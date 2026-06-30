@@ -5,6 +5,7 @@ import { generateAllCareerInsights } from "@/lib/data";
 import { colorForRisk, formatCurrency } from "@/lib/utils";
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import ReskillExplorer from "@/components/skills/ReskillExplorer";
 
 const GROUPS = ["Technical", "Cognitive", "Interpersonal", "Administrative", "Management"];
 
@@ -191,6 +192,12 @@ export default function SkillsPage() {
           <p className="text-zinc-500 text-sm">No occupations found for this skill group.</p>
         </div>
       )}
+
+      {/* Divider */}
+      <hr className="border-zinc-800" />
+
+      {/* Reskilling Pathways Explorer */}
+      <ReskillExplorer />
     </div>
   );
 }
