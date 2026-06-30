@@ -24,6 +24,8 @@ export interface EnrichedCountry {
     innovation: number | null;
     regulationEthics: number | null;
   } | null;
+  /** Oxford Insights Government AI Readiness Index 2023, composite 0–100. */
+  governmentReadiness: number | null;
   gdpPerWorkingAgeCapita: number | null;
 }
 
@@ -357,6 +359,27 @@ function CountryModal({
               </p>
               <p className="text-[10px] text-zinc-500 mt-0.5">
                 IMF AI Preparedness Index
+              </p>
+            </div>
+
+            {/* Government AI readiness (Oxford 2023) */}
+            <div className="rounded-xl bg-zinc-900/50 border border-indigo-500/20 px-4 py-3 col-span-2">
+              <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
+                Government AI Readiness (Oxford 2023)
+              </p>
+              <p className="text-xl font-extrabold text-indigo-300 tabular-nums">
+                {country.governmentReadiness !== null
+                  ? `${country.governmentReadiness.toFixed(1)} / 100`
+                  : "—"}
+              </p>
+              <p className="text-[10px] text-zinc-500 mt-0.5">
+                Oxford Insights GAIRI 2023 ·{" "}
+                <Link
+                  href="/sources"
+                  className="text-violet-400 hover:text-violet-300 underline underline-offset-2 transition-colors"
+                >
+                  sources
+                </Link>
               </p>
             </div>
 

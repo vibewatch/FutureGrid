@@ -30,7 +30,7 @@ function brandRamp(t: number): string {
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-type Metric = "claude" | "diffusion" | "readiness";
+type Metric = "claude" | "diffusion" | "readiness" | "govReadiness";
 
 interface TooltipState {
   visible: boolean;
@@ -77,6 +77,23 @@ function TooltipContent({ datum, metric }: { datum: CountryMapDatum; metric: Met
       );
     }
     return <p className="text-zinc-400 text-xs mt-1.5">No AI readiness data</p>;
+  }
+
+  if (metric === "govReadiness") {
+    if (datum.governmentReadiness != null) {
+      return (
+        <div className="mt-1.5 space-y-0.5">
+          <p className="text-zinc-400 text-xs">
+            Gov. readiness:{" "}
+            <span className="text-cyan-300 font-mono font-semibold">
+              {datum.governmentReadiness.toFixed(1)}
+            </span>
+            <span className="text-zinc-600 text-[10px] ml-1">Oxford, 0–100</span>
+          </p>
+        </div>
+      );
+    }
+    return <p className="text-zinc-400 text-xs mt-1.5">No gov. readiness data</p>;
   }
 
   if (metric === "diffusion") {
@@ -237,6 +254,12 @@ export default function WorldChoropleth({
     [],
   );
 
+  // Gov. readiness color scale — Oxford GAIRI domain 0→100
+  const govReadinessColorScale = useMemo(
+    () => d3.scaleSequential([0, 100], brandRamp),
+    [],
+  );
+
   // ── Geo ───────────────────────────────────────────────────────────────────
 
   const pathGen = useMemo(() => {
@@ -262,6 +285,11 @@ export default function WorldChoropleth({
           ? readinessColorScale(datum.aiReadiness)
           : NO_DATA_FILL;
         hasProxy = false;
+      } else if (metric === "govReadiness") {
+        fill     = datum?.governmentReadiness != null
+          ? govReadinessColorScale(datum.governmentReadiness)
+          : NO_DATA_FILL;
+        hasProxy = false;
       } else if (metric === "diffusion") {
         fill     = datum?.diffusionPct != null
           ? diffusionColorScale(datum.diffusionPct)
@@ -276,7 +304,7 @@ export default function WorldChoropleth({
 
       return { iso3, datum, d: dStr, fill, hasProxy };
     });
-  }, [geoData, pathGen, dataByIso3, metric, claudeColorScale, diffusionColorScale, readinessColorScale]);
+  }, [geoData, pathGen, dataByIso3, metric, claudeColorScale, diffusionColorScale, readinessColorScale, govReadinessColorScale]);
 
   // SR top-15 list — metric-aware
   const srTop15 = useMemo(() => {
@@ -290,6 +318,12 @@ export default function WorldChoropleth({
       return [...dataByIso3.values()]
         .filter(d => d.aiReadiness != null)
         .sort((a, b) => (b.aiReadiness ?? 0) - (a.aiReadiness ?? 0))
+        .slice(0, 15);
+    }
+    if (metric === "govReadiness") {
+      return [...dataByIso3.values()]
+        .filter(d => d.governmentReadiness != null)
+        .sort((a, b) => (b.governmentReadiness ?? 0) - (a.governmentReadiness ?? 0))
         .slice(0, 15);
     }
     return [...dataByIso3.values()]
@@ -370,6 +404,8 @@ export default function WorldChoropleth({
     ? "World choropleth map showing AI (Claude.ai) usage index by country. Colour intensity indicates per-capita usage; grey countries have no Claude.ai data; China is shown with a dashed amber border indicating proxy data only."
     : metric === "diffusion"
     ? "World choropleth map showing GenAI diffusion by country, as percentage of working-age population using generative AI (Microsoft AIEI Q1 2026, ~147 economies). Grey countries have no data. China is included with real data at 16.4%."
+    : metric === "govReadiness"
+    ? "World choropleth map showing Government AI Readiness by country based on the Oxford Insights Government AI Readiness Index 2023, scored 0–100. Higher scores indicate greater government AI readiness. Grey countries have no data."
     : "World choropleth map showing AI readiness by country based on the IMF AI Preparedness Index (AIPI), scored 0–1. Higher scores indicate greater capacity and readiness for AI adoption. Grey countries have no data.";
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -383,7 +419,7 @@ export default function WorldChoropleth({
         aria-label="Map metric"
         className="flex w-fit rounded-xl glass p-0.5 mb-3 text-xs font-medium"
       >
-        {(["claude", "diffusion", "readiness"] as Metric[]).map((m) => {
+        {(["claude", "diffusion", "readiness", "govReadiness"] as Metric[]).map((m) => {
           const active = metric === m;
           return (
             <button
@@ -402,7 +438,7 @@ export default function WorldChoropleth({
                   : { background: "transparent", color: "#71717a" }
               }
             >
-              {m === "claude" ? "Claude.ai usage" : m === "diffusion" ? "GenAI diffusion" : "AI readiness"}
+              {m === "claude" ? "Claude.ai usage" : m === "diffusion" ? "GenAI diffusion" : m === "readiness" ? "AI readiness" : "Gov. readiness"}
             </button>
           );
         })}
@@ -429,6 +465,8 @@ export default function WorldChoropleth({
                 ? "Top 15 countries by AI usage index"
                 : metric === "diffusion"
                 ? "Top 15 countries by GenAI diffusion rate"
+                : metric === "govReadiness"
+                ? "Top 15 countries by Government AI readiness score"
                 : "Top 15 countries by AI readiness score"
             }
           >
@@ -438,6 +476,8 @@ export default function WorldChoropleth({
                   ? `${d.name}: GenAI diffusion ${d.diffusionPct?.toFixed(1)}%`
                   : metric === "readiness"
                   ? `${d.name}: AI readiness ${d.aiReadiness?.toFixed(2)}`
+                  : metric === "govReadiness"
+                  ? `${d.name}: Gov. readiness ${d.governmentReadiness?.toFixed(1)}`
                   : `${d.name}: usage index ${d.usageIndex?.toFixed(2)}${d.usagePct != null ? `, global share ${(d.usagePct * 100).toFixed(2)}%` : ""}`
                 }
               </li>
@@ -536,7 +576,7 @@ export default function WorldChoropleth({
                   }}
                 />
                 <span className="text-[10px] text-zinc-500 font-mono">
-                  {metric === "claude" ? maxIndex.toFixed(1) : metric === "diffusion" ? `${maxDiffusion.toFixed(1)}%` : "0.80"}
+                  {metric === "claude" ? maxIndex.toFixed(1) : metric === "diffusion" ? `${maxDiffusion.toFixed(1)}%` : metric === "govReadiness" ? "100" : "0.80"}
                 </span>
               </div>
               <p className="text-[10px] text-zinc-600 mt-0.5">
@@ -544,6 +584,8 @@ export default function WorldChoropleth({
                   ? "AI usage index (per-capita)"
                   : metric === "diffusion"
                   ? "GenAI diffusion (% of working-age pop)"
+                  : metric === "govReadiness"
+                  ? "Gov. AI readiness (Oxford, 0–100)"
                   : "AI readiness (IMF AIPI, 0–1)"}
               </p>
             </div>

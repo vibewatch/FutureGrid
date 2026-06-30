@@ -23,6 +23,7 @@ const METRICS: MetricDef[] = [
   { key: "usageIndex",            label: "AI Usage Index",        shortLabel: "AI Usage",     format: (v) => v.toFixed(2) + " idx" },
   { key: "diffusionPct",          label: "GenAI Diffusion",       shortLabel: "Diffusion",    format: (v) => v.toFixed(1) + "%" },
   { key: "aiReadiness",           label: "AI Readiness",          shortLabel: "Readiness",    format: (v) => v.toFixed(3) },
+  { key: "governmentReadiness",   label: "Gov. Readiness",        shortLabel: "Gov. Ready",   format: (v) => v.toFixed(1) },
   { key: "digitalInfrastructure", label: "Digital Infrastructure",shortLabel: "Dig. Infra",   format: (v) => v.toFixed(3) },
   { key: "humanCapital",          label: "Human Capital",         shortLabel: "H. Capital",   format: (v) => v.toFixed(3) },
   { key: "innovation",            label: "Innovation",            shortLabel: "Innovation",   format: (v) => v.toFixed(3) },
@@ -99,6 +100,8 @@ export default function HeatmapChart() {
             rawVal = c.diffusionPct; normValue = normOf(rawVal, 100); break;
           case "aiReadiness":
             rawVal = c.aiReadiness; normValue = normOf(rawVal, maxReadiness); break;
+          case "governmentReadiness":
+            rawVal = c.governmentReadiness; normValue = normOf(rawVal, 100); break;
           case "digitalInfrastructure":
             rawVal = si?.digitalInfrastructure; normValue = normOf(rawVal, maxDI); break;
           case "humanCapital":
@@ -258,16 +261,17 @@ export default function HeatmapChart() {
         ref={svgRef}
         className="w-full h-auto min-h-[600px]"
         role="img"
-        aria-label="Country × AI-metric heatmap: 25 major economies scored on 7 real AI indicators"
+        aria-label="Country × AI-metric heatmap: 25 major economies scored on 8 real AI indicators"
       >
         <title>Country × AI-Metric Heatmap</title>
       </svg>
       <span className="sr-only">
-        Heatmap comparing 25 countries on 7 real AI metrics: AI Usage Index, GenAI Diffusion
-        rate, AI Readiness (IMF AIPI composite), and four AIPI sub-indices (digital
-        infrastructure, human capital, innovation, regulation &amp; ethics). Each metric is
-        independently normalised to 0–1 for colour comparability. Grey cells indicate no data.
-        Hover over individual cells to see the real underlying value.
+        Heatmap comparing 25 countries on 8 real AI metrics: AI Usage Index, GenAI Diffusion
+        rate, AI Readiness (IMF AIPI composite), Government AI Readiness (Oxford Insights
+        GAIRI 2023, 0–100), and four AIPI sub-indices (digital infrastructure, human capital,
+        innovation, regulation &amp; ethics). Each metric is independently normalised to 0–1
+        for colour comparability. Grey cells indicate no data. Hover over individual cells to
+        see the real underlying value.
       </span>
 
       {tooltip.visible && (

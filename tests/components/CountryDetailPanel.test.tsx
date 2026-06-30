@@ -42,6 +42,7 @@ const usaCountry: EnrichedCountry = {
     innovation: 0.18,
     regulationEthics: 0.22,
   },
+  governmentReadiness: 83.4,
   gdpPerWorkingAgeCapita: 132531,
 };
 
@@ -63,6 +64,7 @@ const chnCountry: EnrichedCountry = {
     innovation: 0.15,
     regulationEthics: 0.15,
   },
+  governmentReadiness: 70.94,
   gdpPerWorkingAgeCapita: 19189,
 };
 
