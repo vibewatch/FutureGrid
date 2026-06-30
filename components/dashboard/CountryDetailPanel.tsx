@@ -12,6 +12,10 @@ export interface EnrichedCountry {
   hasClaudeData: boolean;
   proxyNote: string | null;
   diffusionPct: number | null;
+  /** All three AIEI survey periods; null when incomplete. */
+  diffusionTrend: { h1_2025: number; h2_2025: number; q1_2026: number } | null;
+  /** pp gain H1 2025 → Q1 2026; null when incomplete. */
+  diffusionDelta: number | null;
   aiReadiness: number | null;
   gdpPerWorkingAgeCapita: number | null;
 }
@@ -59,6 +63,34 @@ function flagEmoji(iso3: string): string {
   return (
     String.fromCodePoint(base + iso2.charCodeAt(0) - A) +
     String.fromCodePoint(base + iso2.charCodeAt(1) - A)
+  );
+}
+
+// ─── Tiny 3-point sparkline (pure SVG, no animation, reduced-motion safe) ─────
+
+function Sparkline3({ h1, h2, q1 }: { h1: number; h2: number; q1: number }) {
+  const W = 52, H = 22;
+  const vals = [h1, h2, q1];
+  const minV = Math.min(...vals);
+  const maxV = Math.max(...vals);
+  const span = maxV - minV || 0.1;
+  const px = (i: number) => (((i / 2) * (W - 8)) + 4).toFixed(1);
+  const py = (v: number) => (H - 4 - ((v - minV) / span) * (H - 8)).toFixed(1);
+  const pts = `${px(0)},${py(vals[0])} ${px(1)},${py(vals[1])} ${px(2)},${py(vals[2])}`;
+  return (
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} aria-hidden="true" className="shrink-0">
+      <polyline
+        points={pts}
+        fill="none"
+        stroke="rgb(139,92,246)"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      <circle cx={px(0)} cy={py(vals[0])} r="2" fill="rgb(139,92,246)" opacity="0.5" />
+      <circle cx={px(1)} cy={py(vals[1])} r="2" fill="rgb(139,92,246)" opacity="0.5" />
+      <circle cx={px(2)} cy={py(vals[2])} r="2.5" fill="rgb(139,92,246)" />
+    </svg>
   );
 }
 
@@ -226,13 +258,52 @@ function CountryModal({
               <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
                 GenAI Diffusion
               </p>
-              <p className="text-xl font-extrabold text-violet-300 tabular-nums">
-                {country.diffusionPct !== null
-                  ? `${country.diffusionPct.toFixed(1)}%`
-                  : "—"}
-              </p>
-              <p className="text-[10px] text-zinc-500 mt-0.5">
-                Microsoft AIEI Q1 2026
+              {country.diffusionTrend ? (
+                <>
+                  <p className="text-sm font-semibold text-zinc-200 tabular-nums leading-snug">
+                    {country.diffusionTrend.h1_2025.toFixed(1)}%{" "}
+                    <span className="text-zinc-500">→</span>{" "}
+                    {country.diffusionTrend.h2_2025.toFixed(1)}%{" "}
+                    <span className="text-zinc-500">→</span>{" "}
+                    <span className="text-violet-300 font-bold">
+                      {country.diffusionTrend.q1_2026.toFixed(1)}%
+                    </span>
+                  </p>
+                  {country.diffusionDelta !== null && (
+                    <span
+                      className={`inline-block text-[11px] font-bold tabular-nums px-1.5 py-0.5 rounded-full border mt-1 ${
+                        country.diffusionDelta >= 0
+                          ? "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"
+                          : "text-red-400 bg-red-500/10 border-red-500/20"
+                      }`}
+                    >
+                      {country.diffusionDelta >= 0 ? "+" : ""}
+                      {country.diffusionDelta.toFixed(1)}pp
+                    </span>
+                  )}
+                  <div className="mt-2">
+                    <Sparkline3
+                      h1={country.diffusionTrend.h1_2025}
+                      h2={country.diffusionTrend.h2_2025}
+                      q1={country.diffusionTrend.q1_2026}
+                    />
+                  </div>
+                </>
+              ) : (
+                <p className="text-xl font-extrabold text-violet-300 tabular-nums">
+                  {country.diffusionPct !== null
+                    ? `${country.diffusionPct.toFixed(1)}%`
+                    : "—"}
+                </p>
+              )}
+              <p className="text-[10px] text-zinc-500 mt-1">
+                Microsoft AIEI · H1&nbsp;2025→Q1&nbsp;2026 ·{" "}
+                <Link
+                  href="/sources"
+                  className="text-violet-400 hover:text-violet-300 underline underline-offset-2 transition-colors"
+                >
+                  sources
+                </Link>
               </p>
             </div>
 

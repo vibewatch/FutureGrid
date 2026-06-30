@@ -279,16 +279,20 @@ async function main() {
   const msRows = parseCSV(msCsvText);
   console.log(`  Microsoft AIEI CSV: ${msRows.length} rows`);
 
-  // Detect the latest diffusion column (prefer Q1 2026, fallback to H2 2025)
+  // Detect all three diffusion columns
   const sampleRow = msRows[0] || {};
   const colKeys = Object.keys(sampleRow);
-  const q1Col = colKeys.find((k) => /q1 2026/i.test(k));
+  const h1Col = colKeys.find((k) => /h1 2025/i.test(k));
   const h2Col = colKeys.find((k) => /h2 2025/i.test(k));
+  const q1Col = colKeys.find((k) => /q1 2026/i.test(k));
+  // Latest column for back-compat diffusion metric
   const diffCol = q1Col || h2Col || colKeys.find((k) => /diffusion/i.test(k));
-  console.log(`  Using diffusion column: "${diffCol}"`);
+  console.log(`  Diffusion columns — H1 2025: "${h1Col}", H2 2025: "${h2Col}", Q1 2026: "${q1Col}"`);
+  console.log(`  Using latest diffusion column: "${diffCol}"`);
 
-  // Map Economy → ISO-3 and parse diffusion %
+  // Map Economy → ISO-3 and parse all three diffusion periods
   const diffusion = {};
+  const diffusionTrend = {};
   const unmatched = [];
 
   for (const row of msRows) {
@@ -306,13 +310,31 @@ async function main() {
       continue;
     }
 
+    // Back-compat: keep latest single value
     const pct = parsePct(row[diffCol]);
     if (pct !== null) {
       diffusion[iso3] = pct;
     }
+
+    // All-three-period trend
+    const h1 = h1Col ? parsePct(row[h1Col]) : null;
+    const h2 = h2Col ? parsePct(row[h2Col]) : null;
+    const q1 = q1Col ? parsePct(row[q1Col]) : null;
+    if (h1 !== null || h2 !== null || q1 !== null) {
+      diffusionTrend[iso3] = {
+        h1_2025: h1 ?? null,
+        h2_2025: h2 ?? null,
+        q1_2026: q1 ?? null,
+      };
+    }
   }
 
-  console.log(`  Mapped: ${Object.keys(diffusion).length} countries`);
+  const fullTrendCount = Object.values(diffusionTrend).filter(
+    (t) => t.h1_2025 !== null && t.h2_2025 !== null && t.q1_2026 !== null,
+  ).length;
+  console.log(`  diffusionTrend entries: ${Object.keys(diffusionTrend).length} (${fullTrendCount} with all 3 periods)`);
+
+  console.log(`  Mapped diffusion: ${Object.keys(diffusion).length} countries (latest), ${Object.keys(diffusionTrend).length} trend entries`);
   if (unmatched.length > 0) {
     console.warn(`  Unmatched names (${unmatched.length}): ${unmatched.join(", ")}`);
   } else {
@@ -391,10 +413,12 @@ async function main() {
       url: "https://github.com/microsoft/ai-diffusion-report",
       license: "MIT",
       column: diffCol,
+      periods: ["H1 2025 AI Diffusion", "H2 2025 AI Diffusion", "Q1 2026 AI Diffusion"],
       metric: "diffusionPct",
       description:
-        "% of working-age population using generative AI, Q1 2026 update. " +
-        "147 economies including China. " +
+        "% of working-age population using generative AI across three periods: H1 2025, H2 2025, Q1 2026. " +
+        "147 economies including China. diffusion keeps Q1 2026 (latest) for back-compat; " +
+        "diffusionTrend retains all three periods for momentum/fastest-rising analysis. " +
         "COMPARABILITY CAVEAT: this is a behavior-based survey %; " +
         "do NOT merge with Claude.ai usageIndex (observed API sessions, different denominator). " +
         "Western telemetry may undercount domestic apps (e.g. Doubao, Kimi) in China — " +
@@ -430,6 +454,7 @@ async function main() {
     unmatchedEconomies: unmatched,
     metrics: {
       diffusion: diffusion,
+      diffusionTrend: diffusionTrend,
       ...(imfIncluded ? { readiness, readinessMeta } : {}),
     },
   };
@@ -438,9 +463,10 @@ async function main() {
   writeFileSync(outPath, JSON.stringify(output, null, 2) + "\n");
   console.log(`\n  ✓ Wrote ${path.relative(ROOT, outPath)}`);
   console.log(`    diffusion countries: ${Object.keys(diffusion).length}`);
-  console.log(`    China (CHN): ${diffusion["CHN"] ?? "NOT FOUND"}%`);
-  console.log(`    United States (USA): ${diffusion["USA"] ?? "NOT FOUND"}%`);
-  console.log(`    India (IND): ${diffusion["IND"] ?? "NOT FOUND"}%`);
+  console.log(`    diffusionTrend countries: ${Object.keys(diffusionTrend).length} (${fullTrendCount} with all 3 periods)`);
+  console.log(`    China (CHN): diffusion=${diffusion["CHN"] ?? "NOT FOUND"}%, trend=${JSON.stringify(diffusionTrend["CHN"] ?? "NOT FOUND")}`);
+  console.log(`    United States (USA): diffusion=${diffusion["USA"] ?? "NOT FOUND"}%`);
+  console.log(`    India (IND): diffusion=${diffusion["IND"] ?? "NOT FOUND"}%`);
   console.log(`    IMF readiness included: ${imfIncluded}`);
   if (imfIncluded && readiness) {
     console.log(`    readiness countries: ${Object.keys(readiness).length}`);

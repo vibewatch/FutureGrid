@@ -9,7 +9,7 @@
       "year": 2026,
       "url": "https://github.com/microsoft/ai-diffusion-report",
       "license": "MIT",
-      "usedFor": "diffusionPct on CountryMapDatum: % of working-age population using generative AI, Q1 2026 update, 147 economies including China (16.4%). COMPARABILITY CAVEAT: behavior-based survey %; different denominator than Claude.ai usageIndex (observed API sessions). Do NOT merge. Western telemetry may undercount China\u2019s domestic apps (e.g. Doubao, Kimi) \u2014 CNNIC reports ~43% genAI penetration vs 16.4% here."
+      "usedFor": "diffusionPct (Q1 2026, back-compat), diffusionTrend (H1 2025 / H2 2025 / Q1 2026), and diffusionDelta (pp change H1 2025 \u2192 Q1 2026) on CountryMapDatum: % of working-age population using generative AI, three-period time series, 147 economies including China (H1 16.4%, H2 16.3%, Q1 16.4%). COMPARABILITY CAVEAT: behavior-based survey %; different denominator than Claude.ai usageIndex (observed API sessions). Do NOT merge. Western telemetry may undercount China\u2019s domestic apps (e.g. Doubao, Kimi) \u2014 CNNIC reports ~43% genAI penetration vs 16.4% here."
     },
     {
       "name": "IMF AI Preparedness Index (AIPI) \u2014 overall composite score (AI_PI)",
