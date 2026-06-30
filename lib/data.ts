@@ -38,21 +38,22 @@ const snapshot = occupationSnapshot as SnapshotRow[];
 let _insightsCache: CareerInsight[] | null = null;
 
 export function generateAllCareerInsights(): CareerInsight[] {
-  if (_insightsCache) return _insightsCache;
-  _insightsCache = snapshot.map((row) => ({
-    occupationCode: row.socCode,
-    occupationName: row.title,
-    automationRisk: row.automationRisk,
-    automationProbability: row.automationProbability,
-    growthRate: row.growthRate,
-    medianSalary: row.medianSalary,
-    totalEmployment: row.employment,
-    projectedOpenings: row.projectedOpenings ?? null,
-    outlook: row.outlook ?? (row.brightOutlook ? "Bright" : "Average"),
-    sectorName: row.sector,
-    skills: row.skills,
-  }));
-  return _insightsCache;
+  if (!_insightsCache) {
+    _insightsCache = snapshot.map((row) => ({
+      occupationCode: row.socCode,
+      occupationName: row.title,
+      automationRisk: row.automationRisk,
+      automationProbability: row.automationProbability,
+      growthRate: row.growthRate,
+      medianSalary: row.medianSalary,
+      totalEmployment: row.employment,
+      projectedOpenings: row.projectedOpenings ?? null,
+      outlook: row.outlook ?? (row.brightOutlook ? "Bright" : "Average"),
+      sectorName: row.sector,
+      skills: row.skills,
+    }));
+  }
+  return [..._insightsCache];
 }
 
 export function getSectorAggregates(): { sector: string; avgRisk: number; avgGrowth: number | null; occupationCount: number }[] {

@@ -43,7 +43,7 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
 
   const [data] = useState(() => {
     const insights = generateAllCareerInsights();
-    return insights
+    return [...insights]
       .sort((a, b) => b.automationProbability - a.automationProbability)
       .slice(0, 20);
   });
