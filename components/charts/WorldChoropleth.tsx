@@ -6,6 +6,7 @@ import * as d3 from "d3";
 import type { GeoPermissibleObjects, ExtendedFeatureCollection } from "d3-geo";
 import { getCountryMapData } from "@/lib/data";
 import type { CountryMapDatum } from "@/lib/data";
+import { useT } from "@/lib/i18n/useT";
 
 // ── Constants ──────────────────────────────────────────────────────────────────
 
@@ -66,22 +67,24 @@ interface GeoData {
 
 // ── Tooltip content (module-level to avoid unstable-nested-component lint) ────
 
-function TooltipContent({ datum, metric }: { datum: CountryMapDatum; metric: Metric }) {
+type TFunc = (key: string, vars?: Record<string, string | number>) => string;
+
+function TooltipContent({ datum, metric, t }: { datum: CountryMapDatum; metric: Metric; t: TFunc }) {
   if (metric === "readiness") {
     if (datum.aiReadiness != null) {
       return (
         <div className="mt-1.5 space-y-0.5">
           <p className="text-zinc-600 dark:text-zinc-400 text-xs">
-            AI readiness:{" "}
+            {t("tooltipReadinessLabel")}{" "}
             <span className="text-cyan-600 dark:text-cyan-300 font-mono font-semibold">
               {datum.aiReadiness.toFixed(2)}
             </span>
-            <span className="text-zinc-500 text-[10px] ml-1">IMF AIPI, 0–1</span>
+            <span className="text-zinc-500 text-[10px] ml-1">{t("tooltipReadinessNote")}</span>
           </p>
         </div>
       );
     }
-    return <p className="text-zinc-500 text-xs mt-1.5">No AI readiness data</p>;
+    return <p className="text-zinc-500 text-xs mt-1.5">{t("noAIReadinessData")}</p>;
   }
 
   if (metric === "govReadiness") {
@@ -89,16 +92,16 @@ function TooltipContent({ datum, metric }: { datum: CountryMapDatum; metric: Met
       return (
         <div className="mt-1.5 space-y-0.5">
           <p className="text-zinc-600 dark:text-zinc-400 text-xs">
-            Gov. readiness:{" "}
+            {t("tooltipGovReadinessLabel")}{" "}
             <span className="text-cyan-600 dark:text-cyan-300 font-mono font-semibold">
               {datum.governmentReadiness.toFixed(1)}
             </span>
-            <span className="text-zinc-500 text-[10px] ml-1">Oxford, 0–100</span>
+            <span className="text-zinc-500 text-[10px] ml-1">{t("tooltipGovReadinessNote")}</span>
           </p>
         </div>
       );
     }
-    return <p className="text-zinc-500 text-xs mt-1.5">No gov. readiness data</p>;
+    return <p className="text-zinc-500 text-xs mt-1.5">{t("noGovReadinessData")}</p>;
   }
 
   if (metric === "diffusion") {
@@ -106,11 +109,11 @@ function TooltipContent({ datum, metric }: { datum: CountryMapDatum; metric: Met
       return (
         <div className="mt-1.5 space-y-0.5">
           <p className="text-zinc-600 dark:text-zinc-400 text-xs">
-            GenAI use:{" "}
+            {t("tooltipGenAIUseLabel")}{" "}
             <span className="text-cyan-600 dark:text-cyan-300 font-mono font-semibold">
               {datum.diffusionPct.toFixed(1)}%
             </span>
-            <span className="text-zinc-500 text-[10px] ml-1">of working-age pop.</span>
+            <span className="text-zinc-500 text-[10px] ml-1">{t("tooltipGenAIUseNote")}</span>
           </p>
           {datum.iso3 === "CHN" && datum.proxyNote && (
             <p className="text-zinc-500 text-[10px] leading-snug mt-1">
@@ -120,21 +123,21 @@ function TooltipContent({ datum, metric }: { datum: CountryMapDatum; metric: Met
         </div>
       );
     }
-    return <p className="text-zinc-500 text-xs mt-1.5">No GenAI diffusion data</p>;
+    return <p className="text-zinc-500 text-xs mt-1.5">{t("noGenAIDiffusionData")}</p>;
   }
 
   if (datum.hasClaudeData) {
     return (
       <div className="mt-1.5 space-y-0.5">
         <p className="text-zinc-600 dark:text-zinc-400 text-xs">
-          AI usage index:{" "}
+          {t("tooltipAIUsageIndexLabel")}{" "}
           <span className="text-cyan-600 dark:text-cyan-300 font-mono font-semibold">
             {datum.usageIndex?.toFixed(2)}
           </span>
         </p>
         {datum.usagePct != null && (
           <p className="text-zinc-600 dark:text-zinc-400 text-xs">
-            Global share:{" "}
+            {t("tooltipGlobalShareLabel")}{" "}
             <span className="text-violet-600 dark:text-violet-300 font-mono font-semibold">
               {(datum.usagePct * 100).toFixed(2)}%
             </span>
@@ -146,7 +149,7 @@ function TooltipContent({ datum, metric }: { datum: CountryMapDatum; metric: Met
 
   return (
     <div className="mt-1.5 space-y-1">
-      <p className="text-zinc-500 text-xs">No Claude.ai usage data</p>
+      <p className="text-zinc-500 text-xs">{t("noClaudeAIUsageData")}</p>
       {datum.proxyNote && (
         <p className="text-amber-600 dark:text-amber-300/80 text-xs leading-snug">{datum.proxyNote}</p>
       )}
@@ -181,6 +184,7 @@ export default function WorldChoropleth({
 }: {
   onCountrySelect?: (iso3: string) => void;
 } = {}) {
+  const t            = useT("charts");
   const svgRef       = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
@@ -537,7 +541,7 @@ export default function WorldChoropleth({
                     : { background: "transparent", color: "#71717a" }
                 }
               >
-                {m === "claude" ? "Claude.ai usage" : m === "diffusion" ? "GenAI diffusion" : m === "readiness" ? "AI readiness" : "Gov. readiness"}
+                {m === "claude" ? t("metricClaude") : m === "diffusion" ? t("metricDiffusion") : m === "readiness" ? t("metricReadiness") : t("metricGovReadiness")}
               </button>
             );
           })}
@@ -568,7 +572,7 @@ export default function WorldChoropleth({
                     : { background: "transparent", color: "#71717a" }
                 }
               >
-                {mode === "map" ? "Map" : "Bubbles"}
+                {mode === "map" ? t("viewModeMap") : t("viewModeBubbles")}
               </button>
             );
           })}
@@ -578,7 +582,7 @@ export default function WorldChoropleth({
       {/* Error state */}
       {geoError && (
         <p className="text-zinc-500 text-sm py-12 text-center">
-          Map unavailable — could not load world geometry.
+          {t("mapError")}
         </p>
       )}
 
@@ -630,7 +634,7 @@ export default function WorldChoropleth({
               aria-label="Reset zoom"
               className="absolute right-1 top-1 z-10 rounded-lg glass px-2 py-1 text-[11px] text-zinc-500 hover:text-zinc-200 transition-colors"
             >
-              Reset view
+              {t("buttonResetView")}
             </button>
           )}
 
@@ -753,7 +757,7 @@ export default function WorldChoropleth({
               }}
             >
               <p className="font-semibold text-zinc-900 dark:text-white leading-tight">{tooltip.datum.name}</p>
-              <TooltipContent datum={tooltip.datum} metric={metric} />
+              <TooltipContent datum={tooltip.datum} metric={metric} t={t} />
             </div>
           )}
 
@@ -762,7 +766,7 @@ export default function WorldChoropleth({
             {/* Sequential gradient bar */}
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] text-zinc-500 uppercase tracking-wide">Low</span>
+                <span className="text-[10px] text-zinc-500 uppercase tracking-wide">{t("legendLow")}</span>
                 <div
                   className="w-28 h-2.5 rounded"
                   style={{
@@ -775,14 +779,14 @@ export default function WorldChoropleth({
               </div>
               <p className="text-[10px] text-zinc-600 mt-0.5">
                 {viewMode === "bubble"
-                  ? `Bubble colour + size = ${metric === "claude" ? "AI usage index" : metric === "diffusion" ? "GenAI diffusion %" : metric === "govReadiness" ? "Gov. AI readiness" : "AI readiness"}`
+                  ? t("legendBubbleColourSize", { metric: metric === "claude" ? t("legendMetricAIUsage") : metric === "diffusion" ? t("legendMetricGenAI") : metric === "govReadiness" ? t("legendMetricGovReady") : t("legendMetricAIReady") })
                   : metric === "claude"
-                  ? "AI usage index (per-capita)"
+                  ? t("legendAIUsagePcIndex")
                   : metric === "diffusion"
-                  ? "GenAI diffusion (% of working-age pop)"
+                  ? t("legendGenAIDiffusionPop")
                   : metric === "govReadiness"
-                  ? "Gov. AI readiness (Oxford, 0–100)"
-                  : "AI readiness (IMF AIPI, 0–1)"}
+                  ? t("legendGovReadinessOxford")
+                  : t("legendAIReadinessIMF")}
               </p>
             </div>
 
@@ -793,13 +797,13 @@ export default function WorldChoropleth({
                   <svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true">
                     <circle cx="8" cy="6" r="5" fill={brandRamp(0.7)} fillOpacity={0.78} />
                   </svg>
-                  <span className="text-[10px] text-zinc-500">Bubble size ∝ metric value</span>
+                  <span className="text-[10px] text-zinc-500">{t("legendBubbleProportional")}</span>
                 </>
               ) : (
                 <>
                   <div className="w-4 h-2.5 rounded" style={{ background: noDataFill }} />
                   <span className="text-[10px] text-zinc-500">
-                    {metric === "claude" ? "No Claude.ai data" : "No data"}
+                    {metric === "claude" ? t("noClaudeData") : t("noData")}
                   </span>
                 </>
               )}
@@ -815,7 +819,7 @@ export default function WorldChoropleth({
                     borderColor: PROXY_STROKE,
                   }}
                 />
-                <span className="text-[10px] text-zinc-500">Proxy / restricted data</span>
+                <span className="text-[10px] text-zinc-500">{t("proxyRestrictedData")}</span>
               </div>
             )}
           </div>

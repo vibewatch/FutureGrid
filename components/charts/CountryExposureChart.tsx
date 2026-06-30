@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import { getCountryExposure } from "@/lib/data";
 import type { CountryExposure } from "@/lib/data";
+import { useT } from "@/lib/i18n/useT";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -38,6 +39,7 @@ function brandColor(t: number): string {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function CountryExposureChart() {
+  const t            = useT("charts");
   const svgRef       = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
@@ -50,6 +52,11 @@ export default function CountryExposureChart() {
   });
 
   const allData = useMemo(() => getCountryExposure(), []);
+
+  const axisBarAIUsage = t("barAxisAIUsageIndex");
+  const axisBarGlobal  = t("barAxisGlobalShare");
+  const axisGDPWorker  = t("axisGDPPerWorker");
+  const axisAIUsageIdx = t("axisAIUsageIndexArrow");
 
   // Top-N countries for the ranked bar chart, sorted by selected metric
   const barData = useMemo(() => {
@@ -136,8 +143,8 @@ export default function CountryExposureChart() {
         .attr("letter-spacing", "0.06em")
         .text(
           metric === "usageIndex"
-            ? "AI USAGE INDEX (PER-CAPITA, WORLD AVG = 1.0)"
-            : "SHARE OF GLOBAL AI USAGE",
+            ? axisBarAIUsage
+            : axisBarGlobal,
         );
 
       const g = svg.append("g")
@@ -298,7 +305,7 @@ export default function CountryExposureChart() {
         .attr("text-anchor", "middle")
         .attr("fill", axisText)
         .attr("font-size", "11px")
-        .text("GDP per Working-Age Adult (log scale) →");
+        .text(axisGDPWorker);
 
       const yAxisG = svg.append("g")
         .attr("transform", `translate(${margin.left},0)`)
@@ -314,7 +321,7 @@ export default function CountryExposureChart() {
         .attr("text-anchor", "middle")
         .attr("fill", axisText)
         .attr("font-size", "11px")
-        .text("AI Usage Index →");
+        .text(axisAIUsageIdx);
 
       // ── Dots ─────────────────────────────────────────────────────────────
       const dots = svg
@@ -392,7 +399,7 @@ export default function CountryExposureChart() {
 
     // Interrupt all running transitions on unmount / re-render
     return () => { svg.selectAll("*").interrupt(); };
-  }, [barData, scatterData, metric, viewMode, isDark]);
+  }, [barData, scatterData, metric, viewMode, isDark, axisBarAIUsage, axisBarGlobal, axisGDPWorker, axisAIUsageIdx]);
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -415,7 +422,7 @@ export default function CountryExposureChart() {
                   : "text-zinc-500 hover:text-zinc-300"
               }`}
             >
-              Per-Capita Index
+              {t("metricPerCapitaIndex")}
             </button>
             <button
               onClick={() => setMetric("usagePct")}
@@ -425,7 +432,7 @@ export default function CountryExposureChart() {
                   : "text-zinc-500 hover:text-zinc-300"
               }`}
             >
-              Global Share
+              {t("labelGlobalShare")}
             </button>
           </div>
         )}
@@ -516,20 +523,20 @@ export default function CountryExposureChart() {
           </p>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between gap-4">
-              <span className="text-zinc-500">Usage Index</span>
+              <span className="text-zinc-500">{t("labelUsageIndex")}</span>
               <span className="font-semibold text-violet-300">
                 {item.usageIndex != null ? item.usageIndex.toFixed(2) : "—"}
               </span>
             </div>
             <div className="flex justify-between gap-4">
-              <span className="text-zinc-500">Global Share</span>
+              <span className="text-zinc-500">{t("labelGlobalShare")}</span>
               <span className="font-semibold text-cyan-300">
                 {item.usagePct != null ? `${(item.usagePct * 100).toFixed(2)}%` : "—"}
               </span>
             </div>
             {item.usageCount != null && item.usageCount > 0 && (
               <div className="flex justify-between gap-4">
-                <span className="text-zinc-500">Usage Count</span>
+                <span className="text-zinc-500">{t("labelUsageCount")}</span>
                 <span className="text-zinc-900 dark:text-white font-medium">
                   {item.usageCount.toLocaleString()}
                 </span>
@@ -537,7 +544,7 @@ export default function CountryExposureChart() {
             )}
             {item.gdpPerWorkingAgeCapita != null && item.gdpPerWorkingAgeCapita > 0 && (
               <div className="flex justify-between gap-4">
-                <span className="text-zinc-500">GDP / Worker</span>
+                <span className="text-zinc-500">{t("labelGDPWorker")}</span>
                 <span className="text-zinc-900 dark:text-white font-medium">
                   ${Math.round(item.gdpPerWorkingAgeCapita).toLocaleString()}
                 </span>

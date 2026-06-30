@@ -4,6 +4,7 @@ import { useEffect, useRef, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import { getOccupationTrend } from "@/lib/data";
+import { useT } from "@/lib/i18n/useT";
 
 // ── Brand colours ─────────────────────────────────────────────────────────────
 const VIOLET = "#8b5cf6";
@@ -40,6 +41,7 @@ function fmtWage(v: number): string {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function OccupationTrendChart({ code }: OccupationTrendChartProps) {
+  const t            = useT("charts");
   const svgRef       = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
@@ -50,6 +52,10 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
   });
 
   const data = useMemo<TrendPoint[]>(() => getOccupationTrend(code), [code]);
+
+  const labelEmployment = t("labelEmployment");
+  const labelMedianWage = t("labelMedianWage");
+  const emptyText       = t("emptyInsufficientHistory");
 
   const hasData = useMemo(() => {
     const vEmp  = data.filter((d) => d.employment != null).length;
@@ -81,7 +87,7 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
         .attr("text-anchor", "middle")
         .attr("fill", "#71717a")
         .attr("font-size", "14px")
-        .text("Insufficient history");
+        .text(emptyText);
       return () => { svg.selectAll("*").interrupt(); };
     }
 
@@ -315,7 +321,7 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
       legendG.append("text").attr("x", lx + 28).attr("y", 8)
         .attr("dominant-baseline", "middle")
         .attr("fill", legendText).attr("font-size", "11px")
-        .text("Employment");
+        .text(labelEmployment);
       lx += 105 + 20;
     }
 
@@ -325,7 +331,7 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
       legendG.append("text").attr("x", lx + 28).attr("y", 8)
         .attr("dominant-baseline", "middle")
         .attr("fill", legendText).attr("font-size", "11px")
-        .text("Median Wage");
+        .text(labelMedianWage);
     }
 
     // ── Hover overlay ─────────────────────────────────────────────────────────
@@ -357,7 +363,7 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
       .on("mouseleave", () => setTooltip((p) => ({ ...p, visible: false })));
 
     return () => { svg.selectAll("*").interrupt(); };
-  }, [data, isDark]);
+  }, [data, isDark, labelEmployment, labelMedianWage, emptyText]);
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
@@ -401,13 +407,13 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
           <p className="font-semibold text-zinc-900 dark:text-white mb-1.5">{tooltip.year}</p>
           <div className="space-y-1 text-xs">
             <div className="flex justify-between gap-4">
-              <span style={{ color: VIOLET }}>Employment</span>
+              <span style={{ color: VIOLET }}>{t("labelEmployment")}</span>
               <span className="font-semibold text-zinc-900 dark:text-white">
                 {tooltip.employment != null ? tooltip.employment.toLocaleString() : "—"}
               </span>
             </div>
             <div className="flex justify-between gap-4">
-              <span style={{ color: CYAN }}>Median Wage</span>
+              <span style={{ color: CYAN }}>{t("labelMedianWage")}</span>
               <span className="font-semibold text-zinc-900 dark:text-white">
                 {tooltip.wage != null ? `$${tooltip.wage.toLocaleString()}` : "—"}
               </span>

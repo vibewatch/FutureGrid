@@ -86,7 +86,8 @@ function buildFrames(data: CareerInsight[]): Frame[] {
 // ── Component ──────────────────────────────────────────────────────────────────
 
 export default function BarChartRace() {
-  const t = useT("explore");
+  const t       = useT("explore");
+  const tCharts = useT("charts");
 
   const { resolvedTheme } = useTheme();
   const isDark = (resolvedTheme ?? "dark") !== "light";
@@ -434,10 +435,10 @@ export default function BarChartRace() {
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 px-1 text-[10px] text-zinc-500 dark:text-zinc-400 select-none">
         {(
           [
-            ["#22c55e", "Low"],
-            ["#eab308", "Medium"],
-            ["#f97316", "High"],
-            ["#ef4444", "Very High"],
+            ["#22c55e", tCharts("legendLow")],
+            ["#eab308", tCharts("legendMedium")],
+            ["#f97316", tCharts("legendHigh")],
+            ["#ef4444", tCharts("legendVeryHigh")],
           ] as const
         ).map(([color, label]) => (
           <span key={label} className="flex items-center gap-1">

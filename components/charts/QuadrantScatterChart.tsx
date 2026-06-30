@@ -6,6 +6,7 @@ import * as d3 from "d3";
 import { useRouter } from "next/navigation";
 import { generateAllCareerInsights, type CareerInsight } from "@/lib/data";
 import { colorForRisk } from "@/lib/utils";
+import { useT } from "@/lib/i18n/useT";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -44,6 +45,7 @@ function fmtSalary(v: number): string {
 // ── Component ──────────────────────────────────────────────────────────────────
 
 export default function QuadrantScatterChart() {
+  const t         = useT("charts");
   const router    = useRouter();
   const routerRef = useRef(router);
   useEffect(() => { routerRef.current = router; }, [router]);
@@ -63,6 +65,13 @@ export default function QuadrantScatterChart() {
   const data = useMemo(() => generateAllCareerInsights(), []);
 
   // ── D3 draw ──────────────────────────────────────────────────────────────────
+
+  const labelAxisAIExposure  = t("axisAIExposure");
+  const labelMedianSalaryLog = t("axisMedianSalaryLog");
+  const labelQuadLL  = t("quadrantLowerLower");
+  const labelQuadLH  = t("quadrantLowerHigher");
+  const labelQuadHL  = t("quadrantHigherLower");
+  const labelQuadHH  = t("quadrantHigherHigher");
 
   useEffect(() => {
     const svgEl       = svgRef.current;
@@ -137,7 +146,7 @@ export default function QuadrantScatterChart() {
       .attr("y", H - 10)
       .attr("text-anchor", "middle")
       .attr("fill", axisText).attr("font-size", "11px")
-      .text("AI Exposure →");
+      .text(labelAxisAIExposure);
 
     svg.append("text")
       .attr("transform", "rotate(-90)")
@@ -145,15 +154,15 @@ export default function QuadrantScatterChart() {
       .attr("y", 18)
       .attr("text-anchor", "middle")
       .attr("fill", axisText).attr("font-size", "11px")
-      .text("Median Annual Salary (log) →");
+      .text(labelMedianSalaryLog);
 
     // Corner labels — always pinned to the four corners of the plot area
     const pad = 9;
     const corners = [
-      { x: margin.left + pad,      y: H - margin.bottom - pad, anchor: "start", base: "auto",    text: "Lower pay · Lower exposure"  },
-      { x: W - margin.right - pad, y: H - margin.bottom - pad, anchor: "end",   base: "auto",    text: "Lower pay · Higher exposure" },
-      { x: margin.left + pad,      y: margin.top + pad,        anchor: "start", base: "hanging", text: "Higher pay · Lower exposure"  },
-      { x: W - margin.right - pad, y: margin.top + pad,        anchor: "end",   base: "hanging", text: "Higher pay · Higher exposure" },
+      { x: margin.left + pad,      y: H - margin.bottom - pad, anchor: "start", base: "auto",    text: labelQuadLL  },
+      { x: W - margin.right - pad, y: H - margin.bottom - pad, anchor: "end",   base: "auto",    text: labelQuadLH  },
+      { x: margin.left + pad,      y: margin.top + pad,        anchor: "start", base: "hanging", text: labelQuadHL  },
+      { x: W - margin.right - pad, y: margin.top + pad,        anchor: "end",   base: "hanging", text: labelQuadHH  },
     ] as const;
     const gCorners = svg.append("g");
     corners.forEach((c) => {
@@ -305,7 +314,7 @@ export default function QuadrantScatterChart() {
       svg.selectAll("*").interrupt();
       svg.on(".zoom", null);
     };
-  }, [data, isDark]);
+  }, [data, isDark, labelAxisAIExposure, labelMedianSalaryLog, labelQuadLL, labelQuadLH, labelQuadHL, labelQuadHH]);
 
   // ── Reset zoom ────────────────────────────────────────────────────────────────
 
@@ -345,7 +354,7 @@ export default function QuadrantScatterChart() {
           }}
           aria-label="Reset zoom to default view"
         >
-          Reset zoom
+          {t("buttonResetZoom")}
         </button>
       )}
 
@@ -371,19 +380,19 @@ export default function QuadrantScatterChart() {
           <p className="text-[11px] text-zinc-500 mb-2">{tooltip.d.sectorName}</p>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between gap-4">
-              <span className="text-zinc-500">AI Exposure</span>
+              <span className="text-zinc-500">{t("labelAIExposure")}</span>
               <span className="font-semibold" style={{ color: colorForRisk(tooltip.d.automationRisk) }}>
                 {(tooltip.d.automationProbability * 100).toFixed(1)}%{" — "}{tooltip.d.automationRisk}
               </span>
             </div>
             <div className="flex justify-between gap-4">
-              <span className="text-zinc-500">Salary</span>
+              <span className="text-zinc-500">{t("labelSalary")}</span>
               <span className="font-semibold text-zinc-900 dark:text-white">
                 ${tooltip.d.medianSalary.toLocaleString()}
               </span>
             </div>
             <div className="flex justify-between gap-4">
-              <span className="text-zinc-500">Employment</span>
+              <span className="text-zinc-500">{t("labelEmployment")}</span>
               <span className="text-zinc-900 dark:text-white">
                 {tooltip.d.totalEmployment != null
                   ? tooltip.d.totalEmployment.toLocaleString()
@@ -391,7 +400,7 @@ export default function QuadrantScatterChart() {
               </span>
             </div>
           </div>
-          <p className="text-[10px] text-zinc-500 mt-2.5">Click to explore occupation →</p>
+          <p className="text-[10px] text-zinc-500 mt-2.5">{t("tooltipClickOccupation")}</p>
         </div>
       )}
 
@@ -399,18 +408,18 @@ export default function QuadrantScatterChart() {
       <div className="absolute bottom-2 right-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-zinc-500 dark:text-zinc-400 pointer-events-none select-none">
         {(
           [
-            ["#22c55e", "Low"],
-            ["#eab308", "Medium"],
-            ["#f97316", "High"],
-            ["#ef4444", "Very High"],
+            ["#22c55e", "legendLow"],
+            ["#eab308", "legendMedium"],
+            ["#f97316", "legendHigh"],
+            ["#ef4444", "legendVeryHigh"],
           ] as const
-        ).map(([color, label]) => (
-          <span key={label} className="flex items-center gap-1">
+        ).map(([color, key]) => (
+          <span key={key} className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: color }} />
-            {label}
+            {t(key)}
           </span>
         ))}
-        <span className="ml-1 text-zinc-600 dark:text-zinc-500">dot size = employment</span>
+        <span className="ml-1 text-zinc-600 dark:text-zinc-500">{t("legendDotEmp")}</span>
       </div>
 
       {/* Screen-reader accessible occupation list */}

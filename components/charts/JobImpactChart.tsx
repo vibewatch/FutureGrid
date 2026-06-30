@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import { colorForRisk } from "@/lib/utils";
 import { generateAllCareerInsights } from "@/lib/data";
+import { useT } from "@/lib/i18n/useT";
 
 interface JobImpactChartProps {
   selectedSector?: string;
@@ -36,6 +37,7 @@ const RISK_GLOW: Record<string, string> = {
 };
 
 export default function JobImpactChart({ selectedSector }: JobImpactChartProps) {
+  const t           = useT("charts");
   const svgRef      = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
@@ -50,6 +52,10 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
       .sort((a, b) => b.automationProbability - a.automationProbability)
       .slice(0, 20);
   });
+
+  const labelOccupations = t("labelOccupations");
+  const labelAIExposure  = t("labelAIExposure");
+  const emptyText        = t("emptyNoSectorData");
 
   useEffect(() => {
     if (!svgRef.current || !containerRef.current) return;
@@ -79,7 +85,7 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
         .attr("x", W / 2).attr("y", H / 2)
         .attr("text-anchor", "middle")
         .attr("fill", axisText).attr("font-size", "14px")
-        .text("No data available for this sector");
+        .text(emptyText);
       return;
     }
 
@@ -145,13 +151,13 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
       .attr("x", W / 2).attr("y", H - 5)
       .attr("text-anchor", "middle")
       .attr("fill", axisLabel).attr("font-size", "12px")
-      .text("Occupations");
+      .text(labelOccupations);
     svg.append("text")
       .attr("transform", "rotate(-90)")
       .attr("x", -(H / 2)).attr("y", 15)
       .attr("text-anchor", "middle")
       .attr("fill", axisLabel).attr("font-size", "12px")
-      .text("AI Exposure");
+      .text(labelAIExposure);
 
     // --- Bars ---
     type Datum = (typeof filtered)[number];
@@ -213,7 +219,7 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
           .attr("stroke-width", 0.5)
           .attr("stroke-opacity", 0.6);
       });
-  }, [data, selectedSector, isDark]);
+  }, [data, selectedSector, isDark, labelOccupations, labelAIExposure, emptyText]);
 
   return (
     <div ref={containerRef} className="relative w-full overflow-x-auto">

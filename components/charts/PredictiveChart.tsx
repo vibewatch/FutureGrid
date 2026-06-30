@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import { generateAllCareerInsights } from "@/lib/data";
 import { colorForRisk } from "@/lib/utils";
+import { useT } from "@/lib/i18n/useT";
 
 interface PredictiveChartProps {
   selectedSector?: string;
@@ -23,6 +24,7 @@ interface TooltipState {
 }
 
 export default function PredictiveChart({ selectedSector }: PredictiveChartProps) {
+  const t            = useT("charts");
   const svgRef       = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
@@ -47,6 +49,8 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
     return { topOccupations: top, summary: { count: top.length, avgExposure, brightCount } };
   }, [selectedSector]);
 
+  const emptyText = t("emptyNoProjectionData");
+
   useEffect(() => {
     const svgEl       = svgRef.current;
     const containerEl = containerRef.current;
@@ -67,7 +71,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
         .attr("x", 360).attr("y", 100)
         .attr("text-anchor", "middle")
         .attr("fill", axisText).attr("font-size", "14px")
-        .text("No projection data available for this sector");
+        .text(emptyText);
       return () => { svg.selectAll("*").interrupt(); };
     }
 
@@ -222,7 +226,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
       });
 
     return () => { svg.selectAll("*").interrupt(); };
-  }, [topOccupations, selectedSector, isDark]);
+  }, [topOccupations, selectedSector, isDark, emptyText]);
 
   return (
     <div className="space-y-4">
@@ -238,7 +242,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
           >
             {summary.count}
           </div>
-          <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Occupations Shown</div>
+          <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{t("statOccupationsShown")}</div>
         </div>
         <div
           className="rounded-xl border p-3"
@@ -247,7 +251,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
           <div className="text-2xl font-bold" style={{ color: "#22d3ee" }}>
             {(summary.avgExposure * 100).toFixed(1)}%
           </div>
-          <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Avg AI Exposure</div>
+          <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{t("statAvgAIExposure")}</div>
         </div>
         <div
           className="rounded-xl border p-3"
@@ -256,7 +260,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
           <div className="text-2xl font-bold" style={{ color: "#22c55e" }}>
             {summary.brightCount}
           </div>
-          <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Bright Outlook</div>
+          <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{t("statBrightOutlook")}</div>
         </div>
       </div>
 
@@ -289,7 +293,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
             <p className="text-xs text-zinc-500 mb-2">{tooltip.sector}</p>
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between gap-4">
-                <span className="text-zinc-500">Projected Openings / yr</span>
+                <span className="text-zinc-500">{t("labelProjectedOpenings")}</span>
                 <span
                   className="font-bold"
                   style={{ background: "linear-gradient(90deg,#8b5cf6,#22d3ee)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
@@ -298,7 +302,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
                 </span>
               </div>
               <div className="flex justify-between gap-4">
-                <span className="text-zinc-500">AI Exposure</span>
+                <span className="text-zinc-500">{t("labelAIExposure")}</span>
                 <span className="font-semibold" style={{ color: colorForRisk(tooltip.risk) }}>
                   {(tooltip.prob * 100).toFixed(1)}% — {tooltip.risk}
                 </span>

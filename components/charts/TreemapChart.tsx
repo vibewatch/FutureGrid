@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import * as d3 from "d3";
 import { generateAllCareerInsights } from "@/lib/data";
 import type { CareerInsight } from "@/lib/data";
+import { useT } from "@/lib/i18n/useT";
 
 // ── Brand sequential color scale (matches HeatmapChart) ──────────────────────
 
@@ -66,6 +67,7 @@ const DUMMY_INSIGHT: CareerInsight = {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function TreemapChart() {
+  const t      = useT("charts");
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
@@ -343,11 +345,11 @@ export default function TreemapChart() {
             onClick={() => setFocusSector(null)}
             aria-label="Back to all sectors"
           >
-            ← All Sectors
+            {t("treemapBack")}
           </button>
         ) : (
           <p className="text-xs text-zinc-500 dark:text-zinc-500">
-            Click a sector header to zoom in · click a tile to explore that career
+            {t("treemapClickHint")}
           </p>
         )}
         {focusSector && (
@@ -413,7 +415,7 @@ export default function TreemapChart() {
           <p className="text-xs text-zinc-500 mb-2">{tooltip.insight.sectorName}</p>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between gap-4">
-              <span className="text-zinc-500">AI Exposure</span>
+              <span className="text-zinc-500">{t("labelAIExposure")}</span>
               <span
                 className="font-semibold"
                 style={{
@@ -424,7 +426,7 @@ export default function TreemapChart() {
               </span>
             </div>
             <div className="flex justify-between gap-4">
-              <span className="text-zinc-500">Employment</span>
+              <span className="text-zinc-500">{t("labelEmployment")}</span>
               <span className="font-medium text-zinc-900 dark:text-white">
                 {tooltip.insight.totalEmployment != null
                   ? tooltip.insight.totalEmployment.toLocaleString()
@@ -433,7 +435,7 @@ export default function TreemapChart() {
             </div>
             {tooltip.insight.medianSalary > 0 && (
               <div className="flex justify-between gap-4">
-                <span className="text-zinc-500">Median Salary</span>
+                <span className="text-zinc-500">{t("labelMedianSalary")}</span>
                 <span className="font-medium text-zinc-900 dark:text-white">
                   {fmtSalary(tooltip.insight.medianSalary)}
                 </span>
@@ -441,14 +443,14 @@ export default function TreemapChart() {
             )}
           </div>
           <p className="text-[10px] text-zinc-500 mt-2.5">
-            Click to explore career →
+            {t("tooltipClickCareer")}
           </p>
         </div>
       )}
 
       {/* Color legend */}
       <div className="mt-2.5 flex items-center gap-2 text-[10px] text-zinc-500 dark:text-zinc-500 select-none pointer-events-none">
-        <span>Low AI exposure</span>
+        <span>{t("legendLowAIExposure")}</span>
         <div
           className="flex-1 max-w-[160px] h-2 rounded"
           style={{
@@ -456,9 +458,9 @@ export default function TreemapChart() {
               "linear-gradient(to right, #1e1b4b, #7c3aed, #06b6d4)",
           }}
         />
-        <span>High AI exposure</span>
+        <span>{t("legendHighAIExposure")}</span>
         <span className="ml-3 text-zinc-600 dark:text-zinc-600">
-          · Area = total employment
+          {t("legendAreaEmp")}
         </span>
       </div>
     </div>

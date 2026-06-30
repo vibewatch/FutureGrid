@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import { generateAllCareerInsights } from "@/lib/data";
+import { useT } from "@/lib/i18n/useT";
 
 const GROUP_COLORS: Record<string, string> = {
   Technical:      "#8b5cf6",
@@ -43,6 +44,7 @@ type RowDatum = {
 };
 
 export default function SkillTransitionChart() {
+  const t            = useT("charts");
   const svgRef       = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
@@ -58,6 +60,10 @@ export default function SkillTransitionChart() {
       lowRisk:  insights.filter((i) => i.automationRisk === "Low"),
     };
   });
+
+  const headerHighRisk  = t("sectionHighRisk");
+  const headerLowRisk   = t("sectionLowRiskPathways");
+  const axisSkillFlows  = t("axisSkillCategoryFlows");
 
   useEffect(() => {
     if (!svgRef.current || !containerRef.current) return;
@@ -117,12 +123,12 @@ export default function SkillTransitionChart() {
       .attr("x", xLeft).attr("y", M.top - 18)
       .attr("text-anchor", "end")
       .attr("fill", "#ef4444").attr("font-size", "13px").attr("font-weight", "600")
-      .text("High Risk");
+      .text(headerHighRisk);
     svg.append("text")
       .attr("x", xRight + 75).attr("y", M.top - 18)
       .attr("text-anchor", "middle")
       .attr("fill", "#22c55e").attr("font-size", "13px").attr("font-weight", "600")
-      .text("Low Risk Pathways");
+      .text(headerLowRisk);
 
     // --- Row groups (each group = path + two rects + two labels) ---
     const rowGroups = svg
@@ -221,8 +227,8 @@ export default function SkillTransitionChart() {
       .attr("x", -(H / 2)).attr("y", 14)
       .attr("text-anchor", "middle")
       .attr("fill", axisLabel).attr("font-size", "12px")
-      .text("Skill Category Flows →");
-  }, [filtered, isDark]);
+      .text(axisSkillFlows);
+  }, [filtered, isDark, headerHighRisk, headerLowRisk, axisSkillFlows]);
 
   return (
     <div ref={containerRef} className="relative w-full overflow-x-auto">
@@ -247,14 +253,14 @@ export default function SkillTransitionChart() {
             className="font-semibold text-sm mb-2"
             style={{ color: GROUP_COLORS[tooltip.group] ?? "#e4e4e7" }}
           >
-            {tooltip.group} Skills
+          {t("tooltipSkillsGroup", { group: tooltip.group })}
           </p>
           <div className="flex justify-between gap-4 text-xs mb-1">
-            <span className="text-zinc-500">High Risk Workers</span>
+            <span className="text-zinc-500">{t("tooltipHighRiskWorkers")}</span>
             <span className="font-semibold" style={{ color: "#ef4444" }}>{tooltip.highCount}k</span>
           </div>
           <div className="flex justify-between gap-4 text-xs">
-            <span className="text-zinc-500">Low Risk Pathway</span>
+            <span className="text-zinc-500">{t("tooltipLowRiskPathway")}</span>
             <span className="font-semibold" style={{ color: "#22c55e" }}>{tooltip.lowCount}k</span>
           </div>
         </div>

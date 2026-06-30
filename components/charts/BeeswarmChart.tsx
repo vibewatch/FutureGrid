@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import * as d3 from "d3";
 import type { CareerInsight } from "@/lib/data";
 import { colorForRisk } from "@/lib/utils";
+import { useT } from "@/lib/i18n/useT";
 
 // ── Categorical sector palette (20 distinct colors) ──────────────────────────
 
@@ -64,6 +65,7 @@ export interface BeeswarmChartProps {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function BeeswarmChart({ data }: BeeswarmChartProps) {
+  const t              = useT("charts");
   const router         = useRouter();
   const svgRef         = useRef<SVGSVGElement>(null);
   const containerRef   = useRef<HTMLDivElement>(null);
@@ -100,6 +102,8 @@ export default function BeeswarmChart({ data }: BeeswarmChartProps) {
         .join(", "),
     [data],
   );
+
+  const axisAIExposure = t("axisAIExposure");
 
   // ── D3 beeswarm ──────────────────────────────────────────────────────────
 
@@ -182,7 +186,7 @@ export default function BeeswarmChart({ data }: BeeswarmChartProps) {
       .attr("text-anchor", "middle")
       .attr("fill", axisText)
       .attr("font-size", "11px")
-      .text("AI Exposure →");
+      .text(axisAIExposure);
 
     // ── Dot group ───────────────────────────────────────────────────────────
 
@@ -287,7 +291,7 @@ export default function BeeswarmChart({ data }: BeeswarmChartProps) {
       sim.stop();
       svg.selectAll("*").interrupt();
     };
-  }, [data, isDark, sectorIndex]);
+  }, [data, isDark, sectorIndex, axisAIExposure]);
 
   useEffect(() => {
     const cleanup = draw();
@@ -354,7 +358,7 @@ export default function BeeswarmChart({ data }: BeeswarmChartProps) {
             <p className="text-[11px] text-zinc-500 mb-2">{tooltip.item.sectorName}</p>
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between gap-4">
-                <span className="text-zinc-500">AI Exposure</span>
+                <span className="text-zinc-500">{t("labelAIExposure")}</span>
                 <span
                   className="font-semibold"
                   style={{ color: colorForRisk(tooltip.item.automationRisk) }}
@@ -364,7 +368,7 @@ export default function BeeswarmChart({ data }: BeeswarmChartProps) {
                 </span>
               </div>
               <div className="flex justify-between gap-4">
-                <span className="text-zinc-500">Employment</span>
+                <span className="text-zinc-500">{t("labelEmployment")}</span>
                 <span className="text-zinc-900 dark:text-white font-medium">
                   {tooltip.item.totalEmployment != null
                     ? tooltip.item.totalEmployment.toLocaleString()
@@ -372,7 +376,7 @@ export default function BeeswarmChart({ data }: BeeswarmChartProps) {
                 </span>
               </div>
               <div className="flex justify-between gap-4">
-                <span className="text-zinc-500">Median Salary</span>
+                <span className="text-zinc-500">{t("labelMedianSalary")}</span>
                 <span className="text-zinc-900 dark:text-white font-medium">
                   {tooltip.item.medianSalary > 0
                     ? `$${tooltip.item.medianSalary.toLocaleString()}`
@@ -380,7 +384,7 @@ export default function BeeswarmChart({ data }: BeeswarmChartProps) {
                 </span>
               </div>
             </div>
-            <p className="text-[10px] text-zinc-500 mt-2.5">Click to explore career →</p>
+            <p className="text-[10px] text-zinc-500 mt-2.5">{t("tooltipClickCareer")}</p>
           </div>
         )}
       </div>

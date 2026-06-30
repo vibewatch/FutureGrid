@@ -13,6 +13,7 @@ import {
 import { useMemo } from "react";
 import { useTheme } from "next-themes";
 import { getSectorAggregates } from "@/lib/data";
+import { useT } from "@/lib/i18n/useT";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -24,7 +25,12 @@ function riskFill(r: number, alpha = 0.75): string {
 }
 
 export default function CareerTrendChart() {
+  const t       = useT("charts");
   const sectors = useMemo(() => getSectorAggregates(), []);
+
+  const chartTitle    = t("chartTitleAvgAIExposure");
+  const datasetLabel  = t("datasetAIExposure");
+  const tooltipPrefix = t("tooltipAIExposureCallback");
   const { resolvedTheme } = useTheme();
   const isDark = (resolvedTheme ?? "dark") !== "light";
 
@@ -58,7 +64,7 @@ export default function CareerTrendChart() {
       },
       title: {
         display: true,
-        text: "Average AI Exposure by Sector",
+        text: chartTitle,
         color: titleText,
         font: { size: 14, weight: 500 },
         padding: { bottom: 14 },
@@ -73,7 +79,7 @@ export default function CareerTrendChart() {
         cornerRadius: 8,
         callbacks: {
           label: (ctx: { parsed: { y: number | null } }) =>
-            `  AI Exposure: ${((ctx.parsed.y ?? 0) * 100).toFixed(1)}%`,
+            tooltipPrefix.replace("{value}", `${((ctx.parsed.y ?? 0) * 100).toFixed(1)}%`),
         },
       },
     },
@@ -96,13 +102,13 @@ export default function CareerTrendChart() {
       },
     },
     };
-  }, [isDark]);
+  }, [isDark, chartTitle, tooltipPrefix]);
 
   const data = useMemo(() => ({
     labels: sectors.map((s) => s.sector),
     datasets: [
       {
-        label: "AI Exposure",
+        label: datasetLabel,
         data: sectors.map((s) => s.avgRisk),
         backgroundColor:     sectors.map((s) => riskFill(s.avgRisk, 0.75)),
         borderColor:         sectors.map((s) => riskFill(s.avgRisk, 1.00)),
@@ -112,7 +118,7 @@ export default function CareerTrendChart() {
         borderSkipped: false as const,
       },
     ],
-  }), [sectors]);
+  }), [sectors, datasetLabel]);
 
   return (
     <div className="w-full h-[400px]">

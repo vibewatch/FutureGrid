@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getSectorAggregatesExtended, getSectorAggregates } from "@/lib/data";
 import type { SectorAggregate } from "@/lib/data";
+import { useT } from "@/lib/i18n/useT";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -15,13 +16,6 @@ function bandColor(avgRisk: number): string {
   if (avgRisk < 0.50) return "#eab308";
   if (avgRisk < 0.70) return "#f97316";
   return "#ef4444";
-}
-
-function bandLabel(avgRisk: number): string {
-  if (avgRisk < 0.30) return "Low";
-  if (avgRisk < 0.50) return "Medium";
-  if (avgRisk < 0.70) return "High";
-  return "Very High";
 }
 
 // ── Tooltip state ─────────────────────────────────────────────────────────────
@@ -41,6 +35,7 @@ const EMPTY_ITEM: SectorAggregate = {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function SectorScatterChart() {
+  const t            = useT("charts");
   const router         = useRouter();
   const svgRef         = useRef<SVGSVGElement>(null);
   const containerRef   = useRef<HTMLDivElement>(null);
@@ -70,6 +65,9 @@ export default function SectorScatterChart() {
   }, []);
 
   // ── D3 draw ────────────────────────────────────────────────────────────────
+
+  const labelAxisAIExposure    = t("axisAIExposure");
+  const labelBrightOutlookShare = t("axisBrightOutlookShare");
 
   useEffect(() => {
     const svgEl       = svgRef.current;
@@ -165,7 +163,7 @@ export default function SectorScatterChart() {
       .attr("text-anchor", "middle")
       .attr("fill", axisText)
       .attr("font-size", "11px")
-      .text("AI Exposure →");
+      .text(labelAxisAIExposure);
 
     const yAxisG = svg.append("g")
       .attr("transform", `translate(${margin.left},0)`)
@@ -185,7 +183,7 @@ export default function SectorScatterChart() {
       .attr("text-anchor", "middle")
       .attr("fill", axisText)
       .attr("font-size", "11px")
-      .text("Bright-Outlook Share →");
+      .text(labelBrightOutlookShare);
 
     // ── Bubbles ─────────────────────────────────────────────────────────────
 
@@ -283,7 +281,7 @@ export default function SectorScatterChart() {
       });
 
     return () => { svg.selectAll("*").interrupt(); };
-  }, [data, isDark]);
+  }, [data, isDark, labelAxisAIExposure, labelBrightOutlookShare]);
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -327,23 +325,23 @@ export default function SectorScatterChart() {
           </p>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between gap-4">
-              <span className="text-zinc-500">AI Exposure</span>
+              <span className="text-zinc-500">{t("labelAIExposure")}</span>
               <span
                 className="font-semibold"
                 style={{ color: bandColor(tooltip.item.avgRisk) }}
               >
                 {(tooltip.item.avgRisk * 100).toFixed(1)}% —{" "}
-                {bandLabel(tooltip.item.avgRisk)}
+                {tooltip.item.avgRisk < 0.30 ? t("legendLow") : tooltip.item.avgRisk < 0.50 ? t("legendMedium") : tooltip.item.avgRisk < 0.70 ? t("legendHigh") : t("legendVeryHigh")}
               </span>
             </div>
             <div className="flex justify-between gap-4">
-              <span className="text-zinc-500">Bright Outlook</span>
+              <span className="text-zinc-500">{t("labelBrightOutlook")}</span>
               <span className="font-semibold text-green-500 dark:text-green-400">
                 {(tooltip.item.brightShare * 100).toFixed(1)}%
               </span>
             </div>
             <div className="flex justify-between gap-4">
-              <span className="text-zinc-500">Employment</span>
+              <span className="text-zinc-500">{t("labelEmployment")}</span>
               <span className="text-zinc-900 dark:text-white font-medium">
                 {tooltip.item.totalEmployment != null
                   ? tooltip.item.totalEmployment.toLocaleString()
@@ -351,7 +349,7 @@ export default function SectorScatterChart() {
               </span>
             </div>
           </div>
-          <p className="text-[10px] text-zinc-500 mt-2.5">Click to explore sector →</p>
+          <p className="text-[10px] text-zinc-500 mt-2.5">{t("tooltipClickSector")}</p>
         </div>
       )}
 
@@ -359,21 +357,21 @@ export default function SectorScatterChart() {
       <div className="absolute bottom-2 right-3 flex items-center gap-3 text-[10px] text-zinc-600 pointer-events-none select-none">
         {(
           [
-            ["#22c55e", "Low"],
-            ["#eab308", "Medium"],
-            ["#f97316", "High"],
-            ["#ef4444", "Very High"],
+            ["#22c55e", "legendLow"],
+            ["#eab308", "legendMedium"],
+            ["#f97316", "legendHigh"],
+            ["#ef4444", "legendVeryHigh"],
           ] as const
-        ).map(([color, lbl]) => (
-          <span key={lbl} className="flex items-center gap-1">
+        ).map(([color, key]) => (
+          <span key={key} className="flex items-center gap-1">
             <span
               className="w-2 h-2 rounded-full shrink-0"
               style={{ backgroundColor: color }}
             />
-            {lbl}
+            {t(key)}
           </span>
         ))}
-        <span className="ml-1 text-zinc-700">bubble = total employment</span>
+        <span className="ml-1 text-zinc-700">{t("legendBubbleEmp")}</span>
       </div>
     </div>
   );

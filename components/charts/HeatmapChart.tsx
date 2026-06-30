@@ -4,6 +4,7 @@ import { useEffect, useRef, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import { getCountryMapData } from "@/lib/data";
+import { useT } from "@/lib/i18n/useT";
 
 // Top 25 countries: required majors (China, USA, India) + geographic diversity,
 // all confirmed present in getCountryMapData() output.
@@ -35,11 +36,10 @@ interface HeatCell {
   iso3: string;
   country: string;
   metricKey: string;
-  metricLabel: string;
-  /** 0–1 normalized value used for cell colour; null = no data */
-  normValue: number | null;
   /** Human-readable real value for tooltip */
   rawDisplay: string;
+  /** 0–1 normalized value used for cell colour; null = no data */
+  normValue: number | null;
 }
 
 interface TooltipData {
@@ -48,7 +48,7 @@ interface TooltipData {
   y: number;
   cw: number;
   country: string;
-  metricLabel: string;
+  metricKey: string;
   rawDisplay: string;
   normValue: number | null;
 }
@@ -65,13 +65,14 @@ function normOf(v: number | null | undefined, max: number): number | null {
 }
 
 export default function HeatmapChart() {
+  const t = useT("charts");
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
   const isDark = (resolvedTheme ?? "dark") !== "light";
   const [tooltip, setTooltip] = useState<TooltipData>({
     visible: false, x: 0, y: 0, cw: 800,
-    country: "", metricLabel: "", rawDisplay: "", normValue: null,
+    country: "", metricKey: "", rawDisplay: "", normValue: null,
   });
 
   const { cells, countries } = useMemo(() => {
@@ -120,7 +121,6 @@ export default function HeatmapChart() {
           iso3: c.iso3,
           country: c.name,
           metricKey: m.key,
-          metricLabel: m.label,
           normValue,
           rawDisplay: fmt(m, rawVal),
         };
@@ -129,6 +129,22 @@ export default function HeatmapChart() {
 
     return { cells, countries: subset.map((c) => c.iso3) };
   }, []);
+
+  const heatShortLabels: Record<string, string> = {
+    usageIndex:            t("heatmapShortAIUsage"),
+    diffusionPct:          t("heatmapShortDiffusion"),
+    aiReadiness:           t("heatmapShortReadiness"),
+    governmentReadiness:   t("heatmapShortGovReady"),
+    digitalInfrastructure: t("heatmapShortDigInfra"),
+    humanCapital:          t("heatmapShortHumanCap"),
+    innovation:            t("heatmapShortInnovation"),
+    regulationEthics:      t("heatmapShortRegEthics"),
+  };
+  // Stable cache key — changes whenever locale changes
+  const heatShortKey   = Object.values(heatShortLabels).join("\0");
+  const labelLegendLow      = t("legendLow");
+  const labelLegendHigh     = t("legendHigh");
+  const labelHeatmapNorm    = t("legendHeatmapNorm");
 
   useEffect(() => {
     if (!svgRef.current || !containerRef.current) return;
@@ -170,7 +186,7 @@ export default function HeatmapChart() {
         .attr("x", x).attr("y", margin.top - 10)
         .attr("text-anchor", "middle")
         .attr("fill", axisText).attr("font-size", "11px").attr("font-weight", "600")
-        .text(m.shortLabel);
+        .text(heatShortLabels[m.key] ?? m.shortLabel);
     });
 
     // ── Row labels ──
@@ -219,7 +235,7 @@ export default function HeatmapChart() {
           y: event.clientY - rect.top,
           cw: containerEl.clientWidth,
           country: d.country,
-          metricLabel: d.metricLabel,
+          metricKey: d.metricKey,
           rawDisplay: d.rawDisplay,
           normValue: d.normValue,
         });
@@ -252,16 +268,18 @@ export default function HeatmapChart() {
         .attr("fill", metricColor(i / steps));
     }
     svg.append("text").attr("x", legendX).attr("y", legendY + 20)
-      .attr("fill", "#71717a").attr("font-size", "10px").text("Low");
+      .attr("fill", "#71717a").attr("font-size", "10px").text(labelLegendLow);
     svg.append("text").attr("x", legendX + legendW / 2).attr("y", legendY + 20)
       .attr("text-anchor", "middle").attr("fill", legendMid).attr("font-size", "10px")
-      .text("Normalised 0–1 per metric (colour only) · grey = no data");
+      .text(labelHeatmapNorm);
     svg.append("text").attr("x", legendX + legendW).attr("y", legendY + 20)
       .attr("text-anchor", "end").attr("fill", "#71717a").attr("font-size", "10px")
-      .text("High");
+      .text(labelLegendHigh);
 
     return () => { svg.selectAll("*").interrupt(); };
-  }, [cells, countries, isDark]);
+  // heatShortLabels is referenced inside but heatShortKey (a join of its values) is the stable dep proxy
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cells, countries, isDark, heatShortKey, labelLegendLow, labelLegendHigh, labelHeatmapNorm]);
 
   return (
     <div ref={containerRef} className="relative w-full overflow-x-auto">
@@ -300,7 +318,18 @@ export default function HeatmapChart() {
           }}
         >
           <p className="font-semibold text-zinc-900 dark:text-white text-sm leading-tight mb-0.5">{tooltip.country}</p>
-          <p className="text-xs text-zinc-500 mb-2">{tooltip.metricLabel}</p>
+          <p className="text-xs text-zinc-500 mb-2">{
+            ({
+              usageIndex:            t("heatmapLabelAIUsageIndex"),
+              diffusionPct:          t("heatmapLabelGenAIDiffusion"),
+              aiReadiness:           t("heatmapLabelAIReadiness"),
+              governmentReadiness:   t("heatmapLabelGovReadiness"),
+              digitalInfrastructure: t("heatmapLabelDigInfra"),
+              humanCapital:          t("heatmapLabelHumanCapital"),
+              innovation:            t("heatmapLabelInnovation"),
+              regulationEthics:      t("heatmapLabelRegEthics"),
+            } as Record<string, string>)[tooltip.metricKey] ?? tooltip.metricKey
+          }</p>
           <span
             className="text-lg font-bold"
             style={{ color: tooltip.normValue != null ? metricColor(tooltip.normValue) : "#52525b" }}
