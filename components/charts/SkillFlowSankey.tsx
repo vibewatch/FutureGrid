@@ -7,6 +7,7 @@ import * as d3 from "d3";
 import { sankey, sankeyLinkHorizontal } from "d3-sankey";
 import type { SankeyGraph, SankeyNode, SankeyLink } from "d3-sankey";
 import { getHighExposureOccupations, getReskillingPaths } from "@/lib/data";
+import { useT } from "@/lib/i18n/useT";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -104,6 +105,7 @@ function buildSankeyData(maxSources = 6, maxTargets = 5): SankeyData {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function SkillFlowSankey() {
+  const t      = useT("charts");
   const svgRef = useRef<SVGSVGElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
@@ -119,6 +121,9 @@ export default function SkillFlowSankey() {
   }>({ visible: false, x: 0, y: 0, html: "", accentColor: "#8b5cf6" });
 
   const { nodes, rawLinks, summary } = useMemo(() => buildSankeyData(6, 5), []);
+
+  const sankeyHighLabel      = t("sankeyHighAIExposure");
+  const sankeyResilientLabel = t("sankeyResilientPathways");
 
   // Target colour lookup
   const targetColorMap = useMemo(() => {
@@ -155,16 +160,19 @@ export default function SkillFlowSankey() {
     const borderTooltip = isDark ? "#3f3f46" : "#d4d4d8";
 
     // ── Build d3-sankey graph ───────────────────────────────────────────────
+    // nodeId is set to `d.id` below, so links must reference nodes by that
+    // string id (NOT a numeric index — doing so makes d3-sankey throw
+    // "missing: 0"). sourceCode/targetCode already hold the node ids.
     const nodeIndex = new Map<string, number>(nodes.map((n, i) => [n.id, i]));
 
     const graphNodes: NodeDatum[] = nodes.map((n) => ({ ...n }));
-    const graphLinks: (LinkDatum & { source: number; target: number })[] =
+    const graphLinks: (LinkDatum & { source: string; target: string })[] =
       rawLinks
         .filter((l) => nodeIndex.has(l.sourceCode) && nodeIndex.has(l.targetCode))
         .map((l) => ({
           ...l,
-          source: nodeIndex.get(l.sourceCode)!,
-          target: nodeIndex.get(l.targetCode)!,
+          source: l.sourceCode,
+          target: l.targetCode,
         }));
 
     const graph: SankeyGraph<NodeDatum, LinkDatum> = sankey<NodeDatum, LinkDatum>()
@@ -246,13 +254,13 @@ export default function SkillFlowSankey() {
       .attr("x", srcX).attr("y", PAD.top - 8)
       .attr("fill", "#ef4444").attr("font-size", "12px").attr("font-weight", "700")
       .attr("text-anchor", "middle")
-      .text("High AI Exposure");
+      .text(sankeyHighLabel);
 
     svg.append("text")
       .attr("x", tgtX).attr("y", PAD.top - 8)
       .attr("fill", "#22c55e").attr("font-size", "12px").attr("font-weight", "700")
       .attr("text-anchor", "middle")
-      .text("Resilient Pathways");
+      .text(sankeyResilientLabel);
 
     // ── Hover interactions ────────────────────────────────────────────────────
 
@@ -358,7 +366,7 @@ export default function SkillFlowSankey() {
     }
 
     void bgTooltip; void borderTooltip; void subLabelColor; // used in JSX
-  }, [nodes, rawLinks, targetColorMap, isDark, router]);
+  }, [nodes, rawLinks, targetColorMap, isDark, router, sankeyHighLabel, sankeyResilientLabel]);
 
   const { resolvedTheme: _rt } = useTheme();
   const isDarkJsx = (_rt ?? "dark") !== "light";
@@ -401,13 +409,13 @@ export default function SkillFlowSankey() {
       <div className="flex flex-wrap items-center gap-4 mt-3 px-1 text-xs text-zinc-500 dark:text-zinc-400">
         <span className="flex items-center gap-1.5">
           <span className="inline-block w-3 h-3 rounded-sm" style={{ background: SOURCE_COLOR }} />
-          High AI-exposure source
+          {t("legendHighAIExposureSource")}
         </span>
         <span className="flex items-center gap-1.5">
           <span className="inline-block w-3 h-3 rounded-sm" style={{ background: "#8b5cf6" }} />
-          Resilient career target
+          {t("legendResilientCareerTarget")}
         </span>
-        <span className="text-zinc-400 dark:text-zinc-500">Link width = shared skill count · Click a target to explore</span>
+        <span className="text-zinc-400 dark:text-zinc-500">{t("legendSankeyLinkWidth")}</span>
       </div>
     </div>
   );

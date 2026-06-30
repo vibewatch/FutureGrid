@@ -106,6 +106,21 @@ export default function ReportView() {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
+  // Detect desktop (lg breakpoint). The sticky scrollytelling layout only runs
+  // on desktop; mobile + SSR/first paint use the stacked layout. This guarantees
+  // every chart mounts exactly once in a visible, measurable container — charts
+  // mounted in a `display:none` box measure 0 width and crash (d3-sankey / geo
+  // projection throw on a 0/NaN extent).
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
   // Active beat index
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -127,7 +142,7 @@ export default function ReportView() {
 
   // IntersectionObserver — scroll into view triggers active index
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion || !isDesktop) return;
 
     const observers: IntersectionObserver[] = [];
 
@@ -155,7 +170,7 @@ export default function ReportView() {
     return () => {
       observers.forEach((obs) => obs.disconnect());
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, isDesktop]);
 
   // Scroll to a step by index
   function scrollToStep(index: number) {
@@ -164,8 +179,11 @@ export default function ReportView() {
 
   const activeBeat = BEATS[activeIndex];
 
-  // ── Reduced-motion layout: static stacked ──────────────────────────────────
-  if (reducedMotion) {
+  // ── Stacked layout: reduced-motion OR mobile OR pre-mount (SSR/first paint) ──
+  // Charts render once each in visible containers (never display:none → no
+  // zero-width crash). Desktop with motion enabled gets the scrollytelling
+  // layout below once isDesktop resolves on the client.
+  if (reducedMotion || !isDesktop) {
     return (
       <div className="max-w-[1200px] space-y-6">
         {/* Hero */}
@@ -176,9 +194,11 @@ export default function ReportView() {
           <p className="text-zinc-600 dark:text-zinc-400 mt-2 max-w-2xl">
             {t("pageSubhead")}
           </p>
-          <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-2 italic">
-            {t("reducedMotionNote")}
-          </p>
+          {reducedMotion && (
+            <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-2 italic">
+              {t("reducedMotionNote")}
+            </p>
+          )}
         </div>
 
         {BEATS.map((beat, i) => (
@@ -265,7 +285,7 @@ export default function ReportView() {
 
           {/* Chart panel — renders only the active chart, with fade transition */}
           <div
-            className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 overflow-hidden transition-opacity duration-300"
+            className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 overflow-hidden transition-opacity duration-300 relative"
             style={{ minHeight: "420px" }}
           >
             {BEATS.map((beat, i) => (
@@ -345,11 +365,6 @@ export default function ReportView() {
               <p className="text-zinc-600 dark:text-zinc-300 leading-relaxed max-w-prose text-base">
                 {beatBody(beat, i)}
               </p>
-
-              {/* On small screens: show chart inline under narrative text */}
-              <div className="lg:hidden mt-6 glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
-                <beat.Chart />
-              </div>
 
               {/* Divider between steps (not after last) */}
               {i < BEATS.length - 1 && (
