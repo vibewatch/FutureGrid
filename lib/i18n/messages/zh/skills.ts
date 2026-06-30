@@ -21,6 +21,9 @@ export const skillsZh = {
   groupDescManagement: "领导力、战略规划及人员管理能力。",
   noOccupationsFound: "该技能组下暂无相关职业。",
   salaryLabel: "薪资：",
+  // SkillFlowSankey
+  sankeyTitle: "职业转型流向",
+  sankeySubhead: "高风险职业如何通过共通技能转向具有韧性的职业路径",
   // ReskillExplorer
   reskillingPathways: "技能转型路径",
   reskillingSubhead: "以下职业 AI 风险更低，且与您现有技能高度重叠（基于 O*NET 技能匹配）。本内容不构成财务建议。",

@@ -21,6 +21,9 @@ export const skillsEn = {
   groupDescManagement: "Leadership, strategy, and people-management capabilities.",
   noOccupationsFound: "No occupations found for this skill group.",
   salaryLabel: "Salary:",
+  // SkillFlowSankey
+  sankeyTitle: "Career Transition Flows",
+  sankeySubhead: "How high-exposure roles map to resilient careers via shared skills",
   // ReskillExplorer
   reskillingPathways: "Reskilling Pathways",
   reskillingSubhead: "Roles with lower AI exposure that build on skills you already have (O*NET skill overlap). Not financial advice.",

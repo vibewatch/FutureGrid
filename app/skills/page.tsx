@@ -1,6 +1,7 @@
 "use client";
 
 import SkillTransitionChart from "@/components/charts/SkillTransitionChart";
+import SkillFlowSankey from "@/components/charts/SkillFlowSankey";
 import { generateAllCareerInsights } from "@/lib/data";
 import { colorForRisk, formatCurrency } from "@/lib/utils";
 import { useState, useMemo } from "react";
@@ -197,6 +198,20 @@ export default function SkillsPage() {
           <p className="text-zinc-500 text-sm">{t("noOccupationsFound")}</p>
         </div>
       )}
+
+      {/* Divider */}
+      <hr className="border-zinc-200 dark:border-zinc-800" />
+
+      {/* Career Transition Flows */}
+      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 space-y-2">
+        <h2 className="text-xl font-bold tracking-tight text-gradient">
+          {t("sankeyTitle")}
+        </h2>
+        <p className="text-zinc-600 dark:text-zinc-400 text-sm">
+          {t("sankeySubhead")}
+        </p>
+        <SkillFlowSankey />
+      </div>
 
       {/* Divider */}
       <hr className="border-zinc-200 dark:border-zinc-800" />
