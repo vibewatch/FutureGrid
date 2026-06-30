@@ -315,6 +315,8 @@ export interface AIUsageProxyDataset {
   scope: string;
   caveat: string;
   enterpriseAdoptionMetrics: Record<string, unknown>[];
+  individualGenerativeAIUsageMetrics: Record<string, unknown>[];
+  usCensusBusinessAIMetrics: Record<string, unknown>[];
   countrySurveyMetrics: Record<string, unknown>[];
   chinaAppMarketMetrics: Record<string, unknown>[];
   chinaNativeAppMau: Record<string, unknown>[];

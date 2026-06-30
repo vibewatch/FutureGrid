@@ -41,6 +41,20 @@ npm run build
 
 The production build is a static export written to the `out/` directory, ready for any static host.
 
+### Data Snapshot
+
+```bash
+npm run build:data
+```
+
+The data scripts load `.env` / `.env.local` automatically via Next's environment loader. Set `BLS_API_KEY` there to enrich occupations with BLS OEWS employment and wage data, and `CENSUS_API_KEY` to refresh the optional US Census AI adoption proxy.
+
+To refresh only supplemental AI usage/adoption proxies:
+
+```bash
+npm run build:proxies
+```
+
 ## Tech Stack
 
 - **Frontend**: React / Next.js

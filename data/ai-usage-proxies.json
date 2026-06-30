@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-30T07:55:48Z",
+  "generatedAt": "2026-06-30T08:47:12.627Z",
   "scope": "Supplemental AI adoption and usage proxies outside Anthropic's Claude.ai country usage index.",
   "caveat": "These metrics use different denominators and collection methods. Do not merge them into the Anthropic usageIndex without explicit normalization and labeling.",
   "enterpriseAdoptionMetrics": [
@@ -20,50 +20,1273 @@
       "confidence": "high",
       "comparability": "Enterprise adoption survey metric; comparable across listed European reporting countries, but not comparable to consumer MAU or Anthropic Claude.ai usageIndex.",
       "regionalAggregates": [
-        { "geo": { "code": "EU27_2020", "name": "European Union - 27 countries (from 2020)" }, "value": 13.48 },
-        { "geo": { "code": "EA", "name": "Euro area" }, "value": 14.39 }
+        {
+          "geo": {
+            "code": "EA",
+            "name": "Euro area (EA11-1999, EA12-2001, EA13-2007, EA15-2008, EA16-2009, EA17-2011, EA18-2014, EA19-2015, EA20-2023, EA21-2026)"
+          },
+          "value": 14.39
+        },
+        {
+          "geo": {
+            "code": "EU27_2020",
+            "name": "European Union - 27 countries (from 2020)"
+          },
+          "value": 13.48
+        }
       ],
       "countries": [
-        { "geo": { "code": "AL", "name": "Albania" }, "value": 8.91 },
-        { "geo": { "code": "AT", "name": "Austria" }, "value": 20.27 },
-        { "geo": { "code": "BA", "name": "Bosnia and Herzegovina" }, "value": 6.36 },
-        { "geo": { "code": "BE", "name": "Belgium" }, "value": 24.71 },
-        { "geo": { "code": "BG", "name": "Bulgaria" }, "value": 6.47 },
-        { "geo": { "code": "CY", "name": "Cyprus" }, "value": 7.9 },
-        { "geo": { "code": "CZ", "name": "Czechia" }, "value": 11.26 },
-        { "geo": { "code": "DE", "name": "Germany" }, "value": 19.75 },
-        { "geo": { "code": "DK", "name": "Denmark" }, "value": 27.58 },
-        { "geo": { "code": "EE", "name": "Estonia" }, "value": 13.89 },
-        { "geo": { "code": "EL", "name": "Greece" }, "value": 9.81 },
-        { "geo": { "code": "ES", "name": "Spain" }, "value": 11.31 },
-        { "geo": { "code": "FI", "name": "Finland" }, "value": 24.37 },
-        { "geo": { "code": "FR", "name": "France" }, "value": 9.91 },
-        { "geo": { "code": "HR", "name": "Croatia" }, "value": 11.76 },
-        { "geo": { "code": "HU", "name": "Hungary" }, "value": 7.41 },
-        { "geo": { "code": "IE", "name": "Ireland" }, "value": 14.9 },
-        { "geo": { "code": "IT", "name": "Italy" }, "value": 8.2 },
-        { "geo": { "code": "LT", "name": "Lithuania" }, "value": 8.76 },
-        { "geo": { "code": "LU", "name": "Luxembourg" }, "value": 23.73 },
-        { "geo": { "code": "LV", "name": "Latvia" }, "value": 8.83 },
-        { "geo": { "code": "ME", "name": "Montenegro" }, "value": 7.91 },
-        { "geo": { "code": "MT", "name": "Malta" }, "value": 17.3 },
-        { "geo": { "code": "NL", "name": "Netherlands" }, "value": 23.06 },
-        { "geo": { "code": "NO", "name": "Norway" }, "value": 20.77 },
-        { "geo": { "code": "PL", "name": "Poland" }, "value": 5.9 },
-        { "geo": { "code": "PT", "name": "Portugal" }, "value": 8.63 },
-        { "geo": { "code": "RO", "name": "Romania" }, "value": 3.07 },
-        { "geo": { "code": "RS", "name": "Serbia" }, "value": 6.95 },
-        { "geo": { "code": "SE", "name": "Sweden" }, "value": 25.09 },
-        { "geo": { "code": "SI", "name": "Slovenia" }, "value": 20.89 },
-        { "geo": { "code": "SK", "name": "Slovakia" }, "value": 10.78 },
-        { "geo": { "code": "TR", "name": "Türkiye" }, "value": 4.42 }
+        {
+          "geo": {
+            "code": "AL",
+            "name": "Albania"
+          },
+          "value": 8.91
+        },
+        {
+          "geo": {
+            "code": "AT",
+            "name": "Austria"
+          },
+          "value": 20.27
+        },
+        {
+          "geo": {
+            "code": "BA",
+            "name": "Bosnia and Herzegovina"
+          },
+          "value": 6.36
+        },
+        {
+          "geo": {
+            "code": "BE",
+            "name": "Belgium"
+          },
+          "value": 24.71
+        },
+        {
+          "geo": {
+            "code": "BG",
+            "name": "Bulgaria"
+          },
+          "value": 6.47
+        },
+        {
+          "geo": {
+            "code": "CY",
+            "name": "Cyprus"
+          },
+          "value": 7.9
+        },
+        {
+          "geo": {
+            "code": "CZ",
+            "name": "Czechia"
+          },
+          "value": 11.26
+        },
+        {
+          "geo": {
+            "code": "DE",
+            "name": "Germany"
+          },
+          "value": 19.75
+        },
+        {
+          "geo": {
+            "code": "DK",
+            "name": "Denmark"
+          },
+          "value": 27.58
+        },
+        {
+          "geo": {
+            "code": "EE",
+            "name": "Estonia"
+          },
+          "value": 13.89
+        },
+        {
+          "geo": {
+            "code": "EL",
+            "name": "Greece"
+          },
+          "value": 9.81
+        },
+        {
+          "geo": {
+            "code": "ES",
+            "name": "Spain"
+          },
+          "value": 11.31
+        },
+        {
+          "geo": {
+            "code": "FI",
+            "name": "Finland"
+          },
+          "value": 24.37
+        },
+        {
+          "geo": {
+            "code": "FR",
+            "name": "France"
+          },
+          "value": 9.91
+        },
+        {
+          "geo": {
+            "code": "HR",
+            "name": "Croatia"
+          },
+          "value": 11.76
+        },
+        {
+          "geo": {
+            "code": "HU",
+            "name": "Hungary"
+          },
+          "value": 7.41
+        },
+        {
+          "geo": {
+            "code": "IE",
+            "name": "Ireland"
+          },
+          "value": 14.9
+        },
+        {
+          "geo": {
+            "code": "IT",
+            "name": "Italy"
+          },
+          "value": 8.2
+        },
+        {
+          "geo": {
+            "code": "LT",
+            "name": "Lithuania"
+          },
+          "value": 8.76
+        },
+        {
+          "geo": {
+            "code": "LU",
+            "name": "Luxembourg"
+          },
+          "value": 23.73
+        },
+        {
+          "geo": {
+            "code": "LV",
+            "name": "Latvia"
+          },
+          "value": 8.83
+        },
+        {
+          "geo": {
+            "code": "ME",
+            "name": "Montenegro"
+          },
+          "value": 7.91
+        },
+        {
+          "geo": {
+            "code": "MT",
+            "name": "Malta"
+          },
+          "value": 17.3
+        },
+        {
+          "geo": {
+            "code": "NL",
+            "name": "Netherlands"
+          },
+          "value": 23.06
+        },
+        {
+          "geo": {
+            "code": "NO",
+            "name": "Norway"
+          },
+          "value": 20.77
+        },
+        {
+          "geo": {
+            "code": "PL",
+            "name": "Poland"
+          },
+          "value": 5.9
+        },
+        {
+          "geo": {
+            "code": "PT",
+            "name": "Portugal"
+          },
+          "value": 8.63
+        },
+        {
+          "geo": {
+            "code": "RO",
+            "name": "Romania"
+          },
+          "value": 3.07
+        },
+        {
+          "geo": {
+            "code": "RS",
+            "name": "Serbia"
+          },
+          "value": 6.95
+        },
+        {
+          "geo": {
+            "code": "SE",
+            "name": "Sweden"
+          },
+          "value": 25.09
+        },
+        {
+          "geo": {
+            "code": "SI",
+            "name": "Slovenia"
+          },
+          "value": 20.89
+        },
+        {
+          "geo": {
+            "code": "SK",
+            "name": "Slovakia"
+          },
+          "value": 10.78
+        },
+        {
+          "geo": {
+            "code": "TR",
+            "name": "Türkiye"
+          },
+          "value": 4.42
+        }
+      ]
+    },
+    {
+      "id": "oecd-businesses-using-ai-2025",
+      "metric": "businesses_using_artificial_intelligence",
+      "unit": "percent_of_enterprises",
+      "period": "2025",
+      "population": "Businesses with 10 or more persons employed; total activities.",
+      "source": {
+        "name": "OECD ICT Access and Usage by Businesses",
+        "publisher": "OECD",
+        "dataset": "DSD_ICT_B@DF_BUSINESSES",
+        "measure": "G14_B — Businesses using artificial intelligence (AI)",
+        "url": "https://data-explorer.oecd.org/vis?df[ds]=DisseminateFinalDMZ&df[id]=DSD_ICT_B@DF_BUSINESSES&df[ag]=OECD.STI.DEP",
+        "apiUrl": "https://sdmx.oecd.org/public/rest/data/OECD.STI.DEP,DSD_ICT_B@DF_BUSINESSES/.A.G14_B.._T.S_GE10?startPeriod=2025&endPeriod=2025&dimensionAtObservation=AllDimensions&format=csvfilewithlabels"
+      },
+      "confidence": "high",
+      "comparability": "Enterprise adoption survey metric; partially harmonised via OECD/Eurostat ICT survey methodology, not comparable to consumer MAU or Anthropic usageIndex.",
+      "regionalAggregates": [
+        {
+          "geo": {
+            "code": "OECD",
+            "name": "OECD"
+          },
+          "period": "2025",
+          "value": 20.3011,
+          "status": "Time series break"
+        }
+      ],
+      "countries": [
+        {
+          "geo": {
+            "code": "AUT",
+            "name": "Austria"
+          },
+          "period": "2025",
+          "value": 29.9459,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "BEL",
+            "name": "Belgium"
+          },
+          "period": "2025",
+          "value": 34.5428,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "BGR",
+            "name": "Bulgaria"
+          },
+          "period": "2025",
+          "value": 8.5463,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "CZE",
+            "name": "Czechia"
+          },
+          "period": "2025",
+          "value": 17.6049,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "DEU",
+            "name": "Germany"
+          },
+          "period": "2025",
+          "value": 25.9684,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "DNK",
+            "name": "Denmark"
+          },
+          "period": "2025",
+          "value": 42.0324,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "ESP",
+            "name": "Spain"
+          },
+          "period": "2025",
+          "value": 20.2685,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "EST",
+            "name": "Estonia"
+          },
+          "period": "2025",
+          "value": 23.4026,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "EU27",
+            "name": "European Union (27 countries)"
+          },
+          "period": "2025",
+          "value": 19.9479,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "FIN",
+            "name": "Finland"
+          },
+          "period": "2025",
+          "value": 37.8204,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "FRA",
+            "name": "France"
+          },
+          "period": "2025",
+          "value": 18.1592,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "GRC",
+            "name": "Greece"
+          },
+          "period": "2025",
+          "value": 8.9269,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "HRV",
+            "name": "Croatia"
+          },
+          "period": "2025",
+          "value": 15.1928,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "HUN",
+            "name": "Hungary"
+          },
+          "period": "2025",
+          "value": 10.3731,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "IRL",
+            "name": "Ireland"
+          },
+          "period": "2025",
+          "value": 19.6416,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "ITA",
+            "name": "Italy"
+          },
+          "period": "2025",
+          "value": 16.4032,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "LTU",
+            "name": "Lithuania"
+          },
+          "period": "2025",
+          "value": 21.3034,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "LUX",
+            "name": "Luxembourg"
+          },
+          "period": "2025",
+          "value": 33.6114,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "LVA",
+            "name": "Latvia"
+          },
+          "period": "2025",
+          "value": 12.2139,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "NLD",
+            "name": "Netherlands"
+          },
+          "period": "2025",
+          "value": 33.2079,
+          "status": "Time series break"
+        },
+        {
+          "geo": {
+            "code": "NOR",
+            "name": "Norway"
+          },
+          "period": "2025",
+          "value": 28.8939,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "POL",
+            "name": "Poland"
+          },
+          "period": "2025",
+          "value": 8.3624,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "PRT",
+            "name": "Portugal"
+          },
+          "period": "2025",
+          "value": 11.5446,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "ROU",
+            "name": "Romania"
+          },
+          "period": "2025",
+          "value": 5.2108,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "SVK",
+            "name": "Slovak Republic"
+          },
+          "period": "2025",
+          "value": 17.9952,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "SVN",
+            "name": "Slovenia"
+          },
+          "period": "2025",
+          "value": 21.6118,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "SWE",
+            "name": "Sweden"
+          },
+          "period": "2025",
+          "value": 35.0402,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "TUR",
+            "name": "Türkiye"
+          },
+          "period": "2025",
+          "value": 7.4125,
+          "status": "Normal value"
+        }
+      ]
+    }
+  ],
+  "individualGenerativeAIUsageMetrics": [
+    {
+      "id": "oecd-individuals-using-generative-ai-2025",
+      "metric": "individuals_using_generative_ai_tools_last_3_months",
+      "unit": "percent_of_population",
+      "period": "2025",
+      "population": "Individuals aged 16-74; total sex, education, income, and employment-status breakdowns.",
+      "source": {
+        "name": "OECD ICT Access and Usage by Individuals",
+        "publisher": "OECD",
+        "dataset": "DSD_ICT_HH_IND@DF_IND",
+        "measure": "D1X_I — Individuals using the internet for using generative AI tools - last 3 months",
+        "url": "https://data-explorer.oecd.org/vis?df[ds]=DisseminateFinalDMZ&df[id]=DSD_ICT_HH_IND@DF_IND&df[ag]=OECD.STI.DEP",
+        "apiUrl": "https://sdmx.oecd.org/public/rest/data/OECD.STI.DEP,DSD_ICT_HH_IND@DF_IND/.A.D1X_I...Y16T74._T._T._T._T?startPeriod=2025&endPeriod=2025&dimensionAtObservation=AllDimensions&format=csvfilewithlabels"
+      },
+      "confidence": "high",
+      "comparability": "Individual generative-AI usage survey metric; comparable across listed OECD/partner reporting countries, not comparable to enterprise adoption or product MAU.",
+      "regionalAggregates": [
+        {
+          "geo": {
+            "code": "OECD",
+            "name": "OECD"
+          },
+          "period": "2025",
+          "value": 36.81,
+          "status": "Normal value"
+        }
+      ],
+      "countries": [
+        {
+          "geo": {
+            "code": "AUT",
+            "name": "Austria"
+          },
+          "period": "2025",
+          "value": 39.4236,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "BEL",
+            "name": "Belgium"
+          },
+          "period": "2025",
+          "value": 42.0112,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "BGR",
+            "name": "Bulgaria"
+          },
+          "period": "2025",
+          "value": 22.4955,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "CHE",
+            "name": "Switzerland"
+          },
+          "period": "2025",
+          "value": 47.0167,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "CZE",
+            "name": "Czechia"
+          },
+          "period": "2025",
+          "value": 35.353,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "DEU",
+            "name": "Germany"
+          },
+          "period": "2025",
+          "value": 32.2549,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "DNK",
+            "name": "Denmark"
+          },
+          "period": "2025",
+          "value": 48.4399,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "ESP",
+            "name": "Spain"
+          },
+          "period": "2025",
+          "value": 37.8813,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "EST",
+            "name": "Estonia"
+          },
+          "period": "2025",
+          "value": 46.6355,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "EU27",
+            "name": "European Union (27 countries)"
+          },
+          "period": "2025",
+          "value": 32.6602,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "FIN",
+            "name": "Finland"
+          },
+          "period": "2025",
+          "value": 46.27,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "FRA",
+            "name": "France"
+          },
+          "period": "2025",
+          "value": 37.4554,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "GRC",
+            "name": "Greece"
+          },
+          "period": "2025",
+          "value": 44.0863,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "HRV",
+            "name": "Croatia"
+          },
+          "period": "2025",
+          "value": 27.5246,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "HUN",
+            "name": "Hungary"
+          },
+          "period": "2025",
+          "value": 29.563,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "IRL",
+            "name": "Ireland"
+          },
+          "period": "2025",
+          "value": 44.93,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "ITA",
+            "name": "Italy"
+          },
+          "period": "2025",
+          "value": 19.8612,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "LTU",
+            "name": "Lithuania"
+          },
+          "period": "2025",
+          "value": 36.891,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "LUX",
+            "name": "Luxembourg"
+          },
+          "period": "2025",
+          "value": 42.5385,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "LVA",
+            "name": "Latvia"
+          },
+          "period": "2025",
+          "value": 33.4026,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "NLD",
+            "name": "Netherlands"
+          },
+          "period": "2025",
+          "value": 44.6971,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "NOR",
+            "name": "Norway"
+          },
+          "period": "2025",
+          "value": 56.3231,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "POL",
+            "name": "Poland"
+          },
+          "period": "2025",
+          "value": 22.6817,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "PRT",
+            "name": "Portugal"
+          },
+          "period": "2025",
+          "value": 38.6973,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "ROU",
+            "name": "Romania"
+          },
+          "period": "2025",
+          "value": 17.7646,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "SVK",
+            "name": "Slovak Republic"
+          },
+          "period": "2025",
+          "value": 30.7888,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "SVN",
+            "name": "Slovenia"
+          },
+          "period": "2025",
+          "value": 37.5573,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "SWE",
+            "name": "Sweden"
+          },
+          "period": "2025",
+          "value": 42.0062,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "TUR",
+            "name": "Türkiye"
+          },
+          "period": "2025",
+          "value": 17.1915,
+          "status": "Normal value"
+        }
+      ]
+    }
+  ],
+  "usCensusBusinessAIMetrics": [
+    {
+      "id": "us-census-abs-ai-total-use-2018",
+      "metric": "employer_firms_using_artificial_intelligence_total_use",
+      "unit": "firms_and_percent_of_employer_firms",
+      "period": "2018",
+      "population": "Employer firms, total for all sectors (NAICS2017=00). TECHUSE=T1E03B99 means Artificial Intelligence: Total use.",
+      "source": {
+        "name": "U.S. Census Annual Business Survey — Technology Characteristics of Businesses",
+        "publisher": "U.S. Census Bureau",
+        "dataset": "2018/abstcb",
+        "url": "https://api.census.gov/data/2018/abstcb.html"
+      },
+      "confidence": "high",
+      "comparability": "U.S. employer-firm technology-use survey metric from 2018; predates the generative-AI wave and is not comparable to 2025 generative-AI usage surveys.",
+      "national": {
+        "geo": {
+          "code": "USA",
+          "name": "United States"
+        },
+        "firms": 141731,
+        "percentOfEmployerFirms": 3
+      },
+      "states": [
+        {
+          "geo": {
+            "code": "01",
+            "name": "Alabama"
+          },
+          "firms": 1858,
+          "percentOfEmployerFirms": 3.2
+        },
+        {
+          "geo": {
+            "code": "02",
+            "name": "Alaska"
+          },
+          "firms": 420,
+          "percentOfEmployerFirms": 3.3
+        },
+        {
+          "geo": {
+            "code": "04",
+            "name": "Arizona"
+          },
+          "firms": 2877,
+          "percentOfEmployerFirms": 3.4
+        },
+        {
+          "geo": {
+            "code": "05",
+            "name": "Arkansas"
+          },
+          "firms": 1231,
+          "percentOfEmployerFirms": 3
+        },
+        {
+          "geo": {
+            "code": "06",
+            "name": "California"
+          },
+          "firms": 21167,
+          "percentOfEmployerFirms": 3.5
+        },
+        {
+          "geo": {
+            "code": "08",
+            "name": "Colorado"
+          },
+          "firms": 4718,
+          "percentOfEmployerFirms": 3.9
+        },
+        {
+          "geo": {
+            "code": "09",
+            "name": "Connecticut"
+          },
+          "firms": 1486,
+          "percentOfEmployerFirms": 2.7
+        },
+        {
+          "geo": {
+            "code": "10",
+            "name": "Delaware"
+          },
+          "firms": 1047,
+          "percentOfEmployerFirms": 6.9
+        },
+        {
+          "geo": {
+            "code": "11",
+            "name": "District of Columbia"
+          },
+          "firms": 802,
+          "percentOfEmployerFirms": 8.4
+        },
+        {
+          "geo": {
+            "code": "12",
+            "name": "Florida"
+          },
+          "firms": 12172,
+          "percentOfEmployerFirms": 3.4
+        },
+        {
+          "geo": {
+            "code": "13",
+            "name": "Georgia"
+          },
+          "firms": 4883,
+          "percentOfEmployerFirms": 3.5
+        },
+        {
+          "geo": {
+            "code": "15",
+            "name": "Hawaii"
+          },
+          "firms": 741,
+          "percentOfEmployerFirms": 3.9
+        },
+        {
+          "geo": {
+            "code": "16",
+            "name": "Idaho"
+          },
+          "firms": 832,
+          "percentOfEmployerFirms": 2.3
+        },
+        {
+          "geo": {
+            "code": "17",
+            "name": "Illinois"
+          },
+          "firms": 6306,
+          "percentOfEmployerFirms": 3
+        },
+        {
+          "geo": {
+            "code": "18",
+            "name": "Indiana"
+          },
+          "firms": 2823,
+          "percentOfEmployerFirms": 3
+        },
+        {
+          "geo": {
+            "code": "19",
+            "name": "Iowa"
+          },
+          "firms": 1847,
+          "percentOfEmployerFirms": 3.3
+        },
+        {
+          "geo": {
+            "code": "20",
+            "name": "Kansas"
+          },
+          "firms": 1645,
+          "percentOfEmployerFirms": 3.3
+        },
+        {
+          "geo": {
+            "code": "21",
+            "name": "Kentucky"
+          },
+          "firms": 1658,
+          "percentOfEmployerFirms": 2.9
+        },
+        {
+          "geo": {
+            "code": "22",
+            "name": "Louisiana"
+          },
+          "firms": 1653,
+          "percentOfEmployerFirms": 2.7
+        },
+        {
+          "geo": {
+            "code": "23",
+            "name": "Maine"
+          },
+          "firms": 826,
+          "percentOfEmployerFirms": 3.2
+        },
+        {
+          "geo": {
+            "code": "24",
+            "name": "Maryland"
+          },
+          "firms": 2930,
+          "percentOfEmployerFirms": 3.4
+        },
+        {
+          "geo": {
+            "code": "25",
+            "name": "Massachusetts"
+          },
+          "firms": 2924,
+          "percentOfEmployerFirms": 2.7
+        },
+        {
+          "geo": {
+            "code": "26",
+            "name": "Michigan"
+          },
+          "firms": 3703,
+          "percentOfEmployerFirms": 2.6
+        },
+        {
+          "geo": {
+            "code": "27",
+            "name": "Minnesota"
+          },
+          "firms": 3413,
+          "percentOfEmployerFirms": 3.3
+        },
+        {
+          "geo": {
+            "code": "28",
+            "name": "Mississippi"
+          },
+          "firms": 1159,
+          "percentOfEmployerFirms": 3.5
+        },
+        {
+          "geo": {
+            "code": "29",
+            "name": "Missouri"
+          },
+          "firms": 2406,
+          "percentOfEmployerFirms": 2.7
+        },
+        {
+          "geo": {
+            "code": "30",
+            "name": "Montana"
+          },
+          "firms": 967,
+          "percentOfEmployerFirms": 3.4
+        },
+        {
+          "geo": {
+            "code": "31",
+            "name": "Nebraska"
+          },
+          "firms": 1087,
+          "percentOfEmployerFirms": 2.6
+        },
+        {
+          "geo": {
+            "code": "32",
+            "name": "Nevada"
+          },
+          "firms": 1417,
+          "percentOfEmployerFirms": 3.6
+        },
+        {
+          "geo": {
+            "code": "33",
+            "name": "New Hampshire"
+          },
+          "firms": 734,
+          "percentOfEmployerFirms": 2.9
+        },
+        {
+          "geo": {
+            "code": "34",
+            "name": "New Jersey"
+          },
+          "firms": 5047,
+          "percentOfEmployerFirms": 3.4
+        },
+        {
+          "geo": {
+            "code": "35",
+            "name": "New Mexico"
+          },
+          "firms": 778,
+          "percentOfEmployerFirms": 3
+        },
+        {
+          "geo": {
+            "code": "36",
+            "name": "New York"
+          },
+          "firms": 9166,
+          "percentOfEmployerFirms": 2.9
+        },
+        {
+          "geo": {
+            "code": "37",
+            "name": "North Carolina"
+          },
+          "firms": 4460,
+          "percentOfEmployerFirms": 2.9
+        },
+        {
+          "geo": {
+            "code": "38",
+            "name": "North Dakota"
+          },
+          "firms": 346,
+          "percentOfEmployerFirms": 1.9
+        },
+        {
+          "geo": {
+            "code": "39",
+            "name": "Ohio"
+          },
+          "firms": 4997,
+          "percentOfEmployerFirms": 3.2
+        },
+        {
+          "geo": {
+            "code": "40",
+            "name": "Oklahoma"
+          },
+          "firms": 1688,
+          "percentOfEmployerFirms": 2.9
+        },
+        {
+          "geo": {
+            "code": "41",
+            "name": "Oregon"
+          },
+          "firms": 2368,
+          "percentOfEmployerFirms": 2.9
+        },
+        {
+          "geo": {
+            "code": "42",
+            "name": "Pennsylvania"
+          },
+          "firms": 5411,
+          "percentOfEmployerFirms": 2.9
+        },
+        {
+          "geo": {
+            "code": "44",
+            "name": "Rhode Island"
+          },
+          "firms": 334,
+          "percentOfEmployerFirms": 1.9
+        },
+        {
+          "geo": {
+            "code": "45",
+            "name": "South Carolina"
+          },
+          "firms": 2201,
+          "percentOfEmployerFirms": 3.3
+        },
+        {
+          "geo": {
+            "code": "46",
+            "name": "South Dakota"
+          },
+          "firms": 613,
+          "percentOfEmployerFirms": 3.1
+        },
+        {
+          "geo": {
+            "code": "47",
+            "name": "Tennessee"
+          },
+          "firms": 2835,
+          "percentOfEmployerFirms": 3.7
+        },
+        {
+          "geo": {
+            "code": "48",
+            "name": "Texas"
+          },
+          "firms": 11447,
+          "percentOfEmployerFirms": 3.5
+        },
+        {
+          "geo": {
+            "code": "49",
+            "name": "Utah"
+          },
+          "firms": 1812,
+          "percentOfEmployerFirms": 3.2
+        },
+        {
+          "geo": {
+            "code": "50",
+            "name": "Vermont"
+          },
+          "firms": 372,
+          "percentOfEmployerFirms": 2.6
+        },
+        {
+          "geo": {
+            "code": "51",
+            "name": "Virginia"
+          },
+          "firms": 4030,
+          "percentOfEmployerFirms": 3.2
+        },
+        {
+          "geo": {
+            "code": "53",
+            "name": "Washington"
+          },
+          "firms": 3521,
+          "percentOfEmployerFirms": 2.8
+        },
+        {
+          "geo": {
+            "code": "54",
+            "name": "West Virginia"
+          },
+          "firms": 628,
+          "percentOfEmployerFirms": 3
+        },
+        {
+          "geo": {
+            "code": "55",
+            "name": "Wisconsin"
+          },
+          "firms": 2976,
+          "percentOfEmployerFirms": 3
+        },
+        {
+          "geo": {
+            "code": "56",
+            "name": "Wyoming"
+          },
+          "firms": 350,
+          "percentOfEmployerFirms": 2.4
+        }
       ]
     }
   ],
   "countrySurveyMetrics": [
     {
       "id": "cn-cnnic-genai-users-2025-06",
-      "geo": { "iso3": "CHN", "name": "China" },
+      "geo": {
+        "iso3": "CHN",
+        "name": "China"
+      },
       "metric": "generative_ai_users",
       "value": 515000000,
       "unit": "users",
@@ -79,7 +1302,10 @@
     },
     {
       "id": "cn-cnnic-genai-penetration-2025-06",
-      "geo": { "iso3": "CHN", "name": "China" },
+      "geo": {
+        "iso3": "CHN",
+        "name": "China"
+      },
       "metric": "generative_ai_user_penetration",
       "value": 36.5,
       "unit": "percent_of_population",
@@ -95,7 +1321,10 @@
     },
     {
       "id": "cn-cnnic-genai-user-growth-2024-12-to-2025-06",
-      "geo": { "iso3": "CHN", "name": "China" },
+      "geo": {
+        "iso3": "CHN",
+        "name": "China"
+      },
       "metric": "generative_ai_users_increase",
       "value": 266000000,
       "unit": "users",
@@ -113,11 +1342,14 @@
   "chinaAppMarketMetrics": [
     {
       "id": "cn-questmobile-mobile-ai-app-users-2025-06",
-      "geo": { "iso3": "CHN", "name": "China" },
+      "geo": {
+        "iso3": "CHN",
+        "name": "China"
+      },
       "metric": "mobile_ai_application_users",
       "value": 680000000,
       "unit": "monthly_active_users",
-      "period": "2025-06",
+      "period": "2025-H1_or_2025-06_reported",
       "source": {
         "name": "QuestMobile 2025 AI Application Market Half-Year Report",
         "publisher": "QuestMobile",
@@ -128,11 +1360,14 @@
     },
     {
       "id": "cn-questmobile-ai-search-users-2025-06",
-      "geo": { "iso3": "CHN", "name": "China" },
+      "geo": {
+        "iso3": "CHN",
+        "name": "China"
+      },
       "metric": "ai_search_track_users",
       "value": 685000000,
       "unit": "monthly_active_users",
-      "period": "2025-06",
+      "period": "2025-H1_or_2025-06_reported",
       "source": {
         "name": "QuestMobile 2025 AI Application Market Half-Year Report",
         "publisher": "QuestMobile",
@@ -143,11 +1378,14 @@
     },
     {
       "id": "cn-questmobile-ai-assistant-users-2025-06",
-      "geo": { "iso3": "CHN", "name": "China" },
+      "geo": {
+        "iso3": "CHN",
+        "name": "China"
+      },
       "metric": "ai_comprehensive_assistant_track_users",
       "value": 612000000,
       "unit": "monthly_active_users",
-      "period": "2025-06",
+      "period": "2025-H1_or_2025-06_reported",
       "source": {
         "name": "QuestMobile 2025 AI Application Market Half-Year Report",
         "publisher": "QuestMobile",
@@ -158,7 +1396,10 @@
     },
     {
       "id": "cn-questmobile-ai-token-consumption-2025-06",
-      "geo": { "iso3": "CHN", "name": "China" },
+      "geo": {
+        "iso3": "CHN",
+        "name": "China"
+      },
       "metric": "ai_application_token_consumption",
       "value": 1163000000000000,
       "unit": "tokens",
@@ -173,7 +1414,10 @@
     },
     {
       "id": "cn-questmobile-top-internet-groups-token-consumption-2025-06",
-      "geo": { "iso3": "CHN", "name": "China" },
+      "geo": {
+        "iso3": "CHN",
+        "name": "China"
+      },
       "metric": "top_five_internet_groups_token_consumption",
       "value": 603000000000000,
       "shareOfTotal": 51.8,
@@ -191,7 +1435,10 @@
   "chinaNativeAppMau": [
     {
       "id": "cn-questmobile-doubao-mau-2025-12",
-      "geo": { "iso3": "CHN", "name": "China" },
+      "geo": {
+        "iso3": "CHN",
+        "name": "China"
+      },
       "product": "Doubao",
       "metric": "monthly_active_users",
       "value": 226000000,
@@ -208,7 +1455,10 @@
     },
     {
       "id": "cn-questmobile-deepseek-mau-2025-12",
-      "geo": { "iso3": "CHN", "name": "China" },
+      "geo": {
+        "iso3": "CHN",
+        "name": "China"
+      },
       "product": "DeepSeek",
       "metric": "monthly_active_users",
       "value": 135000000,
@@ -227,85 +1477,185 @@
   "openModelDownloadProxies": [
     {
       "provider": "Alibaba Qwen",
-      "capturedAt": "2026-06-30T07:52:00Z",
+      "capturedAt": "2026-06-30T08:47:31.243Z",
       "source": "https://huggingface.co/api/models?search=Qwen&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
-        { "modelId": "Qwen/Qwen3-0.6B", "downloads": 27491863, "likes": 1370 },
-        { "modelId": "Qwen/Qwen3-4B", "downloads": 15512124, "likes": 641 },
-        { "modelId": "Qwen/Qwen3-8B", "downloads": 13624078, "likes": 1170 },
-        { "modelId": "Qwen/Qwen2.5-7B-Instruct", "downloads": 12723410, "likes": 1390 },
-        { "modelId": "Qwen/Qwen2.5-1.5B-Instruct", "downloads": 11679218, "likes": 750 }
+        {
+          "modelId": "Qwen/Qwen3-0.6B",
+          "downloads": 27628947,
+          "likes": 1370
+        },
+        {
+          "modelId": "Qwen/Qwen3-4B",
+          "downloads": 14472618,
+          "likes": 641
+        },
+        {
+          "modelId": "Qwen/Qwen3-8B",
+          "downloads": 13672043,
+          "likes": 1170
+        },
+        {
+          "modelId": "Qwen/Qwen2.5-7B-Instruct",
+          "downloads": 12723410,
+          "likes": 1390
+        },
+        {
+          "modelId": "Qwen/Qwen2.5-1.5B-Instruct",
+          "downloads": 11679218,
+          "likes": 750
+        }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
     },
     {
       "provider": "DeepSeek",
-      "capturedAt": "2026-06-30T07:52:00Z",
+      "capturedAt": "2026-06-30T08:47:31.239Z",
       "source": "https://huggingface.co/api/models?search=DeepSeek&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
-        { "modelId": "deepseek-ai/DeepSeek-R1", "downloads": 7483926, "likes": 13421 },
-        { "modelId": "antirez/deepseek-v4-gguf", "downloads": 6434367, "likes": 281 },
-        { "modelId": "deepseek-ai/DeepSeek-R1-0528", "downloads": 3982017, "likes": 2454 },
-        { "modelId": "deepseek-ai/DeepSeek-OCR-2", "downloads": 3202245, "likes": 1017 },
-        { "modelId": "deepseek-ai/DeepSeek-V3.2", "downloads": 2493114, "likes": 1452 }
+        {
+          "modelId": "deepseek-ai/DeepSeek-R1",
+          "downloads": 7483926,
+          "likes": 13421
+        },
+        {
+          "modelId": "antirez/deepseek-v4-gguf",
+          "downloads": 6441753,
+          "likes": 281
+        },
+        {
+          "modelId": "deepseek-ai/DeepSeek-R1-0528",
+          "downloads": 3586665,
+          "likes": 2454
+        },
+        {
+          "modelId": "deepseek-ai/DeepSeek-OCR-2",
+          "downloads": 3217801,
+          "likes": 1017
+        },
+        {
+          "modelId": "deepseek-ai/DeepSeek-V3.2",
+          "downloads": 2391599,
+          "likes": 1452
+        }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
     },
     {
       "provider": "Moonshot Kimi",
-      "capturedAt": "2026-06-30T07:52:00Z",
+      "capturedAt": "2026-06-30T08:47:31.304Z",
       "source": "https://huggingface.co/api/models?search=Kimi&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
-        { "modelId": "moonshotai/Kimi-K2.6", "downloads": 2330649, "likes": 1495 },
-        { "modelId": "moonshotai/Kimi-K2-Instruct-0905", "downloads": 1652845, "likes": 757 },
-        { "modelId": "moonshotai/Kimi-K2.5", "downloads": 1580060, "likes": 2826 },
-        { "modelId": "nvidia/Kimi-K2.5-NVFP4", "downloads": 1271271, "likes": 86 },
-        { "modelId": "nvidia/Kimi-K2.6-NVFP4", "downloads": 676619, "likes": 39 }
+        {
+          "modelId": "moonshotai/Kimi-K2.6",
+          "downloads": 2302910,
+          "likes": 1495
+        },
+        {
+          "modelId": "moonshotai/Kimi-K2-Instruct-0905",
+          "downloads": 1661261,
+          "likes": 758
+        },
+        {
+          "modelId": "moonshotai/Kimi-K2.5",
+          "downloads": 1557319,
+          "likes": 2826
+        },
+        {
+          "modelId": "nvidia/Kimi-K2.5-NVFP4",
+          "downloads": 1262794,
+          "likes": 86
+        },
+        {
+          "modelId": "moonshotai/Kimi-K2.7-Code",
+          "downloads": 706580,
+          "likes": 1019
+        }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
     },
     {
       "provider": "Zhipu ChatGLM",
-      "capturedAt": "2026-06-30T07:53:00Z",
+      "capturedAt": "2026-06-30T08:47:31.310Z",
       "source": "https://huggingface.co/api/models?search=ChatGLM&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
-        { "modelId": "zai-org/chatglm2-6b", "downloads": 410366, "likes": 2057 },
-        { "modelId": "zai-org/chatglm3-6b", "downloads": 119504, "likes": 1165 },
-        { "modelId": "thu-coai/ShieldLM-6B-chatglm3", "downloads": 20479, "likes": 4 },
-        { "modelId": "optimum-intel-internal-testing/tiny-random-chatglm4", "downloads": 6256, "likes": 0 },
-        { "modelId": "zai-org/chatglm3-6b-base", "downloads": 4773, "likes": 88 }
+        {
+          "modelId": "zai-org/chatglm2-6b",
+          "downloads": 410366,
+          "likes": 2057
+        },
+        {
+          "modelId": "zai-org/chatglm3-6b",
+          "downloads": 119504,
+          "likes": 1165
+        },
+        {
+          "modelId": "thu-coai/ShieldLM-6B-chatglm3",
+          "downloads": 20479,
+          "likes": 4
+        },
+        {
+          "modelId": "optimum-intel-internal-testing/tiny-random-chatglm4",
+          "downloads": 6203,
+          "likes": 0
+        },
+        {
+          "modelId": "zai-org/chatglm3-6b-base",
+          "downloads": 4773,
+          "likes": 88
+        }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
     },
     {
       "provider": "Baichuan",
-      "capturedAt": "2026-06-30T07:53:00Z",
+      "capturedAt": "2026-06-30T08:47:31.370Z",
       "source": "https://huggingface.co/api/models?search=Baichuan&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
-        { "modelId": "baichuan-inc/Baichuan2-7B-Chat", "downloads": 63893, "likes": 172 },
-        { "modelId": "baichuan-inc/Baichuan-7B", "downloads": 54760, "likes": 841 },
-        { "modelId": "optimum-intel-internal-testing/tiny-random-baichuan2", "downloads": 12831, "likes": 0 },
-        { "modelId": "optimum-intel-internal-testing/tiny-random-baichuan2-13b", "downloads": 11970, "likes": 0 },
-        { "modelId": "baichuan-inc/Baichuan2-13B-Chat", "downloads": 9611, "likes": 432 }
+        {
+          "modelId": "baichuan-inc/Baichuan2-7B-Chat",
+          "downloads": 63893,
+          "likes": 172
+        },
+        {
+          "modelId": "baichuan-inc/Baichuan-7B",
+          "downloads": 54760,
+          "likes": 841
+        },
+        {
+          "modelId": "optimum-intel-internal-testing/tiny-random-baichuan2",
+          "downloads": 12562,
+          "likes": 0
+        },
+        {
+          "modelId": "optimum-intel-internal-testing/tiny-random-baichuan2-13b",
+          "downloads": 11735,
+          "likes": 0
+        },
+        {
+          "modelId": "baichuan-inc/Baichuan2-13B-Chat",
+          "downloads": 9611,
+          "likes": 432
+        }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
     }
   ],
   "developerEcosystemProxies": [
     {
-      "id": "github-huggingface-transformers-2026-06-30",
+      "id": "github-huggingface-transformers",
       "metric": "github_repository_activity",
       "repository": "huggingface/transformers",
-      "stars": 162039,
-      "forks": 33667,
+      "stars": 162045,
+      "forks": 33668,
       "openIssues": 2452,
-      "repositoryUpdatedAt": "2026-06-30T07:47:13Z",
-      "capturedAt": "2026-06-30T07:52:00Z",
+      "repositoryUpdatedAt": "2026-06-30T08:29:50Z",
+      "capturedAt": "2026-06-30T08:47:31.929Z",
       "source": "https://api.github.com/repos/huggingface/transformers",
       "confidence": "high",
       "comparability": "Developer ecosystem proxy; no country split and no end-user usage measurement."
@@ -316,45 +1666,72 @@
       "name": "Similarweb",
       "status": "not_collected",
       "reason": "Useful for web traffic and country share across AI products, but detailed API access is commercial.",
-      "potentialMetrics": ["website_visits", "country_traffic_share", "engagement"]
+      "potentialMetrics": [
+        "website_visits",
+        "country_traffic_share",
+        "engagement"
+      ]
     },
     {
       "name": "Sensor Tower / data.ai / AppMagic",
       "status": "not_collected",
       "reason": "Useful for mobile AI app downloads and MAU estimates, but high-quality country-level data is generally commercial.",
-      "potentialMetrics": ["mobile_downloads", "mobile_mau", "country_rank"]
+      "potentialMetrics": [
+        "mobile_downloads",
+        "mobile_mau",
+        "country_rank"
+      ]
     },
     {
       "name": "Google Trends",
       "status": "not_collected",
       "reason": "Search-interest proxy is accessible manually but has no official stable public API for production collection.",
-      "potentialMetrics": ["relative_search_interest_by_country", "time_series_interest"]
+      "potentialMetrics": [
+        "relative_search_interest_by_country",
+        "time_series_interest"
+      ]
     },
     {
-      "name": "US Census Business Trends and Outlook Survey / Business Formation Statistics APIs",
-      "status": "not_collected",
-      "reason": "Potentially useful for US business AI adoption, but the probed Census API endpoint required an API key in this environment.",
-      "potentialMetrics": ["business_ai_use", "industry_split", "firm_size_split"]
+      "name": "US Census Annual Business Survey Technology Characteristics",
+      "status": "collected",
+      "reason": "Collected from Census ABS 2018 abstcb with TECHUSE=T1E03B99.",
+      "potentialMetrics": [
+        "business_ai_use",
+        "state_split",
+        "industry_split"
+      ]
     },
     {
       "name": "OECD ICT Access and Usage Database",
-      "status": "source_identified",
-      "reason": "OECD reports generative-AI use by individuals across OECD countries, but this pass did not resolve a stable machine-readable series endpoint.",
-      "source": "https://www.oecd.org/en/about/news/announcements/2026/01/ai-use-by-individuals-surges-across-the-oecd-as-adoption-by-firms-continues-to-expand.html",
-      "potentialMetrics": ["individual_generative_ai_use", "country_split", "age_and_education_split"]
+      "status": "collected",
+      "reason": "Collected businesses using AI (G14_B) and individuals using generative AI tools (D1X_I) via OECD SDMX API.",
+      "source": "https://data-explorer.oecd.org/",
+      "potentialMetrics": [
+        "business_ai_use",
+        "individual_generative_ai_use",
+        "country_split"
+      ]
     },
     {
       "name": "Stack Overflow Developer Survey",
       "status": "not_collected",
       "reason": "Survey can support developer AI-tool adoption analysis, but the current public dataset ZIP URL was not resolved in this pass.",
-      "potentialMetrics": ["developer_ai_tool_usage", "developer_attitudes", "country_split"]
+      "potentialMetrics": [
+        "developer_ai_tool_usage",
+        "developer_attitudes",
+        "country_split"
+      ]
     },
     {
       "name": "CNNIC Statistical Reports",
       "status": "source_identified",
       "reason": "CNNIC report pages and PDFs are available; specific generative-AI figures were verified via a government-hosted Xinhua summary.",
       "source": "https://www.cnnic.com.cn/IDR/ReportDownloads/",
-      "potentialMetrics": ["internet_users", "generative_ai_users", "penetration_rate"]
+      "potentialMetrics": [
+        "internet_users",
+        "generative_ai_users",
+        "penetration_rate"
+      ]
     }
   ]
 }

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "build:data": "node scripts/build-data-snapshot.mjs"
+    "build:data": "npm run build:proxies && node scripts/build-data-snapshot.mjs",
+    "build:proxies": "node scripts/build-ai-usage-proxies.mjs"
   },
   "dependencies": {
     "chart.js": "^4.5.1",
@@ -18,6 +19,7 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@next/env": "^16.2.9",
     "@tailwindcss/postcss": "^4",
     "@types/d3": "^7.4.3",
     "@types/node": "^20",

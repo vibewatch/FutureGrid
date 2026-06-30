@@ -11,9 +11,12 @@ import https from "https";
 import http from "http";
 import path from "path";
 import { fileURLToPath } from "url";
+import nextEnv from "@next/env";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
+nextEnv.loadEnvConfig(ROOT);
+
 const DATA_DIR = path.join(ROOT, "data");
 const CACHE_DIR = path.join(ROOT, ".data-cache");
 
@@ -633,6 +636,22 @@ async function main() {
         usedFor: "Supplemental multi-country enterprise AI adoption rate for European reporting countries",
       },
       {
+        name: "OECD ICT Access and Usage Database",
+        publisher: "OECD",
+        year: 2025,
+        url: "https://data-explorer.oecd.org/",
+        license: "OECD terms",
+        usedFor: "Supplemental enterprise AI adoption and individual generative-AI usage rates by reporting country",
+      },
+      {
+        name: "U.S. Census Annual Business Survey — Technology Characteristics of Businesses",
+        publisher: "U.S. Census Bureau",
+        year: 2018,
+        url: "https://api.census.gov/data/2018/abstcb.html",
+        license: "Public Domain",
+        usedFor: "Supplemental U.S. employer-firm artificial-intelligence total-use counts and percentages",
+      },
+      {
         name: "CNNIC Generative AI Application Development Report summary",
         publisher: "CNNIC / Xinhua / State Council of the People's Republic of China",
         year: 2025,
@@ -705,7 +724,7 @@ async function main() {
         usedFor: "Context/validation reference only — not directly loaded",
       },
     ],
-  note: `automationRisk bands are percentile-calibrated from the aiExposure distribution (${en} occupations): Very High = top ~8% (aiExposure > ${VH_THRESHOLD.toFixed(4)}), High = next ~12% (> ${HIGH_THRESHOLD.toFixed(4)}), Medium = next ~25% (> ${MED_THRESHOLD.toFixed(4)}), Low = remainder (≤ ${MED_THRESHOLD.toFixed(4)}). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: ${blsEnriched ? `real OEWS 2025 figures (${blsEmpUpdated} occupations updated via BLS Public Data API)` : "null — BLS_API_KEY not set; set it and re-run npm run build:data"}. medianSalary: ${blsEnriched ? `OEWS 2025 where available (${blsWageUpdated} updated), AEI-bundled wage otherwise` : "AEI-bundled (BLS_API_KEY not set)"}. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: ` + (onetSkillsFailed ? "FAILED — default skills used" : "successfully loaded"),
+    note: `automationRisk bands are percentile-calibrated from the aiExposure distribution (${en} occupations): Very High = top ~8% (aiExposure > ${VH_THRESHOLD.toFixed(4)}), High = next ~12% (> ${HIGH_THRESHOLD.toFixed(4)}), Medium = next ~25% (> ${MED_THRESHOLD.toFixed(4)}), Low = remainder (≤ ${MED_THRESHOLD.toFixed(4)}). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: ${blsEnriched ? `real OEWS 2025 figures (${blsEmpUpdated} occupations updated via BLS Public Data API)` : "null — BLS_API_KEY not set; set it and re-run npm run build:data"}. medianSalary: ${blsEnriched ? `OEWS 2025 where available (${blsWageUpdated} updated), AEI-bundled wage otherwise` : "AEI-bundled (BLS_API_KEY not set)"}. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: ` + (onetSkillsFailed ? "FAILED — default skills used" : "successfully loaded"),
   };
 
   // ─── Write JSON files ──────────────────────────────────────────────────────

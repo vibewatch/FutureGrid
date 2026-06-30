@@ -60,6 +60,22 @@
       "usedFor": "Supplemental multi-country enterprise AI adoption rate for European reporting countries"
     },
     {
+      "name": "OECD ICT Access and Usage Database",
+      "publisher": "OECD",
+      "year": 2025,
+      "url": "https://data-explorer.oecd.org/",
+      "license": "OECD terms",
+      "usedFor": "Supplemental enterprise AI adoption and individual generative-AI usage rates by reporting country"
+    },
+    {
+      "name": "U.S. Census Annual Business Survey — Technology Characteristics of Businesses",
+      "publisher": "U.S. Census Bureau",
+      "year": 2018,
+      "url": "https://api.census.gov/data/2018/abstcb.html",
+      "license": "Public Domain",
+      "usedFor": "Supplemental U.S. employer-firm artificial-intelligence total-use counts and percentages"
+    },
+    {
       "name": "CNNIC Generative AI Application Development Report summary",
       "publisher": "CNNIC / Xinhua / State Council of the People's Republic of China",
       "year": 2025,
