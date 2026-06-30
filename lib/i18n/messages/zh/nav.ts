@@ -4,6 +4,7 @@ export const navZh = {
   careers: "职业",
   skills: "技能",
   explore: "探索",
+  report: "深度报告",
   heatmap: "热力图",
   global: "全球",
   sources: "数据来源",
