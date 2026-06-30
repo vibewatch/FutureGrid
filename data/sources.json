@@ -1,0 +1,72 @@
+{
+  "generatedAt": "2026-06-30T05:53:52.111Z",
+  "license": "CC-BY 4.0 (Anthropic Economic Index); CC BY 4.0 (O*NET, USDOL/ETA); Public Domain (BLS)",
+  "attribution": "Anthropic Economic Index (Anthropic, 2025); O*NET 28.3 (U.S. Department of Labor/ETA); BLS Employment Statistics (U.S. Bureau of Labor Statistics, 2023)",
+  "sources": [
+    {
+      "name": "Anthropic Economic Index — Job Exposure",
+      "publisher": "Anthropic",
+      "year": 2025,
+      "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+      "license": "CC-BY 4.0",
+      "usedFor": "Primary AI-exposure metric (observed_exposure) per SOC occupation — replaces Frey-Osborne 2013"
+    },
+    {
+      "name": "Anthropic Economic Index — Wage & Forecast Data",
+      "publisher": "Anthropic / O*NET / BLS (bundled)",
+      "year": 2025,
+      "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+      "license": "CC-BY 4.0",
+      "usedFor": "Median salary, job forecast, job zone, bright outlook, sector (JobFamily)"
+    },
+    {
+      "name": "Anthropic Economic Index — BLS Employment May 2023",
+      "publisher": "Anthropic / BLS (bundled)",
+      "year": 2023,
+      "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+      "license": "CC-BY 4.0 (derived); BLS original is public domain",
+      "usedFor": "Employment totals by occupation"
+    },
+    {
+      "name": "Anthropic Economic Index — Country AI Adoption (Aug 2025)",
+      "publisher": "Anthropic",
+      "year": 2025,
+      "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+      "license": "CC-BY 4.0",
+      "usedFor": "Per-country AI usage index, usage %, usage count, GDP per working-age capita"
+    },
+    {
+      "name": "O*NET 28.3 Skills Database",
+      "publisher": "U.S. Department of Labor / Employment and Training Administration",
+      "year": 2024,
+      "url": "https://www.onetcenter.org/database.html",
+      "license": "CC BY 4.0",
+      "usedFor": "Top skills (by importance) per SOC occupation"
+    },
+    {
+      "name": "IMF Artificial Intelligence Occupational Exposure (AIOE) Index 2024",
+      "publisher": "International Monetary Fund",
+      "year": 2024,
+      "url": "https://www.imf.org/en/Publications/WP/Issues/2024/01/14/Gen-AI-Artificial-Intelligence-and-the-Future-of-Work-542379",
+      "license": "IMF Working Paper (cited context)",
+      "usedFor": "Context/validation reference only — not directly loaded"
+    },
+    {
+      "name": "OECD Employment Outlook 2023 — AI and the Labour Market",
+      "publisher": "OECD",
+      "year": 2023,
+      "url": "https://doi.org/10.1787/08785bba-en",
+      "license": "OECD terms (cited context)",
+      "usedFor": "Context/validation reference only — not directly loaded"
+    },
+    {
+      "name": "ILO World Employment and Social Outlook 2025 — Artificial Intelligence",
+      "publisher": "International Labour Organization",
+      "year": 2025,
+      "url": "https://www.ilo.org/publications/major-reports/world-employment-and-social-outlook",
+      "license": "ILO terms (cited context)",
+      "usedFor": "Context/validation reference only — not directly loaded"
+    }
+  ],
+  "note": "Automation risk bands: Low < 0.30, Medium 0.30–0.60, High 0.60–0.85, Very High > 0.85. aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). O*NET skills are best-effort: successfully loaded"
+}

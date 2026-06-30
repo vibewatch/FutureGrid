@@ -1,0 +1,1554 @@
+[
+  {
+    "iso3": "ABW",
+    "name": "Aruba",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 55553.99364615255
+  },
+  {
+    "iso3": "AGO",
+    "name": "Angola",
+    "usageIndex": 0.04561227046565567,
+    "usagePct": 0.024676151432772,
+    "usageCount": 238,
+    "gdpPerWorkingAgeCapita": 5796.591076911293
+  },
+  {
+    "iso3": "ALB",
+    "name": "Albania",
+    "usageIndex": 0.7888309384528269,
+    "usagePct": 0.0383620841601917,
+    "usageCount": 370,
+    "gdpPerWorkingAgeCapita": 15160.177657549833
+  },
+  {
+    "iso3": "AND",
+    "name": "Andorra",
+    "usageIndex": 2.5930481118561155,
+    "usagePct": 0.0041472523416423,
+    "usageCount": 40,
+    "gdpPerWorkingAgeCapita": 68285.58866303651
+  },
+  {
+    "iso3": "ARE",
+    "name": "United Arab Emirates",
+    "usageIndex": 1.2922019273345715,
+    "usagePct": 0.3121844200171281,
+    "usageCount": 3011,
+    "gdpPerWorkingAgeCapita": 60127.05878296327
+  },
+  {
+    "iso3": "ARG",
+    "name": "Argentina",
+    "usageIndex": 0.7842234914875027,
+    "usagePct": 0.6395063110812509,
+    "usageCount": 6168,
+    "gdpPerWorkingAgeCapita": 20966.423275351695
+  },
+  {
+    "iso3": "ARM",
+    "name": "Armenia",
+    "usageIndex": 1.5414610298047535,
+    "usagePct": 0.0848113103865861,
+    "usageCount": 818,
+    "gdpPerWorkingAgeCapita": 12551.43122594346
+  },
+  {
+    "iso3": "ASM",
+    "name": "American Samoa",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "ATG",
+    "name": "Antigua and Barbuda",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 33696.80448281085
+  },
+  {
+    "iso3": "AUS",
+    "name": "Australia",
+    "usageIndex": 4.101449368258871,
+    "usagePct": 1.9443355790704764,
+    "usageCount": 18753,
+    "gdpPerWorkingAgeCapita": 102513.1805350331
+  },
+  {
+    "iso3": "AUT",
+    "name": "Austria",
+    "usageIndex": 1.6663721262550917,
+    "usagePct": 0.2695714022067529,
+    "usageCount": 2600,
+    "gdpPerWorkingAgeCapita": 87151.06570374031
+  },
+  {
+    "iso3": "AZE",
+    "name": "Azerbaijan",
+    "usageIndex": 0.2611554372170135,
+    "usagePct": 0.0501817533338724,
+    "usageCount": 484,
+    "gdpPerWorkingAgeCapita": 10460.39769104414
+  },
+  {
+    "iso3": "BDI",
+    "name": "Burundi",
+    "usageIndex": 0.03051059351979704,
+    "usagePct": 0.0061171972039224,
+    "usageCount": 59,
+    "gdpPerWorkingAgeCapita": 639.8290120031005
+  },
+  {
+    "iso3": "BEL",
+    "name": "Belgium",
+    "usageIndex": 1.861428503075573,
+    "usagePct": 0.3793699079517342,
+    "usageCount": 3659,
+    "gdpPerWorkingAgeCapita": 88245.97318402125
+  },
+  {
+    "iso3": "BEN",
+    "name": "Benin",
+    "usageIndex": 0.2524600653772727,
+    "usagePct": 0.054640049601138,
+    "usageCount": 527,
+    "gdpPerWorkingAgeCapita": 2655.416999442524
+  },
+  {
+    "iso3": "BFA",
+    "name": "Burkina Faso",
+    "usageIndex": 0.08000694781689591,
+    "usagePct": 0.028304997231709,
+    "usageCount": 273,
+    "gdpPerWorkingAgeCapita": 1832.887591889975
+  },
+  {
+    "iso3": "BGD",
+    "name": "Bangladesh",
+    "usageIndex": 0.11186231137505075,
+    "usagePct": 0.3440145817392332,
+    "usageCount": 3318,
+    "gdpPerWorkingAgeCapita": 3967.2406267898255
+  },
+  {
+    "iso3": "BGR",
+    "name": "Bulgaria",
+    "usageIndex": 1.4596011913060525,
+    "usagePct": 0.1615354787069696,
+    "usageCount": 1558,
+    "gdpPerWorkingAgeCapita": 27428.093267052194
+  },
+  {
+    "iso3": "BHR",
+    "name": "Bahrain",
+    "usageIndex": 0.7105268657269481,
+    "usagePct": 0.0236393383473614,
+    "usageCount": 228,
+    "gdpPerWorkingAgeCapita": 38161.782937228934
+  },
+  {
+    "iso3": "BHS",
+    "name": "Bahamas",
+    "usageIndex": 0.6249837074991653,
+    "usagePct": 0.0047693401928887,
+    "usageCount": 46,
+    "gdpPerWorkingAgeCapita": 52316.51473694657
+  },
+  {
+    "iso3": "BIH",
+    "name": "Bosnia and Herzegovina",
+    "usageIndex": 0.6737524860668648,
+    "usagePct": 0.0373252710747811,
+    "usageCount": 360,
+    "gdpPerWorkingAgeCapita": 14058.115992760766
+  },
+  {
+    "iso3": "BLZ",
+    "name": "Belize",
+    "usageIndex": 0.5106441721264725,
+    "usagePct": 0.0039398897245602,
+    "usageCount": 38,
+    "gdpPerWorkingAgeCapita": 12013.264719491846
+  },
+  {
+    "iso3": "BMU",
+    "name": "Bermuda",
+    "usageIndex": 2.6603859479912932,
+    "usagePct": 0.0030067579476907,
+    "usageCount": 29,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "BOL",
+    "name": "Bolivia",
+    "usageIndex": 0.4839902319857235,
+    "usagePct": 0.1049254842435515,
+    "usageCount": 1012,
+    "gdpPerWorkingAgeCapita": 6038.784004183883
+  },
+  {
+    "iso3": "BRA",
+    "name": "Brazil",
+    "usageIndex": 0.9260182311201804,
+    "usagePct": 3.6788201896538495,
+    "usageCount": 35482,
+    "gdpPerWorkingAgeCapita": 14782.600419414845
+  },
+  {
+    "iso3": "BRB",
+    "name": "Barbados",
+    "usageIndex": 1.2913599223505714,
+    "usagePct": 0.0065319224380867,
+    "usageCount": 63,
+    "gdpPerWorkingAgeCapita": 38322.71932498115
+  },
+  {
+    "iso3": "BRN",
+    "name": "Brunei",
+    "usageIndex": 0.6989063666455809,
+    "usagePct": 0.0063245598210045,
+    "usageCount": 61,
+    "gdpPerWorkingAgeCapita": 46216.28972529656
+  },
+  {
+    "iso3": "BTN",
+    "name": "Bhutan",
+    "usageIndex": 0.4002762888906183,
+    "usagePct": 0.0062208785124635,
+    "usageCount": 60,
+    "gdpPerWorkingAgeCapita": 5380.966137503524
+  },
+  {
+    "iso3": "BWA",
+    "name": "Botswana",
+    "usageIndex": 0.2477245546174363,
+    "usagePct": 0.0107828560882701,
+    "usageCount": 104,
+    "gdpPerWorkingAgeCapita": 12027.171116893962
+  },
+  {
+    "iso3": "CAN",
+    "name": "Canada",
+    "usageIndex": 2.9136194486582068,
+    "usagePct": 2.117794408259668,
+    "usageCount": 20426,
+    "gdpPerWorkingAgeCapita": 83397.40614599641
+  },
+  {
+    "iso3": "CHE",
+    "name": "Switzerland",
+    "usageIndex": 2.8129771076417764,
+    "usagePct": 0.4469701211205046,
+    "usageCount": 4311,
+    "gdpPerWorkingAgeCapita": 159447.77850270874
+  },
+  {
+    "iso3": "CHL",
+    "name": "Chile",
+    "usageIndex": 1.158389348435904,
+    "usagePct": 0.426648584646457,
+    "usageCount": 4115,
+    "gdpPerWorkingAgeCapita": 24248.62384782136
+  },
+  {
+    "iso3": "CIV",
+    "name": "Ivory Coast",
+    "usageIndex": 0.19943315153593494,
+    "usagePct": 0.0973567487200542,
+    "usageCount": 939,
+    "gdpPerWorkingAgeCapita": 4825.4978829441125
+  },
+  {
+    "iso3": "CMR",
+    "name": "Cameroon",
+    "usageIndex": 0.22117411239226328,
+    "usagePct": 0.0971493861029721,
+    "usageCount": 937,
+    "gdpPerWorkingAgeCapita": 3250.193069497753
+  },
+  {
+    "iso3": "COG",
+    "name": "Republic of the Congo",
+    "usageIndex": 0.12840642851227105,
+    "usagePct": 0.012441757024927,
+    "usageCount": 120,
+    "gdpPerWorkingAgeCapita": 4157.189959547441
+  },
+  {
+    "iso3": "COL",
+    "name": "Colombia",
+    "usageIndex": 0.8236025489336274,
+    "usagePct": 0.8240590402843356,
+    "usageCount": 7948,
+    "gdpPerWorkingAgeCapita": 11313.865939573907
+  },
+  {
+    "iso3": "COM",
+    "name": "Comoros",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 2876.5266730677286
+  },
+  {
+    "iso3": "CPV",
+    "name": "Cabo Verde",
+    "usageIndex": 0.4321941752440881,
+    "usagePct": 0.0041472523416423,
+    "usageCount": 40,
+    "gdpPerWorkingAgeCapita": 7683.461672886343
+  },
+  {
+    "iso3": "CRI",
+    "name": "Costa Rica",
+    "usageIndex": 1.3119790443472865,
+    "usagePct": 0.1255580646432222,
+    "usageCount": 1211,
+    "gdpPerWorkingAgeCapita": 26951.561234857145
+  },
+  {
+    "iso3": "CUW",
+    "name": "Curacao",
+    "usageIndex": 1.044188678051117,
+    "usagePct": 0.0030067579476907,
+    "usageCount": 29,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "CYM",
+    "name": "Cayman Islands",
+    "usageIndex": 2.4085834963771133,
+    "usagePct": 0.003628845798937,
+    "usageCount": 35,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "CYP",
+    "name": "Cyprus",
+    "usageIndex": 2.39017701570814,
+    "usagePct": 0.0608609281136015,
+    "usageCount": 587,
+    "gdpPerWorkingAgeCapita": 38404.71104586875
+  },
+  {
+    "iso3": "CZE",
+    "name": "Czechia",
+    "usageIndex": 1.711132868072996,
+    "usagePct": 0.3211010125516592,
+    "usageCount": 3097,
+    "gdpPerWorkingAgeCapita": 49714.93948841886
+  },
+  {
+    "iso3": "DEU",
+    "name": "Germany",
+    "usageIndex": 1.8350611876849208,
+    "usagePct": 2.6068591406478423,
+    "usageCount": 25143,
+    "gdpPerWorkingAgeCapita": 88693.9787891109
+  },
+  {
+    "iso3": "DJI",
+    "name": "Djibouti",
+    "usageIndex": 0.10439726239787459,
+    "usagePct": 0.0021773074793622,
+    "usageCount": 21,
+    "gdpPerWorkingAgeCapita": 5520.591664256729
+  },
+  {
+    "iso3": "DMA",
+    "name": "Dominica",
+    "usageIndex": 1.423076287172169,
+    "usagePct": 0.001762582245198,
+    "usageCount": 17,
+    "gdpPerWorkingAgeCapita": 15220.33454164301
+  },
+  {
+    "iso3": "DNK",
+    "name": "Denmark",
+    "usageIndex": 2.3071425941225168,
+    "usagePct": 0.2366007460906962,
+    "usageCount": 2282,
+    "gdpPerWorkingAgeCapita": 113263.93711245505
+  },
+  {
+    "iso3": "DOM",
+    "name": "Dominican Republic",
+    "usageIndex": 0.5788662042274328,
+    "usagePct": 0.1172635599599375,
+    "usageCount": 1131,
+    "gdpPerWorkingAgeCapita": 16637.61618246597
+  },
+  {
+    "iso3": "DZA",
+    "name": "Algeria",
+    "usageIndex": 0.2541380965072279,
+    "usagePct": 0.2030080021233931,
+    "usageCount": 1958,
+    "gdpPerWorkingAgeCapita": 8969.58842511948
+  },
+  {
+    "iso3": "ECU",
+    "name": "Ecuador",
+    "usageIndex": 0.956858634417044,
+    "usagePct": 0.315398540581901,
+    "usageCount": 3042,
+    "gdpPerWorkingAgeCapita": 9988.291688510175
+  },
+  {
+    "iso3": "EGY",
+    "name": "Egypt",
+    "usageIndex": 0.28119237906874356,
+    "usagePct": 0.5573907147167323,
+    "usageCount": 5376,
+    "gdpPerWorkingAgeCapita": 5227.316547705825
+  },
+  {
+    "iso3": "ESP",
+    "name": "Spain",
+    "usageIndex": 1.2605807317206792,
+    "usagePct": 1.0971556069814845,
+    "usageCount": 10582,
+    "gdpPerWorkingAgeCapita": 53518.68827011927
+  },
+  {
+    "iso3": "EST",
+    "name": "Estonia",
+    "usageIndex": 3.10575549323648,
+    "usagePct": 0.0726805972872822,
+    "usageCount": 701,
+    "gdpPerWorkingAgeCapita": 49410.33974231546
+  },
+  {
+    "iso3": "FIN",
+    "name": "Finland",
+    "usageIndex": 1.8895174643237134,
+    "usagePct": 0.1770876749881285,
+    "usageCount": 1708,
+    "gdpPerWorkingAgeCapita": 86239.00920358354
+  },
+  {
+    "iso3": "FJI",
+    "name": "Fiji",
+    "usageIndex": 0.3666299147564368,
+    "usagePct": 0.0061171972039224,
+    "usageCount": 59,
+    "gdpPerWorkingAgeCapita": 9643.44070961718
+  },
+  {
+    "iso3": "FRA",
+    "name": "France",
+    "usageIndex": 1.9438095632497092,
+    "usagePct": 2.209863410244128,
+    "usageCount": 21314,
+    "gdpPerWorkingAgeCapita": 75225.64794338809
+  },
+  {
+    "iso3": "FRO",
+    "name": "Faroe Islands",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "FSM",
+    "name": "Micronesia",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 6691.48150252884
+  },
+  {
+    "iso3": "GAB",
+    "name": "Gabon",
+    "usageIndex": 0.29214887062835865,
+    "usagePct": 0.0119233504822217,
+    "usageCount": 115,
+    "gdpPerWorkingAgeCapita": 13766.979263379795
+  },
+  {
+    "iso3": "GBR",
+    "name": "United Kingdom",
+    "usageIndex": 2.6652636438018495,
+    "usagePct": 3.1595841964802274,
+    "usageCount": 30474,
+    "gdpPerWorkingAgeCapita": 83152.8295627269
+  },
+  {
+    "iso3": "GEO",
+    "name": "Georgia",
+    "usageIndex": 2.191490694350285,
+    "usagePct": 0.1384145469023135,
+    "usageCount": 1335,
+    "gdpPerWorkingAgeCapita": 14463.249642754523
+  },
+  {
+    "iso3": "GHA",
+    "name": "Ghana",
+    "usageIndex": 0.3483687568154062,
+    "usagePct": 0.1961650357596833,
+    "usageCount": 1892,
+    "gdpPerWorkingAgeCapita": 3978.246329458356
+  },
+  {
+    "iso3": "GIB",
+    "name": "Gibraltar",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "GIN",
+    "name": "Guinea",
+    "usageIndex": 0.03595253220230268,
+    "usagePct": 0.0079834607576615,
+    "usageCount": 77,
+    "gdpPerWorkingAgeCapita": 3137.3506232314494
+  },
+  {
+    "iso3": "GMB",
+    "name": "Gambia",
+    "usageIndex": 0.11763589211776804,
+    "usagePct": 0.0049767028099708,
+    "usageCount": 48,
+    "gdpPerWorkingAgeCapita": 1635.3522496322375
+  },
+  {
+    "iso3": "GNB",
+    "name": "Guinea-Bissau",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 1709.8915346276524
+  },
+  {
+    "iso3": "GNQ",
+    "name": "Equatorial Guinea",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 11229.185857169841
+  },
+  {
+    "iso3": "GRC",
+    "name": "Greece",
+    "usageIndex": 1.28477675431947,
+    "usagePct": 0.2268547030878367,
+    "usageCount": 2188,
+    "gdpPerWorkingAgeCapita": 39376.65689246587
+  },
+  {
+    "iso3": "GRD",
+    "name": "Grenada",
+    "usageIndex": 0.7659684398201663,
+    "usagePct": 0.0016589009366569,
+    "usageCount": 16,
+    "gdpPerWorkingAgeCapita": 17383.70277864502
+  },
+  {
+    "iso3": "GRL",
+    "name": "Greenland",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "GTM",
+    "name": "Guatemala",
+    "usageIndex": 0.3656013171046337,
+    "usagePct": 0.1157083403318216,
+    "usageCount": 1116,
+    "gdpPerWorkingAgeCapita": 9620.500626667832
+  },
+  {
+    "iso3": "GUM",
+    "name": "Guam",
+    "usageIndex": 1.0416936620006763,
+    "usagePct": 0.0029030766391496,
+    "usageCount": 28,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "GUY",
+    "name": "Guyana",
+    "usageIndex": 0.2230563869950619,
+    "usagePct": 0.0032141205647728,
+    "usageCount": 31,
+    "gdpPerWorkingAgeCapita": 46285.034274087586
+  },
+  {
+    "iso3": "HND",
+    "name": "Honduras",
+    "usageIndex": 0.23602957710421577,
+    "usagePct": 0.0448940065982784,
+    "usageCount": 433,
+    "gdpPerWorkingAgeCapita": 5256.315221358912
+  },
+  {
+    "iso3": "HRV",
+    "name": "Croatia",
+    "usageIndex": 1.4189268455426038,
+    "usagePct": 0.0933131776869529,
+    "usageCount": 900,
+    "gdpPerWorkingAgeCapita": 38045.172524694855
+  },
+  {
+    "iso3": "HTI",
+    "name": "Haiti",
+    "usageIndex": 0.06857268772024658,
+    "usagePct": 0.0139969766530429,
+    "usageCount": 135,
+    "gdpPerWorkingAgeCapita": 3475.4520114928823
+  },
+  {
+    "iso3": "HUN",
+    "name": "Hungary",
+    "usageIndex": 0.9456727203268285,
+    "usagePct": 0.1580103142165736,
+    "usageCount": 1524,
+    "gdpPerWorkingAgeCapita": 36106.862456746145
+  },
+  {
+    "iso3": "IDN",
+    "name": "Indonesia",
+    "usageIndex": 0.3579440501634318,
+    "usagePct": 1.8693739929952908,
+    "usageCount": 18030,
+    "gdpPerWorkingAgeCapita": 7231.199089520412
+  },
+  {
+    "iso3": "IMN",
+    "name": "Isle of Man",
+    "usageIndex": 3.054875766522931,
+    "usagePct": 0.0043546149587244,
+    "usageCount": 42,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "IND",
+    "name": "India",
+    "usageIndex": 0.26704803748680805,
+    "usagePct": 7.150277762225582,
+    "usageCount": 68964,
+    "gdpPerWorkingAgeCapita": 3948.7128605939074
+  },
+  {
+    "iso3": "IRL",
+    "name": "Ireland",
+    "usageIndex": 2.257524240446821,
+    "usagePct": 0.2153460778397792,
+    "usageCount": 2077,
+    "gdpPerWorkingAgeCapita": 163661.46945325768
+  },
+  {
+    "iso3": "IRQ",
+    "name": "Iraq",
+    "usageIndex": 0.39406671085630723,
+    "usagePct": 0.2944549162566071,
+    "usageCount": 2840,
+    "gdpPerWorkingAgeCapita": 10043.662811380043
+  },
+  {
+    "iso3": "ISL",
+    "name": "Iceland",
+    "usageIndex": 2.8312856161415665,
+    "usagePct": 0.0206325803996707,
+    "usageCount": 199,
+    "gdpPerWorkingAgeCapita": 124196.00871446758
+  },
+  {
+    "iso3": "ISR",
+    "name": "Israel",
+    "usageIndex": 7.00376424055597,
+    "usagePct": 1.1343771967477247,
+    "usageCount": 10941,
+    "gdpPerWorkingAgeCapita": 90237.43265143564
+  },
+  {
+    "iso3": "ITA",
+    "name": "Italy",
+    "usageIndex": 1.4724186837774282,
+    "usagePct": 1.491248260746049,
+    "usageCount": 14383,
+    "gdpPerWorkingAgeCapita": 63346.04219526605
+  },
+  {
+    "iso3": "JAM",
+    "name": "Jamaica",
+    "usageIndex": 0.5726788336209688,
+    "usagePct": 0.0321412056477282,
+    "usageCount": 310,
+    "gdpPerWorkingAgeCapita": 9671.355122194287
+  },
+  {
+    "iso3": "JOR",
+    "name": "Jordan",
+    "usageIndex": 0.45721228691571575,
+    "usagePct": 0.0925874085271655,
+    "usageCount": 893,
+    "gdpPerWorkingAgeCapita": 7135.879551781071
+  },
+  {
+    "iso3": "JPN",
+    "name": "Japan",
+    "usageIndex": 1.8567345999463332,
+    "usagePct": 3.6597428288822944,
+    "usageCount": 35298,
+    "gdpPerWorkingAgeCapita": 55246.96466016575
+  },
+  {
+    "iso3": "KAZ",
+    "name": "Kazakhstan",
+    "usageIndex": 0.4118212959743227,
+    "usagePct": 0.1421470740097916,
+    "usageCount": 1371,
+    "gdpPerWorkingAgeCapita": 22317.150362946555
+  },
+  {
+    "iso3": "KEN",
+    "name": "Kenya",
+    "usageIndex": 0.45870687806700905,
+    "usagePct": 0.4214645192194041,
+    "usageCount": 4065,
+    "gdpPerWorkingAgeCapita": 3558.849073408154
+  },
+  {
+    "iso3": "KGZ",
+    "name": "Kyrgyzstan",
+    "usageIndex": 0.23629537286708127,
+    "usagePct": 0.0286160411573322,
+    "usageCount": 276,
+    "gdpPerWorkingAgeCapita": 3906.36602991404
+  },
+  {
+    "iso3": "KHM",
+    "name": "Cambodia",
+    "usageIndex": 0.24874253806127875,
+    "usagePct": 0.0759983991605961,
+    "usageCount": 733,
+    "gdpPerWorkingAgeCapita": 4189.637022057561
+  },
+  {
+    "iso3": "KIR",
+    "name": "Kiribati",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 3749.2848360905186
+  },
+  {
+    "iso3": "KNA",
+    "name": "Saint Kitts and Nevis",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 33782.966368255504
+  },
+  {
+    "iso3": "KOR",
+    "name": "South Korea",
+    "usageIndex": 3.725454261874139,
+    "usagePct": 3.6583949718712607,
+    "usageCount": 35285,
+    "gdpPerWorkingAgeCapita": 51496.35067757943
+  },
+  {
+    "iso3": "KWT",
+    "name": "Kuwait",
+    "usageIndex": 0.3369833684618052,
+    "usagePct": 0.0356663701381242,
+    "usageCount": 344,
+    "gdpPerWorkingAgeCapita": 40520.77402630855
+  },
+  {
+    "iso3": "LAO",
+    "name": "Laos",
+    "usageIndex": 0.2885905743125494,
+    "usagePct": 0.0395025785541434,
+    "usageCount": 381,
+    "gdpPerWorkingAgeCapita": 3137.563145458921
+  },
+  {
+    "iso3": "LBN",
+    "name": "Lebanon",
+    "usageIndex": 0.7237694929087171,
+    "usagePct": 0.072369553361659,
+    "usageCount": 698,
+    "gdpPerWorkingAgeCapita": 7649.559298285476
+  },
+  {
+    "iso3": "LBR",
+    "name": "Liberia",
+    "usageIndex": 0.043010660864071,
+    "usagePct": 0.0037325271074781,
+    "usageCount": 36,
+    "gdpPerWorkingAgeCapita": 1501.5941581816312
+  },
+  {
+    "iso3": "LCA",
+    "name": "Saint Lucia",
+    "usageIndex": 1.1710769839426558,
+    "usagePct": 0.0041472523416423,
+    "usageCount": 40,
+    "gdpPerWorkingAgeCapita": 19268.8086637085
+  },
+  {
+    "iso3": "LIE",
+    "name": "Liechtenstein",
+    "usageIndex": 3.0804762637053638,
+    "usagePct": 0.0021773074793622,
+    "usageCount": 21,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "LKA",
+    "name": "Sri Lanka",
+    "usageIndex": 1.0078096909768501,
+    "usagePct": 0.3934705659133183,
+    "usageCount": 3795,
+    "gdpPerWorkingAgeCapita": 6855.768591970304
+  },
+  {
+    "iso3": "LSO",
+    "name": "Lesotho",
+    "usageIndex": 0.14637303759729753,
+    "usagePct": 0.0057024719697582,
+    "usageCount": 55,
+    "gdpPerWorkingAgeCapita": 1603.0035663184583
+  },
+  {
+    "iso3": "LTU",
+    "name": "Lithuania",
+    "usageIndex": 2.129776532955327,
+    "usagePct": 0.1083469674254064,
+    "usageCount": 1045,
+    "gdpPerWorkingAgeCapita": 45109.332193465
+  },
+  {
+    "iso3": "LUX",
+    "name": "Luxembourg",
+    "usageIndex": 2.7398940583768154,
+    "usagePct": 0.0345258757441725,
+    "usageCount": 333,
+    "gdpPerWorkingAgeCapita": 199973.81446042765
+  },
+  {
+    "iso3": "LVA",
+    "name": "Latvia",
+    "usageIndex": 2.112291617793881,
+    "usagePct": 0.0668744440089829,
+    "usageCount": 645,
+    "gdpPerWorkingAgeCapita": 37168.53471842537
+  },
+  {
+    "iso3": "MAF",
+    "name": "Saint Martin",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "MAR",
+    "name": "Morocco",
+    "usageIndex": 0.7364220658651062,
+    "usagePct": 0.5023359398814301,
+    "usageCount": 4845,
+    "gdpPerWorkingAgeCapita": 6159.655576326082
+  },
+  {
+    "iso3": "MCO",
+    "name": "Monaco",
+    "usageIndex": 4.926025027194152,
+    "usagePct": 0.0025920327135264,
+    "usageCount": 25,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "MDA",
+    "name": "Moldova",
+    "usageIndex": 1.2359199736766049,
+    "usagePct": 0.051114885110742,
+    "usageCount": 493,
+    "gdpPerWorkingAgeCapita": 11853.799219163839
+  },
+  {
+    "iso3": "MDG",
+    "name": "Madagascar",
+    "usageIndex": 0.12193820635953317,
+    "usagePct": 0.0604462028794373,
+    "usageCount": 583,
+    "gdpPerWorkingAgeCapita": 950.4549962287342
+  },
+  {
+    "iso3": "MDV",
+    "name": "Maldives",
+    "usageIndex": 1.5241667200377986,
+    "usagePct": 0.0164853280580283,
+    "usageCount": 159,
+    "gdpPerWorkingAgeCapita": 17551.84408141015
+  },
+  {
+    "iso3": "MEX",
+    "name": "Mexico",
+    "usageIndex": 0.3995778562692801,
+    "usagePct": 0.9509649619385916,
+    "usageCount": 9172,
+    "gdpPerWorkingAgeCapita": 21055.231412837926
+  },
+  {
+    "iso3": "MHL",
+    "name": "Marshall Islands",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 12247.933161279034
+  },
+  {
+    "iso3": "MKD",
+    "name": "North Macedonia",
+    "usageIndex": 1.0834015899757727,
+    "usagePct": 0.0342148318185494,
+    "usageCount": 330,
+    "gdpPerWorkingAgeCapita": 14284.258368739234
+  },
+  {
+    "iso3": "MLT",
+    "name": "Malta",
+    "usageIndex": 2.8294557814441834,
+    "usagePct": 0.0293418103171196,
+    "usageCount": 283,
+    "gdpPerWorkingAgeCapita": 63416.5934217836
+  },
+  {
+    "iso3": "MNE",
+    "name": "Montenegro",
+    "usageIndex": 2.1301752508287004,
+    "usagePct": 0.023017250496115,
+    "usageCount": 222,
+    "gdpPerWorkingAgeCapita": 20082.201107362056
+  },
+  {
+    "iso3": "MNG",
+    "name": "Mongolia",
+    "usageIndex": 0.3089027399688463,
+    "usagePct": 0.0184552729203084,
+    "usageCount": 178,
+    "gdpPerWorkingAgeCapita": 10677.466362993113
+  },
+  {
+    "iso3": "MNP",
+    "name": "Northern Mariana Islands",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "MOZ",
+    "name": "Mozambique",
+    "usageIndex": 0.09502713181684254,
+    "usagePct": 0.0469676327690996,
+    "usageCount": 453,
+    "gdpPerWorkingAgeCapita": 1200.8185090654026
+  },
+  {
+    "iso3": "MRT",
+    "name": "Mauritania",
+    "usageIndex": 0.09190601185821151,
+    "usagePct": 0.0069466476722509,
+    "usageCount": 67,
+    "gdpPerWorkingAgeCapita": 3827.747429501387
+  },
+  {
+    "iso3": "MUS",
+    "name": "Mauritius",
+    "usageIndex": 1.3250879343264177,
+    "usagePct": 0.0323485682648103,
+    "usageCount": 312,
+    "gdpPerWorkingAgeCapita": 16566.49364893835
+  },
+  {
+    "iso3": "MWI",
+    "name": "Malawi",
+    "usageIndex": 0.060559013270510165,
+    "usagePct": 0.0201141738569654,
+    "usageCount": 194,
+    "gdpPerWorkingAgeCapita": 960.6402944020085
+  },
+  {
+    "iso3": "MYS",
+    "name": "Malaysia",
+    "usageIndex": 0.7466611773005524,
+    "usagePct": 0.5060684669889082,
+    "usageCount": 4881,
+    "gdpPerWorkingAgeCapita": 16744.801251132354
+  },
+  {
+    "iso3": "NAM",
+    "name": "Namibia",
+    "usageIndex": 0.38157374601531413,
+    "usagePct": 0.0185589542288495,
+    "usageCount": 179,
+    "gdpPerWorkingAgeCapita": 7434.795398545627
+  },
+  {
+    "iso3": "NCL",
+    "name": "New Caledonia",
+    "usageIndex": 0.9152629172151514,
+    "usagePct": 0.0048730215014297,
+    "usageCount": 47,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "NER",
+    "name": "Niger",
+    "usageIndex": 0.019817932650789145,
+    "usagePct": 0.0073613729064151,
+    "usageCount": 71,
+    "gdpPerWorkingAgeCapita": 1446.5138295852926
+  },
+  {
+    "iso3": "NGA",
+    "name": "Nigeria",
+    "usageIndex": 0.20189902709582497,
+    "usagePct": 0.7107353700489584,
+    "usageCount": 6855,
+    "gdpPerWorkingAgeCapita": 1441.664986299227
+  },
+  {
+    "iso3": "NLD",
+    "name": "The Netherlands",
+    "usageIndex": 2.561266349939384,
+    "usagePct": 0.8037375038102881,
+    "usageCount": 7752,
+    "gdpPerWorkingAgeCapita": 105769.21585185928
+  },
+  {
+    "iso3": "NOR",
+    "name": "Norway",
+    "usageIndex": 2.2597983776357173,
+    "usagePct": 0.2214632750437016,
+    "usageCount": 2136,
+    "gdpPerWorkingAgeCapita": 133499.89761071428
+  },
+  {
+    "iso3": "NPL",
+    "name": "Nepal",
+    "usageIndex": 0.42182704791951486,
+    "usagePct": 0.2201154180326679,
+    "usageCount": 2123,
+    "gdpPerWorkingAgeCapita": 2250.486467692543
+  },
+  {
+    "iso3": "NRU",
+    "name": "Nauru",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 22698.43507683632
+  },
+  {
+    "iso3": "NZL",
+    "name": "New Zealand",
+    "usageIndex": 4.04852631687659,
+    "usagePct": 0.3781257322492415,
+    "usageCount": 3647,
+    "gdpPerWorkingAgeCapita": 74633.69897073443
+  },
+  {
+    "iso3": "OMN",
+    "name": "Oman",
+    "usageIndex": 0.29675744007017196,
+    "usagePct": 0.0307933486366944,
+    "usageCount": 297,
+    "gdpPerWorkingAgeCapita": 27874.66708509641
+  },
+  {
+    "iso3": "PAK",
+    "name": "Pakistan",
+    "usageIndex": 0.23940969586951716,
+    "usagePct": 0.9605036423243692,
+    "usageCount": 9264,
+    "gdpPerWorkingAgeCapita": 2515.0984411018367
+  },
+  {
+    "iso3": "PAN",
+    "name": "Panama",
+    "usageIndex": 0.9076556588864465,
+    "usagePct": 0.0728879599043643,
+    "usageCount": 703,
+    "gdpPerWorkingAgeCapita": 29533.717672235955
+  },
+  {
+    "iso3": "PER",
+    "name": "Peru",
+    "usageIndex": 0.8485933711590928,
+    "usagePct": 0.5246274212177577,
+    "usageCount": 5060,
+    "gdpPerWorkingAgeCapita": 12646.323877661176
+  },
+  {
+    "iso3": "PHL",
+    "name": "Philippines",
+    "usageIndex": 0.4506373532469348,
+    "usagePct": 0.9409078750101088,
+    "usageCount": 9075,
+    "gdpPerWorkingAgeCapita": 5979.632691012824
+  },
+  {
+    "iso3": "PLW",
+    "name": "Palau",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 24558.587479935795
+  },
+  {
+    "iso3": "PNG",
+    "name": "Papua New Guinea",
+    "usageIndex": 0.03908671146913083,
+    "usagePct": 0.007050328980792,
+    "usageCount": 68,
+    "gdpPerWorkingAgeCapita": 4746.363305666457
+  },
+  {
+    "iso3": "POL",
+    "name": "Poland",
+    "usageIndex": 1.6075854166559187,
+    "usagePct": 1.0339100087714386,
+    "usageCount": 9972,
+    "gdpPerWorkingAgeCapita": 38209.25361666856
+  },
+  {
+    "iso3": "PRI",
+    "name": "Puerto Rico",
+    "usageIndex": 0.834751904732923,
+    "usagePct": 0.0460345009922301,
+    "usageCount": 444,
+    "gdpPerWorkingAgeCapita": 59332.5492819456
+  },
+  {
+    "iso3": "PRT",
+    "name": "Portugal",
+    "usageIndex": 2.012603970534846,
+    "usagePct": 0.3650618873730681,
+    "usageCount": 3521,
+    "gdpPerWorkingAgeCapita": 46013.61009194968
+  },
+  {
+    "iso3": "PRY",
+    "name": "Paraguay",
+    "usageIndex": 0.5773283079736656,
+    "usagePct": 0.0701922458822968,
+    "usageCount": 677,
+    "gdpPerWorkingAgeCapita": 9785.666997682887
+  },
+  {
+    "iso3": "PSE",
+    "name": "Palestinian Territory",
+    "usageIndex": 0.3828694822211485,
+    "usagePct": 0.031830161722105,
+    "usageCount": 307,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "PYF",
+    "name": "French Polynesia",
+    "usageIndex": 1.173104773748377,
+    "usagePct": 0.0062208785124635,
+    "usageCount": 60,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "QAT",
+    "name": "Qatar",
+    "usageIndex": 0.7669330494269564,
+    "usagePct": 0.049352302865544,
+    "usageCount": 476,
+    "gdpPerWorkingAgeCapita": 93076.97642309398
+  },
+  {
+    "iso3": "ROU",
+    "name": "Romania",
+    "usageIndex": 1.0400929191591919,
+    "usagePct": 0.3449477135161027,
+    "usageCount": 3327,
+    "gdpPerWorkingAgeCapita": 31327.812791877608
+  },
+  {
+    "iso3": "RWA",
+    "name": "Rwanda",
+    "usageIndex": 0.29905482537424155,
+    "usagePct": 0.0677038944773114,
+    "usageCount": 653,
+    "gdpPerWorkingAgeCapita": 1702.5314089029812
+  },
+  {
+    "iso3": "SAU",
+    "name": "Saudi Arabia",
+    "usageIndex": 0.4143273937878727,
+    "usagePct": 0.2896855760637183,
+    "usageCount": 2794,
+    "gdpPerWorkingAgeCapita": 41985.798549031635
+  },
+  {
+    "iso3": "SEN",
+    "name": "Senegal",
+    "usageIndex": 0.294766119812222,
+    "usagePct": 0.0858481234719967,
+    "usageCount": 828,
+    "gdpPerWorkingAgeCapita": 3054.5670941438534
+  },
+  {
+    "iso3": "SGP",
+    "name": "Singapore",
+    "usageIndex": 4.571735157758412,
+    "usagePct": 0.5572870334081912,
+    "usageCount": 5375,
+    "gdpPerWorkingAgeCapita": 121453.27598815701
+  },
+  {
+    "iso3": "SLB",
+    "name": "Solomon Islands",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 3652.4105498553013
+  },
+  {
+    "iso3": "SLE",
+    "name": "Sierra Leone",
+    "usageIndex": 0.0408282444670335,
+    "usagePct": 0.0055987906612171,
+    "usageCount": 54,
+    "gdpPerWorkingAgeCapita": 1509.4225004344053
+  },
+  {
+    "iso3": "SLV",
+    "name": "El Salvador",
+    "usageIndex": 0.399629947052067,
+    "usagePct": 0.045930819683689,
+    "usageCount": 443,
+    "gdpPerWorkingAgeCapita": 8315.64872508447
+  },
+  {
+    "iso3": "SMR",
+    "name": "San Marino",
+    "usageIndex": 2.935775993096779,
+    "usagePct": 0.001762582245198,
+    "usageCount": 17,
+    "gdpPerWorkingAgeCapita": 92936.3005676187
+  },
+  {
+    "iso3": "SRB",
+    "name": "Serbia",
+    "usageIndex": 1.421558574939597,
+    "usagePct": 0.1595655338446895,
+    "usageCount": 1539,
+    "gdpPerWorkingAgeCapita": 21462.94212470453
+  },
+  {
+    "iso3": "STP",
+    "name": "Sao Tome and Principe",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 5799.635701275046
+  },
+  {
+    "iso3": "SUR",
+    "name": "Suriname",
+    "usageIndex": 0.23637742309487828,
+    "usagePct": 0.0026957140220675,
+    "usageCount": 26,
+    "gdpPerWorkingAgeCapita": 10572.67468747999
+  },
+  {
+    "iso3": "SVK",
+    "name": "Slovakia",
+    "usageIndex": 0.9717083986314544,
+    "usagePct": 0.0936242216125761,
+    "usageCount": 903,
+    "gdpPerWorkingAgeCapita": 39478.157128320294
+  },
+  {
+    "iso3": "SVN",
+    "name": "Slovenia",
+    "usageIndex": 1.654879243622467,
+    "usagePct": 0.0604462028794373,
+    "usageCount": 583,
+    "gdpPerWorkingAgeCapita": 53656.97978357421
+  },
+  {
+    "iso3": "SWE",
+    "name": "Sweden",
+    "usageIndex": 2.198774555619245,
+    "usagePct": 0.3913969397424971,
+    "usageCount": 3775,
+    "gdpPerWorkingAgeCapita": 92702.13665967331
+  },
+  {
+    "iso3": "SWZ",
+    "name": "Eswatini",
+    "usageIndex": 0.1977668067935001,
+    "usagePct": 0.0041472523416423,
+    "usageCount": 40,
+    "gdpPerWorkingAgeCapita": 6705.410759611218
+  },
+  {
+    "iso3": "SXM",
+    "name": "Sint Maarten",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "SYC",
+    "name": "Seychelles",
+    "usageIndex": 0.839308836679964,
+    "usagePct": 0.0019699448622801,
+    "usageCount": 19,
+    "gdpPerWorkingAgeCapita": 24982.71491126988
+  },
+  {
+    "iso3": "TCA",
+    "name": "Turks and Caicos Islands",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "TCD",
+    "name": "Chad",
+    "usageIndex": 0.02440976756670197,
+    "usagePct": 0.0069466476722509,
+    "usageCount": 67,
+    "gdpPerWorkingAgeCapita": 1813.1504634520168
+  },
+  {
+    "iso3": "TGO",
+    "name": "Togo",
+    "usageIndex": 0.11186865281326967,
+    "usagePct": 0.0164853280580283,
+    "usageCount": 159,
+    "gdpPerWorkingAgeCapita": 1794.2569461842215
+  },
+  {
+    "iso3": "THA",
+    "name": "Thailand",
+    "usageIndex": 0.9351838778279836,
+    "usagePct": 1.266881909063198,
+    "usageCount": 12219,
+    "gdpPerWorkingAgeCapita": 10509.89704549089
+  },
+  {
+    "iso3": "TJK",
+    "name": "Tajikistan",
+    "usageIndex": 0.05923084029418369,
+    "usagePct": 0.0101607682370237,
+    "usageCount": 98,
+    "gdpPerWorkingAgeCapita": 2135.408282527255
+  },
+  {
+    "iso3": "TKM",
+    "name": "Turkmenistan",
+    "usageIndex": 0.014394271013928036,
+    "usagePct": 0.001866263553739,
+    "usageCount": 18,
+    "gdpPerWorkingAgeCapita": 17213.224529371688
+  },
+  {
+    "iso3": "TLS",
+    "name": "Timor Leste",
+    "usageIndex": 0.1523899792227197,
+    "usagePct": 0.003525164490396,
+    "usageCount": 34,
+    "gdpPerWorkingAgeCapita": 2355.9425874914064
+  },
+  {
+    "iso3": "TON",
+    "name": "Tonga",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 8938.936614813096
+  },
+  {
+    "iso3": "TTO",
+    "name": "Trinidad and Tobago",
+    "usageIndex": 0.7057838087535128,
+    "usagePct": 0.0182479103032263,
+    "usageCount": 176,
+    "gdpPerWorkingAgeCapita": 26700.532253205234
+  },
+  {
+    "iso3": "TUN",
+    "name": "Tunisia",
+    "usageIndex": 0.8864614890600662,
+    "usagePct": 0.1955429479084369,
+    "usageCount": 1886,
+    "gdpPerWorkingAgeCapita": 6506.121121775293
+  },
+  {
+    "iso3": "TUR",
+    "name": "Turkey",
+    "usageIndex": 0.6830201869010764,
+    "usagePct": 1.078492971444094,
+    "usageCount": 10402,
+    "gdpPerWorkingAgeCapita": 22651.310447180294
+  },
+  {
+    "iso3": "TUV",
+    "name": "Tuvalu",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 11158.798283261802
+  },
+  {
+    "iso3": "TWN",
+    "name": "Taiwan",
+    "usageIndex": 2.2949679537585976,
+    "usagePct": 1.0036350666774494,
+    "usageCount": 9680,
+    "gdpPerWorkingAgeCapita": 48391.047952063214
+  },
+  {
+    "iso3": "TZA",
+    "name": "Tanzania",
+    "usageIndex": 0.041612266808040387,
+    "usagePct": 0.0419909299591288,
+    "usageCount": 405,
+    "gdpPerWorkingAgeCapita": 2148.799090380761
+  },
+  {
+    "iso3": "UGA",
+    "name": "Uganda",
+    "usageIndex": 0.08587034134701184,
+    "usagePct": 0.0630382355929637,
+    "usageCount": 608,
+    "gdpPerWorkingAgeCapita": 2079.882474647875
+  },
+  {
+    "iso3": "UKR",
+    "name": "Ukraine",
+    "usageIndex": 0.9231204363626977,
+    "usagePct": 0.6347369708883622,
+    "usageCount": 6122,
+    "gdpPerWorkingAgeCapita": 7490.372998752378
+  },
+  {
+    "iso3": "URY",
+    "name": "Uruguay",
+    "usageIndex": 1.3136128765963584,
+    "usagePct": 0.0790051571082868,
+    "usageCount": 762,
+    "gdpPerWorkingAgeCapita": 36408.304012778724
+  },
+  {
+    "iso3": "USA",
+    "name": "United States",
+    "usageIndex": 3.6243515142461553,
+    "usagePct": 21.58644843824845,
+    "usageCount": 208200,
+    "gdpPerWorkingAgeCapita": 132531.7570859901
+  },
+  {
+    "iso3": "UZB",
+    "name": "Uzbekistan",
+    "usageIndex": 0.08011536015688527,
+    "usagePct": 0.0496633467911671,
+    "usageCount": 479,
+    "gdpPerWorkingAgeCapita": 5015.875475814878
+  },
+  {
+    "iso3": "VCT",
+    "name": "Saint Vincent and the Grenadines",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 17284.20770798316
+  },
+  {
+    "iso3": "VGB",
+    "name": "British Virgin Islands",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "VIR",
+    "name": "U.S. Virgin Islands",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": null
+  },
+  {
+    "iso3": "VNM",
+    "name": "Vietnam",
+    "usageIndex": 0.5969477865036321,
+    "usagePct": 1.1043096172708176,
+    "usageCount": 10651,
+    "gdpPerWorkingAgeCapita": 6717.646893699442
+  },
+  {
+    "iso3": "VUT",
+    "name": "Vanuatu",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 6411.074253636131
+  },
+  {
+    "iso3": "WSM",
+    "name": "Samoa",
+    "usageIndex": 0,
+    "usagePct": 0,
+    "usageCount": 0,
+    "gdpPerWorkingAgeCapita": 8801.859269148988
+  },
+  {
+    "iso3": "XKX",
+    "name": "Kosovo",
+    "usageIndex": 0.4278959376989321,
+    "usagePct": 0.0122343944078449,
+    "usageCount": 118,
+    "gdpPerWorkingAgeCapita": 10548.29170836731
+  },
+  {
+    "iso3": "ZAF",
+    "name": "South Africa",
+    "usageIndex": 0.45762478610714263,
+    "usagePct": 0.5341661016035351,
+    "usageCount": 5152,
+    "gdpPerWorkingAgeCapita": 9272.848440503294
+  },
+  {
+    "iso3": "ZMB",
+    "name": "Zambia",
+    "usageIndex": 0.11408087631922542,
+    "usagePct": 0.0372215897662401,
+    "usageCount": 359,
+    "gdpPerWorkingAgeCapita": 2182.304943750481
+  },
+  {
+    "iso3": "ZWE",
+    "name": "Zimbabwe",
+    "usageIndex": 0.15356697683650564,
+    "usagePct": 0.0383620841601917,
+    "usageCount": 370,
+    "gdpPerWorkingAgeCapita": 3813.7036514934875
+  }
+]
