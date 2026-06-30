@@ -256,6 +256,14 @@
     "gdpPerWorkingAgeCapita": 24248.62384782136
   },
   {
+    "iso3": "CHN",
+    "name": "China",
+    "usageIndex": null,
+    "usagePct": null,
+    "usageCount": null,
+    "gdpPerWorkingAgeCapita": 19189.00821390334
+  },
+  {
     "iso3": "CIV",
     "name": "Ivory Coast",
     "usageIndex": 0.19943315153593494,

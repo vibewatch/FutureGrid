@@ -1,0 +1,360 @@
+{
+  "generatedAt": "2026-06-30T07:55:48Z",
+  "scope": "Supplemental AI adoption and usage proxies outside Anthropic's Claude.ai country usage index.",
+  "caveat": "These metrics use different denominators and collection methods. Do not merge them into the Anthropic usageIndex without explicit normalization and labeling.",
+  "enterpriseAdoptionMetrics": [
+    {
+      "id": "eurostat-enterprise-ai-any-2024",
+      "metric": "enterprises_using_at_least_one_ai_technology",
+      "unit": "percent_of_enterprises",
+      "period": "2024",
+      "population": "Enterprises with 10 persons employed or more; all activities except agriculture, forestry and fishing, mining and quarrying, and the financial sector.",
+      "source": {
+        "name": "Eurostat — Artificial intelligence by size class of enterprise",
+        "publisher": "Eurostat",
+        "dataset": "isoc_eb_ai",
+        "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table?lang=en",
+        "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_eb_ai?lang=en&time=2024&size_emp=GE10&nace_r2=C10-S951_X_K&indic_is=E_AI_TANY&unit=PC_ENT",
+        "updated": "2026-06-15T11:00:00+0200"
+      },
+      "confidence": "high",
+      "comparability": "Enterprise adoption survey metric; comparable across listed European reporting countries, but not comparable to consumer MAU or Anthropic Claude.ai usageIndex.",
+      "regionalAggregates": [
+        { "geo": { "code": "EU27_2020", "name": "European Union - 27 countries (from 2020)" }, "value": 13.48 },
+        { "geo": { "code": "EA", "name": "Euro area" }, "value": 14.39 }
+      ],
+      "countries": [
+        { "geo": { "code": "AL", "name": "Albania" }, "value": 8.91 },
+        { "geo": { "code": "AT", "name": "Austria" }, "value": 20.27 },
+        { "geo": { "code": "BA", "name": "Bosnia and Herzegovina" }, "value": 6.36 },
+        { "geo": { "code": "BE", "name": "Belgium" }, "value": 24.71 },
+        { "geo": { "code": "BG", "name": "Bulgaria" }, "value": 6.47 },
+        { "geo": { "code": "CY", "name": "Cyprus" }, "value": 7.9 },
+        { "geo": { "code": "CZ", "name": "Czechia" }, "value": 11.26 },
+        { "geo": { "code": "DE", "name": "Germany" }, "value": 19.75 },
+        { "geo": { "code": "DK", "name": "Denmark" }, "value": 27.58 },
+        { "geo": { "code": "EE", "name": "Estonia" }, "value": 13.89 },
+        { "geo": { "code": "EL", "name": "Greece" }, "value": 9.81 },
+        { "geo": { "code": "ES", "name": "Spain" }, "value": 11.31 },
+        { "geo": { "code": "FI", "name": "Finland" }, "value": 24.37 },
+        { "geo": { "code": "FR", "name": "France" }, "value": 9.91 },
+        { "geo": { "code": "HR", "name": "Croatia" }, "value": 11.76 },
+        { "geo": { "code": "HU", "name": "Hungary" }, "value": 7.41 },
+        { "geo": { "code": "IE", "name": "Ireland" }, "value": 14.9 },
+        { "geo": { "code": "IT", "name": "Italy" }, "value": 8.2 },
+        { "geo": { "code": "LT", "name": "Lithuania" }, "value": 8.76 },
+        { "geo": { "code": "LU", "name": "Luxembourg" }, "value": 23.73 },
+        { "geo": { "code": "LV", "name": "Latvia" }, "value": 8.83 },
+        { "geo": { "code": "ME", "name": "Montenegro" }, "value": 7.91 },
+        { "geo": { "code": "MT", "name": "Malta" }, "value": 17.3 },
+        { "geo": { "code": "NL", "name": "Netherlands" }, "value": 23.06 },
+        { "geo": { "code": "NO", "name": "Norway" }, "value": 20.77 },
+        { "geo": { "code": "PL", "name": "Poland" }, "value": 5.9 },
+        { "geo": { "code": "PT", "name": "Portugal" }, "value": 8.63 },
+        { "geo": { "code": "RO", "name": "Romania" }, "value": 3.07 },
+        { "geo": { "code": "RS", "name": "Serbia" }, "value": 6.95 },
+        { "geo": { "code": "SE", "name": "Sweden" }, "value": 25.09 },
+        { "geo": { "code": "SI", "name": "Slovenia" }, "value": 20.89 },
+        { "geo": { "code": "SK", "name": "Slovakia" }, "value": 10.78 },
+        { "geo": { "code": "TR", "name": "Türkiye" }, "value": 4.42 }
+      ]
+    }
+  ],
+  "countrySurveyMetrics": [
+    {
+      "id": "cn-cnnic-genai-users-2025-06",
+      "geo": { "iso3": "CHN", "name": "China" },
+      "metric": "generative_ai_users",
+      "value": 515000000,
+      "unit": "users",
+      "period": "2025-06",
+      "source": {
+        "name": "China's generative AI users double to 515 mln: report",
+        "publisher": "Xinhua / State Council of the People's Republic of China",
+        "url": "https://english.www.gov.cn/archive/statistics/202510/18/content_WS68f30556c6d00ca5f9a06e05.html",
+        "primaryUnderlyingSource": "China Internet Network Information Center (CNNIC)"
+      },
+      "confidence": "high",
+      "comparability": "Country survey/user-base metric; not directly comparable to Anthropic Claude.ai usageIndex."
+    },
+    {
+      "id": "cn-cnnic-genai-penetration-2025-06",
+      "geo": { "iso3": "CHN", "name": "China" },
+      "metric": "generative_ai_user_penetration",
+      "value": 36.5,
+      "unit": "percent_of_population",
+      "period": "2025-06",
+      "source": {
+        "name": "China's generative AI users double to 515 mln: report",
+        "publisher": "Xinhua / State Council of the People's Republic of China",
+        "url": "https://english.www.gov.cn/archive/statistics/202510/18/content_WS68f30556c6d00ca5f9a06e05.html",
+        "primaryUnderlyingSource": "China Internet Network Information Center (CNNIC)"
+      },
+      "confidence": "high",
+      "comparability": "Penetration survey metric; not a per-product activity count."
+    },
+    {
+      "id": "cn-cnnic-genai-user-growth-2024-12-to-2025-06",
+      "geo": { "iso3": "CHN", "name": "China" },
+      "metric": "generative_ai_users_increase",
+      "value": 266000000,
+      "unit": "users",
+      "period": "2024-12_to_2025-06",
+      "source": {
+        "name": "China's generative AI users double to 515 mln: report",
+        "publisher": "Xinhua / State Council of the People's Republic of China",
+        "url": "https://english.www.gov.cn/archive/statistics/202510/18/content_WS68f30556c6d00ca5f9a06e05.html",
+        "primaryUnderlyingSource": "China Internet Network Information Center (CNNIC)"
+      },
+      "confidence": "high",
+      "comparability": "Growth in broad user base; not product-level usage."
+    }
+  ],
+  "chinaAppMarketMetrics": [
+    {
+      "id": "cn-questmobile-mobile-ai-app-users-2025-06",
+      "geo": { "iso3": "CHN", "name": "China" },
+      "metric": "mobile_ai_application_users",
+      "value": 680000000,
+      "unit": "monthly_active_users",
+      "period": "2025-06",
+      "source": {
+        "name": "QuestMobile 2025 AI Application Market Half-Year Report",
+        "publisher": "QuestMobile",
+        "url": "https://www.questmobile.com.cn/research/report/1952664347667959809/"
+      },
+      "confidence": "medium_high",
+      "comparability": "Market/category MAU; likely includes overlapping users across AI application forms."
+    },
+    {
+      "id": "cn-questmobile-ai-search-users-2025-06",
+      "geo": { "iso3": "CHN", "name": "China" },
+      "metric": "ai_search_track_users",
+      "value": 685000000,
+      "unit": "monthly_active_users",
+      "period": "2025-06",
+      "source": {
+        "name": "QuestMobile 2025 AI Application Market Half-Year Report",
+        "publisher": "QuestMobile",
+        "url": "https://www.questmobile.com.cn/research/report/1952664347667959809/"
+      },
+      "confidence": "medium_high",
+      "comparability": "Category-scale MAU; overlaps with other categories and cannot be summed."
+    },
+    {
+      "id": "cn-questmobile-ai-assistant-users-2025-06",
+      "geo": { "iso3": "CHN", "name": "China" },
+      "metric": "ai_comprehensive_assistant_track_users",
+      "value": 612000000,
+      "unit": "monthly_active_users",
+      "period": "2025-06",
+      "source": {
+        "name": "QuestMobile 2025 AI Application Market Half-Year Report",
+        "publisher": "QuestMobile",
+        "url": "https://www.questmobile.com.cn/research/report/1952664347667959809/"
+      },
+      "confidence": "medium_high",
+      "comparability": "Category-scale MAU; overlaps with AI search and app/plugin usage."
+    },
+    {
+      "id": "cn-questmobile-ai-token-consumption-2025-06",
+      "geo": { "iso3": "CHN", "name": "China" },
+      "metric": "ai_application_token_consumption",
+      "value": 1163000000000000,
+      "unit": "tokens",
+      "period": "2025-H1_or_2025-06_reported",
+      "source": {
+        "name": "QuestMobile 2025 AI Application Market Half-Year Report",
+        "publisher": "QuestMobile",
+        "url": "https://www.questmobile.com.cn/research/report/1952664347667959809/"
+      },
+      "confidence": "medium",
+      "comparability": "Token-volume estimate; not comparable to user-count metrics."
+    },
+    {
+      "id": "cn-questmobile-top-internet-groups-token-consumption-2025-06",
+      "geo": { "iso3": "CHN", "name": "China" },
+      "metric": "top_five_internet_groups_token_consumption",
+      "value": 603000000000000,
+      "shareOfTotal": 51.8,
+      "unit": "tokens",
+      "period": "2025-H1_or_2025-06_reported",
+      "source": {
+        "name": "QuestMobile 2025 AI Application Market Half-Year Report",
+        "publisher": "QuestMobile",
+        "url": "https://www.questmobile.com.cn/research/report/1952664347667959809/"
+      },
+      "confidence": "medium",
+      "comparability": "Concentration/volume estimate; not user adoption."
+    }
+  ],
+  "chinaNativeAppMau": [
+    {
+      "id": "cn-questmobile-doubao-mau-2025-12",
+      "geo": { "iso3": "CHN", "name": "China" },
+      "product": "Doubao",
+      "metric": "monthly_active_users",
+      "value": 226000000,
+      "unit": "users",
+      "period": "2025-12",
+      "source": {
+        "name": "QuestMobile 2025 AI Application Ranking report coverage",
+        "publisher": "Guancha, citing QuestMobile",
+        "url": "https://www.guancha.cn/economy/2026_03_03_808630.shtml",
+        "primaryUnderlyingSource": "QuestMobile 2025 AI Application Layer Development Core Report"
+      },
+      "confidence": "medium",
+      "comparability": "Product MAU for a China-native AI app; not comparable to Anthropic country usageIndex."
+    },
+    {
+      "id": "cn-questmobile-deepseek-mau-2025-12",
+      "geo": { "iso3": "CHN", "name": "China" },
+      "product": "DeepSeek",
+      "metric": "monthly_active_users",
+      "value": 135000000,
+      "unit": "users",
+      "period": "2025-12",
+      "source": {
+        "name": "QuestMobile 2025 AI Application Ranking report coverage",
+        "publisher": "Guancha, citing QuestMobile",
+        "url": "https://www.guancha.cn/economy/2026_03_03_808630.shtml",
+        "primaryUnderlyingSource": "QuestMobile 2025 AI Application Layer Development Core Report"
+      },
+      "confidence": "medium",
+      "comparability": "Product MAU for a China-native AI app; not comparable to Anthropic country usageIndex."
+    }
+  ],
+  "openModelDownloadProxies": [
+    {
+      "provider": "Alibaba Qwen",
+      "capturedAt": "2026-06-30T07:52:00Z",
+      "source": "https://huggingface.co/api/models?search=Qwen&sort=downloads&direction=-1&limit=5",
+      "metric": "huggingface_model_downloads",
+      "entries": [
+        { "modelId": "Qwen/Qwen3-0.6B", "downloads": 27491863, "likes": 1370 },
+        { "modelId": "Qwen/Qwen3-4B", "downloads": 15512124, "likes": 641 },
+        { "modelId": "Qwen/Qwen3-8B", "downloads": 13624078, "likes": 1170 },
+        { "modelId": "Qwen/Qwen2.5-7B-Instruct", "downloads": 12723410, "likes": 1390 },
+        { "modelId": "Qwen/Qwen2.5-1.5B-Instruct", "downloads": 11679218, "likes": 750 }
+      ],
+      "comparability": "Developer/open-model proxy; not consumer app usage."
+    },
+    {
+      "provider": "DeepSeek",
+      "capturedAt": "2026-06-30T07:52:00Z",
+      "source": "https://huggingface.co/api/models?search=DeepSeek&sort=downloads&direction=-1&limit=5",
+      "metric": "huggingface_model_downloads",
+      "entries": [
+        { "modelId": "deepseek-ai/DeepSeek-R1", "downloads": 7483926, "likes": 13421 },
+        { "modelId": "antirez/deepseek-v4-gguf", "downloads": 6434367, "likes": 281 },
+        { "modelId": "deepseek-ai/DeepSeek-R1-0528", "downloads": 3982017, "likes": 2454 },
+        { "modelId": "deepseek-ai/DeepSeek-OCR-2", "downloads": 3202245, "likes": 1017 },
+        { "modelId": "deepseek-ai/DeepSeek-V3.2", "downloads": 2493114, "likes": 1452 }
+      ],
+      "comparability": "Developer/open-model proxy; not consumer app usage."
+    },
+    {
+      "provider": "Moonshot Kimi",
+      "capturedAt": "2026-06-30T07:52:00Z",
+      "source": "https://huggingface.co/api/models?search=Kimi&sort=downloads&direction=-1&limit=5",
+      "metric": "huggingface_model_downloads",
+      "entries": [
+        { "modelId": "moonshotai/Kimi-K2.6", "downloads": 2330649, "likes": 1495 },
+        { "modelId": "moonshotai/Kimi-K2-Instruct-0905", "downloads": 1652845, "likes": 757 },
+        { "modelId": "moonshotai/Kimi-K2.5", "downloads": 1580060, "likes": 2826 },
+        { "modelId": "nvidia/Kimi-K2.5-NVFP4", "downloads": 1271271, "likes": 86 },
+        { "modelId": "nvidia/Kimi-K2.6-NVFP4", "downloads": 676619, "likes": 39 }
+      ],
+      "comparability": "Developer/open-model proxy; not consumer app usage."
+    },
+    {
+      "provider": "Zhipu ChatGLM",
+      "capturedAt": "2026-06-30T07:53:00Z",
+      "source": "https://huggingface.co/api/models?search=ChatGLM&sort=downloads&direction=-1&limit=5",
+      "metric": "huggingface_model_downloads",
+      "entries": [
+        { "modelId": "zai-org/chatglm2-6b", "downloads": 410366, "likes": 2057 },
+        { "modelId": "zai-org/chatglm3-6b", "downloads": 119504, "likes": 1165 },
+        { "modelId": "thu-coai/ShieldLM-6B-chatglm3", "downloads": 20479, "likes": 4 },
+        { "modelId": "optimum-intel-internal-testing/tiny-random-chatglm4", "downloads": 6256, "likes": 0 },
+        { "modelId": "zai-org/chatglm3-6b-base", "downloads": 4773, "likes": 88 }
+      ],
+      "comparability": "Developer/open-model proxy; not consumer app usage."
+    },
+    {
+      "provider": "Baichuan",
+      "capturedAt": "2026-06-30T07:53:00Z",
+      "source": "https://huggingface.co/api/models?search=Baichuan&sort=downloads&direction=-1&limit=5",
+      "metric": "huggingface_model_downloads",
+      "entries": [
+        { "modelId": "baichuan-inc/Baichuan2-7B-Chat", "downloads": 63893, "likes": 172 },
+        { "modelId": "baichuan-inc/Baichuan-7B", "downloads": 54760, "likes": 841 },
+        { "modelId": "optimum-intel-internal-testing/tiny-random-baichuan2", "downloads": 12831, "likes": 0 },
+        { "modelId": "optimum-intel-internal-testing/tiny-random-baichuan2-13b", "downloads": 11970, "likes": 0 },
+        { "modelId": "baichuan-inc/Baichuan2-13B-Chat", "downloads": 9611, "likes": 432 }
+      ],
+      "comparability": "Developer/open-model proxy; not consumer app usage."
+    }
+  ],
+  "developerEcosystemProxies": [
+    {
+      "id": "github-huggingface-transformers-2026-06-30",
+      "metric": "github_repository_activity",
+      "repository": "huggingface/transformers",
+      "stars": 162039,
+      "forks": 33667,
+      "openIssues": 2452,
+      "repositoryUpdatedAt": "2026-06-30T07:47:13Z",
+      "capturedAt": "2026-06-30T07:52:00Z",
+      "source": "https://api.github.com/repos/huggingface/transformers",
+      "confidence": "high",
+      "comparability": "Developer ecosystem proxy; no country split and no end-user usage measurement."
+    }
+  ],
+  "sourceCatalogForFutureCollection": [
+    {
+      "name": "Similarweb",
+      "status": "not_collected",
+      "reason": "Useful for web traffic and country share across AI products, but detailed API access is commercial.",
+      "potentialMetrics": ["website_visits", "country_traffic_share", "engagement"]
+    },
+    {
+      "name": "Sensor Tower / data.ai / AppMagic",
+      "status": "not_collected",
+      "reason": "Useful for mobile AI app downloads and MAU estimates, but high-quality country-level data is generally commercial.",
+      "potentialMetrics": ["mobile_downloads", "mobile_mau", "country_rank"]
+    },
+    {
+      "name": "Google Trends",
+      "status": "not_collected",
+      "reason": "Search-interest proxy is accessible manually but has no official stable public API for production collection.",
+      "potentialMetrics": ["relative_search_interest_by_country", "time_series_interest"]
+    },
+    {
+      "name": "US Census Business Trends and Outlook Survey / Business Formation Statistics APIs",
+      "status": "not_collected",
+      "reason": "Potentially useful for US business AI adoption, but the probed Census API endpoint required an API key in this environment.",
+      "potentialMetrics": ["business_ai_use", "industry_split", "firm_size_split"]
+    },
+    {
+      "name": "OECD ICT Access and Usage Database",
+      "status": "source_identified",
+      "reason": "OECD reports generative-AI use by individuals across OECD countries, but this pass did not resolve a stable machine-readable series endpoint.",
+      "source": "https://www.oecd.org/en/about/news/announcements/2026/01/ai-use-by-individuals-surges-across-the-oecd-as-adoption-by-firms-continues-to-expand.html",
+      "potentialMetrics": ["individual_generative_ai_use", "country_split", "age_and_education_split"]
+    },
+    {
+      "name": "Stack Overflow Developer Survey",
+      "status": "not_collected",
+      "reason": "Survey can support developer AI-tool adoption analysis, but the current public dataset ZIP URL was not resolved in this pass.",
+      "potentialMetrics": ["developer_ai_tool_usage", "developer_attitudes", "country_split"]
+    },
+    {
+      "name": "CNNIC Statistical Reports",
+      "status": "source_identified",
+      "reason": "CNNIC report pages and PDFs are available; specific generative-AI figures were verified via a government-hosted Xinhua summary.",
+      "source": "https://www.cnnic.com.cn/IDR/ReportDownloads/",
+      "potentialMetrics": ["internet_users", "generative_ai_users", "penetration_rate"]
+    }
+  ]
+}

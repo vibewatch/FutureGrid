@@ -1,5 +1,6 @@
 import occupationSnapshot from "@/data/occupation-snapshot.json";
 import countryExposureData from "@/data/country-exposure.json";
+import aiUsageProxiesData from "@/data/ai-usage-proxies.json";
 import sourcesData from "@/data/sources.json";
 
 export interface CareerInsight {
@@ -284,6 +285,25 @@ export interface CountryExposure {
 
 export function getCountryExposure(): CountryExposure[] {
   return countryExposureData as CountryExposure[];
+}
+
+// ─── Supplemental AI usage proxies ───────────────────────────────────────────
+
+export interface AIUsageProxyDataset {
+  generatedAt: string;
+  scope: string;
+  caveat: string;
+  enterpriseAdoptionMetrics: Record<string, unknown>[];
+  countrySurveyMetrics: Record<string, unknown>[];
+  chinaAppMarketMetrics: Record<string, unknown>[];
+  chinaNativeAppMau: Record<string, unknown>[];
+  openModelDownloadProxies: Record<string, unknown>[];
+  developerEcosystemProxies: Record<string, unknown>[];
+  sourceCatalogForFutureCollection: Record<string, unknown>[];
+}
+
+export function getAIUsageProxies(): AIUsageProxyDataset {
+  return aiUsageProxiesData as AIUsageProxyDataset;
 }
 
 // ─── Data sources ─────────────────────────────────────────────────────────────

@@ -44,6 +44,62 @@
       "usedFor": "Per-country AI usage index, usage %, usage count, GDP per working-age capita"
     },
     {
+      "name": "World Bank Open Data — China GDP and Working-Age Population",
+      "publisher": "World Bank",
+      "year": 2024,
+      "url": "https://data.worldbank.org/country/china",
+      "license": "CC BY 4.0",
+      "usedFor": "Supplemental China GDP per working-age capita when Anthropic country usage metrics are not reported"
+    },
+    {
+      "name": "Eurostat — Artificial intelligence by size class of enterprise",
+      "publisher": "Eurostat",
+      "year": 2024,
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table?lang=en",
+      "license": "Eurostat reuse policy",
+      "usedFor": "Supplemental multi-country enterprise AI adoption rate for European reporting countries"
+    },
+    {
+      "name": "CNNIC Generative AI Application Development Report summary",
+      "publisher": "CNNIC / Xinhua / State Council of the People's Republic of China",
+      "year": 2025,
+      "url": "https://english.www.gov.cn/archive/statistics/202510/18/content_WS68f30556c6d00ca5f9a06e05.html",
+      "license": "Government website terms",
+      "usedFor": "Supplemental China generative-AI user count, penetration rate, and six-month user growth proxy"
+    },
+    {
+      "name": "QuestMobile 2025 AI Application Market Half-Year Report",
+      "publisher": "QuestMobile",
+      "year": 2025,
+      "url": "https://www.questmobile.com.cn/research/report/1952664347667959809/",
+      "license": "QuestMobile terms",
+      "usedFor": "Supplemental China AI application MAU, category scale, and token-volume proxy metrics"
+    },
+    {
+      "name": "QuestMobile 2025 AI Application Ranking coverage",
+      "publisher": "Guancha, citing QuestMobile",
+      "year": 2026,
+      "url": "https://www.guancha.cn/economy/2026_03_03_808630.shtml",
+      "license": "Publisher terms",
+      "usedFor": "Secondary-source China-native AI app MAU figures for Doubao and DeepSeek"
+    },
+    {
+      "name": "Hugging Face public model API",
+      "publisher": "Hugging Face",
+      "year": 2026,
+      "url": "https://huggingface.co/docs/hub/api",
+      "license": "Hugging Face API terms",
+      "usedFor": "Supplemental open-model download and like-count proxies for Qwen, DeepSeek, Kimi, ChatGLM, and Baichuan"
+    },
+    {
+      "name": "GitHub REST API",
+      "publisher": "GitHub",
+      "year": 2026,
+      "url": "https://docs.github.com/rest",
+      "license": "GitHub API terms",
+      "usedFor": "Supplemental developer-ecosystem proxy metrics for AI repositories"
+    },
+    {
       "name": "O*NET 28.3 Skills Database",
       "publisher": "U.S. Department of Labor / Employment and Training Administration",
       "year": 2024,
@@ -76,5 +132,5 @@
       "usedFor": "Context/validation reference only — not directly loaded"
     }
   ],
-  "note": "automationRisk bands are percentile-calibrated from the aiExposure distribution (756 occupations): Very High = top ~8% (aiExposure > 0.3104), High = next ~12% (> 0.1378), Medium = next ~25% (> 0.0080), Low = remainder (≤ 0.0080). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: real OEWS 2025 figures (755 occupations updated via BLS Public Data API). medianSalary: OEWS 2025 where available (752 updated), AEI-bundled wage otherwise. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. O*NET skills: successfully loaded"
+  "note": "automationRisk bands are percentile-calibrated from the aiExposure distribution (756 occupations): Very High = top ~8% (aiExposure > 0.3104), High = next ~12% (> 0.1378), Medium = next ~25% (> 0.0080), Low = remainder (≤ 0.0080). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: real OEWS 2025 figures (755 occupations updated via BLS Public Data API). medianSalary: OEWS 2025 where available (752 updated), AEI-bundled wage otherwise. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: successfully loaded"
 }

@@ -13,6 +13,7 @@ export const metadata = {
 
 export default function GlobalPage() {
   const allCountries = getCountryExposure();
+  const china = allCountries.find((country) => country.iso3 === "CHN");
 
   // Ranked list: exclude zeros, sort desc by usageIndex
   const ranked = allCountries
@@ -58,7 +59,7 @@ export default function GlobalPage() {
                 className="text-4xl sm:text-5xl font-extrabold text-gradient tabular-nums"
               />
               <p className="text-xs text-zinc-500 mt-1 uppercase tracking-widest">
-                Countries covered
+                Countries tracked
               </p>
             </div>
             <div className="hidden sm:block w-px h-10 bg-zinc-800" aria-hidden="true" />
@@ -90,6 +91,42 @@ export default function GlobalPage() {
 
       <hr className="divider-glow" />
 
+      {/* ─── CHINA COVERAGE ──────────────────────────────────────────────── */}
+      {china && (
+        <Reveal delay={90}>
+          <div className="glass px-5 py-4 rounded-xl max-w-3xl border border-zinc-800/80">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div>
+                <p className="text-xs text-zinc-500 uppercase tracking-widest mb-1">
+                  Supplemental country coverage
+                </p>
+                <h2 className="text-lg font-semibold text-white">China</h2>
+                <p className="text-sm text-zinc-400 mt-1">
+                  Anthropic does not report mainland China Claude.ai usage metrics in this snapshot,
+                  so usage index, global share, and interaction count are shown as unavailable.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 sm:min-w-[300px]">
+                <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2">
+                  <p className="text-[10px] text-zinc-500 uppercase tracking-widest">Usage index</p>
+                  <p className="text-sm font-semibold text-zinc-300 mt-1">Not reported</p>
+                </div>
+                <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2">
+                  <p className="text-[10px] text-zinc-500 uppercase tracking-widest">GDP / worker</p>
+                  <p className="text-sm font-semibold text-cyan-300 mt-1">
+                    {china.gdpPerWorkingAgeCapita != null
+                      ? `$${Math.round(china.gdpPerWorkingAgeCapita).toLocaleString()}`
+                      : "—"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      )}
+
+      <hr className="divider-glow" />
+
       {/* ─── CHART PANEL ─────────────────────────────────────────────────── */}
       <Reveal delay={80}>
         <div>
@@ -117,7 +154,7 @@ export default function GlobalPage() {
           </h2>
           <p className="text-xs text-zinc-500 mb-4">
             Ranked by usage index (per-capita Claude.ai usage, normalised). Countries with
-            zero recorded usage are excluded.
+            zero recorded usage or unreported Claude.ai metrics are excluded.
           </p>
           <hr className="divider-glow mb-6" />
 
@@ -211,9 +248,11 @@ export default function GlobalPage() {
             <span className="text-zinc-300">
               Anthropic Economic Index, August 2025 snapshot
             </span>{" "}
-            (194 countries). GDP data from World Bank / IMF via the same dataset.
-            Countries with zero recorded interactions are excluded from ranked lists
-            but remain on the map.
+            (194 reported country rows, plus a supplemental China row using World Bank 2024 GDP
+            and working-age population). GDP data comes from World Bank / IMF fields bundled in
+            the Anthropic dataset, with China GDP-per-worker sourced directly from World Bank.
+            Countries with zero recorded interactions are excluded from ranked lists but remain
+            in the dataset; countries with unreported Claude.ai usage metrics do not rank.
           </p>
           <p>
             For full details on data provenance and licensing, see the{" "}
