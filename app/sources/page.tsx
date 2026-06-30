@@ -57,30 +57,6 @@ export default function SourcesPage() {
           </p>
         </Reveal>
 
-        {/* ─── FREY-OSBORNE DISCLAIMER ─────────────────────────────────── */}
-        <Reveal delay={120} className="mt-6">
-          <div
-            className="glass px-5 py-4 rounded-xl text-sm text-zinc-400 max-w-2xl space-y-1 border border-violet-500/20"
-            role="note"
-            aria-label="Methodology commitment"
-          >
-            <p className="font-semibold text-zinc-100 flex items-center gap-2">
-              <span aria-hidden="true">✦</span>
-              We do NOT use Frey &amp; Osborne (2013)
-            </p>
-            <p>
-              The widely-cited Frey &amp; Osborne automation-probability model is
-              over a decade old and has been superseded by observed usage data.
-              FutureGrid derives all AI-exposure metrics from the{" "}
-              <span className="text-zinc-200">
-                Anthropic Economic Index (2025)
-              </span>
-              , which measures real Claude.ai usage patterns — not
-              hypothetical task-substitution probabilities.
-            </p>
-          </div>
-        </Reveal>
-
         {/* ─── SNAPSHOT DATE ───────────────────────────────────────────── */}
         <Reveal delay={200} className="mt-4">
           <p className="text-xs text-zinc-600 uppercase tracking-widest">
