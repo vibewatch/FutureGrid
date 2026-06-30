@@ -318,6 +318,11 @@ export default function BarChartRace() {
       .attr("font-size", "9px")
       .attr("dy", "-4px");
 
+    // Stop in-flight transitions on unmount/re-render so they can't fire after
+    // the node is gone (e.g. when /report mounts/unmounts the chart).
+    return () => {
+      svg.selectAll("*").interrupt();
+    };
   }, [yearIdx, frames, isDark, reduced]);
 
   // ── Render ────────────────────────────────────────────────────────────────────
