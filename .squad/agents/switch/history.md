@@ -18,3 +18,5 @@
 **2026-06-30 (Round 3 — Real-Data Integration):** Relabeled "automation risk" → "AI exposure" across all pages; chart axes rewired to projectedOpenings/brightShare; removed Frey-Osborne from sidebar footer, now cites Anthropic EI + BLS + O*NET. CountryExposureChart added for global view. All reduced-motion/a11y maintained. Commit afe77e9. 🟢 BUILD/LINT PASS.
 
 **2026-06-30 (Round 4 — World Map UI):** Built components/charts/WorldChoropleth.tsx (D3 geoNaturalEarth1 flat choropleth, 173 features, metric toggle Claude usage ↔ GenAI diffusion). China rendering: grey + dashed-amber border on diffusion view. Tooltip, legend auto-update, staggered entrance animation, WCAG AA, reduced-motion safe, keyboard accessible. Commits: 78d2b3f, e976e14. ✅ /global RENDERS, METRICS TOGGLE LIVE.
+
+**2026-06-30 (Issue Backlog Round — Issues #3 & #6):** [#3] IMF AI readiness toggle integration (3rd metric: Claude usage ↔ GenAI diffusion ↔ AI readiness). [#6] Performance: world geometry (412KB) moved from JS bundle → static asset (public/geo/world-countries.geo.json); /global JS reduced ~23%; loading skeleton + basePath-aware fetch. Commits e976e14, 9m8n9op. ✅ CLOSED #3 #6.

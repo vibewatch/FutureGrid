@@ -19,9 +19,10 @@ const ROOT = path.resolve(__dirname, "..");
 nextEnv.loadEnvConfig(ROOT);
 
 const DATA_DIR = path.join(ROOT, "data");
+const PUBLIC_DIR = path.join(ROOT, "public");
 const CACHE_DIR = path.join(ROOT, ".data-cache");
 
-[DATA_DIR, CACHE_DIR].forEach((d) => { if (!existsSync(d)) mkdirSync(d, { recursive: true }); });
+[DATA_DIR, PUBLIC_DIR, CACHE_DIR].forEach((d) => { if (!existsSync(d)) mkdirSync(d, { recursive: true }); });
 
 const UA = "FutureGrid-data-bot/1.0 (https://github.com/huangyingting/FutureGrid)";
 const AEI_BASE = "https://huggingface.co/datasets/Anthropic/EconomicIndex/resolve/main/";
@@ -329,7 +330,7 @@ async function enrichWithBLS(occupations) {
 const WORLD_ATLAS_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 const ISO_CROSSWALK_URL = "https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.json";
 
-async function buildWorldGeo({ DATA_DIR: dataDir, CACHE_DIR: cacheDir }) {
+async function buildWorldGeo({ DATA_DIR: dataDir, PUBLIC_DIR: publicDir, CACHE_DIR: cacheDir }) {
   console.log("\n[GEO] Building world-countries.geo.json …");
 
   const topoText = await fetchText(
@@ -367,8 +368,10 @@ async function buildWorldGeo({ DATA_DIR: dataDir, CACHE_DIR: cacheDir }) {
   }
 
   const out = { type: "FeatureCollection", features };
-  writeFileSync(path.join(dataDir, "world-countries.geo.json"), JSON.stringify(out));
-  console.log(`✓ Written world-countries.geo.json (${features.length} features)`);
+  const outJson = JSON.stringify(out);
+  writeFileSync(path.join(dataDir, "world-countries.geo.json"), outJson);
+  writeFileSync(path.join(publicDir, "world-countries.geo.json"), outJson);
+  console.log(`✓ Written world-countries.geo.json (${features.length} features) → data/ + public/`);
 
   // Spot-check
   const spot = ["CHN", "USA", "IND", "BRA"];
@@ -836,7 +839,7 @@ async function main() {
   }
 
   // ─── World geometry ───────────────────────────────────────────────────────
-  await buildWorldGeo({ DATA_DIR, CACHE_DIR });
+  await buildWorldGeo({ DATA_DIR, PUBLIC_DIR, CACHE_DIR });
 
   console.log("\n=== Done ===");
 }

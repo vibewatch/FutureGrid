@@ -384,6 +384,12 @@ export interface CountryMapDatum {
    *  Comparable across ~147 economies including China. NOT the same scale as
    *  usageIndex — do not average or merge. */
   diffusionPct: number | null;
+  /** All three AIEI periods for momentum/trend analysis.
+   *  null if the country was not present in all three survey waves. */
+  diffusionTrend: { h1_2025: number; h2_2025: number; q1_2026: number } | null;
+  /** Percentage-point change from H1 2025 → Q1 2026 (q1_2026 − h1_2025).
+   *  null if either end-point is missing. */
+  diffusionDelta: number | null;
   /** IMF AI Preparedness Index (capacity metric, not user-behavior %).
    *  null if IMF data was unavailable or skipped this build. */
   aiReadiness: number | null;
@@ -414,10 +420,12 @@ export function getCountryMapData(): CountryMapDatum[] {
   const metrics = globalAiMetricsData as {
     metrics: {
       diffusion: Record<string, number>;
+      diffusionTrend?: Record<string, { h1_2025: number | null; h2_2025: number | null; q1_2026: number | null }>;
       readiness?: Record<string, number>;
     };
   };
   const diffusionMap: Record<string, number> = metrics?.metrics?.diffusion ?? {};
+  const diffusionTrendMap = metrics?.metrics?.diffusionTrend ?? {};
   const readinessMap: Record<string, number> = metrics?.metrics?.readiness ?? {};
 
   return exposure.map((c) => {
@@ -426,6 +434,18 @@ export function getCountryMapData(): CountryMapDatum[] {
     if (!hasClaudeData && c.iso3 === "CHN") {
       proxyNote = chinaNote;
     }
+    const rawTrend = diffusionTrendMap[c.iso3] ?? null;
+    const diffusionTrend =
+      rawTrend &&
+      rawTrend.h1_2025 !== null &&
+      rawTrend.h2_2025 !== null &&
+      rawTrend.q1_2026 !== null
+        ? { h1_2025: rawTrend.h1_2025, h2_2025: rawTrend.h2_2025, q1_2026: rawTrend.q1_2026 }
+        : null;
+    const diffusionDelta =
+      rawTrend && rawTrend.h1_2025 !== null && rawTrend.q1_2026 !== null
+        ? Math.round((rawTrend.q1_2026 - rawTrend.h1_2025) * 100) / 100
+        : null;
     return {
       iso3: c.iso3,
       name: c.name,
@@ -434,9 +454,40 @@ export function getCountryMapData(): CountryMapDatum[] {
       hasClaudeData,
       proxyNote,
       diffusionPct: diffusionMap[c.iso3] ?? null,
+      diffusionTrend,
+      diffusionDelta,
       aiReadiness: readinessMap[c.iso3] ?? null,
     };
   });
+}
+
+// ─── Diffusion trend helpers ──────────────────────────────────────────────────
+
+export interface DiffusionRiser {
+  iso3: string;
+  name: string;
+  from: number;
+  to: number;
+  delta: number;
+}
+
+/** Returns countries sorted by largest positive diffusionDelta (H1 2025 → Q1 2026).
+ *  Requires all three AIEI periods to be present. */
+export function getDiffusionRisers(limit = 5): DiffusionRiser[] {
+  return getCountryMapData()
+    .filter(
+      (c): c is typeof c & { diffusionTrend: NonNullable<typeof c.diffusionTrend>; diffusionDelta: number } =>
+        c.diffusionTrend !== null && c.diffusionDelta !== null && c.diffusionDelta > 0,
+    )
+    .sort((a, b) => b.diffusionDelta - a.diffusionDelta)
+    .slice(0, limit)
+    .map((c) => ({
+      iso3: c.iso3,
+      name: c.name,
+      from: c.diffusionTrend.h1_2025,
+      to: c.diffusionTrend.q1_2026,
+      delta: c.diffusionDelta,
+    }));
 }
 
 export interface DataSource {

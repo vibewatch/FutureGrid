@@ -18,9 +18,10 @@ import { feature as topoFeature } from "topojson-client";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const DATA_DIR = path.join(ROOT, "data");
+const PUBLIC_DIR = path.join(ROOT, "public");
 const CACHE_DIR = path.join(ROOT, ".data-cache");
 
-[DATA_DIR, CACHE_DIR].forEach((d) => { if (!existsSync(d)) mkdirSync(d, { recursive: true }); });
+[DATA_DIR, PUBLIC_DIR, CACHE_DIR].forEach((d) => { if (!existsSync(d)) mkdirSync(d, { recursive: true }); });
 
 const UA = "FutureGrid-data-bot/1.0 (https://github.com/huangyingting/FutureGrid)";
 const WORLD_ATLAS_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
@@ -95,8 +96,10 @@ async function main() {
   }
 
   const out = { type: "FeatureCollection", features };
-  writeFileSync(path.join(DATA_DIR, "world-countries.geo.json"), JSON.stringify(out));
-  console.log(`\n✓ Written data/world-countries.geo.json (${features.length} features)`);
+  const outJson = JSON.stringify(out);
+  writeFileSync(path.join(DATA_DIR, "world-countries.geo.json"), outJson);
+  writeFileSync(path.join(PUBLIC_DIR, "world-countries.geo.json"), outJson);
+  console.log(`\n✓ Written data/world-countries.geo.json and public/world-countries.geo.json (${features.length} features)`);
 
   // Spot-check required countries
   const required = ["CHN", "USA", "IND", "BRA"];

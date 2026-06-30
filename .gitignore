@@ -49,3 +49,4 @@ temp/
 .squad-workstream
 # Data pipeline cache (raw downloads, not committed)
 .data-cache/
+tsconfig.tsbuildinfo

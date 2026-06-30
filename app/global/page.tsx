@@ -1,10 +1,39 @@
 import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
-import { getCountryExposure, getAIUsageProxies, getCountryMapData } from "@/lib/data";
+import { getCountryExposure, getAIUsageProxies, getCountryMapData, getDiffusionRisers } from "@/lib/data";
 // CountryExposureChart and WorldChoropleth are client islands authored by teammates
 import CountryExposureChart from "@/components/charts/CountryExposureChart";
 import WorldChoropleth from "@/components/charts/WorldChoropleth";
+import CountryDetailPanel, { type EnrichedCountry } from "@/components/dashboard/CountryDetailPanel";
+
+// ─── Tiny 3-point sparkline (pure SVG, no animation, reduced-motion safe) ─────
+
+function Sparkline3({ h1, h2, q1 }: { h1: number; h2: number; q1: number }) {
+  const W = 60, H = 24;
+  const vals = [h1, h2, q1];
+  const minV = Math.min(...vals);
+  const maxV = Math.max(...vals);
+  const span = maxV - minV || 0.1;
+  const px = (i: number) => (((i / 2) * (W - 8)) + 4).toFixed(1);
+  const py = (v: number) => (H - 4 - ((v - minV) / span) * (H - 8)).toFixed(1);
+  const pts = `${px(0)},${py(vals[0])} ${px(1)},${py(vals[1])} ${px(2)},${py(vals[2])}`;
+  return (
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
+      <polyline
+        points={pts}
+        fill="none"
+        stroke="rgb(139,92,246)"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      <circle cx={px(0)} cy={py(vals[0])} r="2" fill="rgb(139,92,246)" opacity="0.5" />
+      <circle cx={px(1)} cy={py(vals[1])} r="2" fill="rgb(139,92,246)" opacity="0.5" />
+      <circle cx={px(2)} cy={py(vals[2])} r="2.5" fill="rgb(139,92,246)" />
+    </svg>
+  );
+}
 
 export const metadata = {
   title: "Global AI Adoption — FutureGrid",
@@ -44,14 +73,31 @@ export default function GlobalPage() {
     .sort((a, b) => (b.diffusionPct ?? 0) - (a.diffusionPct ?? 0))
     .slice(0, 3);
 
+  // Enrich mapData with gdpPerWorkingAgeCapita + usageCount from CountryExposure
+  const enrichedCountries: EnrichedCountry[] = mapData.map((c) => {
+    const exp = allCountries.find((e) => e.iso3 === c.iso3);
+    return {
+      ...c,
+      gdpPerWorkingAgeCapita: exp?.gdpPerWorkingAgeCapita ?? null,
+      usageCount: exp?.usageCount ?? null,
+    };
+  });
+
   // Ranked list: exclude zeros, sort desc by usageIndex
-  const ranked = allCountries
+  const rankedEnriched = enrichedCountries
     .filter((c) => c.usageIndex !== null && c.usageIndex > 0)
     .sort((a, b) => (b.usageIndex ?? 0) - (a.usageIndex ?? 0));
 
-  const top12 = ranked.slice(0, 12);
+  // Fastest-rising GenAI diffusion adopters (H1 2025 → Q1 2026)
+  const rawRisers = getDiffusionRisers(5);
+  const diffusionRisers = rawRisers.map((r) => {
+    const trend = mapData.find((c) => c.iso3 === r.iso3)?.diffusionTrend ?? null;
+    return { ...r, h2: trend?.h2_2025 ?? null };
+  });
+
+  const top12 = rankedEnriched.slice(0, 12);
   const totalCovered = allCountries.length;
-  const topCountry = ranked[0];
+  const topCountry = rankedEnriched[0];
   const topIndex = topCountry?.usageIndex ?? 0;
 
   // Normalise bar widths relative to the top country
@@ -94,7 +140,7 @@ export default function GlobalPage() {
             <div className="hidden sm:block w-px h-10 bg-zinc-800" aria-hidden="true" />
             <div>
               <AnimatedCounter
-                value={ranked.length}
+                value={rankedEnriched.length}
                 durationMs={1400}
                 className="text-4xl sm:text-5xl font-extrabold text-gradient tabular-nums"
               />
@@ -277,6 +323,78 @@ export default function GlobalPage() {
 
       <hr className="divider-glow" />
 
+      {/* ─── FASTEST-RISING ADOPTERS ──────────────────────────────────────── */}
+      {diffusionRisers.length > 0 && (
+        <Reveal delay={100}>
+          <section aria-labelledby="diffusion-risers-heading">
+            <div className="flex flex-wrap items-baseline justify-between gap-4 mb-1">
+              <h2
+                id="diffusion-risers-heading"
+                className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gradient"
+              >
+                Fastest-Rising Adopters
+              </h2>
+              <Link
+                href="/sources"
+                className="text-xs text-zinc-500 hover:text-violet-400 underline underline-offset-2 transition-colors shrink-0"
+              >
+                Microsoft AIEI · see sources
+              </Link>
+            </div>
+            <p className="text-sm text-zinc-400 mb-5 max-w-2xl leading-relaxed">
+              Countries with the largest GenAI diffusion gains,{" "}
+              <span className="text-zinc-200 font-medium">H1&nbsp;2025 → Q1&nbsp;2026</span>.
+              Based on Microsoft&rsquo;s AI Economic Impact Index (Western telemetry — may
+              undercount domestic apps in some markets).{" "}
+              <Link
+                href="/sources"
+                className="text-violet-400 hover:text-violet-300 underline underline-offset-2 transition-colors"
+              >
+                Full source details →
+              </Link>
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+              {diffusionRisers.map((r) => (
+                <div
+                  key={r.iso3}
+                  className="glass rounded-xl px-4 py-3 space-y-2"
+                >
+                  <p className="text-sm font-semibold text-white leading-tight">
+                    {r.name}
+                  </p>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-xs text-zinc-400 tabular-nums">
+                      {r.from.toFixed(1)}% → {r.to.toFixed(1)}%
+                    </span>
+                    <span className="text-[11px] font-bold text-emerald-400 tabular-nums bg-emerald-500/10 px-1.5 py-0.5 rounded-full border border-emerald-500/20 ml-auto">
+                      +{r.delta.toFixed(1)}pp
+                    </span>
+                  </div>
+                  {r.h2 !== null && (
+                    <Sparkline3 h1={r.from} h2={r.h2} q1={r.to} />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <p className="text-[10px] text-zinc-600 mt-3 leading-relaxed">
+              Microsoft AIEI · H1 2025 → Q1 2026 · % working-age population using
+              generative AI across 147&nbsp;economies. Western telemetry —{" "}
+              <Link
+                href="/sources"
+                className="text-zinc-500 hover:text-zinc-400 transition-colors underline underline-offset-2"
+              >
+                see sources
+              </Link>{" "}
+              for caveats.
+            </p>
+          </section>
+        </Reveal>
+      )}
+
+      <hr className="divider-glow" />
+
       {/* ─── CHART PANEL ─────────────────────────────────────────────────── */}
       <Reveal delay={80}>
         <div>
@@ -296,90 +414,16 @@ export default function GlobalPage() {
 
       <hr className="divider-glow" />
 
-      {/* ─── TOP 12 RANKED LIST ──────────────────────────────────────────── */}
+      {/* ─── TOP 12 RANKED LIST / COUNTRY DETAIL ─────────────────────── */}
       <Reveal delay={120}>
-        <div>
-          <h2 className="text-xl font-bold text-gradient mb-2">
-            Top Countries by AI Adoption
-          </h2>
-          <p className="text-xs text-zinc-500 mb-4">
-            Ranked by usage index (per-capita Claude.ai usage, normalised). Countries with
-            zero recorded usage or unreported Claude.ai metrics are excluded.
-          </p>
-          <hr className="divider-glow mb-6" />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {top12.map((country, i) => {
-              const barWidth = ((country.usageIndex ?? 0) / maxIndex) * 100;
-              const pct =
-                country.usagePct !== null
-                  ? `${(country.usagePct * 100).toFixed(2)}%`
-                  : "—";
-
-              return (
-                <Reveal key={country.iso3} delay={i * 40}>
-                  <div className="glass glass-hover p-4 rounded-xl relative overflow-hidden">
-                    {/* Rank badge */}
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <span
-                          className="text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0"
-                          style={{
-                            background:
-                              i === 0
-                                ? "linear-gradient(135deg,#8b5cf6,#22d3ee)"
-                                : "rgba(255,255,255,0.06)",
-                            color: i === 0 ? "#fff" : "#a1a1aa",
-                          }}
-                          aria-label={`Rank ${i + 1}`}
-                        >
-                          {i + 1}
-                        </span>
-                        <span className="font-semibold text-white text-sm">
-                          {country.name}
-                        </span>
-                      </div>
-                      <span className="text-xs text-zinc-400 font-mono tabular-nums">
-                        {(country.usageIndex ?? 0).toFixed(3)}
-                      </span>
-                    </div>
-
-                    {/* Progress bar */}
-                    <div
-                      className="h-1.5 rounded-full bg-zinc-800 overflow-hidden"
-                      role="progressbar"
-                      aria-valuenow={Math.round(barWidth)}
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                      aria-label={`${country.name} usage index relative to top country`}
-                    >
-                      <div
-                        className="h-full rounded-full brand-grad"
-                        style={{ width: `${barWidth.toFixed(1)}%` }}
-                      />
-                    </div>
-
-                    {/* Secondary stats */}
-                    <div className="flex gap-4 mt-2 text-xs text-zinc-500">
-                      <span>
-                        Share of global usage:{" "}
-                        <span className="text-zinc-300">{pct}</span>
-                      </span>
-                      {country.usageCount !== null && (
-                        <span>
-                          Interactions:{" "}
-                          <span className="text-zinc-300">
-                            {country.usageCount.toLocaleString()}
-                          </span>
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
+        <CountryDetailPanel
+          countries={enrichedCountries}
+          top12={top12}
+          maxIndex={maxIndex}
+          cnnicUsers={cnnicUsers}
+          questMau={questMau}
+          doubaoMau={doubaoMau}
+        />
       </Reveal>
 
       <hr className="divider-glow" />

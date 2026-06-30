@@ -27,7 +27,9 @@ const MS_DIFFUSION_URL =
   "https://raw.githubusercontent.com/microsoft/ai-diffusion-report/main/data/AI_Diffusion_Q12026_Update.csv";
 const ISO_CROSSWALK_URL =
   "https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.json";
-const IMF_AIPI_URL = "https://www.imf.org/external/datamapper/api/v1/AIPI";
+// Correct indicator endpoint: AIPI dataset, AI_PI indicator (overall composite score)
+// See: https://www.imf.org/external/datamapper/AI_PI@AIPI/ADVEC/EME/LIC
+const IMF_AIPI_URL = "https://www.imf.org/external/datamapper/api/v1/AIPI/AI_PI";
 
 // ─── HTTP helpers ──────────────────────────────────────────────────────────────
 
@@ -277,16 +279,20 @@ async function main() {
   const msRows = parseCSV(msCsvText);
   console.log(`  Microsoft AIEI CSV: ${msRows.length} rows`);
 
-  // Detect the latest diffusion column (prefer Q1 2026, fallback to H2 2025)
+  // Detect all three diffusion columns
   const sampleRow = msRows[0] || {};
   const colKeys = Object.keys(sampleRow);
-  const q1Col = colKeys.find((k) => /q1 2026/i.test(k));
+  const h1Col = colKeys.find((k) => /h1 2025/i.test(k));
   const h2Col = colKeys.find((k) => /h2 2025/i.test(k));
+  const q1Col = colKeys.find((k) => /q1 2026/i.test(k));
+  // Latest column for back-compat diffusion metric
   const diffCol = q1Col || h2Col || colKeys.find((k) => /diffusion/i.test(k));
-  console.log(`  Using diffusion column: "${diffCol}"`);
+  console.log(`  Diffusion columns — H1 2025: "${h1Col}", H2 2025: "${h2Col}", Q1 2026: "${q1Col}"`);
+  console.log(`  Using latest diffusion column: "${diffCol}"`);
 
-  // Map Economy → ISO-3 and parse diffusion %
+  // Map Economy → ISO-3 and parse all three diffusion periods
   const diffusion = {};
+  const diffusionTrend = {};
   const unmatched = [];
 
   for (const row of msRows) {
@@ -304,13 +310,31 @@ async function main() {
       continue;
     }
 
+    // Back-compat: keep latest single value
     const pct = parsePct(row[diffCol]);
     if (pct !== null) {
       diffusion[iso3] = pct;
     }
+
+    // All-three-period trend
+    const h1 = h1Col ? parsePct(row[h1Col]) : null;
+    const h2 = h2Col ? parsePct(row[h2Col]) : null;
+    const q1 = q1Col ? parsePct(row[q1Col]) : null;
+    if (h1 !== null || h2 !== null || q1 !== null) {
+      diffusionTrend[iso3] = {
+        h1_2025: h1 ?? null,
+        h2_2025: h2 ?? null,
+        q1_2026: q1 ?? null,
+      };
+    }
   }
 
-  console.log(`  Mapped: ${Object.keys(diffusion).length} countries`);
+  const fullTrendCount = Object.values(diffusionTrend).filter(
+    (t) => t.h1_2025 !== null && t.h2_2025 !== null && t.q1_2026 !== null,
+  ).length;
+  console.log(`  diffusionTrend entries: ${Object.keys(diffusionTrend).length} (${fullTrendCount} with all 3 periods)`);
+
+  console.log(`  Mapped diffusion: ${Object.keys(diffusion).length} countries (latest), ${Object.keys(diffusionTrend).length} trend entries`);
   if (unmatched.length > 0) {
     console.warn(`  Unmatched names (${unmatched.length}): ${unmatched.join(", ")}`);
   } else {
@@ -336,14 +360,13 @@ async function main() {
     );
     const imfJson = JSON.parse(imfText);
 
-    // IMF datamapper API structure varies:
-    // Attempt 1: { values: { AIPI: { ISO3: { year: value } } } }
-    // Attempt 2: flat { AIPI: { ISO3: { year: value } } }
-    // Attempt 3: { datasets: { AIPI: ... } }
+    // IMF datamapper API response for AIPI/AI_PI endpoint:
+    // { values: { AI_PI: { ISO3: { "2023": score } } } }
     const aipiValues =
+      imfJson?.values?.AI_PI ||
       imfJson?.values?.AIPI ||
+      imfJson?.AI_PI ||
       imfJson?.AIPI ||
-      imfJson?.datasets?.AIPI?.values ||
       null;
     if (aipiValues && typeof aipiValues === "object") {
       readiness = {};
@@ -390,10 +413,12 @@ async function main() {
       url: "https://github.com/microsoft/ai-diffusion-report",
       license: "MIT",
       column: diffCol,
+      periods: ["H1 2025 AI Diffusion", "H2 2025 AI Diffusion", "Q1 2026 AI Diffusion"],
       metric: "diffusionPct",
       description:
-        "% of working-age population using generative AI, Q1 2026 update. " +
-        "147 economies including China. " +
+        "% of working-age population using generative AI across three periods: H1 2025, H2 2025, Q1 2026. " +
+        "147 economies including China. diffusion keeps Q1 2026 (latest) for back-compat; " +
+        "diffusionTrend retains all three periods for momentum/fastest-rising analysis. " +
         "COMPARABILITY CAVEAT: this is a behavior-based survey %; " +
         "do NOT merge with Claude.ai usageIndex (observed API sessions, different denominator). " +
         "Western telemetry may undercount domestic apps (e.g. Doubao, Kimi) in China — " +
@@ -401,37 +426,27 @@ async function main() {
     },
   ];
 
-  if (imfIncluded) {
-    sources.push({
-      id: "imf-aipi",
-      name: "IMF AI Preparedness Index (AIPI)",
-      publisher: "International Monetary Fund",
-      year: 2024,
-      url: "https://www.imf.org/external/datamapper/api/v1/AIPI",
-      license: "IMF terms",
-      metric: "aiReadiness",
-      description:
-        "AI readiness / preparedness score (~174 countries, 2024). " +
-        "COMPARABILITY CAVEAT: this measures institutional/infrastructure capacity, " +
-        "NOT user behavior. Do NOT merge or average with diffusionPct.",
-    });
-  } else {
-    sources.push({
-      id: "imf-aipi",
-      name: "IMF AI Preparedness Index (AIPI)",
-      publisher: "International Monetary Fund",
-      year: 2024,
-      url: "https://www.imf.org/external/datamapper/api/v1/AIPI",
-      license: "IMF terms",
-      metric: "aiReadiness",
-      included: false,
-      skipReason: imfSkipReason,
-      description:
-        "AI readiness / preparedness score. Skipped this run — see skipReason. " +
-        "COMPARABILITY CAVEAT: capacity metric, not user-behavior %. " +
-        "Do NOT merge with diffusionPct.",
-    });
-  }
+  const readinessMeta = {
+    id: "imf-aipi",
+    name: "IMF AI Preparedness Index (AIPI) — overall composite score (AI_PI)",
+    publisher: "International Monetary Fund",
+    year: 2023,
+    url: "https://www.imf.org/external/datamapper/AI_PI@AIPI/ADVEC/EME/LIC",
+    apiEndpoint: "https://www.imf.org/external/datamapper/api/v1/AIPI/AI_PI",
+    license: "IMF terms (https://www.imf.org/external/terms.htm)",
+    metric: "aiReadiness",
+    scaleMin: 0,
+    scaleMax: 1,
+    included: imfIncluded,
+    description:
+      "Overall AI preparedness composite score 0–1 for 178 countries (2023 vintage). " +
+      "Measures institutional/infrastructure readiness capacity across four pillars: " +
+      "digital infrastructure, AI regulation & ethics, AI innovation & capacity, human capital. " +
+      "COMPARABILITY CAVEAT: capacity/infrastructure readiness metric, NOT user behavior %. " +
+      "Do NOT merge or average with diffusionPct or usageIndex — different denominators.",
+    ...(imfIncluded ? {} : { skipReason: imfSkipReason }),
+  };
+  sources.push(readinessMeta);
 
   const output = {
     generatedAt: new Date().toISOString(),
@@ -439,7 +454,8 @@ async function main() {
     unmatchedEconomies: unmatched,
     metrics: {
       diffusion: diffusion,
-      ...(imfIncluded ? { readiness } : {}),
+      diffusionTrend: diffusionTrend,
+      ...(imfIncluded ? { readiness, readinessMeta } : {}),
     },
   };
 
@@ -447,10 +463,16 @@ async function main() {
   writeFileSync(outPath, JSON.stringify(output, null, 2) + "\n");
   console.log(`\n  ✓ Wrote ${path.relative(ROOT, outPath)}`);
   console.log(`    diffusion countries: ${Object.keys(diffusion).length}`);
-  console.log(`    China (CHN): ${diffusion["CHN"] ?? "NOT FOUND"}%`);
-  console.log(`    United States (USA): ${diffusion["USA"] ?? "NOT FOUND"}%`);
-  console.log(`    India (IND): ${diffusion["IND"] ?? "NOT FOUND"}%`);
+  console.log(`    diffusionTrend countries: ${Object.keys(diffusionTrend).length} (${fullTrendCount} with all 3 periods)`);
+  console.log(`    China (CHN): diffusion=${diffusion["CHN"] ?? "NOT FOUND"}%, trend=${JSON.stringify(diffusionTrend["CHN"] ?? "NOT FOUND")}`);
+  console.log(`    United States (USA): diffusion=${diffusion["USA"] ?? "NOT FOUND"}%`);
+  console.log(`    India (IND): diffusion=${diffusion["IND"] ?? "NOT FOUND"}%`);
   console.log(`    IMF readiness included: ${imfIncluded}`);
+  if (imfIncluded && readiness) {
+    console.log(`    readiness countries: ${Object.keys(readiness).length}`);
+    console.log(`    China readiness (CHN): ${readiness["CHN"] ?? "NOT FOUND"}`);
+    console.log(`    USA readiness: ${readiness["USA"] ?? "NOT FOUND"}`);
+  }
   if (!imfIncluded) console.log(`    IMF skip reason: ${imfSkipReason}`);
   console.log(`    Unmatched names: ${unmatched.length}`);
   if (unmatched.length > 0) console.log(`    Unmatched: ${unmatched.join(", ")}`);
