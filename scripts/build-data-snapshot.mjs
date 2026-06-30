@@ -188,6 +188,54 @@ function onetToSoc6(code) {
 
 // ─── BLS helpers ───────────────────────────────────────────────────────────────
 
+const BLS_HISTORY_START = "2019";
+const BLS_HISTORY_END   = "2025";
+
+/**
+ * OEWS historical flat-file metadata.
+ * BLS OEWS `OEUN` API series only stores the current-year snapshot; multi-year
+ * history requires downloading the per-year national Excel files.  We fetch
+ * archived copies from the Wayback Machine (web.archive.org) for 2019–2023;
+ * 2024 was not yet captured and 2025 comes from the live API above.
+ */
+const OEWS_HISTORY_YEARS = [
+  { year: "2019", yr: "19", ts: "20210101000000" },
+  { year: "2020", yr: "20", ts: "20210416171629" },
+  { year: "2021", yr: "21", ts: "20220601000000" },
+  { year: "2022", yr: "22", ts: "20230622235111" },
+  { year: "2023", yr: "23", ts: "20240819155659" },
+];
+
+/** Python helper that parses an OEWS national xlsx → {OCC_CODE: {emp,wage}} JSON. */
+const PARSE_OEWS_PY = `import json, openpyxl, sys
+wb = openpyxl.load_workbook(sys.argv[1], read_only=True)
+ws = wb.active
+it = ws.iter_rows(values_only=True)
+headers = [str(h).lower().strip() if h is not None else '' for h in next(it)]
+def ci(name): return headers.index(name) if name in headers else -1
+i_naics=ci('naics'); i_og=ci('o_group'); i_own=ci('own_code')
+i_code=ci('occ_code'); i_emp=ci('tot_emp'); i_wage=ci('a_median')
+def toint(v):
+    if v is None: return None
+    s=str(v).strip().replace(',','')
+    if s in ('None','','*','**','#','-'): return None
+    try: return int(float(s))
+    except: return None
+result={}
+for row in it:
+    naics=str(row[i_naics]).strip() if i_naics>=0 else ''
+    og=str(row[i_og]).strip().lower() if i_og>=0 else ''
+    own=str(row[i_own]).strip() if i_own>=0 else ''
+    code=str(row[i_code]).strip() if i_code>=0 else ''
+    if naics!='000000' or og!='detailed' or own!='1235' or not code or code=='None': continue
+    emp=toint(row[i_emp] if i_emp>=0 else None)
+    wage=toint(row[i_wage] if i_wage>=0 else None)
+    if emp is not None or wage is not None:
+        result[code]={'emp':emp,'wage':wage}
+wb.close()
+print(json.dumps(result))
+`;
+
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
 /** POST to BLS Public Data API v2, returns parsed JSON response. */
@@ -233,10 +281,27 @@ function getLatestAnnual(data) {
 }
 
 /**
+ * Collect all annual (period A01) values from a BLS series data array.
+ * Returns { [year: string]: number } — only real datapoints, no padding.
+ */
+function getAllAnnual(data) {
+  if (!Array.isArray(data) || data.length === 0) return {};
+  const result = {};
+  for (const d of data) {
+    if (d.period !== "A01" || !d.value || d.value === "-") continue;
+    const val = parseFloat(d.value.replace(/,/g, ""));
+    if (!isNaN(val)) result[d.year] = val;
+  }
+  return result;
+}
+
+/**
  * Enrich occupations[] in-place with OEWS employment + annual median wage from BLS API v2.
  *
  * With BLS_API_KEY: batches 50 series per request, retries with backoff, updates
- * `employment` (integer, OEWS total) and `medianSalary` (authoritative OEWS wage).
+ * `employment` (integer, OEWS total) and `medianSalary` (authoritative OEWS wage) from
+ * the most recent available year, and populates `employmentHistory` / `wageHistory` with
+ * the full BLS_HISTORY_START–BLS_HISTORY_END annual series.
  * Without key: logs a clear notice and returns immediately (snapshot stays valid, employment null).
  *
  * @param {object[]} occupations  snapshot array (mutated in place)
@@ -248,7 +313,7 @@ async function enrichWithBLS(occupations) {
   if (!apiKey) {
     console.log("\n[BLS] BLS_API_KEY not set — skipping real employment/wage enrichment");
     console.log("      (set it and re-run `npm run build:data`).");
-    return { enriched: false, empUpdated: 0, wageUpdated: 0 };
+    return { enriched: false, empUpdated: 0, wageUpdated: 0, empHistUpdated: 0, wageHistUpdated: 0 };
   }
 
   console.log(`\n[BLS] Enriching ${occupations.length} occupations via BLS Public Data API v2 …`);
@@ -268,6 +333,7 @@ async function enrichWithBLS(occupations) {
   const BATCH_SIZE = 50;
   const totalBatches = Math.ceil(allSeriesIds.length / BATCH_SIZE);
   let empUpdated = 0, wageUpdated = 0;
+  let empHistUpdated = 0, wageHistUpdated = 0;
 
   for (let i = 0; i < allSeriesIds.length; i += BATCH_SIZE) {
     const batch = allSeriesIds.slice(i, i + BATCH_SIZE);
@@ -277,22 +343,36 @@ async function enrichWithBLS(occupations) {
     let success = false;
     for (let attempt = 1; attempt <= 3 && !success; attempt++) {
       try {
-        const resp = await blsPost(batch, "2024", "2025", apiKey);
+        const resp = await blsPost(batch, BLS_HISTORY_START, BLS_HISTORY_END, apiKey);
 
         if (resp.status === "REQUEST_SUCCEEDED") {
           for (const series of (resp.Results?.series ?? [])) {
             const latest = getLatestAnnual(series.data);
-            if (latest === null) continue;
+          const history = getAllAnnual(series.data);
             const entry = seriesMap.get(series.seriesID);
             if (!entry) continue;
             if (entry.field === "emp") {
+            if (latest !== null) {
               entry.occ.employment = Math.round(latest.value);
               empUpdated++;
-            } else {
+            }
+            const rounded = Object.fromEntries(Object.entries(history).map(([y, v]) => [y, Math.round(v)]));
+            if (Object.keys(rounded).length > 0) {
+              entry.occ.employmentHistory = rounded;
+              empHistUpdated++;
+            }
+          } else {
+            if (latest !== null) {
               entry.occ.medianSalary = Math.round(latest.value);
               wageUpdated++;
             }
+            const rounded = Object.fromEntries(Object.entries(history).map(([y, v]) => [y, Math.round(v)]));
+            if (Object.keys(rounded).length > 0) {
+              entry.occ.wageHistory = rounded;
+              wageHistUpdated++;
+            }
           }
+        }
           success = true;
         } else {
           const msgs = (resp.message ?? []).join(" ");
@@ -321,10 +401,110 @@ async function enrichWithBLS(occupations) {
   }
 
   console.log(`  → employment updated: ${empUpdated}, wages updated: ${wageUpdated}`);
-  return { enriched: true, empUpdated, wageUpdated };
+  console.log(`  → employment history: ${empHistUpdated} occ, wage history: ${wageHistUpdated} occ (${BLS_HISTORY_START}–${BLS_HISTORY_END})`);
+  return { enriched: true, empUpdated, wageUpdated, empHistUpdated, wageHistUpdated };
 }
 
 // classifyRisk is defined inside main() using percentile thresholds from the actual distribution
+
+/**
+ * Supplement occupations[] with OEWS historical employment + wage data from
+ * per-year national flat files (2019–2023).  The BLS OEWS `OEUN` API series
+ * stores only the current-vintage snapshot; historical years are obtained by
+ * fetching archived copies of the annual national Excel files from the Wayback
+ * Machine and parsing them with Python/openpyxl.
+ *
+ * @param {object[]} occupations  snapshot array (mutated in place)
+ * @param {string}   cacheDir     path to the data cache directory
+ */
+async function enrichWithOEWSHistory(occupations, cacheDir) {
+  const HISTORY_DIR = path.join(cacheDir, "oews_history");
+  if (!existsSync(HISTORY_DIR)) mkdirSync(HISTORY_DIR, { recursive: true });
+
+  // Write Python parser helper (idempotent)
+  const parserPath = path.join(HISTORY_DIR, "parse_oews.py");
+  if (!existsSync(parserPath)) writeFileSync(parserPath, PARSE_OEWS_PY);
+
+  let totalEmp = 0, totalWage = 0;
+
+  for (const { year, yr, ts } of OEWS_HISTORY_YEARS) {
+    const zipPath = path.join(HISTORY_DIR, `oesm${yr}nat.zip`);
+
+    // Validate cached file — delete if it's HTML (a failed prior download)
+    if (existsSync(zipPath)) {
+      const ft = execSync(`file "${zipPath}"`).toString();
+      if (!ft.includes("Zip archive")) {
+        try { execSync(`rm -f "${zipPath}"`); } catch { /* ignore */ }
+      }
+    }
+
+    // Download if not cached
+    if (!existsSync(zipPath)) {
+      const wbUrl = `https://web.archive.org/web/${ts}/https://www.bls.gov/oes/special.requests/oesm${yr}nat.zip`;
+      process.stdout.write(`  [OEWS ${year}] Downloading from Wayback Machine … `);
+      try {
+        await fetchBinary(wbUrl, zipPath);
+        // Validate after download
+        const ft2 = execSync(`file "${zipPath}"`).toString();
+        if (!ft2.includes("Zip archive")) {
+          process.stdout.write("not a ZIP (unavailable), skipping\n");
+          execSync(`rm -f "${zipPath}"`);
+          continue;
+        }
+        process.stdout.write("ok\n");
+      } catch (e) {
+        process.stdout.write(`FAILED: ${e.message.split("\n")[0]}\n`);
+        continue;
+      }
+    }
+
+    // Extract
+    const unzipDir = path.join(HISTORY_DIR, year);
+    if (!existsSync(unzipDir)) {
+      mkdirSync(unzipDir, { recursive: true });
+      try { execSync(`unzip -q "${zipPath}" -d "${unzipDir}"`, { stdio: "ignore" }); } catch { /* ignore */ }
+    }
+
+    // Find xlsx
+    const xlsxFiles = execSync(`find "${unzipDir}" -name "*.xlsx" 2>/dev/null`)
+      .toString().trim().split("\n").filter(Boolean);
+    if (!xlsxFiles.length) {
+      console.warn(`  ⚠ ${year}: no xlsx found in ZIP`);
+      continue;
+    }
+
+    // Parse with Python
+    process.stdout.write(`  [OEWS ${year}] Parsing ${path.basename(xlsxFiles[0])} … `);
+    let parsedData;
+    try {
+      const out = execSync(`python3 "${parserPath}" "${xlsxFiles[0]}"`).toString();
+      parsedData = JSON.parse(out);
+    } catch (e) {
+      console.warn(`FAILED: ${e.message.split("\n")[0]}`);
+      continue;
+    }
+    process.stdout.write(`${Object.keys(parsedData).length} occ\n`);
+
+    // Merge into snapshot — skip years already populated by the API
+    let empAdded = 0, wageAdded = 0;
+    for (const occ of occupations) {
+      const row = parsedData[occ.socCode];
+      if (!row) continue;
+      if (row.emp !== null && row.emp > 0) {
+        if (!occ.employmentHistory) occ.employmentHistory = {};
+        if (!(year in occ.employmentHistory)) { occ.employmentHistory[year] = row.emp; empAdded++; }
+      }
+      if (row.wage !== null && row.wage > 0) {
+        if (!occ.wageHistory) occ.wageHistory = {};
+        if (!(year in occ.wageHistory)) { occ.wageHistory[year] = row.wage; wageAdded++; }
+      }
+    }
+    console.log(`    → ${empAdded} emp, ${wageAdded} wage values`);
+    totalEmp += empAdded; totalWage += wageAdded;
+  }
+
+  console.log(`  → OEWS history total: ${totalEmp} emp entries, ${totalWage} wage entries`);
+}
 
 // ─── World geometry builder ────────────────────────────────────────────────────
 const WORLD_ATLAS_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
@@ -598,8 +778,12 @@ async function main() {
   console.log(`\n  Occupation snapshot: ${snapshot.length} records (skipped ${skippedNoExposure} missing exposure)`);
 
   // ─── BLS OEWS enrichment (employment + wages) ──────────────────────────────
-  const { enriched: blsEnriched, empUpdated: blsEmpUpdated, wageUpdated: blsWageUpdated } =
+  const { enriched: blsEnriched, empUpdated: blsEmpUpdated, wageUpdated: blsWageUpdated, empHistUpdated: blsEmpHistUpdated } =
     await enrichWithBLS(snapshot);
+
+  // ─── BLS OEWS historical flat-file enrichment (2019–2023) ──────────────────
+  console.log("\n[BLS] Enriching with OEWS historical flat files (2019–2023) …");
+  await enrichWithOEWSHistory(snapshot, CACHE_DIR);
 
   // ─── Country exposure ──────────────────────────────────────────────────────
   // Long format: filter geography=="country", pivot variables to columns
@@ -658,7 +842,7 @@ async function main() {
         year: 2025,
         url: "https://www.bls.gov/oes/",
         license: "Public Domain",
-        usedFor: "per-occupation employment + median wage (authoritative; overrides AEI bundle when BLS_API_KEY set)",
+        usedFor: `per-occupation employment + median wage (authoritative; overrides AEI bundle when BLS_API_KEY set); employmentHistory and wageHistory annual series ${BLS_HISTORY_START}–${BLS_HISTORY_END}`,
       },
       {
         name: "Anthropic Economic Index — BLS Employment May 2023",
@@ -821,7 +1005,7 @@ async function main() {
         usedFor: "Numeric ISO 3166-1 → alpha-3 mapping used to annotate world-atlas country features",
       },
     ],
-    note: `automationRisk bands are percentile-calibrated from the aiExposure distribution (${en} occupations): Very High = top ~8% (aiExposure > ${VH_THRESHOLD.toFixed(4)}), High = next ~12% (> ${HIGH_THRESHOLD.toFixed(4)}), Medium = next ~25% (> ${MED_THRESHOLD.toFixed(4)}), Low = remainder (≤ ${MED_THRESHOLD.toFixed(4)}). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: ${blsEnriched ? `real OEWS 2025 figures (${blsEmpUpdated} occupations updated via BLS Public Data API)` : "null — BLS_API_KEY not set; set it and re-run npm run build:data"}. medianSalary: ${blsEnriched ? `OEWS 2025 where available (${blsWageUpdated} updated), AEI-bundled wage otherwise` : "AEI-bundled (BLS_API_KEY not set)"}. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: ` + (onetSkillsFailed ? "FAILED — default skills used" : "successfully loaded"),
+    note: `automationRisk bands are percentile-calibrated from the aiExposure distribution (${en} occupations): Very High = top ~8% (aiExposure > ${VH_THRESHOLD.toFixed(4)}), High = next ~12% (> ${HIGH_THRESHOLD.toFixed(4)}), Medium = next ~25% (> ${MED_THRESHOLD.toFixed(4)}), Low = remainder (≤ ${MED_THRESHOLD.toFixed(4)}). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: ${blsEnriched ? `real OEWS 2025 figures (${blsEmpUpdated} occupations updated via BLS Public Data API)` : "null — BLS_API_KEY not set; set it and re-run npm run build:data"}. medianSalary: ${blsEnriched ? `OEWS 2025 where available (${blsWageUpdated} updated), AEI-bundled wage otherwise` : "AEI-bundled (BLS_API_KEY not set)"}. employmentHistory/wageHistory: OEWS multi-year annual series 2019–2025 — 2025 via BLS Public Data API (${blsEnriched ? blsEmpHistUpdated : 0} occ); 2019–2023 via archived national Excel flat files (Wayback Machine); note that BLS OEWS OEUN API series stores only the current-vintage snapshot so older years require flat-file download. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: ` + (onetSkillsFailed ? "FAILED — default skills used" : "successfully loaded"),
   };
 
   // ─── Write JSON files ──────────────────────────────────────────────────────

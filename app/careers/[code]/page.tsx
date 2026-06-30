@@ -1,7 +1,8 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { generateAllCareerInsights, getOnetEnrichment, getSectorAggregatesExtended, computeResiliencyScore } from "@/lib/data";
+import { generateAllCareerInsights, getOnetEnrichment, getSectorAggregatesExtended, computeResiliencyScore, getOccupationTrend } from "@/lib/data";
+import OccupationTrendChart from "@/components/charts/OccupationTrendChart";
 import { colorForRisk, formatCurrency } from "@/lib/utils";
 import PredictiveChart from "@/components/charts/PredictiveChart";
 import Link from "next/link";
@@ -22,6 +23,7 @@ export default function CareerDetailPage() {
     () => getSectorAggregatesExtended().find((s) => s.sector === career?.sectorName),
     [career],
   );
+  const trend = useMemo(() => getOccupationTrend(code), [code]);
 
   if (!career) {
     return (
@@ -293,6 +295,32 @@ export default function CareerDetailPage() {
           Employment Projections &amp; AI Exposure
         </h2>
         <PredictiveChart selectedSector={career.sectorName} />
+      </div>
+
+      {/* Employment & wage trend */}
+      <div className="glass bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+        <h2 className="text-lg font-semibold text-gradient mb-1">
+          Employment &amp; Wage Trend
+        </h2>
+        <p className="text-xs text-zinc-500 uppercase tracking-widest mb-3">
+          BLS OEWS, 2019–2025
+        </p>
+        <hr className="divider-glow mb-5" />
+        {trend.length >= 2 ? (
+          <OccupationTrendChart code={code} />
+        ) : (
+          <p className="text-sm text-zinc-500 italic">
+            Limited historical data available for this occupation.
+          </p>
+        )}
+        <p className="text-xs text-zinc-500 mt-4">
+          Source: U.S. Bureau of Labor Statistics Occupational Employment and Wage Statistics
+          (OEWS).{" "}
+          <Link href="/sources" className="underline underline-offset-2 hover:text-zinc-400">
+            See /sources
+          </Link>
+          .
+        </p>
       </div>
 
       {/* Sector comparison table */}

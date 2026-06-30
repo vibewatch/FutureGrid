@@ -17,6 +17,8 @@ export interface CareerInsight {
   outlook: "Bright" | "Average";
   sectorName: string;
   skills: string[];
+  employmentHistory: Record<string, number> | null;
+  wageHistory: Record<string, number> | null;
 }
 
 type SnapshotRow = {
@@ -34,6 +36,8 @@ type SnapshotRow = {
   brightOutlook: boolean;
   outlook: "Bright" | "Average";
   skills: string[];
+  employmentHistory?: Record<string, number>;
+  wageHistory?: Record<string, number>;
 };
 
 const snapshot = occupationSnapshot as SnapshotRow[];
@@ -54,6 +58,8 @@ export function generateAllCareerInsights(): CareerInsight[] {
       outlook: row.outlook ?? (row.brightOutlook ? "Bright" : "Average"),
       sectorName: row.sector,
       skills: row.skills,
+      employmentHistory: row.employmentHistory ?? null,
+      wageHistory: row.wageHistory ?? null,
     }));
   }
   return [..._insightsCache];
@@ -430,6 +436,12 @@ export interface CountryMapDatum {
     innovation: number | null;
     regulationEthics: number | null;
   } | null;
+  /** Oxford Insights Government AI Readiness Index 2023 — overall composite score 0–100.
+   *  193 countries including China (rank 16, 70.94). Three pillars: Government,
+   *  Technology Sector, Data and Infrastructure. CC-BY licence.
+   *  COMPARABILITY CAVEAT: government-readiness capacity score — do NOT merge with
+   *  diffusionPct (user behaviour %), usageIndex (API sessions), or aiReadiness (IMF 0–1). */
+  governmentReadiness: number | null;
 }
 
 export function getCountryMapData(): CountryMapDatum[] {
@@ -465,12 +477,14 @@ export function getCountryMapData(): CountryMapDatum[] {
         innovation: number | null;
         regulationEthics: number | null;
       }>;
+      governmentReadiness?: Record<string, number>;
     };
   };
   const diffusionMap: Record<string, number> = metrics?.metrics?.diffusion ?? {};
   const diffusionTrendMap = metrics?.metrics?.diffusionTrend ?? {};
   const readinessMap: Record<string, number> = metrics?.metrics?.readiness ?? {};
   const readinessSubIndicesMap = metrics?.metrics?.readinessSubIndices ?? {};
+  const governmentReadinessMap: Record<string, number> = metrics?.metrics?.governmentReadiness ?? {};
 
   return exposure.map((c) => {
     const hasClaudeData = c.usageIndex != null && c.usageIndex > 0;
@@ -509,6 +523,7 @@ export function getCountryMapData(): CountryMapDatum[] {
             regulationEthics: readinessSubIndicesMap[c.iso3].regulationEthics ?? null,
           }
         : null,
+      governmentReadiness: governmentReadinessMap[c.iso3] ?? null,
     };
   });
 }
@@ -651,4 +666,28 @@ export function getHighExposureOccupations(
   }
 
   return results;
+}
+
+// ─── Occupation trend (multi-year BLS OEWS history) ──────────────────────────
+
+/**
+ * Returns a sorted-by-year array of annual employment + wage datapoints for
+ * the given SOC code, drawn from the OEWS history fields populated by the
+ * BLS pipeline. Years with no data for a field are represented as null.
+ */
+export function getOccupationTrend(
+  code: string,
+): { year: number; employment: number | null; wage: number | null }[] {
+  const row = snapshot.find((r) => r.socCode === code);
+  if (!row) return [];
+  const empH = row.employmentHistory ?? {};
+  const wageH = row.wageHistory ?? {};
+  const years = new Set([...Object.keys(empH), ...Object.keys(wageH)]);
+  return Array.from(years)
+    .map((y) => ({
+      year: parseInt(y, 10),
+      employment: empH[y] ?? null,
+      wage: wageH[y] ?? null,
+    }))
+    .sort((a, b) => a.year - b.year);
 }
