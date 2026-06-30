@@ -1,12 +1,6 @@
 import Reveal from "@/components/ui/Reveal";
 import { getDataSources } from "@/lib/data";
 
-export const metadata = {
-  title: "Data & Sources — FutureGrid",
-  description:
-    "FutureGrid uses current, authoritative datasets. Full transparency on every data source, license, and methodology.",
-};
-
 function LicenseBadge({ license }: { license: string }) {
   const isOpen =
     license.startsWith("CC") || license === "Public Domain";
@@ -26,11 +20,15 @@ function LicenseBadge({ license }: { license: string }) {
 export default function SourcesPage() {
   const { generatedAt, sources, note } = getDataSources();
 
-  const snapshotDate = new Date(generatedAt).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const snapshotDate = (() => {
+    try {
+      const d = new Date(generatedAt);
+      if (isNaN(d.getTime())) return null;
+      return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+    } catch {
+      return null;
+    }
+  })();
 
   // Split primary data sources vs context-only citations
   const primarySources = sources.filter(
@@ -58,13 +56,14 @@ export default function SourcesPage() {
         </Reveal>
 
         {/* ─── SNAPSHOT DATE ───────────────────────────────────────────── */}
-        <Reveal delay={200} className="mt-4">
-          <p className="text-xs text-zinc-600 uppercase tracking-widest">
-            Data snapshot generated:{" "}
-            <time dateTime={generatedAt} className="text-zinc-400">
-              {snapshotDate}
-            </time>
-          </p>
+        <Reveal delay={200} className="mt-6">
+          {snapshotDate ? (
+            <div className="inline-flex items-center gap-2 text-sm font-medium text-violet-300 border border-violet-500/20 bg-violet-500/10 px-3 py-1.5 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0" aria-hidden="true" />
+              Data as of{" "}
+              <time dateTime={generatedAt}>{snapshotDate}</time>
+            </div>
+          ) : null}
         </Reveal>
       </section>
 

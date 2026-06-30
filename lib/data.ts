@@ -420,6 +420,16 @@ export interface CountryMapDatum {
   /** IMF AI Preparedness Index (capacity metric, not user-behavior %).
    *  null if IMF data was unavailable or skipped this build. */
   aiReadiness: number | null;
+  /** IMF AIPI sub-index scores (0–1, 2023 vintage).
+   *  Four pillars: Digital Infrastructure (DI), Human Capital & Labour Market Policies (HCLMP),
+   *  Innovation & Economic Integration (IEI), Regulation & Ethics (RE).
+   *  null if sub-index data was unavailable or skipped this build. */
+  readinessSubIndices: {
+    digitalInfrastructure: number | null;
+    humanCapital: number | null;
+    innovation: number | null;
+    regulationEthics: number | null;
+  } | null;
 }
 
 export function getCountryMapData(): CountryMapDatum[] {
@@ -449,11 +459,18 @@ export function getCountryMapData(): CountryMapDatum[] {
       diffusion: Record<string, number>;
       diffusionTrend?: Record<string, { h1_2025: number | null; h2_2025: number | null; q1_2026: number | null }>;
       readiness?: Record<string, number>;
+      readinessSubIndices?: Record<string, {
+        digitalInfrastructure: number | null;
+        humanCapital: number | null;
+        innovation: number | null;
+        regulationEthics: number | null;
+      }>;
     };
   };
   const diffusionMap: Record<string, number> = metrics?.metrics?.diffusion ?? {};
   const diffusionTrendMap = metrics?.metrics?.diffusionTrend ?? {};
   const readinessMap: Record<string, number> = metrics?.metrics?.readiness ?? {};
+  const readinessSubIndicesMap = metrics?.metrics?.readinessSubIndices ?? {};
 
   return exposure.map((c) => {
     const hasClaudeData = c.usageIndex != null && c.usageIndex > 0;
@@ -484,6 +501,14 @@ export function getCountryMapData(): CountryMapDatum[] {
       diffusionTrend,
       diffusionDelta,
       aiReadiness: readinessMap[c.iso3] ?? null,
+      readinessSubIndices: readinessSubIndicesMap[c.iso3]
+        ? {
+            digitalInfrastructure: readinessSubIndicesMap[c.iso3].digitalInfrastructure ?? null,
+            humanCapital: readinessSubIndicesMap[c.iso3].humanCapital ?? null,
+            innovation: readinessSubIndicesMap[c.iso3].innovation ?? null,
+            regulationEthics: readinessSubIndicesMap[c.iso3].regulationEthics ?? null,
+          }
+        : null,
     };
   });
 }
@@ -536,4 +561,94 @@ export interface DataSources {
 
 export function getDataSources(): DataSources {
   return sourcesData as DataSources;
+}
+
+// ─── Reskilling paths ─────────────────────────────────────────────────────────
+
+export interface ReskillingTarget {
+  occupationCode: string;
+  occupationName: string;
+  sectorName: string;
+  automationRisk: CareerInsight["automationRisk"];
+  aiExposure: number;
+  medianSalary: number;
+  outlook: CareerInsight["outlook"];
+  sharedSkills: string[];
+  sharedCount: number;
+  /** sharedCount / fromSkills.length */
+  overlapScore: number;
+}
+
+let _skillsByCodeCache: Map<string, string[]> | null = null;
+
+function getSkillsByCode(): Map<string, string[]> {
+  if (!_skillsByCodeCache) {
+    _skillsByCodeCache = new Map(snapshot.map((row) => [row.socCode, row.skills]));
+  }
+  return _skillsByCodeCache;
+}
+
+export function getReskillingPaths(fromCode: string, limit = 6): ReskillingTarget[] {
+  const source = snapshot.find((row) => row.socCode === fromCode);
+  if (!source || source.skills.length === 0) return [];
+
+  const fromSkills = [...new Set(source.skills)];
+  const fromSkillSet = new Set(fromSkills);
+  const skillsByCode = getSkillsByCode();
+
+  const seenTitles = new Set<string>();
+  seenTitles.add(source.title);
+
+  const candidates: ReskillingTarget[] = [];
+
+  for (const row of snapshot) {
+    if (row.socCode === fromCode) continue;
+    if (row.automationRisk !== "Low" && row.automationRisk !== "Medium") continue;
+    if (row.aiExposure >= source.aiExposure) continue;
+    if (seenTitles.has(row.title)) continue;
+
+    const targetSkills = [...new Set(skillsByCode.get(row.socCode) ?? [])];
+    const sharedSkills = targetSkills.filter((s) => fromSkillSet.has(s));
+    if (sharedSkills.length === 0) continue;
+
+    seenTitles.add(row.title);
+    candidates.push({
+      occupationCode: row.socCode,
+      occupationName: row.title,
+      sectorName: row.sector,
+      automationRisk: row.automationRisk,
+      aiExposure: row.aiExposure,
+      medianSalary: row.medianSalary,
+      outlook: row.outlook,
+      sharedSkills,
+      sharedCount: sharedSkills.length,
+      overlapScore: sharedSkills.length / fromSkills.length,
+    });
+  }
+
+  return candidates
+    .sort((a, b) => b.sharedCount - a.sharedCount || b.medianSalary - a.medianSalary)
+    .slice(0, limit);
+}
+
+export function getHighExposureOccupations(
+  limit = 30,
+): { occupationCode: string; occupationName: string; aiExposure: number; sectorName: string }[] {
+  const sorted = [...snapshot].sort((a, b) => b.aiExposure - a.aiExposure);
+  const seenTitles = new Set<string>();
+  const results: { occupationCode: string; occupationName: string; aiExposure: number; sectorName: string }[] = [];
+
+  for (const row of sorted) {
+    if (seenTitles.has(row.title)) continue;
+    seenTitles.add(row.title);
+    results.push({
+      occupationCode: row.socCode,
+      occupationName: row.title,
+      aiExposure: row.aiExposure,
+      sectorName: row.sector,
+    });
+    if (results.length >= limit) break;
+  }
+
+  return results;
 }

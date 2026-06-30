@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Squad agent scripts use CJS — not part of the app
+    ".squad/**",
   ]),
 ]);
 

@@ -19,3 +19,6 @@
 **2026-06-30 (Round 4 — /global Route + China Context):** Wired /global route: hero "Global AI Impact Explorer", metric context (Claude Usage vs. GenAI Diffusion % with clear labels), China callout ("16.4% Microsoft vs. 43% CNNIC; domestic platform undercount"), source attribution (8 datasets evaluated, 3 recommended), diffusion leaders (UAE 70%, Singapore 63%, Norway 49%). All content Reduced-motion safe, WCAG AA, no regressions. Commit e976e14. ✅ /GLOBAL LIVE, CHINA CONTEXT TRANSPARENT.
 
 **2026-06-30 (Issue Backlog Round — Issues #4 & #5):** [#4] Diffusion sparklines + per-country trend detail modal (fastest risers S.Korea +11.2pp, UAE +10.7pp, France +6.9pp). [#5] CountryDetailPanel: 195-country selector, all metrics display, China proxies (Anthropic + Microsoft + CNNIC context), keyboard accessible (Tab/Enter/Esc). Commit e976e14. ✅ CLOSED #4 #5.
+
+
+**2026-06-30 (Batches 3 & 4 — Autonomous Improvement Loop):** Issues #14 (README refresh for real data stack), #17 (freshness indicators sidebar + sources badge). All closed, validated (build 0, lint clean, tests 103/103). Loop concluded; diminishing returns reached.

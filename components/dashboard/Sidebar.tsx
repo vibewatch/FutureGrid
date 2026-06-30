@@ -4,6 +4,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import CommandPalette from "@/components/ui/CommandPalette";
+import { getDataSources } from "@/lib/data";
+
+const _dataAsOf: string | null = (() => {
+  try {
+    const { generatedAt } = getDataSources();
+    if (!generatedAt) return null;
+    const d = new Date(generatedAt);
+    if (isNaN(d.getTime())) return null;
+    return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+  } catch {
+    return null;
+  }
+})();
 
 // ─── Inline SVG icons (stroke-based, 18–20 px) ─────────────────────────────────
 function IconDashboard() {
@@ -167,6 +180,7 @@ function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
                 <Link
                   href={href}
                   onClick={onNavigate}
+                  aria-current={isActive ? "page" : undefined}
                   className={`relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
                     isActive
                       ? "bg-zinc-800/80 text-white"
@@ -196,6 +210,9 @@ function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
         <Link href="/sources" className="text-zinc-600 hover:text-zinc-400 transition-colors">
           View sources →
         </Link>
+        {_dataAsOf && (
+          <p className="text-zinc-600 leading-snug">Data as of {_dataAsOf}</p>
+        )}
       </div>
     </>
   );

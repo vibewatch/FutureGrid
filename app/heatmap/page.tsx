@@ -25,10 +25,15 @@ export default function HeatmapPage() {
       {/* Header */}
       <div className="animate-fade-up">
         <h1 className="text-3xl font-bold tracking-tight text-gradient">
-          AI Disruption Heatmap
+          Country × AI Readiness Heatmap
         </h1>
         <p className="text-zinc-400 mt-1">
-          Visualize AI exposure across sectors and geographic regions.
+          Real AI metrics for 25 major economies — usage index, GenAI diffusion, IMF AI
+          Readiness, and four AIPI sub-indices. Each metric is independently normalised to 0–1
+          for colour comparability.{" "}
+          <Link href="/sources" className="text-violet-400 hover:text-violet-300 underline underline-offset-2">
+            View sources →
+          </Link>
         </p>
       </div>
 
