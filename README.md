@@ -43,7 +43,7 @@ The production build is a static export written to the `out/` directory, ready f
 
 ### GitHub Pages
 
-Pushes to `main` publish the static export with the `Deploy GitHub Pages` workflow. In the repository settings, set Pages source to `GitHub Actions`.
+Pushes to `main` publish the static export with the `Deploy GitHub Pages` workflow. In the repository settings, set Pages source to `GitHub Actions` and configure the custom domain `futuregrid.genisisiq.com`.
 
 ### Data Snapshot
 

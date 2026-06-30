@@ -37,7 +37,6 @@ jobs:
         run: npm run build
         env:
           GITHUB_PAGES: "true"
-          GITHUB_PAGES_BASE_PATH: "/${{ github.event.repository.name }}"
           NEXT_TELEMETRY_DISABLED: "1"
 
       - name: Disable Jekyll processing
