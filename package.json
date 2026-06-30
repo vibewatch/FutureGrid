@@ -9,7 +9,8 @@
     "lint": "eslint",
     "build:data": "npm run build:proxies && node scripts/build-data-snapshot.mjs",
     "build:proxies": "node scripts/build-ai-usage-proxies.mjs",
-    "build:geo": "node scripts/build-world-geo.mjs"
+    "build:geo": "node scripts/build-world-geo.mjs",
+    "build:global-metrics": "node scripts/build-global-metrics.mjs"
   },
   "dependencies": {
     "chart.js": "^4.5.1",
