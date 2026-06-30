@@ -14,7 +14,8 @@ const H = 500;
 const NO_DATA_FILL = "#27272a"; // zinc-800
 const PROXY_STROKE = "#f59e0b"; // amber-400
 const BASE_STROKE  = "#52525b"; // zinc-600
-const HOVER_STROKE = "#ffffff";
+const HOVER_STROKE  = "#ffffff";
+const FOCUS_STROKE  = "#22d3ee"; // cyan-400 — visible keyboard-focus indicator
 
 // Inlined at build time from next.config.ts env block; empty string on localhost.
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
@@ -153,12 +154,17 @@ function MapSkeleton() {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function WorldChoropleth() {
+export default function WorldChoropleth({
+  onCountrySelect,
+}: {
+  onCountrySelect?: (iso3: string) => void;
+} = {}) {
   const svgRef       = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [metric,         setMetric]         = useState<Metric>("claude");
   const [hovered,        setHovered]        = useState<string | null>(null);
+  const [focused,        setFocused]        = useState<string | null>(null);
   const [tooltip,        setTooltip]        = useState<TooltipState>({
     visible: false, x: 0, y: 0, datum: null,
   });
@@ -342,6 +348,22 @@ export default function WorldChoropleth() {
     setTooltip(prev => ({ ...prev, visible: false }));
   }, []);
 
+  // ── Selection handlers ────────────────────────────────────────────────────
+
+  const handleCountryClick = useCallback((iso3: string) => {
+    if (onCountrySelect && iso3) onCountrySelect(iso3);
+  }, [onCountrySelect]);
+
+  const handleCountryKeyDown = useCallback((
+    e: React.KeyboardEvent<SVGPathElement>,
+    iso3: string,
+  ) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      if (onCountrySelect && iso3) onCountrySelect(iso3);
+    }
+  }, [onCountrySelect]);
+
   // ── SVG aria-label (metric-aware) ─────────────────────────────────────────
 
   const svgAriaLabel = metric === "claude"
@@ -442,8 +464,9 @@ export default function WorldChoropleth() {
             }}
           >
             <g>
-              {countryPaths.map(({ iso3, d, fill, hasProxy }) => {
+              {countryPaths.map(({ iso3, datum, d, fill, hasProxy }) => {
                 const isHovered = hovered === iso3;
+                const isFocused = onCountrySelect != null && focused === iso3;
                 const dimmed    = hovered !== null && !isHovered;
 
                 return (
@@ -451,18 +474,34 @@ export default function WorldChoropleth() {
                     key={iso3}
                     d={d}
                     fill={fill}
-                    stroke={isHovered ? HOVER_STROKE : hasProxy ? PROXY_STROKE : BASE_STROKE}
-                    strokeWidth={isHovered ? 1.5 : hasProxy ? 1.2 : 0.4}
+                    stroke={
+                      isHovered ? HOVER_STROKE
+                      : isFocused  ? FOCUS_STROKE
+                      : hasProxy   ? PROXY_STROKE
+                      : BASE_STROKE
+                    }
+                    strokeWidth={isHovered || isFocused ? 1.5 : hasProxy ? 1.2 : 0.4}
                     strokeDasharray={hasProxy && !isHovered ? "3 2" : undefined}
                     style={{
                       opacity:    dimmed ? 0.5 : 1,
                       filter:     isHovered ? "brightness(1.4)" : undefined,
                       transition: "opacity 0.12s ease, filter 0.12s ease",
                       cursor:     "pointer",
+                      outline:    "none",
                     }}
                     onMouseEnter={e => handleMouseEnter(e, iso3)}
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
+                    {...(onCountrySelect ? {
+                      tabIndex: 0,
+                      role: "button" as const,
+                      "aria-label": `${datum?.name ?? iso3} — select for details`,
+                      onClick: () => handleCountryClick(iso3),
+                      onKeyDown: (e: React.KeyboardEvent<SVGPathElement>) =>
+                        handleCountryKeyDown(e, iso3),
+                      onFocus: () => setFocused(iso3),
+                      onBlur:  () => setFocused(null),
+                    } : {})}
                   />
                 );
               })}

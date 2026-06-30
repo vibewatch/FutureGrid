@@ -2,9 +2,9 @@ import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import { getCountryExposure, getAIUsageProxies, getCountryMapData, getDiffusionRisers } from "@/lib/data";
-// CountryExposureChart and WorldChoropleth are client islands authored by teammates
+// CountryExposureChart and WorldChoroplethInteractive are client islands authored by teammates
 import CountryExposureChart from "@/components/charts/CountryExposureChart";
-import WorldChoropleth from "@/components/charts/WorldChoropleth";
+import WorldChoroplethInteractive from "@/components/charts/WorldChoroplethInteractive";
 import CountryDetailPanel, { type EnrichedCountry } from "@/components/dashboard/CountryDetailPanel";
 
 // ─── Tiny 3-point sparkline (pure SVG, no animation, reduced-motion safe) ─────
@@ -194,7 +194,7 @@ export default function GlobalPage() {
             .
           </p>
           <div className="glass p-4 sm:p-6 rounded-2xl">
-            <WorldChoropleth />
+            <WorldChoroplethInteractive />
           </div>
 
           {/* GenAI diffusion leaders */}
