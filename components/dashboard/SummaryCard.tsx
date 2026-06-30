@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import AnimatedCounter from "@/components/ui/AnimatedCounter";
 
 interface SummaryCardProps {
   title: string;
@@ -10,22 +11,69 @@ interface SummaryCardProps {
   trendUp?: boolean;
   color: string;
   href: string;
+  /** If provided, renders value via AnimatedCounter instead of static text. */
+  numericValue?: number;
+  numericDecimals?: number;
+  numericSuffix?: string;
+  numericPrefix?: string;
 }
 
-export default function SummaryCard({ title, value, subtitle, trend, trendUp, color, href }: SummaryCardProps) {
+export default function SummaryCard({
+  title,
+  value,
+  subtitle,
+  trend,
+  trendUp,
+  color,
+  href,
+  numericValue,
+  numericDecimals = 0,
+  numericSuffix,
+  numericPrefix,
+}: SummaryCardProps) {
   return (
-    <Link href={href} className={`block rounded-xl bg-zinc-800/50 border border-zinc-700/50 p-5 hover:border-zinc-600 transition-colors`}>
-      <div className="flex items-center justify-between mb-2">
-        <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: color }} />
+    <Link
+      href={href}
+      className="glass glass-hover block p-5 outline-none focus-visible:ring-2 focus-visible:ring-violet-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#07080d]"
+      style={{
+        boxShadow: `0 0 0 1px ${color}22, 0 4px 20px ${color}15`,
+      }}
+    >
+      <div className="flex items-center justify-between mb-3">
+        <div
+          className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+          style={{ backgroundColor: color, boxShadow: `0 0 6px 1px ${color}66` }}
+        />
         {trend && (
-          <span className={`text-xs font-medium ${trendUp ? "text-green-400" : "text-red-400"}`}>
-            {trend}
+          <span
+            className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${
+              trendUp
+                ? "bg-green-500/10 text-green-400 border-green-500/25"
+                : "bg-red-500/10 text-red-400 border-red-500/25"
+            }`}
+          >
+            {trendUp ? "↑" : "↓"} {trend}
           </span>
         )}
       </div>
-      <div className="text-3xl font-bold text-white mb-1">{value}</div>
-      <div className="text-sm font-medium text-zinc-300">{title}</div>
-      <div className="text-xs text-zinc-500 mt-1">{subtitle}</div>
+
+      <div className="text-3xl font-bold mb-1.5 leading-none">
+        {numericValue !== undefined ? (
+          <AnimatedCounter
+            value={numericValue}
+            decimals={numericDecimals}
+            prefix={numericPrefix}
+            suffix={numericSuffix}
+            durationMs={1600}
+            className="text-gradient"
+          />
+        ) : (
+          <span className="text-gradient">{value}</span>
+        )}
+      </div>
+
+      <div className="text-sm font-semibold text-zinc-200 mb-0.5">{title}</div>
+      <div className="text-xs text-zinc-500">{subtitle}</div>
     </Link>
   );
 }

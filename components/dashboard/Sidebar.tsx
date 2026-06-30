@@ -2,56 +2,290 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import CommandPalette from "@/components/ui/CommandPalette";
 
+// ─── Inline SVG icons (stroke-based, 18–20 px) ─────────────────────────────────
+function IconDashboard() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3"  y="3"  width="7" height="7" rx="1" />
+      <rect x="14" y="3"  width="7" height="7" rx="1" />
+      <rect x="3"  y="14" width="7" height="7" rx="1" />
+      <rect x="14" y="14" width="7" height="7" rx="1" />
+    </svg>
+  );
+}
+
+function IconSectors() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3"  y="12" width="4" height="9" rx="1" />
+      <rect x="10" y="7"  width="4" height="14" rx="1" />
+      <rect x="17" y="4"  width="4" height="17" rx="1" />
+    </svg>
+  );
+}
+
+function IconCareers() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="7" width="20" height="14" rx="2" />
+      <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+      <line x1="12" y1="12" x2="12" y2="16" />
+      <line x1="10" y1="14" x2="14" y2="14" />
+    </svg>
+  );
+}
+
+function IconSkills() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+      <polyline points="16 7 22 7 22 13" />
+    </svg>
+  );
+}
+
+function IconHeatmap() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3"  y="3"  width="5" height="5" rx="0.5" />
+      <rect x="10" y="3"  width="5" height="5" rx="0.5" />
+      <rect x="17" y="3"  width="5" height="5" rx="0.5" />
+      <rect x="3"  y="10" width="5" height="5" rx="0.5" />
+      <rect x="10" y="10" width="5" height="5" rx="0.5" />
+      <rect x="17" y="10" width="5" height="5" rx="0.5" />
+      <rect x="3"  y="17" width="5" height="5" rx="0.5" />
+      <rect x="10" y="17" width="5" height="5" rx="0.5" />
+      <rect x="17" y="17" width="5" height="5" rx="0.5" />
+    </svg>
+  );
+}
+
+function IconMenu() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <line x1="3" y1="6"  x2="21" y2="6"  />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  );
+}
+
+function IconX() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <line x1="18" y1="6"  x2="6"  y2="18" />
+      <line x1="6"  y1="6"  x2="18" y2="18" />
+    </svg>
+  );
+}
+
+// ─── Nav items ─────────────────────────────────────────────────────────────────
 const NAV_ITEMS = [
-  { href: "/", label: "Dashboard", icon: "⌂" },
-  { href: "/sectors", label: "Sectors", icon: "▤" },
-  { href: "/careers", label: "Careers", icon: "☷" },
-  { href: "/skills", label: "Skills", icon: "↗" },
-  { href: "/heatmap", label: "Heatmap", icon: "◫" },
+  { href: "/",        label: "Dashboard", Icon: IconDashboard },
+  { href: "/sectors", label: "Sectors",   Icon: IconSectors   },
+  { href: "/careers", label: "Careers",   Icon: IconCareers   },
+  { href: "/skills",  label: "Skills",    Icon: IconSkills    },
+  { href: "/heatmap", label: "Heatmap",   Icon: IconHeatmap   },
 ];
 
-export default function Sidebar() {
-  const pathname = usePathname();
-
+// ─── Logo ──────────────────────────────────────────────────────────────────────
+function Logo({ onClick }: { onClick?: () => void }) {
   return (
-    <aside className="fixed left-0 top-0 h-full w-60 bg-zinc-900 border-r border-zinc-800 flex flex-col z-40">
-      <div className="p-5 border-b border-zinc-800">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm">
-            FG
-          </div>
-          <span className="text-lg font-bold text-white tracking-tight">FutureGrid</span>
-        </Link>
+    <Link href="/" onClick={onClick} className="flex items-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded-md">
+      <div className="w-8 h-8 rounded-lg brand-grad flex items-center justify-center text-white font-black text-xs tracking-tight shadow-lg shrink-0">
+        FG
       </div>
-      <nav className="flex-1 p-3">
-        <ul className="space-y-1">
-          {NAV_ITEMS.map((item) => {
-            const isActive = item.href === "/"
-              ? pathname === "/"
-              : pathname.startsWith(item.href);
+      <span className="text-[17px] font-bold tracking-tight text-white leading-none">
+        Future<span className="text-gradient">Grid</span>
+      </span>
+    </Link>
+  );
+}
+
+// ─── Search button ─────────────────────────────────────────────────────────────
+function SearchButton({ onNavigate }: { onNavigate?: () => void }) {
+  const handleClick = () => {
+    window.dispatchEvent(new Event("open-command-palette"));
+    onNavigate?.();
+  };
+  return (
+    <div className="px-3 pt-3 pb-1">
+      <button
+        onClick={handleClick}
+        aria-label="Open search command palette (Cmd K)"
+        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg glass text-zinc-500 hover:text-zinc-300 transition-colors text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+      >
+        {/* Search icon */}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <span className="flex-1 text-left text-xs">Search…</span>
+        <kbd className="text-[10px] border border-zinc-700 rounded px-1.5 py-0.5 font-sans">⌘K</kbd>
+      </button>
+    </div>
+  );
+}
+
+// ─── Nav list (shared between desktop sidebar & mobile drawer) ─────────────────
+function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
+  return (
+    <>
+      <SearchButton onNavigate={onNavigate} />
+      <nav className="flex-1 p-3" aria-label="Main navigation">
+        <ul className="space-y-0.5">
+          {NAV_ITEMS.map(({ href, label, Icon }) => {
+            const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
             return (
-              <li key={item.href}>
+              <li key={href}>
                 <Link
-                  href={item.href}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  href={href}
+                  onClick={onNavigate}
+                  className={`relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
                     isActive
-                      ? "bg-zinc-800 text-white"
+                      ? "bg-zinc-800/80 text-white"
                       : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
                   }`}
                 >
-                  <span className="text-base">{item.icon}</span>
-                  {item.label}
+                  {isActive && (
+                    <span
+                      className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-6 brand-grad rounded-full"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span className={isActive ? "text-violet-400" : ""}>
+                    <Icon />
+                  </span>
+                  <span className={isActive ? "text-gradient font-semibold" : ""}>
+                    {label}
+                  </span>
                 </Link>
               </li>
             );
           })}
         </ul>
       </nav>
-      <div className="p-4 border-t border-zinc-800 text-xs text-zinc-600">
-        <p>Data sources: BLS, O*NET</p>
+      <div className="p-4 border-t border-zinc-800/60 text-xs text-zinc-400 space-y-0.5">
+        <p>Data: BLS &amp; O*NET</p>
         <p>Frey &amp; Osborne (2013)</p>
       </div>
-    </aside>
+    </>
+  );
+}
+
+// ─── Sidebar ───────────────────────────────────────────────────────────────────
+export default function Sidebar() {
+  const pathname = usePathname();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const hamburgerRef  = useRef<HTMLButtonElement>(null);
+  const drawerRef     = useRef<HTMLElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Close drawer on route change (deferred to avoid synchronous setState-in-effect)
+  useEffect(() => {
+    const id = setTimeout(() => setDrawerOpen(false), 0);
+    return () => clearTimeout(id);
+  }, [pathname]);
+
+  // Focus management: focus close button on open, restore hamburger on close
+  useEffect(() => {
+    if (drawerOpen) {
+      closeButtonRef.current?.focus();
+    } else {
+      hamburgerRef.current?.focus();
+    }
+  }, [drawerOpen]);
+
+  // Escape to close + Tab focus trap
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setDrawerOpen(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const drawer = drawerRef.current;
+      if (!drawer) return;
+      const focusable = Array.from(
+        drawer.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last  = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [drawerOpen]);
+
+  return (
+    <>
+      {/* CommandPalette — global singleton, available app-wide via Sidebar mount */}
+      <CommandPalette />
+
+      {/* ── Mobile top bar (hidden at lg+) ─────────────────────────────────── */}
+      <header className="fixed top-0 left-0 right-0 h-14 bg-zinc-900/90 backdrop-blur-sm border-b border-zinc-800/80 flex items-center gap-3 px-4 lg:hidden z-50">
+        <button
+          ref={hamburgerRef}
+          onClick={() => setDrawerOpen(true)}
+          aria-label="Open navigation menu"
+          className="p-1.5 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 transition-colors"
+        >
+          <IconMenu />
+        </button>
+        <Logo />
+      </header>
+
+      {/* ── Desktop sidebar (hidden below lg) ──────────────────────────────── */}
+      <aside className="hidden lg:flex fixed left-0 top-0 h-full w-60 bg-zinc-900/85 backdrop-blur-sm border-r border-zinc-800/60 flex-col z-40">
+        <div className="p-5 border-b border-zinc-800/60">
+          <Logo />
+        </div>
+        <NavList pathname={pathname} />
+      </aside>
+
+      {/* ── Mobile overlay ──────────────────────────────────────────────────── */}
+      {drawerOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-[2px] z-40 lg:hidden"
+          onClick={() => setDrawerOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* ── Mobile slide-in drawer ──────────────────────────────────────────── */}
+      <aside
+        ref={drawerRef}
+        className={`fixed left-0 top-0 h-full w-64 bg-zinc-900 border-r border-zinc-800/80 flex flex-col z-50 lg:hidden motion-safe:transition-transform motion-safe:duration-300 ease-in-out ${
+          drawerOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+        aria-label="Navigation drawer"
+        aria-hidden={!drawerOpen}
+      >
+        <div className="p-4 border-b border-zinc-800/60 flex items-center justify-between">
+          <Logo onClick={() => setDrawerOpen(false)} />
+          <button
+            ref={closeButtonRef}
+            onClick={() => setDrawerOpen(false)}
+            aria-label="Close navigation menu"
+            className="p-1.5 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 transition-colors"
+          >
+            <IconX />
+          </button>
+        </div>
+        <NavList pathname={pathname} onNavigate={() => setDrawerOpen(false)} />
+      </aside>
+    </>
   );
 }
