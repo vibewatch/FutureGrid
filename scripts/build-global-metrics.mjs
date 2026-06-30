@@ -1,0 +1,462 @@
+#!/usr/bin/env node
+/**
+ * build-global-metrics.mjs
+ * Fetches Microsoft AI Diffusion (AIEI) CSV and (best-effort) IMF AI Preparedness
+ * Index, maps Economy names → ISO-3, and writes data/global-ai-metrics.json.
+ *
+ * Run: node scripts/build-global-metrics.mjs
+ * (or via: npm run build:global-metrics)
+ */
+
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import https from "https";
+import http from "http";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(__dirname, "..");
+const DATA_DIR = path.join(ROOT, "data");
+const CACHE_DIR = path.join(ROOT, ".data-cache");
+
+[DATA_DIR, CACHE_DIR].forEach((d) => { if (!existsSync(d)) mkdirSync(d, { recursive: true }); });
+
+const UA = "FutureGrid-data-bot/1.0 (https://github.com/huangyingting/FutureGrid)";
+
+const MS_DIFFUSION_URL =
+  "https://raw.githubusercontent.com/microsoft/ai-diffusion-report/main/data/AI_Diffusion_Q12026_Update.csv";
+const ISO_CROSSWALK_URL =
+  "https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.json";
+const IMF_AIPI_URL = "https://www.imf.org/external/datamapper/api/v1/AIPI";
+
+// ─── HTTP helpers ──────────────────────────────────────────────────────────────
+
+function resolveUrl(base, location) {
+  if (!location) return base;
+  if (location.startsWith("http://") || location.startsWith("https://")) return location;
+  try { return new URL(location, base).href; } catch { return new URL(base).origin + location; }
+}
+
+function fetchText(url, cacheFile, timeoutMs = 30_000) {
+  if (existsSync(cacheFile)) {
+    console.log(`  [cache] ${path.relative(ROOT, cacheFile)}`);
+    return Promise.resolve(readFileSync(cacheFile, "utf8"));
+  }
+  console.log(`  [fetch] ${url}`);
+  return new Promise((resolve, reject) => {
+    const options = { headers: { "User-Agent": UA } };
+    function doRequest(u) {
+      const proto = u.startsWith("https") ? https : http;
+      const req = proto.get(u, options, (res) => {
+        if ([301, 302, 307, 308].includes(res.statusCode)) {
+          return doRequest(resolveUrl(u, res.headers.location));
+        }
+        if (res.statusCode !== 200) {
+          reject(new Error(`HTTP ${res.statusCode} for ${u}`));
+          return;
+        }
+        const chunks = [];
+        res.on("data", (c) => chunks.push(c));
+        res.on("end", () => {
+          const buf = Buffer.concat(chunks);
+          writeFileSync(cacheFile, buf);
+          resolve(buf.toString("utf8"));
+        });
+        res.on("error", reject);
+      });
+      req.on("error", reject);
+      req.setTimeout(timeoutMs, () => { req.destroy(new Error(`Timeout fetching ${u}`)); });
+    }
+    doRequest(url);
+  });
+}
+
+// ─── CSV parser (handles quoted fields) ────────────────────────────────────────
+
+function parseCSV(text) {
+  const rows = [];
+  let headers = null;
+  const lines = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  let i = 0;
+
+  function parseRow() {
+    const fields = [];
+    while (i < lines.length && lines[i] !== "\n") {
+      if (lines[i] === '"') {
+        i++;
+        let val = "";
+        while (i < lines.length) {
+          if (lines[i] === '"' && lines[i + 1] === '"') { val += '"'; i += 2; }
+          else if (lines[i] === '"') { i++; break; }
+          else { val += lines[i++]; }
+        }
+        fields.push(val);
+        if (lines[i] === ",") i++;
+      } else {
+        let val = "";
+        while (i < lines.length && lines[i] !== "," && lines[i] !== "\n") val += lines[i++];
+        if (lines[i] === ",") i++;
+        fields.push(val.trim());
+      }
+    }
+    if (lines[i] === "\n") i++;
+    return fields;
+  }
+
+  while (i < lines.length) {
+    const row = parseRow();
+    if (row.length === 0 || (row.length === 1 && row[0] === "")) continue;
+    if (!headers) { headers = row; continue; }
+    if (row.length < headers.length - 1) continue;
+    const obj = {};
+    for (let j = 0; j < headers.length; j++) obj[headers[j]] = row[j] ?? "";
+    rows.push(obj);
+  }
+  return rows;
+}
+
+// ─── Name → ISO-3 mapping ──────────────────────────────────────────────────────
+
+// Manual overrides for names that differ between Microsoft CSV and the ISO crosswalk.
+// Key: name as it appears in the Microsoft AIEI dataset (trimmed, as-is).
+// Value: ISO-3 alpha-3 code.
+const NAME_OVERRIDES = {
+  // English common names missing from ISO official list
+  "United Kingdom": "GBR",
+  "Netherlands": "NLD",
+
+  // Americas
+  "United States": "USA",
+  "Bolivia": "BOL",
+  "Bolivia (Plurinational State of)": "BOL",
+  "Venezuela": "VEN",
+  "Venezuela, RB": "VEN",
+  "Venezuela (Bolivarian Republic of)": "VEN",
+  "Trinidad & Tobago": "TTO",
+  "Trinidad and Tobago": "TTO",
+
+  // Europe
+  "Russia": "RUS",
+  "Russian Federation": "RUS",
+  "Turkey": "TUR",
+  "Türkiye": "TUR",
+  "Czechia": "CZE",
+  "Czech Republic": "CZE",
+  "Slovakia": "SVK",
+  "North Macedonia": "MKD",
+  "Kosovo": "XKX",
+
+  // Asia-Pacific
+  "South Korea": "KOR",
+  "Korea, Rep.": "KOR",
+  "Korea, Republic of": "KOR",
+  "Republic of Korea": "KOR",
+  "Vietnam": "VNM",
+  "Viet Nam": "VNM",
+  "Iran": "IRN",
+  "Iran, Islamic Republic of": "IRN",
+  "Iran, Islamic Rep.": "IRN",
+  "Hong Kong": "HKG",
+  "Hong Kong SAR, China": "HKG",
+  "Hong Kong, China": "HKG",
+  "Macao SAR, China": "MAC",
+  "Macau": "MAC",
+  "Taiwan": "TWN",
+  "Taiwan, China": "TWN",
+  "China (mainland)": "CHN",
+  "Laos": "LAO",
+  "Lao PDR": "LAO",
+  "Lao People's Democratic Republic": "LAO",
+  "Myanmar": "MMR",
+  "Burma": "MMR",
+  "Timor-Leste": "TLS",
+  "East Timor": "TLS",
+  "Kyrgyzstan": "KGZ",
+  "Kyrgyz Republic": "KGZ",
+
+  // Middle East / Africa
+  "Egypt": "EGY",
+  "Egypt, Arab Rep.": "EGY",
+  "Palestinian Territories": "PSE",
+  "West Bank and Gaza": "PSE",
+  "Palestine, State of": "PSE",
+  "Syria": "SYR",
+  "Syrian Arab Republic": "SYR",
+  "Yemen": "YEM",
+  "Yemen, Rep.": "YEM",
+  "Libya": "LBY",
+  "Tanzania": "TZA",
+  "Tanzania, United Republic of": "TZA",
+  "Congo, Dem. Rep.": "COD",
+  "Congo, Rep.": "COG",
+  "Congo (DRC)": "COD",
+  "Democratic Republic of the Congo": "COD",
+  "Republic of the Congo": "COG",
+  "Côte d'Ivoire": "CIV",
+  "Cote d'Ivoire": "CIV",
+  "Ivory Coast": "CIV",
+  "Eswatini": "SWZ",
+  "Swaziland": "SWZ",
+  "São Tomé and Príncipe": "STP",
+  "Sao Tome and Principe": "STP",
+  "Cabo Verde": "CPV",
+  "Cape Verde": "CPV",
+  "Gambia, The": "GMB",
+  "The Gambia": "GMB",
+  "Gambia": "GMB",
+  "Bahamas, The": "BHS",
+  "The Bahamas": "BHS",
+  "Bahamas": "BHS",
+
+  // Other
+  "Micronesia": "FSM",
+  "Micronesia, Fed. Sts.": "FSM",
+  "Federated States of Micronesia": "FSM",
+  "Moldova": "MDA",
+  "Republic of Moldova": "MDA",
+  "Moldova, Republic of": "MDA",
+  "North Korea": "PRK",
+  "Korea, Dem. People's Rep.": "PRK",
+};
+
+/** Build a lookup: normalised name → ISO-3. Normalised = trimmed lower-case. */
+function buildNameLookup(isoData) {
+  const map = new Map();
+  for (const [name, iso3] of Object.entries(NAME_OVERRIDES)) {
+    map.set(name.toLowerCase().trim(), iso3);
+  }
+  for (const entry of isoData) {
+    const key = (entry.name || "").toLowerCase().trim();
+    if (key && !map.has(key)) map.set(key, entry["alpha-3"]);
+  }
+  return map;
+}
+
+/** Strip non-ASCII for fuzzy fallback (handles encoding-corrupted names like Türkiye). */
+function asciiOnly(s) {
+  return s.replace(/[^\x20-\x7E]/g, "").toLowerCase().trim();
+}
+
+/** ASCII-only version of NAME_OVERRIDES for fallback matching. */
+function buildAsciiLookup() {
+  const map = new Map();
+  for (const [name, iso3] of Object.entries(NAME_OVERRIDES)) {
+    const key = asciiOnly(name);
+    if (key && !map.has(key)) map.set(key, iso3);
+  }
+  return map;
+}
+
+/** Parse a percent string like "16.40%" → 16.4. Returns null if not parseable. */
+function parsePct(str) {
+  if (!str || typeof str !== "string") return null;
+  const v = parseFloat(str.replace("%", "").trim());
+  return isNaN(v) ? null : v;
+}
+
+// ─── Main ──────────────────────────────────────────────────────────────────────
+
+async function main() {
+  console.log("\n[GLOBAL-METRICS] Building data/global-ai-metrics.json …");
+
+  // 1. Fetch ISO crosswalk (cached)
+  const isoText = await fetchText(
+    ISO_CROSSWALK_URL,
+    path.join(CACHE_DIR, "iso-crosswalk.json"),
+  );
+  const isoData = JSON.parse(isoText);
+  const nameLookup = buildNameLookup(isoData);
+  const asciiLookup = buildAsciiLookup();
+  console.log(`  ISO crosswalk: ${isoData.length} entries`);
+
+  // 2. Fetch Microsoft AI Diffusion CSV
+  const msCsvText = await fetchText(
+    MS_DIFFUSION_URL,
+    path.join(CACHE_DIR, "microsoft-ai-diffusion-q12026.csv"),
+  );
+  const msRows = parseCSV(msCsvText);
+  console.log(`  Microsoft AIEI CSV: ${msRows.length} rows`);
+
+  // Detect the latest diffusion column (prefer Q1 2026, fallback to H2 2025)
+  const sampleRow = msRows[0] || {};
+  const colKeys = Object.keys(sampleRow);
+  const q1Col = colKeys.find((k) => /q1 2026/i.test(k));
+  const h2Col = colKeys.find((k) => /h2 2025/i.test(k));
+  const diffCol = q1Col || h2Col || colKeys.find((k) => /diffusion/i.test(k));
+  console.log(`  Using diffusion column: "${diffCol}"`);
+
+  // Map Economy → ISO-3 and parse diffusion %
+  const diffusion = {};
+  const unmatched = [];
+
+  for (const row of msRows) {
+    const economy = (row.Economy || "").trim();
+    if (!economy) continue;
+
+    const iso3 =
+      NAME_OVERRIDES[economy] ||
+      nameLookup.get(economy.toLowerCase().trim()) ||
+      asciiLookup.get(asciiOnly(economy)) ||
+      null;
+
+    if (!iso3) {
+      unmatched.push(economy);
+      continue;
+    }
+
+    const pct = parsePct(row[diffCol]);
+    if (pct !== null) {
+      diffusion[iso3] = pct;
+    }
+  }
+
+  console.log(`  Mapped: ${Object.keys(diffusion).length} countries`);
+  if (unmatched.length > 0) {
+    console.warn(`  Unmatched names (${unmatched.length}): ${unmatched.join(", ")}`);
+  } else {
+    console.log("  All economy names matched.");
+  }
+
+  // Spot-check key countries
+  const checks = { CHN: "China", USA: "United States", IND: "India", RUS: "Russia" };
+  for (const [iso3, label] of Object.entries(checks)) {
+    console.log(`  ${label} (${iso3}): diffusion=${diffusion[iso3] ?? "NOT FOUND"}%`);
+  }
+
+  // 3. Best-effort IMF AIPI
+  let readiness = null;
+  let imfIncluded = false;
+  let imfSkipReason = "";
+
+  try {
+    const imfText = await fetchText(
+      IMF_AIPI_URL,
+      path.join(CACHE_DIR, "imf-aipi.json"),
+      20_000,
+    );
+    const imfJson = JSON.parse(imfText);
+
+    // IMF datamapper API structure varies:
+    // Attempt 1: { values: { AIPI: { ISO3: { year: value } } } }
+    // Attempt 2: flat { AIPI: { ISO3: { year: value } } }
+    // Attempt 3: { datasets: { AIPI: ... } }
+    const aipiValues =
+      imfJson?.values?.AIPI ||
+      imfJson?.AIPI ||
+      imfJson?.datasets?.AIPI?.values ||
+      null;
+    if (aipiValues && typeof aipiValues === "object") {
+      readiness = {};
+      for (const [iso3, yearMap] of Object.entries(aipiValues)) {
+        if (!yearMap || typeof yearMap !== "object") continue;
+        // Pick latest year available
+        const years = Object.keys(yearMap)
+          .map(Number)
+          .filter((y) => !isNaN(y))
+          .sort((a, b) => b - a);
+        for (const yr of years) {
+          const val = yearMap[String(yr)];
+          if (val != null && !isNaN(Number(val))) {
+            readiness[iso3.toUpperCase()] = Number(val);
+            break;
+          }
+        }
+      }
+      const cnt = Object.keys(readiness).length;
+      console.log(`  IMF AIPI: ${cnt} countries mapped`);
+      if (cnt > 0) {
+        imfIncluded = true;
+      } else {
+        imfSkipReason = "IMF AIPI returned 0 parseable values";
+        readiness = null;
+        console.warn(`  [IMF] Skipped: ${imfSkipReason}`);
+      }
+    } else {
+      imfSkipReason = "IMF AIPI response did not contain expected values.AIPI structure";
+      console.warn(`  [IMF] Skipped: ${imfSkipReason}`);
+    }
+  } catch (err) {
+    imfSkipReason = `Fetch/parse error: ${err.message}`;
+    console.warn(`  [IMF] Skipped: ${imfSkipReason}`);
+  }
+
+  // 4. Write output
+  const sources = [
+    {
+      id: "microsoft-aiei",
+      name: "Microsoft AI Diffusion Report (AI Economic Impact & Insights)",
+      publisher: "Microsoft",
+      year: 2026,
+      url: "https://github.com/microsoft/ai-diffusion-report",
+      license: "MIT",
+      column: diffCol,
+      metric: "diffusionPct",
+      description:
+        "% of working-age population using generative AI, Q1 2026 update. " +
+        "147 economies including China. " +
+        "COMPARABILITY CAVEAT: this is a behavior-based survey %; " +
+        "do NOT merge with Claude.ai usageIndex (observed API sessions, different denominator). " +
+        "Western telemetry may undercount domestic apps (e.g. Doubao, Kimi) in China — " +
+        "CNNIC reports ~43% genAI penetration vs Microsoft's 16.4%.",
+    },
+  ];
+
+  if (imfIncluded) {
+    sources.push({
+      id: "imf-aipi",
+      name: "IMF AI Preparedness Index (AIPI)",
+      publisher: "International Monetary Fund",
+      year: 2024,
+      url: "https://www.imf.org/external/datamapper/api/v1/AIPI",
+      license: "IMF terms",
+      metric: "aiReadiness",
+      description:
+        "AI readiness / preparedness score (~174 countries, 2024). " +
+        "COMPARABILITY CAVEAT: this measures institutional/infrastructure capacity, " +
+        "NOT user behavior. Do NOT merge or average with diffusionPct.",
+    });
+  } else {
+    sources.push({
+      id: "imf-aipi",
+      name: "IMF AI Preparedness Index (AIPI)",
+      publisher: "International Monetary Fund",
+      year: 2024,
+      url: "https://www.imf.org/external/datamapper/api/v1/AIPI",
+      license: "IMF terms",
+      metric: "aiReadiness",
+      included: false,
+      skipReason: imfSkipReason,
+      description:
+        "AI readiness / preparedness score. Skipped this run — see skipReason. " +
+        "COMPARABILITY CAVEAT: capacity metric, not user-behavior %. " +
+        "Do NOT merge with diffusionPct.",
+    });
+  }
+
+  const output = {
+    generatedAt: new Date().toISOString(),
+    sources,
+    unmatchedEconomies: unmatched,
+    metrics: {
+      diffusion: diffusion,
+      ...(imfIncluded ? { readiness } : {}),
+    },
+  };
+
+  const outPath = path.join(DATA_DIR, "global-ai-metrics.json");
+  writeFileSync(outPath, JSON.stringify(output, null, 2) + "\n");
+  console.log(`\n  ✓ Wrote ${path.relative(ROOT, outPath)}`);
+  console.log(`    diffusion countries: ${Object.keys(diffusion).length}`);
+  console.log(`    China (CHN): ${diffusion["CHN"] ?? "NOT FOUND"}%`);
+  console.log(`    United States (USA): ${diffusion["USA"] ?? "NOT FOUND"}%`);
+  console.log(`    India (IND): ${diffusion["IND"] ?? "NOT FOUND"}%`);
+  console.log(`    IMF readiness included: ${imfIncluded}`);
+  if (!imfIncluded) console.log(`    IMF skip reason: ${imfSkipReason}`);
+  console.log(`    Unmatched names: ${unmatched.length}`);
+  if (unmatched.length > 0) console.log(`    Unmatched: ${unmatched.join(", ")}`);
+}
+
+main().catch((err) => {
+  console.error("\n[GLOBAL-METRICS] Fatal error:", err);
+  process.exit(1);
+});

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
-import { getCountryExposure, getAIUsageProxies } from "@/lib/data";
+import { getCountryExposure, getAIUsageProxies, getCountryMapData } from "@/lib/data";
 // CountryExposureChart and WorldChoropleth are client islands authored by teammates
 import CountryExposureChart from "@/components/charts/CountryExposureChart";
 import WorldChoropleth from "@/components/charts/WorldChoropleth";
@@ -35,6 +35,14 @@ export default function GlobalPage() {
   const doubaoMau = doubaoEntry
     ? `${Math.round(Number((doubaoEntry as { value?: unknown }).value) / 1e6)}M`
     : "226M";
+
+  // Diffusion layer data: China's Microsoft AIEI figure + top leaders
+  const mapData = getCountryMapData();
+  const chinaDiffusion = mapData.find((c) => c.iso3 === "CHN")?.diffusionPct ?? 16.4;
+  const diffusionLeaders = [...mapData]
+    .filter((c) => c.diffusionPct !== null)
+    .sort((a, b) => (b.diffusionPct ?? 0) - (a.diffusionPct ?? 0))
+    .slice(0, 3);
 
   // Ranked list: exclude zeros, sort desc by usageIndex
   const ranked = allCountries
@@ -122,14 +130,51 @@ export default function GlobalPage() {
             Global AI Adoption — World Map
           </h2>
           <p className="text-sm text-zinc-400 mb-6 max-w-2xl leading-relaxed">
-            Real per-capita Claude.ai usage from the Anthropic Economic Index (Aug 2025),
-            visualised across all tracked countries. Nations with restricted or unavailable
-            Claude.ai access — including China — are shown distinctly with proxy context
-            instead of a usage score.
+            Two lenses are available via the layer toggle:{" "}
+            <span className="text-zinc-200 font-medium">Claude.ai usage</span>{" "}
+            (per-capita observed interactions, Anthropic Economic Index Aug&nbsp;2025 —
+            availability-biased; China and restricted markets appear grey) and{" "}
+            <span className="text-zinc-200 font-medium">GenAI diffusion</span>{" "}
+            (Microsoft AIEI Q1&nbsp;2026, % of working-age population using GenAI across
+            147&nbsp;countries,{" "}
+            <span className="text-zinc-200 font-medium">China included</span>
+            ). The two metrics use different denominators and cannot be merged — see{" "}
+            <Link
+              href="/sources"
+              className="text-violet-400 hover:text-violet-300 underline underline-offset-2 transition-colors"
+            >
+              Data &amp; Sources
+            </Link>
+            .
           </p>
           <div className="glass p-4 sm:p-6 rounded-2xl">
             <WorldChoropleth />
           </div>
+
+          {/* GenAI diffusion leaders */}
+          {diffusionLeaders.length > 0 && (
+            <div className="mt-5" aria-label="Top GenAI diffusion countries">
+              <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-2">
+                GenAI diffusion leaders · Microsoft AIEI Q1&nbsp;2026
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {diffusionLeaders.map((c) => (
+                  <div
+                    key={c.iso3}
+                    className="flex items-center gap-2 rounded-lg px-3 py-1.5 bg-zinc-900/60 border border-zinc-700/40 text-sm"
+                  >
+                    <span className="text-zinc-300 font-medium">{c.name}</span>
+                    <span className="text-violet-400 font-bold tabular-nums">
+                      {c.diffusionPct?.toFixed(1)}%
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-[10px] text-zinc-600 mt-1.5">
+                % working-age population using generative AI (147-country survey).
+              </p>
+            </div>
+          )}
         </section>
       </Reveal>
 
@@ -147,7 +192,7 @@ export default function GlobalPage() {
               China — Proxy Context
             </h2>
             <span className="ml-auto text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
-              Not in usage index
+              Claude layer: grey
             </span>
           </div>
 
@@ -156,14 +201,20 @@ export default function GlobalPage() {
             <p className="text-sm text-zinc-400 leading-relaxed">
               Claude.ai is{" "}
               <span className="text-zinc-200 font-medium">unavailable in mainland China</span>,
-              so it does not appear in the per-capita usage index. The figures below are
-              third-party proxy metrics for broader domestic AI adoption — each uses a different
-              measurement approach and denominator, and they are{" "}
-              <span className="text-zinc-200 font-medium">not merged into the index</span>.
+              so it appears grey on the Claude.ai usage layer and is excluded from the
+              per-capita usage index. On the{" "}
+              <span className="text-zinc-200 font-medium">GenAI diffusion layer</span>, China
+              does appear — Microsoft AIEI estimates{" "}
+              <span className="text-amber-300 font-bold">~{chinaDiffusion.toFixed(1)}%</span>{" "}
+              of working-age adults used GenAI in Q1&nbsp;2026. Note that Western telemetry
+              likely undercounts domestic apps (Doubao, Kimi, etc.) — CNNIC&rsquo;s survey
+              implies ~43% penetration. The native-ecosystem figures below use different
+              measurement approaches and denominators and are{" "}
+              <span className="text-zinc-200 font-medium">not merged into either index</span>.
             </p>
 
             {/* Proxy stat cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               <div className="rounded-xl px-4 py-3 bg-zinc-900/50 border border-amber-500/10">
                 <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
                   CNNIC · Jun 2025
@@ -191,13 +242,27 @@ export default function GlobalPage() {
                 </p>
                 <p className="text-xs text-zinc-400 mt-1">App MAU</p>
               </div>
+              <div className="rounded-xl px-4 py-3 bg-zinc-900/50 border border-violet-500/10">
+                <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
+                  Microsoft AIEI · Q1 2026
+                </p>
+                <p className="text-2xl font-extrabold text-violet-300 tabular-nums">
+                  ~{chinaDiffusion.toFixed(1)}%
+                </p>
+                <p className="text-xs text-zinc-400 mt-1">GenAI diffusion (working-age pop.)</p>
+              </div>
             </div>
 
             {/* Caveat */}
             <p className="text-xs text-zinc-500 leading-relaxed">
               These proxies use different measurement methods (government survey, app-market scan,
-              product MAU) and cannot be summed or directly compared to each other or to the
-              Anthropic usage index. See the{" "}
+              product MAU) and cannot be summed or directly compared to each other.{" "}
+              <span className="text-zinc-400">
+                The <code className="text-zinc-300">usageIndex</code> (Claude.ai interactions
+                per working-age capita) and <code className="text-zinc-300">diffusionPct</code>{" "}
+                (Microsoft AIEI survey %) use entirely different denominators — do not merge them.
+              </span>{" "}
+              See the{" "}
               <Link
                 href="/sources"
                 className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors"

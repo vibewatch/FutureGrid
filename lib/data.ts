@@ -2,6 +2,7 @@ import occupationSnapshot from "@/data/occupation-snapshot.json";
 import countryExposureData from "@/data/country-exposure.json";
 import aiUsageProxiesData from "@/data/ai-usage-proxies.json";
 import sourcesData from "@/data/sources.json";
+import globalAiMetricsData from "@/data/global-ai-metrics.json";
 
 export interface CareerInsight {
   occupationCode: string;
@@ -340,6 +341,13 @@ export interface CountryMapDatum {
   usagePct: number | null;
   hasClaudeData: boolean;
   proxyNote: string | null;
+  /** Microsoft AIEI Q1 2026: % of working-age population using generative AI.
+   *  Comparable across ~147 economies including China. NOT the same scale as
+   *  usageIndex — do not average or merge. */
+  diffusionPct: number | null;
+  /** IMF AI Preparedness Index (capacity metric, not user-behavior %).
+   *  null if IMF data was unavailable or skipped this build. */
+  aiReadiness: number | null;
 }
 
 export function getCountryMapData(): CountryMapDatum[] {
@@ -359,7 +367,19 @@ export function getCountryMapData(): CountryMapDatum[] {
   const qmVal = questEntry
     ? `${Math.round(Number((questEntry as { value?: unknown }).value) / 1e6)}M`
     : "680M";
-  const chinaNote = `Claude.ai unavailable; CNNIC reports ${cnnicVal} generative-AI users, QuestMobile ${qmVal} mobile-AI MAU.`;
+  const chinaNote =
+    `Claude.ai unavailable; CNNIC reports ${cnnicVal} generative-AI users, QuestMobile ${qmVal} mobile-AI MAU. ` +
+    `Microsoft estimates 16.4% GenAI diffusion (Western telemetry undercounts domestic apps; CNNIC reports ~43%).`;
+
+  // Join global AI metrics (diffusion + readiness)
+  const metrics = globalAiMetricsData as {
+    metrics: {
+      diffusion: Record<string, number>;
+      readiness?: Record<string, number>;
+    };
+  };
+  const diffusionMap: Record<string, number> = metrics?.metrics?.diffusion ?? {};
+  const readinessMap: Record<string, number> = metrics?.metrics?.readiness ?? {};
 
   return exposure.map((c) => {
     const hasClaudeData = c.usageIndex != null && c.usageIndex > 0;
@@ -374,6 +394,8 @@ export function getCountryMapData(): CountryMapDatum[] {
       usagePct: c.usagePct,
       hasClaudeData,
       proxyNote,
+      diffusionPct: diffusionMap[c.iso3] ?? null,
+      aiReadiness: readinessMap[c.iso3] ?? null,
     };
   });
 }

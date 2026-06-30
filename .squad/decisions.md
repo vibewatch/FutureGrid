@@ -190,6 +190,110 @@ interface CareerInsight {
 
 ---
 
+### FutureGrid Round 4 — Global Data Discovery + Flat World Map + China-Inclusive Metrics (2026-06-30)
+
+**Requested by:** huangyingting  
+**Status:** Approved (🟢 Coordinator), Implemented & committed (78d2b3f, e976e14)  
+**Scope:** Global AI metrics layer (147 countries + China data), flat choropleth world map (173 ISO-3 features), togglable metric views, China-inclusive GenAI diffusion display
+
+#### Global Data Sources Adopted (Scout Research)
+
+**Ranked recommendations (from Scout's evaluation of 8 global datasets):**
+
+1. **IMF AI Preparedness Index (AIPI)** — 174 countries, China included (score ~0.63, rank 31st). Primary for structural readiness/capacity comparison. Open data, 4 sub-indices. Limitation: measures readiness, not current usage.
+
+2. **Microsoft AIEI AI Diffusion Dataset** — 146 countries, Q1 2026. China: 16.4% working-age population using GenAI. MIT license, machine-readable CSV. Limitation: Microsoft telemetry missing domestic platforms; CNNIC reports ~43% actual (2.6× undercount due to Doubao, Qwen, DeepSeek, Baidu ERNIE Bot).
+
+3. **Oxford Insights Government AI Readiness Index (GAIIRI)** — 188 countries, CC BY-SA 4.0. Measures government AI capacity (policy implementation). Widest coverage; government-led perspective.
+
+**Additional context sources:** Stanford HAI Global Vibrancy (66 countries, R&D/talent/policy pillars), Anthropic Economic Index (194 countries, Claude usage proxy), IMF SDN/2024/001 methodology, OECD Employment Outlook 2023, ILO WESO 2025.
+
+**Comparability caveat:** Do NOT merge usageIndex (Claude.ai API obs, ~100 ctry), diffusionPct (behavior survey, 146 ctry), and aiReadiness (institutional capacity, 174 ctry) across metrics. Display as separate toggleable layers with explicit labels.
+
+#### Geometry Layer: World Map Data (Tank)
+
+**`data/world-countries.geo.json` (173 ISO-3 features):**
+- Generated build-time via `scripts/build-world-geo.mjs`
+- Source: Natural Earth 110m polygons (world-atlas@2 CDN TopoJSON) → GeoJSON FeatureCollection via topojson-client@3
+- ISO 3166 alpha-3 crosswalk (lukes/ISO-3166) with numeric-to-alpha mapping
+- Antarctica (ATA) dropped; 173 features all with `id` (alpha-3) + `properties.name`
+- Spot-check: CHN, USA, IND, BRA present; geospatially accurate
+- `.data-cache/` (gitignored); only processed geojson committed (static-export safe)
+
+**`lib/data.ts` geography exports:**
+```typescript
+export interface CountryMapDatum {
+  iso3: string;
+  name: string;
+  usageIndex: number | null;        // Anthropic EI Claude.ai obs
+  usagePct: number | null;
+  hasClaudeData: boolean;
+  diffusionPct: number | null;      // NEW: Microsoft AIEI Q1 2026 %
+  aiReadiness: number | null;       // IMF AIPI (reserved, null this build)
+  proxyNote: string | null;         // China context + MAU figures
+}
+export function getCountryMapData(): CountryMapDatum[]  // 195 entries
+```
+
+#### Global Metrics: China-Inclusive Diffusion Data (Tank)
+
+**`scripts/build-global-metrics.mjs` (new build step):**
+- Fetches **Microsoft AI Diffusion Report Q1 2026** (MIT license, 147 economies)
+- ISO 3166 crosswalk: Economy→ISO-3 via 35+ manual overrides + ASCII-normalized fallback (handles encoding-corrupted names, e.g., Türkiye)
+- **147/147 economy names matched (0 unmatched)**
+- Best-effort IMF AIPI: API returned metadata only; SKIPPED. Slot reserved in schema (aiReadiness: null). Re-enable by clearing `.data-cache/imf-aipi.json` if API changes.
+- Output: `data/global-ai-metrics.json` (147 countries, committed)
+
+**Key values (Microsoft AIEI Q1 2026):**
+- China (CHN): 16.4% (GenAI diffusion, working-age population; CNNIC 43% caveat noted)
+- United States (USA): 31.3%
+- India (IND): 17.6%
+- Russia (RUS): 9.5%
+- Diffusion leaders: UAE 70%, Singapore 63%, Norway 49%
+
+**`lib/data.ts` changes (additive):**
+- `getCountryMapData()` joins `data/global-ai-metrics.json` on iso3
+- China proxyNote updated: "Claude.ai unavailable; Microsoft estimates 16.4% GenAI diffusion (Q1 2026). Western telemetry undercounts domestic apps; CNNIC reports ~43%."
+
+#### UI/Map Layer Implementation (Switch, Neo)
+
+**`components/charts/WorldChoropleth.tsx` (NEW):**
+- D3 geoNaturalEarth1 flat projection (equirectangular alternate planned for accessibility)
+- Choropleth color-scale: togglable between Claude usage index (blue gradient) ↔ GenAI diffusion % (purple→cyan gradient)
+- China rendering: grey background + dashed-amber border when diffusion selected (proxy context callout)
+- Tooltip: country name, selected metric value, proxy note (if China)
+- Entrance animation: staggered feature fade-in; reduced-motion respected
+
+**`/global` route (NEW):**
+- Hero: "Global AI Impact Explorer" 
+- Map container + metric toggle (Claude Usage ↔ GenAI Diffusion)
+- China callout: "GenAI adoption in China (16.4% per Microsoft) vs. domestic estimates (43% CNNIC)."
+- Intro text: GenAI diffusion leaders (UAE, Singapore, Norway), global context from sources
+- Data attribution panel: Scout research summary + downloadable data/sources.json
+
+**Toggle labels & legend:**
+- Clear separation: "Claude.ai Usage Index (Anthropic, ~100 countries)" vs. "GenAI Diffusion % (Microsoft, 146 countries)"
+- Legend auto-updates with selected metric
+
+#### Validation (Coordinator)
+
+- `npm run build` → exit 0 (798 static pages, /global renders flat map)
+- `npx eslint lib scripts components` → exit 0, no lint errors
+- Spot-checks: /global loads, map displays 173 features, China renders grey + dashed amber on diffusion toggle, toggle switches metrics, legend updates, tooltip shows data + proxy note for China
+- No regressions (prior routes, data integrity, accessibility all intact)
+
+**Commits:**
+- **78d2b3f:** Geometry layer (scripts/build-world-geo.mjs, data/world-countries.geo.json, topojson-client@3 devDep, lib/data.ts geography exports, components/charts/WorldChoropleth.tsx flat choropleth)
+- **e976e14:** Metrics layer (scripts/build-global-metrics.mjs, data/global-ai-metrics.json, lib/data.ts getCountryMapData join, /global route + two-lens intro + China callout)
+
+#### Cross-Team Handoff Notes
+
+- **For data consumers:** `CountryMapDatum` interface stable; `usageIndex`, `usagePct`, `diffusionPct`, `aiReadiness` all nullable. Display only non-null values. Do NOT average or merge across metric types.
+- **For geospatial work:** GeoJSON id field uses ISO-3 (alpha-3); join on `countryMapData[].iso3`. D3 integrations ready; accessibility tested (color contrast, focus management, reduced-motion).
+- **For future work:** IMF AIPI API integration documented in script; BLS API + Anthropic EI already wired (Round 3); World Bank Data360 mirroring available for AIPI fallback.
+
+---
+
 ## Governance
 
 - All meaningful changes require team consensus

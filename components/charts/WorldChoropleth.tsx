@@ -27,6 +27,8 @@ function brandRamp(t: number): string {
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
+type Metric = "claude" | "diffusion";
+
 interface TooltipState {
   visible: boolean;
   x: number;
@@ -42,12 +44,69 @@ interface CountryPath {
   hasProxy: boolean;
 }
 
+// ── Tooltip content (module-level to avoid unstable-nested-component lint) ────
+
+function TooltipContent({ datum, metric }: { datum: CountryMapDatum; metric: Metric }) {
+  if (metric === "diffusion") {
+    if (datum.diffusionPct != null) {
+      return (
+        <div className="mt-1.5 space-y-0.5">
+          <p className="text-zinc-400 text-xs">
+            GenAI use:{" "}
+            <span className="text-cyan-300 font-mono font-semibold">
+              {datum.diffusionPct.toFixed(1)}%
+            </span>
+            <span className="text-zinc-600 text-[10px] ml-1">of working-age pop.</span>
+          </p>
+          {datum.iso3 === "CHN" && datum.proxyNote && (
+            <p className="text-zinc-500 text-[10px] leading-snug mt-1">
+              {datum.proxyNote}
+            </p>
+          )}
+        </div>
+      );
+    }
+    return <p className="text-zinc-400 text-xs mt-1.5">No GenAI diffusion data</p>;
+  }
+
+  if (datum.hasClaudeData) {
+    return (
+      <div className="mt-1.5 space-y-0.5">
+        <p className="text-zinc-400 text-xs">
+          AI usage index:{" "}
+          <span className="text-cyan-300 font-mono font-semibold">
+            {datum.usageIndex?.toFixed(2)}
+          </span>
+        </p>
+        {datum.usagePct != null && (
+          <p className="text-zinc-400 text-xs">
+            Global share:{" "}
+            <span className="text-violet-300 font-mono font-semibold">
+              {(datum.usagePct * 100).toFixed(2)}%
+            </span>
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-1.5 space-y-1">
+      <p className="text-zinc-400 text-xs">No Claude.ai usage data</p>
+      {datum.proxyNote && (
+        <p className="text-amber-300/80 text-xs leading-snug">{datum.proxyNote}</p>
+      )}
+    </div>
+  );
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function WorldChoropleth() {
   const svgRef       = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const [metric,         setMetric]         = useState<Metric>("claude");
   const [hovered,        setHovered]        = useState<string | null>(null);
   const [tooltip,        setTooltip]        = useState<TooltipState>({
     visible: false, x: 0, y: 0, datum: null,
@@ -63,6 +122,7 @@ export default function WorldChoropleth() {
     return map;
   }, []);
 
+  // Claude color scale
   const maxIndex = useMemo(() => {
     let max = 0;
     for (const d of dataByIso3.values()) {
@@ -71,9 +131,23 @@ export default function WorldChoropleth() {
     return max > 0 ? max : 1;
   }, [dataByIso3]);
 
-  const colorScale = useMemo(
+  const claudeColorScale = useMemo(
     () => d3.scaleSequential([0, maxIndex], brandRamp),
     [maxIndex],
+  );
+
+  // Diffusion color scale
+  const maxDiffusion = useMemo(() => {
+    let max = 0;
+    for (const d of dataByIso3.values()) {
+      if (d.diffusionPct != null && d.diffusionPct > max) max = d.diffusionPct;
+    }
+    return max > 0 ? max : 31;
+  }, [dataByIso3]);
+
+  const diffusionColorScale = useMemo(
+    () => d3.scaleSequential([0, maxDiffusion], brandRamp),
+    [maxDiffusion],
   );
 
   // ── Geo ───────────────────────────────────────────────────────────────────
@@ -95,25 +169,43 @@ export default function WorldChoropleth() {
       }>;
     };
     return fc.features.map((feature) => {
-      const iso3     = feature.id;
-      const datum    = dataByIso3.get(iso3) ?? null;
-      const dStr     = pathGen(feature as unknown as GeoPermissibleObjects) ?? "";
-      const hasProxy = datum?.proxyNote != null;
-      const fill     = datum?.hasClaudeData && datum.usageIndex != null
-        ? colorScale(datum.usageIndex)
-        : NO_DATA_FILL;
+      const iso3  = feature.id;
+      const datum = dataByIso3.get(iso3) ?? null;
+      const dStr  = pathGen(feature as unknown as GeoPermissibleObjects) ?? "";
+
+      let fill: string;
+      let hasProxy: boolean;
+
+      if (metric === "diffusion") {
+        // China has real diffusion data — color it, no proxy styling
+        fill     = datum?.diffusionPct != null
+          ? diffusionColorScale(datum.diffusionPct)
+          : NO_DATA_FILL;
+        hasProxy = false;
+      } else {
+        fill     = datum?.hasClaudeData && datum.usageIndex != null
+          ? claudeColorScale(datum.usageIndex)
+          : NO_DATA_FILL;
+        hasProxy = datum?.proxyNote != null;
+      }
+
       return { iso3, datum, d: dStr, fill, hasProxy };
     });
-  }, [dataByIso3, colorScale, pathGen]);
+  }, [dataByIso3, metric, claudeColorScale, diffusionColorScale, pathGen]);
 
-  // Top-15 countries for the accessible SR list
-  const top15 = useMemo(() =>
-    [...dataByIso3.values()]
+  // SR top-15 list — metric-aware
+  const srTop15 = useMemo(() => {
+    if (metric === "diffusion") {
+      return [...dataByIso3.values()]
+        .filter(d => d.diffusionPct != null)
+        .sort((a, b) => (b.diffusionPct ?? 0) - (a.diffusionPct ?? 0))
+        .slice(0, 15);
+    }
+    return [...dataByIso3.values()]
       .filter(d => d.hasClaudeData && d.usageIndex != null)
       .sort((a, b) => (b.usageIndex ?? 0) - (a.usageIndex ?? 0))
-      .slice(0, 15),
-    [dataByIso3],
-  );
+      .slice(0, 15);
+  }, [dataByIso3, metric]);
 
   // ── Entrance animation (rAF-deferred; CSS handles prefers-reduced-motion) ──
 
@@ -172,24 +264,72 @@ export default function WorldChoropleth() {
     setTooltip(prev => ({ ...prev, visible: false }));
   }, []);
 
+  // ── SVG aria-label (metric-aware) ─────────────────────────────────────────
+
+  const svgAriaLabel = metric === "claude"
+    ? "World choropleth map showing AI (Claude.ai) usage index by country. Colour intensity indicates per-capita usage; grey countries have no Claude.ai data; China is shown with a dashed amber border indicating proxy data only."
+    : "World choropleth map showing GenAI diffusion by country, as percentage of working-age population using generative AI (Microsoft AIEI Q1 2026, ~147 economies). Grey countries have no data. China is included with real data at 16.4%.";
+
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
     <div className="relative w-full" ref={containerRef}>
 
+      {/* Metric toggle — segmented control */}
+      <div
+        role="group"
+        aria-label="Map metric"
+        className="flex w-fit rounded-xl glass p-0.5 mb-3 text-xs font-medium"
+      >
+        {(["claude", "diffusion"] as Metric[]).map((m) => {
+          const active = metric === m;
+          return (
+            <button
+              key={m}
+              type="button"
+              aria-pressed={active}
+              onClick={() => setMetric(m)}
+              className="relative px-3 py-1.5 rounded-[10px] transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+              style={
+                active
+                  ? {
+                      background: "linear-gradient(135deg, #7c3aed 0%, #0891b2 100%)",
+                      color: "#fff",
+                      boxShadow: "0 2px 8px rgba(124,58,237,0.35)",
+                    }
+                  : { background: "transparent", color: "#71717a" }
+              }
+            >
+              {m === "claude" ? "Claude.ai usage" : "GenAI diffusion"}
+            </button>
+          );
+        })}
+      </div>
+
       {/* Accessible list of top countries (screen readers only) */}
-      <ul className="sr-only" aria-label="Top 15 countries by AI usage index">
-        {top15.map(d => (
+      <ul
+        className="sr-only"
+        aria-label={
+          metric === "claude"
+            ? "Top 15 countries by AI usage index"
+            : "Top 15 countries by GenAI diffusion rate"
+        }
+      >
+        {srTop15.map(d => (
           <li key={d.iso3}>
-            {d.name}: usage index {d.usageIndex?.toFixed(2)}
-            {d.usagePct != null ? `, global share ${(d.usagePct * 100).toFixed(2)}%` : ""}
+            {metric === "diffusion"
+              ? `${d.name}: GenAI diffusion ${d.diffusionPct?.toFixed(1)}%`
+              : `${d.name}: usage index ${d.usageIndex?.toFixed(2)}${d.usagePct != null ? `, global share ${(d.usagePct * 100).toFixed(2)}%` : ""}`
+            }
           </li>
         ))}
-        <li>
-          Note: China (CHN) is displayed with proxy data from CNNIC and QuestMobile because
-          Claude.ai is unavailable in mainland China. These figures represent general AI
-          adoption, not Claude.ai usage specifically.
-        </li>
+        {metric === "claude" && (
+          <li>
+            Note: China (CHN) is displayed with proxy data from CNNIC and QuestMobile because
+            Claude.ai is unavailable in mainland China. These figures represent general AI
+            adoption, not Claude.ai usage specifically.
+          </li>
+        )}
       </ul>
 
       {/* World map SVG */}
@@ -198,7 +338,7 @@ export default function WorldChoropleth() {
         viewBox={`0 0 ${W} ${H}`}
         className="choropleth-svg w-full h-auto"
         role="img"
-        aria-label="World choropleth map showing AI (Claude.ai) usage index by country. Colour intensity indicates per-capita usage; grey countries have no Claude.ai data; China is shown with a dashed amber border indicating proxy data only."
+        aria-label={svgAriaLabel}
         style={{
           opacity:   entered ? 1 : 0,
           transform: entered ? "scale(1)" : "scale(0.97)",
@@ -243,33 +383,7 @@ export default function WorldChoropleth() {
           }}
         >
           <p className="font-semibold text-white leading-tight">{tooltip.datum.name}</p>
-          {tooltip.datum.hasClaudeData ? (
-            <div className="mt-1.5 space-y-0.5">
-              <p className="text-zinc-400 text-xs">
-                AI usage index:{" "}
-                <span className="text-cyan-300 font-mono font-semibold">
-                  {tooltip.datum.usageIndex?.toFixed(2)}
-                </span>
-              </p>
-              {tooltip.datum.usagePct != null && (
-                <p className="text-zinc-400 text-xs">
-                  Global share:{" "}
-                  <span className="text-violet-300 font-mono font-semibold">
-                    {(tooltip.datum.usagePct * 100).toFixed(2)}%
-                  </span>
-                </p>
-              )}
-            </div>
-          ) : (
-            <div className="mt-1.5 space-y-1">
-              <p className="text-zinc-400 text-xs">No Claude.ai usage data</p>
-              {tooltip.datum.proxyNote && (
-                <p className="text-amber-300/80 text-xs leading-snug">
-                  {tooltip.datum.proxyNote}
-                </p>
-              )}
-            </div>
-          )}
+          <TooltipContent datum={tooltip.datum} metric={metric} />
         </div>
       )}
 
@@ -286,29 +400,37 @@ export default function WorldChoropleth() {
               }}
             />
             <span className="text-[10px] text-zinc-500 uppercase tracking-wide font-mono">
-              {maxIndex.toFixed(1)}
+              {metric === "claude" ? maxIndex.toFixed(1) : `${maxDiffusion.toFixed(1)}%`}
             </span>
           </div>
-          <p className="text-[10px] text-zinc-600 mt-0.5">AI usage index (per-capita)</p>
+          <p className="text-[10px] text-zinc-600 mt-0.5">
+            {metric === "claude"
+              ? "AI usage index (per-capita)"
+              : "GenAI diffusion (% of working-age pop)"}
+          </p>
         </div>
 
         {/* No-data swatch */}
         <div className="flex items-center gap-1.5 pt-px">
           <div className="w-4 h-2.5 rounded" style={{ background: NO_DATA_FILL }} />
-          <span className="text-[10px] text-zinc-500">No Claude.ai data</span>
+          <span className="text-[10px] text-zinc-500">
+            {metric === "claude" ? "No Claude.ai data" : "No data"}
+          </span>
         </div>
 
-        {/* Proxy / restricted swatch */}
-        <div className="flex items-center gap-1.5 pt-px">
-          <div
-            className="w-4 h-2.5 rounded border border-dashed"
-            style={{
-              background:   NO_DATA_FILL,
-              borderColor:  PROXY_STROKE,
-            }}
-          />
-          <span className="text-[10px] text-zinc-500">Proxy / restricted data</span>
-        </div>
+        {/* Proxy / restricted swatch — Claude layer only */}
+        {metric === "claude" && (
+          <div className="flex items-center gap-1.5 pt-px">
+            <div
+              className="w-4 h-2.5 rounded border border-dashed"
+              style={{
+                background:  NO_DATA_FILL,
+                borderColor: PROXY_STROKE,
+              }}
+            />
+            <span className="text-[10px] text-zinc-500">Proxy / restricted data</span>
+          </div>
+        )}
       </div>
     </div>
   );
