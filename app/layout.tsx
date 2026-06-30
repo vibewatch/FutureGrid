@@ -16,6 +16,15 @@ const geistMono = Geist_Mono({
 });
 
 const BASE_URL = "https://futuregrid.genisisiq.com";
+// basePath is set via NEXT_PUBLIC_BASE_PATH (e.g. "/FutureGrid" on GitHub Pages, "" otherwise).
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+const OG_IMAGE = {
+  url: `${BASE_PATH}/og.png`,
+  width: 1200,
+  height: 630,
+  alt: "FutureGrid — AI & the Future of Work",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -31,12 +40,14 @@ export const metadata: Metadata = {
     title: "FutureGrid — AI & the Future of Work",
     description:
       "Explore how artificial intelligence is reshaping careers — see AI exposure levels, Bright Outlook occupations, and salary data across 22 industry sectors.",
+    images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: "FutureGrid — AI & the Future of Work",
     description:
       "Explore how artificial intelligence is reshaping careers — see AI exposure levels, Bright Outlook occupations, and salary data across 22 industry sectors.",
+    images: [OG_IMAGE],
   },
 };
 
