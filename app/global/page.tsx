@@ -5,6 +5,7 @@ import { getCountryExposure, getAIUsageProxies, getCountryMapData } from "@/lib/
 // CountryExposureChart and WorldChoropleth are client islands authored by teammates
 import CountryExposureChart from "@/components/charts/CountryExposureChart";
 import WorldChoropleth from "@/components/charts/WorldChoropleth";
+import CountryDetailPanel, { type EnrichedCountry } from "@/components/dashboard/CountryDetailPanel";
 
 export const metadata = {
   title: "Global AI Adoption — FutureGrid",
@@ -44,14 +45,24 @@ export default function GlobalPage() {
     .sort((a, b) => (b.diffusionPct ?? 0) - (a.diffusionPct ?? 0))
     .slice(0, 3);
 
+  // Enrich mapData with gdpPerWorkingAgeCapita + usageCount from CountryExposure
+  const enrichedCountries: EnrichedCountry[] = mapData.map((c) => {
+    const exp = allCountries.find((e) => e.iso3 === c.iso3);
+    return {
+      ...c,
+      gdpPerWorkingAgeCapita: exp?.gdpPerWorkingAgeCapita ?? null,
+      usageCount: exp?.usageCount ?? null,
+    };
+  });
+
   // Ranked list: exclude zeros, sort desc by usageIndex
-  const ranked = allCountries
+  const rankedEnriched = enrichedCountries
     .filter((c) => c.usageIndex !== null && c.usageIndex > 0)
     .sort((a, b) => (b.usageIndex ?? 0) - (a.usageIndex ?? 0));
 
-  const top12 = ranked.slice(0, 12);
+  const top12 = rankedEnriched.slice(0, 12);
   const totalCovered = allCountries.length;
-  const topCountry = ranked[0];
+  const topCountry = rankedEnriched[0];
   const topIndex = topCountry?.usageIndex ?? 0;
 
   // Normalise bar widths relative to the top country
@@ -94,7 +105,7 @@ export default function GlobalPage() {
             <div className="hidden sm:block w-px h-10 bg-zinc-800" aria-hidden="true" />
             <div>
               <AnimatedCounter
-                value={ranked.length}
+                value={rankedEnriched.length}
                 durationMs={1400}
                 className="text-4xl sm:text-5xl font-extrabold text-gradient tabular-nums"
               />
@@ -296,90 +307,16 @@ export default function GlobalPage() {
 
       <hr className="divider-glow" />
 
-      {/* ─── TOP 12 RANKED LIST ──────────────────────────────────────────── */}
+      {/* ─── TOP 12 RANKED LIST / COUNTRY DETAIL ─────────────────────── */}
       <Reveal delay={120}>
-        <div>
-          <h2 className="text-xl font-bold text-gradient mb-2">
-            Top Countries by AI Adoption
-          </h2>
-          <p className="text-xs text-zinc-500 mb-4">
-            Ranked by usage index (per-capita Claude.ai usage, normalised). Countries with
-            zero recorded usage or unreported Claude.ai metrics are excluded.
-          </p>
-          <hr className="divider-glow mb-6" />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {top12.map((country, i) => {
-              const barWidth = ((country.usageIndex ?? 0) / maxIndex) * 100;
-              const pct =
-                country.usagePct !== null
-                  ? `${(country.usagePct * 100).toFixed(2)}%`
-                  : "—";
-
-              return (
-                <Reveal key={country.iso3} delay={i * 40}>
-                  <div className="glass glass-hover p-4 rounded-xl relative overflow-hidden">
-                    {/* Rank badge */}
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <span
-                          className="text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0"
-                          style={{
-                            background:
-                              i === 0
-                                ? "linear-gradient(135deg,#8b5cf6,#22d3ee)"
-                                : "rgba(255,255,255,0.06)",
-                            color: i === 0 ? "#fff" : "#a1a1aa",
-                          }}
-                          aria-label={`Rank ${i + 1}`}
-                        >
-                          {i + 1}
-                        </span>
-                        <span className="font-semibold text-white text-sm">
-                          {country.name}
-                        </span>
-                      </div>
-                      <span className="text-xs text-zinc-400 font-mono tabular-nums">
-                        {(country.usageIndex ?? 0).toFixed(3)}
-                      </span>
-                    </div>
-
-                    {/* Progress bar */}
-                    <div
-                      className="h-1.5 rounded-full bg-zinc-800 overflow-hidden"
-                      role="progressbar"
-                      aria-valuenow={Math.round(barWidth)}
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                      aria-label={`${country.name} usage index relative to top country`}
-                    >
-                      <div
-                        className="h-full rounded-full brand-grad"
-                        style={{ width: `${barWidth.toFixed(1)}%` }}
-                      />
-                    </div>
-
-                    {/* Secondary stats */}
-                    <div className="flex gap-4 mt-2 text-xs text-zinc-500">
-                      <span>
-                        Share of global usage:{" "}
-                        <span className="text-zinc-300">{pct}</span>
-                      </span>
-                      {country.usageCount !== null && (
-                        <span>
-                          Interactions:{" "}
-                          <span className="text-zinc-300">
-                            {country.usageCount.toLocaleString()}
-                          </span>
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
+        <CountryDetailPanel
+          countries={enrichedCountries}
+          top12={top12}
+          maxIndex={maxIndex}
+          cnnicUsers={cnnicUsers}
+          questMau={questMau}
+          doubaoMau={doubaoMau}
+        />
       </Reveal>
 
       <hr className="divider-glow" />
