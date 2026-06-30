@@ -707,3 +707,58 @@ Test suite alone is insufficient for D3-heavy work. Adopt a lightweight real-bro
 - **Batch 6 lesson:** Shared-file edits must be solo/sequenced (concurrent agents clobber).
 - **Batch 7 lesson:** Clobber-safe orchestration works when builders create new files only, integrator sequences shared-file edits.
 
+---
+
+## Batch 8: Quality Hardening — Render Regression Tests & Headless Smoke Test (2026-06-30)
+
+**Shipped:** Issue #33 (6a6160b) + Issue #34 (442441b), commits merged to origin/main  
+**Requested by:** huangyingting  
+**Status:** ✅ CLOSED, shipped
+
+### Render Regression Tests (Mouse, #33)
+
+**Files created (105 → 121 tests; vitest exit 0):**
+- `tests/components/BarChartRace.test.tsx` — assertions: `rect.bar-fill` > 0, `rect.track` > 0, `button` count ≥ 2
+- `tests/components/TreemapChart.test.tsx` — assertions: `rect.tm-rect` > 0, `.sr-only` text length > 0
+- `tests/components/QuadrantScatterChart.test.tsx` — assertions: `circle.qsc-dot` > 0, `ul.sr-only li` count > 0
+- `tests/components/BeeswarmChart.test.tsx` — assertions: `circle.bee-dot` > 0, `.sr-only` links present
+- `tests/components/KeyFindings.test.tsx` — assertions: `#key-findings-heading` exists, `a` count ≥ 3, `<p>` subheading present
+- `tests/components/DataExport.test.tsx` — assertions: `button` count ≥ 6, `URL.createObjectURL` stubbed + called, heading present
+
+**Notable:** BarChartRace had unhandled d3 interpolation errors post-unmount (jsdom lacks `SVGElement.transform`). Test polyfills in beforeAll; **cleanup added to component:** `d3.select(svgEl).selectAll("*").interrupt()` on unmount.
+
+### Headless-Chrome Smoke Test (Coordinator, #34)
+
+**File created:** `scripts/smoke-test.mjs` (Node built-ins only — no Playwright)
+- Serves static export in-process (Node HTTP server)
+- Spawns headless Chrome with `--no-zygote` + `detached` flag
+- Loads all 9 routes; verifies no error boundary (clean DOM)
+- CI wiring: new `smoke` npm script, runs post-build in `test` CI job
+- Result: GREEN (all routes HTTP 200, no render crashes)
+
+### Strategic Decisions Recorded
+
+#### Lesson 1: Two-Layer Chart Testing Defense
+
+**Problem:** Batch 7 production crash (SkillFlowSankey link ids) passed 105/105 vitest but failed in real browser. Root cause: jsdom mocks ResizeObserver, so D3 layout code (inside ResizeObserver callback) never executes in test.
+
+**Solution adopted (now in place for all chart work):**
+1. **Render regression tests (unit layer):** Verify mount succeeds, D3 selectors (`.bar-fill`, `.tm-rect`, `.bee-dot`, etc.) populated, no unhandled errors in jsdom
+2. **Headless-Chrome smoke test (integration layer):** Verify all routes load in real browser without error boundary catch
+
+**Implication:** Chart work requires BOTH layers. Unit tests alone are insufficient.
+
+#### Lesson 2: Headless-Chrome Smoke-Script Gotchas
+
+**Gotcha 1 — Deadlock:** Node static server + `spawnSync(chrome)` in same process deadlocks (spawnSync blocks event loop, server can't serve). **Fix:** Use async `spawn()` with await, or spawn before server starts.
+
+**Gotcha 2 — Process leaks:** Chrome spawned normally leaves helper processes alive. **Fix:** Spawn with `{ detached: true }` (becomes process group) + `--no-zygote` flag + `process.kill(-pid)` to reap entire group on exit.
+
+**Implication:** Smoke-test scripts must use async spawn + process-group cleanup. This pattern is now in `scripts/smoke-test.mjs` for reuse in future CI jobs.
+
+### Outcome
+
+✅ **Batch 8 complete. All 5 issues (#28–#34, split across batches) closed + shipped.**  
+✅ **121/121 tests pass; headless Chrome smoke test GREEN.**  
+✅ **Two-layer chart testing strategy now adopted; smoke-test async-spawn pattern documented for reuse.**
+
