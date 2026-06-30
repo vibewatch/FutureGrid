@@ -110,13 +110,13 @@ function SubIndexBar({ label, value }: { label: string; value: number | null }) 
   return (
     <div>
       <div className="flex items-center justify-between mb-1">
-        <span className="text-[11px] text-zinc-400 leading-tight">{label}</span>
+        <span className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-tight">{label}</span>
         <span className="text-[11px] font-bold text-cyan-300 tabular-nums ml-2 shrink-0">
           {value !== null ? value.toFixed(2) : "—"}
         </span>
       </div>
       <div
-        className="h-1.5 rounded-full bg-zinc-800 overflow-hidden"
+        className="h-1.5 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden"
         role="progressbar"
         aria-valuenow={value !== null ? Math.round(value * 100) : 0}
         aria-valuemin={0}
@@ -231,20 +231,20 @@ function CountryModal({
         style={{ maxHeight: "90dvh" }}
       >
         {/* Header */}
-        <div className="flex items-center gap-3 px-5 py-4 border-b border-zinc-700/40 sticky top-0 bg-zinc-950/95 backdrop-blur-sm rounded-t-2xl sm:rounded-t-2xl">
+        <div className="flex items-center gap-3 px-5 py-4 border-b border-zinc-300 dark:border-zinc-700/40 sticky top-0 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-sm rounded-t-2xl sm:rounded-t-2xl">
           <span aria-hidden="true" className="text-2xl leading-none">
             {flag}
           </span>
           <h2
             id="country-detail-title"
-            className="text-lg font-bold text-white flex-1 leading-tight"
+            className="text-lg font-bold text-zinc-900 dark:text-white flex-1 leading-tight"
           >
             {country.name}
           </h2>
           <button
             ref={closeRef}
             onClick={onClose}
-            className="text-zinc-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-violet-500/60"
+            className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-violet-500/60"
             aria-label="Close country detail"
           >
             <svg
@@ -261,7 +261,7 @@ function CountryModal({
         {/* Body */}
         <div className="px-5 py-5 space-y-4">
           {/* Claude.ai usage block */}
-          <div className="rounded-xl bg-zinc-900/50 border border-zinc-700/40 px-4 py-3">
+          <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-700/40 px-4 py-3">
             <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-2">
               Claude.ai Usage · Anthropic Economic Index Aug 2025
             </p>
@@ -270,8 +270,8 @@ function CountryModal({
                 <span className="text-2xl font-extrabold text-gradient tabular-nums">
                   {(country.usageIndex ?? 0).toFixed(3)}
                 </span>
-                <span className="text-sm text-zinc-400">usage index</span>
-                <span className="ml-auto text-sm font-medium text-zinc-300 tabular-nums">
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">usage index</span>
+                <span className="ml-auto text-sm font-medium text-zinc-700 dark:text-zinc-300 tabular-nums">
                   {country.usagePct !== null
                     ? `${(country.usagePct * 100).toFixed(2)}% global share`
                     : "—"}
@@ -294,13 +294,13 @@ function CountryModal({
           {/* Stats grid */}
           <div className="grid grid-cols-2 gap-3">
             {/* GenAI diffusion */}
-            <div className="rounded-xl bg-zinc-900/50 border border-violet-500/20 px-4 py-3">
+            <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-violet-200 dark:border-violet-500/20 px-4 py-3">
               <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
                 GenAI Diffusion
               </p>
               {country.diffusionTrend ? (
                 <>
-                  <p className="text-sm font-semibold text-zinc-200 tabular-nums leading-snug">
+                  <p className="text-sm font-semibold text-zinc-700 dark:text-zinc-200 tabular-nums leading-snug">
                     {country.diffusionTrend.h1_2025.toFixed(1)}%{" "}
                     <span className="text-zinc-500">→</span>{" "}
                     {country.diffusionTrend.h2_2025.toFixed(1)}%{" "}
@@ -348,11 +348,11 @@ function CountryModal({
             </div>
 
             {/* AI readiness */}
-            <div className="rounded-xl bg-zinc-900/50 border border-cyan-500/20 px-4 py-3">
+            <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-cyan-200 dark:border-cyan-500/20 px-4 py-3">
               <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
                 AI Readiness
               </p>
-              <p className="text-xl font-extrabold text-cyan-300 tabular-nums">
+              <p className="text-xl font-extrabold text-cyan-700 dark:text-cyan-300 tabular-nums">
                 {country.aiReadiness !== null
                   ? country.aiReadiness.toFixed(2)
                   : "—"}
@@ -363,11 +363,11 @@ function CountryModal({
             </div>
 
             {/* Government AI readiness (Oxford 2023) */}
-            <div className="rounded-xl bg-zinc-900/50 border border-indigo-500/20 px-4 py-3 col-span-2">
+            <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-indigo-200 dark:border-indigo-500/20 px-4 py-3 col-span-2">
               <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
                 Government AI Readiness (Oxford 2023)
               </p>
-              <p className="text-xl font-extrabold text-indigo-300 tabular-nums">
+              <p className="text-xl font-extrabold text-indigo-700 dark:text-indigo-300 tabular-nums">
                 {country.governmentReadiness !== null
                   ? `${country.governmentReadiness.toFixed(1)} / 100`
                   : "—"}
@@ -384,11 +384,11 @@ function CountryModal({
             </div>
 
             {/* GDP */}
-            <div className="rounded-xl bg-zinc-900/50 border border-emerald-500/20 px-4 py-3 col-span-2">
+            <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-emerald-200 dark:border-emerald-500/20 px-4 py-3 col-span-2">
               <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
                 GDP per Working-Age Capita
               </p>
-              <p className="text-xl font-extrabold text-emerald-300 tabular-nums">
+              <p className="text-xl font-extrabold text-emerald-700 dark:text-emerald-300 tabular-nums">
                 {country.gdpPerWorkingAgeCapita !== null
                   ? `$${country.gdpPerWorkingAgeCapita.toLocaleString("en-US", {
                       maximumFractionDigits: 0,
@@ -403,7 +403,7 @@ function CountryModal({
 
           {/* IMF AIPI sub-indices */}
           {country.readinessSubIndices && (
-            <div className="rounded-xl bg-zinc-900/50 border border-cyan-500/20 px-4 py-3 space-y-2.5">
+            <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-cyan-200 dark:border-cyan-500/20 px-4 py-3 space-y-2.5">
               <p className="text-[10px] text-zinc-500 uppercase tracking-widest">
                 IMF AI Preparedness — Sub-indices ·{" "}
                 <Link
@@ -444,7 +444,7 @@ function CountryModal({
           {/* China native ecosystem context */}
           {isChina && (
             <div
-              className="rounded-xl bg-zinc-900/50 border px-4 py-3 space-y-3"
+              className="rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border px-4 py-3 space-y-3"
               style={{ borderColor: "rgba(245,158,11,0.2)" }}
             >
               <p className="text-[10px] text-zinc-500 uppercase tracking-widest">
@@ -566,7 +566,7 @@ export default function CountryDetailPanel({
           Ranked by usage index (per-capita Claude.ai usage, normalised).
           Countries with zero recorded usage or unreported Claude.ai metrics are
           excluded.{" "}
-          <span className="text-zinc-400">
+          <span           className="text-zinc-600 dark:text-zinc-400">
             Click any row or use the selector to view the full metric set.
           </span>
         </p>
@@ -584,7 +584,7 @@ export default function CountryDetailPanel({
             id="country-selector"
             onChange={handleSelectorChange}
             defaultValue=""
-            className="flex-1 max-w-xs bg-zinc-900/80 border border-zinc-700/60 rounded-xl px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:ring-2 focus:ring-violet-500/60 cursor-pointer"
+            className="flex-1 max-w-xs bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-700/60 rounded-xl px-3 py-2 text-sm text-zinc-900 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-violet-500/60 cursor-pointer"
             aria-label="Select any country to view details"
           >
             <option value="" disabled>
@@ -636,18 +636,18 @@ export default function CountryDetailPanel({
                     >
                       {i + 1}
                     </span>
-                    <span className="font-semibold text-white text-sm">
+                    <span className="font-semibold text-zinc-900 dark:text-white text-sm">
                       {country.name}
                     </span>
                   </div>
-                  <span className="text-xs text-zinc-400 font-mono tabular-nums">
+                  <span className="text-xs text-zinc-600 dark:text-zinc-400 font-mono tabular-nums">
                     {(country.usageIndex ?? 0).toFixed(3)}
                   </span>
                 </div>
 
                 {/* Progress bar */}
                 <div
-                  className="h-1.5 rounded-full bg-zinc-800 overflow-hidden"
+                  className="h-1.5 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden"
                   role="progressbar"
                   aria-valuenow={Math.round(barWidth)}
                   aria-valuemin={0}
@@ -664,12 +664,12 @@ export default function CountryDetailPanel({
                 <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-xs text-zinc-500">
                   <span>
                     Share:{" "}
-                    <span className="text-zinc-300">{pct}</span>
+                    <span className="text-zinc-700 dark:text-zinc-300">{pct}</span>
                   </span>
                   {country.usageCount !== null && (
                     <span>
                       Interactions:{" "}
-                      <span className="text-zinc-300">
+                      <span className="text-zinc-700 dark:text-zinc-300">
                         {country.usageCount.toLocaleString()}
                       </span>
                     </span>

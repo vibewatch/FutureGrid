@@ -218,7 +218,7 @@ export default function CommandPalette() {
         style={{ top: "18vh" }}
       >
         {/* Search row */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-zinc-700/60">
+        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-zinc-200 dark:border-zinc-700/60">
           <span className="text-zinc-500 shrink-0">
             <IconSearch />
           </span>
@@ -233,9 +233,9 @@ export default function CommandPalette() {
             aria-autocomplete="list"
             aria-controls="cp-listbox"
             aria-activedescendant={filtered.length > 0 ? `cp-item-${selected}` : undefined}
-            className="flex-1 bg-transparent text-white placeholder:text-zinc-500 text-sm outline-none"
+            className="flex-1 bg-transparent text-zinc-900 dark:text-white placeholder:text-zinc-500 text-sm outline-none"
           />
-          <kbd className="text-[10px] text-zinc-500 border border-zinc-700 rounded px-1.5 py-0.5 shrink-0">
+          <kbd className="text-[10px] text-zinc-500 border border-zinc-300 dark:border-zinc-700 rounded px-1.5 py-0.5 shrink-0">
             Esc
           </kbd>
         </div>
@@ -273,8 +273,8 @@ export default function CommandPalette() {
                         onClick={() => navigateTo(item.href)}
                         className={`flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-colors${
                           isSelected
-                            ? " bg-violet-500/20 text-white"
-                            : " text-zinc-300 hover:bg-zinc-800/50"
+                            ? " bg-violet-500/20 text-zinc-900 dark:text-white"
+                            : " text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-zinc-800/50"
                         }`}
                       >
                         {/* Type badge */}
@@ -312,14 +312,14 @@ export default function CommandPalette() {
         </div>
 
         {/* Footer hints */}
-        <div className="border-t border-zinc-700/60 px-4 py-2 flex items-center gap-4 text-[11px] text-zinc-600 select-none">
+        <div className="border-t border-zinc-200 dark:border-zinc-700/60 px-4 py-2 flex items-center gap-4 text-[11px] text-zinc-600 select-none">
           <span>
-            <kbd className="border border-zinc-700/80 rounded px-1">↑</kbd>
-            <kbd className="border border-zinc-700/80 rounded px-1 ml-0.5">↓</kbd>
+            <kbd className="border border-zinc-300 dark:border-zinc-700/80 rounded px-1">↑</kbd>
+            <kbd className="border border-zinc-300 dark:border-zinc-700/80 rounded px-1 ml-0.5">↓</kbd>
             {" "}navigate
           </span>
-          <span><kbd className="border border-zinc-700/80 rounded px-1">↵</kbd> open</span>
-          <span><kbd className="border border-zinc-700/80 rounded px-1">Esc</kbd> close</span>
+          <span><kbd className="border border-zinc-300 dark:border-zinc-700/80 rounded px-1">↵</kbd> open</span>
+          <span><kbd className="border border-zinc-300 dark:border-zinc-700/80 rounded px-1">Esc</kbd> close</span>
           {filtered.length > 0 && (
             <span className="ml-auto">{filtered.length} result{filtered.length !== 1 ? "s" : ""}</span>
           )}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useMemo, useState } from "react";
+import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import { getOccupationTrend } from "@/lib/data";
 
@@ -41,6 +42,8 @@ function fmtWage(v: number): string {
 export default function OccupationTrendChart({ code }: OccupationTrendChartProps) {
   const svgRef       = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { resolvedTheme } = useTheme();
+  const isDark = (resolvedTheme ?? "dark") !== "light";
 
   const [tooltip, setTooltip] = useState<TooltipState>({
     visible: false, x: 0, y: 0, cw: 720, year: 0, employment: null, wage: null,
@@ -85,6 +88,14 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
     const reduced = typeof window !== "undefined"
       ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
       : false;
+
+    // Theme-aware colors
+    const axisText  = isDark ? "#71717a" : "#52525b";
+    const gridColor = isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)";
+    const axisLine  = isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.10)";
+    const tickLine  = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
+    const dotStroke = isDark ? "#09090b" : "#ffffff";
+    const legendText = isDark ? "#a1a1aa" : "#52525b";
 
     // ── Layout ───────────────────────────────────────────────────────────────
     const W = 720, H = 300;
@@ -139,7 +150,7 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
       .call((gg) => {
         gg.select(".domain").remove();
         gg.selectAll(".tick line")
-          .attr("stroke", "rgba(255,255,255,0.05)")
+          .attr("stroke", gridColor)
           .attr("stroke-dasharray", "3,5");
       });
 
@@ -152,9 +163,9 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
           .tickFormat((d) => String(d as number))
       )
       .call((gg) => {
-        gg.select(".domain").attr("stroke", "rgba(255,255,255,0.12)");
-        gg.selectAll(".tick line").attr("stroke", "rgba(255,255,255,0.08)");
-        gg.selectAll("text").attr("fill", "#71717a").attr("font-size", "11px");
+        gg.select(".domain").attr("stroke", axisLine);
+        gg.selectAll(".tick line").attr("stroke", tickLine);
+        gg.selectAll("text").attr("fill", axisText).attr("font-size", "11px");
       });
 
     // ── Left Y Axis (employment — violet) ────────────────────────────────────
@@ -163,7 +174,7 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
         .call(d3.axisLeft(yEmp).ticks(5).tickFormat((d) => fmtEmp(d as number)))
         .call((gg) => {
           gg.select(".domain").attr("stroke", "rgba(139,92,246,0.35)");
-          gg.selectAll(".tick line").attr("stroke", "rgba(255,255,255,0.04)");
+          gg.selectAll(".tick line").attr("stroke", tickLine);
           gg.selectAll("text").attr("fill", VIOLET).attr("font-size", "10px");
         });
     }
@@ -175,7 +186,7 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
         .call(d3.axisRight(yWage).ticks(5).tickFormat((d) => fmtWage(d as number)))
         .call((gg) => {
           gg.select(".domain").attr("stroke", "rgba(34,211,238,0.35)");
-          gg.selectAll(".tick line").attr("stroke", "rgba(255,255,255,0.04)");
+          gg.selectAll(".tick line").attr("stroke", tickLine);
           gg.selectAll("text").attr("fill", CYAN).attr("font-size", "10px");
         });
     }
@@ -228,7 +239,7 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
         .attr("cy", (d) => yEmp(d.employment as number))
         .attr("r", 3.5)
         .attr("fill", VIOLET)
-        .attr("stroke", "#09090b")
+        .attr("stroke", dotStroke)
         .attr("stroke-width", 1.5)
         .attr("opacity", reduced ? 1 : 0)
         .transition()
@@ -282,7 +293,7 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
         .attr("cy", (d) => yWage(d.wage as number))
         .attr("r", 3.5)
         .attr("fill", CYAN)
-        .attr("stroke", "#09090b")
+        .attr("stroke", dotStroke)
         .attr("stroke-width", 1.5)
         .attr("opacity", reduced ? 1 : 0)
         .transition()
@@ -303,7 +314,7 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
         .attr("width", 22).attr("height", 3).attr("rx", 1.5).attr("fill", VIOLET);
       legendG.append("text").attr("x", lx + 28).attr("y", 8)
         .attr("dominant-baseline", "middle")
-        .attr("fill", "#a1a1aa").attr("font-size", "11px")
+        .attr("fill", legendText).attr("font-size", "11px")
         .text("Employment");
       lx += 105 + 20;
     }
@@ -313,7 +324,7 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
         .attr("width", 22).attr("height", 3).attr("rx", 1.5).attr("fill", CYAN);
       legendG.append("text").attr("x", lx + 28).attr("y", 8)
         .attr("dominant-baseline", "middle")
-        .attr("fill", "#a1a1aa").attr("font-size", "11px")
+        .attr("fill", legendText).attr("font-size", "11px")
         .text("Median Wage");
     }
 
@@ -346,7 +357,7 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
       .on("mouseleave", () => setTooltip((p) => ({ ...p, visible: false })));
 
     return () => { svg.selectAll("*").interrupt(); };
-  }, [data]);
+  }, [data, isDark]);
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
@@ -379,25 +390,25 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
             left: tooltip.x > tooltip.cw * 0.65 ? tooltip.x - 195 : tooltip.x + 14,
             top: tooltip.y,
             transform: "translateY(-50%)",
-            background: "rgba(9,9,11,0.93)",
+            background: isDark ? "rgba(9,9,11,0.93)" : "rgba(255,255,255,0.95)",
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
             borderColor: "rgba(139,92,246,0.35)",
             minWidth: 185,
-            boxShadow: "0 4px 28px rgba(0,0,0,0.55)",
+            boxShadow: isDark ? "0 4px 28px rgba(0,0,0,0.55)" : "0 4px 16px rgba(0,0,0,0.10)",
           }}
         >
-          <p className="font-semibold text-white mb-1.5">{tooltip.year}</p>
+          <p className="font-semibold text-zinc-900 dark:text-white mb-1.5">{tooltip.year}</p>
           <div className="space-y-1 text-xs">
             <div className="flex justify-between gap-4">
               <span style={{ color: VIOLET }}>Employment</span>
-              <span className="font-semibold text-white">
+              <span className="font-semibold text-zinc-900 dark:text-white">
                 {tooltip.employment != null ? tooltip.employment.toLocaleString() : "—"}
               </span>
             </div>
             <div className="flex justify-between gap-4">
               <span style={{ color: CYAN }}>Median Wage</span>
-              <span className="font-semibold text-white">
+              <span className="font-semibold text-zinc-900 dark:text-white">
                 {tooltip.wage != null ? `$${tooltip.wage.toLocaleString()}` : "—"}
               </span>
             </div>

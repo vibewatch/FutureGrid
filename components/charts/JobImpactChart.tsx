@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import { colorForRisk } from "@/lib/utils";
 import { generateAllCareerInsights } from "@/lib/data";
@@ -37,6 +38,8 @@ const RISK_GLOW: Record<string, string> = {
 export default function JobImpactChart({ selectedSector }: JobImpactChartProps) {
   const svgRef      = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { resolvedTheme } = useTheme();
+  const isDark = (resolvedTheme ?? "dark") !== "light";
   const [tooltip, setTooltip] = useState<TooltipData>({
     visible: false, x: 0, y: 0, cw: 800, name: "", prob: 0, risk: "", sector: "",
   });
@@ -57,6 +60,12 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // Theme-aware colors
+    const axisText  = isDark ? "#a1a1aa" : "#52525b";
+    const axisLabel = isDark ? "#52525b" : "#3f3f46";
+    const gridColor = isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)";
+    const axisLine  = isDark ? "rgba(255,255,255,0.10)" : "rgba(0,0,0,0.10)";
+
     const W = 800, H = 500;
     const M = { top: 30, right: 40, bottom: 180, left: 60 };
     svg.attr("viewBox", `0 0 ${W} ${H}`);
@@ -69,7 +78,7 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
       svg.append("text")
         .attr("x", W / 2).attr("y", H / 2)
         .attr("text-anchor", "middle")
-        .attr("fill", "#71717a").attr("font-size", "14px")
+        .attr("fill", axisText).attr("font-size", "14px")
         .text("No data available for this sector");
       return;
     }
@@ -100,7 +109,7 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
       d3.axisLeft(y).tickSize(-(W - M.left - M.right)).tickFormat(() => "").ticks(5)
     );
     grid.selectAll("line")
-      .attr("stroke", "rgba(255,255,255,0.05)")
+      .attr("stroke", gridColor)
       .attr("stroke-dasharray", "3,5");
     grid.select(".domain").remove();
 
@@ -108,13 +117,13 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
     const xAxis = svg.append("g")
       .attr("transform", `translate(0,${H - M.bottom})`)
       .call(d3.axisBottom(x).tickSize(4));
-    xAxis.select(".domain").attr("stroke", "rgba(255,255,255,0.10)");
-    xAxis.selectAll(".tick line").attr("stroke", "rgba(255,255,255,0.10)");
+    xAxis.select(".domain").attr("stroke", axisLine);
+    xAxis.selectAll(".tick line").attr("stroke", axisLine);
     xAxis.selectAll<SVGTextElement, string>("text")
       .attr("transform", "rotate(-45)")
       .attr("text-anchor", "end")
       .attr("font-size", "10px")
-      .attr("fill", "#a1a1aa")
+      .attr("fill", axisText)
       .attr("dy", "0.32em")
       .attr("dx", "-0.5em")
       .each(function () {
@@ -127,21 +136,21 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
     const yAxis = svg.append("g")
       .attr("transform", `translate(${M.left},0)`)
       .call(d3.axisLeft(y).tickFormat(d3.format(".0%")).ticks(5).tickSize(4));
-    yAxis.select(".domain").attr("stroke", "rgba(255,255,255,0.10)");
-    yAxis.selectAll(".tick line").attr("stroke", "rgba(255,255,255,0.10)");
-    yAxis.selectAll("text").attr("fill", "#a1a1aa").attr("font-size", "11px");
+    yAxis.select(".domain").attr("stroke", axisLine);
+    yAxis.selectAll(".tick line").attr("stroke", axisLine);
+    yAxis.selectAll("text").attr("fill", axisText).attr("font-size", "11px");
 
     // --- Axis labels ---
     svg.append("text")
       .attr("x", W / 2).attr("y", H - 5)
       .attr("text-anchor", "middle")
-      .attr("fill", "#52525b").attr("font-size", "12px")
+      .attr("fill", axisLabel).attr("font-size", "12px")
       .text("Occupations");
     svg.append("text")
       .attr("transform", "rotate(-90)")
       .attr("x", -(H / 2)).attr("y", 15)
       .attr("text-anchor", "middle")
-      .attr("fill", "#52525b").attr("font-size", "12px")
+      .attr("fill", axisLabel).attr("font-size", "12px")
       .text("AI Exposure");
 
     // --- Bars ---
@@ -204,7 +213,7 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
           .attr("stroke-width", 0.5)
           .attr("stroke-opacity", 0.6);
       });
-  }, [data, selectedSector]);
+  }, [data, selectedSector, isDark]);
 
   return (
     <div ref={containerRef} className="relative w-full overflow-x-auto">
@@ -217,15 +226,17 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
             left: tooltip.x > tooltip.cw * 0.65 ? tooltip.x - 215 : tooltip.x + 14,
             top: tooltip.y,
             transform: "translateY(-50%)",
-            background: "rgba(9,9,11,0.93)",
+            background: isDark ? "rgba(9,9,11,0.93)" : "rgba(255,255,255,0.95)",
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
             borderColor: colorForRisk(tooltip.risk) + "44",
             minWidth: 195,
-            boxShadow: `0 4px 24px ${RISK_GLOW[tooltip.risk] ?? "rgba(0,0,0,0.4)"}`,
+            boxShadow: isDark
+              ? `0 4px 24px ${RISK_GLOW[tooltip.risk] ?? "rgba(0,0,0,0.4)"}`
+              : `0 4px 16px rgba(0,0,0,0.10)`,
           }}
         >
-          <p className="font-semibold text-white leading-tight mb-0.5 max-w-[200px] truncate">
+          <p className="font-semibold text-zinc-900 dark:text-white leading-tight mb-0.5 max-w-[200px] truncate">
             {tooltip.name}
           </p>
           <p className="text-xs text-zinc-500 mb-2">{tooltip.sector}</p>

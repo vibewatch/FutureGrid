@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useTheme } from "next-themes";
 import CommandPalette from "@/components/ui/CommandPalette";
 import { getDataSources } from "@/lib/data";
 
@@ -116,6 +117,62 @@ function IconX() {
   );
 }
 
+function IconSun() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="5" />
+      <line x1="12" y1="1"  x2="12" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="23" />
+      <line x1="4.22" y1="4.22"  x2="5.64" y2="5.64" />
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+      <line x1="1" y1="12" x2="3" y2="12" />
+      <line x1="21" y1="12" x2="23" y2="12" />
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+      <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22" />
+    </svg>
+  );
+}
+
+function IconMoon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  );
+}
+
+function ThemeToggle() {
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Detect client-side mount to avoid hydration mismatch with next-themes
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { setMounted(true); }, []);
+
+  if (!mounted) {
+    return (
+      <button
+        className="p-1.5 rounded-md text-zinc-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 transition-colors w-8 h-8"
+        aria-label="Toggle theme"
+        disabled
+      />
+    );
+  }
+
+  const isDark = resolvedTheme === "dark";
+
+  return (
+    <button
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-pressed={isDark}
+      className="p-1.5 rounded-md text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 transition-colors"
+    >
+      {isDark ? <IconSun /> : <IconMoon />}
+    </button>
+  );
+}
+
 // ─── Nav items ─────────────────────────────────────────────────────────────────
 const NAV_ITEMS = [
   { href: "/",        label: "Dashboard", Icon: IconDashboard },
@@ -134,7 +191,7 @@ function Logo({ onClick }: { onClick?: () => void }) {
       <div className="w-8 h-8 rounded-lg brand-grad flex items-center justify-center text-white font-black text-xs tracking-tight shadow-lg shrink-0">
         FG
       </div>
-      <span className="text-[17px] font-bold tracking-tight text-white leading-none">
+      <span className="text-[17px] font-bold tracking-tight text-zinc-900 dark:text-white leading-none">
         Future<span className="text-gradient">Grid</span>
       </span>
     </Link>
@@ -152,7 +209,7 @@ function SearchButton({ onNavigate }: { onNavigate?: () => void }) {
       <button
         onClick={handleClick}
         aria-label="Open search command palette (Cmd K)"
-        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg glass text-zinc-500 hover:text-zinc-300 transition-colors text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg glass text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
       >
         {/* Search icon */}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -160,7 +217,7 @@ function SearchButton({ onNavigate }: { onNavigate?: () => void }) {
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
         <span className="flex-1 text-left text-xs">Search…</span>
-        <kbd className="text-[10px] border border-zinc-700 rounded px-1.5 py-0.5 font-sans">⌘K</kbd>
+        <kbd className="text-[10px] border border-zinc-300 dark:border-zinc-700 rounded px-1.5 py-0.5 font-sans">⌘K</kbd>
       </button>
     </div>
   );
@@ -183,8 +240,8 @@ function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
                   aria-current={isActive ? "page" : undefined}
                   className={`relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
                     isActive
-                      ? "bg-zinc-800/80 text-white"
-                      : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
+                      ? "bg-zinc-200/80 dark:bg-zinc-800/80 text-zinc-900 dark:text-white"
+                      : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50"
                   }`}
                 >
                   {isActive && (
@@ -193,7 +250,7 @@ function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
                       aria-hidden="true"
                     />
                   )}
-                  <span className={isActive ? "text-violet-400" : ""}>
+                  <span className={isActive ? "text-violet-500 dark:text-violet-400" : ""}>
                     <Icon />
                   </span>
                   <span className={isActive ? "text-gradient font-semibold" : ""}>
@@ -205,13 +262,13 @@ function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
           })}
         </ul>
       </nav>
-      <div className="p-4 border-t border-zinc-800/60 text-xs text-zinc-500 space-y-1">
+      <div className="p-4 border-t border-zinc-200 dark:border-zinc-800/60 text-xs text-zinc-500 space-y-1">
         <p className="leading-snug">Data: Anthropic Economic Index · BLS · O*NET</p>
-        <Link href="/sources" className="text-zinc-600 hover:text-zinc-400 transition-colors">
+        <Link href="/sources" className="text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors">
           View sources →
         </Link>
         {_dataAsOf && (
-          <p className="text-zinc-600 leading-snug">Data as of {_dataAsOf}</p>
+          <p className="text-zinc-400 dark:text-zinc-600 leading-snug">Data as of {_dataAsOf}</p>
         )}
       </div>
     </>
@@ -277,22 +334,26 @@ export default function Sidebar() {
       <CommandPalette />
 
       {/* ── Mobile top bar (hidden at lg+) ─────────────────────────────────── */}
-      <header className="fixed top-0 left-0 right-0 h-14 bg-zinc-900/90 backdrop-blur-sm border-b border-zinc-800/80 flex items-center gap-3 px-4 lg:hidden z-50">
+      <header className="fixed top-0 left-0 right-0 h-14 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-sm border-b border-zinc-200 dark:border-zinc-800/80 flex items-center gap-3 px-4 lg:hidden z-50">
         <button
           ref={hamburgerRef}
           onClick={() => setDrawerOpen(true)}
           aria-label="Open navigation menu"
-          className="p-1.5 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 transition-colors"
+          className="p-1.5 rounded-md text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 transition-colors"
         >
           <IconMenu />
         </button>
         <Logo />
+        <div className="ml-auto">
+          <ThemeToggle />
+        </div>
       </header>
 
       {/* ── Desktop sidebar (hidden below lg) ──────────────────────────────── */}
-      <aside className="hidden lg:flex fixed left-0 top-0 h-full w-60 bg-zinc-900/85 backdrop-blur-sm border-r border-zinc-800/60 flex-col z-40">
-        <div className="p-5 border-b border-zinc-800/60">
+      <aside className="hidden lg:flex fixed left-0 top-0 h-full w-60 bg-white/85 dark:bg-zinc-900/85 backdrop-blur-sm border-r border-zinc-200 dark:border-zinc-800/60 flex-col z-40">
+        <div className="p-5 border-b border-zinc-200 dark:border-zinc-800/60 flex items-center justify-between">
           <Logo />
+          <ThemeToggle />
         </div>
         <NavList pathname={pathname} />
       </aside>
@@ -309,19 +370,19 @@ export default function Sidebar() {
       {/* ── Mobile slide-in drawer ──────────────────────────────────────────── */}
       <aside
         ref={drawerRef}
-        className={`fixed left-0 top-0 h-full w-64 bg-zinc-900 border-r border-zinc-800/80 flex flex-col z-50 lg:hidden motion-safe:transition-transform motion-safe:duration-300 ease-in-out ${
+        className={`fixed left-0 top-0 h-full w-64 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800/80 flex flex-col z-50 lg:hidden motion-safe:transition-transform motion-safe:duration-300 ease-in-out ${
           drawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         aria-label="Navigation drawer"
         aria-hidden={!drawerOpen}
       >
-        <div className="p-4 border-b border-zinc-800/60 flex items-center justify-between">
+        <div className="p-4 border-b border-zinc-200 dark:border-zinc-800/60 flex items-center justify-between">
           <Logo onClick={() => setDrawerOpen(false)} />
           <button
             ref={closeButtonRef}
             onClick={() => setDrawerOpen(false)}
             aria-label="Close navigation menu"
-            className="p-1.5 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 transition-colors"
+            className="p-1.5 rounded-md text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 transition-colors"
           >
             <IconX />
           </button>

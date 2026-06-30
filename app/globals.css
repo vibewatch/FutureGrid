@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* ─── Tailwind v4: dark variant = .dark class (set by next-themes) ─────────── */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ─── Design tokens ─────────────────────────────────────────────────────────── */
 @theme {
   --color-brand-violet: #8b5cf6;
@@ -23,6 +26,51 @@
   --brand-violet: #8b5cf6;
   --brand-cyan:   #22d3ee;
   --brand-blue:   #3b82f6;
+
+  /* ── Light-mode surface/text tokens ── */
+  --bg:              #f8f9fc;
+  --bg-elevated:     #ffffff;
+  --bg-panel:        rgba(255,255,255,0.85);
+  --text:            #18181b;   /* zinc-900 */
+  --text-subtle:     #3f3f46;   /* zinc-700 */
+  --text-muted:      #71717a;   /* zinc-500 */
+  --border:          rgba(0,0,0,0.09);
+  --border-strong:   rgba(0,0,0,0.14);
+
+  /* Glass tokens — light */
+  --glass-bg:        rgba(255,255,255,0.65);
+  --glass-border:    rgba(0,0,0,0.08);
+
+  /* Scrollbar — light */
+  --scrollbar-track: #f1f1f5;
+  --scrollbar-thumb: #8b5cf6;
+  --scrollbar-thumb-hover: #a78bfa;
+
+  /* Grid background opacity — lighter in light mode */
+  --grid-bg-opacity: 0.0;
+}
+
+.dark {
+  /* ── Dark-mode surface/text tokens (matches original) ── */
+  --bg:              #07080d;
+  --bg-elevated:     #0f1117;
+  --bg-panel:        rgba(15,17,23,0.85);
+  --text:            #e4e4e7;   /* zinc-200 */
+  --text-subtle:     #d4d4d8;   /* zinc-300 */
+  --text-muted:      #71717a;   /* zinc-500 */
+  --border:          rgba(255,255,255,0.10);
+  --border-strong:   rgba(255,255,255,0.15);
+
+  /* Glass tokens — dark */
+  --glass-bg:        rgba(255,255,255,0.04);
+  --glass-border:    rgba(255,255,255,0.08);
+
+  /* Scrollbar — dark */
+  --scrollbar-track: #07080d;
+  --scrollbar-thumb: #8b5cf6;
+  --scrollbar-thumb-hover: #a78bfa;
+
+  --grid-bg-opacity: 1.0;
 }
 
 /* ─── Base ──────────────────────────────────────────────────────────────────── */
@@ -30,16 +78,24 @@ html {
   color-scheme: dark;
 }
 
+html.dark {
+  color-scheme: dark;
+}
+
+html:not(.dark) {
+  color-scheme: light;
+}
+
 body {
-  background-color: #07080d;
-  color: #e4e4e7; /* zinc-200 — WCAG AA on #07080d */
+  background-color: var(--bg);
+  color: var(--text);
 }
 
 /* ─── Custom scrollbar ───────────────────────────────────────────────────────── */
 ::-webkit-scrollbar        { width: 6px; height: 6px; }
-::-webkit-scrollbar-track  { background: #07080d; }
-::-webkit-scrollbar-thumb  { background: #8b5cf6; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
+::-webkit-scrollbar-track  { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb  { background: var(--scrollbar-thumb); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
 
 /* ─── Selection ──────────────────────────────────────────────────────────────── */
 ::selection {
@@ -75,7 +131,7 @@ body {
 
 /* ─── Utility classes (consumed by all agents) ───────────────────────────────── */
 @layer utilities {
-  /* Gradient text – violet → cyan */
+  /* Gradient text – violet → cyan (reads fine on both themes) */
   .text-gradient {
     background: linear-gradient(90deg, #8b5cf6, #22d3ee);
     -webkit-background-clip: text;
@@ -83,12 +139,12 @@ body {
     -webkit-text-fill-color: transparent;
   }
 
-  /* Glassmorphism panel */
+  /* Glassmorphism panel — uses theme vars so it adapts automatically */
   .glass {
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--glass-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--glass-border);
     border-radius: 12px;
   }
 
@@ -184,3 +240,4 @@ body {
     transform: none !important;
   }
 }
+

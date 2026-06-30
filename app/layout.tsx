@@ -4,6 +4,7 @@ import "./globals.css";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import Sidebar from "@/components/dashboard/Sidebar";
 import GridBackground from "@/components/ui/GridBackground";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,24 +56,26 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="h-full bg-[#07080d] text-zinc-200">
-        <GoogleAnalytics />
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-violet-600 focus:text-white focus:rounded-md focus:text-sm focus:font-medium"
-        >
-          Skip to main content
-        </a>
-        <GridBackground />
-        <Sidebar />
-        {/* pt-16 on mobile offsets the fixed top bar; lg resets to lg:pt-0 via p-8 shorthand */}
-        <main id="main" className="ml-0 lg:ml-60 min-h-full px-4 pb-4 pt-16 sm:px-6 sm:pb-6 sm:pt-16 lg:p-8">
-          {children}
-          <footer className="mt-12 border-t border-white/10 pt-5 text-xs text-zinc-500 sm:text-sm" aria-label="Site credit">
-            Built by <span className="font-medium text-zinc-300">Yingting Huang</span>
-          </footer>
-        </main>
+    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <body className="h-full bg-[var(--bg)] text-[var(--text)]">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <GoogleAnalytics />
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-violet-600 focus:text-white focus:rounded-md focus:text-sm focus:font-medium"
+          >
+            Skip to main content
+          </a>
+          <GridBackground />
+          <Sidebar />
+          {/* pt-16 on mobile offsets the fixed top bar; lg resets to lg:pt-0 via p-8 shorthand */}
+          <main id="main" className="ml-0 lg:ml-60 min-h-full px-4 pb-4 pt-16 sm:px-6 sm:pb-6 sm:pt-16 lg:p-8">
+            {children}
+            <footer className="mt-12 border-t border-[var(--border)] pt-5 text-xs text-[var(--text-muted)] sm:text-sm" aria-label="Site credit">
+              Built by <span className="font-medium text-[var(--text-subtle)]">Yingting Huang</span>
+            </footer>
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );

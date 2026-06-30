@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useMemo, useState } from "react";
+import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -43,6 +44,8 @@ export default function SectorScatterChart() {
   const router         = useRouter();
   const svgRef         = useRef<SVGSVGElement>(null);
   const containerRef   = useRef<HTMLDivElement>(null);
+  const { resolvedTheme } = useTheme();
+  const isDark = (resolvedTheme ?? "dark") !== "light";
   // Keep router stable in closure — avoids adding router to D3 effect deps
   const routerRef      = useRef(router);
   // Update ref in an effect (never during render) to satisfy react-hooks/refs
@@ -75,6 +78,12 @@ export default function SectorScatterChart() {
 
     const svg     = d3.select(svgEl);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Theme-aware colors
+    const axisText   = isDark ? "#71717a" : "#52525b";
+    const gridColor  = isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)";
+    const axisLine   = isDark ? "rgba(255,255,255,0.10)" : "rgba(0,0,0,0.10)";
+    const bubbleText = isDark ? "rgba(255,255,255,0.90)" : "rgba(0,0,0,0.80)";
 
     if (!containerEl || data.length === 0) return () => { svg.selectAll("*").interrupt(); };
 
@@ -119,7 +128,7 @@ export default function SectorScatterChart() {
       .call((g) => {
         g.select(".domain").remove();
         g.selectAll(".tick line")
-          .attr("stroke", "rgba(255,255,255,0.05)")
+          .attr("stroke", gridColor)
           .attr("stroke-dasharray", "3,3");
         g.selectAll(".tick text").remove();
       });
@@ -132,7 +141,7 @@ export default function SectorScatterChart() {
       .call((g) => {
         g.select(".domain").remove();
         g.selectAll(".tick line")
-          .attr("stroke", "rgba(255,255,255,0.05)")
+          .attr("stroke", gridColor)
           .attr("stroke-dasharray", "3,3");
         g.selectAll(".tick text").remove();
       });
@@ -146,15 +155,15 @@ export default function SectorScatterChart() {
           .ticks(5)
           .tickFormat((d) => `${d}%`)
       );
-    xAxisG.select(".domain").attr("stroke", "rgba(255,255,255,0.10)");
-    xAxisG.selectAll(".tick line").attr("stroke", "rgba(255,255,255,0.10)");
-    xAxisG.selectAll("text").attr("fill", "#71717a").attr("font-size", "11px");
+    xAxisG.select(".domain").attr("stroke", axisLine);
+    xAxisG.selectAll(".tick line").attr("stroke", axisLine);
+    xAxisG.selectAll("text").attr("fill", axisText).attr("font-size", "11px");
 
     svg.append("text")
       .attr("x", margin.left + (W - margin.left - margin.right) / 2)
       .attr("y", H - 8)
       .attr("text-anchor", "middle")
-      .attr("fill", "#71717a")
+      .attr("fill", axisText)
       .attr("font-size", "11px")
       .text("AI Exposure →");
 
@@ -165,16 +174,16 @@ export default function SectorScatterChart() {
           .ticks(5)
           .tickFormat((d) => `${d}%`)
       );
-    yAxisG.select(".domain").attr("stroke", "rgba(255,255,255,0.10)");
-    yAxisG.selectAll(".tick line").attr("stroke", "rgba(255,255,255,0.10)");
-    yAxisG.selectAll("text").attr("fill", "#71717a").attr("font-size", "11px");
+    yAxisG.select(".domain").attr("stroke", axisLine);
+    yAxisG.selectAll(".tick line").attr("stroke", axisLine);
+    yAxisG.selectAll("text").attr("fill", axisText).attr("font-size", "11px");
 
     svg.append("text")
       .attr("transform", "rotate(-90)")
       .attr("x", -(margin.top + (H - margin.top - margin.bottom) / 2))
       .attr("y", 16)
       .attr("text-anchor", "middle")
-      .attr("fill", "#71717a")
+      .attr("fill", axisText)
       .attr("font-size", "11px")
       .text("Bright-Outlook Share →");
 
@@ -216,7 +225,7 @@ export default function SectorScatterChart() {
         .append("text")
         .attr("text-anchor", "middle")
         .attr("dy", "0.35em")
-        .attr("fill", "rgba(255,255,255,0.90)")
+        .attr("fill", bubbleText)
         .attr("font-size", Math.min(10, r * 0.42) + "px")
         .attr("font-weight", "600")
         .attr("pointer-events", "none")
@@ -274,7 +283,7 @@ export default function SectorScatterChart() {
       });
 
     return () => { svg.selectAll("*").interrupt(); };
-  }, [data]);
+  }, [data, isDark]);
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -305,15 +314,15 @@ export default function SectorScatterChart() {
             left: tooltip.x > tooltip.cw * 0.62 ? tooltip.x - 224 : tooltip.x + 14,
             top: tooltip.y,
             transform: "translateY(-50%)",
-            background: "rgba(9,9,11,0.93)",
+            background: isDark ? "rgba(9,9,11,0.93)" : "rgba(255,255,255,0.95)",
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
             borderColor: bandColor(tooltip.item.avgRisk) + "55",
             minWidth: 210,
-            boxShadow: "0 4px 28px rgba(0,0,0,0.55)",
+            boxShadow: isDark ? "0 4px 28px rgba(0,0,0,0.55)" : "0 4px 16px rgba(0,0,0,0.10)",
           }}
         >
-          <p className="font-semibold text-white text-sm mb-2 leading-tight">
+          <p className="font-semibold text-zinc-900 dark:text-white text-sm mb-2 leading-tight">
             {tooltip.item.sector}
           </p>
           <div className="space-y-1.5 text-xs">
@@ -329,20 +338,20 @@ export default function SectorScatterChart() {
             </div>
             <div className="flex justify-between gap-4">
               <span className="text-zinc-500">Bright Outlook</span>
-              <span className="font-semibold text-green-400">
+              <span className="font-semibold text-green-500 dark:text-green-400">
                 {(tooltip.item.brightShare * 100).toFixed(1)}%
               </span>
             </div>
             <div className="flex justify-between gap-4">
               <span className="text-zinc-500">Employment</span>
-              <span className="text-white font-medium">
+              <span className="text-zinc-900 dark:text-white font-medium">
                 {tooltip.item.totalEmployment != null
                   ? tooltip.item.totalEmployment.toLocaleString()
                   : "—"}
               </span>
             </div>
           </div>
-          <p className="text-[10px] text-zinc-600 mt-2.5">Click to explore sector →</p>
+          <p className="text-[10px] text-zinc-500 mt-2.5">Click to explore sector →</p>
         </div>
       )}
 

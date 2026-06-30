@@ -54,13 +54,13 @@ export default function SkillsPage() {
         <h1 className="text-3xl font-bold tracking-tight text-gradient">
           Skill Transition Pathways
         </h1>
-        <p className="text-zinc-400 mt-1">
+        <p className="text-zinc-600 dark:text-zinc-400 mt-1">
           Identify skill-based pathways from high-exposure to low-exposure occupations.
         </p>
       </div>
 
       {/* Chart */}
-      <div className="glass bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
         <SkillTransitionChart />
       </div>
 
@@ -75,7 +75,7 @@ export default function SkillsPage() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 ${
                 selectedGroup === group
                   ? "brand-grad text-white shadow-md"
-                  : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-white"
+                  : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-white"
               }`}
             >
               {group}
@@ -89,8 +89,8 @@ export default function SkillsPage() {
 
       {/* Result bar + sort */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <p className="text-zinc-400 text-sm">
-          <span className="text-white font-semibold">{occupationsWithSkill.length}</span>{" "}
+        <p className="text-zinc-600 dark:text-zinc-400 text-sm">
+          <span className="text-zinc-900 dark:text-white font-semibold">{occupationsWithSkill.length}</span>{" "}
           occupation{occupationsWithSkill.length !== 1 ? "s" : ""} use{" "}
           <span className="text-violet-400">{selectedGroup}</span> skills
         </p>
@@ -111,7 +111,7 @@ export default function SkillsPage() {
               className={`px-2.5 py-1 rounded text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 ${
                 sortKey === key
                   ? "bg-violet-600 text-white"
-                  : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white"
+                  : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-white"
               }`}
             >
               {label}
@@ -133,12 +133,12 @@ export default function SkillsPage() {
             <Link
               key={i.occupationCode}
               href={`/careers/${i.occupationCode}`}
-              className="block glass glass-hover bg-zinc-900/50 border border-zinc-800 rounded-xl p-5 focus:outline-none focus:ring-2 focus:ring-violet-500 group transition-all"
+              className="block glass glass-hover bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 focus:outline-none focus:ring-2 focus:ring-violet-500 group transition-all"
             >
               {/* Header */}
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1 pr-2">
-                  <h3 className="font-semibold text-white text-sm leading-tight group-hover:text-cyan-300 transition-colors">
+                  <h3 className="font-semibold text-zinc-900 dark:text-white text-sm leading-tight group-hover:text-cyan-300 transition-colors">
                     {i.occupationName}
                   </h3>
                   <p className="text-xs text-zinc-500 mt-0.5">{i.sectorName}</p>
@@ -155,7 +155,7 @@ export default function SkillsPage() {
               </div>
 
               {/* Risk bar */}
-              <div className="h-1 bg-zinc-800 rounded-full overflow-hidden mb-3">
+              <div className="h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden mb-3">
                 <div
                   className="h-full rounded-full"
                   style={{
@@ -168,7 +168,7 @@ export default function SkillsPage() {
               {/* Salary */}
               <p className="text-xs text-zinc-500 mb-2.5">
                 Salary:{" "}
-                <span className="text-zinc-300 font-medium">
+                <span className="text-zinc-700 dark:text-zinc-300 font-medium">
                   {formatCurrency(i.medianSalary)}
                 </span>
               </p>
@@ -178,7 +178,7 @@ export default function SkillsPage() {
                 {matchedSkills.map((s) => (
                   <span
                     key={s}
-                    className="px-2 py-0.5 rounded bg-violet-900/30 border border-violet-700/30 text-violet-300 text-xs"
+                    className="px-2 py-0.5 rounded bg-violet-50 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-700/30 text-violet-700 dark:text-violet-300 text-xs"
                   >
                     {s}
                   </span>
@@ -190,13 +190,13 @@ export default function SkillsPage() {
       </div>
 
       {occupationsWithSkill.length === 0 && (
-        <div className="glass bg-zinc-900/40 border border-zinc-800 rounded-xl py-12 flex items-center justify-center">
+        <div className="glass bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 rounded-xl py-12 flex items-center justify-center">
           <p className="text-zinc-500 text-sm">No occupations found for this skill group.</p>
         </div>
       )}
 
       {/* Divider */}
-      <hr className="border-zinc-800" />
+      <hr className="border-zinc-200 dark:border-zinc-800" />
 
       {/* Reskilling Pathways Explorer */}
       <ReskillExplorer />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useMemo, useState } from "react";
+import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import { getCountryMapData } from "@/lib/data";
 
@@ -66,6 +67,8 @@ function normOf(v: number | null | undefined, max: number): number | null {
 export default function HeatmapChart() {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { resolvedTheme } = useTheme();
+  const isDark = (resolvedTheme ?? "dark") !== "light";
   const [tooltip, setTooltip] = useState<TooltipData>({
     visible: false, x: 0, y: 0, cw: 800,
     country: "", metricLabel: "", rawDisplay: "", normValue: null,
@@ -137,6 +140,11 @@ export default function HeatmapChart() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const metricKeys = METRICS.map((m) => m.key);
 
+    // Theme-aware colors
+    const axisText   = isDark ? "#a1a1aa" : "#52525b";
+    const legendMid  = isDark ? "#52525b" : "#71717a";
+    const noDataFill = isDark ? "#27272a" : "#e4e4e7";
+
     const margin = { top: 65, right: 24, bottom: 52, left: 162 };
     const cellW = 100;
     const cellH = 30;
@@ -161,7 +169,7 @@ export default function HeatmapChart() {
       svg.append("text")
         .attr("x", x).attr("y", margin.top - 10)
         .attr("text-anchor", "middle")
-        .attr("fill", "#a1a1aa").attr("font-size", "11px").attr("font-weight", "600")
+        .attr("fill", axisText).attr("font-size", "11px").attr("font-weight", "600")
         .text(m.shortLabel);
     });
 
@@ -172,7 +180,7 @@ export default function HeatmapChart() {
       svg.append("text")
         .attr("x", margin.left - 8).attr("y", y)
         .attr("text-anchor", "end").attr("dominant-baseline", "middle")
-        .attr("fill", "#a1a1aa").attr("font-size", "11px")
+        .attr("fill", axisText).attr("font-size", "11px")
         .text(name.length > 21 ? name.slice(0, 20) + "…" : name);
     });
 
@@ -188,7 +196,7 @@ export default function HeatmapChart() {
     cellG.append("rect")
       .attr("width", xScale.bandwidth())
       .attr("height", yScale.bandwidth())
-      .attr("fill", (d) => d.normValue != null ? metricColor(d.normValue) : "#27272a")
+      .attr("fill", (d) => d.normValue != null ? metricColor(d.normValue) : noDataFill)
       .attr("rx", 3);
 
     // ── Entrance animation ──
@@ -246,14 +254,14 @@ export default function HeatmapChart() {
     svg.append("text").attr("x", legendX).attr("y", legendY + 20)
       .attr("fill", "#71717a").attr("font-size", "10px").text("Low");
     svg.append("text").attr("x", legendX + legendW / 2).attr("y", legendY + 20)
-      .attr("text-anchor", "middle").attr("fill", "#52525b").attr("font-size", "10px")
+      .attr("text-anchor", "middle").attr("fill", legendMid).attr("font-size", "10px")
       .text("Normalised 0–1 per metric (colour only) · grey = no data");
     svg.append("text").attr("x", legendX + legendW).attr("y", legendY + 20)
       .attr("text-anchor", "end").attr("fill", "#71717a").attr("font-size", "10px")
       .text("High");
 
     return () => { svg.selectAll("*").interrupt(); };
-  }, [cells, countries]);
+  }, [cells, countries, isDark]);
 
   return (
     <div ref={containerRef} className="relative w-full overflow-x-auto">
@@ -281,17 +289,17 @@ export default function HeatmapChart() {
             left: tooltip.x > tooltip.cw * 0.65 ? tooltip.x - 210 : tooltip.x + 14,
             top: tooltip.y,
             transform: "translateY(-50%)",
-            background: "rgba(9,9,11,0.93)",
+            background: isDark ? "rgba(9,9,11,0.93)" : "rgba(255,255,255,0.95)",
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
             borderColor: tooltip.normValue != null
               ? metricColor(tooltip.normValue) + "55"
               : "#3f3f4680",
             minWidth: 185,
-            boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
+            boxShadow: isDark ? "0 4px 24px rgba(0,0,0,0.4)" : "0 4px 16px rgba(0,0,0,0.10)",
           }}
         >
-          <p className="font-semibold text-white text-sm leading-tight mb-0.5">{tooltip.country}</p>
+          <p className="font-semibold text-zinc-900 dark:text-white text-sm leading-tight mb-0.5">{tooltip.country}</p>
           <p className="text-xs text-zinc-500 mb-2">{tooltip.metricLabel}</p>
           <span
             className="text-lg font-bold"

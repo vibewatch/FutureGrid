@@ -27,7 +27,7 @@ export default function HeatmapPage() {
         <h1 className="text-3xl font-bold tracking-tight text-gradient">
           Country × AI Readiness Heatmap
         </h1>
-        <p className="text-zinc-400 mt-1">
+        <p className="text-zinc-600 dark:text-zinc-400 mt-1">
           Real AI metrics for 25 major economies — usage index, GenAI diffusion, IMF AI
           Readiness, and four AIPI sub-indices. Each metric is independently normalised to 0–1
           for colour comparability.{" "}
@@ -38,7 +38,7 @@ export default function HeatmapPage() {
       </div>
 
       {/* Legend */}
-      <div className="glass bg-zinc-900/50 border border-zinc-800 rounded-xl px-5 py-4">
+      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl px-5 py-4">
         <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">
           AI Exposure Legend
         </h2>
@@ -49,7 +49,7 @@ export default function HeatmapPage() {
                 className="w-3.5 h-3.5 rounded-sm shrink-0"
                 style={{ backgroundColor: color }}
               />
-              <span className="text-sm text-zinc-300">{label}</span>
+              <span className="text-sm text-zinc-700 dark:text-zinc-300">{label}</span>
               <span className="text-xs text-zinc-600">{range}</span>
             </div>
           ))}
@@ -57,13 +57,13 @@ export default function HeatmapPage() {
       </div>
 
       {/* Heatmap chart */}
-      <div className="glass bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
         <HeatmapChart />
       </div>
 
       {/* Sector detail cards */}
-      <div className="glass bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-        <h2 className="text-lg font-semibold text-white mb-5">Sector Details</h2>
+      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-5">Sector Details</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {sectors.map((s) => {
             const rl = riskLabel(s.avgRisk);
@@ -72,7 +72,7 @@ export default function HeatmapPage() {
               <Link
                 key={s.sector}
                 href={`/sectors/${encodeURIComponent(s.sector)}`}
-                className="relative group block glass glass-hover bg-zinc-800/40 border border-zinc-700/40 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all overflow-hidden"
+                className="relative group block glass glass-hover bg-zinc-100 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-700/40 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all overflow-hidden"
               >
                 {/* Accent stripe */}
                 <div
@@ -81,7 +81,7 @@ export default function HeatmapPage() {
                 />
 
                 <div className="pl-3">
-                  <h3 className="font-semibold text-white text-sm leading-tight mb-3 group-hover:text-cyan-300 transition-colors">
+                  <h3 className="font-semibold text-zinc-900 dark:text-white text-sm leading-tight mb-3 group-hover:text-cyan-300 transition-colors">
                     {s.sector}
                   </h3>
 
@@ -93,7 +93,7 @@ export default function HeatmapPage() {
                         {(s.avgRisk * 100).toFixed(1)}%
                       </span>
                     </div>
-                    <div className="h-1 bg-zinc-800 rounded-full overflow-hidden">
+                    <div className="h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
                       <div
                         className="h-full rounded-full"
                         style={{
@@ -114,20 +114,20 @@ export default function HeatmapPage() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-500">Avg Salary</span>
-                      <span className="text-white font-medium">
+                      <span className="text-zinc-900 dark:text-white font-medium">
                         {s.avgSalary != null ? formatCurrency(s.avgSalary) : "—"}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-500">Occupations</span>
-                      <span className="text-white font-medium">{s.occupationCount}</span>
+                      <span className="text-zinc-900 dark:text-white font-medium">{s.occupationCount}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Hover tooltip overlay */}
                 <div className="absolute inset-x-0 bottom-0 h-0 group-hover:h-auto overflow-hidden transition-all duration-200">
-                  <div className="bg-zinc-900/95 border-t border-zinc-700/50 px-4 py-2 text-xs text-zinc-400 invisible group-hover:visible">
+                  <div className="bg-zinc-50 dark:bg-zinc-900/95 border-t border-zinc-200 dark:border-zinc-700/50 px-4 py-2 text-xs text-zinc-600 dark:text-zinc-400 invisible group-hover:visible">
                     Employment: {s.totalEmployment != null ? s.totalEmployment.toLocaleString() : "—"} &middot; Exposure: {rl}
                   </div>
                 </div>

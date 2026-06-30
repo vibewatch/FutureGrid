@@ -126,7 +126,7 @@ export default function HeroRiskChecker() {
           aria-autocomplete="list"
           aria-controls="rc-listbox"
           aria-activedescendant={activeIndex >= 0 ? `rc-opt-${activeIndex}` : undefined}
-          className="w-full bg-zinc-900/60 border border-zinc-700/50 focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 text-white placeholder:text-zinc-600 rounded-xl px-4 py-3 pr-10 text-sm outline-none transition-all"
+          className="w-full bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-700/50 focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 rounded-xl px-4 py-3 pr-10 text-sm outline-none transition-all"
         />
         <span
           className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 select-none pointer-events-none text-lg"
@@ -140,12 +140,7 @@ export default function HeroRiskChecker() {
             id="rc-listbox"
             role="listbox"
             aria-label="Matching occupations"
-            className="absolute z-50 left-0 right-0 top-full mt-1.5 rounded-xl border border-zinc-700/60 overflow-hidden shadow-xl"
-            style={{
-              background: "rgba(9,9,11,0.97)",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-            }}
+            className="absolute z-50 left-0 right-0 top-full mt-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-950 backdrop-blur-xl overflow-hidden shadow-xl"
           >
             {results.map((r, i) => (
               <li
@@ -157,8 +152,8 @@ export default function HeroRiskChecker() {
                 onMouseEnter={() => setActiveIndex(i)}
                 className={`flex items-center justify-between px-4 py-2.5 cursor-pointer text-sm select-none transition-colors ${
                   i === activeIndex
-                    ? "bg-violet-600/20 text-white"
-                    : "text-zinc-300 hover:bg-zinc-800/50"
+                    ? "bg-violet-100 dark:bg-violet-600/20 text-zinc-900 dark:text-white"
+                    : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/50"
                 }`}
               >
                 <span className="truncate font-medium">{r.occupationName}</span>
@@ -196,7 +191,7 @@ export default function HeroRiskChecker() {
 
           <div className="space-y-3">
             <div>
-              <h3 className="text-white font-semibold text-base leading-tight">
+              <h3 className="text-zinc-900 dark:text-white font-semibold text-base leading-tight">
                 {selected.occupationName}
               </h3>
               <p className="text-zinc-500 text-sm mt-0.5">{selected.sectorName}</p>
@@ -219,7 +214,7 @@ export default function HeroRiskChecker() {
             {selected.projectedOpenings != null && (
               <p className="text-xs text-zinc-500 mt-1">
                 Projected annual openings:{" "}
-                <span className="text-zinc-300 font-medium">
+                <span className="text-zinc-700 dark:text-zinc-300 font-medium">
                   {selected.projectedOpenings.toLocaleString()}
                 </span>
               </p>
@@ -231,7 +226,7 @@ export default function HeroRiskChecker() {
 
             <Link
               href={`/careers/${selected.occupationCode}`}
-              className="inline-flex items-center gap-1.5 text-violet-400 hover:text-violet-300 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
+              className="inline-flex items-center gap-1.5 text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
             >
               View full profile <span aria-hidden="true">→</span>
             </Link>

@@ -40,18 +40,18 @@ export default function SectorsPage() {
         <h1 className="text-3xl font-bold tracking-tight text-gradient">
           AI Disruption by Sector
         </h1>
-        <p className="text-zinc-400 mt-1">
+        <p className="text-zinc-600 dark:text-zinc-400 mt-1">
           Compare AI exposure, Bright Outlook share, and occupation counts across major industry sectors.
         </p>
       </div>
 
       {/* Charts */}
-      <div className="glass bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
         <CareerTrendChart />
       </div>
 
-      <div className="glass bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-        <h2 className="text-lg font-semibold text-white mb-4">
+      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
           Top Occupations by AI Exposure
         </h2>
         <JobImpactChart />
@@ -60,7 +60,7 @@ export default function SectorsPage() {
       {/* Sector grid with sort */}
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <h2 className="text-xl font-semibold text-white">
+          <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">
             All Sectors{" "}
             <span className="text-zinc-500 font-normal text-sm">
               ({allSectors.length})
@@ -84,7 +84,7 @@ export default function SectorsPage() {
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 ${
                   sortBy === key
                     ? "brand-grad text-white"
-                    : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white"
+                    : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-white"
                 }`}
               >
                 {label}
@@ -101,7 +101,7 @@ export default function SectorsPage() {
               <Link
                 key={s.sector}
                 href={`/sectors/${encodeURIComponent(s.sector)}`}
-                className="block glass glass-hover bg-zinc-900/50 border border-zinc-800 rounded-xl p-5 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all group"
+                className="block glass glass-hover bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all group"
               >
                 {/* Sector header */}
                 <div className="flex items-center gap-3 mb-4">
@@ -109,7 +109,7 @@ export default function SectorsPage() {
                     className="w-3 h-3 rounded-full shrink-0"
                     style={{ backgroundColor: riskColor }}
                   />
-                  <h3 className="text-base font-semibold text-white group-hover:text-cyan-300 transition-colors leading-tight">
+                  <h3 className="text-base font-semibold text-zinc-900 dark:text-white group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors leading-tight">
                     {s.sector}
                   </h3>
                 </div>
@@ -125,7 +125,7 @@ export default function SectorsPage() {
                       {(s.avgRisk * 100).toFixed(1)}%
                     </span>
                   </div>
-                  <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all"
                       style={{
@@ -139,24 +139,24 @@ export default function SectorsPage() {
                 {/* Stats */}
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-zinc-400">Bright Outlook</span>
-                    <span className="font-medium text-green-400">
+                    <span className="text-zinc-600 dark:text-zinc-400">Bright Outlook</span>
+                    <span className="font-medium text-green-700 dark:text-green-400">
                       {(s.brightShare * 100).toFixed(0)}%
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-zinc-400">Avg Salary</span>
-                    <span className="font-medium text-white">
+                    <span className="text-zinc-600 dark:text-zinc-400">Avg Salary</span>
+                    <span className="font-medium text-zinc-900 dark:text-white">
                       {s.avgSalary != null ? formatCurrency(s.avgSalary) : "—"}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-zinc-400">Occupations</span>
-                    <span className="font-medium text-white">{s.occupationCount}</span>
+                    <span className="text-zinc-600 dark:text-zinc-400">Occupations</span>
+                    <span className="font-medium text-zinc-900 dark:text-white">{s.occupationCount}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-zinc-400">Employment</span>
-                    <span className="font-medium text-white">
+                    <span className="text-zinc-600 dark:text-zinc-400">Employment</span>
+                    <span className="font-medium text-zinc-900 dark:text-white">
                       {s.totalEmployment != null ? s.totalEmployment.toLocaleString() : "—"}
                     </span>
                   </div>

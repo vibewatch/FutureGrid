@@ -105,13 +105,13 @@ export default function GlobalPage() {
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]">
             <span className="text-gradient">Global AI Adoption</span>
             <br />
-            <span className="text-white">by Country</span>
+            <span className="text-zinc-900 dark:text-white">by Country</span>
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="mt-4 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
             AI adoption varies dramatically across countries. This page shows{" "}
-            <span className="text-zinc-200 font-medium">real per-capita AI (Claude.ai) usage</span>{" "}
+            <span className="text-zinc-700 dark:text-zinc-200 font-medium">real per-capita AI (Claude.ai) usage</span>{" "}
             from the{" "}
-            <span className="text-zinc-200 font-medium">
+            <span className="text-zinc-700 dark:text-zinc-200 font-medium">
               Anthropic Economic Index (Aug 2025)
             </span>{" "}
             — a usage-based measure grounded in observed behaviour, not forecasts.
@@ -131,7 +131,7 @@ export default function GlobalPage() {
                 Countries tracked
               </p>
             </div>
-            <div className="hidden sm:block w-px h-10 bg-zinc-800" aria-hidden="true" />
+            <div className="hidden sm:block w-px h-10 bg-zinc-300 dark:bg-zinc-800" aria-hidden="true" />
             <div>
               <AnimatedCounter
                 value={rankedEnriched.length}
@@ -142,7 +142,7 @@ export default function GlobalPage() {
                 With measurable usage
               </p>
             </div>
-            <div className="hidden sm:block w-px h-10 bg-zinc-800" aria-hidden="true" />
+            <div className="hidden sm:block w-px h-10 bg-zinc-300 dark:bg-zinc-800" aria-hidden="true" />
             <div>
               <AnimatedCounter
                 value={topIndex}
@@ -169,15 +169,15 @@ export default function GlobalPage() {
           >
             Global AI Adoption — World Map
           </h2>
-          <p className="text-sm text-zinc-400 mb-6 max-w-2xl leading-relaxed">
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6 max-w-2xl leading-relaxed">
             Two lenses are available via the layer toggle:{" "}
-            <span className="text-zinc-200 font-medium">Claude.ai usage</span>{" "}
+            <span className="text-zinc-700 dark:text-zinc-200 font-medium">Claude.ai usage</span>{" "}
             (per-capita observed interactions, Anthropic Economic Index Aug&nbsp;2025 —
             availability-biased; China and restricted markets appear grey) and{" "}
-            <span className="text-zinc-200 font-medium">GenAI diffusion</span>{" "}
+            <span className="text-zinc-700 dark:text-zinc-200 font-medium">GenAI diffusion</span>{" "}
             (Microsoft AIEI Q1&nbsp;2026, % of working-age population using GenAI across
             147&nbsp;countries,{" "}
-            <span className="text-zinc-200 font-medium">China included</span>
+            <span className="text-zinc-700 dark:text-zinc-200 font-medium">China included</span>
             ). The two metrics use different denominators and cannot be merged — see{" "}
             <Link
               href="/sources"
@@ -201,9 +201,9 @@ export default function GlobalPage() {
                 {diffusionLeaders.map((c) => (
                   <div
                     key={c.iso3}
-                    className="flex items-center gap-2 rounded-lg px-3 py-1.5 bg-zinc-900/60 border border-zinc-700/40 text-sm"
+                    className="flex items-center gap-2 rounded-lg px-3 py-1.5 bg-white/80 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-700/40 text-sm"
                   >
-                    <span className="text-zinc-300 font-medium">{c.name}</span>
+                    <span className="text-zinc-700 dark:text-zinc-300 font-medium">{c.name}</span>
                     <span className="text-violet-400 font-bold tabular-nums">
                       {c.diffusionPct?.toFixed(1)}%
                     </span>
@@ -238,58 +238,58 @@ export default function GlobalPage() {
 
           {/* Body */}
           <div className="px-5 py-5 space-y-5">
-            <p className="text-sm text-zinc-400 leading-relaxed">
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
               Claude.ai is{" "}
-              <span className="text-zinc-200 font-medium">unavailable in mainland China</span>,
+              <span className="text-zinc-700 dark:text-zinc-200 font-medium">unavailable in mainland China</span>,
               so it appears grey on the Claude.ai usage layer and is excluded from the
               per-capita usage index. On the{" "}
-              <span className="text-zinc-200 font-medium">GenAI diffusion layer</span>, China
+              <span className="text-zinc-700 dark:text-zinc-200 font-medium">GenAI diffusion layer</span>, China
               does appear — Microsoft AIEI estimates{" "}
               <span className="text-amber-300 font-bold">~{chinaDiffusion.toFixed(1)}%</span>{" "}
               of working-age adults used GenAI in Q1&nbsp;2026. Note that Western telemetry
               likely undercounts domestic apps (Doubao, Kimi, etc.) — CNNIC&rsquo;s survey
               implies ~43% penetration. The native-ecosystem figures below use different
               measurement approaches and denominators and are{" "}
-              <span className="text-zinc-200 font-medium">not merged into either index</span>.
+              <span className="text-zinc-700 dark:text-zinc-200 font-medium">not merged into either index</span>.
             </p>
 
             {/* Proxy stat cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              <div className="rounded-xl px-4 py-3 bg-zinc-900/50 border border-amber-500/10">
+              <div className="rounded-xl px-4 py-3 bg-white/70 dark:bg-zinc-900/50 border border-amber-500/10">
                 <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
                   CNNIC · Jun 2025
                 </p>
                 <p className="text-2xl font-extrabold text-amber-300 tabular-nums">
                   {cnnicUsers}
                 </p>
-                <p className="text-xs text-zinc-400 mt-1">Generative-AI users</p>
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Generative-AI users</p>
               </div>
-              <div className="rounded-xl px-4 py-3 bg-zinc-900/50 border border-amber-500/10">
+              <div className="rounded-xl px-4 py-3 bg-white/70 dark:bg-zinc-900/50 border border-amber-500/10">
                 <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
                   QuestMobile · H1 2025
                 </p>
                 <p className="text-2xl font-extrabold text-amber-300 tabular-nums">
                   {questMau}
                 </p>
-                <p className="text-xs text-zinc-400 mt-1">Mobile-AI MAU</p>
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Mobile-AI MAU</p>
               </div>
-              <div className="rounded-xl px-4 py-3 bg-zinc-900/50 border border-amber-500/10">
+              <div className="rounded-xl px-4 py-3 bg-white/70 dark:bg-zinc-900/50 border border-amber-500/10">
                 <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
                   Doubao (QuestMobile) · Dec 2025
                 </p>
                 <p className="text-2xl font-extrabold text-amber-300 tabular-nums">
                   {doubaoMau}
                 </p>
-                <p className="text-xs text-zinc-400 mt-1">App MAU</p>
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">App MAU</p>
               </div>
-              <div className="rounded-xl px-4 py-3 bg-zinc-900/50 border border-violet-500/10">
+              <div className="rounded-xl px-4 py-3 bg-white/70 dark:bg-zinc-900/50 border border-violet-500/10">
                 <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
                   Microsoft AIEI · Q1 2026
                 </p>
                 <p className="text-2xl font-extrabold text-violet-300 tabular-nums">
                   ~{chinaDiffusion.toFixed(1)}%
                 </p>
-                <p className="text-xs text-zinc-400 mt-1">GenAI diffusion (working-age pop.)</p>
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">GenAI diffusion (working-age pop.)</p>
               </div>
             </div>
 
@@ -297,9 +297,9 @@ export default function GlobalPage() {
             <p className="text-xs text-zinc-500 leading-relaxed">
               These proxies use different measurement methods (government survey, app-market scan,
               product MAU) and cannot be summed or directly compared to each other.{" "}
-              <span className="text-zinc-400">
-                The <code className="text-zinc-300">usageIndex</code> (Claude.ai interactions
-                per working-age capita) and <code className="text-zinc-300">diffusionPct</code>{" "}
+              <span className="text-zinc-600 dark:text-zinc-400">
+                The <code className="text-zinc-700 dark:text-zinc-300">usageIndex</code> (Claude.ai interactions
+                per working-age capita) and <code className="text-zinc-700 dark:text-zinc-300">diffusionPct</code>{" "}
                 (Microsoft AIEI survey %) use entirely different denominators — do not merge them.
               </span>{" "}
               See the{" "}
@@ -335,9 +335,9 @@ export default function GlobalPage() {
                 Microsoft AIEI · see sources
               </Link>
             </div>
-            <p className="text-sm text-zinc-400 mb-5 max-w-2xl leading-relaxed">
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-5 max-w-2xl leading-relaxed">
               Countries with the largest GenAI diffusion gains,{" "}
-              <span className="text-zinc-200 font-medium">H1&nbsp;2025 → Q1&nbsp;2026</span>.
+              <span className="text-zinc-700 dark:text-zinc-200 font-medium">H1&nbsp;2025 → Q1&nbsp;2026</span>.
               Based on Microsoft&rsquo;s AI Economic Impact Index (Western telemetry — may
               undercount domestic apps in some markets).{" "}
               <Link
@@ -354,11 +354,11 @@ export default function GlobalPage() {
                   key={r.iso3}
                   className="glass rounded-xl px-4 py-3 space-y-2"
                 >
-                  <p className="text-sm font-semibold text-white leading-tight">
+                  <p className="text-sm font-semibold text-zinc-900 dark:text-white leading-tight">
                     {r.name}
                   </p>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs text-zinc-400 tabular-nums">
+                    <span className="text-xs text-zinc-600 dark:text-zinc-400 tabular-nums">
                       {r.from.toFixed(1)}% → {r.to.toFixed(1)}%
                     </span>
                     <span className="text-[11px] font-bold text-emerald-400 tabular-nums bg-emerald-500/10 px-1.5 py-0.5 rounded-full border border-emerald-500/20 ml-auto">
@@ -425,15 +425,15 @@ export default function GlobalPage() {
       {/* ─── METHODOLOGY NOTE ────────────────────────────────────────────── */}
       <Reveal delay={0}>
         <div
-          className="glass px-5 py-4 rounded-xl text-sm text-zinc-400 max-w-3xl space-y-2"
+          className="glass px-5 py-4 rounded-xl text-sm text-zinc-600 dark:text-zinc-400 max-w-3xl space-y-2"
           role="note"
           aria-label="Methodology"
         >
-          <p className="font-semibold text-zinc-200">Methodology</p>
+          <p className="font-semibold text-zinc-700 dark:text-zinc-200">Methodology</p>
           <p>
             Usage index = observed Claude.ai interactions per working-age capita,
             normalised across all countries. Source:{" "}
-            <span className="text-zinc-300">
+            <span className="text-zinc-700 dark:text-zinc-300">
               Anthropic Economic Index, August 2025 snapshot
             </span>{" "}
             (194 reported country rows, plus a supplemental China row using World Bank 2024 GDP

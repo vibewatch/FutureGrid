@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useMemo, useState } from "react";
+import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import { getCountryExposure } from "@/lib/data";
 import type { CountryExposure } from "@/lib/data";
@@ -39,6 +40,8 @@ function brandColor(t: number): string {
 export default function CountryExposureChart() {
   const svgRef       = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { resolvedTheme } = useTheme();
+  const isDark = (resolvedTheme ?? "dark") !== "light";
 
   const [metric,   setMetric]   = useState<Metric>("usageIndex");
   const [viewMode, setViewMode] = useState<ViewMode>("bar");
@@ -75,6 +78,19 @@ export default function CountryExposureChart() {
 
     const svg     = d3.select(svgEl);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Theme-aware colors
+    const axisText     = isDark ? "#71717a" : "#52525b";
+    const gridColor    = isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)";
+    const axisLine     = isDark ? "rgba(255,255,255,0.10)" : "rgba(0,0,0,0.10)";
+    const trackFill    = isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)";
+    const axisLabelOp  = isDark ? "rgba(255,255,255,0.28)" : "rgba(0,0,0,0.40)";
+    const barLabelOp   = isDark ? "rgba(255,255,255,0.52)" : "rgba(0,0,0,0.55)";
+    const countryLabel = (i: number) =>
+      isDark
+        ? `rgba(255,255,255,${i < 5 ? 0.88 : 0.62})`
+        : `rgba(0,0,0,${i < 5 ? 0.82 : 0.60})`;
+    const scatterLabel = isDark ? "rgba(255,255,255,0.72)" : "rgba(0,0,0,0.65)";
 
     svg.selectAll("*").remove();
 
@@ -115,7 +131,7 @@ export default function CountryExposureChart() {
       svg.append("text")
         .attr("x", margin.left)
         .attr("y", 18)
-        .attr("fill", "rgba(255,255,255,0.28)")
+        .attr("fill", axisLabelOp)
         .attr("font-size", "10px")
         .attr("letter-spacing", "0.06em")
         .text(
@@ -140,7 +156,7 @@ export default function CountryExposureChart() {
         .attr("y", BAR_H / 2)
         .attr("dy", "0.35em")
         .attr("text-anchor", "end")
-        .attr("fill", (_, i) => `rgba(255,255,255,${i < 5 ? 0.88 : 0.62})`)
+        .attr("fill", (_, i) => countryLabel(i))
         .attr("font-size", "12px")
         .attr("font-weight", (_, i) => (i < 3 ? "600" : "400"))
         .text(d => d.name.length > 20 ? d.name.slice(0, 18) + "\u2026" : d.name);
@@ -151,7 +167,7 @@ export default function CountryExposureChart() {
         .attr("x", 0).attr("y", 0)
         .attr("width", chartW).attr("height", BAR_H)
         .attr("rx", 4)
-        .attr("fill", "rgba(255,255,255,0.04)");
+        .attr("fill", trackFill);
 
       // Brand-gradient bar
       const bars = rows.append("rect")
@@ -177,7 +193,7 @@ export default function CountryExposureChart() {
         .attr("x", d => xScale(val(d)) + 6)
         .attr("y", BAR_H / 2)
         .attr("dy", "0.35em")
-        .attr("fill", "rgba(255,255,255,0.52)")
+        .attr("fill", barLabelOp)
         .attr("font-size", "11px")
         .text(d =>
           metric === "usageIndex"
@@ -251,7 +267,7 @@ export default function CountryExposureChart() {
         .attr("class", "ce-xgrid")
         .attr("x1", d => xScale(d)).attr("x2", d => xScale(d))
         .attr("y1", margin.top).attr("y2", H - margin.bottom)
-        .attr("stroke", "rgba(255,255,255,0.05)")
+        .attr("stroke", gridColor)
         .attr("stroke-dasharray", "3,3");
 
       svg.append("g")
@@ -261,7 +277,7 @@ export default function CountryExposureChart() {
         .attr("class", "ce-ygrid")
         .attr("x1", margin.left).attr("x2", W - margin.right)
         .attr("y1", d => yScale(d)).attr("y2", d => yScale(d))
-        .attr("stroke", "rgba(255,255,255,0.05)")
+        .attr("stroke", gridColor)
         .attr("stroke-dasharray", "3,3");
 
       // ── Axes ─────────────────────────────────────────────────────────────
@@ -272,31 +288,31 @@ export default function CountryExposureChart() {
             .ticks(5)
             .tickFormat(d => `$${d3.format(".0s")(d)}`),
         );
-      xAxisG.select(".domain").attr("stroke", "rgba(255,255,255,0.10)");
-      xAxisG.selectAll(".tick line").attr("stroke", "rgba(255,255,255,0.10)");
-      xAxisG.selectAll("text").attr("fill", "#71717a").attr("font-size", "11px");
+      xAxisG.select(".domain").attr("stroke", axisLine);
+      xAxisG.selectAll(".tick line").attr("stroke", axisLine);
+      xAxisG.selectAll("text").attr("fill", axisText).attr("font-size", "11px");
 
       svg.append("text")
         .attr("x", margin.left + (W - margin.left - margin.right) / 2)
         .attr("y", H - 10)
         .attr("text-anchor", "middle")
-        .attr("fill", "#71717a")
+        .attr("fill", axisText)
         .attr("font-size", "11px")
         .text("GDP per Working-Age Adult (log scale) →");
 
       const yAxisG = svg.append("g")
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(yScale).ticks(5));
-      yAxisG.select(".domain").attr("stroke", "rgba(255,255,255,0.10)");
-      yAxisG.selectAll(".tick line").attr("stroke", "rgba(255,255,255,0.10)");
-      yAxisG.selectAll("text").attr("fill", "#71717a").attr("font-size", "11px");
+      yAxisG.select(".domain").attr("stroke", axisLine);
+      yAxisG.selectAll(".tick line").attr("stroke", axisLine);
+      yAxisG.selectAll("text").attr("fill", axisText).attr("font-size", "11px");
 
       svg.append("text")
         .attr("transform", "rotate(-90)")
         .attr("x", -(margin.top + (H - margin.top - margin.bottom) / 2))
         .attr("y", 16)
         .attr("text-anchor", "middle")
-        .attr("fill", "#71717a")
+        .attr("fill", axisText)
         .attr("font-size", "11px")
         .text("AI Usage Index →");
 
@@ -339,7 +355,7 @@ export default function CountryExposureChart() {
         .attr("x", d => xScale(d.gdpPerWorkingAgeCapita!) + 8)
         .attr("y", d => yScale(d.usageIndex!))
         .attr("dy", "0.35em")
-        .attr("fill", "rgba(255,255,255,0.72)")
+        .attr("fill", scatterLabel)
         .attr("font-size", "10px")
         .attr("font-weight", "600")
         // Use first word only for brevity, avoid text collision
@@ -376,7 +392,7 @@ export default function CountryExposureChart() {
 
     // Interrupt all running transitions on unmount / re-render
     return () => { svg.selectAll("*").interrupt(); };
-  }, [barData, scatterData, metric, viewMode]);
+  }, [barData, scatterData, metric, viewMode, isDark]);
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -486,17 +502,17 @@ export default function CountryExposureChart() {
             left       : tooltip.x > tooltip.cw * 0.60 ? tooltip.x - 218 : tooltip.x + 14,
             top        : tooltip.y,
             transform  : "translateY(-50%)",
-            background : "rgba(9,9,11,0.93)",
+            background : isDark ? "rgba(9,9,11,0.93)" : "rgba(255,255,255,0.95)",
             backdropFilter       : "blur(12px)",
             WebkitBackdropFilter : "blur(12px)",
             borderColor: "rgba(139,92,246,0.35)",
             minWidth   : 206,
-            boxShadow  : "0 4px 28px rgba(0,0,0,0.55)",
+            boxShadow  : isDark ? "0 4px 28px rgba(0,0,0,0.55)" : "0 4px 16px rgba(0,0,0,0.10)",
           }}
         >
-          <p className="font-semibold text-white text-sm mb-2 leading-tight">
+          <p className="font-semibold text-zinc-900 dark:text-white text-sm mb-2 leading-tight">
             {item.name}
-            <span className="ml-2 text-zinc-600 font-normal text-xs">{item.iso3}</span>
+            <span className="ml-2 text-zinc-500 font-normal text-xs">{item.iso3}</span>
           </p>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between gap-4">
@@ -514,7 +530,7 @@ export default function CountryExposureChart() {
             {item.usageCount != null && item.usageCount > 0 && (
               <div className="flex justify-between gap-4">
                 <span className="text-zinc-500">Usage Count</span>
-                <span className="text-white font-medium">
+                <span className="text-zinc-900 dark:text-white font-medium">
                   {item.usageCount.toLocaleString()}
                 </span>
               </div>
@@ -522,7 +538,7 @@ export default function CountryExposureChart() {
             {item.gdpPerWorkingAgeCapita != null && item.gdpPerWorkingAgeCapita > 0 && (
               <div className="flex justify-between gap-4">
                 <span className="text-zinc-500">GDP / Worker</span>
-                <span className="text-white font-medium">
+                <span className="text-zinc-900 dark:text-white font-medium">
                   ${Math.round(item.gdpPerWorkingAgeCapita).toLocaleString()}
                 </span>
               </div>

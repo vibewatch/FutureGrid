@@ -29,11 +29,11 @@ export default function Error({
         FG
       </div>
 
-      <h2 className="text-2xl sm:text-3xl font-bold text-white leading-snug">
+      <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white leading-snug">
         Something went wrong
       </h2>
 
-      <p className="mt-3 text-base text-zinc-400 max-w-sm leading-relaxed">
+      <p className="mt-3 text-base text-zinc-600 dark:text-zinc-400 max-w-sm leading-relaxed">
         An unexpected error disrupted this page. You can try again or go back
         to the dashboard.
       </p>
@@ -58,7 +58,7 @@ export default function Error({
 
         <Link
           href="/"
-          className="glass inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium text-zinc-300 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
+          className="glass inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
         >
           ← Dashboard
         </Link>

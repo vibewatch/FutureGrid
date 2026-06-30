@@ -11,6 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import { useMemo } from "react";
+import { useTheme } from "next-themes";
 import { getSectorAggregates } from "@/lib/data";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -24,11 +25,22 @@ function riskFill(r: number, alpha = 0.75): string {
 
 export default function CareerTrendChart() {
   const sectors = useMemo(() => getSectorAggregates(), []);
+  const { resolvedTheme } = useTheme();
+  const isDark = (resolvedTheme ?? "dark") !== "light";
 
   const options = useMemo(() => {
     const reduced = typeof window !== "undefined"
       ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
       : false;
+    const axisText  = isDark ? "#71717a" : "#52525b";
+    const legendText = isDark ? "#a1a1aa" : "#52525b";
+    const titleText = isDark ? "#d4d4d8" : "#18181b";
+    const gridColor = isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)";
+    const borderColor = isDark ? "rgba(255,255,255,0.10)" : "rgba(0,0,0,0.10)";
+    const ttBg = isDark ? "rgba(9,9,11,0.92)" : "rgba(255,255,255,0.95)";
+    const ttTitle = isDark ? "#e4e4e7" : "#18181b";
+    const ttBody  = isDark ? "#a1a1aa" : "#52525b";
+    const ttBorder = isDark ? "rgba(139,92,246,0.30)" : "rgba(139,92,246,0.25)";
     return {
     responsive: true,
     maintainAspectRatio: false,
@@ -37,7 +49,7 @@ export default function CareerTrendChart() {
       legend: {
         position: "top" as const,
         labels: {
-          color: "#a1a1aa",
+          color: legendText,
           usePointStyle: true,
           pointStyleWidth: 10,
           padding: 16,
@@ -47,15 +59,15 @@ export default function CareerTrendChart() {
       title: {
         display: true,
         text: "Average AI Exposure by Sector",
-        color: "#d4d4d8",
+        color: titleText,
         font: { size: 14, weight: 500 },
         padding: { bottom: 14 },
       },
       tooltip: {
-        backgroundColor: "rgba(9,9,11,0.92)",
-        titleColor: "#e4e4e7",
-        bodyColor: "#a1a1aa",
-        borderColor: "rgba(139,92,246,0.30)",
+        backgroundColor: ttBg,
+        titleColor: ttTitle,
+        bodyColor: ttBody,
+        borderColor: ttBorder,
         borderWidth: 1,
         padding: 12,
         cornerRadius: 8,
@@ -71,20 +83,20 @@ export default function CareerTrendChart() {
         max: 1,
         ticks: {
           callback: (v: string | number) => `${(Number(v) * 100).toFixed(0)}%`,
-          color: "#71717a",
+          color: axisText,
           font: { size: 11 },
         },
-        grid: { color: "rgba(255,255,255,0.05)" },
-        border: { color: "rgba(255,255,255,0.10)" },
+        grid: { color: gridColor },
+        border: { color: borderColor },
       },
       x: {
-        ticks: { color: "#71717a", font: { size: 11 } },
+        ticks: { color: axisText, font: { size: 11 } },
         grid: { display: false },
-        border: { color: "rgba(255,255,255,0.10)" },
+        border: { color: borderColor },
       },
     },
     };
-  }, []);
+  }, [isDark]);
 
   const data = useMemo(() => ({
     labels: sectors.map((s) => s.sector),

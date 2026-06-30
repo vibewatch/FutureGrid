@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 
 const GRID_SIZE = 60;
-const GRID_ALPHA = 0.06;
 const VIOLET = [139, 92, 246] as const;
 const CYAN   = [34, 211, 238] as const;
 
@@ -27,6 +26,10 @@ export default function GridBackground() {
     const dpr = window.devicePixelRatio || 1;
     let w = 0, h = 0;
     const offset = { x: 0, y: 0 };
+
+    function isDarkMode() {
+      return document.documentElement.classList.contains("dark");
+    }
 
     function resize() {
       if (!canvas) return;
@@ -54,9 +57,13 @@ export default function GridBackground() {
       if (!ctx) return;
       ctx.clearRect(0, 0, w, h);
 
+      const dark = isDarkMode();
+      const gridAlpha = dark ? 0.06 : 0.04;
+      const dotAlphaScale = dark ? 1.0 : 0.5;
+
       // Drifting grid lines
       ctx.beginPath();
-      ctx.strokeStyle = `rgba(${VIOLET[0]},${VIOLET[1]},${VIOLET[2]},${GRID_ALPHA})`;
+      ctx.strokeStyle = `rgba(${VIOLET[0]},${VIOLET[1]},${VIOLET[2]},${gridAlpha})`;
       ctx.lineWidth = 0.5;
       const ox = ((offset.x % GRID_SIZE) + GRID_SIZE) % GRID_SIZE;
       const oy = ((offset.y % GRID_SIZE) + GRID_SIZE) % GRID_SIZE;
@@ -72,8 +79,9 @@ export default function GridBackground() {
 
       // Glow dots
       for (const dot of dots) {
+        const a = dot.alpha * dotAlphaScale;
         const g = ctx.createRadialGradient(dot.x, dot.y, 0, dot.x, dot.y, dot.r);
-        g.addColorStop(0, `rgba(${dot.color[0]},${dot.color[1]},${dot.color[2]},${dot.alpha})`);
+        g.addColorStop(0, `rgba(${dot.color[0]},${dot.color[1]},${dot.color[2]},${a})`);
         g.addColorStop(1, `rgba(${dot.color[0]},${dot.color[1]},${dot.color[2]},0)`);
         ctx.fillStyle = g;
         ctx.beginPath();

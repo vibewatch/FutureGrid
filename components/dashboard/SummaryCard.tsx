@@ -48,8 +48,8 @@ export default function SummaryCard({
           <span
             className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${
               trendUp
-                ? "bg-green-500/10 text-green-400 border-green-500/25"
-                : "bg-red-500/10 text-red-400 border-red-500/25"
+                ? "bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400 border-green-200 dark:border-green-500/25"
+                : "bg-red-100 dark:bg-red-500/10 text-red-700 dark:text-red-400 border-red-200 dark:border-red-500/25"
             }`}
           >
             {trendUp ? "↑" : "↓"} {trend}
@@ -72,7 +72,7 @@ export default function SummaryCard({
         )}
       </div>
 
-      <div className="text-sm font-semibold text-zinc-200 mb-0.5">{title}</div>
+      <div className="text-sm font-semibold text-zinc-700 dark:text-zinc-200 mb-0.5">{title}</div>
       <div className="text-xs text-zinc-500">{subtitle}</div>
     </Link>
   );

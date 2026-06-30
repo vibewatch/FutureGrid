@@ -127,7 +127,7 @@ export default function HighlightsBento() {
                             >
                               {i + 1}.
                             </span>
-                            <span className="text-xs text-zinc-200 leading-tight font-medium line-clamp-2">
+                            <span className="text-xs text-zinc-700 dark:text-zinc-200 leading-tight font-medium line-clamp-2">
                               {e.occupationName}
                             </span>
                           </span>
@@ -139,7 +139,7 @@ export default function HighlightsBento() {
                           </span>
                         </div>
                         {/* Mini bar */}
-                        <div className="h-0.5 rounded-full bg-zinc-800/80 overflow-hidden">
+                        <div className="h-0.5 rounded-full bg-zinc-200 dark:bg-zinc-800/80 overflow-hidden">
                           <div
                             className="h-full rounded-full"
                             style={{ width: `${pct}%`, background: color }}

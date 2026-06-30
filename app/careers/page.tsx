@@ -55,7 +55,7 @@ export default function CareersPage() {
       {/* Header */}
       <div className="animate-fade-up">
         <h1 className="text-3xl font-bold tracking-tight text-gradient">Career Explorer</h1>
-        <p className="text-zinc-400 mt-1">
+        <p className="text-zinc-600 dark:text-zinc-400 mt-1">
           Browse {allInsights.length} occupations and their AI exposure profiles.
         </p>
       </div>
@@ -68,13 +68,13 @@ export default function CareersPage() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           aria-label="Search occupations or sectors"
-          className="flex-1 bg-zinc-900/80 border border-zinc-700/50 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 transition-colors"
+          className="flex-1 bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-700/50 rounded-lg px-4 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 transition-colors"
         />
         <select
           value={riskFilter}
           onChange={(e) => setRiskFilter(e.target.value)}
           aria-label="Filter by risk level"
-          className="bg-zinc-900/80 border border-zinc-700/50 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-violet-500 transition-colors"
+          className="bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-700/50 rounded-lg px-4 py-2.5 text-zinc-900 dark:text-white focus:outline-none focus:border-violet-500 transition-colors"
         >
           <option value="all">All Risk Levels</option>
           <option value="Low">Low Risk</option>
@@ -86,7 +86,7 @@ export default function CareersPage() {
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as "risk" | "openings" | "salary" | "employment")}
           aria-label="Sort occupations"
-          className="bg-zinc-900/80 border border-zinc-700/50 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-violet-500 transition-colors"
+          className="bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-700/50 rounded-lg px-4 py-2.5 text-zinc-900 dark:text-white focus:outline-none focus:border-violet-500 transition-colors"
         >
           <option value="risk">Sort by AI Exposure</option>
           <option value="openings">Sort by Openings</option>
@@ -97,11 +97,11 @@ export default function CareersPage() {
 
       {/* Result count */}
       <div className="flex items-center justify-between text-sm">
-        <p className="text-zinc-400">
-          <span className="font-semibold text-white">{filtered.length}</span>{" "}
+        <p className="text-zinc-600 dark:text-zinc-400">
+          <span className="font-semibold text-zinc-900 dark:text-white">{filtered.length}</span>{" "}
           occupation{filtered.length !== 1 ? "s" : ""}
           {compareList.length > 0 && (
-            <span className="ml-2 text-violet-400">
+            <span className="ml-2 text-violet-600 dark:text-violet-400">
               &middot; {compareList.length}/{MAX_COMPARE} selected for compare
             </span>
           )}
@@ -109,7 +109,7 @@ export default function CareersPage() {
         {compareList.length === 0 && (
           <p className="text-zinc-600 text-xs hidden sm:block">
             Use{" "}
-            <kbd className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 text-xs font-mono">
+            <kbd className="px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 text-xs font-mono">
               +
             </kbd>{" "}
             on cards to compare up to {MAX_COMPARE}
@@ -127,10 +127,10 @@ export default function CareersPage() {
             return (
               <div
                 key={i.occupationCode}
-                className={`relative glass glass-hover bg-zinc-900/50 border rounded-xl p-5 transition-all duration-200 ${
+                className={`relative glass glass-hover bg-white/70 dark:bg-zinc-900/50 border rounded-xl p-5 transition-all duration-200 ${
                   selected
                     ? "border-violet-500/60 ring-1 ring-violet-500/20"
-                    : "border-zinc-800"
+                    : "border-zinc-200 dark:border-zinc-800"
                 }`}
               >
                 {/* Compare toggle */}
@@ -143,12 +143,12 @@ export default function CareersPage() {
                       ? `Remove ${i.occupationName} from comparison`
                       : `Add ${i.occupationName} to comparison`
                   }
-                  className={`absolute top-3 right-3 z-10 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-offset-zinc-900 focus:ring-violet-500 ${
+                  className={`absolute top-3 right-3 z-10 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-zinc-900 focus:ring-violet-500 ${
                     selected
                       ? "brand-grad text-white shadow-md"
                       : canAdd
-                      ? "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white"
-                      : "bg-zinc-800/50 text-zinc-600 cursor-not-allowed"
+                      ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-white"
+                      : "bg-zinc-100/50 dark:bg-zinc-800/50 text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
                   }`}
                 >
                   {selected ? "✓" : "+"}
@@ -160,7 +160,7 @@ export default function CareersPage() {
                   className="block focus:outline-none group"
                 >
                   <div className="pr-8 mb-3">
-                    <h3 className="font-semibold text-white leading-tight group-hover:text-cyan-300 transition-colors">
+                    <h3 className="font-semibold text-zinc-900 dark:text-white leading-tight group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">
                       {i.occupationName}
                     </h3>
                     <p className="text-xs text-zinc-500 mt-0.5">
@@ -187,7 +187,7 @@ export default function CareersPage() {
                         {(i.automationProbability * 100).toFixed(0)}%
                       </span>
                     </div>
-                    <div className="h-1 bg-zinc-800 rounded-full overflow-hidden">
+                    <div className="h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
                       <div
                         className="h-full rounded-full"
                         style={{
@@ -205,8 +205,8 @@ export default function CareersPage() {
                       <span
                         className={`px-1.5 py-0.5 rounded text-xs font-semibold border ${
                           i.outlook === "Bright"
-                            ? "bg-green-500/10 text-green-400 border-green-500/20"
-                            : "bg-zinc-700/30 text-zinc-400 border-zinc-700/30"
+                            ? "bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400 border-green-200 dark:border-green-500/20"
+                            : "bg-zinc-100 dark:bg-zinc-700/30 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700/30"
                         }`}
                       >
                         {i.outlook === "Bright" ? "Bright ↗" : "Average"}
@@ -214,17 +214,17 @@ export default function CareersPage() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-500">Proj. Openings</span>
-                      <span className="text-white">
+                      <span className="text-zinc-900 dark:text-white">
                         {i.projectedOpenings != null ? i.projectedOpenings.toLocaleString() : "—"}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-500">Median Salary</span>
-                      <span className="text-white">{formatCurrency(i.medianSalary)}</span>
+                      <span className="text-zinc-900 dark:text-white">{formatCurrency(i.medianSalary)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-500">Employment</span>
-                      <span className="text-white">
+                      <span className="text-zinc-900 dark:text-white">
                         {i.totalEmployment != null ? i.totalEmployment.toLocaleString() : "—"}
                       </span>
                     </div>
@@ -235,11 +235,11 @@ export default function CareersPage() {
           })}
         </div>
       ) : (
-        <div className="glass bg-zinc-900/40 border border-zinc-800 rounded-xl py-16 flex flex-col items-center gap-3 animate-fade-up">
+        <div className="glass bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 rounded-xl py-16 flex flex-col items-center gap-3 animate-fade-up">
           <span className="text-4xl opacity-30" aria-hidden="true">
             &#128269;
           </span>
-          <p className="text-zinc-400 text-sm">No occupations match your criteria.</p>
+          <p className="text-zinc-600 dark:text-zinc-400 text-sm">No occupations match your criteria.</p>
           <button
             onClick={() => {
               setSearchQuery("");
@@ -255,7 +255,7 @@ export default function CareersPage() {
       {/* ── Compare sticky bar ─────────────────────────────────────────────── */}
       {compareList.length >= 1 && (
         <div
-          className="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-700/50 bg-zinc-950/95 backdrop-blur-xl"
+          className="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-200 dark:border-zinc-700/50 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl"
           role="region"
           aria-label="Career comparison"
         >
@@ -269,13 +269,13 @@ export default function CareersPage() {
                 {compareList.map((c) => (
                   <span
                     key={c.occupationCode}
-                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/50 text-xs"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700/50 text-xs"
                   >
                     <span
                       className="w-2 h-2 rounded-full shrink-0"
                       style={{ backgroundColor: colorForRisk(c.automationRisk) }}
                     />
-                    <span className="text-white font-medium">{c.occupationName}</span>
+                    <span className="text-zinc-900 dark:text-white font-medium">{c.occupationName}</span>
                     <button
                       onClick={() => toggleCompare(c)}
                       aria-label={`Remove ${c.occupationName} from comparison`}
@@ -302,7 +302,7 @@ export default function CareersPage() {
                     setCompareList([]);
                     setShowComparePanel(false);
                   }}
-                  className="text-xs text-zinc-400 hover:text-white px-3 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-600 transition-colors"
+                  className="text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white px-3 py-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:focus:ring-zinc-600 transition-colors"
                 >
                   Clear All
                 </button>
@@ -311,7 +311,7 @@ export default function CareersPage() {
 
             {/* Side-by-side comparison table */}
             {showComparePanel && compareList.length >= 2 && (
-              <div className="mt-4 overflow-x-auto border-t border-zinc-800 pt-4">
+              <div className="mt-4 overflow-x-auto border-t border-zinc-200 dark:border-zinc-800 pt-4">
                 <table className="w-full text-sm min-w-[480px]">
                   <thead>
                     <tr>
@@ -323,7 +323,7 @@ export default function CareersPage() {
                           key={c.occupationCode}
                           className="py-2 px-3 text-left min-w-[160px]"
                         >
-                          <div className="font-semibold text-white text-sm leading-tight">
+                          <div className="font-semibold text-zinc-900 dark:text-white text-sm leading-tight">
                             {c.occupationName}
                           </div>
                           <div className="text-xs text-zinc-500 font-normal">
@@ -333,7 +333,7 @@ export default function CareersPage() {
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-800/60">
+                  <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800/60">
                     <tr>
                      <td className="py-2 px-3 text-zinc-500">AI Exposure</td>
                       {compareList.map((c) => (
@@ -357,9 +357,9 @@ export default function CareersPage() {
                        <td key={c.occupationCode} className="py-2 px-3">
                          <span
                            className={`px-1.5 py-0.5 rounded text-xs font-semibold border ${
-                             c.outlook === "Bright"
-                               ? "bg-green-500/10 text-green-400 border-green-500/20"
-                               : "bg-zinc-700/30 text-zinc-400 border-zinc-700/30"
+                          c.outlook === "Bright"
+                               ? "bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400 border-green-200 dark:border-green-500/20"
+                               : "bg-zinc-100 dark:bg-zinc-700/30 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700/30"
                            }`}
                          >
                            {c.outlook === "Bright" ? "Bright ↗" : "Average"}
@@ -370,7 +370,7 @@ export default function CareersPage() {
                     <tr>
                      <td className="py-2 px-3 text-zinc-500">Proj. Openings</td>
                      {compareList.map((c) => (
-                       <td key={c.occupationCode} className="py-2 px-3 text-white">
+                       <td key={c.occupationCode} className="py-2 px-3 text-zinc-900 dark:text-white">
                          {c.projectedOpenings != null ? c.projectedOpenings.toLocaleString() : "—"}
                        </td>
                      ))}
@@ -380,7 +380,7 @@ export default function CareersPage() {
                       {compareList.map((c) => (
                         <td
                           key={c.occupationCode}
-                          className="py-2 px-3 text-white font-semibold"
+                          className="py-2 px-3 text-zinc-900 dark:text-white font-semibold"
                         >
                           {formatCurrency(c.medianSalary)}
                         </td>
@@ -389,7 +389,7 @@ export default function CareersPage() {
                     <tr>
                       <td className="py-2 px-3 text-zinc-500">Est. Employment</td>
                       {compareList.map((c) => (
-                        <td key={c.occupationCode} className="py-2 px-3 text-white">
+                        <td key={c.occupationCode} className="py-2 px-3 text-zinc-900 dark:text-white">
                           {c.totalEmployment != null ? c.totalEmployment.toLocaleString() : "—"}
                         </td>
                       ))}
@@ -400,7 +400,7 @@ export default function CareersPage() {
                         const score = computeResiliencyScore(c.automationProbability);
                         return (
                           <td key={c.occupationCode} className="py-2 px-3">
-                            <span className="text-cyan-400 font-bold tabular-nums">
+                            <span className="text-cyan-700 dark:text-cyan-400 font-bold tabular-nums">
                               {score}
                             </span>
                             <span className="text-zinc-500">/100</span>
@@ -416,7 +416,7 @@ export default function CareersPage() {
                             {c.skills.slice(0, 3).map((s) => (
                               <span
                                 key={s}
-                                className="text-xs px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300"
+                                className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
                               >
                                 {s}
                               </span>

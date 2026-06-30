@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTheme } from "next-themes";
 
 interface Props {
   value: number; // 0–100
@@ -31,6 +32,8 @@ export default function RiskGauge({
   sublabel,
   className,
 }: Props) {
+  const { resolvedTheme } = useTheme();
+  const isDark = (resolvedTheme ?? "dark") !== "light";
   const strokeWidth = Math.max(10, size * 0.088);
   const r = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * r;
@@ -112,7 +115,7 @@ export default function RiskGauge({
           cy={cy}
           r={r}
           fill="none"
-          stroke="#27272a"
+          stroke={isDark ? "#27272a" : "#e4e4e7"}
           strokeWidth={strokeWidth}
         />
         {/* Soft glow behind progress */}
@@ -148,7 +151,7 @@ export default function RiskGauge({
           y={startY}
           textAnchor="middle"
           dominantBaseline="middle"
-          fill="white"
+          fill={isDark ? "white" : "#18181b"}
           fontSize={valueFontSize}
           fontWeight="700"
         >
@@ -160,7 +163,7 @@ export default function RiskGauge({
             y={startY + rowH}
             textAnchor="middle"
             dominantBaseline="middle"
-            fill="#a1a1aa"
+            fill={isDark ? "#a1a1aa" : "#52525b"}
             fontSize={labelFontSize}
           >
             {label}

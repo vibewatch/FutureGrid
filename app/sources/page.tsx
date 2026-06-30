@@ -8,8 +8,8 @@ function LicenseBadge({ license }: { license: string }) {
     <span
       className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full border font-mono ${
         isOpen
-          ? "bg-green-500/10 text-green-400 border-green-500/20"
-          : "bg-zinc-700/40 text-zinc-400 border-zinc-600/40"
+          ? "bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 border-green-200 dark:border-green-500/20"
+          : "bg-zinc-100 dark:bg-zinc-700/40 text-zinc-600 dark:text-zinc-400 border-zinc-300 dark:border-zinc-600/40"
       }`}
     >
       {license}
@@ -46,9 +46,9 @@ export default function SourcesPage() {
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.1]">
             <span className="text-gradient">Data &amp; Sources</span>
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="mt-4 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
             FutureGrid uses{" "}
-            <span className="text-zinc-200 font-medium">
+           <span className="text-zinc-700 dark:text-zinc-200 font-medium">
               current, authoritative datasets
             </span>{" "}
             to power every metric on this site.
@@ -58,7 +58,7 @@ export default function SourcesPage() {
         {/* ─── SNAPSHOT DATE ───────────────────────────────────────────── */}
         <Reveal delay={200} className="mt-6">
           {snapshotDate ? (
-            <div className="inline-flex items-center gap-2 text-sm font-medium text-violet-300 border border-violet-500/20 bg-violet-500/10 px-3 py-1.5 rounded-full">
+            <div className="inline-flex items-center gap-2 text-sm font-medium text-violet-700 dark:text-violet-300 border border-violet-500/20 bg-violet-500/10 px-3 py-1.5 rounded-full">
               <span className="w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0" aria-hidden="true" />
               Data as of{" "}
               <time dateTime={generatedAt}>{snapshotDate}</time>
@@ -86,7 +86,7 @@ export default function SourcesPage() {
                 <article className="glass glass-hover p-5 rounded-xl space-y-3">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
-                      <h3 className="font-semibold text-white text-sm leading-snug">
+                      <h3 className="font-semibold text-zinc-900 dark:text-white text-sm leading-snug">
                         {source.name}
                       </h3>
                       <p className="text-xs text-zinc-500 mt-0.5">
@@ -96,7 +96,7 @@ export default function SourcesPage() {
                     <LicenseBadge license={source.license} />
                   </div>
 
-                  <p className="text-sm text-zinc-400 leading-relaxed">
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
                     <span className="text-zinc-500 mr-1">Used for:</span>
                     {source.usedFor}
                   </p>
@@ -139,7 +139,7 @@ export default function SourcesPage() {
                 <Reveal key={`${source.name}-ctx-${i}`} delay={i * 50}>
                   <article className="glass p-4 rounded-xl flex flex-wrap items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-zinc-200 text-sm leading-snug">
+                      <h3 className="font-medium text-zinc-700 dark:text-zinc-200 text-sm leading-snug">
                         {source.name}
                       </h3>
                       <p className="text-xs text-zinc-500 mt-0.5">
@@ -173,11 +173,11 @@ export default function SourcesPage() {
       {note && (
         <Reveal delay={0}>
           <div
-            className="glass px-5 py-4 rounded-xl text-sm text-zinc-400 max-w-3xl space-y-2"
+            className="glass px-5 py-4 rounded-xl text-sm text-zinc-600 dark:text-zinc-400 max-w-3xl space-y-2"
             role="note"
             aria-label="Technical methodology note"
           >
-            <p className="font-semibold text-zinc-200">Technical Note</p>
+            <p className="font-semibold text-zinc-700 dark:text-zinc-200">Technical Note</p>
             <p className="leading-relaxed">{note}</p>
           </div>
         </Reveal>

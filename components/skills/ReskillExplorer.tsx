@@ -9,9 +9,9 @@ import Reveal from "@/components/ui/Reveal";
 const PREFERRED_DEFAULTS = ["Data Entry", "Customer Service", "Telemarket"];
 
 const OUTLOOK_STYLES: Record<string, string> = {
-  Growing:  "bg-emerald-900/40 text-emerald-300 border border-emerald-700/40",
-  Stable:   "bg-blue-900/40 text-blue-300 border border-blue-700/40",
-  Declining:"bg-red-900/40 text-red-300 border border-red-700/40",
+  Growing:  "bg-emerald-50 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700/40",
+  Stable:   "bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-700/40",
+  Declining:"bg-red-50 dark:bg-red-900/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-700/40",
 };
 
 export default function ReskillExplorer() {
@@ -73,7 +73,7 @@ export default function ReskillExplorer() {
         <h2 id="reskill-heading" className="text-2xl font-bold tracking-tight text-gradient">
           Reskilling Pathways
         </h2>
-        <p className="text-zinc-400 mt-1 text-sm max-w-2xl">
+        <p className="text-zinc-600 dark:text-zinc-400 mt-1 text-sm max-w-2xl">
           Roles with lower AI exposure that build on skills you already have (O*NET skill
           overlap). Not financial advice.{" "}
           <Link
@@ -103,7 +103,7 @@ export default function ReskillExplorer() {
             aria-haspopup="listbox"
             aria-expanded={open}
             aria-controls="reskill-listbox"
-            className="w-full flex items-center justify-between gap-2 glass bg-zinc-900/60 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-white hover:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-colors"
+            className="w-full flex items-center justify-between gap-2 glass bg-white/70 dark:bg-zinc-900/60 border border-zinc-300 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm text-zinc-900 dark:text-white hover:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-colors"
           >
             <span className="truncate">
               {selected ? selected.occupationName : "Select an occupation…"}
@@ -127,21 +127,21 @@ export default function ReskillExplorer() {
               id="reskill-listbox"
               role="listbox"
               aria-label="Select occupation"
-              className="absolute z-50 top-full mt-1 w-full bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl overflow-hidden"
+              className="absolute z-50 top-full mt-1 w-full bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-xl shadow-2xl overflow-hidden"
             >
               {/* Search input */}
-              <div className="p-2 border-b border-zinc-800">
+              <div className="p-2 border-b border-zinc-200 dark:border-zinc-800">
                 <input
                   type="search"
                   placeholder="Search occupations…"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  className="w-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
                   autoFocus
                 />
               </div>
 
-              <ul className="max-h-64 overflow-y-auto divide-y divide-zinc-800/40">
+              <ul className="max-h-64 overflow-y-auto divide-y divide-zinc-200 dark:divide-zinc-800/40">
                 {filtered.map((o) => (
                   <li key={o.occupationCode} role="option" aria-selected={o.occupationCode === fromCode}>
                     <button
@@ -151,10 +151,10 @@ export default function ReskillExplorer() {
                         setOpen(false);
                         setSearch("");
                       }}
-                      className={`w-full text-left px-4 py-2.5 text-sm hover:bg-zinc-800 focus:bg-zinc-800 focus:outline-none transition-colors ${
+                      className={`w-full text-left px-4 py-2.5 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800 focus:outline-none transition-colors ${
                         o.occupationCode === fromCode
                           ? "text-violet-300 font-medium"
-                          : "text-zinc-200"
+                          : "text-zinc-700 dark:text-zinc-200"
                       }`}
                     >
                       <span className="block">{o.occupationName}</span>
@@ -178,17 +178,17 @@ export default function ReskillExplorer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {targets.map((t, i) => {
             const riskColor    = colorForRisk(t.automationRisk);
-            const outlookClass = OUTLOOK_STYLES[t.outlook] ?? "bg-zinc-800/40 text-zinc-300 border border-zinc-700/40";
+            const outlookClass = OUTLOOK_STYLES[t.outlook] ?? "bg-zinc-100 dark:bg-zinc-800/40 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700/40";
             return (
               <Reveal key={t.occupationCode} delay={i * 60}>
                 <Link
                   href={`/careers/${t.occupationCode}`}
-                  className="block glass glass-hover bg-zinc-900/50 border border-zinc-800 rounded-xl p-5 group focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all h-full"
+                  className="block glass glass-hover bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 group focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all h-full"
                 >
                   {/* Header */}
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1 pr-2">
-                      <h3 className="font-semibold text-white text-sm leading-snug group-hover:text-cyan-300 transition-colors">
+                      <h3 className="font-semibold text-zinc-900 dark:text-white text-sm leading-snug group-hover:text-cyan-300 transition-colors">
                         {t.occupationName}
                       </h3>
                       <p className="text-xs text-zinc-500 mt-0.5">{t.sectorName}</p>
@@ -203,7 +203,7 @@ export default function ReskillExplorer() {
 
                   {/* Salary + outlook + AI exposure row */}
                   <div className="flex flex-wrap items-center gap-2 mb-3">
-                    <span className="text-xs text-zinc-300 font-medium">
+                    <span className="text-xs text-zinc-700 dark:text-zinc-300 font-medium">
                       {formatCurrency(t.medianSalary)}
                       <span className="text-zinc-600">/yr</span>
                     </span>
@@ -212,7 +212,7 @@ export default function ReskillExplorer() {
                     </span>
                     <span className="ml-auto text-xs text-zinc-500">
                       AI{" "}
-                      <span className="text-zinc-300 font-medium">
+                      <span className="text-zinc-700 dark:text-zinc-300 font-medium">
                         {(t.aiExposure * 100).toFixed(0)}%
                       </span>
                     </span>
@@ -228,13 +228,13 @@ export default function ReskillExplorer() {
                       {t.sharedSkills.slice(0, 6).map((s) => (
                         <span
                           key={s}
-                          className="px-2 py-0.5 rounded bg-emerald-900/25 border border-emerald-700/30 text-emerald-300 text-xs"
+                          className="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-900/25 border border-emerald-200 dark:border-emerald-700/30 text-emerald-700 dark:text-emerald-300 text-xs"
                         >
                           {s}
                         </span>
                       ))}
                       {t.sharedSkills.length > 6 && (
-                        <span className="px-2 py-0.5 rounded bg-zinc-800 text-zinc-500 text-xs">
+                        <span className="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500 text-xs">
                           +{t.sharedSkills.length - 6} more
                         </span>
                       )}
@@ -246,7 +246,7 @@ export default function ReskillExplorer() {
           })}
         </div>
       ) : fromCode ? (
-        <div className="glass bg-zinc-900/40 border border-zinc-800 rounded-xl py-10 flex items-center justify-center">
+        <div className="glass bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 rounded-xl py-10 flex items-center justify-center">
           <p className="text-zinc-500 text-sm">No reskilling paths found for this occupation.</p>
         </div>
       ) : null}

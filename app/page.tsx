@@ -32,11 +32,11 @@ export default function HomePage() {
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]">
             <span className="text-gradient">See which careers</span>
             <br />
-            <span className="text-white">AI is reshaping.</span>
+            <span className="text-zinc-900 dark:text-white">AI is reshaping.</span>
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="mt-4 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
             Research-based estimates across{" "}
-            <span className="text-zinc-200 font-medium">{insights.length}</span>{" "}
+            <span className="text-zinc-700 dark:text-zinc-200 font-medium">{insights.length}</span>{" "}
             occupations and 22 sectors — understand your exposure, discover resilient paths.
           </p>
         </Reveal>
@@ -52,7 +52,7 @@ export default function HomePage() {
               />
               <p className="text-xs text-zinc-500 mt-1 uppercase tracking-widest">Occupations tracked</p>
             </div>
-            <div className="hidden sm:block w-px h-10 bg-zinc-800" aria-hidden="true" />
+            <div className="hidden sm:block w-px h-10 bg-zinc-200 dark:bg-zinc-800" aria-hidden="true" />
             <div>
               <AnimatedCounter
                 value={avgRiskAll * 100}
@@ -63,7 +63,7 @@ export default function HomePage() {
               />
               <p className="text-xs text-zinc-500 mt-1 uppercase tracking-widest">Avg AI exposure</p>
             </div>
-            <div className="hidden sm:block w-px h-10 bg-zinc-800" aria-hidden="true" />
+            <div className="hidden sm:block w-px h-10 bg-zinc-200 dark:bg-zinc-800" aria-hidden="true" />
             <div>
               <AnimatedCounter
                 value={highRiskCount}
@@ -72,7 +72,7 @@ export default function HomePage() {
               />
               <p className="text-xs text-zinc-500 mt-1 uppercase tracking-widest">High-exposure roles</p>
             </div>
-            <div className="hidden sm:block w-px h-10 bg-zinc-800" aria-hidden="true" />
+            <div className="hidden sm:block w-px h-10 bg-zinc-200 dark:bg-zinc-800" aria-hidden="true" />
             <div>
               <AnimatedCounter
                 value={totalWorkforce / 1_000_000}
@@ -88,14 +88,14 @@ export default function HomePage() {
 
         <Reveal delay={220} className="mt-6">
           <div
-            className="glass flex gap-2.5 items-start px-4 py-3 rounded-xl text-sm text-zinc-400 max-w-2xl"
+            className="glass flex gap-2.5 items-start px-4 py-3 rounded-xl text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl"
             role="note"
             aria-label="About this data"
           >
             <span aria-hidden="true" className="text-zinc-500 shrink-0 mt-px select-none">ℹ</span>
             <p>
               AI-exposure figures reflect observed AI (LLM) usage from the{" "}
-              <span className="text-zinc-300">Anthropic Economic Index (2025)</span>, mapped to
+              <span className="text-zinc-700 dark:text-zinc-300">Anthropic Economic Index (2025)</span>, mapped to
               O*NET tasks — a relative exposure measure, not a prediction of job loss.{" "}
               <Link href="/sources" className="text-zinc-500 underline underline-offset-2 hover:text-zinc-400">
                 See Sources
@@ -179,12 +179,12 @@ export default function HomePage() {
             />
             <p className="text-xs text-zinc-500 mt-1 uppercase tracking-widest">of the U.S. workforce</p>
           </div>
-          <div className="hidden sm:block w-px h-16 bg-zinc-800 shrink-0" aria-hidden="true" />
+          <div className="hidden sm:block w-px h-16 bg-zinc-200 dark:bg-zinc-800 shrink-0" aria-hidden="true" />
           <div>
-            <p className="text-base sm:text-lg font-semibold text-white leading-snug">
+            <p className="text-base sm:text-lg font-semibold text-zinc-900 dark:text-white leading-snug">
               is in <span className="text-gradient">high AI-exposure</span> occupations
             </p>
-            <p className="mt-1.5 text-sm text-zinc-400 max-w-xl leading-relaxed">
+            <p className="mt-1.5 text-sm text-zinc-600 dark:text-zinc-400 max-w-xl leading-relaxed">
               Employment-weighted: BLS OEWS employment × Anthropic Economic Index exposure bands
               ({(workforceExposure.highExposureWorkforce / 1_000_000).toFixed(1)}M of {(workforceExposure.totalWorkforce / 1_000_000).toFixed(1)}M workers tracked).
               This measures occupational AI exposure — not predicted job loss.{" "}
@@ -237,13 +237,13 @@ export default function HomePage() {
           <hr className="divider-glow mb-6" />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="glass p-6">
-              <h3 className="text-xs font-semibold text-zinc-400 mb-4 uppercase tracking-wider">
+              <h3 className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 mb-4 uppercase tracking-wider">
                 Top 20 Occupations by AI Exposure
               </h3>
               <JobImpactChart />
             </div>
             <div className="glass p-6">
-              <h3 className="text-xs font-semibold text-zinc-400 mb-4 uppercase tracking-wider">
+              <h3 className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 mb-4 uppercase tracking-wider">
                 Employment Projections &amp; AI Exposure
               </h3>
               <PredictiveChart />
@@ -261,23 +261,23 @@ export default function HomePage() {
             {sectors.slice(0, 6).map((s) => (
               <div key={s.sector} className="glass glass-hover p-5">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-semibold text-white text-sm">{s.sector}</h3>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white text-sm">{s.sector}</h3>
                   <span
                     className={`text-xs px-2 py-0.5 rounded-full border ${
                       s.avgRisk < 0.3
-                        ? "bg-green-500/10 text-green-400 border-green-500/20"
+                        ? "bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400 border-green-200 dark:border-green-500/20"
                         : s.avgRisk < 0.6
-                        ? "bg-yellow-500/10 text-yellow-400 border-yellow-500/20"
-                        : "bg-red-500/10 text-red-400 border-red-500/20"
+                        ? "bg-yellow-100 dark:bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-500/20"
+                        : "bg-red-100 dark:bg-red-500/10 text-red-700 dark:text-red-400 border-red-200 dark:border-red-500/20"
                     }`}
                   >
                     {(s.avgRisk * 100).toFixed(0)}% exposure
                   </span>
                 </div>
-                <div className="text-sm text-zinc-400 space-y-0.5">
+                <div className="text-sm text-zinc-600 dark:text-zinc-400 space-y-0.5">
                   <div>{s.occupationCount} occupations</div>
                   <div>
-                    <span className="text-green-400">{(s.brightShare * 100).toFixed(0)}%</span>{" "}
+                    <span className="text-green-700 dark:text-green-400">{(s.brightShare * 100).toFixed(0)}%</span>{" "}
                     Bright Outlook
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useMemo, useState } from "react";
+import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import { generateAllCareerInsights } from "@/lib/data";
 import { colorForRisk } from "@/lib/utils";
@@ -24,6 +25,8 @@ interface TooltipState {
 export default function PredictiveChart({ selectedSector }: PredictiveChartProps) {
   const svgRef       = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { resolvedTheme } = useTheme();
+  const isDark = (resolvedTheme ?? "dark") !== "light";
   const [tooltip, setTooltip] = useState<TooltipState>({
     visible: false, x: 0, y: 0, cw: 800, name: "", sector: "", openings: 0, risk: "", prob: 0,
   });
@@ -52,12 +55,18 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
     const svg = d3.select(svgEl);
     svg.selectAll("*").remove();
 
+    // Theme-aware colors
+    const axisText  = isDark ? "#a1a1aa" : "#52525b";
+    const titleText = isDark ? "#d4d4d8" : "#3f3f46";
+    const gridColor = isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.05)";
+    const axisLine  = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
+
     if (topOccupations.length === 0) {
       svg.attr("viewBox", "0 0 720 200");
       svg.append("text")
         .attr("x", 360).attr("y", 100)
         .attr("text-anchor", "middle")
-        .attr("fill", "#71717a").attr("font-size", "14px")
+        .attr("fill", axisText).attr("font-size", "14px")
         .text("No projection data available for this sector");
       return () => { svg.selectAll("*").interrupt(); };
     }
@@ -97,7 +106,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
       .attr("x", M.left + (W - M.left - M.right) / 2)
       .attr("y", 22)
       .attr("text-anchor", "middle")
-      .attr("fill", "#d4d4d8")
+      .attr("fill", titleText)
       .attr("font-size", "13px")
       .attr("font-weight", "500")
       .text(`Top Occupations by Projected Annual Openings${selectedSector ? `: ${selectedSector}` : ""}`);
@@ -112,8 +121,8 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
         })
     );
     xAxisG.select(".domain").remove();
-    xAxisG.selectAll(".tick line").attr("stroke", "rgba(255,255,255,0.08)");
-    xAxisG.selectAll("text").attr("fill", "#71717a").attr("font-size", "11px");
+    xAxisG.selectAll(".tick line").attr("stroke", axisLine);
+    xAxisG.selectAll("text").attr("fill", axisText).attr("font-size", "11px");
 
     // Vertical grid lines
     g.append("g")
@@ -126,7 +135,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
       .call((gg) => {
         gg.select(".domain").remove();
         gg.selectAll(".tick line")
-          .attr("stroke", "rgba(255,255,255,0.04)")
+          .attr("stroke", gridColor)
           .attr("stroke-dasharray", "3,4")
           .attr("transform", `translate(0,${topOccupations.length * rowH})`);
       });
@@ -137,7 +146,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
       .call((gg) => {
         gg.select(".domain").remove();
         gg.selectAll("text")
-          .attr("fill", "#a1a1aa")
+          .attr("fill", axisText)
           .attr("font-size", "11px")
           .attr("x", -8)
           .attr("text-anchor", "end")
@@ -183,7 +192,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
       .attr("class", "pc-label")
       .attr("y", (d) => (yScale(d.occupationName) as number) + yScale.bandwidth() / 2)
       .attr("dy", "0.35em")
-      .attr("fill", "#a1a1aa")
+      .attr("fill", axisText)
       .attr("font-size", "10px")
       .attr("pointer-events", "none")
       .attr("x", (d) => xScale(d.projectedOpenings as number) + 6)
@@ -213,7 +222,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
       });
 
     return () => { svg.selectAll("*").interrupt(); };
-  }, [topOccupations, selectedSector]);
+  }, [topOccupations, selectedSector, isDark]);
 
   return (
     <div className="space-y-4">
@@ -221,7 +230,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
       <div className="grid grid-cols-3 gap-4 text-center">
         <div
           className="rounded-xl border p-3"
-          style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(255,255,255,0.08)", backdropFilter: "blur(12px)" }}
+          style={{ background: "var(--glass-bg)", borderColor: "var(--glass-border)", backdropFilter: "blur(12px)" }}
         >
           <div
             className="text-2xl font-bold"
@@ -229,25 +238,25 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
           >
             {summary.count}
           </div>
-          <div className="text-xs text-zinc-400 mt-1">Occupations Shown</div>
+          <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Occupations Shown</div>
         </div>
         <div
           className="rounded-xl border p-3"
-          style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(255,255,255,0.08)", backdropFilter: "blur(12px)" }}
+          style={{ background: "var(--glass-bg)", borderColor: "var(--glass-border)", backdropFilter: "blur(12px)" }}
         >
           <div className="text-2xl font-bold" style={{ color: "#22d3ee" }}>
             {(summary.avgExposure * 100).toFixed(1)}%
           </div>
-          <div className="text-xs text-zinc-400 mt-1">Avg AI Exposure</div>
+          <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Avg AI Exposure</div>
         </div>
         <div
           className="rounded-xl border p-3"
-          style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(255,255,255,0.08)", backdropFilter: "blur(12px)" }}
+          style={{ background: "var(--glass-bg)", borderColor: "var(--glass-border)", backdropFilter: "blur(12px)" }}
         >
           <div className="text-2xl font-bold" style={{ color: "#22c55e" }}>
             {summary.brightCount}
           </div>
-          <div className="text-xs text-zinc-400 mt-1">Bright Outlook</div>
+          <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Bright Outlook</div>
         </div>
       </div>
 
@@ -268,15 +277,15 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
               left: tooltip.x > tooltip.cw * 0.65 ? tooltip.x - 230 : tooltip.x + 14,
               top: tooltip.y,
               transform: "translateY(-50%)",
-              background: "rgba(9,9,11,0.93)",
+              background: isDark ? "rgba(9,9,11,0.93)" : "rgba(255,255,255,0.95)",
               backdropFilter: "blur(12px)",
               WebkitBackdropFilter: "blur(12px)",
               borderColor: "rgba(139,92,246,0.35)",
               minWidth: 215,
-              boxShadow: "0 4px 28px rgba(0,0,0,0.55)",
+              boxShadow: isDark ? "0 4px 28px rgba(0,0,0,0.55)" : "0 4px 16px rgba(0,0,0,0.10)",
             }}
           >
-            <p className="font-semibold text-white leading-tight mb-0.5 max-w-[210px] truncate">{tooltip.name}</p>
+            <p className="font-semibold text-zinc-900 dark:text-white leading-tight mb-0.5 max-w-[210px] truncate">{tooltip.name}</p>
             <p className="text-xs text-zinc-500 mb-2">{tooltip.sector}</p>
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between gap-4">

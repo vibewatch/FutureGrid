@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useRef, useEffect, useCallback } from "react";
+import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import type { GeoPermissibleObjects, ExtendedFeatureCollection } from "d3-geo";
 import { getCountryMapData } from "@/lib/data";
@@ -11,10 +12,10 @@ import type { CountryMapDatum } from "@/lib/data";
 const W = 960;
 const H = 500;
 
-const NO_DATA_FILL = "#27272a"; // zinc-800
+const NO_DATA_FILL_DARK = "#27272a"; // zinc-800
+const NO_DATA_FILL_LIGHT = "#d4d4d8"; // zinc-300
 const PROXY_STROKE = "#f59e0b"; // amber-400
 const BASE_STROKE  = "#52525b"; // zinc-600
-const HOVER_STROKE  = "#ffffff";
 const FOCUS_STROKE  = "#22d3ee"; // cyan-400 — visible keyboard-focus indicator
 
 // Inlined at build time from next.config.ts env block; empty string on localhost.
@@ -66,46 +67,46 @@ function TooltipContent({ datum, metric }: { datum: CountryMapDatum; metric: Met
     if (datum.aiReadiness != null) {
       return (
         <div className="mt-1.5 space-y-0.5">
-          <p className="text-zinc-400 text-xs">
+          <p className="text-zinc-600 dark:text-zinc-400 text-xs">
             AI readiness:{" "}
-            <span className="text-cyan-300 font-mono font-semibold">
+            <span className="text-cyan-600 dark:text-cyan-300 font-mono font-semibold">
               {datum.aiReadiness.toFixed(2)}
             </span>
-            <span className="text-zinc-600 text-[10px] ml-1">IMF AIPI, 0–1</span>
+            <span className="text-zinc-500 text-[10px] ml-1">IMF AIPI, 0–1</span>
           </p>
         </div>
       );
     }
-    return <p className="text-zinc-400 text-xs mt-1.5">No AI readiness data</p>;
+    return <p className="text-zinc-500 text-xs mt-1.5">No AI readiness data</p>;
   }
 
   if (metric === "govReadiness") {
     if (datum.governmentReadiness != null) {
       return (
         <div className="mt-1.5 space-y-0.5">
-          <p className="text-zinc-400 text-xs">
+          <p className="text-zinc-600 dark:text-zinc-400 text-xs">
             Gov. readiness:{" "}
-            <span className="text-cyan-300 font-mono font-semibold">
+            <span className="text-cyan-600 dark:text-cyan-300 font-mono font-semibold">
               {datum.governmentReadiness.toFixed(1)}
             </span>
-            <span className="text-zinc-600 text-[10px] ml-1">Oxford, 0–100</span>
+            <span className="text-zinc-500 text-[10px] ml-1">Oxford, 0–100</span>
           </p>
         </div>
       );
     }
-    return <p className="text-zinc-400 text-xs mt-1.5">No gov. readiness data</p>;
+    return <p className="text-zinc-500 text-xs mt-1.5">No gov. readiness data</p>;
   }
 
   if (metric === "diffusion") {
     if (datum.diffusionPct != null) {
       return (
         <div className="mt-1.5 space-y-0.5">
-          <p className="text-zinc-400 text-xs">
+          <p className="text-zinc-600 dark:text-zinc-400 text-xs">
             GenAI use:{" "}
-            <span className="text-cyan-300 font-mono font-semibold">
+            <span className="text-cyan-600 dark:text-cyan-300 font-mono font-semibold">
               {datum.diffusionPct.toFixed(1)}%
             </span>
-            <span className="text-zinc-600 text-[10px] ml-1">of working-age pop.</span>
+            <span className="text-zinc-500 text-[10px] ml-1">of working-age pop.</span>
           </p>
           {datum.iso3 === "CHN" && datum.proxyNote && (
             <p className="text-zinc-500 text-[10px] leading-snug mt-1">
@@ -115,22 +116,22 @@ function TooltipContent({ datum, metric }: { datum: CountryMapDatum; metric: Met
         </div>
       );
     }
-    return <p className="text-zinc-400 text-xs mt-1.5">No GenAI diffusion data</p>;
+    return <p className="text-zinc-500 text-xs mt-1.5">No GenAI diffusion data</p>;
   }
 
   if (datum.hasClaudeData) {
     return (
       <div className="mt-1.5 space-y-0.5">
-        <p className="text-zinc-400 text-xs">
+        <p className="text-zinc-600 dark:text-zinc-400 text-xs">
           AI usage index:{" "}
-          <span className="text-cyan-300 font-mono font-semibold">
+          <span className="text-cyan-600 dark:text-cyan-300 font-mono font-semibold">
             {datum.usageIndex?.toFixed(2)}
           </span>
         </p>
         {datum.usagePct != null && (
-          <p className="text-zinc-400 text-xs">
+          <p className="text-zinc-600 dark:text-zinc-400 text-xs">
             Global share:{" "}
-            <span className="text-violet-300 font-mono font-semibold">
+            <span className="text-violet-600 dark:text-violet-300 font-mono font-semibold">
               {(datum.usagePct * 100).toFixed(2)}%
             </span>
           </p>
@@ -141,9 +142,9 @@ function TooltipContent({ datum, metric }: { datum: CountryMapDatum; metric: Met
 
   return (
     <div className="mt-1.5 space-y-1">
-      <p className="text-zinc-400 text-xs">No Claude.ai usage data</p>
+      <p className="text-zinc-500 text-xs">No Claude.ai usage data</p>
       {datum.proxyNote && (
-        <p className="text-amber-300/80 text-xs leading-snug">{datum.proxyNote}</p>
+        <p className="text-amber-600 dark:text-amber-300/80 text-xs leading-snug">{datum.proxyNote}</p>
       )}
     </div>
   );
@@ -178,6 +179,10 @@ export default function WorldChoropleth({
 } = {}) {
   const svgRef       = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { resolvedTheme } = useTheme();
+  const isDark = (resolvedTheme ?? "dark") !== "light";
+  const noDataFill  = isDark ? NO_DATA_FILL_DARK  : NO_DATA_FILL_LIGHT;
+  const hoverStroke = isDark ? "#ffffff" : "#18181b";
 
   const [metric,         setMetric]         = useState<Metric>("claude");
   const [hovered,        setHovered]        = useState<string | null>(null);
@@ -283,28 +288,28 @@ export default function WorldChoropleth({
       if (metric === "readiness") {
         fill     = datum?.aiReadiness != null
           ? readinessColorScale(datum.aiReadiness)
-          : NO_DATA_FILL;
+          : noDataFill;
         hasProxy = false;
       } else if (metric === "govReadiness") {
         fill     = datum?.governmentReadiness != null
           ? govReadinessColorScale(datum.governmentReadiness)
-          : NO_DATA_FILL;
+          : noDataFill;
         hasProxy = false;
       } else if (metric === "diffusion") {
         fill     = datum?.diffusionPct != null
           ? diffusionColorScale(datum.diffusionPct)
-          : NO_DATA_FILL;
+          : noDataFill;
         hasProxy = false;
       } else {
         fill     = datum?.hasClaudeData && datum.usageIndex != null
           ? claudeColorScale(datum.usageIndex)
-          : NO_DATA_FILL;
+          : noDataFill;
         hasProxy = datum?.proxyNote != null;
       }
 
       return { iso3, datum, d: dStr, fill, hasProxy };
     });
-  }, [geoData, pathGen, dataByIso3, metric, claudeColorScale, diffusionColorScale, readinessColorScale, govReadinessColorScale]);
+  }, [geoData, pathGen, dataByIso3, metric, claudeColorScale, diffusionColorScale, readinessColorScale, govReadinessColorScale, noDataFill]);
 
   // SR top-15 list — metric-aware
   const srTop15 = useMemo(() => {
@@ -515,7 +520,7 @@ export default function WorldChoropleth({
                     d={d}
                     fill={fill}
                     stroke={
-                      isHovered ? HOVER_STROKE
+                      isHovered ? hoverStroke
                       : isFocused  ? FOCUS_STROKE
                       : hasProxy   ? PROXY_STROKE
                       : BASE_STROKE
@@ -551,14 +556,14 @@ export default function WorldChoropleth({
           {/* HTML Tooltip */}
           {tooltip.visible && tooltip.datum && (
             <div
-              className="glass pointer-events-none absolute z-50 rounded-xl px-3 py-2.5 text-sm shadow-2xl border border-zinc-700/60"
+              className="glass pointer-events-none absolute z-50 rounded-xl px-3 py-2.5 text-sm shadow-2xl border border-zinc-200 dark:border-zinc-700/60"
               style={{
                 left:     Math.min(tooltip.x, containerWidth - 260),
                 top:      Math.max(tooltip.y - 64, 4),
                 maxWidth: 256,
               }}
             >
-              <p className="font-semibold text-white leading-tight">{tooltip.datum.name}</p>
+              <p className="font-semibold text-zinc-900 dark:text-white leading-tight">{tooltip.datum.name}</p>
               <TooltipContent datum={tooltip.datum} metric={metric} />
             </div>
           )}
@@ -592,7 +597,7 @@ export default function WorldChoropleth({
 
             {/* No-data swatch */}
             <div className="flex items-center gap-1.5 pt-px">
-              <div className="w-4 h-2.5 rounded" style={{ background: NO_DATA_FILL }} />
+              <div className="w-4 h-2.5 rounded" style={{ background: noDataFill }} />
               <span className="text-[10px] text-zinc-500">
                 {metric === "claude" ? "No Claude.ai data" : "No data"}
               </span>
@@ -604,7 +609,7 @@ export default function WorldChoropleth({
                 <div
                   className="w-4 h-2.5 rounded border border-dashed"
                   style={{
-                    background:  NO_DATA_FILL,
+                    background:  noDataFill,
                     borderColor: PROXY_STROKE,
                   }}
                 />
