@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-30T09:00:03.522Z",
+  "generatedAt": "2026-06-30T13:52:25.274Z",
   "scope": "Supplemental AI adoption and usage proxies outside Anthropic's Claude.ai country usage index.",
   "caveat": "These metrics use different denominators and collection methods. Do not merge them into the Anthropic usageIndex without explicit normalization and labeling.",
   "enterpriseAdoptionMetrics": [
@@ -2270,7 +2270,7 @@
   "openModelDownloadProxies": [
     {
       "provider": "Alibaba Qwen",
-      "capturedAt": "2026-06-30T09:00:22.745Z",
+      "capturedAt": "2026-06-30T13:52:35.595Z",
       "source": "https://huggingface.co/api/models?search=Qwen&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
@@ -2287,36 +2287,36 @@
         {
           "modelId": "Qwen/Qwen3-8B",
           "downloads": 13672043,
-          "likes": 1170
+          "likes": 1171
         },
         {
           "modelId": "Qwen/Qwen2.5-7B-Instruct",
           "downloads": 12723410,
-          "likes": 1390
+          "likes": 1391
         },
         {
           "modelId": "Qwen/Qwen2.5-1.5B-Instruct",
           "downloads": 11679218,
-          "likes": 750
+          "likes": 752
         }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
     },
     {
       "provider": "DeepSeek",
-      "capturedAt": "2026-06-30T09:00:22.742Z",
+      "capturedAt": "2026-06-30T13:52:35.611Z",
       "source": "https://huggingface.co/api/models?search=DeepSeek&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
         {
           "modelId": "deepseek-ai/DeepSeek-R1",
           "downloads": 7483926,
-          "likes": 13421
+          "likes": 13422
         },
         {
           "modelId": "antirez/deepseek-v4-gguf",
           "downloads": 6441753,
-          "likes": 281
+          "likes": 282
         },
         {
           "modelId": "deepseek-ai/DeepSeek-R1-0528",
@@ -2338,19 +2338,19 @@
     },
     {
       "provider": "Moonshot Kimi",
-      "capturedAt": "2026-06-30T09:00:22.823Z",
+      "capturedAt": "2026-06-30T13:52:35.611Z",
       "source": "https://huggingface.co/api/models?search=Kimi&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
         {
           "modelId": "moonshotai/Kimi-K2.6",
           "downloads": 2302910,
-          "likes": 1495
+          "likes": 1496
         },
         {
           "modelId": "moonshotai/Kimi-K2-Instruct-0905",
           "downloads": 1661261,
-          "likes": 758
+          "likes": 760
         },
         {
           "modelId": "moonshotai/Kimi-K2.5",
@@ -2372,7 +2372,7 @@
     },
     {
       "provider": "Zhipu ChatGLM",
-      "capturedAt": "2026-06-30T09:00:22.811Z",
+      "capturedAt": "2026-06-30T13:52:35.601Z",
       "source": "https://huggingface.co/api/models?search=ChatGLM&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
@@ -2406,7 +2406,7 @@
     },
     {
       "provider": "Baichuan",
-      "capturedAt": "2026-06-30T09:00:22.883Z",
+      "capturedAt": "2026-06-30T13:52:35.612Z",
       "source": "https://huggingface.co/api/models?search=Baichuan&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
@@ -2444,11 +2444,11 @@
       "id": "github-huggingface-transformers",
       "metric": "github_repository_activity",
       "repository": "huggingface/transformers",
-      "stars": 162045,
-      "forks": 33668,
-      "openIssues": 2452,
-      "repositoryUpdatedAt": "2026-06-30T08:50:42Z",
-      "capturedAt": "2026-06-30T09:00:24.755Z",
+      "stars": 162049,
+      "forks": 33669,
+      "openIssues": 2446,
+      "repositoryUpdatedAt": "2026-06-30T13:40:10Z",
+      "capturedAt": "2026-06-30T13:52:37.392Z",
       "source": "https://api.github.com/repos/huggingface/transformers",
       "confidence": "high",
       "comparability": "Developer ecosystem proxy; no country split and no end-user usage measurement."

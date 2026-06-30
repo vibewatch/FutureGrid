@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 /**
  * build-global-metrics.mjs
- * Fetches Microsoft AI Diffusion (AIEI) CSV and (best-effort) IMF AI Preparedness
- * Index, maps Economy names → ISO-3, and writes data/global-ai-metrics.json.
+ * Fetches Microsoft AI Diffusion (AIEI) CSV, (best-effort) IMF AI Preparedness
+ * Index, and Oxford Insights Government AI Readiness Index (2023),
+ * maps Economy names → ISO-3, and writes data/global-ai-metrics.json.
  *
  * Run: node scripts/build-global-metrics.mjs
  * (or via: npm run build:global-metrics)
@@ -38,6 +39,11 @@ const IMF_AIPI_SUBINDICES = [
   { code: "IEI",   field: "innovation",            label: "Innovation & Economic Integration" },
   { code: "RE",    field: "regulationEthics",      label: "Regulation & Ethics" },
 ];
+
+// Oxford Insights Government AI Readiness Index 2023 — 193 countries, scale 0–100, CC-BY
+// Hosted on openAFRICA (open data mirror of the official Oxford Insights release)
+const OXFORD_GAIRI_URL =
+  "https://open.africa/dataset/e6551895-bded-4f5a-aca1-b3ed0937efd0/resource/f3f84fa7-6974-42f4-9a12-f637ff8ba6b6/download/2023-ai-readiness-index-public-dataset-global-rankings.csv";
 
 // ─── HTTP helpers ──────────────────────────────────────────────────────────────
 
@@ -227,6 +233,17 @@ const NAME_OVERRIDES = {
   "Moldova, Republic of": "MDA",
   "North Korea": "PRK",
   "Korea, Dem. People's Rep.": "PRK",
+
+  // Oxford Insights 2023 specific names
+  "United States of America": "USA",
+  "United Kingdom of Great Britain and Northern Ireland": "GBR",
+  "Iran (Islamic Republic of)": "IRN",
+  "Bolivia (Plurinational State of)": "BOL",
+  "State of Palestine": "PSE",
+  "United Republic of Tanzania": "TZA",
+  "Gambia (Republic of The)": "GMB",
+  "Guinea Bissau": "GNB",
+  "Democratic People's Republic of Korea": "PRK",
 };
 
 /** Build a lookup: normalised name → ISO-3. Normalised = trimmed lower-case. */
@@ -469,7 +486,56 @@ async function main() {
     console.warn(`  [IMF sub-indices] Skipped: ${err.message}`);
   }
 
-  // 5. Write output
+  // 5. Best-effort Oxford Insights Government AI Readiness Index 2023
+  let governmentReadiness = null;
+  let oxfordIncluded = false;
+  let oxfordSkipReason = "";
+
+  try {
+    const oxfordText = await fetchText(
+      OXFORD_GAIRI_URL,
+      path.join(CACHE_DIR, "oxford-gairi-2023.csv"),
+      20_000,
+    );
+    const oxfordRows = parseCSV(oxfordText);
+    if (oxfordRows.length > 0) {
+      governmentReadiness = {};
+      const oxfordUnmatched = [];
+      for (const row of oxfordRows) {
+        const country = (row.Country || row.country || "").trim();
+        if (!country) continue;
+        const rawScore = row.Total || row.total || "";
+        const score = parseFloat(rawScore);
+        if (isNaN(score)) continue;
+        const iso3 = nameLookup.get(country.toLowerCase()) || nameLookup.get(asciiOnly(country));
+        if (iso3) {
+          governmentReadiness[iso3] = Math.round(score * 100) / 100;
+        } else {
+          oxfordUnmatched.push(country);
+        }
+      }
+      const cnt = Object.keys(governmentReadiness).length;
+      console.log(`  Oxford GAIRI 2023: ${cnt} countries mapped`);
+      if (oxfordUnmatched.length > 0) {
+        console.warn(`  Oxford unmatched (${oxfordUnmatched.length}): ${oxfordUnmatched.join(", ")}`);
+      }
+      if (cnt >= 100) {
+        oxfordIncluded = true;
+      } else {
+        oxfordSkipReason = `Oxford GAIRI mapped only ${cnt} countries (expected ≥100)`;
+        governmentReadiness = null;
+        console.warn(`  [Oxford] Skipped: ${oxfordSkipReason}`);
+      }
+    } else {
+      oxfordSkipReason = "Oxford GAIRI CSV parsed 0 rows";
+      console.warn(`  [Oxford] Skipped: ${oxfordSkipReason}`);
+    }
+  } catch (err) {
+    oxfordSkipReason = `Fetch/parse error: ${err.message}`;
+    console.warn(`  [Oxford] Skipped: ${oxfordSkipReason}`);
+  }
+
+  // 6. Write output
   const sources = [
     {
       id: "microsoft-aiei",
@@ -539,6 +605,29 @@ async function main() {
   };
   sources.push(readinessSubIndexMeta);
 
+  const oxfordMeta = {
+    id: "oxford-gairi-2023",
+    name: "Oxford Insights Government AI Readiness Index 2023 — overall composite score",
+    publisher: "Oxford Insights",
+    year: 2023,
+    url: "https://open.africa/dataset/government-ai-readiness-index-2023",
+    dataUrl: OXFORD_GAIRI_URL,
+    license: "Creative Commons Attribution (CC-BY)",
+    metric: "governmentReadiness",
+    scaleMin: 0,
+    scaleMax: 100,
+    included: oxfordIncluded,
+    description:
+      "Overall government AI readiness composite score 0–100 for 193 countries (2023 edition). " +
+      "Three pillars: Government, Technology Sector, Data and Infrastructure. " +
+      "China ranks 16th (70.94). Measures government-level capacity and environment for deploying AI, " +
+      "NOT user-behaviour or diffusion. " +
+      "COMPARABILITY CAVEAT: government readiness score — do NOT average or merge with " +
+      "diffusionPct (user behaviour %), usageIndex (API sessions), or aiReadiness (IMF capacity index 0–1).",
+    ...(oxfordIncluded ? {} : { skipReason: oxfordSkipReason }),
+  };
+  sources.push(oxfordMeta);
+
   const output = {
     generatedAt: new Date().toISOString(),
     sources,
@@ -548,6 +637,7 @@ async function main() {
       diffusionTrend: diffusionTrend,
       ...(imfIncluded ? { readiness, readinessMeta } : {}),
       ...(subIndicesIncluded ? { readinessSubIndices, readinessSubIndexMeta } : {}),
+      ...(oxfordIncluded ? { governmentReadiness, oxfordMeta } : {}),
     },
   };
 
@@ -572,6 +662,13 @@ async function main() {
     const chnSub = readinessSubIndices["CHN"];
     console.log(`    China sub-indices (CHN): DI=${chnSub?.digitalInfrastructure ?? "N/A"}, HCLMP=${chnSub?.humanCapital ?? "N/A"}, IEI=${chnSub?.innovation ?? "N/A"}, RE=${chnSub?.regulationEthics ?? "N/A"}`);
   }
+  console.log(`    Oxford GAIRI included: ${oxfordIncluded}`);
+  if (oxfordIncluded && governmentReadiness) {
+    console.log(`    governmentReadiness countries: ${Object.keys(governmentReadiness).length}`);
+    console.log(`    China governmentReadiness (CHN): ${governmentReadiness["CHN"] ?? "NOT FOUND"}`);
+    console.log(`    USA governmentReadiness: ${governmentReadiness["USA"] ?? "NOT FOUND"}`);
+  }
+  if (!oxfordIncluded) console.log(`    Oxford skip reason: ${oxfordSkipReason}`);
   console.log(`    Unmatched names: ${unmatched.length}`);
   if (unmatched.length > 0) console.log(`    Unmatched: ${unmatched.join(", ")}`);
 }
