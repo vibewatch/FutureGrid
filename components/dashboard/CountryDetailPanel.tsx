@@ -17,6 +17,13 @@ export interface EnrichedCountry {
   /** pp gain H1 2025 → Q1 2026; null when incomplete. */
   diffusionDelta: number | null;
   aiReadiness: number | null;
+  /** IMF AIPI sub-index scores (0–1). null if data unavailable. */
+  readinessSubIndices: {
+    digitalInfrastructure: number | null;
+    humanCapital: number | null;
+    innovation: number | null;
+    regulationEthics: number | null;
+  } | null;
   gdpPerWorkingAgeCapita: number | null;
 }
 
@@ -91,6 +98,37 @@ function Sparkline3({ h1, h2, q1 }: { h1: number; h2: number; q1: number }) {
       <circle cx={px(1)} cy={py(vals[1])} r="2" fill="rgb(139,92,246)" opacity="0.5" />
       <circle cx={px(2)} cy={py(vals[2])} r="2.5" fill="rgb(139,92,246)" />
     </svg>
+  );
+}
+
+// ─── IMF AIPI sub-index mini-bar ─────────────────────────────────────────────
+
+function SubIndexBar({ label, value }: { label: string; value: number | null }) {
+  const pct = value !== null ? (value * 100).toFixed(1) : null;
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-1">
+        <span className="text-[11px] text-zinc-400 leading-tight">{label}</span>
+        <span className="text-[11px] font-bold text-cyan-300 tabular-nums ml-2 shrink-0">
+          {value !== null ? value.toFixed(2) : "—"}
+        </span>
+      </div>
+      <div
+        className="h-1.5 rounded-full bg-zinc-800 overflow-hidden"
+        role="progressbar"
+        aria-valuenow={value !== null ? Math.round(value * 100) : 0}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={`${label}: ${pct !== null ? `${pct}%` : "no data"}`}
+      >
+        {value !== null && (
+          <div
+            className="h-full rounded-full bg-cyan-500/60"
+            style={{ width: `${pct}%` }}
+          />
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -340,6 +378,46 @@ function CountryModal({
             </div>
           </div>
 
+          {/* IMF AIPI sub-indices */}
+          {country.readinessSubIndices && (
+            <div className="rounded-xl bg-zinc-900/50 border border-cyan-500/20 px-4 py-3 space-y-2.5">
+              <p className="text-[10px] text-zinc-500 uppercase tracking-widest">
+                IMF AI Preparedness — Sub-indices ·{" "}
+                <Link
+                  href="/sources"
+                  className="text-violet-400 hover:text-violet-300 underline underline-offset-2 transition-colors"
+                >
+                  IMF AIPI
+                </Link>
+              </p>
+              <SubIndexBar
+                label="Digital Infrastructure"
+                value={country.readinessSubIndices.digitalInfrastructure}
+              />
+              <SubIndexBar
+                label="Human Capital &amp; Labor Markets"
+                value={country.readinessSubIndices.humanCapital}
+              />
+              <SubIndexBar
+                label="Innovation &amp; Economic Integration"
+                value={country.readinessSubIndices.innovation}
+              />
+              <SubIndexBar
+                label="Regulation &amp; Ethics"
+                value={country.readinessSubIndices.regulationEthics}
+              />
+              <p className="text-[10px] text-zinc-600 leading-relaxed pt-0.5">
+                Sub-pillar scores 0–1 (2023 vintage). Source:{" "}
+                <Link
+                  href="/sources"
+                  className="text-zinc-500 hover:text-zinc-400 underline underline-offset-2 transition-colors"
+                >
+                  Data &amp; Sources
+                </Link>
+              </p>
+            </div>
+          )}
+
           {/* China native ecosystem context */}
           {isChina && (
             <div
@@ -425,6 +503,17 @@ export default function CountryDetailPanel({
 
   const openDetail = useCallback((c: EnrichedCountry) => setSelected(c), []);
   const closeDetail = useCallback(() => setSelected(null), []);
+
+  // Handle map-click opens modal via window event from WorldChoroplethInteractive
+  useEffect(() => {
+    function handleMapOpen(e: Event) {
+      const iso3 = (e as CustomEvent<string>).detail;
+      const country = countries.find((c) => c.iso3 === iso3) ?? null;
+      if (country) setSelected(country);
+    }
+    window.addEventListener("fg:openCountry", handleMapOpen);
+    return () => window.removeEventListener("fg:openCountry", handleMapOpen);
+  }, [countries]);
 
   const handleSelectorChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {

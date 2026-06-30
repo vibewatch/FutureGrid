@@ -31,6 +31,14 @@ const ISO_CROSSWALK_URL =
 // See: https://www.imf.org/external/datamapper/AI_PI@AIPI/ADVEC/EME/LIC
 const IMF_AIPI_URL = "https://www.imf.org/external/datamapper/api/v1/AIPI/AI_PI";
 
+// AIPI sub-index endpoints (verified 2026-06-30 via /indicators?dataset=AIPI)
+const IMF_AIPI_SUBINDICES = [
+  { code: "DI",    field: "digitalInfrastructure", label: "Digital Infrastructure" },
+  { code: "HCLMP", field: "humanCapital",          label: "Human Capital & Labor Market Policies" },
+  { code: "IEI",   field: "innovation",            label: "Innovation & Economic Integration" },
+  { code: "RE",    field: "regulationEthics",      label: "Regulation & Ethics" },
+];
+
 // ─── HTTP helpers ──────────────────────────────────────────────────────────────
 
 function resolveUrl(base, location) {
@@ -403,7 +411,65 @@ async function main() {
     console.warn(`  [IMF] Skipped: ${imfSkipReason}`);
   }
 
-  // 4. Write output
+  // 4. Best-effort IMF AIPI sub-indices
+  let readinessSubIndices = null;
+  let subIndicesIncluded = false;
+
+  try {
+    // Fetch all four sub-indices in sequence (respect rate limits)
+    const subIndexMaps = {};
+    for (const { code, field } of IMF_AIPI_SUBINDICES) {
+      const url = `https://www.imf.org/external/datamapper/api/v1/AIPI/${code}`;
+      const cacheFile = path.join(CACHE_DIR, `imf-aipi-${code.toLowerCase()}.json`);
+      const text = await fetchText(url, cacheFile, 20_000);
+      const json = JSON.parse(text);
+      const values = json?.values?.[code] ?? null;
+      if (values && typeof values === "object") {
+        subIndexMaps[field] = values;
+      }
+    }
+
+    const fields = IMF_AIPI_SUBINDICES.map((s) => s.field);
+    if (fields.every((f) => subIndexMaps[f])) {
+      // Collect all ISO3 keys across sub-indices
+      const allIso3 = new Set(
+        fields.flatMap((f) => Object.keys(subIndexMaps[f])),
+      );
+      readinessSubIndices = {};
+      for (const iso3 of allIso3) {
+        const entry = {};
+        for (const { field } of IMF_AIPI_SUBINDICES) {
+          const yearMap = subIndexMaps[field][iso3];
+          if (!yearMap || typeof yearMap !== "object") {
+            entry[field] = null;
+            continue;
+          }
+          const years = Object.keys(yearMap).map(Number).filter((y) => !isNaN(y)).sort((a, b) => b - a);
+          let val = null;
+          for (const yr of years) {
+            const v = yearMap[String(yr)];
+            if (v != null && !isNaN(Number(v))) { val = Number(v); break; }
+          }
+          entry[field] = val;
+        }
+        readinessSubIndices[iso3.toUpperCase()] = entry;
+      }
+      const cnt = Object.keys(readinessSubIndices).length;
+      console.log(`  IMF AIPI sub-indices: ${cnt} countries`);
+      if (cnt > 0) {
+        subIndicesIncluded = true;
+      } else {
+        readinessSubIndices = null;
+        console.warn("  [IMF sub-indices] Skipped: 0 parseable entries");
+      }
+    } else {
+      console.warn("  [IMF sub-indices] Skipped: one or more sub-index fetches returned no data");
+    }
+  } catch (err) {
+    console.warn(`  [IMF sub-indices] Skipped: ${err.message}`);
+  }
+
+  // 5. Write output
   const sources = [
     {
       id: "microsoft-aiei",
@@ -448,6 +514,31 @@ async function main() {
   };
   sources.push(readinessMeta);
 
+  const readinessSubIndexMeta = {
+    id: "imf-aipi-subindices",
+    name: "IMF AI Preparedness Index (AIPI) — sub-indices",
+    publisher: "International Monetary Fund",
+    year: 2023,
+    url: "https://www.imf.org/external/datamapper/AI_PI@AIPI/ADVEC/EME/LIC",
+    apiEndpoints: IMF_AIPI_SUBINDICES.map((s) => ({
+      code: s.code,
+      field: s.field,
+      label: s.label,
+      url: `https://www.imf.org/external/datamapper/api/v1/AIPI/${s.code}`,
+    })),
+    license: "IMF terms (https://www.imf.org/external/terms.htm)",
+    scaleMin: 0,
+    scaleMax: 1,
+    included: subIndicesIncluded,
+    description:
+      "Four AIPI pillar sub-index scores (0–1, 2023 vintage): " +
+      "DI=Digital Infrastructure, HCLMP=Human Capital & Labor Market Policies, " +
+      "IEI=Innovation & Economic Integration, RE=Regulation & Ethics. " +
+      "COMPARABILITY CAVEAT: capacity/infrastructure readiness sub-scores. " +
+      "Do NOT merge with diffusionPct or usageIndex.",
+  };
+  sources.push(readinessSubIndexMeta);
+
   const output = {
     generatedAt: new Date().toISOString(),
     sources,
@@ -456,6 +547,7 @@ async function main() {
       diffusion: diffusion,
       diffusionTrend: diffusionTrend,
       ...(imfIncluded ? { readiness, readinessMeta } : {}),
+      ...(subIndicesIncluded ? { readinessSubIndices, readinessSubIndexMeta } : {}),
     },
   };
 
@@ -474,6 +566,12 @@ async function main() {
     console.log(`    USA readiness: ${readiness["USA"] ?? "NOT FOUND"}`);
   }
   if (!imfIncluded) console.log(`    IMF skip reason: ${imfSkipReason}`);
+  console.log(`    IMF sub-indices included: ${subIndicesIncluded}`);
+  if (subIndicesIncluded && readinessSubIndices) {
+    console.log(`    sub-indices countries: ${Object.keys(readinessSubIndices).length}`);
+    const chnSub = readinessSubIndices["CHN"];
+    console.log(`    China sub-indices (CHN): DI=${chnSub?.digitalInfrastructure ?? "N/A"}, HCLMP=${chnSub?.humanCapital ?? "N/A"}, IEI=${chnSub?.innovation ?? "N/A"}, RE=${chnSub?.regulationEthics ?? "N/A"}`);
+  }
   console.log(`    Unmatched names: ${unmatched.length}`);
   if (unmatched.length > 0) console.log(`    Unmatched: ${unmatched.join(", ")}`);
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-30T10:37:31.390Z",
+  "generatedAt": "2026-06-30T12:07:07.593Z",
   "sources": [
     {
       "id": "microsoft-aiei",
@@ -30,6 +30,44 @@
       "scaleMax": 1,
       "included": true,
       "description": "Overall AI preparedness composite score 0–1 for 178 countries (2023 vintage). Measures institutional/infrastructure readiness capacity across four pillars: digital infrastructure, AI regulation & ethics, AI innovation & capacity, human capital. COMPARABILITY CAVEAT: capacity/infrastructure readiness metric, NOT user behavior %. Do NOT merge or average with diffusionPct or usageIndex — different denominators."
+    },
+    {
+      "id": "imf-aipi-subindices",
+      "name": "IMF AI Preparedness Index (AIPI) — sub-indices",
+      "publisher": "International Monetary Fund",
+      "year": 2023,
+      "url": "https://www.imf.org/external/datamapper/AI_PI@AIPI/ADVEC/EME/LIC",
+      "apiEndpoints": [
+        {
+          "code": "DI",
+          "field": "digitalInfrastructure",
+          "label": "Digital Infrastructure",
+          "url": "https://www.imf.org/external/datamapper/api/v1/AIPI/DI"
+        },
+        {
+          "code": "HCLMP",
+          "field": "humanCapital",
+          "label": "Human Capital & Labor Market Policies",
+          "url": "https://www.imf.org/external/datamapper/api/v1/AIPI/HCLMP"
+        },
+        {
+          "code": "IEI",
+          "field": "innovation",
+          "label": "Innovation & Economic Integration",
+          "url": "https://www.imf.org/external/datamapper/api/v1/AIPI/IEI"
+        },
+        {
+          "code": "RE",
+          "field": "regulationEthics",
+          "label": "Regulation & Ethics",
+          "url": "https://www.imf.org/external/datamapper/api/v1/AIPI/RE"
+        }
+      ],
+      "license": "IMF terms (https://www.imf.org/external/terms.htm)",
+      "scaleMin": 0,
+      "scaleMax": 1,
+      "included": true,
+      "description": "Four AIPI pillar sub-index scores (0–1, 2023 vintage): DI=Digital Infrastructure, HCLMP=Human Capital & Labor Market Policies, IEI=Innovation & Economic Integration, RE=Regulation & Ethics. COMPARABILITY CAVEAT: capacity/infrastructure readiness sub-scores. Do NOT merge with diffusionPct or usageIndex."
     }
   ],
   "unmatchedEconomies": [],
@@ -1113,6 +1151,1168 @@
       "scaleMax": 1,
       "included": true,
       "description": "Overall AI preparedness composite score 0–1 for 178 countries (2023 vintage). Measures institutional/infrastructure readiness capacity across four pillars: digital infrastructure, AI regulation & ethics, AI innovation & capacity, human capital. COMPARABILITY CAVEAT: capacity/infrastructure readiness metric, NOT user behavior %. Do NOT merge or average with diffusionPct or usageIndex — different denominators."
+    },
+    "readinessSubIndices": {
+      "AUS": {
+        "digitalInfrastructure": 0.18218323588371,
+        "humanCapital": 0.17124161124229,
+        "innovation": 0.16190110146999,
+        "regulationEthics": 0.21177437901497
+      },
+      "AUT": {
+        "digitalInfrastructure": 0.19374297559261,
+        "humanCapital": 0.15903098881245,
+        "innovation": 0.17384338378906,
+        "regulationEthics": 0.19794841110706
+      },
+      "BEL": {
+        "digitalInfrastructure": 0.17467841506004,
+        "humanCapital": 0.16408167779446,
+        "innovation": 0.17237295210361,
+        "regulationEthics": 0.16134479641914
+      },
+      "CAN": {
+        "digitalInfrastructure": 0.17194965481758,
+        "humanCapital": 0.17478312551975,
+        "innovation": 0.16084165871143,
+        "regulationEthics": 0.20557691156864
+      },
+      "HRV": {
+        "digitalInfrastructure": 0.17218679189682,
+        "humanCapital": 0.12623111903667,
+        "innovation": 0.13978588581085,
+        "regulationEthics": 0.14349210262299
+      },
+      "CYP": {
+        "digitalInfrastructure": 0.1687947511673,
+        "humanCapital": 0.14401982724667,
+        "innovation": 0.15463767945766,
+        "regulationEthics": 0.16494153439999
+      },
+      "CZE": {
+        "digitalInfrastructure": 0.169324234128,
+        "humanCapital": 0.15549390017986,
+        "innovation": 0.15890319645405,
+        "regulationEthics": 0.16250093281269
+      },
+      "DNK": {
+        "digitalInfrastructure": 0.20180732011795,
+        "humanCapital": 0.17677499353886,
+        "innovation": 0.18168471753597,
+        "regulationEthics": 0.21825522184372
+      },
+      "EST": {
+        "digitalInfrastructure": 0.2017670571804,
+        "humanCapital": 0.18495315313339,
+        "innovation": 0.15907716751099,
+        "regulationEthics": 0.21858482062817
+      },
+      "FIN": {
+        "digitalInfrastructure": 0.18607866764069,
+        "humanCapital": 0.1681006103754,
+        "innovation": 0.17339795827866,
+        "regulationEthics": 0.23044012486935
+      },
+      "FRA": {
+        "digitalInfrastructure": 0.18178890645504,
+        "humanCapital": 0.1621610969305,
+        "innovation": 0.17228455841541,
+        "regulationEthics": 0.18127408623695
+      },
+      "DEU": {
+        "digitalInfrastructure": 0.18530781567097,
+        "humanCapital": 0.1847433000803,
+        "innovation": 0.17900575697422,
+        "regulationEthics": 0.20427194237709
+      },
+      "GRC": {
+        "digitalInfrastructure": 0.15350794792175,
+        "humanCapital": 0.13510471582413,
+        "innovation": 0.15433019399643,
+        "regulationEthics": 0.1390358954668
+      },
+      "HKG": {
+        "digitalInfrastructure": 0.19949550926685,
+        "humanCapital": 0.16099612414837,
+        "innovation": 0.17478720843792,
+        "regulationEthics": 0.16528856754303
+      },
+      "ISL": {
+        "digitalInfrastructure": 0.1728314012289,
+        "humanCapital": 0.17057026922703,
+        "innovation": 0.14988169074059,
+        "regulationEthics": 0.20681749284267
+      },
+      "IRL": {
+        "digitalInfrastructure": 0.17218072712421,
+        "humanCapital": 0.17386642098427,
+        "innovation": 0.15802650153637,
+        "regulationEthics": 0.18905451893806
+      },
+      "ISR": {
+        "digitalInfrastructure": 0.17334572970867,
+        "humanCapital": 0.17238955199718,
+        "innovation": 0.1909364014864,
+        "regulationEthics": 0.18879850208759
+      },
+      "ITA": {
+        "digitalInfrastructure": 0.16825936734676,
+        "humanCapital": 0.1347493827343,
+        "innovation": 0.16274155676365,
+        "regulationEthics": 0.15497273206711
+      },
+      "JPN": {
+        "digitalInfrastructure": 0.17688120901585,
+        "humanCapital": 0.17074917256832,
+        "innovation": 0.18212588131428,
+        "regulationEthics": 0.20340214669704
+      },
+      "KOR": {
+        "digitalInfrastructure": 0.1810295432806,
+        "humanCapital": 0.16438841819763,
+        "innovation": 0.18252864480019,
+        "regulationEthics": 0.1986278295517
+      },
+      "LVA": {
+        "digitalInfrastructure": 0.16214744746685,
+        "humanCapital": 0.16284961998463,
+        "innovation": 0.14554907381535,
+        "regulationEthics": 0.16185165941715
+      },
+      "LTU": {
+        "digitalInfrastructure": 0.17740085721016,
+        "humanCapital": 0.1684432476759,
+        "innovation": 0.14762686192989,
+        "regulationEthics": 0.17141288518906
+      },
+      "LUX": {
+        "digitalInfrastructure": 0.1916915923357,
+        "humanCapital": 0.1717541962862,
+        "innovation": 0.14967054128647,
+        "regulationEthics": 0.22215484082699
+      },
+      "MAC": {
+        "digitalInfrastructure": 0.15714208781719,
+        "humanCapital": 0.086510099470615,
+        "innovation": null,
+        "regulationEthics": 0.14425145089626
+      },
+      "MLT": {
+        "digitalInfrastructure": 0.16583020985126,
+        "humanCapital": 0.15350817143917,
+        "innovation": 0.15371489524841,
+        "regulationEthics": 0.18614806234837
+      },
+      "NLD": {
+        "digitalInfrastructure": 0.19096231460571,
+        "humanCapital": 0.16897539794445,
+        "innovation": 0.18216648697853,
+        "regulationEthics": 0.22438891232014
+      },
+      "NZL": {
+        "digitalInfrastructure": 0.19386158883572,
+        "humanCapital": 0.18136605620384,
+        "innovation": 0.15871722996235,
+        "regulationEthics": 0.21973490715027
+      },
+      "NOR": {
+        "digitalInfrastructure": 0.17248716950417,
+        "humanCapital": 0.16694670915604,
+        "innovation": 0.15901318192482,
+        "regulationEthics": 0.20731395483017
+      },
+      "PRT": {
+        "digitalInfrastructure": 0.15507057309151,
+        "humanCapital": 0.15130364894867,
+        "innovation": 0.16398896276951,
+        "regulationEthics": 0.17565663158894
+      },
+      "PRI": {
+        "digitalInfrastructure": 0.079394944012165,
+        "humanCapital": 0.13915640115738,
+        "innovation": null,
+        "regulationEthics": 0.14095123112202
+      },
+      "SGP": {
+        "digitalInfrastructure": 0.20861737430096,
+        "humanCapital": 0.19519950449467,
+        "innovation": 0.18053269386292,
+        "regulationEthics": 0.21621714532375
+      },
+      "SVK": {
+        "digitalInfrastructure": 0.16607758402824,
+        "humanCapital": 0.14577409625053,
+        "innovation": 0.13627831637859,
+        "regulationEthics": 0.14349250495434
+      },
+      "SVN": {
+        "digitalInfrastructure": 0.1627476811409,
+        "humanCapital": 0.15222308039665,
+        "innovation": 0.14198565483093,
+        "regulationEthics": 0.17690572142601
+      },
+      "ESP": {
+        "digitalInfrastructure": 0.16955207288265,
+        "humanCapital": 0.14982847869396,
+        "innovation": 0.15794710814953,
+        "regulationEthics": 0.1710035353899
+      },
+      "SWE": {
+        "digitalInfrastructure": 0.18255545198917,
+        "humanCapital": 0.17112943530083,
+        "innovation": 0.18375873565674,
+        "regulationEthics": 0.21035628020763
+      },
+      "CHE": {
+        "digitalInfrastructure": 0.18979547917843,
+        "humanCapital": 0.18783612549305,
+        "innovation": 0.17185404896736,
+        "regulationEthics": 0.20752677321434
+      },
+      "GBR": {
+        "digitalInfrastructure": 0.18156261742115,
+        "humanCapital": 0.1732160449028,
+        "innovation": 0.16298899054527,
+        "regulationEthics": 0.21317765116692
+      },
+      "USA": {
+        "digitalInfrastructure": 0.1878224760294,
+        "humanCapital": 0.18329772353172,
+        "innovation": 0.18247638642788,
+        "regulationEthics": 0.21767249703407
+      },
+      "ALB": {
+        "digitalInfrastructure": 0.11438773572445,
+        "humanCapital": 0.14124451577663,
+        "innovation": 0.12576240301132,
+        "regulationEthics": 0.14539788663387
+      },
+      "DZA": {
+        "digitalInfrastructure": 0.082907736301422,
+        "humanCapital": 0.13887116312981,
+        "innovation": 0.074606649577618,
+        "regulationEthics": 0.07405311614275
+      },
+      "AGO": {
+        "digitalInfrastructure": 0.057157389819622,
+        "humanCapital": 0.068584576249123,
+        "innovation": 0.085128732025623,
+        "regulationEthics": 0.048788543790579
+      },
+      "ARG": {
+        "digitalInfrastructure": 0.13022059202194,
+        "humanCapital": 0.11706056445837,
+        "innovation": 0.088058702647686,
+        "regulationEthics": 0.13846957683563
+      },
+      "ARM": {
+        "digitalInfrastructure": 0.11967199295759,
+        "humanCapital": 0.12327387928963,
+        "innovation": 0.11540658771992,
+        "regulationEthics": 0.13453422486782
+      },
+      "AZE": {
+        "digitalInfrastructure": 0.11073476076126,
+        "humanCapital": 0.14725781977177,
+        "innovation": 0.10006237030029,
+        "regulationEthics": 0.11288482695818
+      },
+      "BHS": {
+        "digitalInfrastructure": 0.11173105984926,
+        "humanCapital": 0.11516305059195,
+        "innovation": 0.081716321408749,
+        "regulationEthics": 0.14890202879906
+      },
+      "BHR": {
+        "digitalInfrastructure": 0.11866585165262,
+        "humanCapital": 0.14959295094013,
+        "innovation": 0.14245516061783,
+        "regulationEthics": 0.10454124957323
+      },
+      "BRB": {
+        "digitalInfrastructure": 0.10041929036379,
+        "humanCapital": 0.12500694394112,
+        "innovation": 0.1241939663887,
+        "regulationEthics": 0.15503577888012
+      },
+      "BLR": {
+        "digitalInfrastructure": 0.14583532512188,
+        "humanCapital": 0.13628233969212,
+        "innovation": 0.1133942976594,
+        "regulationEthics": 0.075268611311913
+      },
+      "BLZ": {
+        "digitalInfrastructure": 0.092889793217182,
+        "humanCapital": 0.12669835984707,
+        "innovation": 0.095114596188068,
+        "regulationEthics": 0.10792415589094
+      },
+      "BOL": {
+        "digitalInfrastructure": 0.087617918848991,
+        "humanCapital": 0.12119730561972,
+        "innovation": 0.092190504074097,
+        "regulationEthics": 0.075599029660225
+      },
+      "BIH": {
+        "digitalInfrastructure": 0.1133346259594,
+        "humanCapital": 0.11674146354198,
+        "innovation": 0.1097269281745,
+        "regulationEthics": 0.088110089302063
+      },
+      "BWA": {
+        "digitalInfrastructure": 0.081379868090153,
+        "humanCapital": 0.10599353164434,
+        "innovation": 0.11399831622839,
+        "regulationEthics": 0.1114763841033
+      },
+      "BRA": {
+        "digitalInfrastructure": 0.13913251459599,
+        "humanCapital": 0.115483045578,
+        "innovation": 0.10798208415508,
+        "regulationEthics": 0.13874277472496
+      },
+      "BRN": {
+        "digitalInfrastructure": 0.11878547817469,
+        "humanCapital": 0.14603245258331,
+        "innovation": 0.10850394517183,
+        "regulationEthics": 0.12193084508181
+      },
+      "BGR": {
+        "digitalInfrastructure": 0.14914529025555,
+        "humanCapital": 0.14832343161106,
+        "innovation": 0.13506707549095,
+        "regulationEthics": 0.14475432038307
+      },
+      "CPV": {
+        "digitalInfrastructure": 0.084030240774155,
+        "humanCapital": 0.11639027297497,
+        "innovation": 0.11245388537645,
+        "regulationEthics": 0.11971309781075
+      },
+      "CHL": {
+        "digitalInfrastructure": 0.14755855500698,
+        "humanCapital": 0.14446820318699,
+        "innovation": 0.12424724549055,
+        "regulationEthics": 0.16947716474533
+      },
+      "CHN": {
+        "digitalInfrastructure": 0.19010217487812,
+        "humanCapital": 0.14991983771324,
+        "innovation": 0.14708356559277,
+        "regulationEthics": 0.14834882318974
+      },
+      "COL": {
+        "digitalInfrastructure": 0.11693494021893,
+        "humanCapital": 0.13145245611668,
+        "innovation": 0.10329802334309,
+        "regulationEthics": 0.13780850172043
+      },
+      "CRI": {
+        "digitalInfrastructure": 0.11969991773367,
+        "humanCapital": 0.13781125843525,
+        "innovation": 0.13248217105865,
+        "regulationEthics": 0.15015843510628
+      },
+      "DOM": {
+        "digitalInfrastructure": 0.092551022768021,
+        "humanCapital": 0.12067542970181,
+        "innovation": 0.13091138005257,
+        "regulationEthics": 0.12467357516289
+      },
+      "ECU": {
+        "digitalInfrastructure": 0.10049203783274,
+        "humanCapital": 0.12081720679998,
+        "innovation": 0.092175871133804,
+        "regulationEthics": 0.12859085202217
+      },
+      "EGY": {
+        "digitalInfrastructure": 0.091216824948788,
+        "humanCapital": 0.11584154516459,
+        "innovation": 0.10302583873272,
+        "regulationEthics": 0.083970248699188
+      },
+      "SLV": {
+        "digitalInfrastructure": 0.084077037870884,
+        "humanCapital": 0.10380543768406,
+        "innovation": 0.10700375586748,
+        "regulationEthics": 0.094834513962269
+      },
+      "SWZ": {
+        "digitalInfrastructure": 0.06444937735796,
+        "humanCapital": 0.09002748131752,
+        "innovation": 0.093136429786682,
+        "regulationEthics": 0.058597270399332
+      },
+      "FJI": {
+        "digitalInfrastructure": 0.087259881198406,
+        "humanCapital": 0.1336997449398,
+        "innovation": 0.11253979802132,
+        "regulationEthics": 0.11531253159046
+      },
+      "GAB": {
+        "digitalInfrastructure": 0.076041668653488,
+        "humanCapital": 0.096237435936928,
+        "innovation": 0.079102985560894,
+        "regulationEthics": 0.071147210896015
+      },
+      "GEO": {
+        "digitalInfrastructure": 0.12090872973204,
+        "humanCapital": 0.13217952847481,
+        "innovation": 0.13233087956905,
+        "regulationEthics": 0.14447443187237
+      },
+      "GTM": {
+        "digitalInfrastructure": 0.077027454972267,
+        "humanCapital": 0.10476835817099,
+        "innovation": 0.11577283591032,
+        "regulationEthics": 0.092537060379982
+      },
+      "GUY": {
+        "digitalInfrastructure": 0.074100509285927,
+        "humanCapital": 0.12289647012949,
+        "innovation": 0.12044063210487,
+        "regulationEthics": 0.10674235969782
+      },
+      "HUN": {
+        "digitalInfrastructure": 0.15964402258396,
+        "humanCapital": 0.12633982300758,
+        "innovation": 0.13957384228706,
+        "regulationEthics": 0.13740436732769
+      },
+      "IND": {
+        "digitalInfrastructure": 0.10598836839199,
+        "humanCapital": 0.12388407438993,
+        "innovation": 0.1108129248023,
+        "regulationEthics": 0.15181773900986
+      },
+      "IDN": {
+        "digitalInfrastructure": 0.1195926964283,
+        "humanCapital": 0.13011275231838,
+        "innovation": 0.10582709312439,
+        "regulationEthics": 0.16077074408531
+      },
+      "IRN": {
+        "digitalInfrastructure": 0.11856913566589,
+        "humanCapital": 0.10809991508722,
+        "innovation": 0.087237194180489,
+        "regulationEthics": 0.064419649541378
+      },
+      "IRQ": {
+        "digitalInfrastructure": 0.065998829901218,
+        "humanCapital": 0.10627111792564,
+        "innovation": 0.036030597984791,
+        "regulationEthics": 0.06153579801321
+      },
+      "JAM": {
+        "digitalInfrastructure": 0.090625986456871,
+        "humanCapital": 0.12908591330051,
+        "innovation": 0.094660580158234,
+        "regulationEthics": 0.11937951296568
+      },
+      "JOR": {
+        "digitalInfrastructure": 0.093006357550621,
+        "humanCapital": 0.13241711258888,
+        "innovation": 0.13104628026485,
+        "regulationEthics": 0.12636148929596
+      },
+      "KAZ": {
+        "digitalInfrastructure": 0.15259651839733,
+        "humanCapital": 0.15728041529655,
+        "innovation": 0.10878692567348,
+        "regulationEthics": 0.13372325897217
+      },
+      "KWT": {
+        "digitalInfrastructure": 0.11507316678762,
+        "humanCapital": 0.11470254510641,
+        "innovation": 0.1144158244133,
+        "regulationEthics": 0.11714094132185
+      },
+      "LBN": {
+        "digitalInfrastructure": 0.086067266762257,
+        "humanCapital": 0.12012753635645,
+        "innovation": 0.13071250915527,
+        "regulationEthics": 0.080941185355186
+      },
+      "LBY": {
+        "digitalInfrastructure": 0.057738859206438,
+        "humanCapital": 0.10832929611206,
+        "innovation": 0.051114644855261,
+        "regulationEthics": 0.027793180197477
+      },
+      "MYS": {
+        "digitalInfrastructure": 0.14961506426334,
+        "humanCapital": 0.1687413752079,
+        "innovation": 0.14003576338291,
+        "regulationEthics": 0.17363409698009
+      },
+      "MDV": {
+        "digitalInfrastructure": 0.10230648517609,
+        "humanCapital": 0.078395500779152,
+        "innovation": null,
+        "regulationEthics": 0.11483982950449
+      },
+      "MUS": {
+        "digitalInfrastructure": 0.11924779415131,
+        "humanCapital": 0.13462464511395,
+        "innovation": 0.12669898569584,
+        "regulationEthics": 0.14454154670238
+      },
+      "MEX": {
+        "digitalInfrastructure": 0.12697783112526,
+        "humanCapital": 0.13643628358841,
+        "innovation": 0.13138498365879,
+        "regulationEthics": 0.13724508881569
+      },
+      "MNG": {
+        "digitalInfrastructure": 0.12516421079636,
+        "humanCapital": 0.14172795414925,
+        "innovation": 0.097375869750977,
+        "regulationEthics": 0.12010857462883
+      },
+      "MNE": {
+        "digitalInfrastructure": 0.11362917721272,
+        "humanCapital": 0.15258705615997,
+        "innovation": 0.11075311154127,
+        "regulationEthics": 0.12672398984432
+      },
+      "MAR": {
+        "digitalInfrastructure": 0.097611799836159,
+        "humanCapital": 0.12012998759747,
+        "innovation": 0.11220340430737,
+        "regulationEthics": 0.099165663123131
+      },
+      "NAM": {
+        "digitalInfrastructure": 0.079586505889893,
+        "humanCapital": 0.12299925088882,
+        "innovation": 0.098822064697742,
+        "regulationEthics": 0.11820390820503
+      },
+      "OMN": {
+        "digitalInfrastructure": 0.11640864610672,
+        "humanCapital": 0.15812475979328,
+        "innovation": 0.12507177889347,
+        "regulationEthics": 0.13317178189754
+      },
+      "PAK": {
+        "digitalInfrastructure": 0.077373526990414,
+        "humanCapital": 0.10106925666332,
+        "innovation": 0.085143156349659,
+        "regulationEthics": 0.1050520837307
+      },
+      "PAN": {
+        "digitalInfrastructure": 0.10646378993988,
+        "humanCapital": 0.12228562682867,
+        "innovation": 0.13661649823189,
+        "regulationEthics": 0.1359149068594
+      },
+      "PRY": {
+        "digitalInfrastructure": 0.097160130739212,
+        "humanCapital": 0.10664923489094,
+        "innovation": 0.097998440265656,
+        "regulationEthics": 0.10795207321644
+      },
+      "PER": {
+        "digitalInfrastructure": 0.1119104847312,
+        "humanCapital": 0.1236862167716,
+        "innovation": 0.12366377562284,
+        "regulationEthics": 0.13187259435654
+      },
+      "PHL": {
+        "digitalInfrastructure": 0.10192369669676,
+        "humanCapital": 0.15158447623253,
+        "innovation": 0.12094224989414,
+        "regulationEthics": 0.12403523921967
+      },
+      "POL": {
+        "digitalInfrastructure": 0.16549704968929,
+        "humanCapital": 0.14379578828812,
+        "innovation": 0.14140242338181,
+        "regulationEthics": 0.14618942141533
+      },
+      "QAT": {
+        "digitalInfrastructure": 0.12675407528877,
+        "humanCapital": 0.14447437226772,
+        "innovation": 0.12900191545486,
+        "regulationEthics": 0.13436177372932
+      },
+      "MKD": {
+        "digitalInfrastructure": 0.11697588860989,
+        "humanCapital": 0.11806575208902,
+        "innovation": 0.11838272958994,
+        "regulationEthics": 0.12856166064739
+      },
+      "ROU": {
+        "digitalInfrastructure": 0.15375223755836,
+        "humanCapital": 0.1329060792923,
+        "innovation": 0.14638279378414,
+        "regulationEthics": 0.15060719847679
+      },
+      "RUS": {
+        "digitalInfrastructure": 0.15611711144447,
+        "humanCapital": 0.16315215826035,
+        "innovation": 0.12401229143143,
+        "regulationEthics": 0.11594174802303
+      },
+      "LCA": {
+        "digitalInfrastructure": 0.08181032538414,
+        "humanCapital": 0.10765907913446,
+        "innovation": 0.04578272998333,
+        "regulationEthics": 0.13893456757069
+      },
+      "VCT": {
+        "digitalInfrastructure": 0.074282713234425,
+        "humanCapital": 0.095399148762226,
+        "innovation": 0.02774416655302,
+        "regulationEthics": 0.14442577958107
+      },
+      "SAU": {
+        "digitalInfrastructure": 0.14380052685738,
+        "humanCapital": 0.17675940692425,
+        "innovation": 0.1167853474617,
+        "regulationEthics": 0.13955771923065
+      },
+      "SRB": {
+        "digitalInfrastructure": 0.14890213310719,
+        "humanCapital": 0.13631983101368,
+        "innovation": 0.10888906568289,
+        "regulationEthics": 0.14336368441582
+      },
+      "SYC": {
+        "digitalInfrastructure": 0.11425753682852,
+        "humanCapital": 0.13294424116611,
+        "innovation": 0.1386039853096,
+        "regulationEthics": 0.14484688639641
+      },
+      "ZAF": {
+        "digitalInfrastructure": 0.12399415671825,
+        "humanCapital": 0.11991155147552,
+        "innovation": 0.11019236594439,
+        "regulationEthics": 0.14266707003117
+      },
+      "LKA": {
+        "digitalInfrastructure": 0.113659709692,
+        "humanCapital": 0.12667578458786,
+        "innovation": 0.088010668754578,
+        "regulationEthics": 0.10772097855806
+      },
+      "SUR": {
+        "digitalInfrastructure": 0.08961571007967,
+        "humanCapital": 0.11754739284515,
+        "innovation": 0.10939179360867,
+        "regulationEthics": 0.10135295242071
+      },
+      "SYR": {
+        "digitalInfrastructure": 0.065049670636654,
+        "humanCapital": 0.13206587731838,
+        "innovation": 0.080602675676346,
+        "regulationEthics": 0.020430790260434
+      },
+      "THA": {
+        "digitalInfrastructure": 0.14086797833443,
+        "humanCapital": 0.13699355721474,
+        "innovation": 0.123983502388,
+        "regulationEthics": 0.13387206196785
+      },
+      "TTO": {
+        "digitalInfrastructure": 0.093912199139595,
+        "humanCapital": 0.12233736366034,
+        "innovation": 0.11194191873074,
+        "regulationEthics": 0.10743100196123
+      },
+      "TUN": {
+        "digitalInfrastructure": 0.10872808843851,
+        "humanCapital": 0.13190059363842,
+        "innovation": 0.10275694727898,
+        "regulationEthics": 0.12202405929565
+      },
+      "TUR": {
+        "digitalInfrastructure": 0.14132933318615,
+        "humanCapital": 0.13902553915977,
+        "innovation": 0.12593871355057,
+        "regulationEthics": 0.13389377295971
+      },
+      "UKR": {
+        "digitalInfrastructure": 0.14373734593391,
+        "humanCapital": 0.14591871201992,
+        "innovation": 0.099755093455315,
+        "regulationEthics": 0.12307190895081
+      },
+      "ARE": {
+        "digitalInfrastructure": 0.1519383341074,
+        "humanCapital": 0.15436471998692,
+        "innovation": 0.15091055631638,
+        "regulationEthics": 0.17097102105618
+      },
+      "URY": {
+        "digitalInfrastructure": 0.12890385091305,
+        "humanCapital": 0.1298596560955,
+        "innovation": 0.12161124497652,
+        "regulationEthics": 0.16826623678207
+      },
+      "VEN": {
+        "digitalInfrastructure": 0.070552937686443,
+        "humanCapital": 0.1137428060174,
+        "innovation": 0.068201653659344,
+        "regulationEthics": 0.022085124626756
+      },
+      "AFG": {
+        "digitalInfrastructure": 0.045447543263435,
+        "humanCapital": 0.047246925532818,
+        "innovation": null,
+        "regulationEthics": 0.040271706879139
+      },
+      "BGD": {
+        "digitalInfrastructure": 0.087450683116913,
+        "humanCapital": 0.088801264762878,
+        "innovation": 0.10748774558306,
+        "regulationEthics": 0.10032479465008
+      },
+      "BEN": {
+        "digitalInfrastructure": 0.066083803772926,
+        "humanCapital": 0.10162904113531,
+        "innovation": 0.097438856959343,
+        "regulationEthics": 0.098012492060661
+      },
+      "BTN": {
+        "digitalInfrastructure": 0.087852098047733,
+        "humanCapital": 0.11515894532204,
+        "innovation": 0.093372173607349,
+        "regulationEthics": 0.14553424715996
+      },
+      "BFA": {
+        "digitalInfrastructure": 0.056242469698191,
+        "humanCapital": 0.07948350161314,
+        "innovation": 0.080844655632973,
+        "regulationEthics": 0.095249272882938
+      },
+      "BDI": {
+        "digitalInfrastructure": 0.044495660811663,
+        "humanCapital": 0.10841347277164,
+        "innovation": 0.071255698800087,
+        "regulationEthics": 0.070419035851955
+      },
+      "KHM": {
+        "digitalInfrastructure": 0.080967277288437,
+        "humanCapital": 0.094286002218723,
+        "innovation": 0.11407965421677,
+        "regulationEthics": 0.080631993710995
+      },
+      "CMR": {
+        "digitalInfrastructure": 0.067646443843842,
+        "humanCapital": 0.10462947934866,
+        "innovation": 0.091108001768589,
+        "regulationEthics": 0.07790245115757
+      },
+      "CAF": {
+        "digitalInfrastructure": 0.01827753148973,
+        "humanCapital": 0.032241232693195,
+        "innovation": 0.090367443859577,
+        "regulationEthics": 0.043551277369261
+      },
+      "TCD": {
+        "digitalInfrastructure": 0.030288415029645,
+        "humanCapital": 0.074399076402187,
+        "innovation": 0.076035723090172,
+        "regulationEthics": 0.052882857620716
+      },
+      "COM": {
+        "digitalInfrastructure": 0.036451835185289,
+        "humanCapital": 0.066373735666275,
+        "innovation": 0.11088395863771,
+        "regulationEthics": 0.040464915335178
+      },
+      "COG": {
+        "digitalInfrastructure": 0.045607540756464,
+        "humanCapital": 0.081752292811871,
+        "innovation": 0.096450380980968,
+        "regulationEthics": 0.052801690995693
+      },
+      "COD": {
+        "digitalInfrastructure": 0.037818163633347,
+        "humanCapital": 0.07290817797184,
+        "innovation": 0.074247322976589,
+        "regulationEthics": 0.0625
+      },
+      "CIV": {
+        "digitalInfrastructure": 0.081721000373363,
+        "humanCapital": 0.10363693535328,
+        "innovation": 0.080535598099232,
+        "regulationEthics": 0.099610410630703
+      },
+      "DJI": {
+        "digitalInfrastructure": 0.056495480239391,
+        "humanCapital": 0.087826050817966,
+        "innovation": 0.12005430459976,
+        "regulationEthics": 0.054521381855011
+      },
+      "ETH": {
+        "digitalInfrastructure": 0.051120802760124,
+        "humanCapital": 0.06193008646369,
+        "innovation": 0.069385670125484,
+        "regulationEthics": 0.071160688996315
+      },
+      "GMB": {
+        "digitalInfrastructure": 0.049990605562925,
+        "humanCapital": 0.11953814327717,
+        "innovation": 0.097480267286301,
+        "regulationEthics": 0.092967227101326
+      },
+      "GHA": {
+        "digitalInfrastructure": 0.088655404746532,
+        "humanCapital": 0.11373325437307,
+        "innovation": 0.088968478143215,
+        "regulationEthics": 0.13384254276752
+      },
+      "GIN": {
+        "digitalInfrastructure": 0.055005077272654,
+        "humanCapital": 0.11629898846149,
+        "innovation": 0.07930101454258,
+        "regulationEthics": 0.072921007871628
+      },
+      "GNB": {
+        "digitalInfrastructure": 0.040040176361799,
+        "humanCapital": 0.041767321527004,
+        "innovation": 0.11942091584206,
+        "regulationEthics": 0.063670329749584
+      },
+      "HTI": {
+        "digitalInfrastructure": 0.032914455980062,
+        "humanCapital": 0.056107997894287,
+        "innovation": 0.14014787971973,
+        "regulationEthics": 0.039083652198315
+      },
+      "HND": {
+        "digitalInfrastructure": 0.057422515004873,
+        "humanCapital": 0.11314020305872,
+        "innovation": 0.092143476009369,
+        "regulationEthics": 0.079105637967587
+      },
+      "KEN": {
+        "digitalInfrastructure": 0.097114026546478,
+        "humanCapital": 0.11268864572048,
+        "innovation": 0.10582538694143,
+        "regulationEthics": 0.1295640617609
+      },
+      "KGZ": {
+        "digitalInfrastructure": 0.10636062175035,
+        "humanCapital": 0.1240059286356,
+        "innovation": 0.099357306957245,
+        "regulationEthics": 0.096117943525314
+      },
+      "LAO": {
+        "digitalInfrastructure": 0.059090651571751,
+        "humanCapital": 0.10508282482624,
+        "innovation": 0.089348345994949,
+        "regulationEthics": 0.076970495283604
+      },
+      "LSO": {
+        "digitalInfrastructure": 0.072165466845036,
+        "humanCapital": 0.096543744206429,
+        "innovation": 0.081663213670254,
+        "regulationEthics": 0.10498628020287
+      },
+      "LBR": {
+        "digitalInfrastructure": 0.041458740830421,
+        "humanCapital": 0.098636753857136,
+        "innovation": 0.14990948140621,
+        "regulationEthics": 0.080249987542629
+      },
+      "MDG": {
+        "digitalInfrastructure": 0.049605626612902,
+        "humanCapital": 0.094289295375347,
+        "innovation": 0.074020609259605,
+        "regulationEthics": 0.087534353137016
+      },
+      "MWI": {
+        "digitalInfrastructure": 0.04731697961688,
+        "humanCapital": 0.097354143857956,
+        "innovation": 0.099846519529819,
+        "regulationEthics": 0.095529802143574
+      },
+      "MLI": {
+        "digitalInfrastructure": 0.05957418680191,
+        "humanCapital": 0.079833596944809,
+        "innovation": 0.07989452034235,
+        "regulationEthics": 0.076844148337841
+      },
+      "MRT": {
+        "digitalInfrastructure": 0.049121208488941,
+        "humanCapital": 0.060743823647499,
+        "innovation": 0.072679214179516,
+        "regulationEthics": 0.050356760621071
+      },
+      "MDA": {
+        "digitalInfrastructure": 0.12967915832996,
+        "humanCapital": 0.12841439247131,
+        "innovation": 0.096505768597126,
+        "regulationEthics": 0.1260299384594
+      },
+      "MOZ": {
+        "digitalInfrastructure": 0.045734252780676,
+        "humanCapital": 0.07044755667448,
+        "innovation": 0.073632478713989,
+        "regulationEthics": 0.067550674080849
+      },
+      "MMR": {
+        "digitalInfrastructure": 0.071026295423508,
+        "humanCapital": 0.11759293824434,
+        "innovation": 0.087094478309155,
+        "regulationEthics": 0.051759276539087
+      },
+      "NPL": {
+        "digitalInfrastructure": 0.07811925560236,
+        "humanCapital": 0.10192608088255,
+        "innovation": 0.08523178845644,
+        "regulationEthics": 0.085702165961266
+      },
+      "NIC": {
+        "digitalInfrastructure": 0.069994516670704,
+        "humanCapital": 0.091381162405014,
+        "innovation": 0.10762486606836,
+        "regulationEthics": 0.062393456697464
+      },
+      "NER": {
+        "digitalInfrastructure": 0.039853490889072,
+        "humanCapital": 0.062453556805849,
+        "innovation": 0.13450223207474,
+        "regulationEthics": 0.089016862213612
+      },
+      "NGA": {
+        "digitalInfrastructure": 0.079609505832195,
+        "humanCapital": 0.093732133507729,
+        "innovation": 0.091155245900154,
+        "regulationEthics": 0.071787804365158
+      },
+      "PNG": {
+        "digitalInfrastructure": 0.046358875930309,
+        "humanCapital": 0.053996447473764,
+        "innovation": 0.10327257961035,
+        "regulationEthics": 0.086475059390068
+      },
+      "RWA": {
+        "digitalInfrastructure": 0.083531677722931,
+        "humanCapital": 0.10129887610674,
+        "innovation": 0.11263725161552,
+        "regulationEthics": 0.13993240892887
+      },
+      "STP": {
+        "digitalInfrastructure": 0.059426113963127,
+        "humanCapital": 0.073026217520237,
+        "innovation": null,
+        "regulationEthics": 0.085905365645885
+      },
+      "SEN": {
+        "digitalInfrastructure": 0.080233298242092,
+        "humanCapital": 0.10097125172615,
+        "innovation": 0.090449944138527,
+        "regulationEthics": 0.12431353330612
+      },
+      "SLE": {
+        "digitalInfrastructure": 0.045900296419859,
+        "humanCapital": 0.080714195966721,
+        "innovation": 0.090771771967411,
+        "regulationEthics": 0.080426640808582
+      },
+      "SOM": {
+        "digitalInfrastructure": 0.040855787694454,
+        "humanCapital": null,
+        "innovation": 0.125,
+        "regulationEthics": 0.033615246415138
+      },
+      "SSD": {
+        "digitalInfrastructure": 0.015532669611275,
+        "humanCapital": 0.036337614059448,
+        "innovation": null,
+        "regulationEthics": 0.0074358223937452
+      },
+      "SDN": {
+        "digitalInfrastructure": 0.052748907357454,
+        "humanCapital": 0.070277847349644,
+        "innovation": 0.079731129109859,
+        "regulationEthics": 0.030148828402162
+      },
+      "TJK": {
+        "digitalInfrastructure": 0.064995378255844,
+        "humanCapital": 0.13889667391777,
+        "innovation": 0.088302567601204,
+        "regulationEthics": 0.074251361191273
+      },
+      "TZA": {
+        "digitalInfrastructure": 0.063975043594837,
+        "humanCapital": 0.093435727059841,
+        "innovation": 0.10144794732332,
+        "regulationEthics": 0.093561768531799
+      },
+      "TLS": {
+        "digitalInfrastructure": 0.075306475162506,
+        "humanCapital": 0.10807024687529,
+        "innovation": 0.12503303587437,
+        "regulationEthics": 0.11932499706745
+      },
+      "TGO": {
+        "digitalInfrastructure": 0.063108757138252,
+        "humanCapital": 0.078686192631721,
+        "innovation": 0.082975745201111,
+        "regulationEthics": 0.090915694832802
+      },
+      "UGA": {
+        "digitalInfrastructure": 0.062899269163609,
+        "humanCapital": 0.093090675771236,
+        "innovation": 0.10785694420338,
+        "regulationEthics": 0.09008777141571
+      },
+      "UZB": {
+        "digitalInfrastructure": 0.10700166970491,
+        "humanCapital": 0.13032296299934,
+        "innovation": null,
+        "regulationEthics": 0.10466928035021
+      },
+      "VNM": {
+        "digitalInfrastructure": 0.14108048379421,
+        "humanCapital": 0.12063619494438,
+        "innovation": 0.11066352576017,
+        "regulationEthics": 0.10948853194714
+      },
+      "YEM": {
+        "digitalInfrastructure": 0.039775099605322,
+        "humanCapital": 0.07403589040041,
+        "innovation": 0.12013222277164,
+        "regulationEthics": 0.019384345039725
+      },
+      "ZMB": {
+        "digitalInfrastructure": 0.065099440515041,
+        "humanCapital": 0.11082933843136,
+        "innovation": 0.10277891904116,
+        "regulationEthics": 0.092012278735638
+      },
+      "ZWE": {
+        "digitalInfrastructure": 0.063585557043552,
+        "humanCapital": 0.09445983171463,
+        "innovation": 0.091692417860031,
+        "regulationEthics": 0.055053282529116
+      },
+      "ADVEC": {
+        "digitalInfrastructure": 0.17547730318247,
+        "humanCapital": 0.16305701606549,
+        "innovation": 0.15624907125647,
+        "regulationEthics": 0.18819080446011
+      },
+      "EME": {
+        "digitalInfrastructure": 0.11069856786841,
+        "humanCapital": 0.12735834934666,
+        "innovation": 0.10829687392033,
+        "regulationEthics": 0.11857121749015
+      },
+      "LIC": {
+        "digitalInfrastructure": 0.062236317317002,
+        "humanCapital": 0.088877751735189,
+        "innovation": 0.091741530840019,
+        "regulationEthics": 0.079586175760986
+      },
+      "APQ": {
+        "digitalInfrastructure": 0.13,
+        "humanCapital": 0.13,
+        "innovation": 0.12,
+        "regulationEthics": 0.14
+      },
+      "EUQ": {
+        "digitalInfrastructure": 0.16,
+        "humanCapital": 0.15,
+        "innovation": 0.15,
+        "regulationEthics": 0.17
+      },
+      "NMQ": {
+        "digitalInfrastructure": 0.18,
+        "humanCapital": 0.18,
+        "innovation": 0.17,
+        "regulationEthics": 0.21
+      },
+      "WE": {
+        "digitalInfrastructure": 0.1,
+        "humanCapital": 0.12,
+        "innovation": 0.1,
+        "regulationEthics": 0.12
+      },
+      "MECA": {
+        "digitalInfrastructure": 0.09,
+        "humanCapital": 0.12,
+        "innovation": 0.1,
+        "regulationEthics": 0.09
+      },
+      "SSQ": {
+        "digitalInfrastructure": 0.06,
+        "humanCapital": 0.09,
+        "innovation": 0.09,
+        "regulationEthics": 0.09
+      },
+      "EURO": {
+        "digitalInfrastructure": 0.17,
+        "humanCapital": 0.16,
+        "innovation": 0.16,
+        "regulationEthics": 0.18
+      },
+      "MAE": {
+        "digitalInfrastructure": 0.18,
+        "humanCapital": 0.17,
+        "innovation": 0.17,
+        "regulationEthics": 0.2
+      },
+      "EU": {
+        "digitalInfrastructure": 0.17,
+        "humanCapital": 0.16,
+        "innovation": 0.16,
+        "regulationEthics": 0.18
+      },
+      "AS5": {
+        "digitalInfrastructure": 0.14,
+        "humanCapital": 0.16,
+        "innovation": 0.13,
+        "regulationEthics": 0.16
+      },
+      "TWN": {
+        "digitalInfrastructure": null,
+        "humanCapital": 0.19547612965107,
+        "innovation": 0.1292067617178,
+        "regulationEthics": 0.18282178044319
+      }
+    },
+    "readinessSubIndexMeta": {
+      "id": "imf-aipi-subindices",
+      "name": "IMF AI Preparedness Index (AIPI) — sub-indices",
+      "publisher": "International Monetary Fund",
+      "year": 2023,
+      "url": "https://www.imf.org/external/datamapper/AI_PI@AIPI/ADVEC/EME/LIC",
+      "apiEndpoints": [
+        {
+          "code": "DI",
+          "field": "digitalInfrastructure",
+          "label": "Digital Infrastructure",
+          "url": "https://www.imf.org/external/datamapper/api/v1/AIPI/DI"
+        },
+        {
+          "code": "HCLMP",
+          "field": "humanCapital",
+          "label": "Human Capital & Labor Market Policies",
+          "url": "https://www.imf.org/external/datamapper/api/v1/AIPI/HCLMP"
+        },
+        {
+          "code": "IEI",
+          "field": "innovation",
+          "label": "Innovation & Economic Integration",
+          "url": "https://www.imf.org/external/datamapper/api/v1/AIPI/IEI"
+        },
+        {
+          "code": "RE",
+          "field": "regulationEthics",
+          "label": "Regulation & Ethics",
+          "url": "https://www.imf.org/external/datamapper/api/v1/AIPI/RE"
+        }
+      ],
+      "license": "IMF terms (https://www.imf.org/external/terms.htm)",
+      "scaleMin": 0,
+      "scaleMax": 1,
+      "included": true,
+      "description": "Four AIPI pillar sub-index scores (0–1, 2023 vintage): DI=Digital Infrastructure, HCLMP=Human Capital & Labor Market Policies, IEI=Innovation & Economic Integration, RE=Regulation & Ethics. COMPARABILITY CAVEAT: capacity/infrastructure readiness sub-scores. Do NOT merge with diffusionPct or usageIndex."
     }
   }
 }
