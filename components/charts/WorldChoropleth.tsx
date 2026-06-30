@@ -16,7 +16,10 @@ const NO_DATA_FILL_DARK = "#27272a"; // zinc-800
 const NO_DATA_FILL_LIGHT = "#d4d4d8"; // zinc-300
 const PROXY_STROKE = "#f59e0b"; // amber-400
 const BASE_STROKE  = "#52525b"; // zinc-600
-const FOCUS_STROKE  = "#22d3ee"; // cyan-400 — visible keyboard-focus indicator
+const FOCUS_STROKE      = "#22d3ee"; // cyan-400 — visible keyboard-focus indicator
+const BUBBLE_LAND_DARK  = "#3f3f46"; // zinc-700 — muted land in bubble mode
+const BUBBLE_LAND_LIGHT = "#e4e4e7"; // zinc-200
+const BUBBLE_MAX_R      = 30;        // max bubble radius (viewBox units)
 
 // Inlined at build time from next.config.ts env block; empty string on localhost.
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
@@ -31,7 +34,8 @@ function brandRamp(t: number): string {
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-type Metric = "claude" | "diffusion" | "readiness" | "govReadiness";
+type Metric   = "claude" | "diffusion" | "readiness" | "govReadiness";
+type ViewMode = "map" | "bubble";
 
 interface TooltipState {
   visible: boolean;
@@ -181,8 +185,9 @@ export default function WorldChoropleth({
   const containerRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
   const isDark = (resolvedTheme ?? "dark") !== "light";
-  const noDataFill  = isDark ? NO_DATA_FILL_DARK  : NO_DATA_FILL_LIGHT;
-  const hoverStroke = isDark ? "#ffffff" : "#18181b";
+  const noDataFill     = isDark ? NO_DATA_FILL_DARK  : NO_DATA_FILL_LIGHT;
+  const hoverStroke    = isDark ? "#ffffff"          : "#18181b";
+  const bubbleLandFill = isDark ? BUBBLE_LAND_DARK   : BUBBLE_LAND_LIGHT;
 
   const [metric,         setMetric]         = useState<Metric>("claude");
   const [hovered,        setHovered]        = useState<string | null>(null);
@@ -194,6 +199,10 @@ export default function WorldChoropleth({
   const [containerWidth, setContainerWidth] = useState(W);
   const [geoData,        setGeoData]        = useState<GeoData | null>(null);
   const [geoError,       setGeoError]       = useState<string | null>(null);
+  const [viewMode,       setViewMode]       = useState<ViewMode>("map");
+  const [isZoomed,       setIsZoomed]       = useState(false);
+  const mapGroupRef = useRef<SVGGElement>(null);
+  const zoomRef     = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
 
   // ── Fetch world geometry once on mount ────────────────────────────────────
 
@@ -311,6 +320,46 @@ export default function WorldChoropleth({
     });
   }, [geoData, pathGen, dataByIso3, metric, claudeColorScale, diffusionColorScale, readinessColorScale, govReadinessColorScale, noDataFill]);
 
+  // ── Bubble data: centroid + metric value + color ───────────────────────────
+
+  const bubbleData = useMemo(() => {
+    if (!geoData || !pathGen) return [];
+    return geoData.features.flatMap((feature) => {
+      const iso3  = feature.id;
+      const datum = dataByIso3.get(iso3) ?? null;
+      if (!datum) return [];
+
+      let value: number | null = null;
+      if (metric === "readiness")         value = datum.aiReadiness ?? null;
+      else if (metric === "govReadiness") value = datum.governmentReadiness ?? null;
+      else if (metric === "diffusion")    value = datum.diffusionPct ?? null;
+      else value = datum.hasClaudeData && datum.usageIndex != null ? datum.usageIndex : null;
+      if (value == null) return [];
+
+      const c = pathGen.centroid(feature as unknown as GeoPermissibleObjects);
+      if (!c || isNaN(c[0]) || isNaN(c[1])) return [];
+
+      let fill: string;
+      if (metric === "readiness")         fill = readinessColorScale(value);
+      else if (metric === "govReadiness") fill = govReadinessColorScale(value);
+      else if (metric === "diffusion")    fill = diffusionColorScale(value);
+      else                                fill = claudeColorScale(value);
+
+      return [{ iso3, datum, centroid: c as [number, number], value, fill }];
+    });
+  }, [geoData, pathGen, dataByIso3, metric, claudeColorScale, diffusionColorScale, readinessColorScale, govReadinessColorScale]);
+
+  // Largest-first so small bubbles render on top of large ones
+  const sortedBubbleData = useMemo(
+    () => [...bubbleData].sort((a, b) => b.value - a.value),
+    [bubbleData],
+  );
+
+  const bubbleRadiusScale = useMemo(() => {
+    const maxVal = d3.max(bubbleData, (d) => d.value) ?? 1;
+    return d3.scaleSqrt([0, maxVal], [0, BUBBLE_MAX_R]);
+  }, [bubbleData]);
+
   // SR top-15 list — metric-aware
   const srTop15 = useMemo(() => {
     if (metric === "diffusion") {
@@ -349,12 +398,39 @@ export default function WorldChoropleth({
     return () => observer.disconnect();
   }, []);
 
+  // ── D3 zoom behaviour ────────────────────────────────────────────────────
+
+  useEffect(() => {
+    const svgEl = svgRef.current;
+    if (!svgEl || !geoData) return;
+
+    const zoom = d3.zoom<SVGSVGElement, unknown>()
+      .scaleExtent([1, 8])
+      .translateExtent([[0, 0], [W, H]])
+      .on("zoom", (event: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
+        const { transform } = event;
+        d3.select(mapGroupRef.current).attr("transform", transform.toString());
+        setIsZoomed(transform.k !== 1 || transform.x !== 0 || transform.y !== 0);
+      });
+
+    d3.select(svgEl).call(zoom);
+    zoomRef.current = zoom;
+
+    return () => {
+      d3.select(svgEl).on(".zoom", null);
+      zoomRef.current = null;
+    };
+  }, [geoData]);
+
   // ── D3 cleanup on unmount ────────────────────────────────────────────────
 
   useEffect(() => {
     const svgEl = svgRef.current;
     return () => {
-      if (svgEl) d3.select(svgEl).selectAll("*").interrupt();
+      if (svgEl) {
+        d3.select(svgEl).selectAll("*").interrupt();
+        d3.select(svgEl).on(".zoom", null);
+      }
     };
   }, []);
 
@@ -387,6 +463,21 @@ export default function WorldChoropleth({
     setTooltip(prev => ({ ...prev, visible: false }));
   }, []);
 
+  const handleResetZoom = useCallback(() => {
+    const svgEl = svgRef.current;
+    const zoom  = zoomRef.current;
+    if (!svgEl || !zoom) return;
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const sel = d3.select<SVGSVGElement, unknown>(svgEl);
+    if (reduced) {
+      sel.call(zoom.transform, d3.zoomIdentity);
+    } else {
+      sel.transition().duration(300).call(zoom.transform, d3.zoomIdentity);
+    }
+  }, []);
+
   // ── Selection handlers ────────────────────────────────────────────────────
 
   const handleCountryClick = useCallback((iso3: string) => {
@@ -403,50 +494,85 @@ export default function WorldChoropleth({
     }
   }, [onCountrySelect]);
 
-  // ── SVG aria-label (metric-aware) ─────────────────────────────────────────
+  // ── SVG aria-label (metric- and viewMode-aware) ───────────────────────────
 
+  const mapOrBubble = viewMode === "bubble" ? "bubble" : "choropleth";
   const svgAriaLabel = metric === "claude"
-    ? "World choropleth map showing AI (Claude.ai) usage index by country. Colour intensity indicates per-capita usage; grey countries have no Claude.ai data; China is shown with a dashed amber border indicating proxy data only."
+    ? `World ${mapOrBubble} map showing AI (Claude.ai) usage index by country. Colour intensity indicates per-capita usage; ${viewMode === "bubble" ? "bubble size is proportional to usage index; " : ""}grey countries have no Claude.ai data${viewMode === "map" ? "; China is shown with a dashed amber border indicating proxy data only" : ""}.`
     : metric === "diffusion"
-    ? "World choropleth map showing GenAI diffusion by country, as percentage of working-age population using generative AI (Microsoft AIEI Q1 2026, ~147 economies). Grey countries have no data. China is included with real data at 16.4%."
+    ? `World ${mapOrBubble} map showing GenAI diffusion by country, as percentage of working-age population using generative AI (Microsoft AIEI Q1 2026, ~147 economies). Grey countries have no data. China is included with real data at 16.4%.`
     : metric === "govReadiness"
-    ? "World choropleth map showing Government AI Readiness by country based on the Oxford Insights Government AI Readiness Index 2023, scored 0–100. Higher scores indicate greater government AI readiness. Grey countries have no data."
-    : "World choropleth map showing AI readiness by country based on the IMF AI Preparedness Index (AIPI), scored 0–1. Higher scores indicate greater capacity and readiness for AI adoption. Grey countries have no data.";
+    ? `World ${mapOrBubble} map showing Government AI Readiness by country based on the Oxford Insights Government AI Readiness Index 2023, scored 0–100. Higher scores indicate greater government AI readiness. Grey countries have no data.`
+    : `World ${mapOrBubble} map showing AI readiness by country based on the IMF AI Preparedness Index (AIPI), scored 0–1. Higher scores indicate greater capacity and readiness for AI adoption. Grey countries have no data.`;
 
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
     <div className="relative w-full" ref={containerRef}>
 
-      {/* Metric toggle — segmented control */}
-      <div
-        role="group"
-        aria-label="Map metric"
-        className="flex w-fit rounded-xl glass p-0.5 mb-3 text-xs font-medium"
-      >
-        {(["claude", "diffusion", "readiness", "govReadiness"] as Metric[]).map((m) => {
-          const active = metric === m;
-          return (
-            <button
-              key={m}
-              type="button"
-              aria-pressed={active}
-              onClick={() => setMetric(m)}
-              className="relative px-3 py-1.5 rounded-[10px] transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
-              style={
-                active
-                  ? {
-                      background: "linear-gradient(135deg, #7c3aed 0%, #0891b2 100%)",
-                      color: "#fff",
-                      boxShadow: "0 2px 8px rgba(124,58,237,0.35)",
-                    }
-                  : { background: "transparent", color: "#71717a" }
-              }
-            >
-              {m === "claude" ? "Claude.ai usage" : m === "diffusion" ? "GenAI diffusion" : m === "readiness" ? "AI readiness" : "Gov. readiness"}
-            </button>
-          );
-        })}
+      {/* Controls row: metric toggle + view-mode toggle */}
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+        {/* Metric toggle — segmented control */}
+        <div
+          role="group"
+          aria-label="Map metric"
+          className="flex w-fit rounded-xl glass p-0.5 text-xs font-medium"
+        >
+          {(["claude", "diffusion", "readiness", "govReadiness"] as Metric[]).map((m) => {
+            const active = metric === m;
+            return (
+              <button
+                key={m}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setMetric(m)}
+                className="relative px-3 py-1.5 rounded-[10px] transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+                style={
+                  active
+                    ? {
+                        background: "linear-gradient(135deg, #7c3aed 0%, #0891b2 100%)",
+                        color: "#fff",
+                        boxShadow: "0 2px 8px rgba(124,58,237,0.35)",
+                      }
+                    : { background: "transparent", color: "#71717a" }
+                }
+              >
+                {m === "claude" ? "Claude.ai usage" : m === "diffusion" ? "GenAI diffusion" : m === "readiness" ? "AI readiness" : "Gov. readiness"}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* View-mode toggle: Map / Bubbles */}
+        <div
+          role="group"
+          aria-label="View mode"
+          className="flex rounded-xl glass p-0.5 text-xs font-medium"
+        >
+          {(["map", "bubble"] as ViewMode[]).map((mode) => {
+            const active = viewMode === mode;
+            return (
+              <button
+                key={mode}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setViewMode(mode)}
+                className="relative px-3 py-1.5 rounded-[10px] transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+                style={
+                  active
+                    ? {
+                        background: "linear-gradient(135deg, #7c3aed 0%, #0891b2 100%)",
+                        color: "#fff",
+                        boxShadow: "0 2px 8px rgba(124,58,237,0.35)",
+                      }
+                    : { background: "transparent", color: "#71717a" }
+                }
+              >
+                {mode === "map" ? "Map" : "Bubbles"}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Error state */}
@@ -496,6 +622,18 @@ export default function WorldChoropleth({
             )}
           </ul>
 
+          {/* Reset zoom button — shown only while zoomed in */}
+          {isZoomed && (
+            <button
+              type="button"
+              onClick={handleResetZoom}
+              aria-label="Reset zoom"
+              className="absolute right-1 top-1 z-10 rounded-lg glass px-2 py-1 text-[11px] text-zinc-500 hover:text-zinc-200 transition-colors"
+            >
+              Reset view
+            </button>
+          )}
+
           {/* World map SVG */}
           <svg
             ref={svgRef}
@@ -508,33 +646,80 @@ export default function WorldChoropleth({
               transform: entered ? "scale(1)" : "scale(0.97)",
             }}
           >
-            <g>
+            <g ref={mapGroupRef}>
               {countryPaths.map(({ iso3, datum, d, fill, hasProxy }) => {
-                const isHovered = hovered === iso3;
-                const isFocused = onCountrySelect != null && focused === iso3;
-                const dimmed    = hovered !== null && !isHovered;
+                const inBubble  = viewMode === "bubble";
+                const isHovered = !inBubble && hovered === iso3;
+                const isFocused = !inBubble && onCountrySelect != null && focused === iso3;
+                const dimmed    = !inBubble && hovered !== null && !isHovered;
 
                 return (
                   <path
                     key={iso3}
                     d={d}
-                    fill={fill}
+                    fill={inBubble ? bubbleLandFill : fill}
                     stroke={
-                      isHovered ? hoverStroke
-                      : isFocused  ? FOCUS_STROKE
-                      : hasProxy   ? PROXY_STROKE
+                      isHovered   ? hoverStroke
+                      : isFocused ? FOCUS_STROKE
+                      : !inBubble && hasProxy ? PROXY_STROKE
                       : BASE_STROKE
                     }
-                    strokeWidth={isHovered || isFocused ? 1.5 : hasProxy ? 1.2 : 0.4}
-                    strokeDasharray={hasProxy && !isHovered ? "3 2" : undefined}
+                    strokeWidth={
+                      isHovered || isFocused ? 1.5
+                      : inBubble             ? 0.3
+                      : hasProxy             ? 1.2
+                      : 0.4
+                    }
+                    strokeDasharray={!inBubble && hasProxy && !isHovered ? "3 2" : undefined}
                     style={{
                       opacity:    dimmed ? 0.5 : 1,
                       filter:     isHovered ? "brightness(1.4)" : undefined,
                       transition: "opacity 0.12s ease, filter 0.12s ease",
+                      cursor:     inBubble ? "default" : "pointer",
+                      outline:    "none",
+                    }}
+                    {...(!inBubble ? {
+                      onMouseEnter: (e: React.MouseEvent) => handleMouseEnter(e, iso3),
+                      onMouseMove:  handleMouseMove,
+                      onMouseLeave: handleMouseLeave,
+                      ...(onCountrySelect ? {
+                        tabIndex: 0,
+                        role: "button" as const,
+                        "aria-label": `${datum?.name ?? iso3} — select for details`,
+                        onClick: () => handleCountryClick(iso3),
+                        onKeyDown: (e: React.KeyboardEvent<SVGPathElement>) =>
+                          handleCountryKeyDown(e, iso3),
+                        onFocus: () => setFocused(iso3),
+                        onBlur:  () => setFocused(null),
+                      } : {})
+                    } : {})}
+                  />
+                );
+              })}
+
+              {/* Proportional-symbol (bubble) layer */}
+              {viewMode === "bubble" && sortedBubbleData.map(({ iso3, datum, centroid, value, fill }) => {
+                const r      = bubbleRadiusScale(value);
+                const isHov  = hovered === iso3;
+                const isFoc  = focused === iso3;
+                const dimmed = hovered !== null && !isHov;
+                return (
+                  <circle
+                    key={iso3}
+                    cx={centroid[0]}
+                    cy={centroid[1]}
+                    r={r}
+                    fill={fill}
+                    fillOpacity={dimmed ? 0.3 : 0.78}
+                    stroke={isHov || isFoc ? hoverStroke : "rgba(0,0,0,0.25)"}
+                    strokeWidth={isHov || isFoc ? 1.5 : 0.5}
+                    style={{
+                      filter:     isHov ? "brightness(1.3)" : undefined,
+                      transition: "fill-opacity 0.12s ease, filter 0.12s ease",
                       cursor:     "pointer",
                       outline:    "none",
                     }}
-                    onMouseEnter={e => handleMouseEnter(e, iso3)}
+                    onMouseEnter={(e) => handleMouseEnter(e, iso3)}
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
                     {...(onCountrySelect ? {
@@ -542,8 +727,12 @@ export default function WorldChoropleth({
                       role: "button" as const,
                       "aria-label": `${datum?.name ?? iso3} — select for details`,
                       onClick: () => handleCountryClick(iso3),
-                      onKeyDown: (e: React.KeyboardEvent<SVGPathElement>) =>
-                        handleCountryKeyDown(e, iso3),
+                      onKeyDown: (e: React.KeyboardEvent<SVGCircleElement>) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          onCountrySelect(iso3);
+                        }
+                      },
                       onFocus: () => setFocused(iso3),
                       onBlur:  () => setFocused(null),
                     } : {})}
@@ -585,7 +774,9 @@ export default function WorldChoropleth({
                 </span>
               </div>
               <p className="text-[10px] text-zinc-600 mt-0.5">
-                {metric === "claude"
+                {viewMode === "bubble"
+                  ? `Bubble colour + size = ${metric === "claude" ? "AI usage index" : metric === "diffusion" ? "GenAI diffusion %" : metric === "govReadiness" ? "Gov. AI readiness" : "AI readiness"}`
+                  : metric === "claude"
                   ? "AI usage index (per-capita)"
                   : metric === "diffusion"
                   ? "GenAI diffusion (% of working-age pop)"
@@ -595,16 +786,27 @@ export default function WorldChoropleth({
               </p>
             </div>
 
-            {/* No-data swatch */}
+            {/* No-data / bubble-key swatch */}
             <div className="flex items-center gap-1.5 pt-px">
-              <div className="w-4 h-2.5 rounded" style={{ background: noDataFill }} />
-              <span className="text-[10px] text-zinc-500">
-                {metric === "claude" ? "No Claude.ai data" : "No data"}
-              </span>
+              {viewMode === "bubble" ? (
+                <>
+                  <svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true">
+                    <circle cx="8" cy="6" r="5" fill={brandRamp(0.7)} fillOpacity={0.78} />
+                  </svg>
+                  <span className="text-[10px] text-zinc-500">Bubble size ∝ metric value</span>
+                </>
+              ) : (
+                <>
+                  <div className="w-4 h-2.5 rounded" style={{ background: noDataFill }} />
+                  <span className="text-[10px] text-zinc-500">
+                    {metric === "claude" ? "No Claude.ai data" : "No data"}
+                  </span>
+                </>
+              )}
             </div>
 
-            {/* Proxy / restricted swatch — Claude layer only */}
-            {metric === "claude" && (
+            {/* Proxy / restricted swatch — choropleth + Claude layer only */}
+            {viewMode === "map" && metric === "claude" && (
               <div className="flex items-center gap-1.5 pt-px">
                 <div
                   className="w-4 h-2.5 rounded border border-dashed"
