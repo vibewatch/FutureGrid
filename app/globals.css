@@ -157,6 +157,11 @@ body {
   }
 }
 
+/* ─── Choropleth map entrance animation ──────────────────────────────────────── */
+.choropleth-svg {
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
 /* ─── Reduced-motion: disable all animations ──────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up,
@@ -171,5 +176,11 @@ body {
 
   .glass-hover {
     transition: none;
+  }
+
+  .choropleth-svg {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

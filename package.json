@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "build:data": "npm run build:proxies && node scripts/build-data-snapshot.mjs",
-    "build:proxies": "node scripts/build-ai-usage-proxies.mjs"
+    "build:proxies": "node scripts/build-ai-usage-proxies.mjs",
+    "build:geo": "node scripts/build-world-geo.mjs"
   },
   "dependencies": {
     "chart.js": "^4.5.1",
@@ -29,6 +30,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
+    "topojson-client": "^3.1.0",
     "typescript": "^5"
   }
 }

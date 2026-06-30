@@ -12,6 +12,7 @@ import http from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
+import { feature as topoFeature } from "topojson-client";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -323,6 +324,59 @@ async function enrichWithBLS(occupations) {
 }
 
 // classifyRisk is defined inside main() using percentile thresholds from the actual distribution
+
+// ─── World geometry builder ────────────────────────────────────────────────────
+const WORLD_ATLAS_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+const ISO_CROSSWALK_URL = "https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.json";
+
+async function buildWorldGeo({ DATA_DIR: dataDir, CACHE_DIR: cacheDir }) {
+  console.log("\n[GEO] Building world-countries.geo.json …");
+
+  const topoText = await fetchText(
+    WORLD_ATLAS_URL,
+    path.join(cacheDir, "countries-110m.json")
+  );
+  const isoText = await fetchText(
+    ISO_CROSSWALK_URL,
+    path.join(cacheDir, "iso-crosswalk.json")
+  );
+
+  const topo = JSON.parse(topoText);
+  const isoData = JSON.parse(isoText);
+
+  // Build numeric (as integer) → ISO-3 alpha-3 lookup
+  const numToIso3 = new Map();
+  for (const entry of isoData) {
+    const num = parseInt(entry["country-code"], 10);
+    if (!isNaN(num) && entry["alpha-3"]) numToIso3.set(num, entry["alpha-3"]);
+  }
+
+  const geojson = topoFeature(topo, topo.objects.countries);
+
+  const features = [];
+  for (const f of geojson.features) {
+    const numId = typeof f.id === "number" ? f.id : parseInt(String(f.id), 10);
+    const iso3 = numToIso3.get(numId);
+    if (!iso3 || iso3 === "ATA") continue; // drop Antarctica + unmapped
+    features.push({
+      type: "Feature",
+      id: iso3,
+      properties: { name: (f.properties && f.properties.name) || "" },
+      geometry: f.geometry,
+    });
+  }
+
+  const out = { type: "FeatureCollection", features };
+  writeFileSync(path.join(dataDir, "world-countries.geo.json"), JSON.stringify(out));
+  console.log(`✓ Written world-countries.geo.json (${features.length} features)`);
+
+  // Spot-check
+  const spot = ["CHN", "USA", "IND", "BRA"];
+  for (const iso of spot) {
+    const found = features.find((f) => f.id === iso);
+    console.log(`  ${iso}: ${found ? "✓" : "✗ MISSING"}`);
+  }
+}
 
 // ─── Main pipeline ─────────────────────────────────────────────────────────────
 async function main() {
@@ -739,6 +793,22 @@ async function main() {
         license: "ILO terms (cited context)",
         usedFor: "Context/validation reference only — not directly loaded",
       },
+      {
+        name: "Natural Earth / world-atlas@2 — 110m Country Polygons (TopoJSON)",
+        publisher: "Natural Earth / Mike Bostock (world-atlas npm package)",
+        year: 2023,
+        url: "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+        license: "Public Domain (Natural Earth); ISC (world-atlas package)",
+        usedFor: "World map choropleth geometry — country polygons at 110m resolution, Antarctica dropped; numeric ISO ids mapped to ISO 3166-1 alpha-3 via lukes/ISO-3166-Countries-with-Regional-Codes crosswalk. AEI usageIndex primary choropleth value; proxy context shown for restricted countries (e.g. China).",
+      },
+      {
+        name: "ISO 3166-1 Country Codes Crosswalk (lukes/ISO-3166-Countries-with-Regional-Codes)",
+        publisher: "Luke Duncalfe (GitHub)",
+        year: 2024,
+        url: "https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes",
+        license: "Creative Commons Attribution-ShareAlike 4.0",
+        usedFor: "Numeric ISO 3166-1 → alpha-3 mapping used to annotate world-atlas country features",
+      },
     ],
     note: `automationRisk bands are percentile-calibrated from the aiExposure distribution (${en} occupations): Very High = top ~8% (aiExposure > ${VH_THRESHOLD.toFixed(4)}), High = next ~12% (> ${HIGH_THRESHOLD.toFixed(4)}), Medium = next ~25% (> ${MED_THRESHOLD.toFixed(4)}), Low = remainder (≤ ${MED_THRESHOLD.toFixed(4)}). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: ${blsEnriched ? `real OEWS 2025 figures (${blsEmpUpdated} occupations updated via BLS Public Data API)` : "null — BLS_API_KEY not set; set it and re-run npm run build:data"}. medianSalary: ${blsEnriched ? `OEWS 2025 where available (${blsWageUpdated} updated), AEI-bundled wage otherwise` : "AEI-bundled (BLS_API_KEY not set)"}. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: ` + (onetSkillsFailed ? "FAILED — default skills used" : "successfully loaded"),
   };
@@ -764,6 +834,10 @@ async function main() {
     if (o) console.log(`  ${code} ${o.title}: exposure=${o.aiExposure} salary=${o.medianSalary} sector=${o.sector}`);
     else console.log(`  ${code}: NOT FOUND`);
   }
+
+  // ─── World geometry ───────────────────────────────────────────────────────
+  await buildWorldGeo({ DATA_DIR, CACHE_DIR });
+
   console.log("\n=== Done ===");
 }
 

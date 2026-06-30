@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
-import { getCountryExposure } from "@/lib/data";
-// CountryExposureChart is a client island authored by a teammate
+import { getCountryExposure, getAIUsageProxies } from "@/lib/data";
+// CountryExposureChart and WorldChoropleth are client islands authored by teammates
 import CountryExposureChart from "@/components/charts/CountryExposureChart";
+import WorldChoropleth from "@/components/charts/WorldChoropleth";
 
 export const metadata = {
   title: "Global AI Adoption — FutureGrid",
@@ -13,7 +14,27 @@ export const metadata = {
 
 export default function GlobalPage() {
   const allCountries = getCountryExposure();
-  const china = allCountries.find((country) => country.iso3 === "CHN");
+  const proxies = getAIUsageProxies();
+
+  // Extract China proxy figures from live data (with hardcoded fallbacks)
+  const cnnicEntry = proxies.countrySurveyMetrics.find(
+    (m) => (m as { id?: string }).id === "cn-cnnic-genai-users-2025-06",
+  );
+  const questEntry = proxies.chinaAppMarketMetrics.find(
+    (m) => (m as { id?: string }).id === "cn-questmobile-mobile-ai-app-users-2025-06",
+  );
+  const doubaoEntry = proxies.chinaNativeAppMau.find(
+    (m) => (m as { id?: string }).id === "cn-questmobile-doubao-mau-2025-12",
+  );
+  const cnnicUsers = cnnicEntry
+    ? `${Math.round(Number((cnnicEntry as { value?: unknown }).value) / 1e6)}M`
+    : "515M";
+  const questMau = questEntry
+    ? `${Math.round(Number((questEntry as { value?: unknown }).value) / 1e6)}M`
+    : "680M";
+  const doubaoMau = doubaoEntry
+    ? `${Math.round(Number((doubaoEntry as { value?: unknown }).value) / 1e6)}M`
+    : "226M";
 
   // Ranked list: exclude zeros, sort desc by usageIndex
   const ranked = allCountries
@@ -91,39 +112,103 @@ export default function GlobalPage() {
 
       <hr className="divider-glow" />
 
-      {/* ─── CHINA COVERAGE ──────────────────────────────────────────────── */}
-      {china && (
-        <Reveal delay={90}>
-          <div className="glass px-5 py-4 rounded-xl max-w-3xl border border-zinc-800/80">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div>
-                <p className="text-xs text-zinc-500 uppercase tracking-widest mb-1">
-                  Supplemental country coverage
+      {/* ─── WORLD MAP ───────────────────────────────────────────────────────── */}
+      <Reveal delay={80}>
+        <section aria-labelledby="world-map-heading">
+          <h2
+            id="world-map-heading"
+            className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gradient mb-2"
+          >
+            Global AI Adoption — World Map
+          </h2>
+          <p className="text-sm text-zinc-400 mb-6 max-w-2xl leading-relaxed">
+            Real per-capita Claude.ai usage from the Anthropic Economic Index (Aug 2025),
+            visualised across all tracked countries. Nations with restricted or unavailable
+            Claude.ai access — including China — are shown distinctly with proxy context
+            instead of a usage score.
+          </p>
+          <div className="glass p-4 sm:p-6 rounded-2xl">
+            <WorldChoropleth />
+          </div>
+        </section>
+      </Reveal>
+
+      {/* ─── CHINA CALLOUT ───────────────────────────────────────────────────── */}
+      <Reveal delay={120}>
+        <div
+          className="glass rounded-2xl overflow-hidden"
+          style={{ borderColor: "rgba(245,158,11,0.2)", borderWidth: 1 }}
+          aria-label="China AI adoption proxy context"
+        >
+          {/* Header */}
+          <div className="flex items-center gap-2 px-5 py-4 border-b border-amber-500/10">
+            <span aria-hidden="true" className="text-lg">🇨🇳</span>
+            <h2 className="text-base font-semibold text-amber-200">
+              China — Proxy Context
+            </h2>
+            <span className="ml-auto text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              Not in usage index
+            </span>
+          </div>
+
+          {/* Body */}
+          <div className="px-5 py-5 space-y-5">
+            <p className="text-sm text-zinc-400 leading-relaxed">
+              Claude.ai is{" "}
+              <span className="text-zinc-200 font-medium">unavailable in mainland China</span>,
+              so it does not appear in the per-capita usage index. The figures below are
+              third-party proxy metrics for broader domestic AI adoption — each uses a different
+              measurement approach and denominator, and they are{" "}
+              <span className="text-zinc-200 font-medium">not merged into the index</span>.
+            </p>
+
+            {/* Proxy stat cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="rounded-xl px-4 py-3 bg-zinc-900/50 border border-amber-500/10">
+                <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
+                  CNNIC · Jun 2025
                 </p>
-                <h2 className="text-lg font-semibold text-white">China</h2>
-                <p className="text-sm text-zinc-400 mt-1">
-                  Anthropic does not report mainland China Claude.ai usage metrics in this snapshot,
-                  so usage index, global share, and interaction count are shown as unavailable.
+                <p className="text-2xl font-extrabold text-amber-300 tabular-nums">
+                  {cnnicUsers}
                 </p>
+                <p className="text-xs text-zinc-400 mt-1">Generative-AI users</p>
               </div>
-              <div className="grid grid-cols-2 gap-3 sm:min-w-[300px]">
-                <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2">
-                  <p className="text-[10px] text-zinc-500 uppercase tracking-widest">Usage index</p>
-                  <p className="text-sm font-semibold text-zinc-300 mt-1">Not reported</p>
-                </div>
-                <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2">
-                  <p className="text-[10px] text-zinc-500 uppercase tracking-widest">GDP / worker</p>
-                  <p className="text-sm font-semibold text-cyan-300 mt-1">
-                    {china.gdpPerWorkingAgeCapita != null
-                      ? `$${Math.round(china.gdpPerWorkingAgeCapita).toLocaleString()}`
-                      : "—"}
-                  </p>
-                </div>
+              <div className="rounded-xl px-4 py-3 bg-zinc-900/50 border border-amber-500/10">
+                <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
+                  QuestMobile · H1 2025
+                </p>
+                <p className="text-2xl font-extrabold text-amber-300 tabular-nums">
+                  {questMau}
+                </p>
+                <p className="text-xs text-zinc-400 mt-1">Mobile-AI MAU</p>
+              </div>
+              <div className="rounded-xl px-4 py-3 bg-zinc-900/50 border border-amber-500/10">
+                <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
+                  Doubao (QuestMobile) · Dec 2025
+                </p>
+                <p className="text-2xl font-extrabold text-amber-300 tabular-nums">
+                  {doubaoMau}
+                </p>
+                <p className="text-xs text-zinc-400 mt-1">App MAU</p>
               </div>
             </div>
+
+            {/* Caveat */}
+            <p className="text-xs text-zinc-500 leading-relaxed">
+              These proxies use different measurement methods (government survey, app-market scan,
+              product MAU) and cannot be summed or directly compared to each other or to the
+              Anthropic usage index. See the{" "}
+              <Link
+                href="/sources"
+                className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors"
+              >
+                Data &amp; Sources
+              </Link>{" "}
+              page for full provenance details.
+            </p>
           </div>
-        </Reveal>
-      )}
+        </div>
+      </Reveal>
 
       <hr className="divider-glow" />
 

@@ -331,7 +331,52 @@ export function getAIUsageProxies(): AIUsageProxyDataset {
   return aiUsageProxiesData as AIUsageProxyDataset;
 }
 
-// ─── Data sources ─────────────────────────────────────────────────────────────
+// ─── Country map data (choropleth) ───────────────────────────────────────────
+
+export interface CountryMapDatum {
+  iso3: string;
+  name: string;
+  usageIndex: number | null;
+  usagePct: number | null;
+  hasClaudeData: boolean;
+  proxyNote: string | null;
+}
+
+export function getCountryMapData(): CountryMapDatum[] {
+  const exposure = getCountryExposure();
+  const proxies = getAIUsageProxies();
+
+  // Read China proxy figures from the actual data (with hardcoded fallbacks)
+  const cnnicEntry = proxies.countrySurveyMetrics.find(
+    (m) => (m as { id?: string }).id === "cn-cnnic-genai-users-2025-06",
+  );
+  const questEntry = proxies.chinaAppMarketMetrics.find(
+    (m) => (m as { id?: string }).id === "cn-questmobile-mobile-ai-app-users-2025-06",
+  );
+  const cnnicVal = cnnicEntry
+    ? `${Math.round(Number((cnnicEntry as { value?: unknown }).value) / 1e6)}M`
+    : "515M";
+  const qmVal = questEntry
+    ? `${Math.round(Number((questEntry as { value?: unknown }).value) / 1e6)}M`
+    : "680M";
+  const chinaNote = `Claude.ai unavailable; CNNIC reports ${cnnicVal} generative-AI users, QuestMobile ${qmVal} mobile-AI MAU.`;
+
+  return exposure.map((c) => {
+    const hasClaudeData = c.usageIndex != null && c.usageIndex > 0;
+    let proxyNote: string | null = null;
+    if (!hasClaudeData && c.iso3 === "CHN") {
+      proxyNote = chinaNote;
+    }
+    return {
+      iso3: c.iso3,
+      name: c.name,
+      usageIndex: c.usageIndex,
+      usagePct: c.usagePct,
+      hasClaudeData,
+      proxyNote,
+    };
+  });
+}
 
 export interface DataSource {
   name: string;

@@ -4,15 +4,15 @@
   "attribution": "Anthropic Economic Index (Anthropic, 2025); O*NET 28.3 (U.S. Department of Labor/ETA); BLS Employment Statistics (U.S. Bureau of Labor Statistics, 2023)",
   "sources": [
     {
-      "name": "Anthropic Economic Index — Job Exposure",
+      "name": "Anthropic Economic Index \u2014 Job Exposure",
       "publisher": "Anthropic",
       "year": 2025,
       "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
       "license": "CC-BY 4.0",
-      "usedFor": "Primary AI-exposure metric (observed_exposure) per SOC occupation — replaces Frey-Osborne 2013"
+      "usedFor": "Primary AI-exposure metric (observed_exposure) per SOC occupation \u2014 replaces Frey-Osborne 2013"
     },
     {
-      "name": "Anthropic Economic Index — Wage & Forecast Data",
+      "name": "Anthropic Economic Index \u2014 Wage & Forecast Data",
       "publisher": "Anthropic / O*NET / BLS (bundled)",
       "year": 2025,
       "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
@@ -28,15 +28,15 @@
       "usedFor": "per-occupation employment + median wage (authoritative; overrides AEI bundle when BLS_API_KEY set)"
     },
     {
-      "name": "Anthropic Economic Index — BLS Employment May 2023",
+      "name": "Anthropic Economic Index \u2014 BLS Employment May 2023",
       "publisher": "Anthropic / BLS (bundled)",
       "year": 2023,
       "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
       "license": "CC-BY 4.0 (derived); BLS original is public domain",
-      "usedFor": "Employment totals by occupation (legacy fallback — superseded by OEWS API when key is set)"
+      "usedFor": "Employment totals by occupation (legacy fallback \u2014 superseded by OEWS API when key is set)"
     },
     {
-      "name": "Anthropic Economic Index — Country AI Adoption (Aug 2025)",
+      "name": "Anthropic Economic Index \u2014 Country AI Adoption (Aug 2025)",
       "publisher": "Anthropic",
       "year": 2025,
       "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
@@ -44,7 +44,7 @@
       "usedFor": "Per-country AI usage index, usage %, usage count, GDP per working-age capita"
     },
     {
-      "name": "World Bank Open Data — China GDP and Working-Age Population",
+      "name": "World Bank Open Data \u2014 China GDP and Working-Age Population",
       "publisher": "World Bank",
       "year": 2024,
       "url": "https://data.worldbank.org/country/china",
@@ -52,7 +52,7 @@
       "usedFor": "Supplemental China GDP per working-age capita when Anthropic country usage metrics are not reported"
     },
     {
-      "name": "Eurostat — Artificial intelligence by size class of enterprise",
+      "name": "Eurostat \u2014 Artificial intelligence by size class of enterprise",
       "publisher": "Eurostat",
       "year": 2024,
       "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table?lang=en",
@@ -68,7 +68,7 @@
       "usedFor": "Supplemental enterprise AI adoption and individual generative-AI usage rates by reporting country"
     },
     {
-      "name": "U.S. Census Annual Business Survey — Technology Characteristics of Businesses",
+      "name": "U.S. Census Annual Business Survey \u2014 Technology Characteristics of Businesses",
       "publisher": "U.S. Census Bureau",
       "year": 2018,
       "url": "https://api.census.gov/data/2018/abstcb.html",
@@ -116,7 +116,7 @@
       "usedFor": "Supplemental developer-ecosystem proxy metrics for AI repositories"
     },
     {
-      "name": "Stack Overflow Annual Developer Survey 2024 — TidyTuesday derived subset",
+      "name": "Stack Overflow Annual Developer Survey 2024 \u2014 TidyTuesday derived subset",
       "publisher": "Stack Overflow / R4DS TidyTuesday",
       "year": 2024,
       "url": "https://github.com/rfordatascience/tidytuesday/tree/main/data/2024/2024-09-03",
@@ -145,24 +145,40 @@
       "year": 2024,
       "url": "https://www.imf.org/en/Publications/WP/Issues/2024/01/14/Gen-AI-Artificial-Intelligence-and-the-Future-of-Work-542379",
       "license": "IMF Working Paper (cited context)",
-      "usedFor": "Context/validation reference only — not directly loaded"
+      "usedFor": "Context/validation reference only \u2014 not directly loaded"
     },
     {
-      "name": "OECD Employment Outlook 2023 — AI and the Labour Market",
+      "name": "OECD Employment Outlook 2023 \u2014 AI and the Labour Market",
       "publisher": "OECD",
       "year": 2023,
       "url": "https://doi.org/10.1787/08785bba-en",
       "license": "OECD terms (cited context)",
-      "usedFor": "Context/validation reference only — not directly loaded"
+      "usedFor": "Context/validation reference only \u2014 not directly loaded"
     },
     {
-      "name": "ILO World Employment and Social Outlook 2025 — Artificial Intelligence",
+      "name": "ILO World Employment and Social Outlook 2025 \u2014 Artificial Intelligence",
       "publisher": "International Labour Organization",
       "year": 2025,
       "url": "https://www.ilo.org/publications/major-reports/world-employment-and-social-outlook",
       "license": "ILO terms (cited context)",
-      "usedFor": "Context/validation reference only — not directly loaded"
+      "usedFor": "Context/validation reference only \u2014 not directly loaded"
+    },
+    {
+      "name": "Natural Earth / world-atlas@2 \u2014 110m Country Polygons (TopoJSON)",
+      "publisher": "Natural Earth / Mike Bostock (world-atlas npm package)",
+      "year": 2023,
+      "url": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+      "license": "Public Domain (Natural Earth); ISC (world-atlas package)",
+      "usedFor": "World map choropleth geometry \u2014 country polygons at 110m resolution, Antarctica dropped; numeric ISO ids mapped to ISO 3166-1 alpha-3 via lukes/ISO-3166-Countries-with-Regional-Codes crosswalk. AEI usageIndex primary choropleth value; proxy context shown for restricted countries (e.g. China)."
+    },
+    {
+      "name": "ISO 3166-1 Country Codes Crosswalk (lukes/ISO-3166-Countries-with-Regional-Codes)",
+      "publisher": "Luke Duncalfe (GitHub)",
+      "year": 2024,
+      "url": "https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes",
+      "license": "Creative Commons Attribution-ShareAlike 4.0",
+      "usedFor": "Numeric ISO 3166-1 \u2192 alpha-3 mapping used to annotate world-atlas country features"
     }
   ],
-  "note": "automationRisk bands are percentile-calibrated from the aiExposure distribution (756 occupations): Very High = top ~8% (aiExposure > 0.3104), High = next ~12% (> 0.1378), Medium = next ~25% (> 0.0080), Low = remainder (≤ 0.0080). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: real OEWS 2025 figures (755 occupations updated via BLS Public Data API). medianSalary: OEWS 2025 where available (752 updated), AEI-bundled wage otherwise. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: successfully loaded"
+  "note": "automationRisk bands are percentile-calibrated from the aiExposure distribution (756 occupations): Very High = top ~8% (aiExposure > 0.3104), High = next ~12% (> 0.1378), Medium = next ~25% (> 0.0080), Low = remainder (\u2264 0.0080). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: real OEWS 2025 figures (755 occupations updated via BLS Public Data API). medianSalary: OEWS 2025 where available (752 updated), AEI-bundled wage otherwise. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: successfully loaded"
 }
