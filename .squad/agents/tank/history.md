@@ -25,3 +25,5 @@
 
 
 **2026-07-01 (WARN 10-State Expansion):** Tank-22 integrated GA, TN, KY, OR from Big Local News GCS historical archives into WARN pipeline. Result: 9,298 notices across 10 states (~1.09M workers, 10-year window). Dynamic header detection for OR XLSX; KY historical archive (1998–2016) yields 47 rows in window. Commit: 6850902. Build exit 0 ✓
+
+**2026-07-01 (Insights Lab — Analytics Layer):** Tank built descriptive analytics layer (lib/analysis.ts): linearRegression + Pearson correlation (OLS), getAISignalData (AI exposure vs. employment/wage regression + quartiles), getEmploymentForecast + getNationalForecast (2030 extrapolation with adjustable sensitivity, default -1.9M jobs), getDisruptionIndex (0-100 composite ranking occupations). Correlation findings marked exploratory (not causal): emp r≈0.02, wage r≈-0.21. No JOLTS/WARN join (lack SOC codes); disruption uses AI exposure + trend + wage pressure. Build exit 0, tsc clean. Commit 7ea2d98. ✅ Orchestration 2026-07-01T07-56-24Z-tank.md

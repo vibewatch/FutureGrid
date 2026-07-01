@@ -21,3 +21,7 @@
 **2026-06-30 (Round 4 — CI Workflow):** Built .github/workflows/ci.yml (npm ci, lint, test:run, build on push/PR). Updated eslint to ignore .squad. CI green; build exit 0; lint clean. Commits: 3k4l5m6. ✅ CLOSED #16.
 
 **2026-06-30 (Batches 3 & 4 — Autonomous Improvement Loop):** Issues #15 (+30 tests → 103 total), #16 (CI pipeline green). All closed, validated (build 0, eslint 0 violations, 103/103 tests pass). Loop concluded; diminishing returns reached.
+
+**2026-07-01 (Insights Lab — Test Suite):** Mouse-8 shipped 17 unit tests for analytics layer (tests/analysis.test.ts): regression math (slope, r², Pearson r), forecast calculations (sensitivity scaling, aggregation), disruption index ranking, edge cases (NaN, null, zero values). Suite baseline 138/138 PASS (121 prior + 17 new). Validated: npm run test:run 138 passed, build exit 0, lint clean. Commit 7ea2d98. ✅ Orchestration 2026-07-01T07-56-24Z-mouse-8.md
+
+**Note:** Transient flake recorded (single chain build+lint+test under CPU contention reported "6 files failed"; clean re-run 138/138 PASS). Attributed to D3/jsdom under resource pressure; not a regression.

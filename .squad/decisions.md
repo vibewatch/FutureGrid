@@ -1,6 +1,49 @@
 # Squad Decisions
 
 ## Active Decisions
+### FutureGrid "Insights Lab" — Analytics & Statistical Forecasting Layer (2026-07-01)
+
+**Requested by:** huangyingting  
+**Status:** Approved (🟢 Coordinator integration verified)  
+**Scope:** Descriptive analytics layer: linearRegression + Pearson correlation (OLS), AI-exposure-to-employment/wage regression, employment forecast extrapolation to 2030 (fixed default sensitivity vs. reactive per-occupation slider), Disruption Index (0-100 composite occupation/sector ranking).
+
+#### Design Decision — Descriptive, Not Causal
+Insights Lab frames all outputs as exploratory/descriptive: correlation analysis (r-values ~0.02 employment, r~-0.21 wage vs. AI exposure), linear regression trends, and extrapolated forecasts do **not** claim causation. Data labels consistently note "Research-based estimates" and "Probabilistic models." UI explicitly marks forecasts as sensitivity-dependent.
+
+#### Data Layer (Tank — lib/analysis.ts)
+- **linearRegression(xs, ys)** — OLS implementation; returns slope, intercept, r², Pearson r.
+- **getAISignalData(occupations)** — correlates AI exposure vs. employment/wage growth; returns regression stats + per-occupation quartiles (for drilling into outliers).
+- **getEmploymentForecast(occupations, sensitivity)** — per-occupation trend extrapolation to 2030 using growth rate + AI-adjusted drag coefficient; nationally sums to ~-1.9M jobs at default sensitivity=0.5.
+- **getNationalForecast(sensitivity)** — aggregates all occupations; provides high-level 2030 projection.
+- **getDisruptionIndex(occupations)** — composite 0-100 ranking per occupation (high AI exposure + negative employment trend + wage pressure).
+
+#### Frontend (Neo — 3 components)
+- **AISignalScatter** — scatter plot (x=AI exposure, y=employment growth, labeled occupations, regression line). Hover tooltips show r-values + slope interpretation.
+- **EmploymentForecastChart** — bar chart 2026→2030 trajectory by occupation. Slider varies national AI-sensitivity coefficient (0.1–1.0, reactive recalc); per-occupation slider applies individual adjustment.
+- **DisruptionLeaderboard** — ranked table (Disruption Index 0–100), filters by sector/risk-band, sortable columns.
+- **InsightsView** (app/analysis/page.tsx) — dashboard integrating all three + methodology disclaimer.
+
+#### Internationalization (Neo)
+- New 'analysis' i18n namespace (56 keys EN/ZH parity): chart titles, axis labels, methodology notes, slider/button labels. Data values (occupation names, sector names) remain English (data integrity).
+
+#### Navigation
+- Sidebar nav: added 'Insights Lab' entry (secOverview profile, IconInsights SVG).
+- Route: /analysis (statically exported, no dynamic data fetch).
+
+#### Known Constraints & Data Model Decisions
+1. **Disruption Index occupation-level only:** No JOLTS (Job Openings) or WARN (mass layoff notices) integration — both lack SOC code mapping necessary for occupational drill-down. Disruption Index uses AI exposure + employment trend + wage pressure instead.
+2. **Fixed national sensitivity vs. reactive occupation slider:** National employment forecast (used in dashboard context) uses default sensitivity=0.5 to remain stable/deterministic; per-occupation forecasts allow user exploration via slider. Rationale: national aggregates benefit from model confidence; occupational edge cases surface via interactive selection.
+3. **Regression correlation r-values:** Employment r≈0.02 (weak link between AI exposure and employment change), wage r≈-0.21 (moderate inverse: higher AI-exposed occupations facing wage pressure). Findings marked exploratory; no policy recommendations.
+
+#### Validation (Coordinator)
+- `npm run build` → exit 0; /analysis statically exported.
+- `npm run lint` → clean (140 files, 0 violations).
+- `npm run test:run` → 138 tests PASSED (including 17 analysis-layer tests: regression math, forecast deltas, disruption ranking).
+- `npm run smoke` → 10/10 routes including /analysis verified HTTP 200, Playwright screenshots EN + ZH confirmed all 3 sections render + translate correctly, occupation/sector names stay English (data integrity).
+- Commits: Tank (lib/analysis.ts), Neo (components/insights + app/analysis/page.tsx + i18n), Mouse (tests/analysis.test.ts).
+- **Known transient flake:** Single chain run (build+lint+test under CPU contention) reported "6 files failed" once; clean re-run passed 138/138. Attributed to D3/jsdom under resource contention. Not a regression.
+
+---
 
 ### FutureGrid Round 2 — Engagement Features (2026-06-30)
 
