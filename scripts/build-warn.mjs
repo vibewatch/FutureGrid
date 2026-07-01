@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * build-warn.mjs
- * Multi-state WARN Act notices: CA, NJ, TX, NY, OH, WI
+ * Multi-state WARN Act notices: CA, GA, KY, NJ, NY, OH, OR, TN, TX, WI
  * Emits data/warn-notices.json with normalized records and aggregate summary.
  * Run: node scripts/build-warn.mjs  (or: npm run build:warn)
  */
@@ -582,6 +582,195 @@ async function fetchWI() {
   return records;
 }
 
+// ─── New states (GA, TN, KY, OR) — BLN GCS standardised historical files ─────
+
+async function fetchGA() {
+  const url = "https://storage.googleapis.com/bln-data-public/warn-layoffs/ga_historical.csv";
+  const buffer = await fetchBuffer(url);
+  const rows = parseCSV(buffer.toString("utf-8"));
+  if (rows.length < 2) throw new Error("GA: CSV has too few rows");
+
+  const headers = rows[0].map(normalizeHeader);
+  console.log(`  GA headers: ${headers.join(" | ")}`);
+
+  // GA columns: id, company name, city, zip, county, est. impact, lwda, separation date
+  const colIndex = {};
+  for (let i = 0; i < headers.length; i++) {
+    const h = headers[i];
+    if (!h) continue;
+    if ((h === "company name" || h === "company") && colIndex.company == null) colIndex.company = i;
+    else if (h === "city" && colIndex.city == null) colIndex.city = i;
+    else if (h === "county" && colIndex.county == null) colIndex.county = i;
+    else if ((h === "est. impact" || h.includes("impact")) && colIndex.employees == null) colIndex.employees = i;
+    else if ((h === "separation date" || h.includes("separation")) && colIndex.separationDate == null) colIndex.separationDate = i;
+  }
+  console.log(`  GA colIndex: ${JSON.stringify(colIndex)}`);
+
+  const records = [];
+  for (let r = 1; r < rows.length; r++) {
+    const row = rows[r];
+    const get = (key) => (colIndex[key] != null ? (row[colIndex[key]] ?? "").trim() : "");
+    const company = get("company");
+    if (!company || /^\s*(total|grand total|subtotal)\s*$/i.test(company)) continue;
+    const emp = Number(get("employees").replace(/,/g, ""));
+    if (!isFinite(emp) || emp <= 0) continue;
+    const separationDate = parseDate(get("separationDate") || null);
+    records.push({
+      company,
+      county: get("county") || null,
+      city: get("city") || null,
+      employees: Math.round(emp),
+      noticeDate: separationDate,
+      effectiveDate: separationDate,
+      layoffType: null,
+      state: "GA",
+      stateName: "Georgia",
+    });
+  }
+  return records;
+}
+
+async function fetchTN() {
+  const url = "https://storage.googleapis.com/bln-data-public/warn-layoffs/tn_historical.csv";
+  const buffer = await fetchBuffer(url);
+  const rows = parseCSV(buffer.toString("utf-8"));
+  if (rows.length < 2) throw new Error("TN: CSV has too few rows");
+
+  const headers = rows[0].map(normalizeHeader);
+  console.log(`  TN headers: ${headers.join(" | ")}`);
+
+  // TN columns: notice date, effective date, received date, company, city, county,
+  //             no. of employees, layoff/closure, notice id
+  const colIndex = {};
+  for (let i = 0; i < headers.length; i++) {
+    const h = headers[i];
+    if (!h) continue;
+    if ((h === "company" || h.startsWith("company")) && colIndex.company == null) colIndex.company = i;
+    else if (h === "city" && colIndex.city == null) colIndex.city = i;
+    else if (h === "county" && colIndex.county == null) colIndex.county = i;
+    else if ((h === "no. of employees" || h.includes("employee") || h.includes("worker")) && colIndex.employees == null) colIndex.employees = i;
+    else if ((h === "notice date" || (h.includes("notice") && h.includes("date"))) && colIndex.noticeDate == null) colIndex.noticeDate = i;
+    else if ((h === "effective date" || h.includes("effective")) && colIndex.effectiveDate == null) colIndex.effectiveDate = i;
+    else if ((h === "layoff/closure" || h === "layoff closure" || h.includes("layoff") || h.includes("closure")) && colIndex.layoffType == null) colIndex.layoffType = i;
+  }
+  console.log(`  TN colIndex: ${JSON.stringify(colIndex)}`);
+
+  const records = [];
+  for (let r = 1; r < rows.length; r++) {
+    const row = rows[r];
+    const get = (key) => (colIndex[key] != null ? (row[colIndex[key]] ?? "").trim() : "");
+    const company = get("company");
+    if (!company || /^\s*(total|grand total|subtotal)\s*$/i.test(company)) continue;
+    const emp = Number(get("employees").replace(/,/g, ""));
+    if (!isFinite(emp) || emp <= 0) continue;
+    records.push({
+      company,
+      county: get("county") || null,
+      city: get("city") || null,
+      employees: Math.round(emp),
+      noticeDate: parseDate(get("noticeDate") || null),
+      effectiveDate: parseDate(get("effectiveDate") || null),
+      layoffType: normalizeLayoffType(get("layoffType") || null),
+      state: "TN",
+      stateName: "Tennessee",
+    });
+  }
+  return records;
+}
+
+async function fetchKY() {
+  const url = "https://storage.googleapis.com/bln-data-public/warn-layoffs/ky-historical-normalized.csv";
+  const buffer = await fetchBuffer(url);
+  const rows = parseCSV(buffer.toString("utf-8"));
+  if (rows.length < 2) throw new Error("KY: CSV has too few rows");
+
+  const headers = rows[0].map(normalizeHeader);
+  console.log(`  KY headers: ${headers.join(" | ")}`);
+
+  // KY columns: date received, region, county, company name, naics code, employees,
+  //             closure or layoff?, projected date, ...
+  const colIndex = {};
+  for (let i = 0; i < headers.length; i++) {
+    const h = headers[i];
+    if (!h) continue;
+    if ((h === "company name" || h === "company") && colIndex.company == null) colIndex.company = i;
+    else if (h === "county" && colIndex.county == null) colIndex.county = i;
+    else if ((h === "employees" || h.includes("employee") || h.includes("worker")) && colIndex.employees == null) colIndex.employees = i;
+    else if ((h === "date received" || (h.includes("date") && h.includes("received"))) && colIndex.noticeDate == null) colIndex.noticeDate = i;
+    else if ((h === "projected date" || h.includes("projected")) && colIndex.effectiveDate == null) colIndex.effectiveDate = i;
+    else if ((h === "closure or layoff?" || h.includes("closure") || h.includes("layoff")) && colIndex.layoffType == null) colIndex.layoffType = i;
+  }
+  console.log(`  KY colIndex: ${JSON.stringify(colIndex)}`);
+
+  const records = [];
+  for (let r = 1; r < rows.length; r++) {
+    const row = rows[r];
+    const get = (key) => (colIndex[key] != null ? (row[colIndex[key]] ?? "").trim() : "");
+    const company = get("company");
+    if (!company || /^\s*(total|grand total|subtotal)\s*$/i.test(company)) continue;
+    const emp = Number(get("employees").replace(/,/g, ""));
+    if (!isFinite(emp) || emp <= 0) continue;
+    records.push({
+      company,
+      county: get("county") || null,
+      city: null,
+      employees: Math.round(emp),
+      noticeDate: parseDate(get("noticeDate") || null),
+      effectiveDate: parseDate(get("effectiveDate") || null),
+      layoffType: normalizeLayoffType(get("layoffType") || null),
+      state: "KY",
+      stateName: "Kentucky",
+    });
+  }
+  return records;
+}
+
+async function fetchOR() {
+  const url = "https://storage.googleapis.com/bln-data-public/warn-layoffs/or_historical.xlsx";
+  const buffer = await fetchBuffer(url);
+
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.load(buffer);
+
+  let worksheet = workbook.worksheets[0];
+  for (const ws of workbook.worksheets) {
+    if (ws.actualRowCount > 0) { worksheet = ws; break; }
+  }
+
+  // Header row is NOT row 1 — locate by finding the row containing "Company Name"
+  let headerRow = -1;
+  const colIndex = {};
+  worksheet.eachRow((row, rowNumber) => {
+    if (headerRow !== -1) return;
+    const cells = row.values;
+    if (!cells) return;
+    const norm = cells.map((v) => (v == null ? "" : normalizeHeader(v)));
+    if (!norm.some((h) => h === "company name") || !norm.some((h) => h === "laid off" || h === "received date")) return;
+    headerRow = rowNumber;
+    console.log(`  OR sheet="${worksheet.name}" header=${rowNumber} raw: ${norm.filter(Boolean).join(" | ")}`);
+    for (let i = 1; i < norm.length; i++) {
+      const h = norm[i];
+      if (!h) continue;
+      if (h === "company name" && colIndex.company == null) colIndex.company = i;
+      else if ((h === "location" || h === "city") && colIndex.city == null) colIndex.city = i;
+      else if ((h === "layoff date" || (h.includes("layoff") && h.includes("date"))) && colIndex.effectiveDate == null) colIndex.effectiveDate = i;
+      else if ((h === "laid off" || (h.includes("laid") && h.includes("off"))) && colIndex.employees == null) colIndex.employees = i;
+      else if ((h === "layoff type" || h === "type") && colIndex.layoffType == null) colIndex.layoffType = i;
+      else if ((h === "received date" || (h.includes("received") && h.includes("date"))) && colIndex.noticeDate == null) colIndex.noticeDate = i;
+    }
+  });
+  if (headerRow === -1) throw new Error("OR: header row not found");
+  console.log(`  OR colIndex: ${JSON.stringify(colIndex)}`);
+
+  const records = [];
+  worksheet.eachRow((row, rowNumber) => {
+    if (rowNumber <= headerRow) return;
+    const rec = parseXlsxRow(row, colIndex, "OR", "Oregon");
+    if (rec) records.push(rec);
+  });
+  return records;
+}
+
 // ─── State config ─────────────────────────────────────────────────────────────
 
 const STATE_CONFIG = [
@@ -626,6 +815,34 @@ const STATE_CONFIG = [
     publisher: "Wisconsin Department of Workforce Development",
     url: "https://sheets.googleapis.com/v4/spreadsheets/1cyZiHZcepBI7ShB3dMcRprUFRG24lbwEnEDRBMhAqsA/values/Originals",
     fetch: fetchWI,
+  },
+  {
+    state: "GA", stateName: "Georgia",
+    name: "Georgia WARN Act Historical Notices",
+    publisher: "BLN Data (Georgia Department of Labor)",
+    url: "https://storage.googleapis.com/bln-data-public/warn-layoffs/ga_historical.csv",
+    fetch: fetchGA,
+  },
+  {
+    state: "TN", stateName: "Tennessee",
+    name: "Tennessee WARN Act Historical Notices",
+    publisher: "BLN Data (Tennessee Department of Labor and Workforce Development)",
+    url: "https://storage.googleapis.com/bln-data-public/warn-layoffs/tn_historical.csv",
+    fetch: fetchTN,
+  },
+  {
+    state: "KY", stateName: "Kentucky",
+    name: "Kentucky WARN Act Historical Notices",
+    publisher: "BLN Data (Kentucky Career Center)",
+    url: "https://storage.googleapis.com/bln-data-public/warn-layoffs/ky-historical-normalized.csv",
+    fetch: fetchKY,
+  },
+  {
+    state: "OR", stateName: "Oregon",
+    name: "Oregon WARN Act Historical Notices",
+    publisher: "BLN Data (Oregon Employment Department)",
+    url: "https://storage.googleapis.com/bln-data-public/warn-layoffs/or_historical.xlsx",
+    fetch: fetchOR,
   },
 ];
 
@@ -779,7 +996,7 @@ async function main() {
   const output = {
     generatedAt: new Date().toISOString(),
     coverage:
-      "6 U.S. states (CA, NJ, NY, OH, TX, WI) — official state WARN Act filings, aggregated, latest 10 years. Some states are historical backfills; see per-state date ranges.",
+      "10 U.S. states (CA, GA, KY, NJ, NY, OH, OR, TN, TX, WI) — official state WARN Act filings, aggregated, latest 10 years. Some states are historical backfills; see per-state date ranges.",
     sources: includedSources,
     notices: trimmedNotices,
     summary,
