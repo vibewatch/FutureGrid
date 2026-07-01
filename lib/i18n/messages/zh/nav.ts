@@ -7,6 +7,8 @@ export const navZh = {
   report: "深度报告",
   heatmap: "热力图",
   global: "全球",
+  pulse: "市场脉搏",
+  layoffs: "裁员通报",
   sources: "数据来源",
   searchPlaceholder: "搜索…",
   openSearch: "打开搜索命令面板（⌘K）",

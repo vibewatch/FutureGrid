@@ -13,6 +13,8 @@
     "build:proxies": "node scripts/build-ai-usage-proxies.mjs",
     "build:onet": "node scripts/build-onet-enrichment.mjs",
     "build:geo": "node scripts/build-world-geo.mjs",
+    "build:jolts": "node scripts/build-jolts.mjs",
+    "build:warn": "node scripts/build-warn.mjs",
     "build:global-metrics": "node scripts/build-global-metrics.mjs",
     "build:og": "node scripts/build-og-image.mjs",
     "smoke": "node scripts/smoke-test.mjs"
@@ -20,12 +22,12 @@
   "dependencies": {
     "chart.js": "^4.5.1",
     "d3": "^7.9.0",
+    "d3-sankey": "^0.12.3",
     "next": "16.2.9",
     "next-themes": "^0.4.6",
     "react": "19.2.4",
     "react-chartjs-2": "^5.3.1",
-    "react-dom": "19.2.4",
-    "d3-sankey": "^0.12.3"
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
     "@next/env": "^16.2.9",
@@ -35,6 +37,7 @@
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/d3": "^7.4.3",
+    "@types/d3-sankey": "^0.12.5",
     "@types/node": "^20",
     "@types/node-fetch": "^2.6.13",
     "@types/react": "^19",
@@ -42,11 +45,11 @@
     "@vitejs/plugin-react": "^6.0.3",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "exceljs": "^4.4.0",
     "jsdom": "^29.1.1",
     "tailwindcss": "^4",
     "topojson-client": "^3.1.0",
     "typescript": "^5",
-    "vitest": "^4.1.9",
-    "@types/d3-sankey": "^0.12.5"
+    "vitest": "^4.1.9"
   }
 }

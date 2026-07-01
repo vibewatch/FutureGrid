@@ -1,0 +1,55 @@
+export const layoffsEn: Record<string, string> = {
+  heroTitle: "Recent Mass Layoffs — California",
+  heroSubhead:
+    "Official WARN Act filings from the California Employment Development Department (EDD). " +
+    "Coverage is California only — the largest U.S. state — not all 50 states.",
+  coverageBadge: "CA Only",
+  coverageNote: "California EDD WARN filings only",
+  statTotalNotices: "Total Notices",
+  statTotalEmployees: "Employees Affected",
+  statDateRange: "Date Range",
+  statLayoffs: "Permanent Layoffs",
+  statPermanentClosures: "Permanent Closures",
+  sectionTrend: "Monthly Trend",
+  sectionTrendDesc:
+    "Employees affected (bars, left axis) and notice count (line, right axis) per month.",
+  sectionTopEmployers: "Top Employers by Employees Affected",
+  sectionTopEmployersDesc:
+    "Companies with the most employees named in WARN filings.",
+  sectionByType: "Notices by Layoff Type",
+  sectionByTypeDesc: "Breakdown of all WARN filings by layoff classification.",
+  sectionTable: "WARN Notice Directory",
+  sectionTableDesc:
+    "All California WARN notices. Search by company or county; sort by date or employee count.",
+  tableCompany: "Company",
+  tableCounty: "County",
+  tableEmployees: "Employees",
+  tableNoticeDate: "Notice Date",
+  tableType: "Type",
+  searchPlaceholder: "Search by company or county…",
+  sortLabel: "Sort",
+  sortEmployeesDesc: "Most employees",
+  sortDateDesc: "Most recent",
+  showMore: "Show more",
+  showLess: "Show less",
+  noResults: "No notices match your search.",
+  showingLabel: "Showing {count} of {total} notices",
+  sourceLabel: "Source",
+  publisherLabel: "Publisher",
+  coverageLabel: "Coverage",
+  licenseLabel: "License",
+  warnActLabel: "About the WARN Act & Data",
+  generatedAt: "Data snapshot:",
+  srChartLabel:
+    "Monthly bar chart of California WARN Act notices: employees affected per month (bars) with notice count overlay (line).",
+  srChartSummary:
+    "{months} months of data. Peak month: {peakMonth} with {peakEmployees} employees affected.",
+  srTopEmployersLabel:
+    "Horizontal bar chart: top employers by employees affected in California WARN filings.",
+  srByTypeLabel: "Horizontal bar chart of WARN notices by layoff type.",
+  employees: "employees",
+  notices: "notices",
+  dateUnknown: "Unknown",
+  axisEmployees: "Employees Affected",
+  axisNotices: "Notices",
+};

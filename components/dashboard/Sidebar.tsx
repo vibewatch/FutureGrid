@@ -88,6 +88,24 @@ function IconGlobe() {
   );
 }
 
+function IconPulse() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="2 12 6 12 8 4 10 20 12 12 14 16 16 12 22 12" />
+    </svg>
+  );
+}
+
+function IconLayoffs() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <line x1="12" y1="3" x2="12" y2="15" />
+      <polyline points="8 11 12 15 16 11" />
+      <line x1="6" y1="19" x2="18" y2="19" />
+    </svg>
+  );
+}
+
 function IconSources() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -209,6 +227,8 @@ const NAV_ITEMS = [
   { href: "/report",  labelKey: "report",    Icon: IconReport    },
   { href: "/heatmap", labelKey: "heatmap",   Icon: IconHeatmap   },
   { href: "/global",  labelKey: "global",    Icon: IconGlobe     },
+  { href: "/pulse",   labelKey: "pulse",     Icon: IconPulse     },
+  { href: "/layoffs", labelKey: "layoffs",   Icon: IconLayoffs   },
   { href: "/sources", labelKey: "sources",   Icon: IconSources   },
 ];
 

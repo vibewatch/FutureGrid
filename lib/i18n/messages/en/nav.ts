@@ -7,6 +7,8 @@ export const navEn = {
   report: "Report",
   heatmap: "Heatmap",
   global: "Global",
+  pulse: "Pulse",
+  layoffs: "Layoffs",
   sources: "Sources",
   searchPlaceholder: "Search…",
   openSearch: "Open search command palette (Cmd K)",

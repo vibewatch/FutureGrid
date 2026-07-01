@@ -25,6 +25,7 @@ const BUDGET_MS = Number(process.env.SMOKE_BUDGET_MS ?? 10000);
 const ROUTES = [
   "/", "/careers", "/sectors", "/skills", "/explore",
   "/global", "/heatmap", "/sources", "/report",
+  "/pulse", "/layoffs",
 ];
 
 // Strings the app's error boundary renders when a page crashes at runtime.
