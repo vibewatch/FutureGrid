@@ -28,3 +28,6 @@
 
 
 **2026-07-01 (Insights Lab — Test Suite — Mouse-9):** Mouse-9 shipped 25 unit tests in tests/analysis.test.ts for analytics layer: regression math (slope, r², Pearson r correlation), forecast calculations (sensitivity scaling, aggregation, 2030 extrapolation), disruption index ranking/filtering, edge cases (NaN, null, zero values, empty arrays). Suite total 146/146 PASS (121 prior + 25 new). Validated: npm run test:run 146 passed, npm run build exit 0, npm run lint clean. Commit 7ea2d98. ✅ Orchestration 2026-07-01T10-14-15Z-mouse-9.md
+
+
+**2026-07-01 (Exposure Lenses Test Suite — Mouse-10):** Mouse-10 shipped tests/exposure.test.ts (4 test cases: getOccupationExposureLenses, consensus calc, gap logic, edge cases). Suite total 150/150 PASS (4 new + 146 baseline preserved). Validated: npm run test:run 150 passed, npm run build exit 0, npm run lint clean. Smoke 10/10 routes EN+中文 verified. Commit 88dfeec. ✅ Orchestration 2026-07-01T10-43-22Z-mouse-10.md

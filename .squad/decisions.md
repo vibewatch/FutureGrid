@@ -1349,3 +1349,54 @@ This inversion suggests historical vulnerability assessments (Frey & Osborne) ca
 - CI + Deploy triggered
 
 ---
+
+
+---
+
+### FutureGrid "Multi-Lens AI Exposure + Demand Layer" (2026-07-01)
+
+**Requested by:** huangyingting  
+**Status:** Approved (🟢 Coordinator integration verified)  
+**Scope:** Extracted labor-signal APIs into lean route-scoped modules to surface multi-lens AI exposure comparison on career detail pages and a global AI job-demand layer without bloating shared bundles. 146 tests preserved.
+
+#### Architecture Decision — Route-Scoped Module Extraction
+Extracted AI-signal computation into two lean, route-scoped modules:
+- **lib/exposure.ts** — `getOccupationExposureLenses(occupationCode)` returns 4 AI-exposure measures (Anthropic adoption %, OpenAI capability %, AIOE ability %, Frey & Osborne 2013 automation baseline) + consensus score + gap callout (capability-vs-adoption). JSON output only (no formatting logic). Routed to `/careers/[code]` page.
+- **lib/labor-signals.ts** — `getAIDemandSeries(period: 'all'|'quarterly')` returns Indeed Hiring Lab AI job-posting share time-series; `getAILayoffSeries(period)` returns Challenger AI-attributed cuts; `getCountryAIDemand(countryISO3)` returns per-country demand value (for global layer). ISO3-keyed demand map, daily-frequency sourced. Routed to `/global` and `/careers/[code]` pages.
+- **lib/analysis.ts** — re-exports labor APIs for back-compat (existing routes); avoids breaking changes. Exposes `getAIDemandSeries`, `getAILayoffSeries`, `getCountryAIDemand` from labor-signals.
+
+#### Frontend — Neo (neo-31)
+- **Career Detail 'Across AI Measures' Panel:** Placed adjacently to existing AI Exposure Analysis card in risk-analysis grid. 4 colored compact bars (modern measures) + muted zinc Frey & Osborne baseline (2013, historical de-emphasis) + consensus bold summary. Hover tooltips show source + methodology. 8 careers i18n keys (EN/ZH).
+- **Global Map 'AI Job Demand' Layer:** Indeed Hiring Lab latest job-posting share metric (`demand`). Emerald/teal sequential color ramp (`#052e2b` → `#10b981` → `#a7f3d0`) distinct from existing brand ramp. Choropleth + bubble modes (proportional circles for 9-economy dataset). No-data countries grey. Concise source note: "Indeed Hiring Lab, 9 economies, latest month."
+
+#### Data Layer (Tank — tank-24)
+- **lib/exposure.ts::getOccupationExposureLenses** — queries 4 signal datasets (Anthropic, OpenAI, AIOE, F&O), returns {occupationCode, anthropicAdoption, openaiCapability, aioeAbility, freyOsbornAutomation, consensus, gapCallout}.
+- **lib/labor-signals.ts::getCountryAIDemand** — ISO3-indexed lookup into global-ai-demand.json (Indeed 9-economy snapshot). Per-country value in [0, 100] scale.
+- **lib/labor-signals.ts::getAIDemandSeries** — returns [{date, demand, source}] for timeline UI (quarterly rollup if requested).
+- **lib/labor-signals.ts::getAILayoffSeries** — returns [{date, layoffs, source}] (Challenger AI-attributed monthly).
+
+#### Bundle Hygiene & Performance
+- **Careers chunk unaffected:** exposure.ts routed only to `/careers/[code]` dynamic route (not `/careers` list); labor-signals routed to `/global` and `/careers/[code]`. Zero demand tokens leak into `/careers` list bundle.
+- **Build exit 0, lint clean, test:run 150 passed** (4 exposure tests new; 146 baseline preserved). Smoke 10/10 routes verified EN+ZH. Playwright career-detail + global both error-free.
+
+#### Concrete Example — Software Developers
+**Anthropic adoption:** 28.8% (some adoption, not full)  
+**OpenAI capability:** 86.8% (high technical capability)  
+**AIOE ability:** 52% (moderate exposure, conservative)  
+**Frey & Osborne 2013 automation baseline:** 8.6% (muted, historical)  
+**Consensus:** 54% (modern average)  
+**Gap callout:** "Capability (87%) significantly exceeds adoption (29%), suggesting adoption acceleration potential."  
+**Automation Flip Insight:** Historical 2013 automation estimates NEGATIVELY correlate with modern AI exposure (r=-0.29 capability, r=-0.42 ability); modern lenses agree strongly (r=0.84 capability~ability).
+
+#### Validation (Coordinator)
+- `npm run build` → exit 0; all 12 routes static/dynamic compile.
+- `npm run lint` → clean (no violations).
+- `npm run test:run` → 150 tests PASSED (4 new exposure tests; 146 prior preserved).
+- `npm run smoke` → 10/10 routes HTTP 200; Playwright screenshots EN + 中文 confirm:
+  - Career detail page: new Across-AI-Measures panel renders, 4 lenses visible, gap callout displays, no page errors.
+  - Global map: new demand layer toggles on, choropleth + bubbles render, emerald color scale, legend present, no page errors.
+- Commits: Tank (lib/exposure.ts + lib/labor-signals.ts), Neo (app/careers/[code] panel + global layer UI + i18n), Mouse (tests/exposure.test.ts).
+
+#### Known Constraints & Data Model Decisions
+1. **Indeed Hiring Lab 9-economy snapshot:** Single latest month for simplicity; time-series support via getAIDemandSeries for dashboard timeline. All occupations use global Anthropic/OpenAI/AIOE/F&O measures; per-country demand breaks out separately.
+2. **Gap callout automation:** Coded as `if (capability > adoption + 20pp) → 'Adoption acceleration potential'` to highlight outliers without over-interpreting.
