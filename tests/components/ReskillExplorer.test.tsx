@@ -150,11 +150,11 @@ describe("ReskillExplorer", () => {
     });
   });
 
-  it("shows a shared-skill count label on each target card", () => {
+  it("shows the transferable-skills label on each target card", () => {
     render(<ReskillExplorer />);
 
-    // Each reskilling card shows "N shared skill(s)"
-    const sharedLabels = screen.getAllByText(/shared skill/i);
+    // Each reskilling card shows a "Skills that transfer" section
+    const sharedLabels = screen.getAllByText(/skills that transfer/i);
     expect(sharedLabels.length).toBeGreaterThan(0);
   });
 

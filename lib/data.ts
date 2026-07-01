@@ -613,6 +613,8 @@ export function getDataSources(): DataSources {
 
 // ─── Reskilling paths ─────────────────────────────────────────────────────────
 
+export type ReskillSort = "score" | "overlap" | "pay" | "safety" | "growth";
+
 export interface ReskillingTarget {
   occupationCode: string;
   occupationName: string;
@@ -625,6 +627,23 @@ export interface ReskillingTarget {
   sharedCount: number;
   /** sharedCount / fromSkills.length */
   overlapScore: number;
+  // ── Transition detail (relative to the source occupation) ──
+  /** Target skills the mover would need to build (not shared with the source). */
+  missingSkills: string[];
+  /** Target median salary − source median salary (USD). */
+  salaryDelta: number;
+  /** Reduction in AI exposure, in percentage points (source − target). */
+  exposureDropPts: number;
+  /** Target O*NET Job Zone (1–5: education/experience needed). */
+  jobZone: number;
+  /** Target Job Zone − source Job Zone (retraining-effort proxy; ≤0 is easier). */
+  jobZoneDelta: number;
+  /** Target recent employment growth (annualized %, from OEWS history). */
+  growthRate: number | null;
+  projectedOpenings: number | null;
+  totalEmployment: number | null;
+  /** 0–100 composite: transferable skills, safety gain, pay, destination health, retraining ease. */
+  transitionScore: number;
 }
 
 let _skillsByCodeCache: Map<string, string[]> | null = null;
@@ -636,7 +655,40 @@ function getSkillsByCode(): Map<string, string[]> {
   return _skillsByCodeCache;
 }
 
-export function getReskillingPaths(fromCode: string, limit = 6): ReskillingTarget[] {
+const clamp01 = (x: number): number => (x < 0 ? 0 : x > 1 ? 1 : x);
+
+/** 0–100 transition score: transferable skills, safety gain, pay, destination health, retraining ease. */
+function computeTransitionScore(args: {
+  overlapScore: number;
+  exposureDropFrac: number; // (source − target) / source
+  salaryDeltaFrac: number; // (target − source) / source
+  outlook: CareerInsight["outlook"];
+  growthRate: number | null;
+  jobZoneDelta: number;
+}): number {
+  const transfer = clamp01(args.overlapScore);
+  const safety = clamp01(args.exposureDropFrac);
+  const pay = clamp01(0.5 + Math.max(-0.5, Math.min(0.5, args.salaryDeltaFrac)));
+  const growthBonus = args.growthRate != null ? clamp01(0.5 + args.growthRate / 20) : 0.5;
+  const health = 0.6 * (args.outlook === "Bright" ? 1 : 0.5) + 0.4 * growthBonus;
+  const ease = 1 - clamp01(Math.max(0, args.jobZoneDelta) / 4);
+  const score = 0.35 * transfer + 0.25 * safety + 0.15 * pay + 0.15 * health + 0.1 * ease;
+  return Math.round(score * 100);
+}
+
+const RESKILL_SORTERS: Record<ReskillSort, (a: ReskillingTarget, b: ReskillingTarget) => number> = {
+  score: (a, b) => b.transitionScore - a.transitionScore || b.overlapScore - a.overlapScore,
+  overlap: (a, b) => b.sharedCount - a.sharedCount || b.medianSalary - a.medianSalary,
+  pay: (a, b) => b.salaryDelta - a.salaryDelta,
+  safety: (a, b) => b.exposureDropPts - a.exposureDropPts,
+  growth: (a, b) => (b.growthRate ?? -Infinity) - (a.growthRate ?? -Infinity),
+};
+
+export function getReskillingPaths(
+  fromCode: string,
+  limit = 6,
+  sort: ReskillSort = "score",
+): ReskillingTarget[] {
   const source = snapshot.find((row) => row.socCode === fromCode);
   if (!source || source.skills.length === 0) return [];
 
@@ -658,8 +710,15 @@ export function getReskillingPaths(fromCode: string, limit = 6): ReskillingTarge
     const targetSkills = [...new Set(skillsByCode.get(row.socCode) ?? [])];
     const sharedSkills = targetSkills.filter((s) => fromSkillSet.has(s));
     if (sharedSkills.length === 0) continue;
+    const missingSkills = targetSkills.filter((s) => !fromSkillSet.has(s));
 
     seenTitles.add(row.title);
+
+    const growth = computeGrowthFromHistory(row.employmentHistory);
+    const growthRate = growth ? growth.rate : row.growthRate;
+    const jobZoneDelta = row.jobZone - source.jobZone;
+    const overlapScore = sharedSkills.length / fromSkills.length;
+
     candidates.push({
       occupationCode: row.socCode,
       occupationName: row.title,
@@ -670,13 +729,29 @@ export function getReskillingPaths(fromCode: string, limit = 6): ReskillingTarge
       outlook: row.outlook,
       sharedSkills,
       sharedCount: sharedSkills.length,
-      overlapScore: sharedSkills.length / fromSkills.length,
+      overlapScore,
+      missingSkills,
+      salaryDelta: row.medianSalary - source.medianSalary,
+      exposureDropPts: (source.aiExposure - row.aiExposure) * 100,
+      jobZone: row.jobZone,
+      jobZoneDelta,
+      growthRate,
+      projectedOpenings: row.projectedOpenings ?? null,
+      totalEmployment: row.employment ?? null,
+      transitionScore: computeTransitionScore({
+        overlapScore,
+        exposureDropFrac:
+          source.aiExposure > 0 ? (source.aiExposure - row.aiExposure) / source.aiExposure : 0,
+        salaryDeltaFrac:
+          source.medianSalary > 0 ? (row.medianSalary - source.medianSalary) / source.medianSalary : 0,
+        outlook: row.outlook,
+        growthRate,
+        jobZoneDelta,
+      }),
     });
   }
 
-  return candidates
-    .sort((a, b) => b.sharedCount - a.sharedCount || b.medianSalary - a.medianSalary)
-    .slice(0, limit);
+  return candidates.sort(RESKILL_SORTERS[sort] ?? RESKILL_SORTERS.score).slice(0, limit);
 }
 
 export function getHighExposureOccupations(

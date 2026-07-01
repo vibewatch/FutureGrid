@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
-import { getHighExposureOccupations, getReskillingPaths } from "@/lib/data";
+import { getHighExposureOccupations, getReskillingPaths, type ReskillSort } from "@/lib/data";
 import { colorForRisk, formatCurrency } from "@/lib/utils";
 import Reveal from "@/components/ui/Reveal";
 import { useT } from "@/lib/i18n/useT";
@@ -33,6 +33,7 @@ export default function ReskillExplorer() {
   const [search, setSearch]     = useState("");
   const [open, setOpen]         = useState(false);
   const containerRef            = useRef<HTMLDivElement>(null);
+  const [sort, setSort]         = useState<ReskillSort>("score");
 
   // Close dropdown on outside click / Escape
   useEffect(() => {
@@ -64,9 +65,22 @@ export default function ReskillExplorer() {
 
   const selected = highExposure.find((o) => o.occupationCode === fromCode);
   const targets  = useMemo(
-    () => (fromCode ? getReskillingPaths(fromCode, 6) : []),
-    [fromCode],
+    () => (fromCode ? getReskillingPaths(fromCode, 6, sort) : []),
+    [fromCode, sort],
   );
+
+  function scoreTone(s: number): string {
+    return s >= 70
+      ? "text-emerald-600 dark:text-emerald-400"
+      : s >= 50
+      ? "text-amber-600 dark:text-amber-400"
+      : "text-zinc-500 dark:text-zinc-400";
+  }
+  function fmtDelta(d: number): string {
+    const sign = d > 0 ? "+" : d < 0 ? "−" : "";
+    const abs = Math.abs(d);
+    return `${sign}${abs >= 1000 ? `$${Math.round(abs / 1000)}k` : `$${abs}`}`;
+  }
 
   return (
     <section className="space-y-6" aria-labelledby="reskill-heading">
@@ -84,6 +98,9 @@ export default function ReskillExplorer() {
             {t("viewSources")}
           </Link>
           .
+        </p>
+        <p className="text-zinc-500 dark:text-zinc-500 mt-1.5 text-xs max-w-2xl">
+          {t("reskillingSubhead2")}
         </p>
       </div>
 
@@ -174,12 +191,46 @@ export default function ReskillExplorer() {
         </div>
       </div>
 
+      {/* Sort control */}
+      {targets.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs text-zinc-500 mr-1">{t("sortLabel")}</span>
+          {(
+            [
+              ["score", t("sortScore")],
+              ["safety", t("sortSafety")],
+              ["pay", t("sortPay")],
+              ["growth", t("sortGrowth")],
+            ] as [ReskillSort, string][]
+          ).map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => setSort(key)}
+              aria-pressed={sort === key}
+              className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 ${
+                sort === key
+                  ? "bg-violet-600 text-white"
+                  : "glass bg-white/60 dark:bg-zinc-900/50 text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Target cards */}
       {targets.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {targets.map((path, i) => {
             const riskColor    = colorForRisk(path.automationRisk);
             const outlookClass = OUTLOOK_STYLES[path.outlook] ?? "bg-zinc-100 dark:bg-zinc-800/40 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700/40";
+            const retrain =
+              path.jobZoneDelta <= 0
+                ? { label: t("retrainSimilar"), tone: "text-emerald-600 dark:text-emerald-400" }
+                : path.jobZoneDelta === 1
+                ? { label: t("retrainOneLevel"), tone: "text-amber-600 dark:text-amber-400" }
+                : { label: t("retrainMore", { n: String(path.jobZoneDelta) }), tone: "text-red-500 dark:text-red-400" };
             return (
               <Reveal key={path.occupationCode} delay={i * 60}>
                 <Link
@@ -202,31 +253,65 @@ export default function ReskillExplorer() {
                     </span>
                   </div>
 
-                  {/* Salary + outlook + AI exposure row */}
-                  <div className="flex flex-wrap items-center gap-2 mb-3">
-                    <span className="text-xs text-zinc-700 dark:text-zinc-300 font-medium">
+                  {/* Transition metrics */}
+                  <div className="grid grid-cols-4 gap-1 mb-3">
+                    <div className="text-center">
+                      <div className={`text-sm font-bold tabular-nums ${scoreTone(path.transitionScore)}`}>
+                        {path.transitionScore}
+                      </div>
+                      <div className="text-[9px] uppercase tracking-wide text-zinc-500">{t("scoreLabel")}</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-sm font-bold tabular-nums text-emerald-600 dark:text-emerald-400">
+                        −{path.exposureDropPts.toFixed(0)}
+                      </div>
+                      <div className="text-[9px] uppercase tracking-wide text-zinc-500">{t("metricExposure")}</div>
+                    </div>
+                    <div className="text-center">
+                      <div
+                        className={`text-sm font-bold tabular-nums ${
+                          path.salaryDelta >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-500 dark:text-red-400"
+                        }`}
+                      >
+                        {fmtDelta(path.salaryDelta)}
+                      </div>
+                      <div className="text-[9px] uppercase tracking-wide text-zinc-500">{t("metricPay")}</div>
+                    </div>
+                    <div className="text-center">
+                      <div className={`text-[11px] font-semibold leading-tight ${retrain.tone}`}>{retrain.label}</div>
+                      <div className="text-[9px] uppercase tracking-wide text-zinc-500">{t("metricRetrain")}</div>
+                    </div>
+                  </div>
+
+                  {/* Salary + outlook + growth + AI exposure row */}
+                  <div className="flex flex-wrap items-center gap-2 mb-3 text-xs">
+                    <span className="text-zinc-700 dark:text-zinc-300 font-medium">
                       {formatCurrency(path.medianSalary)}
                       <span className="text-zinc-600">{t("perYear")}</span>
                     </span>
-                    <span className={`px-2 py-0.5 rounded text-xs font-medium ${outlookClass}`}>
-                      {path.outlook}
-                    </span>
-                    <span className="ml-auto text-xs text-zinc-500">
-                      AI{" "}
-                      <span className="text-zinc-700 dark:text-zinc-300 font-medium">
-                        {(path.aiExposure * 100).toFixed(0)}%
+                    <span className={`px-2 py-0.5 rounded font-medium ${outlookClass}`}>{path.outlook}</span>
+                    {path.growthRate != null && (
+                      <span
+                        className={`font-medium ${
+                          path.growthRate >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-500 dark:text-red-400"
+                        }`}
+                      >
+                        {path.growthRate >= 0 ? "+" : ""}
+                        {path.growthRate}%/yr
                       </span>
+                    )}
+                    <span className="ml-auto text-zinc-500">
+                      AI <span className="text-zinc-700 dark:text-zinc-300 font-medium">{(path.aiExposure * 100).toFixed(0)}%</span>
                     </span>
                   </div>
 
-                  {/* Shared skills */}
-                  <div className="space-y-1.5">
-                    <p className="text-xs font-medium text-zinc-500">
-                      <span className="text-emerald-400 font-semibold">{path.sharedCount}</span>{" "}
-                      {t("sharedSkillLabel", { suffix: path.sharedCount !== 1 ? "s" : "" })}
+                  {/* Skills that transfer */}
+                  <div className="space-y-1 mb-2">
+                    <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                      {t("skillsTransfer")} · {path.sharedCount}
                     </p>
                     <div className="flex flex-wrap gap-1">
-                      {path.sharedSkills.slice(0, 6).map((s) => (
+                      {path.sharedSkills.slice(0, 5).map((s) => (
                         <span
                           key={s}
                           className="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-900/25 border border-emerald-200 dark:border-emerald-700/30 text-emerald-700 dark:text-emerald-300 text-xs"
@@ -234,13 +319,35 @@ export default function ReskillExplorer() {
                           {s}
                         </span>
                       ))}
-                      {path.sharedSkills.length > 6 && (
+                      {path.sharedSkills.length > 5 && (
                         <span className="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500 text-xs">
-                          {t("moreSkillsLabel", { n: String(path.sharedSkills.length - 6) })}
+                          {t("moreSkillsLabel", { n: String(path.sharedSkills.length - 5) })}
                         </span>
                       )}
                     </div>
                   </div>
+
+                  {/* Skills to build */}
+                  {path.missingSkills.length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-amber-600 dark:text-amber-400">{t("skillsToBuild")}</p>
+                      <div className="flex flex-wrap gap-1">
+                        {path.missingSkills.slice(0, 4).map((s) => (
+                          <span
+                            key={s}
+                            className="px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/30 text-amber-700 dark:text-amber-300 text-xs"
+                          >
+                            {s}
+                          </span>
+                        ))}
+                        {path.missingSkills.length > 4 && (
+                          <span className="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500 text-xs">
+                            {t("moreSkillsLabel", { n: String(path.missingSkills.length - 4) })}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </Link>
               </Reveal>
             );
