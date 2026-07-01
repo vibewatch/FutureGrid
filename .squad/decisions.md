@@ -1295,3 +1295,57 @@ i18n system was inert: `LanguageProvider` was never mounted in the app layout, `
 ### Commits
 - e7d8872 (Coordinator: LanguageProvider mount + LanguageSwitcher + page.tsx wiring)
 - 6850902 (Tank: WARN pipeline 6→10 states)
+
+
+---
+
+## Multi-Source AI Signals Integration (2026-07-01)
+
+**Requested by:** Coordinator
+**Status:** Approved (🟢 Verified)
+**Scope:** Integrated 5 external data sources for AI-exposure triangulation
+
+### Decision
+
+Added external data sources to enrich AI-exposure analytics:
+- OpenAI 'GPTs are GPTs' (MIT license) — O*NET-SOC capability exposure  
+- Indeed Hiring Lab (CC BY 4.0) — AI-job demand time series
+- Challenger AI data (verified monthly + annual 2023–2025)
+- AIOE data (Wayback SOC-2010→2018 crosswalk via BLS)
+- Frey & Osborne automation baseline (historical, kept for benchmarking only)
+
+### Technical Resolution
+
+- **Modern consensus model**: Capability + Usage lenses averaged (r=0.84 agreement, r=0.64 with F&O ~usage proxy)
+- **Historical baseline**: Frey & Osborne retained descriptively; NOT used in forward predictions
+- **SOC mapping**: O*NET 6-digit averaged; F&O/AIOE use exact 2018 matches + BLS 2010→2018 crosswalk (Wayback), with one-to-many targets retained and duplicates averaged
+- **Coverage**: 756/756 occupations covered (usage, capability, ability); 663/756 automation baseline
+- **Normalization**: AIOE min-max normalized across source scores; Challenger monthly conservative (only explicit AI attribution), annual 2023–2025 always included
+- **Framing**: All findings marked exploratory/descriptive (not causal); occupation/proper-noun values remain English; users see correlations only
+
+### Key Finding: Automation Flip
+
+**Historical automation risk is NEGATIVELY correlated with modern AI exposure:**
+- Capability vs. Automation: r = -0.29
+- Ability vs. Automation: r = -0.42  
+- Capability vs. Ability (modern lenses): r = 0.84 (strong consensus)
+
+Gap leaders (high AI capability, low adoption): Telephone Operators, Proofreaders, Payroll Clerks
+
+This inversion suggests historical vulnerability assessments (Frey & Osborne) capture different risk dimensions than current LLM/LMM exposure; modern tools cluster differently than mechanical automation predictors.
+
+### Implementation
+
+- `scripts/build-ai-signals.mjs` — fetches 5 sources → data/{llm-exposure,ai-demand,ai-layoffs,aioe-exposure,automation-baseline}.json  
+- `lib/analysis.ts` — getExposureComparison, getExposureGapLeaders, getAIDemandSeries, getAILayoffSeries  
+- `sources.json` — +7 entries (all verified, CCs-BY/public-domain)  
+- Frontend: ExposureLensComparison scatter + gap matrix; AIForcesTimeline demand vs. cuts dual-axis
+
+### Validation
+
+- Build exit 0, lint clean
+- Tests 146 PASS (121 prior + 25 analysis tests)
+- Smoke 10/10 routes, Playwright EN+中文 zero page errors
+- CI + Deploy triggered
+
+---
