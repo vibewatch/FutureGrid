@@ -24,7 +24,7 @@ const BUDGET_MS = Number(process.env.SMOKE_BUDGET_MS ?? 10000);
 // Representative routes (dynamic [code]/[id] pages share their list page's shell).
 const ROUTES = [
   "/", "/careers", "/sectors", "/skills", "/explore",
-  "/report", "/labor", "/global", "/sources",
+  "/report", "/analysis", "/labor", "/global", "/sources",
 ];
 
 // Strings the app's error boundary renders when a page crashes at runtime.

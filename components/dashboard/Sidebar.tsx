@@ -117,6 +117,20 @@ function IconReport() {
   );
 }
 
+function IconInsights() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 19V5" />
+      <path d="M4 19h16" />
+      <circle cx="8" cy="14" r="1.5" />
+      <circle cx="13" cy="10" r="1.5" />
+      <circle cx="18" cy="7" r="1.5" />
+      <path d="M9.2 13.1l2.6-2.2" />
+      <path d="M14.4 9.4l2.2-1.5" />
+    </svg>
+  );
+}
+
 function IconMenu() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -194,7 +208,7 @@ function ThemeToggle() {
 
 // ─── Nav sections ──────────────────────────────────────────────────────────────
 const NAV_SECTIONS = [
-  { key: "secOverview",   items: [ { href: "/",        labelKey: "dashboard", Icon: IconDashboard }, { href: "/report",   labelKey: "report",   Icon: IconReport  } ] },
+  { key: "secOverview",   items: [ { href: "/",        labelKey: "dashboard", Icon: IconDashboard }, { href: "/report",   labelKey: "report",   Icon: IconReport  }, { href: "/analysis", labelKey: "analysis", Icon: IconInsights } ] },
   { key: "secExposure",   items: [ { href: "/careers", labelKey: "careers",   Icon: IconCareers   }, { href: "/sectors",  labelKey: "sectors",  Icon: IconSectors }, { href: "/explore", labelKey: "explore", Icon: IconExplore } ] },
   { key: "secLabor",      items: [ { href: "/labor",   labelKey: "labor",     Icon: IconLabor     }, { href: "/global",   labelKey: "global",   Icon: IconGlobe   } ] },
   { key: "secTransition", items: [ { href: "/skills",  labelKey: "skills",    Icon: IconSkills    } ] },

@@ -11,6 +11,7 @@ import { sourcesEn } from "./en/sources";
 import { heatmapEn } from "./en/heatmap";
 import { exploreEn } from "./en/explore";
 import { reportEn } from "./en/report";
+import { analysisEn } from "./en/analysis";
 import { keyfindingsEn } from "./en/keyfindings";
 import { dataexportEn } from "./en/dataexport";
 import { chartsEn } from "./en/charts";
@@ -30,6 +31,7 @@ import { sourcesZh } from "./zh/sources";
 import { heatmapZh } from "./zh/heatmap";
 import { exploreZh } from "./zh/explore";
 import { reportZh } from "./zh/report";
+import { analysisZh } from "./zh/analysis";
 import { keyfindingsZh } from "./zh/keyfindings";
 import { dataexportZh } from "./zh/dataexport";
 import { chartsZh } from "./zh/charts";
@@ -38,8 +40,8 @@ import { layoffsZh } from "./zh/layoffs";
 import { laborZh } from "./zh/labor";
 
 export const messages = {
-  en: { common: commonEn, nav: navEn, dashboard: dashboardEn, careers: careersEn, sectors: sectorsEn, skills: skillsEn, global: globalEn, checker: checkerEn, command: commandEn, sources: sourcesEn, heatmap: heatmapEn, explore: exploreEn, report: reportEn, keyfindings: keyfindingsEn, dataexport: dataexportEn, charts: chartsEn, pulse: pulseEn, layoffs: layoffsEn, labor: laborEn },
-  zh: { common: commonZh, nav: navZh, dashboard: dashboardZh, careers: careersZh, sectors: sectorsZh, skills: skillsZh, global: globalZh, checker: checkerZh, command: commandZh, sources: sourcesZh, heatmap: heatmapZh, explore: exploreZh, report: reportZh, keyfindings: keyfindingsZh, dataexport: dataexportZh, charts: chartsZh, pulse: pulseZh, layoffs: layoffsZh, labor: laborZh },
+  en: { common: commonEn, nav: navEn, dashboard: dashboardEn, careers: careersEn, sectors: sectorsEn, skills: skillsEn, global: globalEn, checker: checkerEn, command: commandEn, sources: sourcesEn, heatmap: heatmapEn, explore: exploreEn, report: reportEn, analysis: analysisEn, keyfindings: keyfindingsEn, dataexport: dataexportEn, charts: chartsEn, pulse: pulseEn, layoffs: layoffsEn, labor: laborEn },
+  zh: { common: commonZh, nav: navZh, dashboard: dashboardZh, careers: careersZh, sectors: sectorsZh, skills: skillsZh, global: globalZh, checker: checkerZh, command: commandZh, sources: sourcesZh, heatmap: heatmapZh, explore: exploreZh, report: reportZh, analysis: analysisZh, keyfindings: keyfindingsZh, dataexport: dataexportZh, charts: chartsZh, pulse: pulseZh, layoffs: layoffsZh, labor: laborZh },
 } as const;
 
 export type Messages = typeof messages;
