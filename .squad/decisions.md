@@ -1091,3 +1091,122 @@ transitionScore = (
 ✅ **Reskilling transition score formula: 0.35 transferability / 0.25 safety / 0.15 salary / 0.15 health / 0.10 ease.**  
 ✅ **ReskillExplorer now ranks destinations by transition viability.**  
 ✅ **All validation passed; zero regressions.**
+
+---
+
+### FutureGrid Iteration — IA Refactor, Visual QA & 10yr Data Extension (2026-07-01)
+
+**Requested by:** huangyingting  
+**Status:** Approved (✅ shipped to origin/main)  
+**Scope:** Sidebar IA restructure, Playwright visual QA, OEWS 10-year history backfill (2016–2025)
+
+#### 1. Sidebar & Navigation IA Refactor (Neo)
+
+**Summary:** Flattened 11 nav items → 5 narrative sections (9 items) grouping related products into thematic workflows.
+
+**NAV_SECTIONS Structure:**
+- `secOverview` → `/` (Dashboard), `/report` (Report)
+- `secExposure` → `/careers`, `/sectors`, `/explore` (heatmap folded in)
+- `secLabor` → `/labor` (tabbed Pulse + Layoffs merged, lazy-loaded via next/dynamic), `/global`
+- `secTransition` → `/skills`
+- `secAbout` → `/sources`
+
+**Files Created:**
+- `components/labor/LaborMarketView.tsx` — tabbed /labor page (PulseView + LayoffsView)
+- `app/labor/page.tsx`, `app/labor/layout.tsx` — server component + metadata
+- `lib/i18n/messages/{en,zh}/labor.ts` — labor namespace (bilingual)
+
+**Files Deleted:**
+- `app/heatmap/`, `app/pulse/`, `app/layoffs/` (3 routes consolidated into Explore + /labor)
+
+**i18n Additions:**
+- 6 new nav keys: `secOverview`, `secExposure`, `secLabor`, `secTransition`, `secAbout`, `labor`
+- 2 explore keys: `sectionHeatmap`, `sectionHeatmapDesc`
+- Registered `labor` namespace in `lib/i18n/messages/index.ts`
+
+**Validation:**
+- `npm run build` → exit 0 ✓
+- `npm run smoke` → 9/9 routes (/, /careers, /sectors, /skills, /explore, /report, /labor, /global, /sources) ✓
+
+#### 2. Playwright Visual QA Workflow (Coordinator)
+
+**Problem:** Full-page screenshots manually collected; large paginated lists (e.g., careers = 755 cards → 10MB) blocked visual testing.
+
+**Solution:** Implemented automated visual QA via Playwright (`scripts/visual-qa.mjs`):
+- System chrome via `executablePath` (not bundled Chromium)
+- Headless desktop (light + dark modes) + mobile
+- Full-page screenshots saved per route
+- Lists auto-paginate via "Load more" button detection
+- Heatmap heading de-duplicated
+- Sector bubble chart labels de-overlapped via D3-force layout + leader lines + text halo
+
+**Key Technical Decision:**
+- `executablePath` to system Chrome avoids Playwright-bundled-binary bloat in CI
+- Pages must implement pagination (listens for "Load more" button) rather than infinite scroll
+- D3 force-simulation for label placement (not CSS grid) ensures no overlap on any occupation set
+
+**Validation:**
+- Careers list: 755 cards → 48-card page 1 + "Load more" (paginated, 100-item chunks) ✓
+- Heatmap heading: no duplication ✓
+- Sector bubble: no label overlap across all 25 sectors ✓
+
+#### 3. OEWS 10-Year History Extension (Tank)
+
+**Problem:** OEWS employment/wage history capped at 2019–2025 (4-5 years); no decade of labor-market context.
+
+**Solution:** Backfilled 2016/2017/2018 from Wayback Machine archived national Excel flat files (672/671/671 occupations respectively). Surgical merge via new `scripts/extend-oews-history.mjs`.
+
+**Technical Approach:**
+
+1. **Parser Robustness (Pre-2019 Format Handling):**
+   - Pre-2019 national files lack `naics`, `own_code`, `o_group` columns
+   - Occupation group column is `OCC_GROUP` (not `o_group`)
+   - Updated `PARSE_OEWS_PY` to detect and handle both:
+     ```python
+     group_col = ci('o_group') if ci('o_group') >= 0 else ci('OCC_GROUP')
+     naics_filter applied only if i_naics >= 0
+     own_code filter applied only if i_own >= 0
+     ```
+   - Pre-2019 files yield ~800 detailed occupations (vs. ~750 filtered post-2019)
+
+2. **xlsx Selection Fix:**
+   - 2018 zip contains 2 xlsx files: `field_descriptions.xlsx` (13KB) + `national_M2018_dl.xlsx` (195KB)
+   - `find` returned files alphabetically; now sorts to prefer `/national_M\d+_dl\.xlsx$/i` pattern
+   - Applied same fix to `build-data-snapshot.mjs`
+
+3. **Network Adaptation:**
+   - Wayback Machine HTTPS endpoint (port 443) ECONNREFUSED in this environment
+   - Downloads rewired to `http://web.archive.org/` (port 80)
+   - `extend-oews-history.mjs` auto-rewrites `https://web.archive.org/` → `http://`
+
+4. **2018 SOC Revision Caveat:**
+   - Occupations reclassified in the 2018 SOC revision (e.g., some 3XX codes merged into 4XX) keep their 2019+ series
+   - No backfill for 2016–2018 under reclassified codes (gap is minor, ~1–3% of occupations)
+
+**Data Coverage:**
+- 2016 employment: 672/756 occupations (89%)
+- Sample: 41-9041 Telemarketers: {2016:215290, 2017:189670, 2018:164160, 2019:134800, 2020:117610, 2021:115130, 2022:96520, 2023:81580, 2025:58430}
+- `data/occupation-snapshot.json`: merged 2016–2025 into `.employmentHistory` + `.wageHistory`
+- `data/sources.json`: updated OEWS window to "2016–2025 via archived national Excel flat files (Wayback Machine)"
+
+**Validation:**
+- `npm run build` → exit 0, 800 static pages ✓
+- Employment series continuous across 2016–2025 ✓
+
+#### 4. Data-Source Audit Decision
+
+**Finding:** AI-specific metrics (Anthropic exposure, Microsoft GenAI diffusion, IMF AI-Preparedness, Oxford Gov-AI-Readiness) are inherently recent (1–3 yr). No decade of AI-adoption data exists to fetch.
+
+**Conclusion:** Only labour-market series (OEWS/JOLTS/WARN) support a 10-year historical window. All three now do (post-2026-07-01):
+- **OEWS:** 2016–2025 ✓
+- **JOLTS:** 2016–2025 ✓
+- **WARN:** 2016–2026 ✓
+
+**Implication:** FutureGrid's decade-long labor trends are data-backed. AI-risk metrics remain recent-only (inherent to AI adoption trajectory).
+
+#### Build & Test Results
+- `npm run build` → exit 0 ✓
+- `npm run lint` → clean ✓
+- `npm run test:run` → 121/121 tests ✓
+- `npm run smoke` → 9/9 routes ✓
+- CI green ✓
