@@ -1,4 +1,9 @@
 import occupationSnapshot from "@/data/occupation-snapshot.json";
+import aiDemandData from "@/data/ai-demand.json";
+import aiLayoffData from "@/data/ai-layoffs.json";
+import aioeExposureData from "@/data/aioe-exposure.json";
+import automationBaselineData from "@/data/automation-baseline.json";
+import llmExposureData from "@/data/llm-exposure.json";
 
 /**
  * Descriptive, exploratory analytics for Insights Lab. These statistics summarize
@@ -214,6 +219,74 @@ export function getDisruptionIndex(): DisruptionIndex {
   return cloneDisruptionIndex(_disruptionCache);
 }
 
+// ---- 4. Multi-methodology AI exposure comparison ----
+export type ExposureLens = "usage" | "capability" | "ability" | "automation";
+export interface OccExposure { code: string; name: string; sector: string; employment: number;
+  usage: number | null;
+  capability: number | null;
+  ability: number | null;
+  automation: number | null;
+  consensus: number | null;
+  gap: number | null;
+}
+export interface LensCorrelation { a: ExposureLens; b: ExposureLens; r: number; n: number; }
+export interface ExposureComparison { occupations: OccExposure[]; lensesAvailable: ExposureLens[]; coverage: Record<ExposureLens, number>; correlations: LensCorrelation[]; }
+
+export function getExposureComparison(): ExposureComparison {
+  if (!_exposureComparisonCache) buildExposureComparisonCache();
+  return cloneExposureComparison(_exposureComparisonCache ?? emptyExposureComparison());
+}
+
+export function getExposureGapLeaders(limit = 10): OccExposure[] {
+  const safeLimit = Math.max(0, Math.floor(Number.isFinite(limit) ? limit : 10));
+  return getExposureComparison().occupations
+    .filter((occupation) => occupation.gap != null)
+    .sort((a, b) => (b.gap ?? -Infinity) - (a.gap ?? -Infinity) || a.name.localeCompare(b.name))
+    .slice(0, safeLimit)
+    .map((occupation) => ({ ...occupation }));
+}
+
+// ---- 5. AI demand and AI-attributed layoff time series ----
+export interface DemandPoint { month: string; share: number; }
+export interface DemandSeries { country: string; points: DemandPoint[]; }
+export interface AIDemand { countries: string[]; series: DemandSeries[]; latest: { country: string; share: number }[]; }
+export function getAIDemandSeries(): AIDemand {
+  if (!_aiDemandCache) {
+    const data = aiDemandData as AIDemandJson;
+    _aiDemandCache = {
+      countries: [...data.countries],
+      series: data.series.map((series) => ({
+        country: series.country,
+        points: series.points
+          .filter((point) => isFiniteNumber(point.share))
+          .map((point) => ({ month: point.month, share: point.share })),
+      })),
+      latest: data.latest
+        .filter((point) => isFiniteNumber(point.share))
+        .map((point) => ({ country: point.country, share: point.share })),
+    };
+  }
+  return cloneAIDemand(_aiDemandCache);
+}
+
+export interface LayoffPoint { month: string; cuts: number; }
+export interface AILayoffs { monthly: LayoffPoint[]; annual: { year: number; cuts: number }[]; note: string; }
+export function getAILayoffSeries(): AILayoffs {
+  if (!_aiLayoffCache) {
+    const data = aiLayoffData as AILayoffJson;
+    _aiLayoffCache = {
+      monthly: data.monthly
+        .filter((point) => isFiniteNumber(point.cuts))
+        .map((point) => ({ month: point.month, cuts: Math.round(point.cuts) })),
+      annual: data.annual
+        .filter((point) => isFiniteNumber(point.year) && isFiniteNumber(point.cuts))
+        .map((point) => ({ year: Math.round(point.year), cuts: Math.round(point.cuts) })),
+      note: data.note,
+    };
+  }
+  return cloneAILayoffs(_aiLayoffCache);
+}
+
 type SnapshotRow = {
   socCode: string;
   title: string;
@@ -235,6 +308,9 @@ type SnapshotRow = {
 
 type GrowthResult = { rate: number; fromYear: number; toYear: number };
 type ForecastCache = { byCode: Map<string, OccupationForecast>; national: NationalForecast };
+type ExposureBySocJson = { bySoc: Record<string, number> };
+type AIDemandJson = { countries: string[]; series: DemandSeries[]; latest: { country: string; share: number }[] };
+type AILayoffJson = { monthly: LayoffPoint[]; annual: { year: number; cuts: number }[]; note: string };
 
 const snapshot = occupationSnapshot as SnapshotRow[];
 const LATEST_ACTUAL_YEAR = 2025;
@@ -243,6 +319,61 @@ const DEFAULT_AI_SENSITIVITY = 0.5;
 let _aiSignalCache: AISignalData | null = null;
 let _forecastCache: ForecastCache | null = null;
 let _disruptionCache: DisruptionIndex | null = null;
+let _exposureComparisonCache: ExposureComparison | null = null;
+let _aiDemandCache: AIDemand | null = null;
+let _aiLayoffCache: AILayoffs | null = null;
+
+function buildExposureComparisonCache(): void {
+  const capabilityBySoc = (llmExposureData as ExposureBySocJson).bySoc;
+  const abilityBySoc = (aioeExposureData as ExposureBySocJson).bySoc;
+  const automationBySoc = (automationBaselineData as ExposureBySocJson).bySoc;
+
+  const occupations = snapshot.map((row) => {
+    const usage = toNullablePct(row.aiExposure);
+    const capability = toNullablePct(capabilityBySoc[row.socCode]);
+    const ability = toNullablePct(abilityBySoc[row.socCode]);
+    const automation = toNullablePct(automationBySoc[row.socCode]);
+    const modern = [usage, capability, ability].filter((value): value is number => value != null);
+    const consensus = modern.length > 0 ? round1(avg(modern)) : null;
+    const gap = capability != null && usage != null ? round1(capability - usage) : null;
+    return {
+      code: row.socCode,
+      name: row.title,
+      sector: row.sector,
+      employment: Math.round(latestPositiveValue(row.employmentHistory) ?? row.employment ?? 0),
+      usage,
+      capability,
+      ability,
+      automation,
+      consensus,
+      gap,
+    };
+  });
+
+  const lenses: ExposureLens[] = ["usage", "capability", "ability", "automation"];
+  const coverage = Object.fromEntries(
+    lenses.map((lens) => [lens, occupations.filter((occupation) => occupation[lens] != null).length]),
+  ) as Record<ExposureLens, number>;
+  const lensesAvailable = lenses.filter((lens) => coverage[lens] > 0);
+  const correlations: LensCorrelation[] = [];
+  for (let i = 0; i < lensesAvailable.length; i += 1) {
+    for (let j = i + 1; j < lensesAvailable.length; j += 1) {
+      const a = lensesAvailable[i];
+      const b = lensesAvailable[j];
+      const pairs = occupations
+        .map((occupation) => ({ x: occupation[a], y: occupation[b] }))
+        .filter((pair): pair is { x: number; y: number } => pair.x != null && pair.y != null);
+      correlations.push({
+        a,
+        b,
+        r: round1(pearson(pairs.map((pair) => pair.x), pairs.map((pair) => pair.y)) * 100) / 100,
+        n: pairs.length,
+      });
+    }
+  }
+
+  _exposureComparisonCache = { occupations, lensesAvailable, coverage, correlations };
+}
 
 function computeGrowthFromHistory(history?: Record<string, number> | null): GrowthResult | null {
   const usable = historyPoints(history);
@@ -359,6 +490,15 @@ function toExposure(aiExposure: number): number {
   return Number.isFinite(aiExposure) ? clamp(aiExposure * 100, 0, 100) : 0;
 }
 
+function toNullablePct(value: number | null | undefined): number | null {
+  if (!isFiniteNumber(value)) return null;
+  return round1(clamp(value * 100, 0, 100));
+}
+
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
 function pairFinite(xs: number[], ys: number[]): { x: number; y: number }[] {
   const length = Math.min(xs.length, ys.length);
   const pairs: { x: number; y: number }[] = [];
@@ -466,5 +606,42 @@ function cloneDisruptionIndex(index: DisruptionIndex): DisruptionIndex {
     occupations: index.occupations.map((occupation) => ({ ...occupation })),
     sectors: index.sectors.map((sector) => ({ ...sector })),
     weights: { ...index.weights },
+  };
+}
+
+function emptyExposureComparison(): ExposureComparison {
+  return {
+    occupations: [],
+    lensesAvailable: [],
+    coverage: { usage: 0, capability: 0, ability: 0, automation: 0 },
+    correlations: [],
+  };
+}
+
+function cloneExposureComparison(comparison: ExposureComparison): ExposureComparison {
+  return {
+    occupations: comparison.occupations.map((occupation) => ({ ...occupation })),
+    lensesAvailable: [...comparison.lensesAvailable],
+    coverage: { ...comparison.coverage },
+    correlations: comparison.correlations.map((correlation) => ({ ...correlation })),
+  };
+}
+
+function cloneAIDemand(data: AIDemand): AIDemand {
+  return {
+    countries: [...data.countries],
+    series: data.series.map((series) => ({
+      country: series.country,
+      points: series.points.map((point) => ({ ...point })),
+    })),
+    latest: data.latest.map((point) => ({ ...point })),
+  };
+}
+
+function cloneAILayoffs(data: AILayoffs): AILayoffs {
+  return {
+    monthly: data.monthly.map((point) => ({ ...point })),
+    annual: data.annual.map((point) => ({ ...point })),
+    note: data.note,
   };
 }

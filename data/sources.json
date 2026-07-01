@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-30T13:53:33.001Z",
+  "generatedAt": "2026-07-01T10:01:55.611Z",
   "license": "CC-BY 4.0 (Anthropic Economic Index); CC BY 4.0 (O*NET, USDOL/ETA); Public Domain (BLS)",
   "attribution": "Anthropic Economic Index (Anthropic, 2025); O*NET 28.3 (U.S. Department of Labor/ETA); BLS Employment Statistics (U.S. Bureau of Labor Statistics, 2023)",
   "sources": [
@@ -194,6 +194,65 @@
       "url": "https://open.africa/dataset/government-ai-readiness-index-2023",
       "license": "Creative Commons Attribution (CC-BY)",
       "usedFor": "Per-country government AI readiness composite score 0–100 for 193 countries (including China, rank 16 = 70.94). Three pillars: Government, Technology Sector, Data and Infrastructure. COMPARABILITY CAVEAT: government-readiness capacity score — do NOT average with diffusionPct (user behaviour %), usageIndex (API sessions), or aiReadiness (IMF 0–1 capacity index)."
+    },
+    {
+      "name": "OpenAI \"GPTs are GPTs\" occupation exposure",
+      "publisher": "OpenAI / University of Pennsylvania researchers",
+      "year": 2023,
+      "url": "https://github.com/openai/GPTs-are-GPTs",
+      "license": "MIT",
+      "usedFor": "LLM capability exposure lens (dv_rating_beta) mapped from O*NET-SOC to SOC-2018"
+    },
+    {
+      "name": "Indeed Hiring Lab AI Tracker",
+      "publisher": "Indeed Hiring Lab",
+      "year": 2026,
+      "url": "https://github.com/hiring-lab/ai-tracker",
+      "license": "CC BY 4.0",
+      "usedFor": "Monthly country-level AI job-posting share demand signal"
+    },
+    {
+      "name": "Challenger, Gray & Christmas AI-attributed job cuts",
+      "publisher": "Challenger, Gray & Christmas",
+      "year": 2026,
+      "url": "https://gist.github.com/mcphil/08f8f011f27c9864d157ead0b9d716d9",
+      "license": "Publisher terms / community-compiled excerpts",
+      "usedFor": "US-national self-reported AI-attributed layoff annual totals and verified monthly points",
+      "note": "Employer-announced job cuts citing AI as stated reason; not necessarily realized layoffs"
+    },
+    {
+      "name": "AIOE (Felten, Raj, Seamans) ability-based AI exposure",
+      "publisher": "Felten, Raj, and Seamans",
+      "year": 2021,
+      "url": "https://github.com/AIOE-Data/AIOE",
+      "license": "cite-only",
+      "usedFor": "Ability-based AI exposure lens, min-max normalized and SOC-2010 mapped to SOC-2018",
+      "note": "Attribution required; SOC crosswalk via BLS/Wayback"
+    },
+    {
+      "name": "Frey & Osborne (2013) computerization probability",
+      "publisher": "Carl Benedikt Frey and Michael Osborne / unofficial mirror",
+      "year": 2013,
+      "url": "https://github.com/WorkForce-Central/Future-of-Work",
+      "license": "academic/unclear — historical baseline only",
+      "usedFor": "Historical automation baseline lens, SOC-2010 mapped to SOC-2018",
+      "note": "Unofficial mirror; not used as current AI exposure"
+    },
+    {
+      "name": "Stanford HAI AI Index 2025 — labor chapter",
+      "publisher": "Stanford Institute for Human-Centered Artificial Intelligence",
+      "year": 2025,
+      "url": "https://aiindex.stanford.edu/report/",
+      "license": "Stanford HAI report terms",
+      "usedFor": "Benchmark citation for labor-market AI trends; not directly loaded"
+    },
+    {
+      "name": "OECD.AI Policy Observatory — AI jobs and skills",
+      "publisher": "OECD.AI Policy Observatory",
+      "year": 2025,
+      "url": "https://oecd.ai/en/work-innovation-productivity-skills",
+      "license": "OECD terms",
+      "usedFor": "Benchmark citation for AI jobs and skills context; not directly loaded"
     }
   ],
   "note": "automationRisk bands are percentile-calibrated from the aiExposure distribution (756 occupations): Very High = top ~8% (aiExposure > 0.3104), High = next ~12% (> 0.1378), Medium = next ~25% (> 0.0080), Low = remainder (≤ 0.0080). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: real OEWS 2025 figures (755 occupations updated via BLS Public Data API). medianSalary: OEWS 2025 where available (752 updated), AEI-bundled wage otherwise. employmentHistory/wageHistory: OEWS multi-year annual series 2016–2025 — 2025 via BLS Public Data API (755 occ); 2016–2023 via archived national Excel flat files (Wayback Machine); note that BLS OEWS OEUN API series stores only the current-vintage snapshot so older years require flat-file download. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: successfully loaded"

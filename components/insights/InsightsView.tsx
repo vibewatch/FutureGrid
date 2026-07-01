@@ -2,7 +2,9 @@
 
 import Reveal from "@/components/ui/Reveal";
 import AISignalScatter from "@/components/insights/AISignalScatter";
+import ExposureLensComparison from "@/components/insights/ExposureLensComparison";
 import EmploymentForecastChart from "@/components/insights/EmploymentForecastChart";
+import AIForcesTimeline from "@/components/insights/AIForcesTimeline";
 import DisruptionLeaderboard from "@/components/insights/DisruptionLeaderboard";
 import { useT } from "@/lib/i18n/useT";
 
@@ -43,9 +45,13 @@ export default function InsightsView() {
       <hr className="divider-glow" />
       <Section eyebrow="01" title={t("signalTitle")} explainer={t("signalExplainer")}><AISignalScatter /></Section>
       <hr className="divider-glow" />
-      <Section eyebrow="02" title={t("forecastTitle")} explainer={t("forecastExplainer")}><EmploymentForecastChart /></Section>
+      <Section eyebrow="02" title={t("exposureLensesTitle")} explainer={t("exposureLensesExplainer")}><ExposureLensComparison /></Section>
       <hr className="divider-glow" />
-      <Section eyebrow="03" title={t("disruptionTitle")} explainer={t("disruptionExplainer")}><DisruptionLeaderboard /></Section>
+      <Section eyebrow="03" title={t("forecastTitle")} explainer={t("forecastExplainer")}><EmploymentForecastChart /></Section>
+      <hr className="divider-glow" />
+      <Section eyebrow="04" title={t("aiForcesTitle")} explainer={t("aiForcesExplainer")}><AIForcesTimeline /></Section>
+      <hr className="divider-glow" />
+      <Section eyebrow="05" title={t("disruptionTitle")} explainer={t("disruptionExplainer")}><DisruptionLeaderboard /></Section>
     </div>
   );
 }

@@ -1,0 +1,60 @@
+{
+  "generatedAt": "2026-07-01T10:01:06.104Z",
+  "source": {
+    "name": "Challenger, Gray & Christmas",
+    "url": "https://gist.githubusercontent.com/mcphil/08f8f011f27c9864d157ead0b9d716d9/raw"
+  },
+  "note": "US-national, employer-announced job cuts where \"AI\"/Artificial Intelligence was cited as the stated reason by Challenger, Gray & Christmas; self-reported announced plans, not necessarily realized layoffs. Monthly points are included only where directly verifiable from the community-compiled Challenger passages; annual 2023–2025 totals are verified constants.",
+  "annual": [
+    {
+      "year": 2023,
+      "cuts": 3900
+    },
+    {
+      "year": 2024,
+      "cuts": 13089
+    },
+    {
+      "year": 2025,
+      "cuts": 54836
+    }
+  ],
+  "monthly": [
+    {
+      "month": "2023-05",
+      "cuts": 3900
+    },
+    {
+      "month": "2025-06",
+      "cuts": 75
+    },
+    {
+      "month": "2025-07",
+      "cuts": 10375
+    },
+    {
+      "month": "2025-09",
+      "cuts": 7000
+    },
+    {
+      "month": "2025-10",
+      "cuts": 31039
+    },
+    {
+      "month": "2025-11",
+      "cuts": 6280
+    },
+    {
+      "month": "2025-12",
+      "cuts": 142
+    },
+    {
+      "month": "2026-01",
+      "cuts": 7624
+    },
+    {
+      "month": "2026-02",
+      "cuts": 4680
+    }
+  ]
+}

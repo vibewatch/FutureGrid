@@ -17,7 +17,8 @@
     "build:warn": "node scripts/build-warn.mjs",
     "build:global-metrics": "node scripts/build-global-metrics.mjs",
     "build:og": "node scripts/build-og-image.mjs",
-    "smoke": "node scripts/smoke-test.mjs"
+    "smoke": "node scripts/smoke-test.mjs",
+    "build:ai-signals": "node scripts/build-ai-signals.mjs"
   },
   "dependencies": {
     "chart.js": "^4.5.1",
