@@ -15,6 +15,7 @@
     "build:geo": "node scripts/build-world-geo.mjs",
     "build:jolts": "node scripts/build-jolts.mjs",
     "build:warn": "node scripts/build-warn.mjs",
+    "build:state-labor": "node scripts/build-state-labor.mjs",
     "build:global-metrics": "node scripts/build-global-metrics.mjs",
     "build:og": "node scripts/build-og-image.mjs",
     "smoke": "node scripts/smoke-test.mjs",

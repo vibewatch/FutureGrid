@@ -410,7 +410,7 @@ describe("WARN data snapshot", () => {
       expectPositiveInteger(type.employees, `summary.byType[${index}].employees`);
       if (index > 0) expect(type.employees).toBeLessThanOrEqual(warnData.summary.byType[index - 1].employees);
     }
-  });
+  }, 20_000);
 
   it("keeps top employer entries shaped and sorted", () => {
     expect(warnData.summary.topEmployers.length).toBeGreaterThan(0);

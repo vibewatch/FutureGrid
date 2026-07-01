@@ -23,7 +23,15 @@ const LayoffsView = dynamic(() => import("@/components/layoffs/LayoffsView"), {
   loading: () => <LoadingStub />,
 });
 
-type Tab = "trends" | "notices";
+const WarnPressureView = dynamic(
+  () => import("@/components/labor/WarnPressureView"),
+  {
+    ssr: false,
+    loading: () => <LoadingStub />,
+  },
+);
+
+type Tab = "trends" | "pressure" | "notices";
 
 export default function LaborMarketView() {
   const t = useT("labor");
@@ -42,8 +50,9 @@ export default function LaborMarketView() {
       </div>
 
       {/* ── Tab bar ────────────────────────────────────────────────────────── */}
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-1 flex gap-1 w-fit">
+      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-1 flex gap-1 w-fit max-w-full overflow-x-auto">
         <button
+          type="button"
           onClick={() => setActiveTab("trends")}
           aria-pressed={activeTab === "trends"}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
@@ -55,6 +64,7 @@ export default function LaborMarketView() {
           {t("tabTrends")}
         </button>
         <button
+          type="button"
           onClick={() => setActiveTab("notices")}
           aria-pressed={activeTab === "notices"}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
@@ -65,10 +75,24 @@ export default function LaborMarketView() {
         >
           {t("tabNotices")}
         </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab("pressure")}
+          aria-pressed={activeTab === "pressure"}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
+            activeTab === "pressure"
+              ? "bg-violet-600 text-white shadow"
+              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50"
+          }`}
+        >
+          {t("tabPressure")}
+        </button>
       </div>
 
       {/* ── Tab content ────────────────────────────────────────────────────── */}
-      {activeTab === "trends" ? <PulseView /> : <LayoffsView />}
+      {activeTab === "trends" && <PulseView />}
+      {activeTab === "pressure" && <WarnPressureView />}
+      {activeTab === "notices" && <LayoffsView />}
     </div>
   );
 }
