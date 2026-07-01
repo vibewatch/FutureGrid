@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import { useT } from "@/lib/i18n/useT";
 
 export interface EnrichedCountry {
   iso3: string;
@@ -105,7 +106,7 @@ function Sparkline3({ h1, h2, q1 }: { h1: number; h2: number; q1: number }) {
 
 // ─── IMF AIPI sub-index mini-bar ─────────────────────────────────────────────
 
-function SubIndexBar({ label, value }: { label: string; value: number | null }) {
+function SubIndexBar({ label, value, noDataLabel }: { label: string; value: number | null; noDataLabel: string }) {
   const pct = value !== null ? (value * 100).toFixed(1) : null;
   return (
     <div>
@@ -121,7 +122,7 @@ function SubIndexBar({ label, value }: { label: string; value: number | null }) 
         aria-valuenow={value !== null ? Math.round(value * 100) : 0}
         aria-valuemin={0}
         aria-valuemax={100}
-        aria-label={`${label}: ${pct !== null ? `${pct}%` : "no data"}`}
+        aria-label={`${label}: ${pct !== null ? `${pct}%` : noDataLabel}`}
       >
         {value !== null && (
           <div
@@ -149,6 +150,7 @@ function CountryModal({
   questMau: string;
   doubaoMau: string;
 }) {
+  const t = useT("global");
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -245,7 +247,7 @@ function CountryModal({
             ref={closeRef}
             onClick={onClose}
             className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-violet-500/60"
-            aria-label="Close country detail"
+            aria-label={t("countryCloseAria")}
           >
             <svg
               className="w-5 h-5"
@@ -263,24 +265,24 @@ function CountryModal({
           {/* Claude.ai usage block */}
           <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-700/40 px-4 py-3">
             <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-2">
-              Claude.ai Usage · Anthropic Economic Index Aug 2025
+              {t("countryClaudeUsageHeading")}
             </p>
             {country.hasClaudeData ? (
               <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <span className="text-2xl font-extrabold text-gradient tabular-nums">
                   {(country.usageIndex ?? 0).toFixed(3)}
                 </span>
-                <span className="text-sm text-zinc-600 dark:text-zinc-400">usage index</span>
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">{t("countryUsageIndexLabel")}</span>
                 <span className="ml-auto text-sm font-medium text-zinc-700 dark:text-zinc-300 tabular-nums">
                   {country.usagePct !== null
-                    ? `${(country.usagePct * 100).toFixed(2)}% global share`
+                    ? `${(country.usagePct * 100).toFixed(2)}% ${t("countryGlobalShareLabel")}`
                     : "—"}
                 </span>
               </div>
             ) : (
               <div>
                 <p className="text-sm font-medium text-zinc-400">
-                  No Claude.ai data
+                  {t("countryNoClaudeData")}
                 </p>
                 {country.proxyNote && (
                   <p className="text-xs text-amber-300/80 mt-1.5 leading-relaxed">
@@ -296,7 +298,7 @@ function CountryModal({
             {/* GenAI diffusion */}
             <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-violet-200 dark:border-violet-500/20 px-4 py-3">
               <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
-                GenAI Diffusion
+                {t("countryGenAiDiffusion")}
               </p>
               {country.diffusionTrend ? (
                 <>
@@ -342,7 +344,7 @@ function CountryModal({
                   href="/sources"
                   className="text-violet-400 hover:text-violet-300 underline underline-offset-2 transition-colors"
                 >
-                  sources
+                  {t("countrySourcesLink")}
                 </Link>
               </p>
             </div>
@@ -350,7 +352,7 @@ function CountryModal({
             {/* AI readiness */}
             <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-cyan-200 dark:border-cyan-500/20 px-4 py-3">
               <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
-                AI Readiness
+                {t("countryAiReadiness")}
               </p>
               <p className="text-xl font-extrabold text-cyan-700 dark:text-cyan-300 tabular-nums">
                 {country.aiReadiness !== null
@@ -365,7 +367,7 @@ function CountryModal({
             {/* Government AI readiness (Oxford 2023) */}
             <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-indigo-200 dark:border-indigo-500/20 px-4 py-3 col-span-2">
               <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
-                Government AI Readiness (Oxford 2023)
+                {t("countryGovernmentReadiness")}
               </p>
               <p className="text-xl font-extrabold text-indigo-700 dark:text-indigo-300 tabular-nums">
                 {country.governmentReadiness !== null
@@ -378,7 +380,7 @@ function CountryModal({
                   href="/sources"
                   className="text-violet-400 hover:text-violet-300 underline underline-offset-2 transition-colors"
                 >
-                  sources
+                  {t("countrySourcesLink")}
                 </Link>
               </p>
             </div>
@@ -386,7 +388,7 @@ function CountryModal({
             {/* GDP */}
             <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-emerald-200 dark:border-emerald-500/20 px-4 py-3 col-span-2">
               <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
-                GDP per Working-Age Capita
+                {t("countryGdpPerWorkingAge")}
               </p>
               <p className="text-xl font-extrabold text-emerald-700 dark:text-emerald-300 tabular-nums">
                 {country.gdpPerWorkingAgeCapita !== null
@@ -405,7 +407,7 @@ function CountryModal({
           {country.readinessSubIndices && (
             <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-cyan-200 dark:border-cyan-500/20 px-4 py-3 space-y-2.5">
               <p className="text-[10px] text-zinc-500 uppercase tracking-widest">
-                IMF AI Preparedness — Sub-indices ·{" "}
+                {t("countryImfSubIndices")} ·{" "}
                 <Link
                   href="/sources"
                   className="text-violet-400 hover:text-violet-300 underline underline-offset-2 transition-colors"
@@ -414,28 +416,32 @@ function CountryModal({
                 </Link>
               </p>
               <SubIndexBar
-                label="Digital Infrastructure"
+                label={t("countryDigitalInfrastructure")}
                 value={country.readinessSubIndices.digitalInfrastructure}
+                noDataLabel={t("countryNoData")}
               />
               <SubIndexBar
-                label="Human Capital &amp; Labor Markets"
+                label={t("countryHumanCapital")}
                 value={country.readinessSubIndices.humanCapital}
+                noDataLabel={t("countryNoData")}
               />
               <SubIndexBar
-                label="Innovation &amp; Economic Integration"
+                label={t("countryInnovation")}
                 value={country.readinessSubIndices.innovation}
+                noDataLabel={t("countryNoData")}
               />
               <SubIndexBar
-                label="Regulation &amp; Ethics"
+                label={t("countryRegulationEthics")}
                 value={country.readinessSubIndices.regulationEthics}
+                noDataLabel={t("countryNoData")}
               />
               <p className="text-[10px] text-zinc-600 leading-relaxed pt-0.5">
-                Sub-pillar scores 0–1 (2023 vintage). Source:{" "}
+                {t("countrySubPillarNote")} {" "}
                 <Link
                   href="/sources"
                   className="text-zinc-500 hover:text-zinc-400 underline underline-offset-2 transition-colors"
                 >
-                  Data &amp; Sources
+                  {t("countryDataSourcesLink")}
                 </Link>
               </p>
             </div>
@@ -448,7 +454,7 @@ function CountryModal({
               style={{ borderColor: "rgba(245,158,11,0.2)" }}
             >
               <p className="text-[10px] text-zinc-500 uppercase tracking-widest">
-                Native Ecosystem Context · Claude layer: grey
+                {t("countryNativeEcosystemHeading")}
               </p>
               <div className="grid grid-cols-3 gap-2">
                 <div>
@@ -458,7 +464,7 @@ function CountryModal({
                   <p className="text-base font-bold text-amber-300 tabular-nums">
                     {cnnicUsers}
                   </p>
-                  <p className="text-[10px] text-zinc-500">GenAI users</p>
+                  <p className="text-[10px] text-zinc-500">{t("countryGenAiUsers")}</p>
                 </div>
                 <div>
                   <p className="text-[10px] text-zinc-500 leading-tight">
@@ -467,7 +473,7 @@ function CountryModal({
                   <p className="text-base font-bold text-amber-300 tabular-nums">
                     {questMau}
                   </p>
-                  <p className="text-[10px] text-zinc-500">Mobile-AI MAU</p>
+                  <p className="text-[10px] text-zinc-500">{t("countryMobileAiMau")}</p>
                 </div>
                 <div>
                   <p className="text-[10px] text-zinc-500 leading-tight">
@@ -476,25 +482,23 @@ function CountryModal({
                   <p className="text-base font-bold text-amber-300 tabular-nums">
                     {doubaoMau}
                   </p>
-                  <p className="text-[10px] text-zinc-500">App MAU</p>
+                  <p className="text-[10px] text-zinc-500">{t("countryAppMau")}</p>
                 </div>
               </div>
               <p className="text-[10px] text-zinc-500 leading-relaxed">
-                These proxies use different measurement methods and cannot be
-                summed or compared directly. Claude.ai is unavailable in mainland
-                China — it appears grey on the Claude.ai usage layer.
+                {t("countryChinaProxyNote")}
               </p>
             </div>
           )}
 
           {/* Source link */}
           <p className="text-xs text-zinc-600">
-            Full provenance:{" "}
+            {t("countryFullProvenance")} {" "}
             <Link
               href="/sources"
               className="text-violet-400 hover:text-violet-300 underline underline-offset-2 transition-colors"
             >
-              Data &amp; Sources
+              {t("countryDataSourcesLink")}
             </Link>
           </p>
         </div>
@@ -522,6 +526,7 @@ export default function CountryDetailPanel({
   questMau,
   doubaoMau,
 }: Props) {
+  const t = useT("global");
   const [selected, setSelected] = useState<EnrichedCountry | null>(null);
 
   const openDetail = useCallback((c: EnrichedCountry) => setSelected(c), []);
@@ -560,14 +565,12 @@ export default function CountryDetailPanel({
     <>
       <div>
         <h2 className="text-xl font-bold text-gradient mb-2">
-          Top Countries by AI Adoption
+          {t("countryTopHeading")}
         </h2>
         <p className="text-xs text-zinc-500 mb-4">
-          Ranked by usage index (per-capita Claude.ai usage, normalised).
-          Countries with zero recorded usage or unreported Claude.ai metrics are
-          excluded.{" "}
-          <span           className="text-zinc-600 dark:text-zinc-400">
-            Click any row or use the selector to view the full metric set.
+          {t("countryTopDesc1")} {" "}
+          <span className="text-zinc-600 dark:text-zinc-400">
+            {t("countryTopDesc2")}
           </span>
         </p>
         <hr className="divider-glow mb-5" />
@@ -578,17 +581,17 @@ export default function CountryDetailPanel({
             htmlFor="country-selector"
             className="text-xs text-zinc-500 uppercase tracking-widest shrink-0"
           >
-            Any country:
+            {t("countrySelectorLabel")}
           </label>
           <select
             id="country-selector"
             onChange={handleSelectorChange}
             defaultValue=""
             className="flex-1 max-w-xs bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-700/60 rounded-xl px-3 py-2 text-sm text-zinc-900 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-violet-500/60 cursor-pointer"
-            aria-label="Select any country to view details"
+            aria-label={t("countrySelectorAria")}
           >
             <option value="" disabled>
-              🔍 Select a country…
+              {t("countrySelectorPlaceholder")}
             </option>
             {sortedCountries.map((c) => (
               <option key={c.iso3} value={c.iso3}>
@@ -602,7 +605,7 @@ export default function CountryDetailPanel({
         <div
           className="grid grid-cols-1 sm:grid-cols-2 gap-3"
           role="list"
-          aria-label="Top countries by AI adoption"
+          aria-label={t("countryRankingAria")}
         >
           {top12.map((country, i) => {
             const barWidth =
@@ -618,7 +621,7 @@ export default function CountryDetailPanel({
                 role="listitem"
                 onClick={() => openDetail(country)}
                 className="glass glass-hover p-4 rounded-xl relative overflow-hidden text-left w-full focus:outline-none focus:ring-2 focus:ring-violet-500/60"
-                aria-label={`Rank ${i + 1}: ${country.name} — usage index ${(country.usageIndex ?? 0).toFixed(3)}. Activate to view full details.`}
+                aria-label={t("countryRankAria", { rank: i + 1, name: country.name, index: (country.usageIndex ?? 0).toFixed(3) })}
               >
                 {/* Rank + name */}
                 <div className="flex items-center justify-between mb-2">
@@ -652,7 +655,7 @@ export default function CountryDetailPanel({
                   aria-valuenow={Math.round(barWidth)}
                   aria-valuemin={0}
                   aria-valuemax={100}
-                  aria-label={`${country.name} relative usage`}
+                  aria-label={t("countryRelativeUsageAria", { name: country.name })}
                 >
                   <div
                     className="h-full rounded-full brand-grad"
@@ -663,19 +666,19 @@ export default function CountryDetailPanel({
                 {/* Secondary stats */}
                 <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-xs text-zinc-500">
                   <span>
-                    Share:{" "}
+                    {t("countryShareLabel")} {" "}
                     <span className="text-zinc-700 dark:text-zinc-300">{pct}</span>
                   </span>
                   {country.usageCount !== null && (
                     <span>
-                      Interactions:{" "}
+                      {t("countryInteractionsLabel")} {" "}
                       <span className="text-zinc-700 dark:text-zinc-300">
                         {country.usageCount.toLocaleString()}
                       </span>
                     </span>
                   )}
                   <span className="ml-auto text-zinc-600 text-[10px]">
-                    details →
+                    {t("countryDetailsLink")}
                   </span>
                 </div>
               </button>

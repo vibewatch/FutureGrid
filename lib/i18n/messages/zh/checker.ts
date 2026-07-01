@@ -1,0 +1,15 @@
+export const checkerZh = {
+  title: "AI 暴露度检查器",
+  searchPlaceholder: "搜索职业以查看其 AI 暴露度…",
+  searchAriaLabel: "搜索职业以查看 AI 暴露度",
+  matchesAriaLabel: "匹配的职业",
+  labelExposureBand: "暴露等级",
+  labelResiliency: "韧性",
+  labelOutlook: "前景",
+  labelMedianSalary: "工资中位数",
+  outlookBright: "乐观 ↗",
+  outlookAverage: "一般",
+  projectedAnnualOpenings: "预计年度招聘量：",
+  forecastNote: "该职业的自动化暴露估算——并非个人预测。",
+  viewFullProfile: "查看完整职业档案",
+};

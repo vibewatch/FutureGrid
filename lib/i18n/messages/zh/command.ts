@@ -1,0 +1,15 @@
+export const commandZh = {
+  dialogAriaLabel: "命令面板——搜索职业、行业、技能",
+  placeholder: "搜索职业、行业、技能…",
+  searchAriaLabel: "搜索",
+  resultsAriaLabel: "搜索结果",
+  emptyState: "没有找到“{query}”的结果",
+  groupOccupations: "职业",
+  groupSectors: "行业",
+  groupSkills: "技能",
+  hintNavigate: "导航",
+  hintOpen: "打开",
+  hintClose: "关闭",
+  resultCountOne: "{count} 个结果",
+  resultCountMany: "{count} 个结果",
+};

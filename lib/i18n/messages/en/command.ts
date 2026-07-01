@@ -1,0 +1,15 @@
+export const commandEn = {
+  dialogAriaLabel: "Command palette — search occupations, sectors, skills",
+  placeholder: "Search occupations, sectors, skills…",
+  searchAriaLabel: "Search",
+  resultsAriaLabel: "Search results",
+  emptyState: "No results for “{query}”",
+  groupOccupations: "Occupations",
+  groupSectors: "Sectors",
+  groupSkills: "Skills",
+  hintNavigate: "navigate",
+  hintOpen: "open",
+  hintClose: "close",
+  resultCountOne: "{count} result",
+  resultCountMany: "{count} results",
+};

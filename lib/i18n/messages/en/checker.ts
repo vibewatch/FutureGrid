@@ -1,0 +1,15 @@
+export const checkerEn = {
+  title: "AI Exposure Checker",
+  searchPlaceholder: "Search an occupation to see its AI exposure…",
+  searchAriaLabel: "Search occupations to check AI exposure",
+  matchesAriaLabel: "Matching occupations",
+  labelExposureBand: "Exposure band",
+  labelResiliency: "Resiliency",
+  labelOutlook: "Outlook",
+  labelMedianSalary: "Median salary",
+  outlookBright: "Bright ↗",
+  outlookAverage: "Average",
+  projectedAnnualOpenings: "Projected annual openings:",
+  forecastNote: "Estimated automation exposure for this occupation — not a personal forecast.",
+  viewFullProfile: "View full profile",
+};

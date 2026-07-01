@@ -5,6 +5,7 @@ import Link from "next/link";
 import RiskGauge from "@/components/ui/RiskGauge";
 import { searchInsights, computeResiliencyScore } from "@/lib/data";
 import { colorForRisk, formatCurrency } from "@/lib/utils";
+import { useT } from "@/lib/i18n/useT";
 import type { CareerInsight } from "@/lib/data";
 
 // ── Sub-component ─────────────────────────────────────────────────────────────
@@ -31,6 +32,7 @@ function StatBadge({
 // ── Main component ────────────────────────────────────────────────────────────
 
 export default function HeroRiskChecker() {
+  const t = useT("checker");
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<CareerInsight[]>([]);
   const [selected, setSelected] = useState<CareerInsight | null>(null);
@@ -86,7 +88,7 @@ export default function HeroRiskChecker() {
   return (
     <div className="glass rounded-2xl p-6 sm:p-8 max-w-3xl">
       <p className="text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-3">
-        AI Exposure Checker
+        {t("title")}
       </p>
 
       {/* ── Search input ─────────────────────────────────────────────────── */}
@@ -118,9 +120,9 @@ export default function HeroRiskChecker() {
             if (blurTimerRef.current !== null) clearTimeout(blurTimerRef.current);
             blurTimerRef.current = setTimeout(() => setShowDropdown(false), 160);
           }}
-          placeholder="Search an occupation to see its AI exposure…"
+          placeholder={t("searchPlaceholder")}
           role="combobox"
-          aria-label="Search occupations to check AI exposure"
+          aria-label={t("searchAriaLabel")}
           aria-haspopup="listbox"
           aria-expanded={showDropdown}
           aria-autocomplete="list"
@@ -139,7 +141,7 @@ export default function HeroRiskChecker() {
           <ul
             id="rc-listbox"
             role="listbox"
-            aria-label="Matching occupations"
+            aria-label={t("matchesAriaLabel")}
             className="absolute z-50 left-0 right-0 top-full mt-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-950 backdrop-blur-xl overflow-hidden shadow-xl"
           >
             {results.map((r, i) => (
@@ -198,22 +200,22 @@ export default function HeroRiskChecker() {
             </div>
 
             <div className="grid grid-cols-2 gap-2">
-              <StatBadge label="Exposure band" value={selected.automationRisk} color={riskColor} />
-              <StatBadge label="Resiliency" value={`${resiliency}/100`} color="#8b5cf6" />
+              <StatBadge label={t("labelExposureBand")} value={selected.automationRisk} color={riskColor} />
+              <StatBadge label={t("labelResiliency")} value={`${resiliency}/100`} color="#8b5cf6" />
               <StatBadge
-                label="Outlook"
-                value={selected.outlook === "Bright" ? "Bright ↗" : "Average"}
+                label={t("labelOutlook")}
+                value={selected.outlook === "Bright" ? t("outlookBright") : t("outlookAverage")}
                 color={selected.outlook === "Bright" ? "#22c55e" : "#6b7280"}
               />
               <StatBadge
-                label="Median salary"
+                label={t("labelMedianSalary")}
                 value={formatCurrency(selected.medianSalary)}
                 color="#f59e0b"
               />
             </div>
             {selected.projectedOpenings != null && (
               <p className="text-xs text-zinc-500 mt-1">
-                Projected annual openings:{" "}
+                {t("projectedAnnualOpenings")} {" "}
                 <span className="text-zinc-700 dark:text-zinc-300 font-medium">
                   {selected.projectedOpenings.toLocaleString()}
                 </span>
@@ -221,14 +223,14 @@ export default function HeroRiskChecker() {
             )}
 
             <p className="text-[11px] text-zinc-500 leading-snug">
-              Estimated automation exposure for this occupation — not a personal forecast.
+              {t("forecastNote")}
             </p>
 
             <Link
               href={`/careers/${selected.occupationCode}`}
               className="inline-flex items-center gap-1.5 text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
             >
-              View full profile <span aria-hidden="true">→</span>
+              {t("viewFullProfile")} <span aria-hidden="true">→</span>
             </Link>
           </div>
         </div>

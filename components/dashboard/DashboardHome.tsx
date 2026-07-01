@@ -9,6 +9,7 @@ import Reveal from "@/components/ui/Reveal";
 import HeroRiskChecker from "@/components/dashboard/HeroRiskChecker";
 import HighlightsBento from "@/components/dashboard/HighlightsBento";
 import SectorScatterChart from "@/components/charts/SectorScatterChart";
+import KeyFindings from "@/components/dashboard/KeyFindings";
 import { useT } from "@/lib/i18n/useT";
 
 interface SectorSummary {
@@ -148,6 +149,10 @@ export default function DashboardHome({
           </Link>
         </Reveal>
       </section>
+
+      <hr className="divider-glow" />
+
+      <Reveal delay={20}><KeyFindings /></Reveal>
 
       <hr className="divider-glow" />
 

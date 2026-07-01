@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { getSearchIndex, type SearchItem } from "@/lib/data";
+import { useT } from "@/lib/i18n/useT";
 
 function riskColor(risk: number): string {
   if (risk < 30) return "#22c55e";
@@ -20,14 +21,15 @@ function IconSearch() {
   );
 }
 
-const TYPE_META: Record<SearchItem["type"], { label: string; abbr: string; colorClass: string }> = {
-  occupation: { label: "Occupations",  abbr: "J",  colorClass: "bg-violet-500/15 text-violet-400" },
-  sector:     { label: "Sectors",      abbr: "S",  colorClass: "bg-cyan-500/15 text-cyan-400"    },
-  skill:      { label: "Skills",       abbr: "Sk", colorClass: "bg-green-500/15 text-green-400"  },
+const TYPE_META: Record<SearchItem["type"], { labelKey: string; abbr: string; colorClass: string }> = {
+  occupation: { labelKey: "groupOccupations", abbr: "J",  colorClass: "bg-violet-500/15 text-violet-400" },
+  sector:     { labelKey: "groupSectors",     abbr: "S",  colorClass: "bg-cyan-500/15 text-cyan-400"    },
+  skill:      { labelKey: "groupSkills",      abbr: "Sk", colorClass: "bg-green-500/15 text-green-400"  },
 };
 
 export default function CommandPalette() {
   const router = useRouter();
+  const t = useT("command");
 
   const [open, setOpen]       = useState(false);
   const [query, setQuery]     = useState("");
@@ -211,7 +213,7 @@ export default function CommandPalette() {
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
-        aria-label="Command palette — search occupations, sectors, skills"
+        aria-label={t("dialogAriaLabel")}
         className={`fixed left-1/2 z-[9999] w-full max-w-lg -translate-x-1/2 glass shadow-2xl overflow-hidden${
           !reducedMotion ? " animate-fade-up" : ""
         }`}
@@ -228,8 +230,8 @@ export default function CommandPalette() {
             type="text"
             value={query}
             onChange={(e) => { setQuery(e.target.value); setSelected(0); }}
-            placeholder="Search occupations, sectors, skills…"
-            aria-label="Search"
+            placeholder={t("placeholder")}
+            aria-label={t("searchAriaLabel")}
             aria-autocomplete="list"
             aria-controls="cp-listbox"
             aria-activedescendant={filtered.length > 0 ? `cp-item-${selected}` : undefined}
@@ -244,12 +246,12 @@ export default function CommandPalette() {
         <div
           id="cp-listbox"
           role="listbox"
-          aria-label="Search results"
+          aria-label={t("resultsAriaLabel")}
           className="max-h-80 overflow-y-auto py-1.5"
         >
           {filtered.length === 0 ? (
             <p className="text-zinc-500 text-sm text-center py-8 select-none">
-              No results for &ldquo;{query}&rdquo;
+              {t("emptyState", { query })}
             </p>
           ) : (
             groups.map(({ type, items }, gi) => {
@@ -258,7 +260,7 @@ export default function CommandPalette() {
               return (
                 <div key={type}>
                   <p className="text-[10px] font-semibold tracking-widest uppercase text-zinc-600 px-4 pt-2.5 pb-1 select-none">
-                    {meta.label}
+                    {t(meta.labelKey)}
                   </p>
                   {items.map((item, ii) => {
                     const idx        = offset + ii;
@@ -316,12 +318,12 @@ export default function CommandPalette() {
           <span>
             <kbd className="border border-zinc-300 dark:border-zinc-700/80 rounded px-1">↑</kbd>
             <kbd className="border border-zinc-300 dark:border-zinc-700/80 rounded px-1 ml-0.5">↓</kbd>
-            {" "}navigate
+            {" "}{t("hintNavigate")}
           </span>
-          <span><kbd className="border border-zinc-300 dark:border-zinc-700/80 rounded px-1">↵</kbd> open</span>
-          <span><kbd className="border border-zinc-300 dark:border-zinc-700/80 rounded px-1">Esc</kbd> close</span>
+          <span><kbd className="border border-zinc-300 dark:border-zinc-700/80 rounded px-1">↵</kbd> {t("hintOpen")}</span>
+          <span><kbd className="border border-zinc-300 dark:border-zinc-700/80 rounded px-1">Esc</kbd> {t("hintClose")}</span>
           {filtered.length > 0 && (
-            <span className="ml-auto">{filtered.length} result{filtered.length !== 1 ? "s" : ""}</span>
+            <span className="ml-auto">{t(filtered.length === 1 ? "resultCountOne" : "resultCountMany", { count: filtered.length })}</span>
           )}
         </div>
       </div>

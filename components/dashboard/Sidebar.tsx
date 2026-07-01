@@ -7,6 +7,7 @@ import { useTheme } from "next-themes";
 import CommandPalette from "@/components/ui/CommandPalette";
 import { getDataSources } from "@/lib/data";
 import { useT } from "@/lib/i18n/useT";
+import LanguageSwitcher from "@/components/i18n/LanguageSwitcher";
 
 const _dataAsOf: string | null = (() => {
   try {
@@ -370,7 +371,8 @@ export default function Sidebar() {
           <IconMenu />
         </button>
         <Logo />
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-2">
+          <LanguageSwitcher />
           <ThemeToggle />
         </div>
       </header>
@@ -379,7 +381,10 @@ export default function Sidebar() {
       <aside className="hidden lg:flex fixed left-0 top-0 h-full w-60 bg-white/85 dark:bg-zinc-900/85 backdrop-blur-sm border-r border-zinc-200 dark:border-zinc-800/60 flex-col z-40">
         <div className="p-5 border-b border-zinc-200 dark:border-zinc-800/60 flex items-center justify-between">
           <Logo />
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            <ThemeToggle />
+          </div>
         </div>
         <NavList pathname={pathname} />
       </aside>
