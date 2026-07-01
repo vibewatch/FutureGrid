@@ -1,6 +1,7 @@
 "use client";
 
 import Reveal from "@/components/ui/Reveal";
+import EvidenceStack from "@/components/insights/EvidenceStack";
 import AISignalScatter from "@/components/insights/AISignalScatter";
 import ExposureLensComparison from "@/components/insights/ExposureLensComparison";
 import MarketSignalLens from "@/components/insights/MarketSignalLens";
@@ -43,6 +44,10 @@ export default function InsightsView() {
         </Reveal>
       </section>
 
+      <hr className="divider-glow" />
+      <Reveal>
+        <EvidenceStack />
+      </Reveal>
       <hr className="divider-glow" />
       <Section eyebrow="01" title={t("signalTitle")} explainer={t("signalExplainer")}><AISignalScatter /></Section>
       <hr className="divider-glow" />
