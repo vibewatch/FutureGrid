@@ -1,0 +1,2744 @@
+{
+  "generatedAt": "2026-07-01T22:34:40.317Z",
+  "source": {
+    "name": "Yahoo Finance chart JSON endpoint",
+    "endpointTemplate": "https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?period1={unixStart}&period2={unixEnd}&interval=1d&events=history&includeAdjustedClose=true",
+    "access": "Public unauthenticated endpoint",
+    "caveat": "Yahoo Finance chart JSON is public and unauthenticated but unofficial/undocumented; availability, schema, symbols, and rate limits can change without notice."
+  },
+  "methodology": {
+    "feature": "Stock-history-based descriptive market AI sensitivity lens; not financial advice, not a forecast, and not causal proof.",
+    "windowStart": "2022-11-30",
+    "interval": "1d",
+    "priceField": "Adjusted close when Yahoo supplies it; otherwise close.",
+    "benchmark": "SPY total return over the same window.",
+    "metrics": "Daily observations compute total return, SPY benchmark return, excess return, annualized volatility, max drawdown, latest close, YTD return, and one-year return. UI series are monthly downsampled.",
+    "occupationMapping": "FutureGrid occupation sector strings are hand-mapped to SPDR ETF sectors; several occupation sectors are coarse and may be relevant to multiple market sectors.",
+    "scoring": "marketAiSensitivityScore is a clamped 0–100 descriptive blend: 65% normalized excess return versus SPY and 35% normalized employment-weighted occupation AI exposure. It is non-predictive."
+  },
+  "benchmark": {
+    "id": "spy",
+    "name": "S&P 500 benchmark",
+    "ticker": "SPY",
+    "prices": [
+      {
+        "date": "2022-11-30",
+        "close": 388.04
+      },
+      {
+        "date": "2022-12-30",
+        "close": 365.67
+      },
+      {
+        "date": "2023-01-31",
+        "close": 388.67
+      },
+      {
+        "date": "2023-02-28",
+        "close": 378.9
+      },
+      {
+        "date": "2023-03-31",
+        "close": 392.95
+      },
+      {
+        "date": "2023-04-28",
+        "close": 399.22
+      },
+      {
+        "date": "2023-05-31",
+        "close": 401.07
+      },
+      {
+        "date": "2023-06-30",
+        "close": 427.06
+      },
+      {
+        "date": "2023-07-31",
+        "close": 441.03
+      },
+      {
+        "date": "2023-08-31",
+        "close": 433.87
+      },
+      {
+        "date": "2023-09-29",
+        "close": 413.29
+      },
+      {
+        "date": "2023-10-31",
+        "close": 404.31
+      },
+      {
+        "date": "2023-11-30",
+        "close": 441.25
+      },
+      {
+        "date": "2023-12-29",
+        "close": 461.39
+      },
+      {
+        "date": "2024-01-31",
+        "close": 468.74
+      },
+      {
+        "date": "2024-02-29",
+        "close": 493.2
+      },
+      {
+        "date": "2024-03-28",
+        "close": 509.33
+      },
+      {
+        "date": "2024-04-30",
+        "close": 488.79
+      },
+      {
+        "date": "2024-05-31",
+        "close": 513.52
+      },
+      {
+        "date": "2024-06-28",
+        "close": 531.63
+      },
+      {
+        "date": "2024-07-31",
+        "close": 538.07
+      },
+      {
+        "date": "2024-08-30",
+        "close": 550.64
+      },
+      {
+        "date": "2024-09-30",
+        "close": 562.21
+      },
+      {
+        "date": "2024-10-31",
+        "close": 557.19
+      },
+      {
+        "date": "2024-11-29",
+        "close": 590.42
+      },
+      {
+        "date": "2024-12-31",
+        "close": 576.22
+      },
+      {
+        "date": "2025-01-31",
+        "close": 591.69
+      },
+      {
+        "date": "2025-02-28",
+        "close": 584.18
+      },
+      {
+        "date": "2025-03-31",
+        "close": 551.63
+      },
+      {
+        "date": "2025-04-30",
+        "close": 546.85
+      },
+      {
+        "date": "2025-05-30",
+        "close": 581.21
+      },
+      {
+        "date": "2025-06-30",
+        "close": 611.08
+      },
+      {
+        "date": "2025-07-31",
+        "close": 625.15
+      },
+      {
+        "date": "2025-08-29",
+        "close": 637.98
+      },
+      {
+        "date": "2025-09-30",
+        "close": 660.71
+      },
+      {
+        "date": "2025-10-31",
+        "close": 676.46
+      },
+      {
+        "date": "2025-11-28",
+        "close": 677.77
+      },
+      {
+        "date": "2025-12-31",
+        "close": 678.32
+      },
+      {
+        "date": "2026-01-30",
+        "close": 688.31
+      },
+      {
+        "date": "2026-02-27",
+        "close": 682.36
+      },
+      {
+        "date": "2026-03-31",
+        "close": 648.67
+      },
+      {
+        "date": "2026-04-30",
+        "close": 716.81
+      },
+      {
+        "date": "2026-05-29",
+        "close": 754.54
+      },
+      {
+        "date": "2026-06-30",
+        "close": 746.77
+      },
+      {
+        "date": "2026-07-01",
+        "close": 745.76
+      }
+    ],
+    "metrics": {
+      "startDate": "2022-11-30",
+      "latestDate": "2026-07-01",
+      "totalReturn": 0.921888,
+      "benchmarkReturn": null,
+      "excessReturn": null,
+      "annualizedVolatility": 0.152034,
+      "maxDrawdown": -0.187552,
+      "latestClose": 745.76,
+      "observationCount": 898,
+      "ytdReturn": 0.097418,
+      "oneYearReturn": 0.220794
+    },
+    "dataQualityNotes": [
+      "Yahoo SPY chart observations use adjusted close when available.",
+      "SPY is used only as a descriptive benchmark for excess return calculations."
+    ]
+  },
+  "sectors": [
+    {
+      "id": "xlc",
+      "name": "Communication Services",
+      "ticker": "XLC",
+      "mappedOccupationSectors": [
+        "Arts, Design, Entertainment, Sports, and Media",
+        "Arts, Entertainment & Media",
+        "Sales and Related"
+      ],
+      "mappedOccupationCount": 54,
+      "mappedEmployment": 14039540,
+      "employmentWeightedAIExposure": 0.261199,
+      "prices": [
+        {
+          "date": "2022-11-30",
+          "close": 49.46
+        },
+        {
+          "date": "2022-12-30",
+          "close": 46.19
+        },
+        {
+          "date": "2023-01-31",
+          "close": 53.02
+        },
+        {
+          "date": "2023-02-28",
+          "close": 51.5
+        },
+        {
+          "date": "2023-03-31",
+          "close": 55.95
+        },
+        {
+          "date": "2023-04-28",
+          "close": 57.82
+        },
+        {
+          "date": "2023-05-31",
+          "close": 60.07
+        },
+        {
+          "date": "2023-06-30",
+          "close": 62.92
+        },
+        {
+          "date": "2023-07-31",
+          "close": 66.5
+        },
+        {
+          "date": "2023-08-31",
+          "close": 65.48
+        },
+        {
+          "date": "2023-09-29",
+          "close": 63.55
+        },
+        {
+          "date": "2023-10-31",
+          "close": 62.73
+        },
+        {
+          "date": "2023-11-30",
+          "close": 67.62
+        },
+        {
+          "date": "2023-12-29",
+          "close": 70.59
+        },
+        {
+          "date": "2024-01-31",
+          "close": 73.72
+        },
+        {
+          "date": "2024-02-29",
+          "close": 77.1
+        },
+        {
+          "date": "2024-03-28",
+          "close": 79.55
+        },
+        {
+          "date": "2024-04-30",
+          "close": 75.85
+        },
+        {
+          "date": "2024-05-31",
+          "close": 81.11
+        },
+        {
+          "date": "2024-06-28",
+          "close": 83.67
+        },
+        {
+          "date": "2024-07-31",
+          "close": 83.8
+        },
+        {
+          "date": "2024-08-30",
+          "close": 85.29
+        },
+        {
+          "date": "2024-09-30",
+          "close": 88.57
+        },
+        {
+          "date": "2024-10-31",
+          "close": 90.17
+        },
+        {
+          "date": "2024-11-29",
+          "close": 96.41
+        },
+        {
+          "date": "2024-12-31",
+          "close": 95.09
+        },
+        {
+          "date": "2025-01-31",
+          "close": 100.57
+        },
+        {
+          "date": "2025-02-28",
+          "close": 100.19
+        },
+        {
+          "date": "2025-03-31",
+          "close": 95.02
+        },
+        {
+          "date": "2025-04-30",
+          "close": 94.03
+        },
+        {
+          "date": "2025-05-30",
+          "close": 99.9
+        },
+        {
+          "date": "2025-06-30",
+          "close": 107.18
+        },
+        {
+          "date": "2025-07-31",
+          "close": 106.08
+        },
+        {
+          "date": "2025-08-29",
+          "close": 110.01
+        },
+        {
+          "date": "2025-09-30",
+          "close": 117.31
+        },
+        {
+          "date": "2025-10-31",
+          "close": 113.78
+        },
+        {
+          "date": "2025-11-28",
+          "close": 114.35
+        },
+        {
+          "date": "2025-12-31",
+          "close": 117.04
+        },
+        {
+          "date": "2026-01-30",
+          "close": 119.39
+        },
+        {
+          "date": "2026-02-27",
+          "close": 117.37
+        },
+        {
+          "date": "2026-03-31",
+          "close": 110.57
+        },
+        {
+          "date": "2026-04-30",
+          "close": 116.21
+        },
+        {
+          "date": "2026-05-29",
+          "close": 115.39
+        },
+        {
+          "date": "2026-06-30",
+          "close": 107.13
+        },
+        {
+          "date": "2026-07-01",
+          "close": 109.74
+        }
+      ],
+      "metrics": {
+        "startDate": "2022-11-30",
+        "latestDate": "2026-07-01",
+        "totalReturn": 1.218745,
+        "benchmarkReturn": 0.921888,
+        "excessReturn": 0.296857,
+        "annualizedVolatility": 0.177725,
+        "maxDrawdown": -0.179708,
+        "latestClose": 109.74,
+        "observationCount": 898,
+        "ytdReturn": -0.055803,
+        "oneYearReturn": 0.031181
+      },
+      "marketAiSensitivityScore": 99.5,
+      "classification": "High descriptive sensitivity",
+      "scoreComponents": {
+        "normalizedExcessReturn": 1,
+        "normalizedAIExposure": 0.987,
+        "excessReturnWeight": 0.65,
+        "aiExposureWeight": 0.35
+      },
+      "dataQualityNotes": [
+        "Yahoo XLC chart observations use adjusted close when available.",
+        "Metrics use 898 daily observations; prices are monthly downsampled for UI size.",
+        "Occupation mapping covers 54 occupations across 3 FutureGrid sector label(s).",
+        "Sparse/coarse occupation mapping; interpret exposure alignment with extra caution."
+      ]
+    },
+    {
+      "id": "xlk",
+      "name": "Technology",
+      "ticker": "XLK",
+      "mappedOccupationSectors": [
+        "Architecture and Engineering",
+        "Computer & Mathematical",
+        "Computer and Mathematical",
+        "Life, Physical & Social Science",
+        "Life, Physical, and Social Science"
+      ],
+      "mappedOccupationCount": 101,
+      "mappedEmployment": 9309220,
+      "employmentWeightedAIExposure": 0.2272,
+      "prices": [
+        {
+          "date": "2022-11-30",
+          "close": 66.17
+        },
+        {
+          "date": "2022-12-30",
+          "close": 60.74
+        },
+        {
+          "date": "2023-01-31",
+          "close": 66.36
+        },
+        {
+          "date": "2023-02-28",
+          "close": 66.63
+        },
+        {
+          "date": "2023-03-31",
+          "close": 73.87
+        },
+        {
+          "date": "2023-04-28",
+          "close": 73.78
+        },
+        {
+          "date": "2023-05-31",
+          "close": 80.36
+        },
+        {
+          "date": "2023-06-30",
+          "close": 85.22
+        },
+        {
+          "date": "2023-07-31",
+          "close": 87.43
+        },
+        {
+          "date": "2023-08-31",
+          "close": 86.11
+        },
+        {
+          "date": "2023-09-29",
+          "close": 80.53
+        },
+        {
+          "date": "2023-10-31",
+          "close": 80.57
+        },
+        {
+          "date": "2023-11-30",
+          "close": 90.96
+        },
+        {
+          "date": "2023-12-29",
+          "close": 94.76
+        },
+        {
+          "date": "2024-01-31",
+          "close": 97.32
+        },
+        {
+          "date": "2024-02-29",
+          "close": 101.9
+        },
+        {
+          "date": "2024-03-28",
+          "close": 102.7
+        },
+        {
+          "date": "2024-04-30",
+          "close": 96.79
+        },
+        {
+          "date": "2024-05-31",
+          "close": 103.64
+        },
+        {
+          "date": "2024-06-28",
+          "close": 111.76
+        },
+        {
+          "date": "2024-07-31",
+          "close": 108.09
+        },
+        {
+          "date": "2024-08-30",
+          "close": 108.84
+        },
+        {
+          "date": "2024-09-30",
+          "close": 111.73
+        },
+        {
+          "date": "2024-10-31",
+          "close": 109.98
+        },
+        {
+          "date": "2024-11-29",
+          "close": 115.67
+        },
+        {
+          "date": "2024-12-31",
+          "close": 115.26
+        },
+        {
+          "date": "2025-01-31",
+          "close": 114.41
+        },
+        {
+          "date": "2025-02-28",
+          "close": 111.79
+        },
+        {
+          "date": "2025-03-31",
+          "close": 102.53
+        },
+        {
+          "date": "2025-04-30",
+          "close": 104.26
+        },
+        {
+          "date": "2025-05-30",
+          "close": 114.66
+        },
+        {
+          "date": "2025-06-30",
+          "close": 125.95
+        },
+        {
+          "date": "2025-07-31",
+          "close": 130.68
+        },
+        {
+          "date": "2025-08-29",
+          "close": 130.54
+        },
+        {
+          "date": "2025-09-30",
+          "close": 140.37
+        },
+        {
+          "date": "2025-10-31",
+          "close": 149.75
+        },
+        {
+          "date": "2025-11-28",
+          "close": 142.55
+        },
+        {
+          "date": "2025-12-31",
+          "close": 143.62
+        },
+        {
+          "date": "2026-01-30",
+          "close": 143.53
+        },
+        {
+          "date": "2026-02-27",
+          "close": 138.42
+        },
+        {
+          "date": "2026-03-31",
+          "close": 132.74
+        },
+        {
+          "date": "2026-04-30",
+          "close": 159.31
+        },
+        {
+          "date": "2026-05-29",
+          "close": 190.79
+        },
+        {
+          "date": "2026-06-30",
+          "close": 190.52
+        },
+        {
+          "date": "2026-07-01",
+          "close": 185.62
+        }
+      ],
+      "metrics": {
+        "startDate": "2022-11-30",
+        "latestDate": "2026-07-01",
+        "totalReturn": 1.805184,
+        "benchmarkReturn": 0.921888,
+        "excessReturn": 0.883296,
+        "annualizedVolatility": 0.239365,
+        "maxDrawdown": -0.256563,
+        "latestClose": 185.62,
+        "observationCount": 898,
+        "ytdReturn": 0.289483,
+        "oneYearReturn": 0.486983
+      },
+      "marketAiSensitivityScore": 94.6,
+      "classification": "High descriptive sensitivity",
+      "scoreComponents": {
+        "normalizedExcessReturn": 1,
+        "normalizedAIExposure": 0.8467,
+        "excessReturnWeight": 0.65,
+        "aiExposureWeight": 0.35
+      },
+      "dataQualityNotes": [
+        "Yahoo XLK chart observations use adjusted close when available.",
+        "Metrics use 898 daily observations; prices are monthly downsampled for UI size.",
+        "Occupation mapping covers 101 occupations across 5 FutureGrid sector label(s)."
+      ]
+    },
+    {
+      "id": "xlf",
+      "name": "Financials",
+      "ticker": "XLF",
+      "mappedOccupationSectors": [
+        "Business & Financial",
+        "Business and Financial Operations",
+        "Legal",
+        "Management",
+        "Office and Administrative Support"
+      ],
+      "mappedOccupationCount": 121,
+      "mappedEmployment": 38557340,
+      "employmentWeightedAIExposure": 0.264338,
+      "prices": [
+        {
+          "date": "2022-11-30",
+          "close": 34.09
+        },
+        {
+          "date": "2022-12-30",
+          "close": 32.31
+        },
+        {
+          "date": "2023-01-31",
+          "close": 34.54
+        },
+        {
+          "date": "2023-02-28",
+          "close": 33.75
+        },
+        {
+          "date": "2023-03-31",
+          "close": 30.52
+        },
+        {
+          "date": "2023-04-28",
+          "close": 31.49
+        },
+        {
+          "date": "2023-05-31",
+          "close": 30.15
+        },
+        {
+          "date": "2023-06-30",
+          "close": 32.15
+        },
+        {
+          "date": "2023-07-31",
+          "close": 33.69
+        },
+        {
+          "date": "2023-08-31",
+          "close": 32.79
+        },
+        {
+          "date": "2023-09-29",
+          "close": 31.77
+        },
+        {
+          "date": "2023-10-31",
+          "close": 31
+        },
+        {
+          "date": "2023-11-30",
+          "close": 34.39
+        },
+        {
+          "date": "2023-12-29",
+          "close": 36.2
+        },
+        {
+          "date": "2024-01-31",
+          "close": 37.31
+        },
+        {
+          "date": "2024-02-29",
+          "close": 38.83
+        },
+        {
+          "date": "2024-03-28",
+          "close": 40.7
+        },
+        {
+          "date": "2024-04-30",
+          "close": 39
+        },
+        {
+          "date": "2024-05-31",
+          "close": 40.24
+        },
+        {
+          "date": "2024-06-28",
+          "close": 39.88
+        },
+        {
+          "date": "2024-07-31",
+          "close": 42.43
+        },
+        {
+          "date": "2024-08-30",
+          "close": 44.37
+        },
+        {
+          "date": "2024-09-30",
+          "close": 44.13
+        },
+        {
+          "date": "2024-10-31",
+          "close": 45.26
+        },
+        {
+          "date": "2024-11-29",
+          "close": 49.99
+        },
+        {
+          "date": "2024-12-31",
+          "close": 47.26
+        },
+        {
+          "date": "2025-01-31",
+          "close": 50.33
+        },
+        {
+          "date": "2025-02-28",
+          "close": 51.02
+        },
+        {
+          "date": "2025-03-31",
+          "close": 48.88
+        },
+        {
+          "date": "2025-04-30",
+          "close": 47.85
+        },
+        {
+          "date": "2025-05-30",
+          "close": 50.01
+        },
+        {
+          "date": "2025-06-30",
+          "close": 51.57
+        },
+        {
+          "date": "2025-07-31",
+          "close": 51.57
+        },
+        {
+          "date": "2025-08-29",
+          "close": 53.16
+        },
+        {
+          "date": "2025-09-30",
+          "close": 53.22
+        },
+        {
+          "date": "2025-10-31",
+          "close": 51.74
+        },
+        {
+          "date": "2025-11-28",
+          "close": 52.69
+        },
+        {
+          "date": "2025-12-31",
+          "close": 54.3
+        },
+        {
+          "date": "2026-01-30",
+          "close": 52.98
+        },
+        {
+          "date": "2026-02-27",
+          "close": 50.99
+        },
+        {
+          "date": "2026-03-31",
+          "close": 49.2
+        },
+        {
+          "date": "2026-04-30",
+          "close": 51.95
+        },
+        {
+          "date": "2026-05-29",
+          "close": 51.4
+        },
+        {
+          "date": "2026-06-30",
+          "close": 53.61
+        },
+        {
+          "date": "2026-07-01",
+          "close": 54.78
+        }
+      ],
+      "metrics": {
+        "startDate": "2022-11-30",
+        "latestDate": "2026-07-01",
+        "totalReturn": 0.606955,
+        "benchmarkReturn": 0.921888,
+        "excessReturn": -0.314933,
+        "annualizedVolatility": 0.165287,
+        "maxDrawdown": -0.162703,
+        "latestClose": 54.78,
+        "observationCount": 898,
+        "ytdReturn": 0.005907,
+        "oneYearReturn": 0.056402
+      },
+      "marketAiSensitivityScore": 35,
+      "classification": "Low descriptive sensitivity",
+      "scoreComponents": {
+        "normalizedExcessReturn": 0,
+        "normalizedAIExposure": 1,
+        "excessReturnWeight": 0.65,
+        "aiExposureWeight": 0.35
+      },
+      "dataQualityNotes": [
+        "Yahoo XLF chart observations use adjusted close when available.",
+        "Metrics use 898 daily observations; prices are monthly downsampled for UI size.",
+        "Occupation mapping covers 121 occupations across 5 FutureGrid sector label(s)."
+      ]
+    },
+    {
+      "id": "xli",
+      "name": "Industrials",
+      "ticker": "XLI",
+      "mappedOccupationSectors": [
+        "Architecture and Engineering",
+        "Construction",
+        "Construction and Extraction",
+        "Installation, Maintenance, and Repair",
+        "Management",
+        "Production",
+        "Protective Service",
+        "Transportation & Logistics",
+        "Transportation and Material Moving"
+      ],
+      "mappedOccupationCount": 338,
+      "mappedEmployment": 49109250,
+      "employmentWeightedAIExposure": 0.03861,
+      "prices": [
+        {
+          "date": "2022-11-30",
+          "close": 96.17
+        },
+        {
+          "date": "2022-12-30",
+          "close": 93.3
+        },
+        {
+          "date": "2023-01-31",
+          "close": 96.76
+        },
+        {
+          "date": "2023-02-28",
+          "close": 95.92
+        },
+        {
+          "date": "2023-03-31",
+          "close": 96.52
+        },
+        {
+          "date": "2023-04-28",
+          "close": 95.39
+        },
+        {
+          "date": "2023-05-31",
+          "close": 92.38
+        },
+        {
+          "date": "2023-06-30",
+          "close": 102.78
+        },
+        {
+          "date": "2023-07-31",
+          "close": 105.75
+        },
+        {
+          "date": "2023-08-31",
+          "close": 103.65
+        },
+        {
+          "date": "2023-09-29",
+          "close": 97.49
+        },
+        {
+          "date": "2023-10-31",
+          "close": 94.58
+        },
+        {
+          "date": "2023-11-30",
+          "close": 102.94
+        },
+        {
+          "date": "2023-12-29",
+          "close": 110.21
+        },
+        {
+          "date": "2024-01-31",
+          "close": 109.15
+        },
+        {
+          "date": "2024-02-29",
+          "close": 116.99
+        },
+        {
+          "date": "2024-03-28",
+          "close": 122.16
+        },
+        {
+          "date": "2024-04-30",
+          "close": 117.86
+        },
+        {
+          "date": "2024-05-31",
+          "close": 119.79
+        },
+        {
+          "date": "2024-06-28",
+          "close": 118.6
+        },
+        {
+          "date": "2024-07-31",
+          "close": 124.43
+        },
+        {
+          "date": "2024-08-30",
+          "close": 127.94
+        },
+        {
+          "date": "2024-09-30",
+          "close": 132.24
+        },
+        {
+          "date": "2024-10-31",
+          "close": 130.67
+        },
+        {
+          "date": "2024-11-29",
+          "close": 140.59
+        },
+        {
+          "date": "2024-12-31",
+          "close": 129.29
+        },
+        {
+          "date": "2025-01-31",
+          "close": 135.76
+        },
+        {
+          "date": "2025-02-28",
+          "close": 133.78
+        },
+        {
+          "date": "2025-03-31",
+          "close": 129.01
+        },
+        {
+          "date": "2025-04-30",
+          "close": 129.16
+        },
+        {
+          "date": "2025-05-30",
+          "close": 140.57
+        },
+        {
+          "date": "2025-06-30",
+          "close": 145.64
+        },
+        {
+          "date": "2025-07-31",
+          "close": 150.08
+        },
+        {
+          "date": "2025-08-29",
+          "close": 150.08
+        },
+        {
+          "date": "2025-09-30",
+          "close": 152.9
+        },
+        {
+          "date": "2025-10-31",
+          "close": 153.72
+        },
+        {
+          "date": "2025-11-28",
+          "close": 152.36
+        },
+        {
+          "date": "2025-12-31",
+          "close": 154.31
+        },
+        {
+          "date": "2026-01-30",
+          "close": 164.57
+        },
+        {
+          "date": "2026-02-27",
+          "close": 176.21
+        },
+        {
+          "date": "2026-03-31",
+          "close": 161.33
+        },
+        {
+          "date": "2026-04-30",
+          "close": 174.15
+        },
+        {
+          "date": "2026-05-29",
+          "close": 172.71
+        },
+        {
+          "date": "2026-06-30",
+          "close": 185.23
+        },
+        {
+          "date": "2026-07-01",
+          "close": 183.36
+        }
+      ],
+      "metrics": {
+        "startDate": "2022-11-30",
+        "latestDate": "2026-07-01",
+        "totalReturn": 0.906528,
+        "benchmarkReturn": 0.921888,
+        "excessReturn": -0.01536,
+        "annualizedVolatility": 0.165078,
+        "maxDrawdown": -0.184907,
+        "latestClose": 183.36,
+        "observationCount": 898,
+        "ytdReturn": 0.166778,
+        "oneYearReturn": 0.254801
+      },
+      "marketAiSensitivityScore": 32.9,
+      "classification": "Low descriptive sensitivity",
+      "scoreComponents": {
+        "normalizedExcessReturn": 0.4693,
+        "normalizedAIExposure": 0.0685,
+        "excessReturnWeight": 0.65,
+        "aiExposureWeight": 0.35
+      },
+      "dataQualityNotes": [
+        "Yahoo XLI chart observations use adjusted close when available.",
+        "Metrics use 898 daily observations; prices are monthly downsampled for UI size.",
+        "Occupation mapping covers 338 occupations across 9 FutureGrid sector label(s)."
+      ]
+    },
+    {
+      "id": "xlre",
+      "name": "Real Estate",
+      "ticker": "XLRE",
+      "mappedOccupationSectors": [
+        "Building and Grounds Cleaning and Maintenance",
+        "Construction",
+        "Construction and Extraction",
+        "Management",
+        "Office and Administrative Support",
+        "Sales and Related"
+      ],
+      "mappedOccupationCount": 169,
+      "mappedEmployment": 51332250,
+      "employmentWeightedAIExposure": 0.209519,
+      "prices": [
+        {
+          "date": "2022-11-30",
+          "close": 34.45
+        },
+        {
+          "date": "2022-12-30",
+          "close": 32.79
+        },
+        {
+          "date": "2023-01-31",
+          "close": 36.03
+        },
+        {
+          "date": "2023-02-28",
+          "close": 33.92
+        },
+        {
+          "date": "2023-03-31",
+          "close": 33.42
+        },
+        {
+          "date": "2023-04-28",
+          "close": 33.75
+        },
+        {
+          "date": "2023-05-31",
+          "close": 32.22
+        },
+        {
+          "date": "2023-06-30",
+          "close": 34.02
+        },
+        {
+          "date": "2023-07-31",
+          "close": 34.47
+        },
+        {
+          "date": "2023-08-31",
+          "close": 33.42
+        },
+        {
+          "date": "2023-09-29",
+          "close": 31
+        },
+        {
+          "date": "2023-10-31",
+          "close": 30.12
+        },
+        {
+          "date": "2023-11-30",
+          "close": 33.87
+        },
+        {
+          "date": "2023-12-29",
+          "close": 36.84
+        },
+        {
+          "date": "2024-01-31",
+          "close": 35.06
+        },
+        {
+          "date": "2024-02-29",
+          "close": 35.96
+        },
+        {
+          "date": "2024-03-28",
+          "close": 36.6
+        },
+        {
+          "date": "2024-04-30",
+          "close": 33.51
+        },
+        {
+          "date": "2024-05-31",
+          "close": 35.23
+        },
+        {
+          "date": "2024-06-28",
+          "close": 35.92
+        },
+        {
+          "date": "2024-07-31",
+          "close": 38.52
+        },
+        {
+          "date": "2024-08-30",
+          "close": 40.73
+        },
+        {
+          "date": "2024-09-30",
+          "close": 42.07
+        },
+        {
+          "date": "2024-10-31",
+          "close": 40.69
+        },
+        {
+          "date": "2024-11-29",
+          "close": 42.38
+        },
+        {
+          "date": "2024-12-31",
+          "close": 38.71
+        },
+        {
+          "date": "2025-01-31",
+          "close": 39.43
+        },
+        {
+          "date": "2025-02-28",
+          "close": 41.08
+        },
+        {
+          "date": "2025-03-31",
+          "close": 40.09
+        },
+        {
+          "date": "2025-04-30",
+          "close": 39.57
+        },
+        {
+          "date": "2025-05-30",
+          "close": 39.98
+        },
+        {
+          "date": "2025-06-30",
+          "close": 40.04
+        },
+        {
+          "date": "2025-07-31",
+          "close": 40.03
+        },
+        {
+          "date": "2025-08-29",
+          "close": 40.9
+        },
+        {
+          "date": "2025-09-30",
+          "close": 41.04
+        },
+        {
+          "date": "2025-10-31",
+          "close": 39.84
+        },
+        {
+          "date": "2025-11-28",
+          "close": 40.59
+        },
+        {
+          "date": "2025-12-31",
+          "close": 39.73
+        },
+        {
+          "date": "2026-01-30",
+          "close": 40.8
+        },
+        {
+          "date": "2026-02-27",
+          "close": 43.17
+        },
+        {
+          "date": "2026-03-31",
+          "close": 40.48
+        },
+        {
+          "date": "2026-04-30",
+          "close": 44.01
+        },
+        {
+          "date": "2026-05-29",
+          "close": 43.61
+        },
+        {
+          "date": "2026-06-30",
+          "close": 44.03
+        },
+        {
+          "date": "2026-07-01",
+          "close": 44.18
+        }
+      ],
+      "metrics": {
+        "startDate": "2022-11-30",
+        "latestDate": "2026-07-01",
+        "totalReturn": 0.282622,
+        "benchmarkReturn": 0.921888,
+        "excessReturn": -0.639266,
+        "annualizedVolatility": 0.175752,
+        "maxDrawdown": -0.211289,
+        "latestClose": 44.18,
+        "observationCount": 898,
+        "ytdReturn": 0.111112,
+        "oneYearReturn": 0.096001
+      },
+      "marketAiSensitivityScore": 27.1,
+      "classification": "Low descriptive sensitivity",
+      "scoreComponents": {
+        "normalizedExcessReturn": 0,
+        "normalizedAIExposure": 0.7738,
+        "excessReturnWeight": 0.65,
+        "aiExposureWeight": 0.35
+      },
+      "dataQualityNotes": [
+        "Yahoo XLRE chart observations use adjusted close when available.",
+        "Metrics use 898 daily observations; prices are monthly downsampled for UI size.",
+        "Occupation mapping covers 169 occupations across 6 FutureGrid sector label(s)."
+      ]
+    },
+    {
+      "id": "xly",
+      "name": "Consumer Discretionary",
+      "ticker": "XLY",
+      "mappedOccupationSectors": [
+        "Education & Library",
+        "Education, Training, and Library",
+        "Food Preparation",
+        "Food Preparation and Serving Related",
+        "Personal Care",
+        "Personal Care and Service",
+        "Sales and Related"
+      ],
+      "mappedOccupationCount": 119,
+      "mappedEmployment": 35265380,
+      "employmentWeightedAIExposure": 0.131974,
+      "prices": [
+        {
+          "date": "2022-11-30",
+          "close": 70.77
+        },
+        {
+          "date": "2022-12-30",
+          "close": 62.7
+        },
+        {
+          "date": "2023-01-31",
+          "close": 72.19
+        },
+        {
+          "date": "2023-02-28",
+          "close": 70.65
+        },
+        {
+          "date": "2023-03-31",
+          "close": 72.82
+        },
+        {
+          "date": "2023-04-28",
+          "close": 72
+        },
+        {
+          "date": "2023-05-31",
+          "close": 73.83
+        },
+        {
+          "date": "2023-06-30",
+          "close": 82.85
+        },
+        {
+          "date": "2023-07-31",
+          "close": 84.77
+        },
+        {
+          "date": "2023-08-31",
+          "close": 83.29
+        },
+        {
+          "date": "2023-09-29",
+          "close": 78.69
+        },
+        {
+          "date": "2023-10-31",
+          "close": 74.34
+        },
+        {
+          "date": "2023-11-30",
+          "close": 82.5
+        },
+        {
+          "date": "2023-12-29",
+          "close": 87.56
+        },
+        {
+          "date": "2024-01-31",
+          "close": 83.69
+        },
+        {
+          "date": "2024-02-29",
+          "close": 90.3
+        },
+        {
+          "date": "2024-03-28",
+          "close": 90.24
+        },
+        {
+          "date": "2024-04-30",
+          "close": 86.18
+        },
+        {
+          "date": "2024-05-31",
+          "close": 86.35
+        },
+        {
+          "date": "2024-06-28",
+          "close": 89.7
+        },
+        {
+          "date": "2024-07-31",
+          "close": 92.2
+        },
+        {
+          "date": "2024-08-30",
+          "close": 92.02
+        },
+        {
+          "date": "2024-09-30",
+          "close": 98.74
+        },
+        {
+          "date": "2024-10-31",
+          "close": 97.03
+        },
+        {
+          "date": "2024-11-29",
+          "close": 109.55
+        },
+        {
+          "date": "2024-12-31",
+          "close": 110.77
+        },
+        {
+          "date": "2025-01-31",
+          "close": 114.63
+        },
+        {
+          "date": "2025-02-28",
+          "close": 106.63
+        },
+        {
+          "date": "2025-03-31",
+          "close": 97.76
+        },
+        {
+          "date": "2025-04-30",
+          "close": 97.66
+        },
+        {
+          "date": "2025-05-30",
+          "close": 105.85
+        },
+        {
+          "date": "2025-06-30",
+          "close": 107.83
+        },
+        {
+          "date": "2025-07-31",
+          "close": 109.86
+        },
+        {
+          "date": "2025-08-29",
+          "close": 114.98
+        },
+        {
+          "date": "2025-09-30",
+          "close": 119.11
+        },
+        {
+          "date": "2025-10-31",
+          "close": 119.25
+        },
+        {
+          "date": "2025-11-28",
+          "close": 117.53
+        },
+        {
+          "date": "2025-12-31",
+          "close": 118.93
+        },
+        {
+          "date": "2026-01-30",
+          "close": 120.69
+        },
+        {
+          "date": "2026-02-27",
+          "close": 116.39
+        },
+        {
+          "date": "2026-03-31",
+          "close": 108.76
+        },
+        {
+          "date": "2026-04-30",
+          "close": 118.11
+        },
+        {
+          "date": "2026-05-29",
+          "close": 120.63
+        },
+        {
+          "date": "2026-06-30",
+          "close": 117.28
+        },
+        {
+          "date": "2026-07-01",
+          "close": 118.09
+        }
+      ],
+      "metrics": {
+        "startDate": "2022-11-30",
+        "latestDate": "2026-07-01",
+        "totalReturn": 0.668747,
+        "benchmarkReturn": 0.921888,
+        "excessReturn": -0.253141,
+        "annualizedVolatility": 0.20945,
+        "maxDrawdown": -0.260074,
+        "latestClose": 118.09,
+        "observationCount": 898,
+        "ytdReturn": 0.0018,
+        "oneYearReturn": 0.090511
+      },
+      "marketAiSensitivityScore": 15.9,
+      "classification": "Low descriptive sensitivity",
+      "scoreComponents": {
+        "normalizedExcessReturn": 0,
+        "normalizedAIExposure": 0.4538,
+        "excessReturnWeight": 0.65,
+        "aiExposureWeight": 0.35
+      },
+      "dataQualityNotes": [
+        "Yahoo XLY chart observations use adjusted close when available.",
+        "Metrics use 898 daily observations; prices are monthly downsampled for UI size.",
+        "Occupation mapping covers 119 occupations across 7 FutureGrid sector label(s)."
+      ]
+    },
+    {
+      "id": "xlp",
+      "name": "Consumer Staples",
+      "ticker": "XLP",
+      "mappedOccupationSectors": [
+        "Farming, Fishing, and Forestry",
+        "Food Preparation",
+        "Food Preparation and Serving Related",
+        "Production",
+        "Sales and Related"
+      ],
+      "mappedOccupationCount": 144,
+      "mappedEmployment": 32643020,
+      "employmentWeightedAIExposure": 0.10645,
+      "prices": [
+        {
+          "date": "2022-11-30",
+          "close": 69.81
+        },
+        {
+          "date": "2022-12-30",
+          "close": 67.9
+        },
+        {
+          "date": "2023-01-31",
+          "close": 67.17
+        },
+        {
+          "date": "2023-02-28",
+          "close": 65.61
+        },
+        {
+          "date": "2023-03-31",
+          "close": 68.38
+        },
+        {
+          "date": "2023-04-28",
+          "close": 70.88
+        },
+        {
+          "date": "2023-05-31",
+          "close": 66.51
+        },
+        {
+          "date": "2023-06-30",
+          "close": 68.37
+        },
+        {
+          "date": "2023-07-31",
+          "close": 69.82
+        },
+        {
+          "date": "2023-08-31",
+          "close": 67.07
+        },
+        {
+          "date": "2023-09-29",
+          "close": 63.85
+        },
+        {
+          "date": "2023-10-31",
+          "close": 62.97
+        },
+        {
+          "date": "2023-11-30",
+          "close": 65.57
+        },
+        {
+          "date": "2023-12-29",
+          "close": 67.35
+        },
+        {
+          "date": "2024-01-31",
+          "close": 68.18
+        },
+        {
+          "date": "2024-02-29",
+          "close": 69.61
+        },
+        {
+          "date": "2024-03-28",
+          "close": 71.92
+        },
+        {
+          "date": "2024-04-30",
+          "close": 71.11
+        },
+        {
+          "date": "2024-05-31",
+          "close": 72.85
+        },
+        {
+          "date": "2024-06-28",
+          "close": 72.68
+        },
+        {
+          "date": "2024-07-31",
+          "close": 73.88
+        },
+        {
+          "date": "2024-08-30",
+          "close": 78.3
+        },
+        {
+          "date": "2024-09-30",
+          "close": 79.19
+        },
+        {
+          "date": "2024-10-31",
+          "close": 76.44
+        },
+        {
+          "date": "2024-11-29",
+          "close": 79.4
+        },
+        {
+          "date": "2024-12-31",
+          "close": 75.57
+        },
+        {
+          "date": "2025-01-31",
+          "close": 75.92
+        },
+        {
+          "date": "2025-02-28",
+          "close": 79.86
+        },
+        {
+          "date": "2025-03-31",
+          "close": 78.92
+        },
+        {
+          "date": "2025-04-30",
+          "close": 79.08
+        },
+        {
+          "date": "2025-05-30",
+          "close": 80.05
+        },
+        {
+          "date": "2025-06-30",
+          "close": 78.78
+        },
+        {
+          "date": "2025-07-31",
+          "close": 77.63
+        },
+        {
+          "date": "2025-08-29",
+          "close": 78.6
+        },
+        {
+          "date": "2025-09-30",
+          "close": 76.78
+        },
+        {
+          "date": "2025-10-31",
+          "close": 74.73
+        },
+        {
+          "date": "2025-11-28",
+          "close": 77.76
+        },
+        {
+          "date": "2025-12-31",
+          "close": 76.71
+        },
+        {
+          "date": "2026-01-30",
+          "close": 82.47
+        },
+        {
+          "date": "2026-02-27",
+          "close": 88.89
+        },
+        {
+          "date": "2026-03-31",
+          "close": 81.42
+        },
+        {
+          "date": "2026-04-30",
+          "close": 83.73
+        },
+        {
+          "date": "2026-05-29",
+          "close": 82.34
+        },
+        {
+          "date": "2026-06-30",
+          "close": 83.07
+        },
+        {
+          "date": "2026-07-01",
+          "close": 83.3
+        }
+      ],
+      "metrics": {
+        "startDate": "2022-11-30",
+        "latestDate": "2026-07-01",
+        "totalReturn": 0.193259,
+        "benchmarkReturn": 0.921888,
+        "excessReturn": -0.728629,
+        "annualizedVolatility": 0.123017,
+        "maxDrawdown": -0.133655,
+        "latestClose": 83.3,
+        "observationCount": 898,
+        "ytdReturn": 0.085727,
+        "oneYearReturn": 0.044283
+      },
+      "marketAiSensitivityScore": 12.2,
+      "classification": "Low descriptive sensitivity",
+      "scoreComponents": {
+        "normalizedExcessReturn": 0,
+        "normalizedAIExposure": 0.3485,
+        "excessReturnWeight": 0.65,
+        "aiExposureWeight": 0.35
+      },
+      "dataQualityNotes": [
+        "Yahoo XLP chart observations use adjusted close when available.",
+        "Metrics use 898 daily observations; prices are monthly downsampled for UI size.",
+        "Occupation mapping covers 144 occupations across 5 FutureGrid sector label(s)."
+      ]
+    },
+    {
+      "id": "xlv",
+      "name": "Health Care",
+      "ticker": "XLV",
+      "mappedOccupationSectors": [
+        "Community and Social Service",
+        "Healthcare",
+        "Healthcare Practitioners and Technical",
+        "Healthcare Support"
+      ],
+      "mappedOccupationCount": 93,
+      "mappedEmployment": 14964620,
+      "employmentWeightedAIExposure": 0.044134,
+      "prices": [
+        {
+          "date": "2022-11-30",
+          "close": 130.61
+        },
+        {
+          "date": "2022-12-30",
+          "close": 128.16
+        },
+        {
+          "date": "2023-01-31",
+          "close": 125.81
+        },
+        {
+          "date": "2023-02-28",
+          "close": 119.97
+        },
+        {
+          "date": "2023-03-31",
+          "close": 122.61
+        },
+        {
+          "date": "2023-04-28",
+          "close": 126.46
+        },
+        {
+          "date": "2023-05-31",
+          "close": 121.07
+        },
+        {
+          "date": "2023-06-30",
+          "close": 126.22
+        },
+        {
+          "date": "2023-07-31",
+          "close": 127.57
+        },
+        {
+          "date": "2023-08-31",
+          "close": 126.68
+        },
+        {
+          "date": "2023-09-29",
+          "close": 122.93
+        },
+        {
+          "date": "2023-10-31",
+          "close": 118.92
+        },
+        {
+          "date": "2023-11-30",
+          "close": 125.39
+        },
+        {
+          "date": "2023-12-29",
+          "close": 130.81
+        },
+        {
+          "date": "2024-01-31",
+          "close": 134.65
+        },
+        {
+          "date": "2024-02-29",
+          "close": 138.91
+        },
+        {
+          "date": "2024-03-28",
+          "close": 142.21
+        },
+        {
+          "date": "2024-04-30",
+          "close": 135.09
+        },
+        {
+          "date": "2024-05-31",
+          "close": 138.33
+        },
+        {
+          "date": "2024-06-28",
+          "close": 140.85
+        },
+        {
+          "date": "2024-07-31",
+          "close": 144.6
+        },
+        {
+          "date": "2024-08-30",
+          "close": 151.92
+        },
+        {
+          "date": "2024-09-30",
+          "close": 149.4
+        },
+        {
+          "date": "2024-10-31",
+          "close": 142.46
+        },
+        {
+          "date": "2024-11-29",
+          "close": 142.99
+        },
+        {
+          "date": "2024-12-31",
+          "close": 134.05
+        },
+        {
+          "date": "2025-01-31",
+          "close": 143.11
+        },
+        {
+          "date": "2025-02-28",
+          "close": 145.12
+        },
+        {
+          "date": "2025-03-31",
+          "close": 142.82
+        },
+        {
+          "date": "2025-04-30",
+          "close": 137.4
+        },
+        {
+          "date": "2025-05-30",
+          "close": 129.74
+        },
+        {
+          "date": "2025-06-30",
+          "close": 132.48
+        },
+        {
+          "date": "2025-07-31",
+          "close": 128.19
+        },
+        {
+          "date": "2025-08-29",
+          "close": 135.07
+        },
+        {
+          "date": "2025-09-30",
+          "close": 137.41
+        },
+        {
+          "date": "2025-10-31",
+          "close": 142.42
+        },
+        {
+          "date": "2025-11-28",
+          "close": 155.65
+        },
+        {
+          "date": "2025-12-31",
+          "close": 153.49
+        },
+        {
+          "date": "2026-01-30",
+          "close": 153.43
+        },
+        {
+          "date": "2026-02-27",
+          "close": 158.84
+        },
+        {
+          "date": "2026-03-31",
+          "close": 145.97
+        },
+        {
+          "date": "2026-04-30",
+          "close": 145.35
+        },
+        {
+          "date": "2026-05-29",
+          "close": 148.81
+        },
+        {
+          "date": "2026-06-30",
+          "close": 158.66
+        },
+        {
+          "date": "2026-07-01",
+          "close": 159.54
+        }
+      ],
+      "metrics": {
+        "startDate": "2022-11-30",
+        "latestDate": "2026-07-01",
+        "totalReturn": 0.221456,
+        "benchmarkReturn": 0.921888,
+        "excessReturn": -0.700432,
+        "annualizedVolatility": 0.139083,
+        "maxDrawdown": -0.17109,
+        "latestClose": 159.54,
+        "observationCount": 898,
+        "ytdReturn": 0.034675,
+        "oneYearReturn": 0.187378
+      },
+      "marketAiSensitivityScore": 3.2,
+      "classification": "Low descriptive sensitivity",
+      "scoreComponents": {
+        "normalizedExcessReturn": 0,
+        "normalizedAIExposure": 0.0913,
+        "excessReturnWeight": 0.65,
+        "aiExposureWeight": 0.35
+      },
+      "dataQualityNotes": [
+        "Yahoo XLV chart observations use adjusted close when available.",
+        "Metrics use 898 daily observations; prices are monthly downsampled for UI size.",
+        "Occupation mapping covers 93 occupations across 4 FutureGrid sector label(s)."
+      ]
+    },
+    {
+      "id": "xle",
+      "name": "Energy",
+      "ticker": "XLE",
+      "mappedOccupationSectors": [
+        "Architecture and Engineering",
+        "Construction and Extraction",
+        "Installation, Maintenance, and Repair",
+        "Life, Physical & Social Science",
+        "Life, Physical, and Social Science"
+      ],
+      "mappedOccupationCount": 181,
+      "mappedEmployment": 16422120,
+      "employmentWeightedAIExposure": 0.026016,
+      "prices": [
+        {
+          "date": "2022-11-30",
+          "close": 40.2
+        },
+        {
+          "date": "2022-12-30",
+          "close": 38.97
+        },
+        {
+          "date": "2023-01-31",
+          "close": 40.07
+        },
+        {
+          "date": "2023-02-28",
+          "close": 37.29
+        },
+        {
+          "date": "2023-03-31",
+          "close": 37.29
+        },
+        {
+          "date": "2023-04-28",
+          "close": 38.33
+        },
+        {
+          "date": "2023-05-31",
+          "close": 34.48
+        },
+        {
+          "date": "2023-06-30",
+          "close": 36.87
+        },
+        {
+          "date": "2023-07-31",
+          "close": 39.73
+        },
+        {
+          "date": "2023-08-31",
+          "close": 40.39
+        },
+        {
+          "date": "2023-09-29",
+          "close": 41.36
+        },
+        {
+          "date": "2023-10-31",
+          "close": 38.98
+        },
+        {
+          "date": "2023-11-30",
+          "close": 38.7
+        },
+        {
+          "date": "2023-12-29",
+          "close": 38.73
+        },
+        {
+          "date": "2024-01-31",
+          "close": 38.53
+        },
+        {
+          "date": "2024-02-29",
+          "close": 39.79
+        },
+        {
+          "date": "2024-03-28",
+          "close": 43.96
+        },
+        {
+          "date": "2024-04-30",
+          "close": 43.55
+        },
+        {
+          "date": "2024-05-31",
+          "close": 43.4
+        },
+        {
+          "date": "2024-06-28",
+          "close": 42.79
+        },
+        {
+          "date": "2024-07-31",
+          "close": 43.75
+        },
+        {
+          "date": "2024-08-30",
+          "close": 42.85
+        },
+        {
+          "date": "2024-09-30",
+          "close": 41.55
+        },
+        {
+          "date": "2024-10-31",
+          "close": 41.93
+        },
+        {
+          "date": "2024-11-29",
+          "close": 45.21
+        },
+        {
+          "date": "2024-12-31",
+          "close": 40.88
+        },
+        {
+          "date": "2025-01-31",
+          "close": 41.83
+        },
+        {
+          "date": "2025-02-28",
+          "close": 43.43
+        },
+        {
+          "date": "2025-03-31",
+          "close": 44.95
+        },
+        {
+          "date": "2025-04-30",
+          "close": 38.72
+        },
+        {
+          "date": "2025-05-30",
+          "close": 39.21
+        },
+        {
+          "date": "2025-06-30",
+          "close": 41.12
+        },
+        {
+          "date": "2025-07-31",
+          "close": 42.29
+        },
+        {
+          "date": "2025-08-29",
+          "close": 43.83
+        },
+        {
+          "date": "2025-09-30",
+          "close": 43.69
+        },
+        {
+          "date": "2025-10-31",
+          "close": 43.1
+        },
+        {
+          "date": "2025-11-28",
+          "close": 44.23
+        },
+        {
+          "date": "2025-12-31",
+          "close": 44.1
+        },
+        {
+          "date": "2026-01-30",
+          "close": 50.36
+        },
+        {
+          "date": "2026-02-27",
+          "close": 55.16
+        },
+        {
+          "date": "2026-03-31",
+          "close": 60.82
+        },
+        {
+          "date": "2026-04-30",
+          "close": 59.22
+        },
+        {
+          "date": "2026-05-29",
+          "close": 55.89
+        },
+        {
+          "date": "2026-06-30",
+          "close": 53.11
+        },
+        {
+          "date": "2026-07-01",
+          "close": 52.81
+        }
+      ],
+      "metrics": {
+        "startDate": "2022-11-30",
+        "latestDate": "2026-07-01",
+        "totalReturn": 0.31368,
+        "benchmarkReturn": 0.921888,
+        "excessReturn": -0.608208,
+        "annualizedVolatility": 0.224904,
+        "maxDrawdown": -0.201373,
+        "latestClose": 52.81,
+        "observationCount": 898,
+        "ytdReturn": 0.172801,
+        "oneYearReturn": 0.27441
+      },
+      "marketAiSensitivityScore": 0.6,
+      "classification": "Low descriptive sensitivity",
+      "scoreComponents": {
+        "normalizedExcessReturn": 0,
+        "normalizedAIExposure": 0.0166,
+        "excessReturnWeight": 0.65,
+        "aiExposureWeight": 0.35
+      },
+      "dataQualityNotes": [
+        "Yahoo XLE chart observations use adjusted close when available.",
+        "Metrics use 898 daily observations; prices are monthly downsampled for UI size.",
+        "Occupation mapping covers 181 occupations across 5 FutureGrid sector label(s)."
+      ]
+    },
+    {
+      "id": "xlu",
+      "name": "Utilities",
+      "ticker": "XLU",
+      "mappedOccupationSectors": [
+        "Architecture and Engineering",
+        "Construction and Extraction",
+        "Installation, Maintenance, and Repair",
+        "Life, Physical & Social Science",
+        "Life, Physical, and Social Science"
+      ],
+      "mappedOccupationCount": 181,
+      "mappedEmployment": 16422120,
+      "employmentWeightedAIExposure": 0.026016,
+      "prices": [
+        {
+          "date": "2022-11-30",
+          "close": 31.88
+        },
+        {
+          "date": "2022-12-30",
+          "close": 31.72
+        },
+        {
+          "date": "2023-01-31",
+          "close": 31.08
+        },
+        {
+          "date": "2023-02-28",
+          "close": 29.24
+        },
+        {
+          "date": "2023-03-31",
+          "close": 30.68
+        },
+        {
+          "date": "2023-04-28",
+          "close": 31.26
+        },
+        {
+          "date": "2023-05-31",
+          "close": 29.43
+        },
+        {
+          "date": "2023-06-30",
+          "close": 29.9
+        },
+        {
+          "date": "2023-07-31",
+          "close": 30.64
+        },
+        {
+          "date": "2023-08-31",
+          "close": 28.76
+        },
+        {
+          "date": "2023-09-29",
+          "close": 27.14
+        },
+        {
+          "date": "2023-10-31",
+          "close": 27.49
+        },
+        {
+          "date": "2023-11-30",
+          "close": 28.91
+        },
+        {
+          "date": "2023-12-29",
+          "close": 29.44
+        },
+        {
+          "date": "2024-01-31",
+          "close": 28.57
+        },
+        {
+          "date": "2024-02-29",
+          "close": 28.87
+        },
+        {
+          "date": "2024-03-28",
+          "close": 30.77
+        },
+        {
+          "date": "2024-04-30",
+          "close": 31.28
+        },
+        {
+          "date": "2024-05-31",
+          "close": 34.09
+        },
+        {
+          "date": "2024-06-28",
+          "close": 32.2
+        },
+        {
+          "date": "2024-07-31",
+          "close": 34.4
+        },
+        {
+          "date": "2024-08-30",
+          "close": 36.05
+        },
+        {
+          "date": "2024-09-30",
+          "close": 38.43
+        },
+        {
+          "date": "2024-10-31",
+          "close": 38.02
+        },
+        {
+          "date": "2024-11-29",
+          "close": 39.45
+        },
+        {
+          "date": "2024-12-31",
+          "close": 36.31
+        },
+        {
+          "date": "2025-01-31",
+          "close": 37.36
+        },
+        {
+          "date": "2025-02-28",
+          "close": 38
+        },
+        {
+          "date": "2025-03-31",
+          "close": 38.09
+        },
+        {
+          "date": "2025-04-30",
+          "close": 38.12
+        },
+        {
+          "date": "2025-05-30",
+          "close": 39.57
+        },
+        {
+          "date": "2025-06-30",
+          "close": 39.72
+        },
+        {
+          "date": "2025-07-31",
+          "close": 41.67
+        },
+        {
+          "date": "2025-08-29",
+          "close": 41.02
+        },
+        {
+          "date": "2025-09-30",
+          "close": 42.71
+        },
+        {
+          "date": "2025-10-31",
+          "close": 43.63
+        },
+        {
+          "date": "2025-11-28",
+          "close": 44.38
+        },
+        {
+          "date": "2025-12-31",
+          "close": 42.12
+        },
+        {
+          "date": "2026-01-30",
+          "close": 42.68
+        },
+        {
+          "date": "2026-02-27",
+          "close": 47.1
+        },
+        {
+          "date": "2026-03-31",
+          "close": 45.6
+        },
+        {
+          "date": "2026-04-30",
+          "close": 46.55
+        },
+        {
+          "date": "2026-05-29",
+          "close": 44.14
+        },
+        {
+          "date": "2026-06-30",
+          "close": 45.34
+        },
+        {
+          "date": "2026-07-01",
+          "close": 44.77
+        }
+      ],
+      "metrics": {
+        "startDate": "2022-11-30",
+        "latestDate": "2026-07-01",
+        "totalReturn": 0.404494,
+        "benchmarkReturn": 0.921888,
+        "excessReturn": -0.517394,
+        "annualizedVolatility": 0.164573,
+        "maxDrawdown": -0.201975,
+        "latestClose": 44.77,
+        "observationCount": 898,
+        "ytdReturn": 0.050738,
+        "oneYearReturn": 0.123224
+      },
+      "marketAiSensitivityScore": 0.6,
+      "classification": "Low descriptive sensitivity",
+      "scoreComponents": {
+        "normalizedExcessReturn": 0,
+        "normalizedAIExposure": 0.0166,
+        "excessReturnWeight": 0.65,
+        "aiExposureWeight": 0.35
+      },
+      "dataQualityNotes": [
+        "Yahoo XLU chart observations use adjusted close when available.",
+        "Metrics use 898 daily observations; prices are monthly downsampled for UI size.",
+        "Occupation mapping covers 181 occupations across 5 FutureGrid sector label(s)."
+      ]
+    },
+    {
+      "id": "xlb",
+      "name": "Materials",
+      "ticker": "XLB",
+      "mappedOccupationSectors": [
+        "Architecture and Engineering",
+        "Construction and Extraction",
+        "Farming, Fishing, and Forestry",
+        "Life, Physical & Social Science",
+        "Life, Physical, and Social Science",
+        "Production"
+      ],
+      "mappedOccupationCount": 240,
+      "mappedEmployment": 17336460,
+      "employmentWeightedAIExposure": 0.022003,
+      "prices": [
+        {
+          "date": "2022-11-30",
+          "close": 38.45
+        },
+        {
+          "date": "2022-12-30",
+          "close": 36.33
+        },
+        {
+          "date": "2023-01-31",
+          "close": 39.59
+        },
+        {
+          "date": "2023-02-28",
+          "close": 38.27
+        },
+        {
+          "date": "2023-03-31",
+          "close": 37.88
+        },
+        {
+          "date": "2023-04-28",
+          "close": 37.83
+        },
+        {
+          "date": "2023-05-31",
+          "close": 35.24
+        },
+        {
+          "date": "2023-06-30",
+          "close": 39.11
+        },
+        {
+          "date": "2023-07-31",
+          "close": 40.46
+        },
+        {
+          "date": "2023-08-31",
+          "close": 39.12
+        },
+        {
+          "date": "2023-09-29",
+          "close": 37.25
+        },
+        {
+          "date": "2023-10-31",
+          "close": 36.07
+        },
+        {
+          "date": "2023-11-30",
+          "close": 39.08
+        },
+        {
+          "date": "2023-12-29",
+          "close": 40.85
+        },
+        {
+          "date": "2024-01-31",
+          "close": 39.26
+        },
+        {
+          "date": "2024-02-29",
+          "close": 41.82
+        },
+        {
+          "date": "2024-03-28",
+          "close": 44.52
+        },
+        {
+          "date": "2024-04-30",
+          "close": 42.48
+        },
+        {
+          "date": "2024-05-31",
+          "close": 43.87
+        },
+        {
+          "date": "2024-06-28",
+          "close": 42.53
+        },
+        {
+          "date": "2024-07-31",
+          "close": 44.37
+        },
+        {
+          "date": "2024-08-30",
+          "close": 45.4
+        },
+        {
+          "date": "2024-09-30",
+          "close": 46.62
+        },
+        {
+          "date": "2024-10-31",
+          "close": 45.18
+        },
+        {
+          "date": "2024-11-29",
+          "close": 45.85
+        },
+        {
+          "date": "2024-12-31",
+          "close": 40.91
+        },
+        {
+          "date": "2025-01-31",
+          "close": 43.17
+        },
+        {
+          "date": "2025-02-28",
+          "close": 43.16
+        },
+        {
+          "date": "2025-03-31",
+          "close": 42.01
+        },
+        {
+          "date": "2025-04-30",
+          "close": 40.99
+        },
+        {
+          "date": "2025-05-30",
+          "close": 42.18
+        },
+        {
+          "date": "2025-06-30",
+          "close": 43.12
+        },
+        {
+          "date": "2025-07-31",
+          "close": 43.08
+        },
+        {
+          "date": "2025-08-29",
+          "close": 45.31
+        },
+        {
+          "date": "2025-09-30",
+          "close": 44.22
+        },
+        {
+          "date": "2025-10-31",
+          "close": 42.27
+        },
+        {
+          "date": "2025-11-28",
+          "close": 44.11
+        },
+        {
+          "date": "2025-12-31",
+          "close": 44.98
+        },
+        {
+          "date": "2026-01-30",
+          "close": 48.87
+        },
+        {
+          "date": "2026-02-27",
+          "close": 52.98
+        },
+        {
+          "date": "2026-03-31",
+          "close": 49.78
+        },
+        {
+          "date": "2026-04-30",
+          "close": 51.28
+        },
+        {
+          "date": "2026-05-29",
+          "close": 50.96
+        },
+        {
+          "date": "2026-06-30",
+          "close": 50.83
+        },
+        {
+          "date": "2026-07-01",
+          "close": 51.02
+        }
+      ],
+      "metrics": {
+        "startDate": "2022-11-30",
+        "latestDate": "2026-07-01",
+        "totalReturn": 0.326953,
+        "benchmarkReturn": 0.921888,
+        "excessReturn": -0.594935,
+        "annualizedVolatility": 0.174064,
+        "maxDrawdown": -0.231658,
+        "latestClose": 51.02,
+        "observationCount": 898,
+        "ytdReturn": 0.115319,
+        "oneYearReturn": 0.153406
+      },
+      "marketAiSensitivityScore": 0,
+      "classification": "Low descriptive sensitivity",
+      "scoreComponents": {
+        "normalizedExcessReturn": 0,
+        "normalizedAIExposure": 0,
+        "excessReturnWeight": 0.65,
+        "aiExposureWeight": 0.35
+      },
+      "dataQualityNotes": [
+        "Yahoo XLB chart observations use adjusted close when available.",
+        "Metrics use 898 daily observations; prices are monthly downsampled for UI size.",
+        "Occupation mapping covers 240 occupations across 6 FutureGrid sector label(s)."
+      ]
+    }
+  ],
+  "summary": {
+    "sectorCount": 11,
+    "requestedSectorCount": 11,
+    "omittedTickers": [],
+    "latestDate": "2026-07-01",
+    "windowStart": "2022-11-30",
+    "topSectors": [
+      {
+        "id": "xlc",
+        "name": "Communication Services",
+        "ticker": "XLC",
+        "marketAiSensitivityScore": 99.5,
+        "excessReturn": 0.296857,
+        "employmentWeightedAIExposure": 0.261199
+      },
+      {
+        "id": "xlk",
+        "name": "Technology",
+        "ticker": "XLK",
+        "marketAiSensitivityScore": 94.6,
+        "excessReturn": 0.883296,
+        "employmentWeightedAIExposure": 0.2272
+      },
+      {
+        "id": "xlf",
+        "name": "Financials",
+        "ticker": "XLF",
+        "marketAiSensitivityScore": 35,
+        "excessReturn": -0.314933,
+        "employmentWeightedAIExposure": 0.264338
+      },
+      {
+        "id": "xli",
+        "name": "Industrials",
+        "ticker": "XLI",
+        "marketAiSensitivityScore": 32.9,
+        "excessReturn": -0.01536,
+        "employmentWeightedAIExposure": 0.03861
+      },
+      {
+        "id": "xlre",
+        "name": "Real Estate",
+        "ticker": "XLRE",
+        "marketAiSensitivityScore": 27.1,
+        "excessReturn": -0.639266,
+        "employmentWeightedAIExposure": 0.209519
+      }
+    ],
+    "mappingCoverage": {
+      "occupationCount": 756,
+      "uniqueOccupationSectorCount": 32,
+      "coveredOccupationSectorCount": 32,
+      "uncoveredOccupationSectors": []
+    },
+    "caveats": [
+      "Descriptive historical lens only; does not forecast ETF performance or prove AI caused returns.",
+      "Yahoo Finance endpoint is unofficial/undocumented and may change or rate-limit.",
+      "Occupation-to-market-sector mapping is hand-authored and coarse; coverage counts should be shown with the score."
+    ]
+  }
+}
