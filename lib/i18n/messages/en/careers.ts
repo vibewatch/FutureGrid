@@ -62,6 +62,7 @@ export const careersEn = {
   transRetrainSimilar: "Similar training",
   transRetrainMore: "+{n} training lvl",
   transSkillsToBuild: "Skills to build:",
+  loadMore: "Load more ({n} remaining)",
   labelAIResiliencyScore: "AI Resiliency Score",
   dataNote:
     "AI exposure from the Anthropic Economic Index (2025); salary from BLS; skills from O*NET.",

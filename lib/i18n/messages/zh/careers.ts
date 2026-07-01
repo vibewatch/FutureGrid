@@ -62,6 +62,7 @@ export const careersZh = {
   transRetrainSimilar: "相近培训",
   transRetrainMore: "+{n} 培训级",
   transSkillsToBuild: "需新学技能：",
+  loadMore: "加载更多（还剩 {n}）",
   labelAIResiliencyScore: "AI 韧性评分",
   dataNote:
     "AI 暴露度数据来源：Anthropic 经济指数（2025）；薪资来源：BLS；技能来源：O*NET。",

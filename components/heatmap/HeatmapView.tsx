@@ -31,10 +31,9 @@ export default function HeatmapView({ sectors }: HeatmapViewProps) {
     <div className="space-y-8 max-w-[1400px]">
       {/* Header */}
       <div className="animate-fade-up">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient">
+        <h2 className="text-2xl font-bold tracking-tight text-gradient">
           {t("pageHeading")}
-        </h1>
-        <p className="text-zinc-600 dark:text-zinc-400 mt-1">
+        </h2>        <p className="text-zinc-600 dark:text-zinc-400 mt-1">
           {t("pageIntro")}{" "}
           <Link
             href="/sources"

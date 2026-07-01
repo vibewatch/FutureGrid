@@ -8,6 +8,7 @@ import { useState, useMemo, useCallback } from "react";
 import { useT } from "@/lib/i18n/useT";
 
 const MAX_COMPARE = 3;
+const PAGE_SIZE = 48;
 
 export default function CareersPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,6 +16,7 @@ export default function CareersPage() {
   const [sortBy, setSortBy] = useState<"risk" | "openings" | "salary" | "employment">("risk");
   const [compareList, setCompareList] = useState<CareerInsight[]>([]);
   const [showComparePanel, setShowComparePanel] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const t = useT("careers");
 
   const allInsights = useMemo(() => generateAllCareerInsights(), []);
@@ -39,6 +41,14 @@ export default function CareersPage() {
       return b.medianSalary - a.medianSalary;
     });
   }, [searchQuery, riskFilter, sortBy, allInsights]);
+
+  // Reset the visible window whenever the result set changes (render-time reset).
+  const filterSig = `${searchQuery}|${riskFilter}|${sortBy}`;
+  const [prevFilterSig, setPrevFilterSig] = useState(filterSig);
+  if (prevFilterSig !== filterSig) {
+    setPrevFilterSig(filterSig);
+    setVisibleCount(PAGE_SIZE);
+  }
 
   const toggleCompare = useCallback((career: CareerInsight) => {
     setCompareList((prev) => {
@@ -120,8 +130,9 @@ export default function CareersPage() {
 
       {/* Career grid */}
       {filtered.length > 0 ? (
+        <>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((i) => {
+          {filtered.slice(0, visibleCount).map((i) => {
             const selected = isInCompare(i.occupationCode);
             const canAdd = compareList.length < MAX_COMPARE;
             const riskColor = colorForRisk(i.automationRisk);
@@ -235,6 +246,17 @@ export default function CareersPage() {
             );
           })}
         </div>
+        {filtered.length > visibleCount && (
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+              className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-full px-6 py-2.5 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:border-violet-500 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500"
+            >
+              {t("loadMore", { n: String(filtered.length - visibleCount) })}
+            </button>
+          </div>
+        )}
+        </>
       ) : (
         <div className="glass bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 rounded-xl py-16 flex flex-col items-center gap-3 animate-fade-up">
           <span className="text-4xl opacity-30" aria-hidden="true">

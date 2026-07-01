@@ -204,23 +204,8 @@ export default function ExploreView() {
         </div>
       </section>
 
-      {/* ── Heatmap section ─────────────────────────────────────────────────── */}
-      <section aria-labelledby="heatmap-heading">
-        <div className="mb-4">
-          <h2
-            id="heatmap-heading"
-            className="text-xl font-semibold text-zinc-900 dark:text-white"
-          >
-            {t("sectionHeatmap")}
-          </h2>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
-            {t("sectionHeatmapDesc")}
-          </p>
-        </div>
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
-          <HeatmapView sectors={sectors} />
-        </div>
-      </section>
+      {/* ── Country × AI Readiness Heatmap (self-titled, incl. sector grid) ── */}
+      <HeatmapView sectors={sectors} />
     </div>
   );
 }
