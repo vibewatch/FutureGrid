@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * build-warn.mjs
- * Multi-state WARN Act notices: CA, GA, KY, NJ, NY, OH, OR, TN, TX, WI
+ * Multi-state WARN Act notices: live adapters plus all-state coverage metadata.
  * Emits data/warn-notices.json with normalized records and aggregate summary.
  * Run: node scripts/build-warn.mjs  (or: npm run build:warn)
  */
@@ -115,6 +115,17 @@ function parseDate(val) {
 }
 
 function fmtDate(y, m, d) {
+  const date = new Date(Date.UTC(y, m - 1, d));
+  if (
+    !Number.isInteger(y) ||
+    !Number.isInteger(m) ||
+    !Number.isInteger(d) ||
+    date.getUTCFullYear() !== y ||
+    date.getUTCMonth() + 1 !== m ||
+    date.getUTCDate() !== d
+  ) {
+    return null;
+  }
   return `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 }
 
@@ -726,52 +737,87 @@ async function fetchKY() {
 }
 
 async function fetchOR() {
-  const url = "https://storage.googleapis.com/bln-data-public/warn-layoffs/or_historical.xlsx";
+  const url = "https://data.oregon.gov/resource/ijbz-jpx8.json?$limit=50000";
+  const buffer = await fetchBuffer(url);
+  const rows = JSON.parse(buffer.toString("utf-8"));
+  if (!Array.isArray(rows) || rows.length === 0) throw new Error("OR: no rows in Socrata response");
+
+  const records = [];
+  for (const row of rows) {
+    const company = String(row.company_name ?? "").trim();
+    if (!company || /^\s*(total|grand total|subtotal)\s*$/i.test(company)) continue;
+    const employees = Number(String(row.laid_off ?? "").replace(/,/g, "").trim());
+    if (!isFinite(employees) || employees <= 0) continue;
+    records.push({
+      company,
+      county: null,
+      city: String(row.city ?? "").trim() || null,
+      employees: Math.round(employees),
+      noticeDate: parseDate(row.received_date ?? null),
+      effectiveDate: parseDate(row.layoff_date ?? null),
+      layoffType: normalizeLayoffType(String(row.layoff_type ?? "").trim() || null),
+      state: "OR",
+      stateName: "Oregon",
+    });
+  }
+  return records;
+}
+
+async function fetchIA() {
+  const url = "https://workforce.iowa.gov/media/1190/download?inline";
   const buffer = await fetchBuffer(url);
 
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.load(buffer);
 
-  let worksheet = workbook.worksheets[0];
+  const records = [];
+  let sheetsOk = 0;
+
   for (const ws of workbook.worksheets) {
-    if (ws.actualRowCount > 0) { worksheet = ws; break; }
+    let headerRow = -1;
+    const colIndex = {};
+    ws.eachRow((row, rowNumber) => {
+      if (headerRow !== -1) return;
+      const cells = row.values;
+      if (!cells) return;
+      const norm = cells.map((v) => (v == null ? "" : normalizeHeader(v)));
+      if (!norm.some((h) => h === "company") || !norm.some((h) => h === "emp #" || h.includes("employee"))) return;
+      headerRow = rowNumber;
+      console.log(`  IA sheet="${ws.name}" header=${rowNumber} raw: ${norm.filter(Boolean).join(" | ")}`);
+      for (let i = 1; i < norm.length; i++) {
+        const h = norm[i];
+        if (!h) continue;
+        if (h === "company" && colIndex.company == null) colIndex.company = i;
+        else if (h === "city" && colIndex.city == null) colIndex.city = i;
+        else if (h === "county" && colIndex.county == null) colIndex.county = i;
+        else if ((h === "emp #" || h.includes("employee") || h.includes("worker")) && colIndex.employees == null) colIndex.employees = i;
+        else if ((h === "notice date" || (h.includes("notice") && h.includes("date"))) && colIndex.noticeDate == null) colIndex.noticeDate = i;
+        else if ((h === "layoff date" || h.includes("effective")) && colIndex.effectiveDate == null) colIndex.effectiveDate = i;
+        else if ((h === "notice type" || h === "type") && colIndex.layoffType == null) colIndex.layoffType = i;
+      }
+    });
+    if (headerRow === -1) continue;
+    sheetsOk++;
+
+    ws.eachRow((row, rowNumber) => {
+      if (rowNumber <= headerRow) return;
+      const rec = parseXlsxRow(row, colIndex, "IA", "Iowa");
+      if (rec) records.push(rec);
+    });
   }
 
-  // Header row is NOT row 1 — locate by finding the row containing "Company Name"
-  let headerRow = -1;
-  const colIndex = {};
-  worksheet.eachRow((row, rowNumber) => {
-    if (headerRow !== -1) return;
-    const cells = row.values;
-    if (!cells) return;
-    const norm = cells.map((v) => (v == null ? "" : normalizeHeader(v)));
-    if (!norm.some((h) => h === "company name") || !norm.some((h) => h === "laid off" || h === "received date")) return;
-    headerRow = rowNumber;
-    console.log(`  OR sheet="${worksheet.name}" header=${rowNumber} raw: ${norm.filter(Boolean).join(" | ")}`);
-    for (let i = 1; i < norm.length; i++) {
-      const h = norm[i];
-      if (!h) continue;
-      if (h === "company name" && colIndex.company == null) colIndex.company = i;
-      else if ((h === "location" || h === "city") && colIndex.city == null) colIndex.city = i;
-      else if ((h === "layoff date" || (h.includes("layoff") && h.includes("date"))) && colIndex.effectiveDate == null) colIndex.effectiveDate = i;
-      else if ((h === "laid off" || (h.includes("laid") && h.includes("off"))) && colIndex.employees == null) colIndex.employees = i;
-      else if ((h === "layoff type" || h === "type") && colIndex.layoffType == null) colIndex.layoffType = i;
-      else if ((h === "received date" || (h.includes("received") && h.includes("date"))) && colIndex.noticeDate == null) colIndex.noticeDate = i;
-    }
-  });
-  if (headerRow === -1) throw new Error("OR: header row not found");
-  console.log(`  OR colIndex: ${JSON.stringify(colIndex)}`);
-
-  const records = [];
-  worksheet.eachRow((row, rowNumber) => {
-    if (rowNumber <= headerRow) return;
-    const rec = parseXlsxRow(row, colIndex, "OR", "Oregon");
-    if (rec) records.push(rec);
-  });
+  console.log(`  IA: processed ${sheetsOk} sheets`);
+  if (records.length === 0) throw new Error("IA: no valid records after processing workbook");
   return records;
 }
 
 // ─── State config ─────────────────────────────────────────────────────────────
+
+const SOURCE_STATUS = Object.freeze({
+  LIVE: "live",
+  MANUAL: "manual-only",
+  UNAVAILABLE: "unavailable",
+});
 
 const STATE_CONFIG = [
   {
@@ -779,6 +825,12 @@ const STATE_CONFIG = [
     name: "California WARN Act Notices",
     publisher: "California Employment Development Department (EDD)",
     url: "https://edd.ca.gov/en/jobs_and_training/layoff_services_warn/",
+    sourceStatus: SOURCE_STATUS.LIVE,
+    sourceType: "xlsx",
+    sourceUrls: [
+      "https://edd.ca.gov/en/jobs_and_training/layoff_services_warn/",
+      "https://edd.ca.gov/siteassets/files/jobs_and_training/warn/warn_report1.xlsx",
+    ],
     fetch: fetchCA,
   },
   {
@@ -786,6 +838,9 @@ const STATE_CONFIG = [
     name: "New Jersey WARN Notice Archive",
     publisher: "New Jersey Department of Labor and Workforce Development",
     url: "https://www.nj.gov/labor/assets/PDFs/WARN/WARN_Notice_Archive.xlsx",
+    sourceStatus: SOURCE_STATUS.LIVE,
+    sourceType: "xlsx",
+    sourceUrls: ["https://www.nj.gov/labor/assets/PDFs/WARN/WARN_Notice_Archive.xlsx"],
     fetch: fetchNJ,
   },
   {
@@ -793,6 +848,9 @@ const STATE_CONFIG = [
     name: "Texas WARN Act Historical Notices",
     publisher: "BLN Data (Texas Workforce Commission)",
     url: "https://storage.googleapis.com/bln-data-public/warn-layoffs/tx_historical.xlsx",
+    sourceStatus: SOURCE_STATUS.LIVE,
+    sourceType: "xlsx",
+    sourceUrls: ["https://storage.googleapis.com/bln-data-public/warn-layoffs/tx_historical.xlsx"],
     fetch: fetchTX,
   },
   {
@@ -800,6 +858,9 @@ const STATE_CONFIG = [
     name: "New York WARN Act Historical Notices",
     publisher: "BLN Data (New York State Department of Labor)",
     url: "https://storage.googleapis.com/bln-data-public/warn-layoffs/ny_historical.xlsx",
+    sourceStatus: SOURCE_STATUS.LIVE,
+    sourceType: "xlsx",
+    sourceUrls: ["https://storage.googleapis.com/bln-data-public/warn-layoffs/ny_historical.xlsx"],
     fetch: fetchNY,
   },
   {
@@ -807,6 +868,9 @@ const STATE_CONFIG = [
     name: "Ohio WARN Act Historical Notices",
     publisher: "BLN Data (Ohio Department of Job and Family Services)",
     url: "https://storage.googleapis.com/bln-data-public/warn-layoffs/oh_historical.csv",
+    sourceStatus: SOURCE_STATUS.LIVE,
+    sourceType: "csv",
+    sourceUrls: ["https://storage.googleapis.com/bln-data-public/warn-layoffs/oh_historical.csv"],
     fetch: fetchOH,
   },
   {
@@ -814,6 +878,11 @@ const STATE_CONFIG = [
     name: "Wisconsin WARN Act Notices",
     publisher: "Wisconsin Department of Workforce Development",
     url: "https://sheets.googleapis.com/v4/spreadsheets/1cyZiHZcepBI7ShB3dMcRprUFRG24lbwEnEDRBMhAqsA/values/Originals",
+    sourceStatus: SOURCE_STATUS.LIVE,
+    sourceType: "json",
+    sourceUrls: [
+      "https://sheets.googleapis.com/v4/spreadsheets/1cyZiHZcepBI7ShB3dMcRprUFRG24lbwEnEDRBMhAqsA/values/Originals",
+    ],
     fetch: fetchWI,
   },
   {
@@ -821,6 +890,9 @@ const STATE_CONFIG = [
     name: "Georgia WARN Act Historical Notices",
     publisher: "BLN Data (Georgia Department of Labor)",
     url: "https://storage.googleapis.com/bln-data-public/warn-layoffs/ga_historical.csv",
+    sourceStatus: SOURCE_STATUS.LIVE,
+    sourceType: "csv",
+    sourceUrls: ["https://storage.googleapis.com/bln-data-public/warn-layoffs/ga_historical.csv"],
     fetch: fetchGA,
   },
   {
@@ -828,6 +900,9 @@ const STATE_CONFIG = [
     name: "Tennessee WARN Act Historical Notices",
     publisher: "BLN Data (Tennessee Department of Labor and Workforce Development)",
     url: "https://storage.googleapis.com/bln-data-public/warn-layoffs/tn_historical.csv",
+    sourceStatus: SOURCE_STATUS.LIVE,
+    sourceType: "csv",
+    sourceUrls: ["https://storage.googleapis.com/bln-data-public/warn-layoffs/tn_historical.csv"],
     fetch: fetchTN,
   },
   {
@@ -835,16 +910,261 @@ const STATE_CONFIG = [
     name: "Kentucky WARN Act Historical Notices",
     publisher: "BLN Data (Kentucky Career Center)",
     url: "https://storage.googleapis.com/bln-data-public/warn-layoffs/ky-historical-normalized.csv",
+    sourceStatus: SOURCE_STATUS.LIVE,
+    sourceType: "csv",
+    sourceUrls: ["https://storage.googleapis.com/bln-data-public/warn-layoffs/ky-historical-normalized.csv"],
     fetch: fetchKY,
   },
   {
     state: "OR", stateName: "Oregon",
-    name: "Oregon WARN Act Historical Notices",
-    publisher: "BLN Data (Oregon Employment Department)",
-    url: "https://storage.googleapis.com/bln-data-public/warn-layoffs/or_historical.xlsx",
+    name: "Oregon WARN Act Notices",
+    publisher: "Oregon Employment Department",
+    url: "https://data.oregon.gov/Business/WARN/ijbz-jpx8/about_data",
+    sourceStatus: SOURCE_STATUS.LIVE,
+    sourceType: "json",
+    sourceUrls: [
+      "https://data.oregon.gov/Business/WARN/ijbz-jpx8/about_data",
+      "https://data.oregon.gov/resource/ijbz-jpx8.json",
+    ],
     fetch: fetchOR,
   },
+  {
+    state: "IA", stateName: "Iowa",
+    name: "Iowa WARN Log",
+    publisher: "Iowa Workforce Development",
+    url: "https://workforce.iowa.gov/employers/resources/warn",
+    sourceStatus: SOURCE_STATUS.LIVE,
+    sourceType: "xlsx",
+    sourceUrls: [
+      "https://workforce.iowa.gov/employers/resources/warn",
+      "https://workforce.iowa.gov/media/1190/download?inline",
+    ],
+    fetch: fetchIA,
+  },
 ];
+
+const ALL_STATES_AND_DC = [
+  ["AL", "Alabama"], ["AK", "Alaska"], ["AZ", "Arizona"], ["AR", "Arkansas"],
+  ["CA", "California"], ["CO", "Colorado"], ["CT", "Connecticut"], ["DE", "Delaware"],
+  ["DC", "District of Columbia"], ["FL", "Florida"], ["GA", "Georgia"], ["HI", "Hawaii"],
+  ["ID", "Idaho"], ["IL", "Illinois"], ["IN", "Indiana"], ["IA", "Iowa"],
+  ["KS", "Kansas"], ["KY", "Kentucky"], ["LA", "Louisiana"], ["ME", "Maine"],
+  ["MD", "Maryland"], ["MA", "Massachusetts"], ["MI", "Michigan"], ["MN", "Minnesota"],
+  ["MS", "Mississippi"], ["MO", "Missouri"], ["MT", "Montana"], ["NE", "Nebraska"],
+  ["NV", "Nevada"], ["NH", "New Hampshire"], ["NJ", "New Jersey"], ["NM", "New Mexico"],
+  ["NY", "New York"], ["NC", "North Carolina"], ["ND", "North Dakota"], ["OH", "Ohio"],
+  ["OK", "Oklahoma"], ["OR", "Oregon"], ["PA", "Pennsylvania"], ["RI", "Rhode Island"],
+  ["SC", "South Carolina"], ["SD", "South Dakota"], ["TN", "Tennessee"], ["TX", "Texas"],
+  ["UT", "Utah"], ["VT", "Vermont"], ["VA", "Virginia"], ["WA", "Washington"],
+  ["WV", "West Virginia"], ["WI", "Wisconsin"], ["WY", "Wyoming"],
+];
+
+const MANUAL_ONLY_NOTE =
+  "Official notices are available for manual/PDF/HTML review, but no stable CSV/XLSX/JSON adapter is registered.";
+const UNAVAILABLE_NOTE =
+  "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.";
+
+const MANUAL_SOURCE_METADATA = {
+  AL: {
+    name: "Alabama WARN Notices",
+    publisher: "Alabama Department of Labor",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: ["https://www.labor.alabama.gov/warn/"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  CO: {
+    name: "Colorado WARN Notices",
+    publisher: "Colorado Department of Labor and Employment",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: ["https://cdle.colorado.gov/employers/layoff-separations/warn-notices"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  CT: {
+    name: "Connecticut WARN Notices",
+    publisher: "Connecticut Department of Labor",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: ["https://portal.ct.gov/dol/divisions/warn/warn-notices"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  FL: {
+    name: "Florida WARN Notices",
+    publisher: "FloridaCommerce",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: [
+      "https://www.floridajobs.org/reemployment-assistance-service-center/reemployment-assistance/for-employers/warn-notices",
+    ],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  IL: {
+    name: "Illinois WARN Activities and Layoff Data",
+    publisher: "Illinois Department of Commerce and Economic Opportunity",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: ["https://www.illinoisworknet.com/LayoffRecovery/Pages/IllinoisWARNData.aspx"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  IN: {
+    name: "Indiana WARN Notices",
+    publisher: "Indiana Department of Workforce Development",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: ["https://www.in.gov/dwd/warn-notices/"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  KS: {
+    name: "Kansas WARN Notices",
+    publisher: "KANSASWORKS",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: ["https://www.kansasworks.com/ada/r/warn"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  MD: {
+    name: "Maryland WARN Notices",
+    publisher: "Maryland Department of Labor",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: ["https://www.dllr.state.md.us/employment/warn.shtml"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  MA: {
+    name: "Massachusetts WARN Weekly Report",
+    publisher: "Massachusetts Executive Office of Labor and Workforce Development",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: ["https://www.mass.gov/info-details/worker-adjustment-and-retraining-act-warn-weekly-report"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  MI: {
+    name: "Michigan WARN Notices",
+    publisher: "Michigan Department of Labor and Economic Opportunity",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: ["https://www.michigan.gov/leo/bureaus-agencies/wd/programs-services/warn-notices"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  MN: {
+    name: "Minnesota WARN Notices",
+    publisher: "Minnesota Department of Employment and Economic Development",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: ["https://mn.gov/deed/programs-services/dislocated-worker/employers/warn/"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  MO: {
+    name: "Missouri WARN Notices",
+    publisher: "Missouri Office of Workforce Development",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: ["https://jobs.mo.gov/warn"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  NV: {
+    name: "Nevada WARN Notices",
+    publisher: "Nevada Department of Employment, Training and Rehabilitation",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: ["https://detr.nv.gov/Page/WARN"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  NC: {
+    name: "North Carolina Workforce WARN Reports",
+    publisher: "North Carolina Department of Commerce",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: ["https://www.commerce.nc.gov/data-tools-reports/labor-market-data-tools/workforce-warn-reports"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  PA: {
+    name: "Pennsylvania WARN Notices",
+    publisher: "Pennsylvania Department of Labor & Industry",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: [
+      "https://www.pa.gov/agencies/dli/programs-services/workforce-development-home/warn-requirements/warn-notices",
+    ],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  SC: {
+    name: "South Carolina Layoff Notification Reports",
+    publisher: "SC Works / South Carolina Department of Employment and Workforce",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "pdf",
+    sourceUrls: ["https://scworks.org/employer/employer-programs/risk-closing/layoff-notification-reports"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  VA: {
+    name: "Virginia WARN Notices",
+    publisher: "Virginia Works",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: ["https://virginiaworks.gov/im-an-employer/retain-and-grow/warn-notices/"],
+    notes: MANUAL_ONLY_NOTE,
+  },
+  WA: {
+    name: "Washington WARN Layoff and Closure Database",
+    publisher: "Washington Employment Security Department",
+    sourceStatus: SOURCE_STATUS.MANUAL,
+    sourceType: "html",
+    sourceUrls: [
+      "https://esd.wa.gov/employer-requirements/layoffs-and-employee-notifications/worker-adjustment-and-retraining-notification-warn-layoff-and-closure-database",
+    ],
+    notes: MANUAL_ONLY_NOTE,
+  },
+};
+
+function normalizeSourceUrls(...groups) {
+  const urls = groups.flat().filter((url) => typeof url === "string" && url.trim());
+  return [...new Set(urls)];
+}
+
+function buildCoverageStates(perStateResults) {
+  const resultByState = new Map(perStateResults.map((r) => [r.state, r]));
+  const liveByState = new Map(STATE_CONFIG.map((cfg) => [cfg.state, cfg]));
+
+  return ALL_STATES_AND_DC.map(([state, fallbackName]) => {
+    const cfg = liveByState.get(state);
+    const manual = MANUAL_SOURCE_METADATA[state] ?? {};
+    const result = resultByState.get(state);
+    const stateName = cfg?.stateName ?? fallbackName;
+    const sourceStatus = cfg?.sourceStatus ?? manual.sourceStatus ?? SOURCE_STATUS.UNAVAILABLE;
+    const sourceType = cfg?.sourceType ?? manual.sourceType ?? "none";
+    const sourceUrls = normalizeSourceUrls(cfg?.sourceUrls ?? [], cfg?.url ?? [], manual.sourceUrls ?? [], manual.url ?? []);
+
+    return {
+      state,
+      stateName,
+      sourceStatus,
+      sourceType,
+      recordsIncluded: result?.status === "ok",
+      notices: result?.notices ?? 0,
+      dateRange: result?.dateRange ?? null,
+      buildStatus: result?.status ?? (cfg ? "not-run" : "metadata-only"),
+      adapter: cfg?.fetch?.name ?? null,
+      name: cfg?.name ?? manual.name ?? `${stateName} WARN Notices`,
+      publisher: cfg?.publisher ?? manual.publisher ?? null,
+      url: sourceUrls[0] ?? null,
+      sourceUrls,
+      notes: cfg?.notes ?? manual.notes ?? (cfg ? "Machine-readable public source is fetched by this pipeline." : UNAVAILABLE_NOTE),
+      error: result?.error ?? null,
+    };
+  });
+}
+
+function buildCoverageSummary(coverageStates) {
+  const countStatus = (status) => coverageStates.filter((s) => s.sourceStatus === status).length;
+  return {
+    totalStates: coverageStates.length,
+    liveStates: countStatus(SOURCE_STATUS.LIVE),
+    manualOnlyStates: countStatus(SOURCE_STATUS.MANUAL),
+    unavailableStates: countStatus(SOURCE_STATUS.UNAVAILABLE),
+    statesWithRecords: coverageStates.filter((s) => s.recordsIncluded).length,
+  };
+}
 
 // ─── Summary helpers ──────────────────────────────────────────────────────────
 
@@ -941,7 +1261,13 @@ async function main() {
 
     if (!records) {
       console.warn(`  ⚠️  SKIPPING ${cfg.state}: ${error?.message}`);
-      perStateResults.push({ state: cfg.state, stateName: cfg.stateName, status: "skipped", notices: 0 });
+      perStateResults.push({
+        state: cfg.state,
+        stateName: cfg.stateName,
+        status: "skipped",
+        notices: 0,
+        error: error?.message ?? null,
+      });
       continue;
     }
 
@@ -956,6 +1282,11 @@ async function main() {
     includedSources.push({
       state: cfg.state, stateName: cfg.stateName,
       name: cfg.name, publisher: cfg.publisher, url: cfg.url,
+      sourceStatus: cfg.sourceStatus,
+      sourceType: cfg.sourceType,
+      sourceUrls: normalizeSourceUrls(cfg.sourceUrls ?? [], cfg.url ?? []),
+      adapter: cfg.fetch.name,
+      notes: cfg.notes ?? null,
       license: "Public Domain (state public record)",
     });
   }
@@ -965,6 +1296,12 @@ async function main() {
     entry.records = entry.records.filter(
       (r) => !r.noticeDate || r.noticeDate >= MIN_NOTICE_DATE,
     );
+    const result = perStateResults.find((r) => r.state === entry.cfg.state);
+    if (result) {
+      const dates = entry.records.map((r) => r.noticeDate).filter(Boolean).sort();
+      result.notices = entry.records.length;
+      result.dateRange = { earliest: dates[0] ?? null, latest: dates[dates.length - 1] ?? null };
+    }
   }
 
   // Compute summary over FULL (untrimmed) set
@@ -993,10 +1330,19 @@ async function main() {
     return b.noticeDate < a.noticeDate ? -1 : b.noticeDate > a.noticeDate ? 1 : 0;
   });
 
+  const coverageStates = buildCoverageStates(perStateResults);
+  const coverageSummary = buildCoverageSummary(coverageStates);
+  const liveStateCodes = coverageStates
+    .filter((s) => s.sourceStatus === SOURCE_STATUS.LIVE)
+    .map((s) => s.state)
+    .join(", ");
+
   const output = {
     generatedAt: new Date().toISOString(),
     coverage:
-      "10 U.S. states (CA, GA, KY, NJ, NY, OH, OR, TN, TX, WI) — official state WARN Act filings, aggregated, latest 10 years. Some states are historical backfills; see per-state date ranges.",
+      `${coverageSummary.liveStates} live WARN adapters (${liveStateCodes}) plus all-state coverage metadata for ${coverageSummary.totalStates} jurisdictions; notices are normalized to the latest 10 years where available.`,
+    coverageSummary,
+    coverageStates,
     sources: includedSources,
     notices: trimmedNotices,
     summary,
@@ -1027,6 +1373,9 @@ async function main() {
   console.log(`   date range        : ${summary.dateRange.earliest} → ${summary.dateRange.latest}`);
   console.log(`   file size         : ${(jsonStr.length / 1024).toFixed(1)} KB`);
   console.log(`   states included   : ${includedSources.map((s) => s.state).join(", ")}`);
+  console.log(
+    `   coverage states   : ${coverageSummary.totalStates} (${coverageSummary.liveStates} live, ${coverageSummary.manualOnlyStates} manual/PDF-only, ${coverageSummary.unavailableStates} unavailable)`
+  );
   console.log(`   byState entries   : ${summary.byState.length}`);
 
   console.log("\n   byState (desc by employees):");
