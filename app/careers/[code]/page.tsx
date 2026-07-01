@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { generateAllCareerInsights, getOnetEnrichment, getSectorAggregatesExtended, computeResiliencyScore, getOccupationTrend } from "@/lib/data";
+import { generateAllCareerInsights, getOnetEnrichment, getSectorAggregatesExtended, computeResiliencyScore, getOccupationTrend, getReskillingPaths } from "@/lib/data";
 import OccupationTrendChart from "@/components/charts/OccupationTrendChart";
 import { colorForRisk, formatCurrency } from "@/lib/utils";
 import PredictiveChart from "@/components/charts/PredictiveChart";
@@ -26,6 +26,7 @@ export default function CareerDetailPage() {
     [career],
   );
   const trend = useMemo(() => getOccupationTrend(code), [code]);
+  const transitions = useMemo(() => getReskillingPaths(code, 3, "score"), [code]);
 
   if (!career) {
     return (
@@ -146,6 +147,84 @@ export default function CareerDetailPage() {
         </Link>
         .
       </p>
+
+      {/* Best transitions from here */}
+      {transitions.length > 0 && (
+        <section aria-labelledby="best-transitions-heading">
+          <div className="flex items-end justify-between gap-3 mb-1">
+            <h2 id="best-transitions-heading" className="text-lg font-semibold text-gradient">
+              {t("bestTransitionsTitle")}
+            </h2>
+            <Link
+              href="/skills"
+              className="shrink-0 text-xs text-violet-500 dark:text-violet-400 hover:text-violet-400 dark:hover:text-violet-300 underline underline-offset-2 transition-colors"
+            >
+              {t("seeAllPathways")} &rarr;
+            </Link>
+          </div>
+          <p className="text-xs text-zinc-500 mb-4 max-w-2xl">{t("bestTransitionsDesc")}</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {transitions.map((p) => {
+              const scoreTone =
+                p.transitionScore >= 70
+                  ? "text-emerald-600 dark:text-emerald-400"
+                  : p.transitionScore >= 50
+                  ? "text-amber-600 dark:text-amber-400"
+                  : "text-zinc-500 dark:text-zinc-400";
+              const retrain =
+                p.jobZoneDelta <= 0 ? t("transRetrainSimilar") : t("transRetrainMore", { n: String(p.jobZoneDelta) });
+              const payText = `${p.salaryDelta >= 0 ? "+" : "−"}$${Math.abs(Math.round(p.salaryDelta / 1000))}k`;
+              return (
+                <Link
+                  key={p.occupationCode}
+                  href={`/careers/${p.occupationCode}`}
+                  className="block glass glass-hover bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 group transition-all focus:outline-none focus:ring-2 focus:ring-violet-500"
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-white leading-snug group-hover:text-cyan-300 transition-colors">
+                      {p.occupationName}
+                    </h3>
+                    <div className="shrink-0 text-right">
+                      <div className={`text-lg font-bold tabular-nums leading-none ${scoreTone}`}>{p.transitionScore}</div>
+                      <div className="text-[9px] uppercase tracking-wide text-zinc-500">{t("transScoreLabel")}</div>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] mb-2.5">
+                    <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                      &darr;{p.exposureDropPts.toFixed(0)} <span className="text-zinc-500 font-normal">{t("transExposure")}</span>
+                    </span>
+                    <span
+                      className={`font-medium ${
+                        p.salaryDelta >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-500 dark:text-red-400"
+                      }`}
+                    >
+                      {payText} <span className="text-zinc-500 font-normal">{t("transPay")}</span>
+                    </span>
+                    <span className="text-zinc-500">{retrain}</span>
+                  </div>
+                  {p.missingSkills.length > 0 && (
+                    <div>
+                      <p className="text-[10px] font-medium text-amber-600 dark:text-amber-400 mb-1">
+                        {t("transSkillsToBuild")}
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {p.missingSkills.slice(0, 3).map((s) => (
+                          <span
+                            key={s}
+                            className="px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/30 text-amber-700 dark:text-amber-300 text-[10px]"
+                          >
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Risk analysis + skills */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
