@@ -215,21 +215,7 @@ export default function SectorScatterChart() {
       .attr("stroke-width", 1.5)
       .attr("stroke-opacity", 0.85);
 
-    // Short label on larger bubbles (first word of sector name)
-    bubbles.each(function (d) {
-      const r = bubbleR(d);
-      if (r < 20) return;
-      d3.select(this)
-        .append("text")
-        .attr("text-anchor", "middle")
-        .attr("dy", "0.35em")
-        .attr("fill", bubbleText)
-        .attr("font-size", Math.min(10, r * 0.42) + "px")
-        .attr("font-weight", "600")
-        .attr("pointer-events", "none")
-        .attr("user-select", "none")
-        .text(d.sector.split(" ")[0]);
-    });
+    // Sector labels are drawn in a de-overlapped layer below (after bubbles).
 
     // ── Entrance animation ───────────────────────────────────────────────────
 
@@ -244,6 +230,49 @@ export default function SectorScatterChart() {
         .delay((_, i) => i * 55)
         .ease(d3.easeBackOut.overshoot(1.15))
         .attr("transform", (d) => `translate(${tX(d)},${tY(d)}) scale(1)`);
+    }
+
+    // ── Sector labels (de-overlapped with a small force layout) ──────────────
+    interface LNode extends d3.SimulationNodeDatum {
+      text: string;
+      cx: number;
+      cy: number;
+    }
+    const labelNodes: LNode[] = data
+      .filter((d) => bubbleR(d) >= 22)
+      .map((d) => {
+        const cx = xScale(d.avgRisk * 100);
+        const cy = yScale(d.brightShare * 100);
+        return { text: d.sector.split(" ")[0], cx, cy, x: cx, y: cy };
+      });
+    d3.forceSimulation<LNode>(labelNodes)
+      .force("x", d3.forceX<LNode>((n) => n.cx).strength(0.7))
+      .force("y", d3.forceY<LNode>((n) => n.cy).strength(0.7))
+      .force("collide", d3.forceCollide<LNode>((n) => Math.max(13, n.text.length * 3.1)))
+      .stop()
+      .tick(140);
+
+    const labelG = svg.append("g").attr("class", "sc-labels").attr("pointer-events", "none");
+    for (const n of labelNodes) {
+      const x = n.x ?? n.cx;
+      const y = n.y ?? n.cy;
+      if (Math.hypot(x - n.cx, y - n.cy) > 5) {
+        labelG
+          .append("line")
+          .attr("x1", n.cx).attr("y1", n.cy).attr("x2", x).attr("y2", y)
+          .attr("stroke", axisText).attr("stroke-width", 0.75).attr("opacity", 0.4);
+      }
+      labelG
+        .append("text")
+        .attr("x", x).attr("y", y)
+        .attr("text-anchor", "middle").attr("dy", "0.35em")
+        .attr("font-size", "10px").attr("font-weight", "600")
+        .attr("fill", bubbleText)
+        .attr("paint-order", "stroke")
+        .attr("stroke", isDark ? "rgba(9,9,11,0.75)" : "rgba(255,255,255,0.85)")
+        .attr("stroke-width", 2.5)
+        .attr("stroke-linejoin", "round")
+        .text(n.text);
     }
 
     // ── Hover interactions ───────────────────────────────────────────────────
