@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 
 // Mock LanguageProvider so useT works without a real context tree
-const mockUseLanguage = vi.fn(() => ({ locale: "en" as const, setLocale: vi.fn() }));
+const mockUseLanguage = vi.fn(() => ({ locale: "en" as "en" | "zh", setLocale: vi.fn() }));
 vi.mock("@/lib/i18n/LanguageProvider", () => ({
   useLanguage: () => mockUseLanguage(),
 }));

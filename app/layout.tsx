@@ -6,6 +6,7 @@ import Sidebar from "@/components/dashboard/Sidebar";
 import GridBackground from "@/components/ui/GridBackground";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { LanguageProvider } from "@/lib/i18n/LanguageProvider";
+import { BASE_URL, BASE_PATH, SITE_DESCRIPTION } from "@/lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,10 +17,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-const BASE_URL = "https://futuregrid.genisisiq.com";
-// basePath is set via NEXT_PUBLIC_BASE_PATH (e.g. "/FutureGrid" on GitHub Pages, "" otherwise).
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const OG_IMAGE = {
   url: `${BASE_PATH}/og.png`,
@@ -36,21 +33,18 @@ export const metadata: Metadata = {
   },
   authors: [{ name: "Yingting Huang" }],
   creator: "Yingting Huang",
-  description:
-    "Explore how artificial intelligence is reshaping careers — see AI exposure levels, Bright Outlook occupations, and salary data across 22 industry sectors.",
+  description: SITE_DESCRIPTION,
   openGraph: {
     siteName: "FutureGrid",
     type: "website",
     title: "FutureGrid — AI & the Future of Work",
-    description:
-      "Explore how artificial intelligence is reshaping careers — see AI exposure levels, Bright Outlook occupations, and salary data across 22 industry sectors.",
+    description: SITE_DESCRIPTION,
     images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: "FutureGrid — AI & the Future of Work",
-    description:
-      "Explore how artificial intelligence is reshaping careers — see AI exposure levels, Bright Outlook occupations, and salary data across 22 industry sectors.",
+    description: SITE_DESCRIPTION,
     images: [OG_IMAGE],
   },
 };
