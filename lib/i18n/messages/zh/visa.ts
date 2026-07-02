@@ -82,17 +82,54 @@ export const visaZh = {
 
   // ── Employers ────────────────────────────────────────────────────────────────
   employersSectionTitle: "顶尖担保雇主",
-  employersSectionSubhead: "十年间获批 H-1B LCA 数量最多的雇主。",
+  employersSectionSubhead:
+    "十年间获批 H-1B LCA 数量最多的 50 家雇主——申请量、平均薪资及逐年申请趋势。",
   employersChartName: "按获批 LCA 总数排列的顶尖 H-1B 担保雇主，FY2016–FY2025",
   employersSummary: "水平条形图展示十年间获批 LCA 总量最高的雇主。",
   employersAxisX: "获批 LCA（总计）",
+  employerDeepTableName: "顶尖 H-1B 担保雇主——含薪资与趋势的详细表格",
+  employerDeepTableCaption:
+    "顶尖 H-1B 担保雇主详细表格：获批 LCA 总数、年均薪资及逐年申请趋势。",
+  colMeanWage: "年均薪资",
+  colYearTrend: "年度趋势",
+  employerShowMore: "展示全部 {n} 家雇主",
+  employerShowLess: "收起",
 
-  // ── States ───────────────────────────────────────────────────────────────────
+  // ── States (existing) ─────────────────────────────────────────────────────────
   statesSectionTitle: "顶尖州",
   statesSectionSubhead:
     "十年间获批 H-1B LCA 数量最多的州，并附最新年度工资中位数。",
   statesTableName: "按获批 H-1B LCA 总数排列的顶尖州",
   statesTableCaption: "按获批 H-1B LCA 总数排列的顶尖州，FY2016–FY2025。",
+
+  // ── State deep-dive ───────────────────────────────────────────────────────────
+  stateDeepSectionTitle: "州级深度分析",
+  stateDeepSectionSubhead:
+    "按获批 LCA 总数或最新工资中位数排序，探索全部 52 个管辖区。点击行或使用下拉框选择州，查看其申请量趋势、薪资走势及顶尖职业。",
+  stateSortLabel: "排序依据",
+  stateSortByTotal: "LCA 总数",
+  stateSortByWage: "工资中位数",
+  stateSelectorLabel: "选择州",
+  stateDetailTitle: "{state} 详情",
+  stateDetailCountByYear: "各财年获批 LCA 数量",
+  stateDetailWageByYear: "各财年年薪中位数",
+  stateDetailTopOccs: "顶尖职业",
+  statesDeepTableName: "所有 H-1B 州——可按 LCA 总数或工资中位数排序",
+  statesDeepTableCaption:
+    "52 个管辖区按获批 H-1B LCA 总数或最新工资中位数排列，FY2016–FY2025。",
+  stateCountChartName: "{state} H-1B 获批 LCA 数量，FY2016–FY2025",
+  stateWageChartName: "{state} H-1B 工资中位数，FY2016–FY2025",
+
+  // ── Occupation wage trend ─────────────────────────────────────────────────────
+  occWageTrendSectionTitle: "各职业薪资走势",
+  occWageTrendSectionSubhead:
+    "FY2025 申请量最高的前 8 个职业（含薪资趋势数据）获批 H-1B LCA 折算年薪中位数。折线断裂表示该财年申请数量不足 50 件。",
+  occWageTrendAxisY: "年薪中位数（美元）",
+  occWageTrendChartName: "顶尖 H-1B 职业各财年年薪中位数趋势，FY2016–FY2025",
+  occWageTrendSummary:
+    "多线图展示前 8 个含薪资数据的 H-1B 职业折算年薪中位数，按财年排列。折线断裂表示该职业某财年申请数量不足 50 件。",
+  occWageTrendGapNote: "折线断裂表示该职业在该财年记录的申请数量不足 50 件。",
+  occWageTrendSeriesCount: "共展示 {n} 个职业系列，跨越 {years} 个财年。",
 
   // ── Shared table headers ─────────────────────────────────────────────────────
   colYear: "财年",

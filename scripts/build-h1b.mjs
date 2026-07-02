@@ -541,9 +541,15 @@ function percentile(sorted, p) {
 // ─── Aggregation state (accumulated across years) ────────────────────────────
 
 const byYear = new Map(); // year → { certified, certifiedWithdrawn, totalWorker, employers:Set, wages:[] }
-const occ = new Map(); // socCode → { titleByYear, countByYear, totalCount, medianWageByYear }
-const emp = new Map(); // employer → { totalCount, countByYear }
+const occ = new Map(); // socCode → { titleByYear, countByYear, totalCount, medianWageByYear, wageCountByYear }
+// Employers are UNBOUNDED (~1M distinct), so we NEVER collect per-employer wage
+// arrays. Instead each employer carries a running (sum,count) accumulator so the
+// mean offered wage stays memory-bounded regardless of how many employers exist.
+const emp = new Map(); // employer → { totalCount, countByYear, wageSum, wageN }
 const stateAgg = new Map(); // state → { totalCount, countByYear, medianWageByYear }
+// Per-state occupation counts for byState[].topOccupations. Bounded: 52 states ×
+// ~800 SOCs ≈ 40K entries total (accumulated across all years) — safe to keep.
+const stateOcc = new Map(); // state → Map(socCode → count)
 
 // SOC 2010→2018 crosswalk (loaded once in main). When present, every SOC code is
 // normalized to the 2018 vintage before aggregating so an occupation that OFLC
@@ -649,9 +655,10 @@ async function parseFile(year, file, ctx) {
       yearRec.totalWorker += workers;
 
       const employer = cellText(get("employerName")).trim().replace(/\s+/g, " ").toUpperCase();
+      let empRec = null;
       if (employer) {
         yearRec.employers.add(employer);
-        bump(emp, employer, yKey);
+        empRec = bump(emp, employer, yKey);
       }
 
       const rawSoc = normSocCode(get("socCode"));
@@ -659,7 +666,13 @@ async function parseFile(year, file, ctx) {
       if (soc) {
         let socRec = occ.get(soc);
         if (!socRec) {
-          socRec = { titleByYear: {}, countByYear: {}, totalCount: 0, medianWageByYear: {} };
+          socRec = {
+            titleByYear: {},
+            countByYear: {},
+            totalCount: 0,
+            medianWageByYear: {},
+            wageCountByYear: {},
+          };
           occ.set(soc, socRec);
         }
         socRec.totalCount++;
@@ -671,9 +684,21 @@ async function parseFile(year, file, ctx) {
       const st = normState(get("worksiteState"));
       if (st) bump(stateAgg, st, yKey);
 
+      // Per-state occupation counts (bounded: 52 states × ~800 SOCs).
+      if (st && soc) {
+        let socCounts = stateOcc.get(st);
+        if (!socCounts) stateOcc.set(st, (socCounts = new Map()));
+        socCounts.set(soc, (socCounts.get(soc) || 0) + 1);
+      }
+
       const wage = annualize(parseMoney(get("wageFrom")), get("wageUnit"));
       if (Number.isFinite(wage) && wage >= WAGE_MIN && wage <= WAGE_MAX) {
         yearRec.wages.push(wage);
+        // Running per-employer mean accumulator (NO arrays — employers are ~1M).
+        if (empRec) {
+          empRec.wageSum = (empRec.wageSum || 0) + wage;
+          empRec.wageN = (empRec.wageN || 0) + 1;
+        }
         if (soc) {
           let arr = socWages.get(soc);
           if (!arr) socWages.set(soc, (arr = []));
@@ -733,7 +758,9 @@ async function parseYear(year, files) {
   yearRec.wages.sort((a, b) => a - b);
   for (const [soc, arr] of socWages) {
     arr.sort((a, b) => a - b);
-    occ.get(soc).medianWageByYear[yKey] = median(arr);
+    const socRec = occ.get(soc);
+    socRec.medianWageByYear[yKey] = median(arr);
+    socRec.wageCountByYear[yKey] = arr.length;
   }
   for (const [st, arr] of stateWages) {
     arr.sort((a, b) => a - b);
@@ -772,9 +799,10 @@ function cagr(countByYear, yearsPresent) {
 function resolveOccTitle(socCode, rec) {
   const canonical = SOC_CROSSWALK?.soc2018Title.get(socCode);
   if (canonical) return canonical;
-  const years = Object.keys(rec.titleByYear).sort((a, b) => Number(b) - Number(a));
+  const titleByYear = rec && rec.titleByYear ? rec.titleByYear : {};
+  const years = Object.keys(titleByYear).sort((a, b) => Number(b) - Number(a));
   for (const y of years) {
-    if (rec.titleByYear[y]) return rec.titleByYear[y];
+    if (titleByYear[y]) return titleByYear[y];
   }
   return null;
 }
@@ -873,35 +901,81 @@ async function main() {
   });
 
   // ── occupations (ALL SOCs with data), consolidated to the 2018 SOC vintage ──
+  // wageByYear (median annual offered wage per fiscal year) is emitted ONLY for
+  // high-volume occupations (totalCount >= WAGE_TRACK_MIN_TOTAL); smaller ones
+  // have noisy medians and omit the field. Within a tracked occupation, a year
+  // with too few wage samples (< MIN_WAGE_SAMPLES_PER_YEAR) is set to null.
+  const WAGE_TRACK_MIN_TOTAL = 5000;
+  const MIN_WAGE_SAMPLES_PER_YEAR = 50;
   const occupations = [...occ.entries()]
-    .map(([socCode, r]) => ({
-      socCode,
-      socTitle: resolveOccTitle(socCode, r),
-      countByYear: r.countByYear,
-      totalCount: r.totalCount,
-      medianWageAnnualLatest: r.medianWageByYear[latestYear] ?? null,
-      cagr: cagr(r.countByYear, yearKeys),
-    }))
+    .map(([socCode, r]) => {
+      const base = {
+        socCode,
+        socTitle: resolveOccTitle(socCode, r),
+        countByYear: r.countByYear,
+        totalCount: r.totalCount,
+        medianWageAnnualLatest: r.medianWageByYear[latestYear] ?? null,
+        cagr: cagr(r.countByYear, yearKeys),
+      };
+      if (r.totalCount >= WAGE_TRACK_MIN_TOTAL) {
+        const wageByYear = {};
+        for (const y of yearKeys) {
+          if (!(r.countByYear[y] > 0)) continue;
+          const samples = r.wageCountByYear[y] ?? 0;
+          wageByYear[y] =
+            samples >= MIN_WAGE_SAMPLES_PER_YEAR ? r.medianWageByYear[y] ?? null : null;
+        }
+        base.wageByYear = wageByYear;
+        base.medianWageByYear = wageByYear;
+      }
+      return base;
+    })
     .sort((a, b) => b.totalCount - a.totalCount);
 
-  // ── topEmployers (top 30 by total) ──
+  // ── topEmployers (top 50 by total) ──
+  // meanWageAnnual is a running per-employer mean of the offered wage, computed
+  // from a bounded (sum,count) accumulator — no per-employer wage arrays are
+  // ever collected, so memory stays flat across the ~1M distinct employers.
   const topEmployers = [...emp.entries()]
     .map(([employer, r]) => ({
       employer,
       totalCount: r.totalCount,
       countByYear: r.countByYear,
+      meanWageAnnual: r.wageN > 0 ? Math.round(r.wageSum / r.wageN) : null,
     }))
     .sort((a, b) => b.totalCount - a.totalCount)
-    .slice(0, 30);
+    .slice(0, 50);
 
   // ── byState (50 + DC + territories with data) ──
+  // Each state gains wageByYear (median annual wage per fiscal year) and
+  // topOccupations (top 5 SOCs by filing count within the state).
   const byState = [...stateAgg.entries()]
-    .map(([state, r]) => ({
-      state,
-      totalCount: r.totalCount,
-      countByYear: r.countByYear,
-      medianWageAnnualLatest: r.medianWageByYear[latestYear] ?? null,
-    }))
+    .map(([state, r]) => {
+      const wageByYear = {};
+      for (const y of yearKeys) {
+        if (!(r.countByYear[y] > 0)) continue;
+        wageByYear[y] = r.medianWageByYear[y] ?? null;
+      }
+      const socCounts = stateOcc.get(state);
+      const topOccupations = socCounts
+        ? [...socCounts.entries()]
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5)
+            .map(([socCode, count]) => ({
+              socCode,
+              socTitle: resolveOccTitle(socCode, occ.get(socCode) ?? {}),
+              count,
+            }))
+        : [];
+      return {
+        state,
+        totalCount: r.totalCount,
+        countByYear: r.countByYear,
+        medianWageAnnualLatest: r.medianWageByYear[latestYear] ?? null,
+        wageByYear,
+        topOccupations,
+      };
+    })
     .sort((a, b) => b.totalCount - a.totalCount);
 
   const generatedAt = new Date().toISOString();

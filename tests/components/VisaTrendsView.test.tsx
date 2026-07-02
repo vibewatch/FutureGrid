@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, within, fireEvent } from "@testing-library/react";
 import type { ReactNode } from "react";
 
 // ── Mocks ─────────────────────────────────────────────────────────────────────
@@ -64,6 +64,20 @@ describe("VisaTrendsView", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders the three new deep-dive section headings", () => {
+    render(<VisaTrendsView />);
+
+    // Deep-dive 1: Wage Trajectories by Occupation
+    expect(
+      screen.getByRole("heading", { name: /Wage Trajectories by Occupation/i }),
+    ).toBeInTheDocument();
+
+    // Deep-dive 3: State Deep-Dive
+    expect(
+      screen.getByRole("heading", { name: /State Deep-Dive/i }),
+    ).toBeInTheDocument();
+  });
+
   it("shows a known headline number and the leading occupation", () => {
     render(<VisaTrendsView />);
     // FY2025 certified LCAs = 544,740 (rendered in a stat card).
@@ -86,6 +100,41 @@ describe("VisaTrendsView", () => {
     expect(within(table).getByText("CA")).toBeInTheDocument();
   });
 
+  it("renders the state deep-dive table with all-states data", () => {
+    render(<VisaTrendsView />);
+    // The deep-dive section has its own accessible table.
+    const deepTable = screen.getByRole("table", {
+      name: /All H-1B states — sortable/i,
+    });
+    expect(deepTable).toBeInTheDocument();
+    // CA should appear in the deep-dive table too.
+    expect(within(deepTable).getByText("CA")).toBeInTheDocument();
+  });
+
+  it("renders the employer deep-dive table with mean wage column", () => {
+    render(<VisaTrendsView />);
+    const empTable = screen.getByRole("table", {
+      name: /Top H-1B sponsoring employers — detailed table/i,
+    });
+    expect(empTable).toBeInTheDocument();
+    // At least one employer row should be present (COGNIZANT is #1 by volume).
+    expect(within(empTable).getByText(/COGNIZANT/i)).toBeInTheDocument();
+  });
+
+  it("renders the state detail panel for the default state (CA)", () => {
+    render(<VisaTrendsView />);
+    // The state detail panel has a heading "{state} Detail".
+    expect(screen.getByRole("heading", { name: /CA Detail/i })).toBeInTheDocument();
+  });
+
+  it("changes the state detail panel when a different row is selected", () => {
+    render(<VisaTrendsView />);
+    // Find the state dropdown and switch to TX.
+    const selector = screen.getByRole("combobox", { name: /Select a state/i });
+    fireEvent.change(selector, { target: { value: "TX" } });
+    expect(screen.getByRole("heading", { name: /TX Detail/i })).toBeInTheDocument();
+  });
+
   it("renders Chinese copy when the locale is zh", () => {
     mockUseLanguage.mockReturnValue({ locale: "zh", setLocale: vi.fn() });
     render(<VisaTrendsView />);
@@ -94,6 +143,10 @@ describe("VisaTrendsView", () => {
     ).toBeInTheDocument();
     // ZH section heading for the wage trend.
     expect(screen.getByRole("heading", { name: /薪资趋势/ })).toBeInTheDocument();
+    // ZH heading for the new wage-by-occupation section.
+    expect(screen.getByRole("heading", { name: /各职业薪资走势/ })).toBeInTheDocument();
+    // ZH heading for the state deep-dive.
+    expect(screen.getByRole("heading", { name: /州级深度分析/ })).toBeInTheDocument();
     // Data-driven values remain present regardless of locale.
     expect(screen.getByText(/544,740/)).toBeInTheDocument();
   });

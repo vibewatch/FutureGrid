@@ -13,11 +13,16 @@ import {
   getOccupationsSorted,
   getTopOccupationsByLatestYear,
   getTopOccupationsByTotal,
-  getTopEmployers,
+  getAllEmployers,
   getTopStates,
+  getAllStates,
   getExposureTierAggregation,
+  getOccupationsWithWageTrend,
   EXPOSURE_TIERS,
 } from "@/lib/h1b";
+// Deep-dive sections (client components with local state — no canvas, so no need for ssr:false)
+import EmployerDeepDiveSection from "./EmployerDeepDiveSection";
+import StateDeepDiveSection from "./StateDeepDiveSection";
 
 // ── Loading stub ──────────────────────────────────────────────────────────────
 
@@ -44,15 +49,15 @@ const TopOccupationsChart = dynamic(() => import("./TopOccupationsChart"), {
   ssr: false,
   loading: () => <LoadingStub />,
 });
+const OccWageTrendChart = dynamic(() => import("./OccWageTrendChart"), {
+  ssr: false,
+  loading: () => <LoadingStub />,
+});
 const OccupationMixChart = dynamic(() => import("./OccupationMixChart"), {
   ssr: false,
   loading: () => <LoadingStub />,
 });
 const ExposureTierChart = dynamic(() => import("./ExposureTierChart"), {
-  ssr: false,
-  loading: () => <LoadingStub />,
-});
-const EmployersChart = dynamic(() => import("./EmployersChart"), {
   ssr: false,
   loading: () => <LoadingStub />,
 });
@@ -157,6 +162,17 @@ export default function VisaTrendsView() {
     [topOccLatest, years],
   );
 
+  // Occupation wage trend — top 8 with wageByYear data.
+  const occWithWage = useMemo(() => getOccupationsWithWageTrend(8), []);
+  const occWageSeries = useMemo(
+    () =>
+      occWithWage.map((o) => ({
+        label: o.socTitle,
+        wageByYear: o.wageByYear!,
+      })),
+    [occWithWage],
+  );
+
   // Occupation mix (100% stacked) — top 8 by total + aggregated "Other".
   const mixSeries = useMemo(() => {
     const top = getTopOccupationsByTotal(8);
@@ -205,8 +221,9 @@ export default function VisaTrendsView() {
   );
   const matchRatePct = `${Math.round(exposure.occupationMatchRate * 100)}%`;
 
-  const employers = useMemo(() => getTopEmployers(10), []);
+  const allEmployers = useMemo(() => getAllEmployers(), []);
   const states = useMemo(() => getTopStates(10), []);
+  const allStates = useMemo(() => getAllStates(), []);
 
   return (
     <div className="mx-auto w-full max-w-[1400px] space-y-10">
@@ -285,6 +302,17 @@ export default function VisaTrendsView() {
         </div>
       </Section>
 
+      {/* ── Occupation wage trend (deep-dive 1) ──────────────────────────── */}
+      <Section
+        title={t("occWageTrendSectionTitle")}
+        subhead={t("occWageTrendSectionSubhead")}
+        delay={145}
+      >
+        <div className={CARD}>
+          <OccWageTrendChart years={years} series={occWageSeries} />
+        </div>
+      </Section>
+
       {/* ── Occupation mix ───────────────────────────────────────────────── */}
       <Section title={t("mixSectionTitle")} subhead={t("mixSectionSubhead")} delay={150}>
         <div className={CARD}>
@@ -309,18 +337,18 @@ export default function VisaTrendsView() {
         </div>
       </Section>
 
-      {/* ── Top employers ────────────────────────────────────────────────── */}
+      {/* ── Employer deep-dive (deep-dive 2) ─────────────────────────────── */}
       <Section
         title={t("employersSectionTitle")}
         subhead={t("employersSectionSubhead")}
         delay={170}
       >
         <div className={CARD}>
-          <EmployersChart employers={employers} />
+          <EmployerDeepDiveSection employers={allEmployers} years={years} />
         </div>
       </Section>
 
-      {/* ── Top states (accessible table) ────────────────────────────────── */}
+      {/* ── Top states (existing accessible table) ───────────────────────── */}
       <Section title={t("statesSectionTitle")} subhead={t("statesSectionSubhead")} delay={180}>
         <div className={`${CARD} overflow-x-auto`}>
           <table className="w-full text-sm" aria-label={t("statesTableName")}>
@@ -364,6 +392,17 @@ export default function VisaTrendsView() {
               ))}
             </tbody>
           </table>
+        </div>
+      </Section>
+
+      {/* ── State deep-dive (deep-dive 3) ────────────────────────────────── */}
+      <Section
+        title={t("stateDeepSectionTitle")}
+        subhead={t("stateDeepSectionSubhead")}
+        delay={185}
+      >
+        <div className={CARD}>
+          <StateDeepDiveSection states={allStates} years={years} defaultState="CA" />
         </div>
       </Section>
 

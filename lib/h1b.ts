@@ -60,12 +60,24 @@ export interface H1bOccupation {
   totalCount: number;
   medianWageAnnualLatest: number;
   cagr: number;
+  /** Median annual wage by fiscal year — present only for occupations with ≥ 5,000 total filings. Null values indicate < 50 filings in that year. */
+  wageByYear?: Record<string, number | null>;
+  /** Alias for wageByYear (same data). */
+  medianWageByYear?: Record<string, number | null>;
 }
 
 export interface H1bEmployer {
   employer: string;
   totalCount: number;
   countByYear: Record<string, number>;
+  /** Mean annualized offered wage across all certified filings for this employer. */
+  meanWageAnnual?: number;
+}
+
+export interface H1bStateTopOccupation {
+  socCode: string;
+  socTitle: string;
+  count: number;
 }
 
 export interface H1bState {
@@ -73,6 +85,10 @@ export interface H1bState {
   totalCount: number;
   countByYear: Record<string, number>;
   medianWageAnnualLatest: number;
+  /** Median annual wage by fiscal year for this state. */
+  wageByYear?: Record<string, number | null>;
+  /** Top 5 occupations by certified-LCA volume in this state. */
+  topOccupations?: H1bStateTopOccupation[];
 }
 
 export interface H1bTrends {
@@ -160,6 +176,9 @@ export function getTopOccupationsByTotal(n = 9): H1bOccupation[] {
   return getOccupationsSorted().slice(0, n);
 }
 
+// Computed once at module load; reused by getOccupationSignalBySoc for O(1)-per-call rank lookup.
+const _occupationsSortedByTotal: H1bOccupation[] = getOccupationsSorted();
+
 // ── Employers & states ────────────────────────────────────────────────────────
 
 /** Top-N sponsoring employers by total certified LCAs. */
@@ -169,10 +188,42 @@ export function getTopEmployers(n = 10): H1bEmployer[] {
     .slice(0, n);
 }
 
+/** All employers sorted by total certified LCAs (descending). */
+export function getAllEmployers(): H1bEmployer[] {
+  return [...data.topEmployers].sort((a, b) => b.totalCount - a.totalCount);
+}
+
 /** Top-N states by total certified LCAs. */
 export function getTopStates(n = 10): H1bState[] {
   return [...data.byState]
     .sort((a, b) => b.totalCount - a.totalCount)
+    .slice(0, n);
+}
+
+/** All states, sorted by total certified LCAs (descending). */
+export function getAllStates(): H1bState[] {
+  return [...data.byState].sort((a, b) => b.totalCount - a.totalCount);
+}
+
+/**
+ * Detail for a single state by its two-letter code.
+ * Returns undefined when the code is not in the dataset.
+ */
+export function getStateDetail(code: string): H1bState | undefined {
+  return data.byState.find((s) => s.state === code);
+}
+
+/**
+ * Top-N occupations (by latest-year volume) that have `wageByYear` data.
+ * Use for the wage-trajectory multi-line chart.
+ */
+export function getOccupationsWithWageTrend(n = 8): H1bOccupation[] {
+  const latest = String(getLatestYear().fiscalYear);
+  return data.occupations
+    .filter((o) => !!o.wageByYear)
+    .sort(
+      (a, b) => (b.countByYear[latest] ?? 0) - (a.countByYear[latest] ?? 0),
+    )
     .slice(0, n);
 }
 
@@ -280,6 +331,67 @@ export function getExposureTierAggregation(): ExposureTierAggregation {
 /** The AI-exposure score (0–1) for a SOC code, or null when unmatched. */
 export function getAiExposureForSoc(socCode: string): number | null {
   return exposureBySoc.get(socCode)?.aiExposure ?? null;
+}
+
+// ── Per-SOC H-1B sponsorship signal ──────────────────────────────────────────
+
+export interface H1bOccupationSignal {
+  socCode: string;
+  socTitle: string;
+  totalCount: number;
+  countByYear: Record<string, number>;
+  firstYear: number;
+  firstYearCount: number;
+  latestYear: number;
+  latestYearCount: number;
+  medianWageAnnualLatest: number;
+  cagr: number;
+  rankByTotal: number;
+  totalOccupations: number;
+  shareOfLatestYear: number;
+}
+
+/**
+ * H-1B visa-sponsorship signal for a SOC code, or null when this occupation
+ * has NO certified H-1B LCA filings in the dataset. Descriptive labor-demand
+ * signal (employer filings), NOT visa approvals.
+ */
+export function getOccupationSignalBySoc(
+  socCode: string,
+): H1bOccupationSignal | null {
+  const occ = data.occupations.find((o) => o.socCode === socCode);
+  if (!occ) return null;
+
+  const years = getFiscalYears();
+  const firstYear = years[0];
+  const latestYear = years[years.length - 1];
+  const latestKey = String(latestYear);
+
+  const latestYearCount = occ.countByYear[latestKey] ?? 0;
+
+  const sumLatest = data.occupations.reduce(
+    (s, o) => s + (o.countByYear[latestKey] ?? 0),
+    0,
+  );
+
+  const rankByTotal =
+    _occupationsSortedByTotal.findIndex((o) => o.socCode === socCode) + 1;
+
+  return {
+    socCode: occ.socCode,
+    socTitle: occ.socTitle,
+    totalCount: occ.totalCount,
+    countByYear: occ.countByYear,
+    firstYear,
+    firstYearCount: occ.countByYear[String(firstYear)] ?? 0,
+    latestYear,
+    latestYearCount,
+    medianWageAnnualLatest: occ.medianWageAnnualLatest,
+    cagr: occ.cagr,
+    rankByTotal,
+    totalOccupations: data.occupations.length,
+    shareOfLatestYear: sumLatest > 0 ? latestYearCount / sumLatest : 0,
+  };
 }
 
 export default data;

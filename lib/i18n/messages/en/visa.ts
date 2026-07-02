@@ -88,18 +88,56 @@ export const visaEn = {
   // ── Employers ────────────────────────────────────────────────────────────────
   employersSectionTitle: "Top Sponsoring Employers",
   employersSectionSubhead:
-    "Employers with the most certified H-1B LCAs across the decade.",
+    "The 50 employers with the most certified H-1B LCAs across the decade — volume, mean wage, and per-year filing trend.",
   employersChartName: "Top H-1B sponsoring employers by total certified LCAs, FY2016–FY2025",
   employersSummary:
     "Horizontal bar chart of the employers with the highest total certified-LCA volume across the decade.",
   employersAxisX: "Certified LCAs (total)",
+  employerDeepTableName: "Top H-1B sponsoring employers — detailed table with wage and trend",
+  employerDeepTableCaption:
+    "Detailed table of top H-1B sponsoring employers: total certified LCAs, mean annual wage, and per-year filing trend.",
+  colMeanWage: "Mean annual wage",
+  colYearTrend: "Year trend",
+  employerShowMore: "Show all {n} employers",
+  employerShowLess: "Show fewer",
 
-  // ── States ───────────────────────────────────────────────────────────────────
+  // ── States (existing) ─────────────────────────────────────────────────────────
   statesSectionTitle: "Top States",
   statesSectionSubhead:
     "States with the most certified H-1B LCAs across the decade, with the latest-year median wage.",
   statesTableName: "Top states by total certified H-1B LCAs",
   statesTableCaption: "Top states ranked by total certified H-1B LCAs, FY2016–FY2025.",
+
+  // ── State deep-dive ───────────────────────────────────────────────────────────
+  stateDeepSectionTitle: "State Deep-Dive",
+  stateDeepSectionSubhead:
+    "Sort and explore all 52 jurisdictions by total certified LCAs or latest median wage. Select a state (click a row or use the dropdown) to reveal its filing-volume trend, wage trajectory, and top occupations.",
+  stateSortLabel: "Sort by",
+  stateSortByTotal: "Total LCAs",
+  stateSortByWage: "Median wage",
+  stateSelectorLabel: "Select a state",
+  stateDetailTitle: "{state} Detail",
+  stateDetailCountByYear: "Certified LCAs by fiscal year",
+  stateDetailWageByYear: "Median annual wage by fiscal year",
+  stateDetailTopOccs: "Top occupations",
+  statesDeepTableName: "All H-1B states — sortable by total LCAs or median wage",
+  statesDeepTableCaption:
+    "All 52 jurisdictions ranked by total certified H-1B LCAs or latest median wage, FY2016–FY2025.",
+  stateCountChartName: "H-1B certified LCA volume for {state}, FY2016–FY2025",
+  stateWageChartName: "Median H-1B wage for {state}, FY2016–FY2025",
+
+  // ── Occupation wage trend ─────────────────────────────────────────────────────
+  occWageTrendSectionTitle: "Wage Trajectories by Occupation",
+  occWageTrendSectionSubhead:
+    "Median annual offered wage on certified H-1B LCAs for the top 8 occupations (by FY2025 volume) that have wage-trend data. Gaps indicate fewer than 50 filings in a given fiscal year.",
+  occWageTrendAxisY: "Median annual wage (USD)",
+  occWageTrendChartName:
+    "Median annual wage trend for top H-1B occupations by fiscal year, FY2016–FY2025",
+  occWageTrendSummary:
+    "Multi-line chart of median annual offered wage for the top 8 H-1B occupations with wage data, by fiscal year. Gaps in lines indicate fiscal years with fewer than 50 filings for that occupation.",
+  occWageTrendGapNote:
+    "Gaps in lines indicate fiscal years where fewer than 50 filings were recorded for that occupation.",
+  occWageTrendSeriesCount: "{n} occupation series shown across {years} fiscal years.",
 
   // ── Shared table headers ─────────────────────────────────────────────────────
   colYear: "Fiscal year",

@@ -107,7 +107,7 @@ const FLAGGED: FlaggedDownload[] = [
   },
 ];
 
-function renderView(locale = "en") {
+function renderView() {
   return render(
     <MethodologyView
       datasets={SAMPLE_DATASETS}
@@ -225,13 +225,13 @@ describe("MethodologyView — ZH locale renders", () => {
   it("renders without error when i18n returns zh keys", () => {
     // The mock already returns 'methodology.<key>' for all keys,
     // which simulates zh locale behaviour (keys present, different strings).
-    expect(() => renderView("zh")).not.toThrow();
+    expect(() => renderView()).not.toThrow();
     // Spot-check that the changelog section still exists.
     expect(screen.getByTestId("section-changelog")).toBeTruthy();
   });
 
   it("ZH: still excludes flagged datasets from cleared downloads", () => {
-    renderView("zh");
+    renderView();
     const clearedContainer = screen.getByTestId("cleared-downloads");
     const links = clearedContainer.querySelectorAll("a[download]");
     const downloadedFiles = Array.from(links).map(
