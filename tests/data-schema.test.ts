@@ -24,6 +24,7 @@ import {
   validateJolts,
   validateOccupationSnapshot,
   validateOccupationSnapshotSlim,
+  validateProvenance,
 } from "../scripts/lib/validate.mjs";
 
 const ROOT = process.cwd();
@@ -328,10 +329,17 @@ describe("validateJolts — negative cases", () => {
 // ─── validateOccupationSnapshot ───────────────────────────────────────────────
 
 describe("validateOccupationSnapshot — committed file", () => {
-  const data = read("data/occupation-snapshot.json");
+  const dataset = read("data/occupation-snapshot.json");
 
   it("committed data/occupation-snapshot.json passes validation", () => {
-    expect(() => validateOccupationSnapshot(data)).not.toThrow();
+    expect(() => validateOccupationSnapshot(dataset)).not.toThrow();
+  });
+
+  it("is a { meta, data } wrapper with provenance and rows", () => {
+    expect(dataset.meta).toBeTruthy();
+    expect(typeof dataset.meta.generatedAt).toBe("string");
+    expect(Array.isArray(dataset.data)).toBe(true);
+    expect(dataset.data.length).toBeGreaterThanOrEqual(680);
   });
 });
 
@@ -364,10 +372,17 @@ describe("validateOccupationSnapshot — negative cases", () => {
 // ─── validateOccupationSnapshotSlim ──────────────────────────────────────────
 
 describe("validateOccupationSnapshotSlim — committed file", () => {
-  const data = read("data/occupation-snapshot-slim.json");
+  const dataset = read("data/occupation-snapshot-slim.json");
 
   it("committed data/occupation-snapshot-slim.json passes validation", () => {
-    expect(() => validateOccupationSnapshotSlim(data)).not.toThrow();
+    expect(() => validateOccupationSnapshotSlim(dataset)).not.toThrow();
+  });
+
+  it("is a { meta, data } wrapper with provenance and rows", () => {
+    expect(dataset.meta).toBeTruthy();
+    expect(typeof dataset.meta.generatedAt).toBe("string");
+    expect(Array.isArray(dataset.data)).toBe(true);
+    expect(dataset.data.length).toBeGreaterThanOrEqual(680);
   });
 });
 
@@ -394,5 +409,70 @@ describe("validateOccupationSnapshotSlim — negative cases", () => {
     expect(() => validateOccupationSnapshotSlim(rows)).toThrow(
       /occupation-snapshot-slim\[0\].*missing required top-level key/
     );
+  });
+});
+
+// ─── validateProvenance ──────────────────────────────────────────────────────
+
+describe("validateProvenance — committed registry", () => {
+  const registry = read("data/provenance.json");
+
+  it("committed data/provenance.json passes validation", () => {
+    expect(() => validateProvenance(registry)).not.toThrow();
+  });
+
+  it("lists every committed data/*.json dataset with provenance", () => {
+    expect(Array.isArray(registry.datasets)).toBe(true);
+    for (const entry of registry.datasets) {
+      expect(typeof entry.id).toBe("string");
+      expect(typeof entry.generatedAt).toBe("string");
+      expect(entry.source == null).toBe(false);
+    }
+  });
+});
+
+describe("validateProvenance — negative cases", () => {
+  it("throws when datasets is empty", () => {
+    expect(() =>
+      validateProvenance({
+        generatedAt: "2026-01-01T00:00:00Z",
+        datasets: [],
+      })
+    ).toThrow(/provenance\.datasets.*too few rows/);
+  });
+
+  it("throws when a dataset entry lacks a source", () => {
+    expect(() =>
+      validateProvenance({
+        generatedAt: "2026-01-01T00:00:00Z",
+        datasets: [
+          {
+            id: "x",
+            file: "data/x.json",
+            generatedAt: "2026-01-01T00:00:00Z",
+            source: null,
+          },
+        ],
+      })
+    ).toThrow(/provenance:x.*missing source/);
+  });
+
+  it("throws when an expected dataset id is absent", () => {
+    expect(() =>
+      validateProvenance(
+        {
+          generatedAt: "2026-01-01T00:00:00Z",
+          datasets: [
+            {
+              id: "x",
+              file: "data/x.json",
+              generatedAt: "2026-01-01T00:00:00Z",
+              source: "S",
+            },
+          ],
+        },
+        { expectedIds: ["x", "y"] }
+      )
+    ).toThrow(/provenance: registry is missing dataset\(s\): y/);
   });
 });

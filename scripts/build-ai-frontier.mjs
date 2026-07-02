@@ -8,6 +8,7 @@
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { deriveMeta } from "./lib/meta.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -561,6 +562,7 @@ async function main() {
     ],
   };
 
+  output.meta = deriveMeta(output);
   writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, 2) + "\n");
   console.log("  wrote data/ai-frontier.json");
 

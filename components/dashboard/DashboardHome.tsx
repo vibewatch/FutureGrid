@@ -11,6 +11,7 @@ import HighlightsBento from "@/components/dashboard/HighlightsBento";
 import SectorScatterChart from "@/components/charts/SectorScatterChart";
 import KeyFindings from "@/components/dashboard/KeyFindings";
 import { useT } from "@/lib/i18n/useT";
+import DataAsOfBadge from "@/components/ui/DataAsOfBadge";
 
 interface SectorSummary {
   sector: string;
@@ -61,6 +62,9 @@ export default function DashboardHome({
           <p className="mt-4 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
             {t("heroSubhead", { count: insightsLength })}
           </p>
+          <div className="mt-3">
+            <DataAsOfBadge datasetId="occupation-snapshot" />
+          </div>
         </Reveal>
 
         <Reveal delay={160} className="mt-8">

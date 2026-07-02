@@ -144,6 +144,52 @@ Fetches Wisconsin WARN-act notices from a Google Sheets spreadsheet.
 
 Set this as a CI/build secret (e.g., a GitHub Actions secret). **Never commit it to the repository.** The script will fail with a clear error message if the variable is absent.
 
+## Data Provenance
+
+Every `data/*.json` snapshot carries a standardized `meta` block so consumers
+can show when data was refreshed and where it came from:
+
+```jsonc
+"meta": {
+  "generatedAt": "2026-07-02T08:41:00.816Z", // ISO timestamp the file was produced
+  "asOf": "2025",                             // the period the data describes
+  "source": { "name": "…", "publisher": "…", "url": "…" }, // or a string
+  "version": "1.0.0"                          // meta-contract version
+}
+```
+
+The bare-array datasets (`occupation-snapshot`, `occupation-snapshot-slim`,
+`country-exposure`) are wrapped as `{ meta, data: [...] }`; all other object
+datasets are annotated additively (existing top-level fields are preserved).
+
+`npm run build:provenance` scans every snapshot and writes
+`data/provenance.json` — a central registry `{ generatedAt, datasets: [...] }`
+listing each dataset's `generatedAt`, `asOf`, `source`, `version`, and row
+count. It is validated (`validateProvenance`) before writing and runs at the end
+of the `build:data` chain. The typed loader `lib/provenance.ts` exposes the
+dataset list plus `getDataAsOf(id)`, `getDatasetProvenance(id)`, and
+`getLatestAsOf()` helpers for the UI provenance badge and methodology changelog.
+
+## Scheduled data refresh
+
+`.github/workflows/refresh-data.yml` refreshes the committed snapshots on a
+weekly schedule (`0 6 * * 1`, i.e. Mondays 06:00 UTC) and can also be triggered
+manually via **workflow_dispatch**. It runs `npm ci` then the data builds
+(`build:warn`, `build:state-labor`, `build:state-qcew`, `build:jolts`,
+`build:data`, `build:snapshot-slim`, `build:warn-public`, `build:provenance`)
+and opens a pull request (`peter-evans/create-pull-request@v6`, branch
+`data/scheduled-refresh`) titled `chore(data): scheduled snapshot refresh` with
+any changed files.
+
+The build steps are guarded by the issue #49 sanity gates, so a bad upstream
+fetch throws and **fails the job** — that failure is the alert.
+
+**Required secret:**
+
+| Secret | Where to get it | Used for |
+|--------|----------------|---------|
+| `GOOGLE_SHEETS_API_KEY` | [Google Cloud Console](https://console.cloud.google.com/) — restricted Sheets API key | Passed to `build:warn` to pull WI WARN data from Google Sheets |
+
 ## Tech Stack
 
 - **Framework:** Next.js 16 / React 19 (static export)

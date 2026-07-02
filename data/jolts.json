@@ -25329,5 +25329,15 @@
         "HIL": 311
       }
     }
-  ]
+  ],
+  "meta": {
+    "generatedAt": "2026-07-01T03:33:52.824Z",
+    "asOf": "2026-07-01",
+    "source": {
+      "name": "BLS Job Openings and Labor Turnover Survey (JOLTS)",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "url": "https://www.bls.gov/jlt/"
+    },
+    "version": "1.0.0"
+  }
 }

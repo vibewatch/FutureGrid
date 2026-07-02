@@ -2537,5 +2537,15 @@
       "included": true,
       "description": "Overall government AI readiness composite score 0–100 for 193 countries (2023 edition). Three pillars: Government, Technology Sector, Data and Infrastructure. China ranks 16th (70.94). Measures government-level capacity and environment for deploying AI, NOT user-behaviour or diffusion. COMPARABILITY CAVEAT: government readiness score — do NOT average or merge with diffusionPct (user behaviour %), usageIndex (API sessions), or aiReadiness (IMF capacity index 0–1)."
     }
+  },
+  "meta": {
+    "generatedAt": "2026-06-30T14:10:06.478Z",
+    "asOf": "2026-06-30",
+    "source": {
+      "name": "Microsoft AI Diffusion Report (AI Economic Impact & Insights)",
+      "publisher": "Microsoft",
+      "url": "https://github.com/microsoft/ai-diffusion-report"
+    },
+    "version": "1.0.0"
   }
 }

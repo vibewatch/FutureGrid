@@ -9,6 +9,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
 import ExcelJS from "exceljs";
+import { deriveMeta } from "./lib/meta.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -19,7 +20,8 @@ if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
 
 const UA = "FutureGrid/1.0 (+https://github.com) data build";
 const GENERATED_AT = new Date().toISOString();
-const SNAPSHOT = JSON.parse(readFileSync(path.join(DATA_DIR, "occupation-snapshot.json"), "utf8"));
+const SNAPSHOT_RAW = JSON.parse(readFileSync(path.join(DATA_DIR, "occupation-snapshot.json"), "utf8"));
+const SNAPSHOT = Array.isArray(SNAPSHOT_RAW) ? SNAPSHOT_RAW : SNAPSHOT_RAW.data;
 const SNAPSHOT_CODES = new Set(SNAPSHOT.map((row) => row.socCode));
 const SNAPSHOT_COUNT = SNAPSHOT.length;
 
@@ -81,6 +83,9 @@ async function fetchBuffer(url) {
 
 function writeJson(filename, value) {
   const fullPath = path.join(DATA_DIR, filename);
+  if (value && typeof value === "object" && !Array.isArray(value) && !value.meta) {
+    value.meta = deriveMeta(value);
+  }
   writeFileSync(fullPath, `${JSON.stringify(value, null, 2)}\n`);
   console.log(`  wrote data/${filename}`);
 }

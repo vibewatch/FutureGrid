@@ -2369,5 +2369,15 @@
         "derivedAnnualAverageEmployment": false
       }
     }
-  ]
+  ],
+  "meta": {
+    "generatedAt": "2026-07-01T22:01:32.633Z",
+    "asOf": "2026-07-01",
+    "source": {
+      "name": "BLS Quarterly Census of Employment and Wages Annual Area CSVs",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "url": "https://www.bls.gov/cew/downloadable-data-files.htm"
+    },
+    "version": "1.0.0"
+  }
 }

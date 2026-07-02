@@ -3,16 +3,19 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { deriveMeta } from "./lib/meta.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const DATA_DIR = path.join(ROOT, "data");
 if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
-
 const OUTPUT_FILE = path.join(DATA_DIR, "market-ai-signals.json");
-const OCCUPATION_SNAPSHOT = JSON.parse(
+const OCCUPATION_SNAPSHOT_RAW = JSON.parse(
   readFileSync(path.join(DATA_DIR, "occupation-snapshot.json"), "utf8"),
 );
+const OCCUPATION_SNAPSHOT = Array.isArray(OCCUPATION_SNAPSHOT_RAW)
+  ? OCCUPATION_SNAPSHOT_RAW
+  : OCCUPATION_SNAPSHOT_RAW.data;
 
 const USER_AGENT = "FutureGrid/1.0 market signals data build (+https://github.com)";
 const PRIMARY_WINDOW_START = "2022-11-30";
@@ -228,6 +231,7 @@ async function main() {
     },
   };
 
+  output.meta = deriveMeta(output);
   writeFileSync(OUTPUT_FILE, `${JSON.stringify(output, null, 2)}\n`);
   console.log(`wrote data/market-ai-signals.json`);
   console.log(

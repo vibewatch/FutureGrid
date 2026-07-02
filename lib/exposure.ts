@@ -23,7 +23,7 @@ type SnapshotRow = {
 };
 type ExposureBySocJson = { bySoc: Record<string, number> };
 
-const snapshot = occupationSnapshot as SnapshotRow[];
+const snapshot = (occupationSnapshot as { data: SnapshotRow[] }).data;
 
 let _occupationExposureLensesByCode: Map<string, OccExposureLenses> | null = null;
 

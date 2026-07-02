@@ -131103,5 +131103,14 @@
         }
       ]
     }
+  },
+  "meta": {
+    "generatedAt": "2026-06-30T13:09:05.302Z",
+    "asOf": "2026-06-30",
+    "source": {
+      "name": "O*NET Web Services API v2",
+      "url": "https://services.onetcenter.org/reference/"
+    },
+    "version": "1.0.0"
   }
 }

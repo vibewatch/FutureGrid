@@ -10,6 +10,7 @@ import https from "https";
 import path from "path";
 import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
+import { deriveMeta } from "./lib/meta.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -23,7 +24,8 @@ function loadCountryNamesByIso3() {
   const file = path.join(DATA_DIR, "country-exposure.json");
   if (!existsSync(file)) return new Map();
   try {
-    const countries = JSON.parse(readFileSync(file, "utf8"));
+    const parsed = JSON.parse(readFileSync(file, "utf8"));
+    const countries = Array.isArray(parsed) ? parsed : parsed.data;
     return new Map(countries.map((country) => [country.iso3, country.name]));
   } catch {
     return new Map();
@@ -693,6 +695,13 @@ async function main() {
     sourceCatalogForFutureCollection: buildSourceCatalog(usCensusBusinessAIMetrics.length > 0),
   };
 
+  dataset.meta = deriveMeta(dataset, {
+    source: {
+      name: "Multiple public AI-usage proxy sources",
+      publisher: "FutureGrid (aggregated)",
+      url: "https://github.com/huangyingting/FutureGrid",
+    },
+  });
   writeFileSync(OUTPUT_FILE, JSON.stringify(dataset, null, 2) + "\n");
   console.log(`✓ Written ${OUTPUT_FILE}`);
   console.log(`  Enterprise sections: ${dataset.enterpriseAdoptionMetrics.length}`);

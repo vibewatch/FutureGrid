@@ -205,16 +205,21 @@ export function validateJolts(data) {
 
 /**
  * Validate data/occupation-snapshot.json.
- * Current committed file: 756 occupations (plain array).
- * No generatedAt in this file (see issue #52) — provenance is NOT required.
- * @param {Array<Record<string, unknown>>} data  the parsed JSON (an array)
+ * Current committed file: `{ meta, data }` with 756 occupations (issue #52).
+ * Also accepts a bare array (the pre-#52 shape) for backward-compatible callers.
+ * @param {{ meta?: object, data?: unknown[] } | Array<Record<string, unknown>>} dataset
  */
-export function validateOccupationSnapshot(data) {
-  assertMinRows(data, 680, "occupation-snapshot");
+export function validateOccupationSnapshot(dataset) {
+  const rows = Array.isArray(dataset) ? dataset : dataset?.data;
+  if (!Array.isArray(dataset)) {
+    assertFields(dataset, ["meta", "data"], "occupation-snapshot");
+    assertProvenance(dataset, "occupation-snapshot");
+  }
+  assertMinRows(rows, 680, "occupation-snapshot");
   // Spot-check required fields on first entry
-  if (data.length > 0) {
+  if (rows.length > 0) {
     assertFields(
-      data[0],
+      rows[0],
       ["socCode", "title", "sector", "aiExposure", "automationRisk"],
       "occupation-snapshot[0]"
     );
@@ -223,17 +228,58 @@ export function validateOccupationSnapshot(data) {
 
 /**
  * Validate data/occupation-snapshot-slim.json.
- * Current committed file: 756 rows (plain array, no generatedAt).
- * No provenance check — this file is derived from occupation-snapshot.json.
- * @param {Array<Record<string, unknown>>} data  the parsed JSON (an array)
+ * Current committed file: `{ meta, data }` with 756 rows (issue #52).
+ * Also accepts a bare array (the pre-#52 shape) for backward-compatible callers.
+ * @param {{ meta?: object, data?: unknown[] } | Array<Record<string, unknown>>} dataset
  */
-export function validateOccupationSnapshotSlim(data) {
-  assertMinRows(data, 680, "occupation-snapshot-slim");
-  if (data.length > 0) {
+export function validateOccupationSnapshotSlim(dataset) {
+  const rows = Array.isArray(dataset) ? dataset : dataset?.data;
+  if (!Array.isArray(dataset)) {
+    assertFields(dataset, ["meta", "data"], "occupation-snapshot-slim");
+    assertProvenance(dataset, "occupation-snapshot-slim");
+  }
+  assertMinRows(rows, 680, "occupation-snapshot-slim");
+  if (rows.length > 0) {
     assertFields(
-      data[0],
+      rows[0],
       ["socCode", "title", "sector", "aiExposure", "automationRisk"],
       "occupation-snapshot-slim[0]"
     );
+  }
+}
+
+/**
+ * Validate data/provenance.json (the central provenance registry, issue #52).
+ * Ensures the registry lists datasets and that every entry carries a
+ * generatedAt timestamp and a source.
+ * @param {Record<string, unknown>} registry
+ * @param {{ expectedIds?: string[] }} [opts]
+ */
+export function validateProvenance(registry, opts = {}) {
+  assertFields(registry, ["generatedAt", "datasets"], "provenance");
+  assertProvenance(registry, "provenance");
+  assertMinRows(registry.datasets, 1, "provenance.datasets");
+  for (const entry of registry.datasets) {
+    assertFields(
+      entry,
+      ["id", "file", "generatedAt", "source"],
+      `provenance:${entry && entry.id ? entry.id : "?"}`
+    );
+    assertProvenance(entry, `provenance:${entry.id}`);
+    if (entry.source == null) {
+      throw new Error(
+        `[validate] provenance:${entry.id}: missing source`
+      );
+    }
+  }
+  const { expectedIds } = opts;
+  if (Array.isArray(expectedIds)) {
+    const present = new Set(registry.datasets.map((d) => d.id));
+    const missing = expectedIds.filter((id) => !present.has(id));
+    if (missing.length > 0) {
+      throw new Error(
+        `[validate] provenance: registry is missing dataset(s): ${missing.join(", ")}`
+      );
+    }
   }
 }

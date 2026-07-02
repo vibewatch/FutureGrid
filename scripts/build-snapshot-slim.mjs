@@ -17,6 +17,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { validateOccupationSnapshotSlim } from "./lib/validate.mjs";
+import { buildMeta } from "./lib/meta.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dataDir = join(__dirname, "..", "data");
@@ -39,9 +40,10 @@ function computeGrowthFromHistory(history) {
   return { rate: Math.round(cagr * 10) / 10, fromYear, toYear };
 }
 
-const full = JSON.parse(
+const fullRaw = JSON.parse(
   readFileSync(join(dataDir, "occupation-snapshot.json"), "utf8"),
 );
+const full = Array.isArray(fullRaw) ? fullRaw : fullRaw.data;
 
 const slim = full.map((row) => {
   const hist = computeGrowthFromHistory(row.employmentHistory);
@@ -73,10 +75,24 @@ const slim = full.map((row) => {
 });
 
 const outPath = join(dataDir, "occupation-snapshot-slim.json");
-validateOccupationSnapshotSlim(slim);
-writeFileSync(outPath, JSON.stringify(slim));
+const slimDataset = {
+  meta: buildMeta({
+    asOf: fullRaw && fullRaw.meta ? fullRaw.meta.asOf : "2025",
+    source:
+      fullRaw && fullRaw.meta
+        ? fullRaw.meta.source
+        : {
+            name: "Anthropic Economic Index — Job Exposure",
+            publisher: "Anthropic",
+            url: "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+          },
+  }),
+  data: slim,
+};
+validateOccupationSnapshotSlim(slimDataset);
+writeFileSync(outPath, JSON.stringify(slimDataset));
 console.log(
   `[build-snapshot-slim] wrote ${slim.length} rows -> ${outPath} (${(
-    JSON.stringify(slim).length / 1024
+    JSON.stringify(slimDataset).length / 1024
   ).toFixed(0)} KB)`,
 );
