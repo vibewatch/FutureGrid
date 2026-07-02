@@ -1843,3 +1843,247 @@ RAI guardrails:
 **What:** Center FutureGrid page content with wider analysis/map caps
 **References:** app/layout.tsx, components/insights/InsightsView.tsx, components/insights/EvidenceStack.tsx, components/dashboard/DashboardHome.tsx, components/global/GlobalView.tsx, components/explore/ExploreView.tsx
 **Why:** Design decision: fix wide-screen left gutter by centering the main content area globally and standardizing page containers. Keep RootLayout responsible for the sidebar offset/padding and add a centered inner shell for children/footer using `mx-auto w-full max-w-[min(100%,1720px)]`. Convert page roots from bare `max-w-[1400px]` to `mx-auto w-full max-w-[1400px]`, with data-dense map/grid pages allowed `max-w-[1600px]` and Insights Lab allowed `max-w-[1680px]`. This preserves mobile behavior while balancing gutters at 1920px and 2560px. For /analysis, redesign Evidence Stack as a wider matrix-first layout: 8/9 source-family columns with visible headers, 44-48px cells, sticky selected-conclusion drawer on xl+, and stacked/mobile fallback.
+
+
+## Decision Inbox Merge — AI Adoption Signals (2026-07-02)
+
+### 2026-07-02T02-06-33: APPROVED contract: AI Adoption Signals lives on /global with normalized loader and small-multiple panels
+**By:** Trinity
+**What:** APPROVED contract: AI Adoption Signals lives on /global with normalized loader and small-multiple panels
+**References:** /home/azadmin/FutureGrid/lib/data.ts, /home/azadmin/FutureGrid/app/global/page.tsx, /home/azadmin/FutureGrid/components/global/GlobalView.tsx, /home/azadmin/FutureGrid/components/insights/InsightsView.tsx, /home/azadmin/FutureGrid/data/ai-usage-proxies.json
+**Why:** Trinity approved placing AI Adoption Signals on `/global` as a compact small-multiple section that visualizes every collected `data/ai-usage-proxies.json` family except the future source catalog, which is surfaced as a footer/list. The contract required a typed server-side loader in `lib/adoption-signals.ts`, route-level loading in `app/global/page.tsx`, rendering through `GlobalView` and `components/global/AIAdoptionSignals.tsx`, visible provenance/caveats, no composite scoring, and targeted loader/component tests.
+
+### 2026-07-02T02-16-50: Assign AI Adoption Signals rejection fixes to Switch
+**By:** Trinity
+**What:** Assign AI Adoption Signals rejection fixes to Switch
+**References:** lib/adoption-signals.ts, components/global/AIAdoptionSignals.tsx, @/data/ai-usage-proxies.json
+**Why:** After review, Trinity assigned Switch as the sole non-locked-out fix owner for the AI Adoption Signals blockers. Switch had to split China app metrics into homogeneous MAU and usage panels, split developer survey metrics into overall distributions and country-share panels, and keep client components from importing the server-side adoption loader or raw JSON. Tank remained locked out of the loader; Neo remained locked out of the component/wiring.
+
+
+## Decision Inbox Merge — AI Frontier Feature (2026-07-02)
+
+### 2026-07-02T04-30-00: DECISION: Ship AI Frontier (/frontier page) as PR #45
+**By:** huangyingting (via Squad Coordinator)
+**What:** AI Frontier feature completed and shipped to production.
+**References:** PR #45, feature/ai-frontier-compute branch (now deleted), Tank + Neo + Mouse + Trinity + Rai + Coordinator
+**Scope & Outcome:**
+- **Data pipeline:** Tank built `scripts/build-ai-frontier.mjs` consuming Epoch AI "Notable AI Models" (1033 models, 528 with compute+date 1950–2026, 215 power, 179 cost, 101 countries); normalized country dedup, co-attribution, blank-org handling, short names. Output: `data/ai-frontier.json` + `lib/ai-frontier.ts` exports.
+- **Frontend:** Neo built 5 components (`app/frontier/page.tsx`, `AIFrontierView`, `ComputeTimelineChart`, `FrontierLeadersChart`, `CostPowerTrends`, `FrontierMixCards`), i18n en/zh parity, Sidebar nav, `/sources` attribution page. Fixed Largest-run card bug (data-driven hero stats from frontierByYear snapshot).
+- **Testing:** Mouse built 23 test cases in `tests/ai-frontier.test.ts`, verified all charts render, data loads, i18n keys present, static-export safety. Removed misleading zoomHint. Result: 217 tests pass, 0 lint, build OK.
+- **Code Review (Trinity):** APPROVE. Independently verified OLS math (doubling-time 5.7mo), regression types, normalizeCountries hardening, CC BY hyperlinks, i18n parity, null guards. Applied revisions: nullable types, comma-split safeguard, dead-key removal.
+- **RAI Review (Rai):** 🟡 Yellow, no blockers. F1–F4 findings (causal overclaiming, loaded "rivals" wording, hero stat drift, missing CC BY hyperlinks) all applied.
+- **Coordination & Deployment:** Coordinator verified visual QA (screenshots 1440/375px, zero console errors, 4 canvas + D3 svg render), git commit, PR #45 filed. CI green (Node 20: lint 0, test 217/217, build pass). Merged to main, branch deleted.
+**Rationale:** Gap analysis completed—FutureGrid covers AI IMPACT (employment, skills, wage pressure) but lacked a view of the AI capability DRIVER (training compute, cost, power draw). Epoch AI data (CC BY) provides authoritative foundation; feature is non-duplicative, on-theme, and ties into Global page via country-of-origin leaderboards. Complements existing impact-side pages.
+**Status:** ✅ SHIPPED (merged PR #45 to main, 2026-07-02T04:30:00Z)
+
+### 2026-07-02T04-35-00: Trinity Review — AI Frontier revision outcomes
+**By:** Trinity (code review, per spawn manifest)
+**What:** Code review summary: APPROVE with revisions applied.
+**Details:**
+- OLS slope/intercept/r² verified; doubling-time formula (5.7mo) correct.
+- Static-export safety confirmed; i18n en/zh parity verified.
+- **Non-blocking findings (addressed):**
+  1. ComputeTrend.overall/modernEra now nullable (`| null`) with null guards.
+  2. Hero stats hardcoded—Neo fixed by data-driving from frontierByYear snapshot.
+  3. normalizeCountries enhanced: comma-split safeguard for "Taiwan, Province of China".
+  4. Dead key statModelsValue removed.
+- **Coordinator visual QA:** Found + fixed "Largest training run" card mismatch (displayed Composer 2.5·2026 instead of Grok 4). Retested; all 4 cards render correctly post-fix.
+**Status:** ✅ APPROVE (all findings applied, re-validated 217/217 tests, zero lint, build pass)
+
+### 2026-07-02T04-40-00: Rai Review — AI Frontier RAI findings (all applied)
+**By:** Rai (responsible AI review, per spawn manifest)
+**What:** 🟡 Yellow verdict; four findings, all applied during revision.
+**Findings Applied:**
+- **F1 (Causal overclaiming):** "Why it matters" copy softened; removed casual causation framing ("drives disruption") → data-driven observation ("engine underlying workforce disruption").
+- **F2 (Loaded geopolitics):** "Rivals" wording neutralized; replaced with data-forward language re: country competition framing.
+- **F3 (Hardcoded stats drift):** Data-driven hero stats now sourced from frontierByYear snapshot (Coordinator verified; Largest-run card fixed).
+- **F4 (Missing CC BY attribution):** CC BY hyperlinked in hero and `/sources` footer.
+**Verified Safe:** No secrets, no PII, no stigmatizing language. Caveats prominent.
+**Status:** ✅ YELLOW → APPLIED (no blockers)
+# Trinity Review Decision — H-1B Career Fold
+
+**Verdict: APPROVE-WITH-NITS**
+**Date:** 2026-07-02T22:50:57Z
+**Reviewer:** Trinity (Lead / Code Reviewer)
+**Requestor:** huangyingting
+
+---
+
+## Scope Reviewed
+
+| File | Author | Status |
+|---|---|---|
+| `lib/h1b.ts` — new `getOccupationSignalBySoc` + `H1bOccupationSignal` interface | Tank | ✅ PASS |
+| `app/careers/[code]/page.tsx` — server component with slim-prop pass | Neo | ✅ PASS |
+| `components/careers/CareerDetailClient.tsx` — H-1B section + sparkline | Neo | ✅ PASS |
+| `lib/i18n/messages/en/careers.ts` — 11 new keys | Neo | ✅ PASS |
+| `lib/i18n/messages/zh/careers.ts` — 11 new keys | Neo | ✅ PASS |
+| `components/visa/StateCountChart.tsx` et al. (warning cleanup) | Neo | ✅ PASS |
+
+---
+
+## Checklist Findings
+
+### 1. Correctness of `getOccupationSignalBySoc` (`lib/h1b.ts:356–394`)
+
+- **Unknown SOC → null**: line 360 `if (!occ) return null` ✅
+- **rankByTotal 1-based**: line 377 `sorted.findIndex(...) + 1` — `findIndex` cannot return -1 here because `occ` was already verified to exist in `data.occupations`, which is the same array that `sorted` copies. ✅
+- **shareOfLatestYear denominator**: lines 369–373 — `sumLatest = data.occupations.reduce((s, o) => s + (o.countByYear[latestKey] ?? 0), 0)` is the correct denominator (all occupations' latest-year filings). Divide-by-zero guard `sumLatest > 0` present. ✅
+- **firstYear/latestYear**: derived from `getFiscalYears()` (lines 362–364), consistent with what the page passes as `h1bFirst`/`h1bLatest` via `getCoverage().fiscalYears`. ✅
+- **countByYear**: passes through `occ.countByYear` in full. ✅
+- **NIT** (`lib/h1b.ts:370–376`): The function re-sorts `data.occupations` (O(n log n)) on every invocation. With ~800 career pages at build time this is ~800 redundant sorts. A module-level lazy-sorted array (or reusing `getOccupationsSorted()`) would eliminate the cost. Not a correctness issue.
+
+### 2. Bundle Hygiene (`grep -rn 'from "@/lib/h1b"' app components`)
+
+All five hits verified:
+
+| File | Import style | Verdict |
+|---|---|---|
+| `app/careers/[code]/page.tsx:9` | VALUE import | ✅ Server component — OK |
+| `components/careers/CareerDetailClient.tsx:10` | `import type` | ✅ Type-only — OK |
+| `components/visa/StateDeepDiveSection.tsx:7` | `import type` | ✅ Type-only — OK |
+| `components/visa/EmployerDeepDiveSection.tsx:7` | `import type` | ✅ Type-only — OK |
+| `components/visa/VisaTrendsView.tsx:22` | VALUE import | ✅ Pre-existing `/visa`-only pattern, single page, not ~800 career pages |
+
+`CareerDetailClient.tsx` — the component that renders on all ~800 career pages — correctly uses `import type` only. Bundle hygiene constraint is fully respected.
+
+### 3. i18n EN/ZH Parity
+
+All 11 keys present in both `en/careers.ts` and `zh/careers.ts`:
+`h1bSectionTitle`, `h1bSectionSubtitle`, `h1bStatDecadeTotal`, `h1bStatLatestVolume`,
+`h1bStatMedianWage`, `h1bStatRank`, `h1bRankValue`, `h1bShareNote`,
+`h1bViewTrends`, `h1bSparklineLabel`, `h1bNoData`. ✅
+
+Interpolation placeholder cross-check:
+
+| Key | EN placeholders | ZH placeholders | Component call |
+|---|---|---|---|
+| `h1bSectionSubtitle` | `{first}`, `{latest}` | `{first}`, `{latest}` | `{ first: h1bSignal.firstYear, latest: h1bSignal.latestYear }` ✅ |
+| `h1bStatLatestVolume` | `{year}` | `{year}` | `{ year: h1bSignal.latestYear }` ✅ |
+| `h1bRankValue` | `{rank}`, `{total}` | `{rank}`, `{total}` | `{ rank: h1bSignal.rankByTotal, total: h1bSignal.totalOccupations }` ✅ |
+| `h1bShareNote` | `{pct}`, `{year}` | `{pct}`, `{year}` | `{ pct: Math.round(...)*"%" , year: h1bSignal.latestYear }` ✅ |
+| `h1bNoData` | `{first}`, `{latest}` | `{first}`, `{latest}` | `{ first: h1bFirst, latest: h1bLatest }` ✅ |
+
+No empty values. "H-1B", "LCA", "FY" proper nouns remain English in ZH per app convention. ✅
+
+### 4. Accessibility
+
+- Section: `<section aria-labelledby="h1b-section-heading">` referencing `<h2 id="h1b-section-heading">` (`CareerDetailClient.tsx:379,384`) ✅
+- SVG sparkline: `role="img"` + `aria-label={label}` where `label = t("h1bSparklineLabel")` (`CareerDetailClient.tsx:654,658`) ✅
+- Null/no-data case: visible paragraph `{t("h1bNoData", ...)}` — readable by screen readers without special ARIA (`CareerDetailClient.tsx:447`) ✅
+- `StateDeepDiveSection.tsx:128,139`: `aria-sort` is correctly placed on `<th scope="col">` elements inside a `<table>` — no misuse on non-table elements ✅
+- **NIT** (`CareerDetailClient.tsx:654`): `h1bSparklineLabel` resolves to the static string "H-1B filing volume by fiscal year" — lacks the year range. Richer copy such as "H-1B filing volume by fiscal year, FY{first}–FY{latest}" would give screen-reader users context without looking at surrounding text. Not a WCAG failure (role+label is present), but a UX improvement.
+
+### 5. Descriptive Framing
+
+- Subtitle copy: "employer filings, not visa approvals or individual outcomes" (`en/careers.ts:103`) ✅
+- noData copy: "No H-1B certified LCA filings recorded…" (`en/careers.ts:113`) ✅
+- Link to `/visa` present: `<Link href="/visa">` (`CareerDetailClient.tsx:390`) ✅
+- No causal, predictive, or individual-outcome language anywhere in the section. ✅
+
+### 6. Consistency
+
+- Glass card `className` matches neighboring sections in `CareerDetailClient.tsx`. ✅
+- `formatNumber` used for `totalCount` and `latestYearCount`; `formatCurrency` used for `medianWageAnnualLatest`. ✅
+- Prop types: `h1bSignal: H1bOccupationSignal | null` correctly nullable; `h1bFirst: number`, `h1bLatest: number` correctly typed. ✅
+- **NIT** (`app/careers/[code]/page.tsx:37–38`): `fiscalYears[0]` and `fiscalYears[fiscalYears.length - 1]` are typed as `number` but would be `undefined` on an empty array. The data schema validation makes this unreachable in practice, but explicit guards (`fiscalYears.at(0) ?? 2016`) would be safer TypeScript.
+
+---
+
+## Non-Blocking Nits Summary
+
+| # | Location | Nit |
+|---|---|---|
+| N1 | `lib/h1b.ts:370–376` | Re-sorts 800× at build time; cache/reuse `getOccupationsSorted()` |
+| N2 | `app/careers/[code]/page.tsx:37–38` | `fiscalYears[n]` could be `undefined` if array is empty; use `fiscalYears.at(0)` with fallback |
+| N3 | `CareerDetailClient.tsx:654` | Sparkline `aria-label` missing year-range context |
+
+None of these nits are blocking. No correctness bugs, no bundle violations, no i18n gaps, no accessibility failures, no framing violations found.
+
+---
+
+## Decision
+
+**APPROVE-WITH-NITS** — feature is production-ready. Nits may be addressed in a follow-up pass at the team's discretion. No rejection required; no lock-out assignments triggered.
+
+## Fold H-1B Sponsorship Signal into /careers/[code] (2026-07-02)
+
+**Requested by:** huangyingting  
+**Decision Date:** 2026-07-02T23:13:00Z  
+**Status:** ✅ SHIPPED (merged commit a8f2c68 to branch feat/h1b-extend)  
+
+### Scope & Outcome
+
+A new "H-1B Visa Sponsorship Demand" section now appears in the career detail view (`/careers/[code]`), providing occupation-level H-1B filing context (employer demand signal) alongside employment and wage data.
+
+#### Data Layer (Tank — `lib/h1b.ts`)
+- **New function:** `getOccupationSignalBySoc(soc)` — retrieves H-1B filing volume, decade total, latest-year count, median wage, fiscal-year range, and national rank by total filings for a given occupation SOC.
+- **New type:** `H1bOccupationSignal` — exported interface for server-side access; server-only module-memoized rank computation (O(n log n) once at build time, not per-page).
+- **Unchanged:** Existing H-1B data in `data/h1b.json` (certified LCA filings 2016–2025, ~500 occupations × 10 years).
+
+#### Frontend (Neo — `components/careers/CareerDetailClient.tsx` + `app/careers/[code]/page.tsx`)
+- **Server pass:** `app/careers/[code]/page.tsx` calls `getOccupationSignalBySoc()` at build time, passes slim result object as a server-resolved prop (`h1bSignal: H1bOccupationSignal | null`).
+- **Client render:** `CareerDetailClient.tsx` imports only the type (`import type { H1bOccupationSignal }`), rendering a glass-card section with:
+  - Filing volume (decade total + latest-year count formatted with `formatNumber`).
+  - Median wage (formatted with `formatCurrency`).
+  - National rank among all occupations ("rank X of Y").
+  - Sparkline SVG (inline, 200×60px, shows filing count trend by fiscal year, role="img" + aria-label).
+  - Descriptive framing: "employer filings, not visa approvals or individual outcomes"; link to `/visa` for deeper trends.
+  - No-data graceful fallback: "No H-1B certified LCA filings recorded for this occupation during the [first–latest] fiscal year range."
+
+#### Internationalization (Neo — `lib/i18n/messages/{en,zh}/careers.ts`)
+- **11 new keys** (EN/ZH parity): `h1bSectionTitle`, `h1bSectionSubtitle`, `h1bStatDecadeTotal`, `h1bStatLatestVolume`, `h1bStatMedianWage`, `h1bStatRank`, `h1bRankValue`, `h1bShareNote`, `h1bViewTrends`, `h1bSparklineLabel`, `h1bNoData`.
+- **Proper nouns remain English in ZH:** "H-1B", "LCA", "FY" per app convention.
+- **Consistent caveats:** "employer filings, not visa approvals or individual outcomes" in both languages.
+
+#### Testing (Mouse — `tests/h1b-data.test.ts` + `tests/careers-i18n.test.ts`)
+- **11 accessor tests** (`tests/h1b-data.test.ts`): verify `getOccupationSignalBySoc()` on known occupations, null/unknown-SOC handling, rank sorting, shareOfLatestYear denominator safety, decade/latest-year calculations.
+- **25 i18n parity tests** (`tests/careers-i18n.test.ts`): check all 11 new keys present in EN and ZH, verify interpolation placeholders match component calls (no orphaned keys, no missing interpolations).
+- **Result:** +36 tests; full suite 435 tests PASS.
+
+#### Code Review Findings (Trinity — APPROVE-WITH-NITS)
+- ✅ **Correctness:** `getOccupationSignalBySoc()` logic (SOC lookup, rank, shareOfLatestYear denominator safety) verified.
+- ✅ **Bundle hygiene:** `CareerDetailClient.tsx` uses `import type` only; server-side value import in `app/careers/[code]/page.tsx` acceptable (single build-time call per page, no client bundle impact).
+- ✅ **i18n parity:** All 11 keys present EN/ZH, interpolations match component calls.
+- ✅ **Accessibility:** Section aria-labelledby, sparkline role="img" + aria-label, null/no-data paragraph readable by screen readers.
+- ✅ **Framing:** Consistent caveat (filings ≠ approvals/outcomes); descriptive, no predictive/causal language.
+- **Non-blocking nits (applied):**
+  - N1: Re-sort eliminated via module-level memoization in `getOccupationSignalBySoc()`.
+  - N2: `fiscalYears[n]` guard hardened with `.at(0) ?? 2016` fallback pattern.
+  - N3: Sparkline aria-label enriched with year-range context ("H-1B filing volume by fiscal year, FY{first}–FY{latest}").
+
+#### RAI Review (Rai — 🟡 Yellow, no blockers)
+- ✅ **Caveat consistency:** "employer filings, not approvals or individual outcomes" applied in both EN and ZH sections.
+- ✅ **ZH qualifier:** "申报" (filings/certified applications) used instead of neutral "申请" (requests) to distinguish certified LCAs.
+- ✅ **Sparkline a11y:** aria-label includes year-range context for screen-reader users.
+- **3 advisories (R4-F1/F2/F3) all applied.**
+
+#### Validation (Coordinator)
+- ✅ `npm run build` → exit 0; all ~800 career pages render, no build errors.
+- ✅ `npm run lint` → 0 violations (140 files scanned).
+- ✅ `npm run test:run` → 435 tests PASS (including 36 new h1b + i18n tests).
+- ✅ `npm run smoke` → 10/10 routes HTTP 200, Playwright screenshots EN/ZH confirm H-1B section renders + translates correctly, occupation names remain English (data integrity).
+- ✅ **Uncommitted /visa extension verified:** build/lint/bundle green; no merge conflicts.
+- ✅ **tsc regression fix:** Fixed renderView arg mismatch in `tests/components/MethodologyView.test.tsx`; final tsc 0.
+- **Final gate:** tsc 0 / lint 0 / 435 tests / build pass.
+
+### Rationale
+
+H-1B visa sponsorship is a critical signal of employer demand and occupational value. Previous pages focused on employment trends and wage outcomes, but lacked the employer-intent signal. Folding H-1B data into the career detail view contextualizes employer demand without creating causal claims. The section is positioned alongside employment/wage stats, helping users understand occupational attractiveness from multiple angles (labor-market outcomes + employer hiring intent). Framing is consistently descriptive: filings indicate demand, not visa approval likelihood or individual worker outcomes.
+
+### Known Constraints
+
+1. **Memoization scope:** Rank computation happens at build time (module-level memoization in `getOccupationSignalBySoc()`); rank is stable across all ~800 career pages but only updates on rebuild.
+2. **No real-time updates:** H-1B data is snapshot-based (2016–2025); future fiscal years require data refresh + rebuild.
+3. **Coverage:** ~500 SOC codes have H-1B data; unmapped occupations show no-data message (graceful fallback).
+
+### Commits
+
+- **Tank:** `lib/h1b.ts` — new `getOccupationSignalBySoc()` + `H1bOccupationSignal` interface.
+- **Neo:** `app/careers/[code]/page.tsx`, `components/careers/CareerDetailClient.tsx`, `lib/i18n/messages/{en,zh}/careers.ts` — server component wiring, client section, i18n keys.
+- **Mouse:** `tests/h1b-data.test.ts`, `tests/careers-i18n.test.ts` — accessor + parity tests.
+- **Trinity, Rai, Coordinator:** Code review, RAI review, validation (commit a8f2c68).
+
+### Status
+
+✅ **SHIPPED** — merged to branch feat/h1b-extend; validation complete; final gate passed (tsc/lint/test/build).

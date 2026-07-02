@@ -32,3 +32,9 @@
 ## 2026-07-02T00:34:32.844+00:00 — Widescreen layout design and EvidenceStack fix
 
 Switch specified the centered wide-screen layout direction and Evidence Stack matrix redesign. After Trinity rejected Neo's first EvidenceStack grid for horizontal overflow at 1280/1440px, Switch owned the reviewer-protocol fix and changed the grid to shrinkable tracks; Playwright verification confirmed no horizontal overflow across 1280, 1440, 1920, and 2560px.
+
+
+## 2026-07-02 — AI Adoption Signals remediation
+- Fixed Trinity/Rai blockers by splitting China app metrics into MAU and usage panels.
+- Split developer survey data into overall distribution and country-share panels to avoid denominator mixing.
+- Preserved bundle hygiene by keeping raw JSON/server loader imports out of client components.
