@@ -16,6 +16,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { validateOccupationSnapshotSlim } from "./lib/validate.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dataDir = join(__dirname, "..", "data");
@@ -72,6 +73,7 @@ const slim = full.map((row) => {
 });
 
 const outPath = join(dataDir, "occupation-snapshot-slim.json");
+validateOccupationSnapshotSlim(slim);
 writeFileSync(outPath, JSON.stringify(slim));
 console.log(
   `[build-snapshot-slim] wrote ${slim.length} rows -> ${outPath} (${(

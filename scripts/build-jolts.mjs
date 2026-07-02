@@ -10,6 +10,7 @@ import { existsSync, mkdirSync, writeFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
+import { validateJolts } from "./lib/validate.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -242,6 +243,7 @@ async function main() {
   }
 
   const outPath = path.join(DATA_DIR, "jolts.json");
+  validateJolts(output);
   writeFileSync(outPath, jsonStr);
 
   // ── Summary ──

@@ -11,6 +11,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
 import ExcelJS from "exceljs";
+import { validateWarnNotices } from "./lib/validate.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -1874,6 +1875,7 @@ async function main() {
 
   const jsonStr = JSON.stringify(output, null, 2) + "\n";
   const outPath = path.join(DATA_DIR, "warn-notices.json");
+  validateWarnNotices(output);
   writeFileSync(outPath, jsonStr);
 
   // ─── Validation output ────────────────────────────────────────────────────
