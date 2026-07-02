@@ -188,10 +188,8 @@ export default function FrontierLeadersChart() {
         <div className="space-y-3">
           <div
             style={{ height: Math.max(280, orgs.length * 34 + 60) }}
-            role="img"
-            aria-label={t("a11yFrontierLeadersName")}
           >
-            <Bar options={commonOptions} data={orgChartData} />
+            <Bar options={commonOptions} data={orgChartData} aria-label={t("a11yFrontierLeadersName")} />
           </div>
           {/* Supplemental table */}
           <div className="overflow-x-auto">
@@ -248,10 +246,8 @@ export default function FrontierLeadersChart() {
         <div className="space-y-3">
           <div
             style={{ height: Math.max(240, countries.length * 34 + 60) }}
-            role="img"
-            aria-label={t("a11yFrontierLeadersName")}
           >
-            <Bar options={commonOptions} data={countryChartData} />
+            <Bar options={commonOptions} data={countryChartData} aria-label={t("a11yFrontierLeadersName")} />
           </div>
           {/* Supplemental table */}
           <div className="overflow-x-auto">

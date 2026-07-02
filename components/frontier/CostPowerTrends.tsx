@@ -256,7 +256,7 @@ export default function CostPowerTrends() {
           {t("costChartTitle")}
         </h3>
         <div className="h-64">
-          <Line options={costOptions} data={costData} />
+          <Line options={costOptions} data={costData} aria-label={t("costChartTitle")} />
         </div>
       </AccessibleChart>
 
@@ -270,7 +270,7 @@ export default function CostPowerTrends() {
           {t("powerChartTitle")}
         </h3>
         <div className="h-64">
-          <Line options={powerOptions} data={powerData} />
+          <Line options={powerOptions} data={powerData} aria-label={t("powerChartTitle")} />
         </div>
       </AccessibleChart>
 

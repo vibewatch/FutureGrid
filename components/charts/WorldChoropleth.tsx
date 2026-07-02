@@ -717,7 +717,6 @@ export default function WorldChoropleth({
             ref={svgRef}
             viewBox={`0 0 ${W} ${H}`}
             className="choropleth-svg w-full h-auto"
-            role="img"
             aria-label={svgAriaLabel}
             style={{
               opacity:   entered ? 1 : 0,
