@@ -249,6 +249,115 @@ export function validateOccupationSnapshotSlim(dataset) {
 }
 
 /**
+ * Validate data/h1b-trends.json (issue: work-visa job trends).
+ *
+ * The dataset aggregates DOL OFLC H-1B/LCA disclosure data into a small
+ * per-fiscal-year snapshot. Thresholds are intentionally conservative so a
+ * partial (>=4 year) backfill still passes while a degenerate/empty build fails.
+ *
+ * Gates:
+ *  - required top-level keys + non-empty provenance (meta.generatedAt + source)
+ *  - a minimum number of fiscal years present
+ *  - a minimum certifiedLcas per year (guards against an empty/broken parse)
+ *  - coverage.fiscalYears matches the fiscalYears present in byYear
+ *  - occupations/byState/topEmployers are present and non-empty
+ *
+ * @param {Record<string, unknown>} data
+ * @param {{ minYears?: number, minCertifiedPerYear?: number }} [opts]
+ */
+export function validateH1bTrends(data, opts = {}) {
+  const minYears = opts.minYears ?? 4;
+  // Full-year figures: FY2020+ sum all four quarterly files (distinct
+  // CASE_NUMBER union), and FY2016–FY2019 use the annual workbook, so every
+  // covered year now carries a full fiscal year of certified H-1B LCAs
+  // (~200K–650K). The floor guards against a regression to the old Q4-only
+  // undercount (~80K–110K) or an empty/broken parse.
+  const minCertifiedPerYear = opts.minCertifiedPerYear ?? 200000;
+
+  assertFields(
+    data,
+    ["meta", "coverage", "byYear", "occupations", "topEmployers", "byState"],
+    "h1b-trends"
+  );
+  assertProvenance(data, "h1b-trends");
+
+  // Provenance source must be present (name/url) — not just a timestamp.
+  const src = data.meta && typeof data.meta === "object" ? data.meta.source : null;
+  if (!src || (typeof src === "object" && !src.name && !src.url)) {
+    throw new Error("[validate] h1b-trends: missing meta.source (name/url)");
+  }
+
+  assertMinRows(data.byYear, minYears, "h1b-trends.byYear");
+
+  const seenYears = [];
+  for (const b of data.byYear) {
+    assertFields(
+      b,
+      [
+        "fiscalYear",
+        "certifiedLcas",
+        "totalWorkerPositions",
+        "distinctEmployers",
+        "medianWageAnnual",
+        "p25WageAnnual",
+        "p75WageAnnual",
+      ],
+      `h1b-trends.byYear[FY${b && b.fiscalYear}]`
+    );
+    if (typeof b.certifiedLcas !== "number" || b.certifiedLcas < minCertifiedPerYear) {
+      throw new Error(
+        `[validate] h1b-trends: FY${b.fiscalYear} has too few certifiedLcas — ` +
+          `got ${b.certifiedLcas}, need at least ${minCertifiedPerYear}`
+      );
+    }
+    if (!(typeof b.medianWageAnnual === "number" && b.medianWageAnnual > 0)) {
+      throw new Error(
+        `[validate] h1b-trends: FY${b.fiscalYear} medianWageAnnual must be a positive number`
+      );
+    }
+    seenYears.push(b.fiscalYear);
+  }
+
+  // byYear must be sorted ascending by fiscalYear.
+  for (let i = 1; i < seenYears.length; i++) {
+    if (seenYears[i] <= seenYears[i - 1]) {
+      throw new Error(
+        "[validate] h1b-trends: byYear must be sorted ascending by fiscalYear"
+      );
+    }
+  }
+
+  // coverage.fiscalYears must exactly match the years present in byYear.
+  const coverage = data.coverage;
+  if (!coverage || typeof coverage !== "object" || !Array.isArray(coverage.fiscalYears)) {
+    throw new Error("[validate] h1b-trends: coverage.fiscalYears must be an array");
+  }
+  const covSorted = [...coverage.fiscalYears].sort((a, b) => a - b);
+  if (
+    covSorted.length !== seenYears.length ||
+    covSorted.some((y, i) => y !== seenYears[i])
+  ) {
+    throw new Error(
+      "[validate] h1b-trends: coverage.fiscalYears does not match byYear fiscal years"
+    );
+  }
+
+  assertMinRows(data.occupations, 50, "h1b-trends.occupations");
+  assertMinRows(data.topEmployers, 5, "h1b-trends.topEmployers");
+  assertMinRows(data.byState, 20, "h1b-trends.byState");
+
+  // Spot-check that SOC codes are normalized to ##-#### form.
+  const bad = data.occupations.find(
+    (o) => typeof o.socCode !== "string" || !/^\d{2}-\d{4}$/.test(o.socCode)
+  );
+  if (bad) {
+    throw new Error(
+      `[validate] h1b-trends: occupation SOC code not normalized: ${bad && bad.socCode}`
+    );
+  }
+}
+
+/**
  * Validate data/provenance.json (the central provenance registry, issue #52).
  * Ensures the registry lists datasets and that every entry carries a
  * generatedAt timestamp and a source.

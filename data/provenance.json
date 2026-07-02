@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-02T08:48:01.584Z",
+  "generatedAt": "2026-07-02T19:07:15.581Z",
   "datasets": [
     {
       "id": "ai-demand",
@@ -102,6 +102,19 @@
       "rows": 4
     },
     {
+      "id": "h1b-trends",
+      "file": "data/h1b-trends.json",
+      "generatedAt": "2026-07-02T18:42:04.146Z",
+      "asOf": "FY2025",
+      "source": {
+        "name": "DOL OFLC LCA Disclosure Data",
+        "publisher": "U.S. DOL OFLC",
+        "url": "https://www.dol.gov/agencies/eta/foreign-labor/performance"
+      },
+      "version": "1.0.0",
+      "rows": 776
+    },
+    {
       "id": "jolts",
       "file": "data/jolts.json",
       "generatedAt": "2026-07-01T03:33:52.824Z",
@@ -140,7 +153,7 @@
     {
       "id": "occupation-snapshot-slim",
       "file": "data/occupation-snapshot-slim.json",
-      "generatedAt": "2026-07-02T08:43:00.241Z",
+      "generatedAt": "2026-07-02T08:48:01.726Z",
       "asOf": "2025",
       "source": {
         "name": "Anthropic Economic Index — Job Exposure",
@@ -186,7 +199,7 @@
         "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex"
       },
       "version": "1.0.0",
-      "rows": 23
+      "rows": 37
     },
     {
       "id": "state-labor",

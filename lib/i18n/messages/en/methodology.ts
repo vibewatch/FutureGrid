@@ -83,6 +83,25 @@ export const methodologyEn = {
   forecastCaveat:
     "Caveat: All forecasts and regression results are descriptive analyses of historical data. They are not econometric causal models, they do not account for policy changes, technological disruption beyond historical trends, or macroeconomic shocks. 2030 projections carry wide uncertainty intervals that are not displayed in the UI.",
 
+  // ── Section: H-1B Work-Visa Trends ────────────────────────────────────────────
+  h1bHeading: "H-1B Work-Visa Trends",
+  h1bSubhead:
+    "How the certified H-1B LCA metric is derived from DOL OFLC disclosure data, and why it is a demand signal for filings rather than a count of visa approvals.",
+  h1bMetricTitle: "What the Metric Counts",
+  h1bMetricDesc:
+    "The headline metric is the number of certified H-1B Labor Condition Applications (LCAs) per fiscal year. An LCA is the wage-and-working-conditions attestation an employer files with the Department of Labor's Office of Foreign Labor Certification (OFLC) before petitioning for an H-1B worker. A certified LCA is an approved filing — it is NOT a visa approval, a petition, or a hire, and a single LCA can list multiple worker positions.",
+  h1bAggTitle: "Per-Quarter Distinct-Case Summation",
+  h1bAggDesc:
+    "OFLC publishes LCA disclosure files quarterly for FY2020 onward and as a single annual workbook for FY2016–FY2019. The quarterly files are per-quarter snapshots, not cumulative, so a full fiscal-year figure is computed as the union of DISTINCT case numbers across all four quarterly files — de-duplicating cases that appear in more than one quarter. FY2016–FY2019 use the annual disclosure workbook directly. SOC occupation codes are normalized to the 2018 SOC vintage via a crosswalk so all ten years are comparable.",
+  h1bWageTitle: "Wage Annualization",
+  h1bWageDesc:
+    "Offered wages are reported on hourly, weekly, bi-weekly, monthly, or yearly bases. Every wage is annualized to a common yearly figure before the median and the 25th/75th percentiles are computed, so the wage trend reflects like-for-like full-year compensation across the decade.",
+  h1bExposureTitle: "AI-Exposure Tier Join",
+  h1bExposureDesc:
+    "Each occupation's SOC code is joined to FutureGrid's occupation-snapshot automation-risk tiers (Low, Medium, High, Very High) to show certified-LCA volume by AI-exposure tier. About 72% of H-1B SOC codes match; unmatched codes are bucketed as 'Unclassified'. This is a descriptive overlay of two independent datasets, not a causal claim about AI and visa demand.",
+  h1bCaveat:
+    "Caveat: These figures are employer filings, not visa approvals or grants. A certified LCA does not guarantee an H-1B petition, an approval, or an actual hire, and each LCA may cover multiple positions. Annual caps, USCIS petition outcomes, and withdrawals are out of scope. Read the numbers as a directional demand signal for high-skill, sponsored roles — not as immigration outcomes or advice.",
+
   // ── Section: Data Changelog ───────────────────────────────────────────────────
   changelogHeading: "Data Changelog",
   changelogSubhead:

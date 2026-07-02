@@ -10,6 +10,7 @@ import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
 import ExcelJS from "exceljs";
 import { deriveMeta } from "./lib/meta.mjs";
+import { buildSocCrosswalk as buildSocCrosswalkShared } from "./lib/soc-crosswalk.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -31,7 +32,6 @@ const URLS = {
   challenger: "https://gist.githubusercontent.com/mcphil/08f8f011f27c9864d157ead0b9d716d9/raw",
   aioe: "https://raw.githubusercontent.com/AIOE-Data/AIOE/main/AIOE_DataAppendix.xlsx",
   freyOsborne: "https://raw.githubusercontent.com/WorkForce-Central/Future-of-Work/master/Frey%20and%20Osborne%20Computerization%20Probability%20by%20SOC.xlsx",
-  crosswalk: "https://web.archive.org/web/2id_/https://www.bls.gov/soc/2018/soc_2010_to_2018_crosswalk.xlsx",
 };
 
 const report = [];
@@ -323,22 +323,14 @@ function findHeader(ws, predicates, maxRows = 20) {
 }
 
 async function buildSocCrosswalk() {
-  const wb = await workbookFromUrl(URLS.crosswalk);
-  const ws = wb.worksheets[0];
-  const header = findHeader(ws, {
-    soc2010: (h) => h.includes("2010 soc code"),
-    soc2018: (h) => h.includes("2018 soc code"),
-  }, 30);
-  if (!header) throw new Error("could not find SOC crosswalk headers");
+  // Load the shared BLS 2010→2018 crosswalk, then reduce it to the same
+  // snapshot-filtered Map<soc2010, Set<soc2018>> this builder has always used:
+  // only 2018 targets that exist in the FutureGrid occupation snapshot.
+  const { multi } = await buildSocCrosswalkShared({ log: (msg) => console.log(msg) });
   const map = new Map();
-  for (let rowNumber = header.rowNumber + 1; rowNumber <= ws.rowCount; rowNumber += 1) {
-    const row = ws.getRow(rowNumber);
-    const from = validSoc(row.getCell(header.columns.soc2010).value);
-    const to = validSoc(row.getCell(header.columns.soc2018).value);
-    if (!from || !to || !SNAPSHOT_CODES.has(to)) continue;
-    const targets = map.get(from) ?? new Set();
-    targets.add(to);
-    map.set(from, targets);
+  for (const [from, targets] of multi) {
+    const filtered = new Set([...targets].filter((to) => SNAPSHOT_CODES.has(to)));
+    if (filtered.size) map.set(from, filtered);
   }
   console.log(`  crosswalk: ${map.size} SOC-2010 codes with FutureGrid SOC-2018 targets`);
   return map;

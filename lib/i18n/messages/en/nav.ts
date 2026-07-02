@@ -14,6 +14,7 @@ export const navEn = {
   sources: "Sources",
   methodology: "Methodology",
   labor: "Labor Market",
+  visa: "H-1B Visas",
   secOverview: "Overview",
   secExposure: "Exposure",
   secLabor: "Labor Market",

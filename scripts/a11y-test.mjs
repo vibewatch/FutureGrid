@@ -26,7 +26,7 @@ const PORT = Number(process.env.A11Y_PORT ?? 8139);
 const CDP_PORT = Number(process.env.A11Y_CDP_PORT ?? 9229);
 
 // Pages to audit.
-const ROUTES = ["/", "/careers", "/global", "/labor", "/frontier", "/analysis"];
+const ROUTES = ["/", "/careers", "/global", "/labor", "/visa", "/frontier", "/analysis"];
 
 // Gate: exit 1 if any page has violations at these impact levels.
 // color-contrast is excluded from the axe run entirely (see AXE_OPTIONS below)

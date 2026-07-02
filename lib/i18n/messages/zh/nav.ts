@@ -14,6 +14,7 @@ export const navZh = {
   sources: "数据来源",
   methodology: "方法论",
   labor: "劳动力市场",
+  visa: "H-1B 签证",
   secOverview: "概览",
   secExposure: "风险敞口",
   secLabor: "劳动力市场",

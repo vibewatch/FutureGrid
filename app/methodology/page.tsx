@@ -102,6 +102,14 @@ const CLEARED: ClearedDownload[] = [
     attribution: "Epoch AI — AI Training Compute dataset.",
   },
   {
+    id: "h1b-trends",
+    filename: "h1b-trends.json",
+    label: "H-1B Certified-LCA Trends",
+    license: "Public Domain",
+    attribution:
+      "U.S. DOL OFLC LCA Disclosure Data. Derived aggregate — certified H-1B LCAs FY2016–FY2025.",
+  },
+  {
     id: "llm-exposure",
     filename: "llm-exposure.json",
     label: "LLM Occupation Exposure",
