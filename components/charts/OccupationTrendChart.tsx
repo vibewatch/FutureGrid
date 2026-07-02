@@ -3,7 +3,7 @@
 import { useEffect, useRef, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
 import * as d3 from "d3";
-import { getOccupationTrend } from "@/lib/data";
+import type { TrendPoint } from "@/lib/snapshot";
 import { useT } from "@/lib/i18n/useT";
 
 // ── Brand colours ─────────────────────────────────────────────────────────────
@@ -11,7 +11,6 @@ const VIOLET = "#8b5cf6";
 const CYAN   = "#22d3ee";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-type TrendPoint = { year: number; employment: number | null; wage: number | null };
 
 interface TooltipState {
   visible: boolean;
@@ -25,6 +24,7 @@ interface TooltipState {
 
 interface OccupationTrendChartProps {
   code: string;
+  data: TrendPoint[];
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -40,7 +40,7 @@ function fmtWage(v: number): string {
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
-export default function OccupationTrendChart({ code }: OccupationTrendChartProps) {
+export default function OccupationTrendChart({ code, data }: OccupationTrendChartProps) {
   const t            = useT("charts");
   const svgRef       = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,8 +50,6 @@ export default function OccupationTrendChart({ code }: OccupationTrendChartProps
   const [tooltip, setTooltip] = useState<TooltipState>({
     visible: false, x: 0, y: 0, cw: 720, year: 0, employment: null, wage: null,
   });
-
-  const data = useMemo<TrendPoint[]>(() => getOccupationTrend(code), [code]);
 
   const labelEmployment = t("labelEmployment");
   const labelMedianWage = t("labelMedianWage");

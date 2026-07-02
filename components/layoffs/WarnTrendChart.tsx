@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import * as d3 from "d3";
-import { getWarnSummary, type WarnMonth } from "@/lib/warn";
+import type { WarnMonth } from "@/lib/warn-types";
 import { useT } from "@/lib/i18n/useT";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -42,7 +42,7 @@ interface TooltipState {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function WarnTrendChart() {
+export default function WarnTrendChart({ byMonth }: { byMonth: WarnMonth[] }) {
   const t            = useT("layoffs");
   const svgRef       = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -53,8 +53,6 @@ export default function WarnTrendChart() {
   const [tooltip, setTooltip] = useState<TooltipState>({
     visible: false, x: 0, y: 0, cw: 700, d: null,
   });
-
-  const { byMonth } = getWarnSummary();
 
   // Extract i18n labels so they appear in the effect deps array
   const labelEmployees = t("axisEmployees");

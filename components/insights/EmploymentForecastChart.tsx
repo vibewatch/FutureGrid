@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import * as d3 from "d3";
-import { getAISignalData, getEmploymentForecast, getNationalForecast, type ForecastPoint } from "@/lib/analysis";
+import { type ForecastPoint, type NationalForecast, type OccupationForecast, type SignalPoint } from "@/lib/analysis";
 import { useT } from "@/lib/i18n/useT";
 
 const VIOLET = "#8b5cf6";
@@ -30,7 +30,7 @@ function recomputeAdjusted(baseline: ForecastPoint[], exposure: number, sensitiv
   });
 }
 
-export default function EmploymentForecastChart() {
+export default function EmploymentForecastChart({ national, signalPoints, forecasts }: { national: NationalForecast; signalPoints: SignalPoint[]; forecasts: Record<string, OccupationForecast> }) {
   const t = useT("analysis");
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -45,9 +45,8 @@ export default function EmploymentForecastChart() {
   const baselineLineLabel = t("baselineLine");
   const aiAdjustedLineLabel = t("aiAdjustedLine");
 
-  const national = useMemo(() => getNationalForecast(), []);
-  const occupations = useMemo(() => getAISignalData().points.filter((p) => getEmploymentForecast(p.code)).sort((a, b) => a.name.localeCompare(b.name)), []);
-  const selectedForecast = useMemo(() => selectedCode ? getEmploymentForecast(selectedCode) : null, [selectedCode]);
+  const occupations = useMemo(() => signalPoints.filter((p) => forecasts[p.code]).sort((a, b) => a.name.localeCompare(b.name)), [signalPoints, forecasts]);
+  const selectedForecast = useMemo(() => selectedCode ? forecasts[selectedCode] ?? null : null, [selectedCode, forecasts]);
   const shownOptions = useMemo(() => {
     const q = query.trim().toLowerCase();
     const base = q ? occupations.filter((o) => o.name.toLowerCase().includes(q) || o.code.includes(q) || o.sector.toLowerCase().includes(q)) : occupations;

@@ -22,7 +22,11 @@ const RISK_OPTIONS: Array<{ value: CareerInsight["automationRisk"] | "all"; labe
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function ExploreView() {
+export default function ExploreView({
+  employmentHistories,
+}: {
+  employmentHistories: Record<string, Record<string, number>>;
+}) {
   const t = useT("explore");
 
   const allInsights = useMemo(() => generateAllCareerInsights(), []);
@@ -200,7 +204,7 @@ export default function ExploreView() {
           </p>
         </div>
         <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
-          <BarChartRace />
+          <BarChartRace employmentHistories={employmentHistories} />
         </div>
       </section>
 

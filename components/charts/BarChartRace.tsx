@@ -52,13 +52,14 @@ function fmtEmployment(v: number): string {
 }
 
 /** Build one Frame for each year from the dataset. */
-function buildFrames(data: CareerInsight[]): Frame[] {
-  // Collect all year keys present in employmentHistory
+function buildFrames(
+  data: CareerInsight[],
+  employmentHistories: Record<string, Record<string, number>>,
+): Frame[] {
+  // Collect all year keys present in the employment histories
   const yearSet = new Set<string>();
-  for (const d of data) {
-    if (d.employmentHistory) {
-      for (const yr of Object.keys(d.employmentHistory)) yearSet.add(yr);
-    }
+  for (const hist of Object.values(employmentHistories)) {
+    for (const yr of Object.keys(hist)) yearSet.add(yr);
   }
   if (yearSet.size === 0) return [];
 
@@ -67,7 +68,7 @@ function buildFrames(data: CareerInsight[]): Frame[] {
   return years.map((year) => {
     const withEmp: Array<{ insight: CareerInsight; emp: number }> = [];
     for (const insight of data) {
-      const emp = insight.employmentHistory?.[year];
+      const emp = employmentHistories[insight.occupationCode]?.[year];
       if (emp != null && emp > 0) withEmp.push({ insight, emp });
     }
     withEmp.sort((a, b) => b.emp - a.emp);
@@ -85,7 +86,13 @@ function buildFrames(data: CareerInsight[]): Frame[] {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export default function BarChartRace() {
+interface BarChartRaceProps {
+  /** SOC code → { year → employment }. Supplied by a Server Component so the
+   *  full snapshot history stays out of client chunks. */
+  employmentHistories: Record<string, Record<string, number>>;
+}
+
+export default function BarChartRace({ employmentHistories }: BarChartRaceProps) {
   const t       = useT("explore");
   const tCharts = useT("charts");
 
@@ -106,7 +113,10 @@ export default function BarChartRace() {
   );
 
   const allData = useMemo(() => generateAllCareerInsights(), []);
-  const frames  = useMemo(() => buildFrames(allData), [allData]);
+  const frames  = useMemo(
+    () => buildFrames(allData, employmentHistories),
+    [allData, employmentHistories],
+  );
   const years   = useMemo(() => frames.map((f) => f.year), [frames]);
 
   // ── Auto-advance timer ────────────────────────────────────────────────────────

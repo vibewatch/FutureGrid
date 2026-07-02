@@ -582,3 +582,35 @@ function cloneExposureComparison(comparison: ExposureComparison): ExposureCompar
     correlations: comparison.correlations.map((correlation) => ({ ...correlation })),
   };
 }
+
+// ─── Analysis page bundle (server-only) ──────────────────────────────────────
+// Aggregates every dataset the /analysis client islands need. Called from the
+// Server Component at build time so the full occupation snapshot (with the
+// per-occupation histories these computations require) never ships in a client
+// chunk — only the small, resolved results are serialized to the islands.
+
+export interface AnalysisPageData {
+  aiSignal: AISignalData;
+  nationalForecast: NationalForecast;
+  forecasts: Record<string, OccupationForecast>;
+  exposureComparison: ExposureComparison;
+  exposureGapLeaders: OccExposure[];
+  disruptionIndex: DisruptionIndex;
+}
+
+export function getAnalysisPageData(): AnalysisPageData {
+  const aiSignal = getAISignalData();
+  const forecasts: Record<string, OccupationForecast> = {};
+  for (const point of aiSignal.points) {
+    const forecast = getEmploymentForecast(point.code);
+    if (forecast) forecasts[point.code] = forecast;
+  }
+  return {
+    aiSignal,
+    nationalForecast: getNationalForecast(),
+    forecasts,
+    exposureComparison: getExposureComparison(),
+    exposureGapLeaders: getExposureGapLeaders(8),
+    disruptionIndex: getDisruptionIndex(),
+  };
+}

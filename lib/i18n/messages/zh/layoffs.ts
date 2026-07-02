@@ -1,4 +1,6 @@
 export const layoffsZh: Record<string, string> = {
+  loading: "正在加载裁员通知…",
+  loadError: "无法加载裁员数据，请重试。",
   heroTitle: "近期大规模裁员 — 6个州",
   heroSubhead:
     "来自加州、新泽西、纽约、俄亥俄、德克萨斯、威斯康星的官方WARN法案申报。" +
