@@ -6,6 +6,7 @@ import * as d3 from "d3";
 import { getCountryExposure } from "@/lib/data";
 import type { CountryExposure } from "@/lib/data";
 import { useT } from "@/lib/i18n/useT";
+import { useFormatters } from "@/lib/i18n/useFormatters";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -40,6 +41,7 @@ function brandColor(t: number): string {
 
 export default function CountryExposureChart() {
   const t            = useT("charts");
+  const { formatNumber } = useFormatters();
   const svgRef       = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
@@ -441,8 +443,8 @@ export default function CountryExposureChart() {
         <div className="flex items-center gap-0.5 p-1 glass rounded-lg ml-auto">
           <button
             onClick={() => setViewMode("bar")}
-            aria-label="Ranked bar chart"
-            title="Ranked bar chart"
+            aria-label={t("ariaLabelRankedBarBtn")}
+            title={t("ariaLabelRankedBarBtn")}
             className={`p-1.5 rounded-md transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
               viewMode === "bar"
                 ? "bg-violet-600/30 text-violet-300"
@@ -457,8 +459,8 @@ export default function CountryExposureChart() {
           </button>
           <button
             onClick={() => setViewMode("scatter")}
-            aria-label="GDP vs AI usage scatter plot"
-            title="GDP vs AI usage scatter"
+            aria-label={t("ariaLabelGDPScatterBtn")}
+            title={t("ariaLabelGDPScatterBtn")}
             className={`p-1.5 rounded-md transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
               viewMode === "scatter"
                 ? "bg-violet-600/30 text-violet-300"
@@ -485,18 +487,23 @@ export default function CountryExposureChart() {
           role="img"
           aria-label={
             viewMode === "bar"
-              ? `Top ${TOP_N} countries by ${metric === "usageIndex" ? "AI usage per-capita index" : "share of global AI usage"}, ranked bar chart`
-              : "Scatter plot: AI usage index versus GDP per working-age adult by country"
+              ? t("ariaLabelTopCountriesBar", {
+                  n: TOP_N,
+                  metric: metric === "usageIndex"
+                    ? t("ariaMetricPerCapitaIndex")
+                    : t("ariaMetricGlobalShare"),
+                })
+              : t("ariaLabelScatterGDPUsage")
           }
         />
       </div>
 
       {/* ── Screen-reader accessible list ──────────────────────────────────── */}
-      <ul className="sr-only" aria-label="Top countries by AI adoption">
+      <ul className="sr-only" aria-label={t("ariaLabelTopCountriesList")}>
         {barData.map(d => (
           <li key={d.iso3}>
-            {d.name}: usage index {d.usageIndex != null ? d.usageIndex.toFixed(2) : "N/A"},{" "}
-            global share {d.usagePct != null ? `${(d.usagePct * 100).toFixed(2)}%` : "N/A"}
+            {d.name}: {t("srTextUsageIndex")} {d.usageIndex != null ? d.usageIndex.toFixed(2) : "N/A"},{" "}
+            {t("srTextGlobalShare")} {d.usagePct != null ? `${(d.usagePct * 100).toFixed(2)}%` : "N/A"}
           </li>
         ))}
       </ul>
@@ -538,7 +545,7 @@ export default function CountryExposureChart() {
               <div className="flex justify-between gap-4">
                 <span className="text-zinc-500">{t("labelUsageCount")}</span>
                 <span className="text-zinc-900 dark:text-white font-medium">
-                  {item.usageCount.toLocaleString()}
+                  {formatNumber(item.usageCount)}
                 </span>
               </div>
             )}
@@ -546,7 +553,7 @@ export default function CountryExposureChart() {
               <div className="flex justify-between gap-4">
                 <span className="text-zinc-500">{t("labelGDPWorker")}</span>
                 <span className="text-zinc-900 dark:text-white font-medium">
-                  ${Math.round(item.gdpPerWorkingAgeCapita).toLocaleString()}
+                  ${formatNumber(Math.round(item.gdpPerWorkingAgeCapita))}
                 </span>
               </div>
             )}

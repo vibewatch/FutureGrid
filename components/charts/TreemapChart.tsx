@@ -343,7 +343,7 @@ export default function TreemapChart() {
           <button
             className="text-xs font-medium text-violet-400 hover:text-violet-300 flex items-center gap-1 transition-colors"
             onClick={() => setFocusSector(null)}
-            aria-label="Back to all sectors"
+            aria-label={t("a11yBackToAllSectors")}
           >
             {t("treemapBack")}
           </button>

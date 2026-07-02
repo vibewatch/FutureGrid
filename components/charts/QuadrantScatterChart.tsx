@@ -338,7 +338,7 @@ export default function QuadrantScatterChart() {
         className="w-full h-auto"
         style={{ minHeight: 320 }}
         role="img"
-        aria-label="Exposure × Pay quadrant scatter of all occupations: AI exposure (x-axis) vs median annual salary (y-axis, log scale), coloured by automation risk. Scroll or pinch to zoom; click a dot to explore that occupation."
+        aria-label={t("a11yQuadrantScatterName")}
       />
 
       {/* Reset zoom button — appears only when zoomed */}
@@ -352,7 +352,7 @@ export default function QuadrantScatterChart() {
             color:              isDark ? "#a1a1aa"                : "#52525b",
             backdropFilter:     "blur(8px)",
           }}
-          aria-label="Reset zoom to default view"
+          aria-label={t("a11yResetZoomToDefault")}
         >
           {t("buttonResetZoom")}
         </button>
@@ -423,7 +423,7 @@ export default function QuadrantScatterChart() {
       </div>
 
       {/* Screen-reader accessible occupation list */}
-      <ul className="sr-only" aria-label="Occupations">
+      <ul className="sr-only" aria-label={t("a11yOccupationsList")}>
         {data.map((d) => (
           <li key={d.occupationCode}>
             <a href={`/careers/${encodeURIComponent(d.occupationCode)}`}>

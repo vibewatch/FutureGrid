@@ -320,12 +320,12 @@ export default function SectorScatterChart() {
         ref={svgRef}
         className="w-full h-auto"
         style={{ minHeight: 280 }}
-        aria-label="Sector scatter chart: AI exposure vs bright-outlook share"
+        aria-label={t("a11ySectorScatterName")}
         role="img"
       />
 
       {/* Screen-reader / keyboard accessible sector links */}
-      <ul className="sr-only" aria-label="Sectors">
+      <ul className="sr-only" aria-label={t("a11ySectorsList")}>
         {data.map((d) => (
           <li key={d.sector}>
             <Link href={`/sectors/${encodeURIComponent(d.sector)}`}>{d.sector}</Link>

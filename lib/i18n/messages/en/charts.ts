@@ -205,4 +205,40 @@ export const chartsEn: Record<string, string> = {
   a11yHeatmapTableCaption: "Heatmap data: 25 countries × 8 AI metrics",
   a11yHeatmapThCountry:    "Country",
   a11yHeatmapThValue:      "Value",
+
+  // ── CountryExposureChart view-toggle button aria-labels ──────────────────
+  ariaLabelRankedBarBtn:    "Ranked bar chart",
+  ariaLabelGDPScatterBtn:   "GDP vs AI usage scatter plot",
+
+  // ── CountryExposureChart SVG aria-labels (template: {n}, {metric}) ───────
+  ariaLabelTopCountriesBar:  "Top {n} countries by {metric}, ranked bar chart",
+  ariaMetricPerCapitaIndex:  "AI usage per-capita index",
+  ariaMetricGlobalShare:     "share of global AI usage",
+  ariaLabelScatterGDPUsage:  "Scatter plot: AI usage index versus GDP per working-age adult by country",
+
+  // ── CountryExposureChart screen-reader list ───────────────────────────────
+  ariaLabelTopCountriesList: "Top countries by AI adoption",
+  srTextUsageIndex:          "usage index",
+  srTextGlobalShare:         "global share",
+
+  // ── QuadrantScatterChart ──────────────────────────────────────────────────
+  a11yQuadrantScatterName:
+    "Exposure × Pay quadrant scatter of all occupations: AI exposure (x-axis) vs median annual salary (y-axis, log scale), coloured by automation risk. Scroll or pinch to zoom; click a dot to explore that occupation.",
+  a11yResetZoomToDefault: "Reset zoom to default view",
+  a11yOccupationsList:    "Occupations",
+
+  // ── TreemapChart ─────────────────────────────────────────────────────────
+  a11yBackToAllSectors: "Back to all sectors",
+
+  // ── WorldChoropleth control aria-labels ──────────────────────────────────
+  a11yMapMetricSelector: "Map metric",
+  a11yViewModeSelector:  "View mode",
+  a11yResetZoomLabel:    "Reset zoom",
+
+  // ── SectorScatterChart ────────────────────────────────────────────────────
+  a11ySectorScatterName: "Sector scatter chart: AI exposure vs bright-outlook share",
+  a11ySectorsList:       "Sectors",
+
+  // ── SkillFlowSankey ───────────────────────────────────────────────────────
+  a11ySkillFlowName: "Career transition flow diagram",
 };
