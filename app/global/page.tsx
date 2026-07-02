@@ -1,10 +1,12 @@
 import { getCountryExposure, getAIUsageProxies, getCountryMapData, getDiffusionRisers } from "@/lib/data";
 import GlobalView from "@/components/global/GlobalView";
 import type { EnrichedCountry } from "@/components/dashboard/CountryDetailPanel";
+import { getAdoptionSignals } from "@/lib/adoption-signals";
 
 export default function GlobalPage() {
   const allCountries = getCountryExposure();
   const proxies = getAIUsageProxies();
+  const adoptionSignals = getAdoptionSignals({ topN: 8 });
 
   // Extract China proxy figures from live data (with hardcoded fallbacks)
   const cnnicEntry = proxies.countrySurveyMetrics.find(
@@ -79,6 +81,7 @@ export default function GlobalPage() {
       enrichedCountries={enrichedCountries}
       top12={top12}
       maxIndex={maxIndex}
+      adoptionSignals={adoptionSignals}
     />
   );
 }

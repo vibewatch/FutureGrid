@@ -62,6 +62,126 @@ export const globalEn: Record<string, string> = {
   chinaCaveatSee: "See the",
   chinaCaveatPage: "page for full provenance details.",
 
+  // AI adoption signals
+  adoptionSignalsEyebrow: "Supplemental proxy evidence",
+  adoptionSignalsTitle: "AI Adoption Signals",
+  adoptionSignalsSubtitle:
+    "Heterogeneous proxy evidence from surveys, app-market measures, open-model activity, developer sources, and research activity. These signals are not merged into the Claude usage index.",
+  adoptionSignalsCaveatLabel: "Caveat:",
+  adoptionSignalsSourceLabel: "Source:",
+  adoptionSignalsPeriodLabel: "Period:",
+  adoptionSignalsViewSources: "View Data & Sources →",
+  adoptionSignalsCollectedFamilies: "Collected families",
+  adoptionSignalsVisualizedFamilies: "Visualized families",
+  adoptionSignalsFutureCatalogCount: "Future candidates",
+  adoptionSignalsBarListAria: "{title} bar list",
+  adoptionSignalsStackedShareAria: "{title} share distribution",
+  adoptionSignalsProviderModelsAria: "{provider} top model activity proxies",
+  adoptionSignalsBenchmarksLabel: "Benchmarks",
+  adoptionSignalsModelLabel: "Model",
+  adoptionSignalsStars: "Stars",
+  adoptionSignalsForks: "Forks",
+  adoptionSignalsOpenIssues: "Open issues",
+  adoptionSignalsUpdated: "Updated",
+  adoptionSignalsFutureSources: "Future collection candidates",
+  adoptionSignalsFutureSourcesSummary: "{count} catalog sources",
+  adoptEnterpriseTitle: "Enterprise AI survey shares",
+  adoptEnterpriseDesc:
+    "Business survey measures reporting respondent share using at least one AI technology. Comparable only within each source family.",
+  adoptEnterpriseDescription:
+    "Business survey measures reporting respondent share using at least one AI technology. Comparable only within each source family.",
+  adoptIndividualTitle: "Individual GenAI respondent share",
+  adoptIndividualDesc:
+    "Survey-based respondent share for generative AI use by individuals, shown as proxy evidence rather than product telemetry.",
+  adoptIndividualDescription:
+    "Survey-based respondent share for generative AI use by individuals, shown as proxy evidence rather than product telemetry.",
+  adoptCensusBusinessTitle: "U.S. business AI activity proxy",
+  adoptCensusBusinessDesc:
+    "U.S. Census business technology measures shown separately because geography, vintage, and denominator differ from global usage measures.",
+  adoptUsBusinessTitle: "U.S. business AI activity proxy",
+  adoptUsBusinessDescription:
+    "U.S. Census business technology measures shown separately because geography, vintage, and denominator differ from global usage measures.",
+  adoptCountrySurveyTitle: "Country survey proxy metrics",
+  adoptCountrySurveyDesc:
+    "Country-level survey and reported penetration measures for generative AI use, kept separate from app and Claude usage metrics.",
+  adoptCountrySurveyDescription:
+    "Country-level survey and reported penetration measures for generative AI use, kept separate from app and Claude usage metrics.",
+  adoptChinaAppMarketTitle: "China app-market activity proxies",
+  adoptChinaAppMarketDesc:
+    "Mobile-AI app-market measures for China, using vendor-reported categories and periods as activity proxies.",
+  adoptChinaAppsTitle: "China app-market activity proxies",
+  adoptChinaAppsDescription:
+    "Mobile-AI app-market measures for China, using vendor-reported categories and periods as activity proxies.",
+  adoptChinaAppsMauTitle: "China app-market MAU proxies",
+  adoptChinaAppsMauDescription:
+    "China mobile-AI app-market rows reported in monthly active users, shown on one user-count scale.",
+  adoptChinaAppsUsageTitle: "China app-market usage-volume proxies",
+  adoptChinaAppsUsageDescription:
+    "China app-market rows reported in tokens or other volume units, shown as separate KPI cards rather than a shared ranking.",
+  adoptChinaNativeAppTitle: "China native app MAU proxies",
+  adoptChinaNativeAppDesc:
+    "Product-level monthly active-user signals for native AI apps, shown without combining them with survey or telemetry measures.",
+  adoptChinaNativeTitle: "China native app MAU proxies",
+  adoptChinaNativeDescription:
+    "Product-level monthly active-user signals for native AI apps, shown without combining them with survey or telemetry measures.",
+  adoptDeveloperSurveyTitle: "Developer AI usage survey",
+  adoptDeveloperSurveyDesc:
+    "Developer survey respondent shares indicating reported AI tool use across countries and response groups.",
+  adoptDeveloperSurveyDescription:
+    "Developer survey respondent shares indicating reported AI tool use across countries and response groups.",
+  adoptDeveloperSurveyOverallTitle: "Developer survey overall distributions",
+  adoptDeveloperSurveyOverallDescription:
+    "Stack Overflow overall AI-tool response distributions, with each survey question kept separate.",
+  adoptDeveloperSurveyCountriesTitle: "Developer survey country respondent shares",
+  adoptDeveloperSurveyCountriesDescription:
+    "Country rows show Stack Overflow respondent yes-shares for AI-tool use, not population adoption.",
+  adoptOpenModelDownloadsTitle: "Open-model download activity",
+  adoptOpenModelDownloadsDesc:
+    "Provider and model download counts from open-model repositories, shown as activity proxy evidence with source-specific caveats.",
+  adoptDeveloperEcosystemTitle: "Developer ecosystem repository KPIs",
+  adoptDeveloperEcosystemDesc:
+    "Repository stars, forks, open issues, and update recency as developer ecosystem activity proxies.",
+  adoptDevEcosystemTitle: "Developer ecosystem repository KPIs",
+  adoptDevEcosystemDescription:
+    "Repository stars, forks, open issues, and update recency as developer ecosystem activity proxies.",
+  adoptResearchActivityTitle: "AI research activity proxy",
+  adoptResearchActivityDesc:
+    "Country-level AI publication activity measures; useful for research context, not direct product usage.",
+  adoptResearchTitle: "AI research activity proxy",
+  adoptResearchDescription:
+    "Country-level AI publication activity measures; useful for research context, not direct product usage.",
+  adoptFutureSourcesTitle: "Future source catalog",
+  adoptFutureSourcesDesc:
+    "Cataloged source families that are candidates for future collection and are not yet visualized as current adoption signals.",
+  adoptFutureSourcesDescription:
+    "Cataloged source families that are candidates for future collection and are not yet visualized as current adoption signals.",
+  adoptEnterpriseAiTitle: "Enterprise AI survey shares",
+  adoptEnterpriseAiDesc:
+    "Business survey measures reporting respondent share using at least one AI technology. Comparable only within each source family.",
+  adoptBusinessTitle: "Business AI proxy measures",
+  adoptBusinessDesc:
+    "Business-level AI survey measures shown by source family without merging denominators.",
+  adoptIndividualGenAiTitle: "Individual GenAI respondent share",
+  adoptIndividualGenAiDesc:
+    "Survey-based respondent share for generative AI use by individuals, shown as proxy evidence rather than product telemetry.",
+  adoptUsCensusBusinessTitle: "U.S. business AI activity proxy",
+  adoptUsCensusBusinessDesc:
+    "U.S. Census business technology measures shown separately because geography, vintage, and denominator differ from global usage measures.",
+  adoptDeveloperTitle: "Developer AI usage survey",
+  adoptDeveloperDesc:
+    "Developer survey respondent shares indicating reported AI tool use across countries and response groups.",
+  adoptOpenModelsTitle: "Open-model download activity",
+  adoptOpenModelsDesc:
+    "Provider and model download counts from open-model repositories, shown as activity proxy evidence with source-specific caveats.",
+  adoptOpenModelsDescription:
+    "Provider and model download counts from open-model repositories, shown as activity proxy evidence with source-specific caveats.",
+  adoptRepoKpisTitle: "Developer ecosystem repository KPIs",
+  adoptRepoKpisDesc:
+    "Repository stars, forks, open issues, and update recency as developer ecosystem activity proxies.",
+  adoptAiResearchTitle: "AI research activity proxy",
+  adoptAiResearchDesc:
+    "Country-level AI publication activity measures; useful for research context, not direct product usage.",
+
   // Fastest-rising adopters
   risersHeading: "Fastest-Rising Adopters",
   risersSourceLink: "Microsoft AIEI \u00b7 see sources",

@@ -8,7 +8,9 @@ import WorldChoroplethInteractive from "@/components/charts/WorldChoroplethInter
 import CountryDetailPanel, {
   type EnrichedCountry,
 } from "@/components/dashboard/CountryDetailPanel";
+import AIAdoptionSignals from "@/components/global/AIAdoptionSignals";
 import { useT } from "@/lib/i18n/useT";
+import type { AdoptionSignalsDataset } from "@/lib/adoption-signals";
 import type { DiffusionRiser } from "@/lib/data";
 
 // ─── Tiny 3-point sparkline (pure SVG, no animation, reduced-motion safe) ─────
@@ -69,6 +71,7 @@ export interface GlobalViewProps {
   enrichedCountries: EnrichedCountry[];
   top12: EnrichedCountry[];
   maxIndex: number;
+  adoptionSignals: AdoptionSignalsDataset;
 }
 
 export default function GlobalView({
@@ -85,6 +88,7 @@ export default function GlobalView({
   enrichedCountries,
   top12,
   maxIndex,
+  adoptionSignals,
 }: GlobalViewProps) {
   const t = useT("global");
 
@@ -343,6 +347,13 @@ export default function GlobalView({
             </p>
           </div>
         </div>
+      </Reveal>
+
+      <hr className="divider-glow" />
+
+      {/* ─── AI ADOPTION SIGNALS ───────────────────────────────────────────── */}
+      <Reveal delay={100}>
+        <AIAdoptionSignals dataset={adoptionSignals} />
       </Reveal>
 
       <hr className="divider-glow" />
