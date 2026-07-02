@@ -22,6 +22,9 @@ vi.mock("next/navigation", () => ({
 }));
 
 import BarChartRace from "@/components/charts/BarChartRace";
+import { getEmploymentHistoryMap } from "@/lib/snapshot";
+
+const employmentHistories = getEmploymentHistoryMap();
 
 // BarChartRace has no d3 transition cleanup in its useEffect. d3-interpolate's
 // parseSvg() calls SVGElement.transform.baseVal.consolidate(), but jsdom does
@@ -42,7 +45,7 @@ beforeAll(() => {
 
 describe("BarChartRace", () => {
   it("renders d3 bar-fill rects and background track rects without throwing", async () => {
-    const { container } = render(<BarChartRace />);
+    const { container } = render(<BarChartRace employmentHistories={employmentHistories} />);
 
     // rect.track — background rank slots drawn immediately (no transition);
     // rect.bar-fill — colored employment bars, entered via d3 join.
@@ -59,7 +62,7 @@ describe("BarChartRace", () => {
   });
 
   it("renders play/pause and replay control buttons", () => {
-    const { container } = render(<BarChartRace />);
+    const { container } = render(<BarChartRace employmentHistories={employmentHistories} />);
     // The controls are rendered via React JSX (not d3) and are always present
     // when frames exist. At minimum: Replay + Play/Pause = 2 buttons.
     expect(container.querySelectorAll("button").length).toBeGreaterThanOrEqual(2);

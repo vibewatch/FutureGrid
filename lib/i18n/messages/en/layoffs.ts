@@ -1,4 +1,6 @@
 export const layoffsEn: Record<string, string> = {
+  loading: "Loading layoff notices…",
+  loadError: "Could not load layoff data. Please try again.",
   heroTitle: "Recent Mass Layoffs — 6 States",
   heroSubhead:
     "Official WARN Act filings from CA, NJ, NY, OH, TX & WI. " +

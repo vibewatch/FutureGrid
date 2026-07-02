@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import * as d3 from "d3";
-import { getExposureComparison, getExposureGapLeaders, type ExposureLens, type OccExposure } from "@/lib/analysis";
+import { type ExposureLens, type OccExposure, type ExposureComparison } from "@/lib/analysis";
 import { useT } from "@/lib/i18n/useT";
 
 type TooltipState = { visible: boolean; x: number; y: number; cw: number; point: OccExposure | null };
@@ -33,7 +33,7 @@ function barWidth(value: number | null): string {
   return `${Math.max(0, Math.min(100, value ?? 0))}%`;
 }
 
-export default function ExposureLensComparison() {
+export default function ExposureLensComparison({ comparison, leaders }: { comparison: ExposureComparison; leaders: OccExposure[] }) {
   const t = useT("analysis");
   const router = useRouter();
   const svgRef = useRef<SVGSVGElement>(null);
@@ -42,8 +42,6 @@ export default function ExposureLensComparison() {
   const isDark = (resolvedTheme ?? "dark") !== "light";
   const [tooltip, setTooltip] = useState<TooltipState>({ visible: false, x: 0, y: 0, cw: 760, point: null });
 
-  const comparison = useMemo(() => getExposureComparison(), []);
-  const leaders = useMemo(() => getExposureGapLeaders(8), []);
   const scatterPoints = useMemo(
     () => comparison.occupations.filter((occupation) => occupation.capability != null && occupation.usage != null),
     [comparison.occupations],

@@ -1,66 +1,27 @@
 import warnData from "@/data/warn-notices.json";
+import type {
+  WarnData,
+  WarnNotice,
+  WarnSource,
+  WarnStateStat,
+  WarnSummary,
+} from "@/lib/warn-types";
 
-// ─── WARN mass-layoff notices (California EDD) ───────────────────────────────
-// Company-level government layoff filings. Kept in its own module (not
-// lib/data.ts) so the snapshot only ships in the Recent-Layoffs route chunk.
+// ─── WARN mass-layoff notices (California EDD + others) ──────────────────────
+// Company-level government layoff filings (~2.7MB). This module is the ONLY
+// importer of warn-notices.json, so the dataset never enters a client chunk.
+// The client Recent-Layoffs views fetch public/warn-notices.json at runtime
+// instead (see lib/warn-client.ts). Server / build code may use these helpers.
 
-export interface WarnNotice {
-  company: string;
-  county: string | null;
-  city: string | null;
-  employees: number;
-  noticeDate: string | null; // ISO "YYYY-MM-DD"
-  effectiveDate: string | null;
-  layoffType: string | null;
-  state: string; // 2-letter, e.g. "CA"
-  stateName: string; // e.g. "California"
-}
-
-export interface WarnMonth {
-  month: string; // "YYYY-MM"
-  notices: number;
-  employees: number;
-}
-
-export interface WarnDateRange {
-  earliest: string | null;
-  latest: string | null;
-}
-
-export interface WarnStateStat {
-  state: string;
-  stateName: string;
-  notices: number;
-  employees: number;
-  dateRange: WarnDateRange;
-}
-
-export interface WarnSummary {
-  total: number;
-  totalEmployees: number;
-  dateRange: WarnDateRange;
-  byState: WarnStateStat[];
-  byMonth: WarnMonth[];
-  byType: { type: string; notices: number; employees: number }[];
-  topEmployers: { company: string; employees: number; notices: number; state: string }[];
-}
-
-export interface WarnSource {
-  state: string;
-  stateName: string;
-  name: string;
-  publisher: string;
-  url: string;
-  license: string;
-}
-
-export interface WarnData {
-  generatedAt: string;
-  coverage: string;
-  sources: WarnSource[];
-  notices: WarnNotice[];
-  summary: WarnSummary;
-}
+export type {
+  WarnData,
+  WarnDateRange,
+  WarnMonth,
+  WarnNotice,
+  WarnSource,
+  WarnStateStat,
+  WarnSummary,
+} from "@/lib/warn-types";
 
 const data = warnData as unknown as WarnData;
 

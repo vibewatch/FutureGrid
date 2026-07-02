@@ -1,7 +1,6 @@
-import occupationSnapshot from "@/data/occupation-snapshot.json";
+import occupationSnapshot from "@/data/occupation-snapshot-slim.json";
 import countryExposureData from "@/data/country-exposure.json";
 import aiUsageProxiesData from "@/data/ai-usage-proxies.json";
-import onetEnrichmentData from "@/data/onet-enrichment.json";
 import sourcesData from "@/data/sources.json";
 import globalAiMetricsData from "@/data/global-ai-metrics.json";
 
@@ -33,65 +32,41 @@ type SnapshotRow = {
   medianSalary: number;
   employment: number | null;
   projectedOpenings: number | null;
+  /** Insight growth: bundled growthRate, else derived-from-history (pre-computed in build:data). */
   growthRate: number | null;
+  /** Window the derived growthRate came from, when derived; null when bundled. */
+  growthWindow?: { fromYear: number; toYear: number } | null;
+  /** Growth derived purely from OEWS history (pre-computed); null with <2 usable years. */
+  histGrowthRate: number | null;
   jobZone: number;
   brightOutlook: boolean;
   outlook: "Bright" | "Average";
   skills: string[];
-  employmentHistory?: Record<string, number>;
-  wageHistory?: Record<string, number>;
 };
 
 const snapshot = occupationSnapshot as SnapshotRow[];
-
-/**
- * Recent employment growth (annualized CAGR, %) derived from the real OEWS
- * employmentHistory (e.g. 2019→2025). Authentic BLS-sourced fallback used only
- * when no bundled growthRate exists. Returns null with <2 usable years.
- */
-function computeGrowthFromHistory(
-  history?: Record<string, number> | null,
-): { rate: number; fromYear: number; toYear: number } | null {
-  if (!history) return null;
-  const years = Object.keys(history)
-    .map(Number)
-    .filter((y) => Number.isFinite(y) && history[String(y)] > 0)
-    .sort((a, b) => a - b);
-  if (years.length < 2) return null;
-  const fromYear = years[0];
-  const toYear = years[years.length - 1];
-  const start = history[String(fromYear)];
-  const end = history[String(toYear)];
-  if (toYear <= fromYear || !(start > 0) || !(end > 0)) return null;
-  const cagr = (Math.pow(end / start, 1 / (toYear - fromYear)) - 1) * 100;
-  if (!Number.isFinite(cagr)) return null;
-  return { rate: Math.round(cagr * 10) / 10, fromYear, toYear };
-}
 
 let _insightsCache: CareerInsight[] | null = null;
 
 export function generateAllCareerInsights(): CareerInsight[] {
   if (!_insightsCache) {
     _insightsCache = snapshot.map((row) => {
-      const derivedGrowth =
-        row.growthRate == null ? computeGrowthFromHistory(row.employmentHistory) : null;
       return {
         occupationCode: row.socCode,
         occupationName: row.title,
         automationRisk: row.automationRisk,
         automationProbability: row.automationProbability,
-        growthRate: row.growthRate ?? (derivedGrowth ? derivedGrowth.rate : null),
-        growthWindow: derivedGrowth
-          ? { fromYear: derivedGrowth.fromYear, toYear: derivedGrowth.toYear }
-          : null,
+        growthRate: row.growthRate,
+        growthWindow: row.growthWindow ?? null,
         medianSalary: row.medianSalary,
         totalEmployment: row.employment,
         projectedOpenings: row.projectedOpenings ?? null,
         outlook: row.outlook ?? (row.brightOutlook ? "Bright" : "Average"),
         sectorName: row.sector,
         skills: row.skills,
-        employmentHistory: row.employmentHistory ?? null,
-        wageHistory: row.wageHistory ?? null,
+        // History is intentionally excluded from client insights (see lib/snapshot.ts).
+        employmentHistory: null,
+        wageHistory: null,
       };
     });
   }
@@ -413,30 +388,6 @@ export function getAIUsageProxies(): AIUsageProxyDataset {
 
 // ─── O*NET enrichment ────────────────────────────────────────────────────────
 
-export interface OnetEnrichmentOccupation {
-  occupationCode: string;
-  onetCode: string;
-  title: string;
-  description: string;
-  sampleTitles: string[];
-  jobZone: { code: number; title: string } | null;
-  tasks: { id: string; title: string }[];
-  detailedWorkActivities: { id: string; title: string }[];
-  skills: { id: string; name: string; description: string }[];
-  technologySkills: { name: string; category: string; hot: boolean; inDemand: boolean }[];
-  relatedOccupations: { code: string; onetCode: string; title: string; brightOutlook: boolean }[];
-}
-
-export interface OnetEnrichmentData {
-  generatedAt: string;
-  coverage: { requested: number; enriched: number; missing: string[] };
-  occupations: Record<string, OnetEnrichmentOccupation>;
-}
-
-export function getOnetEnrichment(code: string): OnetEnrichmentOccupation | undefined {
-  return (onetEnrichmentData as OnetEnrichmentData).occupations[code];
-}
-
 // ─── Country map data (choropleth) ───────────────────────────────────────────
 
 export interface CountryMapDatum {
@@ -714,8 +665,7 @@ export function getReskillingPaths(
 
     seenTitles.add(row.title);
 
-    const growth = computeGrowthFromHistory(row.employmentHistory);
-    const growthRate = growth ? growth.rate : row.growthRate;
+    const growthRate = row.histGrowthRate != null ? row.histGrowthRate : row.growthRate;
     const jobZoneDelta = row.jobZone - source.jobZone;
     const overlapScore = sharedSkills.length / fromSkills.length;
 
@@ -774,28 +724,4 @@ export function getHighExposureOccupations(
   }
 
   return results;
-}
-
-// ─── Occupation trend (multi-year BLS OEWS history) ──────────────────────────
-
-/**
- * Returns a sorted-by-year array of annual employment + wage datapoints for
- * the given SOC code, drawn from the OEWS history fields populated by the
- * BLS pipeline. Years with no data for a field are represented as null.
- */
-export function getOccupationTrend(
-  code: string,
-): { year: number; employment: number | null; wage: number | null }[] {
-  const row = snapshot.find((r) => r.socCode === code);
-  if (!row) return [];
-  const empH = row.employmentHistory ?? {};
-  const wageH = row.wageHistory ?? {};
-  const years = new Set([...Object.keys(empH), ...Object.keys(wageH)]);
-  return Array.from(years)
-    .map((y) => ({
-      year: parseInt(y, 10),
-      employment: empH[y] ?? null,
-      wage: wageH[y] ?? null,
-    }))
-    .sort((a, b) => a.year - b.year);
 }

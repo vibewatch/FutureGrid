@@ -1,15 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useTheme } from "next-themes";
-import {
-  getWarnData,
-  getWarnNotices,
-  getWarnCoverage,
-  getWarnSources,
-  getWarnByState,
-} from "@/lib/warn";
-import type { WarnNotice } from "@/lib/warn";
+import { fetchWarnData } from "@/lib/warn-client";
+import type { WarnData, WarnNotice } from "@/lib/warn-types";
 import WarnTrendChart from "./WarnTrendChart";
 import { useT } from "@/lib/i18n/useT";
 
@@ -82,11 +76,18 @@ export default function LayoffsView() {
   const { resolvedTheme } = useTheme();
   const isDark = (resolvedTheme ?? "dark") !== "light";
 
-  const { generatedAt, summary } = getWarnData();
-  const coverage  = getWarnCoverage();
-  const sources   = getWarnSources();
-  const byState   = getWarnByState();
-  const allNotices = useMemo(() => getWarnNotices(), []);
+  const [warn, setWarn]           = useState<WarnData | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchWarnData()
+      .then((d) => { if (!cancelled) setWarn(d); })
+      .catch((e) => { if (!cancelled) setLoadError(String(e)); });
+    return () => { cancelled = true; };
+  }, []);
+
+  const allNotices = useMemo<WarnNotice[]>(() => warn?.notices ?? [], [warn]);
 
   const [query,       setQuery]       = useState("");
   const [sortKey,     setSortKey]     = useState<SortKey>("date");
@@ -112,9 +113,34 @@ export default function LayoffsView() {
     if (sortKey === "employees") {
       list = [...list].sort((a, b) => b.employees - a.employees);
     }
-    // "date" order: getWarnNotices() is already most-recent-first
+    // "date" order: notices are already most-recent-first
     return list;
   }, [allNotices, query, stateFilter, sortKey]);
+
+  // ── Loading / error states (hooks above always run) ──────────────────────────
+  if (loadError) {
+    return (
+      <div className="mx-auto w-full max-w-[1400px]">
+        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-10 text-center text-sm text-zinc-500 dark:text-zinc-400">
+          {t("loadError")}
+        </div>
+      </div>
+    );
+  }
+  if (!warn) {
+    return (
+      <div className="mx-auto w-full max-w-[1400px]">
+        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-10 flex items-center justify-center text-sm text-zinc-500 dark:text-zinc-400">
+          {t("loading")}
+        </div>
+      </div>
+    );
+  }
+
+  const { generatedAt, summary } = warn;
+  const coverage = warn.coverage;
+  const sources  = warn.sources;
+  const byState  = warn.summary.byState;
 
   const visibleNotices = filtered.slice(0, shown);
 
@@ -282,7 +308,7 @@ export default function LayoffsView() {
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">{t("sectionTrendDesc")}</p>
         </div>
         <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
-          <WarnTrendChart />
+          <WarnTrendChart byMonth={summary.byMonth} />
         </div>
       </section>
 

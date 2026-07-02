@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import * as d3 from "d3";
-import { getDisruptionIndex } from "@/lib/analysis";
+import { type DisruptionIndex } from "@/lib/analysis";
 import { useT } from "@/lib/i18n/useT";
 
 type Mode = "occupations" | "sectors";
@@ -24,12 +24,11 @@ function formatPct(value: number): string {
   return `${value >= 0 ? "+" : ""}${value.toFixed(1)}%`;
 }
 
-export default function DisruptionLeaderboard() {
+export default function DisruptionLeaderboard({ index }: { index: DisruptionIndex }) {
   const t = useT("analysis");
   const router = useRouter();
   const [mode, setMode] = useState<Mode>("occupations");
   const [limit, setLimit] = useState(10);
-  const index = useMemo(() => getDisruptionIndex(), []);
   const color = d3.scaleLinear<string>().domain([0, 50, 100]).range(["#22c55e", "#eab308", "#ef4444"]);
 
   const rows = useMemo<Row[]>(() => {

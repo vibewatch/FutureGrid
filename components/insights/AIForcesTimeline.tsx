@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import * as d3 from "d3";
-import { getAIDemandSeries, getAILayoffSeries, type DemandPoint } from "@/lib/analysis";
+import { getAIDemandSeries, getAILayoffSeries, type DemandPoint } from "@/lib/labor-signals";
 import { useT } from "@/lib/i18n/useT";
 
 type BarPoint = { year: number; cuts: number; date: Date };

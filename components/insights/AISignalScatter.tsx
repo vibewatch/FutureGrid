@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import * as d3 from "d3";
-import { getAISignalData, type SignalPoint } from "@/lib/analysis";
+import { type SignalPoint, type AISignalData } from "@/lib/analysis";
 import { useT } from "@/lib/i18n/useT";
 
 type Metric = "employment" | "wage";
@@ -26,7 +26,7 @@ function formatPct(value: number): string {
   return `${value >= 0 ? "+" : ""}${value.toFixed(1)}%`;
 }
 
-export default function AISignalScatter() {
+export default function AISignalScatter({ data }: { data: AISignalData }) {
   const t = useT("analysis");
   const router = useRouter();
   const routerRef = useRef(router);
@@ -39,7 +39,6 @@ export default function AISignalScatter() {
 
   useEffect(() => { routerRef.current = router; }, [router]);
 
-  const data = useMemo(() => getAISignalData(), []);
   const activeRegression = metric === "employment" ? data.empRegression : data.wageRegression;
   const activeQuartile = data.quartiles.find((q) => q.metric === metric) ?? data.quartiles[0];
   const growthAccessor = useMemo(
