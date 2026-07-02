@@ -302,6 +302,49 @@ export default function MethodologyView({
         </Reveal>
       </section>
 
+      {/* ─── H-1B WORK-VISA TRENDS ───────────────────────────────────────── */}
+      <section
+        aria-labelledby="methodology-h1b"
+        className="space-y-4"
+        data-testid="section-h1b"
+      >
+        <Reveal>
+          <SectionHeading id="methodology-h1b">{t("h1bHeading")}</SectionHeading>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+            {t("h1bSubhead")}
+          </p>
+        </Reveal>
+
+        <Reveal delay={100}>
+          <SubHeading>{t("h1bMetricTitle")}</SubHeading>
+          <Prose>{t("h1bMetricDesc")}</Prose>
+        </Reveal>
+
+        <Reveal delay={150}>
+          <SubHeading>{t("h1bAggTitle")}</SubHeading>
+          <Prose>{t("h1bAggDesc")}</Prose>
+        </Reveal>
+
+        <Reveal delay={180}>
+          <SubHeading>{t("h1bWageTitle")}</SubHeading>
+          <Prose>{t("h1bWageDesc")}</Prose>
+        </Reveal>
+
+        <Reveal delay={200}>
+          <SubHeading>{t("h1bExposureTitle")}</SubHeading>
+          <Prose>{t("h1bExposureDesc")}</Prose>
+        </Reveal>
+
+        <Reveal delay={220}>
+          <div className="rounded-lg bg-zinc-50 dark:bg-zinc-800/30 border border-zinc-200 dark:border-zinc-700 p-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-zinc-400 mb-1">
+              Caveat
+            </p>
+            <Prose>{t("h1bCaveat")}</Prose>
+          </div>
+        </Reveal>
+      </section>
+
       {/* ─── DATA CHANGELOG ──────────────────────────────────────────────── */}
       <section
         aria-labelledby="methodology-changelog"

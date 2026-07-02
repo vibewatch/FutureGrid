@@ -38,6 +38,7 @@ const CLEARED_FILES = [
   "ai-demand.json",
   "ai-frontier.json",
   "country-exposure.json",
+  "h1b-trends.json",
   "jolts.json",
   "llm-exposure.json",
   "occupation-snapshot-slim.json",

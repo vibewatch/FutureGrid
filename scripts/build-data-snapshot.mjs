@@ -1029,6 +1029,14 @@ async function main() {
         license: "Creative Commons Attribution-ShareAlike 4.0",
         usedFor: "Numeric ISO 3166-1 → alpha-3 mapping used to annotate world-atlas country features",
       },
+      {
+        name: "DOL OFLC LCA Disclosure Data (H-1B Labor Condition Applications)",
+        publisher: "U.S. DOL OFLC",
+        year: 2025,
+        url: "https://www.dol.gov/agencies/eta/foreign-labor/performance",
+        license: "US Government public domain / public records",
+        usedFor: "Certified H-1B LCA volume, offered-wage percentiles, top occupations/employers/states over FY2016–FY2025; h1b-trends.json",
+      },
     ],
     note: `automationRisk bands are percentile-calibrated from the aiExposure distribution (${en} occupations): Very High = top ~8% (aiExposure > ${VH_THRESHOLD.toFixed(4)}), High = next ~12% (> ${HIGH_THRESHOLD.toFixed(4)}), Medium = next ~25% (> ${MED_THRESHOLD.toFixed(4)}), Low = remainder (≤ ${MED_THRESHOLD.toFixed(4)}). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: ${blsEnriched ? `real OEWS 2025 figures (${blsEmpUpdated} occupations updated via BLS Public Data API)` : "null — BLS_API_KEY not set; set it and re-run npm run build:data"}. medianSalary: ${blsEnriched ? `OEWS 2025 where available (${blsWageUpdated} updated), AEI-bundled wage otherwise` : "AEI-bundled (BLS_API_KEY not set)"}. employmentHistory/wageHistory: OEWS multi-year annual series 2019–2025 — 2025 via BLS Public Data API (${blsEnriched ? blsEmpHistUpdated : 0} occ); 2019–2023 via archived national Excel flat files (Wayback Machine); note that BLS OEWS OEUN API series stores only the current-vintage snapshot so older years require flat-file download. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: ` + (onetSkillsFailed ? "FAILED — default skills used" : "successfully loaded"),
   };

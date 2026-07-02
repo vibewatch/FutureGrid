@@ -85,6 +85,7 @@ Cross-checking all committed dataset files against `data/sources.json` entries (
 | `state-labor.json` | **MISSING** — BLS LAUS not in `sources.json` | ✅ **Added** entry (Public Domain) |
 | `state-qcew.json` | **MISSING** — BLS QCEW not in `sources.json` | ✅ **Added** entry (Public Domain) |
 | `warn-notices.json` | **MISSING** — California EDD not in `sources.json` | ✅ **Added** entry (Public Records) |
+| `h1b-trends.json` | **MISSING** — DOL OFLC LCA Disclosure Data not in `sources.json` | ✅ **Added** entry (US Government public domain / public records). Verdict: **Yes** — public domain, redistributable with attribution; cleared for bulk download. |
 | `world-countries.geo.json` | Natural Earth ✅ in `sources.json`; ISO crosswalk ✅ in `sources.json` | No action needed |
 | `ai-usage-proxies.json` | All sub-sources present in `sources.json` (entries 5–16) | No action needed |
 | `occupation-snapshot*.json` | All sub-sources present (AEI, BLS, O\*NET entries) | No action needed |

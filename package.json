@@ -29,7 +29,8 @@
     "build:ai-signals": "node scripts/build-ai-signals.mjs",
     "build:market-signals": "node scripts/build-market-signals.mjs",
     "build:ai-frontier": "node scripts/build-ai-frontier.mjs",
-    "build:downloads": "node scripts/build-downloads.mjs"
+    "build:downloads": "node scripts/build-downloads.mjs",
+    "build:h1b": "node scripts/build-h1b.mjs"
   },
   "dependencies": {
     "chart.js": "^4.5.1",

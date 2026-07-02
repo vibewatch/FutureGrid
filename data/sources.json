@@ -290,6 +290,14 @@
       "url": "https://edd.ca.gov/en/jobs_and_training/layoff_services_warn/",
       "license": "Public Records (California Public Records Act / California Labor Code § 1401)",
       "usedFor": "Mass layoff and plant closure notices filed with California EDD under the WARN Act; warn-notices.json"
+    },
+    {
+      "name": "DOL OFLC LCA Disclosure Data (H-1B Labor Condition Applications)",
+      "publisher": "U.S. DOL OFLC",
+      "year": 2025,
+      "url": "https://www.dol.gov/agencies/eta/foreign-labor/performance",
+      "license": "US Government public domain / public records",
+      "usedFor": "Certified H-1B LCA volume, offered-wage percentiles, top occupations/employers/states over FY2016–FY2025; h1b-trends.json"
     }
   ],
   "note": "automationRisk bands are percentile-calibrated from the aiExposure distribution (756 occupations): Very High = top ~8% (aiExposure > 0.3104), High = next ~12% (> 0.1378), Medium = next ~25% (> 0.0080), Low = remainder (≤ 0.0080). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: real OEWS 2025 figures (755 occupations updated via BLS Public Data API). medianSalary: OEWS 2025 where available (752 updated), AEI-bundled wage otherwise. employmentHistory/wageHistory: OEWS multi-year annual series 2019–2025 — 2025 via BLS Public Data API (755 occ); 2019–2023 via archived national Excel flat files (Wayback Machine); note that BLS OEWS OEUN API series stores only the current-vintage snapshot so older years require flat-file download. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: successfully loaded",
