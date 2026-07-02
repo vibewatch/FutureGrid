@@ -777,6 +777,31 @@ describe("state-labor WARN Pressure helpers", () => {
       ).toBe(0);
     }
   });
+
+  it("emits null (not 0) for WARN metric fields on non-machine-readable states and boolean coverageUnavailable on all states", async () => {
+    const stateLaborModule = await importStateLaborModule();
+    const coverage = warnCoverageRegistry();
+    const states = statesFrom(stateLaborModule.getWarnPressureStates(), "getWarnPressureStates()");
+
+    for (const row of states) {
+      const code = codeOf(row);
+      const metadata = coverage.get(code);
+      const status = metadata?.status;
+
+      expect(typeof row.coverageUnavailable, `${code} should expose a boolean coverageUnavailable field`).toBe("boolean");
+
+      if (status && NON_MACHINE_READABLE_STATUSES.has(status)) {
+        expect(row.coverageUnavailable, `${code} non-machine-readable state should have coverageUnavailable=true`).toBe(true);
+        expect(row.warnNotices12m, `${code} non-machine-readable state warnNotices12m should be null, not 0`).toBeNull();
+        expect(row.warnEmployees12m, `${code} non-machine-readable state warnEmployees12m should be null, not 0`).toBeNull();
+        expect(row.warnEmployeesPer10kLaborForce, `${code} non-machine-readable state warnEmployeesPer10kLaborForce should be null, not 0`).toBeNull();
+      } else if (status && MACHINE_READABLE_STATUSES.has(status)) {
+        expect(row.coverageUnavailable, `${code} machine-readable state should have coverageUnavailable=false`).toBe(false);
+        expect(typeof row.warnNotices12m, `${code} machine-readable state warnNotices12m should be a number`).toBe("number");
+        expect(typeof row.warnEmployees12m, `${code} machine-readable state warnEmployees12m should be a number`).toBe("number");
+      }
+    }
+  });
 });
 
 describe("labor i18n WARN Pressure keys", () => {

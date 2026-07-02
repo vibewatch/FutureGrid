@@ -576,6 +576,7 @@ async function main() {
         notes: coverage.notes ?? null,
         error: coverage.error ?? null,
       },
+      coverageUnavailable: !isCurrentMachineReadableWarnCoverage(coverageStatus),
       rankEligible,
       rankStatus: rankEligible ? "ranked" : "not-ranked",
       rankIneligibleReason: ineligibleReason,
@@ -586,9 +587,9 @@ async function main() {
         warnEmployeesPer10kLaborForce: null,
         unemploymentRateYoYDelta: null,
       },
-      warnEmployees12m: totals.employees,
-      warnNotices12m: totals.notices,
-      warnEmployeesPer10kLaborForce: round(warnRateRaw, 2),
+      warnEmployees12m: isCurrentMachineReadableWarnCoverage(coverageStatus) ? totals.employees : null,
+      warnNotices12m: isCurrentMachineReadableWarnCoverage(coverageStatus) ? totals.notices : null,
+      warnEmployeesPer10kLaborForce: isCurrentMachineReadableWarnCoverage(coverageStatus) ? round(warnRateRaw, 2) : null,
       series: {
         ...stateSeries,
         warn: buildWarnMonthlySeries(
@@ -626,7 +627,7 @@ async function main() {
       (a, b) =>
         b.pressureScore - a.pressureScore ||
         b._warnRateRaw - a._warnRateRaw ||
-        b.warnEmployees12m - a.warnEmployees12m ||
+        (b.warnEmployees12m ?? 0) - (a.warnEmployees12m ?? 0) ||
         a.stateName.localeCompare(b.stateName),
     )
     .forEach((state, index) => {
