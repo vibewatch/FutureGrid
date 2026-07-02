@@ -1,9 +1,23 @@
 import type { Metadata } from "next";
 import InsightsView from "@/components/insights/InsightsView";
 import { getAnalysisPageData } from "@/lib/analysis";
+import { BASE_PATH, SITE_NAME } from "@/lib/seo";
+
+const title = "Insights Lab";
+const description =
+  "Dive deep into AI displacement forecasts, occupation resilience scores, and workforce trend analysis. Data-driven insights on the future of work — powered by FutureGrid.";
+const canonicalPath = `${BASE_PATH}/analysis`;
 
 export const metadata: Metadata = {
-  title: "Insights Lab",
+  title,
+  description,
+  alternates: { canonical: canonicalPath },
+  openGraph: {
+    title: `${title} | ${SITE_NAME}`,
+    description,
+    url: canonicalPath,
+    type: "website",
+  },
 };
 
 export default function AnalysisPage() {
