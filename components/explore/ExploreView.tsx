@@ -55,7 +55,7 @@ export default function ExploreView() {
   }
 
   return (
-    <div className="space-y-10 max-w-[1400px]">
+    <div className="mx-auto w-full max-w-[1600px] space-y-10">
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <div className="animate-fade-up">
         <h1 className="text-3xl font-bold tracking-tight text-gradient">

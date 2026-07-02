@@ -28,7 +28,7 @@ export default function HeatmapView({ sectors }: HeatmapViewProps) {
   const t = useT("heatmap");
 
   return (
-    <div className="space-y-8 max-w-[1400px]">
+    <div className="mx-auto w-full max-w-[1400px] space-y-8">
       {/* Header */}
       <div className="animate-fade-up">
         <h2 className="text-2xl font-bold tracking-tight text-gradient">

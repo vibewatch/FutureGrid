@@ -63,7 +63,7 @@ export default function CareersPage() {
     compareList.some((c) => c.occupationCode === code);
 
   return (
-    <div className="space-y-6 max-w-[1400px] pb-28">
+    <div className="mx-auto w-full max-w-[1400px] space-y-6 pb-28">
       {/* Header */}
       <div className="animate-fade-up">
         <h1 className="text-3xl font-bold tracking-tight text-gradient">{t("pageTitle")}</h1>

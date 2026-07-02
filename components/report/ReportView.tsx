@@ -232,7 +232,7 @@ export default function ReportView() {
 
   // ── Scrollytelling layout ──────────────────────────────────────────────────
   return (
-    <div className="max-w-[1400px]">
+    <div className="mx-auto w-full max-w-[1400px]">
       {/* Hero */}
       <div className="animate-fade-up mb-10">
         <h1 className="text-3xl font-bold tracking-tight text-gradient">

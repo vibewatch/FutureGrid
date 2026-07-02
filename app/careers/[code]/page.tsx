@@ -46,7 +46,7 @@ export default function CareerDetailPage() {
   const resiliency = computeResiliencyScore(career.automationProbability);
 
   return (
-    <div className="space-y-8 max-w-[1400px]">
+    <div className="mx-auto w-full max-w-[1400px] space-y-8">
       <Link
         href="/careers"
         className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white inline-block transition-colors"

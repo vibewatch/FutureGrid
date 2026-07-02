@@ -160,7 +160,7 @@ export default function EvidenceStack() {
         </ul>
       </div>
 
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_420px] 2xl:grid-cols-[minmax(0,1fr)_460px]">
         <div className="glass p-5 sm:p-6">
           <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
             <div>
@@ -186,39 +186,46 @@ export default function EvidenceStack() {
                         : "border-zinc-200 bg-white/55 hover:border-violet-400/35 hover:bg-violet-500/5 dark:border-zinc-800 dark:bg-zinc-950/35"
                     }`}
                   >
-                    <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.9fr)_150px] lg:items-center">
+                    <div className="grid gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.35fr)_minmax(0,auto)] xl:items-center">
                       <div className="min-w-0">
                         <div className="flex items-start gap-3">
                           <span className="mt-0.5 text-xs font-bold tabular-nums text-zinc-500">0{index + 1}</span>
                           <div>
                             <h4 className="font-semibold leading-snug text-zinc-900 dark:text-white">{conclusion.title}</h4>
                             <p className="mt-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{conclusion.finding}</p>
+                            <div className="mt-3 flex flex-wrap gap-1.5">
+                              {familyIds(conclusion).map((familyId) => {
+                                const family = familyForId(familiesById, familyId);
+                                return (
+                                  <span
+                                    key={familyId}
+                                    className="rounded-full border border-zinc-200 bg-white/70 px-2.5 py-1 text-[11px] font-semibold text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-300"
+                                  >
+                                    {family.label}
+                                    <span className="sr-only"> {familyId}</span>
+                                  </span>
+                                );
+                              })}
+                            </div>
                           </div>
                         </div>
                       </div>
 
                       <div>
-                        <div className="mb-2 flex flex-wrap gap-1.5">
-                          {familyIds(conclusion).map((familyId) => {
-                            const family = familyForId(familiesById, familyId);
-                            return (
-                              <span
-                                key={familyId}
-                                className="rounded-full border border-zinc-200 bg-white/70 px-2.5 py-1 text-[11px] font-semibold text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-300"
-                              >
-                                {family.label}
-                                <span className="sr-only"> {familyId}</span>
-                              </span>
-                            );
-                          })}
+                        <div className="mb-2 hidden grid-cols-9 gap-2 text-[10px] font-semibold uppercase tracking-wider text-zinc-500 lg:grid">
+                          {stack.sourceFamilies.map((family) => (
+                            <span key={family.id} className="truncate text-center" title={family.label}>
+                              {family.id}
+                            </span>
+                          ))}
                         </div>
-                        <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-8" aria-label={t("evidenceMatrixAria")}>
+                        <div className="grid grid-cols-3 gap-2 sm:grid-cols-5 lg:grid-cols-9" aria-label={t("evidenceMatrixAria")}>
                           {stack.sourceFamilies.map((family) => {
                             const cellStatus: MatrixStatus = conclusionFamilyIds.has(family.id) ? conclusion.status : "not-used";
                             return (
                               <span
                                 key={family.id}
-                                className={`h-8 rounded-lg border ${STATUS_STYLES[cellStatus].cell}`}
+                                className={`h-11 rounded-xl border ${STATUS_STYLES[cellStatus].cell}`}
                                 title={`${family.label}: ${statusLabel(t, cellStatus)}`}
                                 aria-label={`${family.label}: ${statusLabel(t, cellStatus)}`}
                               >
@@ -229,7 +236,7 @@ export default function EvidenceStack() {
                         </div>
                       </div>
 
-                      <div className="flex flex-wrap gap-2 lg:justify-end">
+                      <div className="flex flex-wrap gap-2 xl:justify-end">
                         <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold ${STATUS_STYLES[conclusion.status].badge}`}>
                           <span className={`h-2 w-2 rounded-full ${STATUS_STYLES[conclusion.status].dot}`} aria-hidden="true" />
                           {statusLabel(t, conclusion.status)}
@@ -247,7 +254,7 @@ export default function EvidenceStack() {
         </div>
 
         {selected && (
-          <aside className="glass h-fit p-5 sm:p-6" aria-labelledby={`${headingId}-selected`}>
+          <aside className="glass h-fit p-5 sm:p-6 xl:sticky xl:top-8" aria-labelledby={`${headingId}-selected`}>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500">{t("evidenceSelectedTitle")}</p>
             <h3 id={`${headingId}-selected`} className="mt-2 text-xl font-bold text-gradient">{selected.title}</h3>
             <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{selected.finding}</p>

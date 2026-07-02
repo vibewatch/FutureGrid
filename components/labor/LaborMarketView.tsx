@@ -38,7 +38,7 @@ export default function LaborMarketView() {
   const [activeTab, setActiveTab] = useState<Tab>("trends");
 
   return (
-    <div className="space-y-6 max-w-[1400px]">
+    <div className="mx-auto w-full max-w-[1400px] space-y-6">
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <div className="animate-fade-up">
         <h1 className="text-3xl font-bold tracking-tight text-gradient">

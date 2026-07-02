@@ -72,10 +72,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Sidebar />
             {/* pt-16 on mobile offsets the fixed top bar; lg resets to lg:pt-0 via p-8 shorthand */}
             <main id="main" className="ml-0 lg:ml-60 min-h-full px-4 pb-4 pt-16 sm:px-6 sm:pb-6 sm:pt-16 lg:p-8">
-              {children}
-              <footer className="mt-12 border-t border-[var(--border)] pt-5 text-xs text-[var(--text-muted)] sm:text-sm" aria-label="Site credit">
-                Built by <span className="font-medium text-[var(--text-subtle)]">Yingting Huang</span>
-              </footer>
+              <div className="mx-auto w-full max-w-[1720px]">
+                {children}
+                <footer className="mt-12 border-t border-[var(--border)] pt-5 text-xs text-[var(--text-muted)] sm:text-sm" aria-label="Site credit">
+                  Built by <span className="font-medium text-[var(--text-subtle)]">Yingting Huang</span>
+                </footer>
+              </div>
             </main>
           </LanguageProvider>
         </ThemeProvider>

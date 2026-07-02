@@ -89,7 +89,7 @@ export default function GlobalView({
   const t = useT("global");
 
   return (
-    <div className="space-y-12 max-w-[1400px]">
+    <div className="mx-auto w-full max-w-[1600px] space-y-12">
       {/* ─── HERO ─────────────────────────────────────────────────────────── */}
       <section className="pt-4 pb-6">
         <Reveal>

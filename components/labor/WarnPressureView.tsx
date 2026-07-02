@@ -801,7 +801,7 @@ export default function WarnPressureView() {
     "—";
 
   return (
-    <div className="space-y-10 max-w-[1400px]">
+    <div className="mx-auto w-full max-w-[1400px] space-y-10">
       <div className="animate-fade-up">
         <div className="flex items-center gap-2 mb-3">
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-violet-500/15 text-violet-600 dark:text-violet-400 border border-violet-400/30">

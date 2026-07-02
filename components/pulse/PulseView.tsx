@@ -44,7 +44,7 @@ export default function PulseView() {
   const latest = useMemo(() => getJoltsLatestNational(), []);
 
   return (
-    <div className="space-y-10 max-w-[1400px]">
+    <div className="mx-auto w-full max-w-[1400px] space-y-10">
 
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <div className="animate-fade-up">

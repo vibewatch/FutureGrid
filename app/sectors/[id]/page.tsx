@@ -47,7 +47,7 @@ export default function SectorDetailPage() {
   const riskColor = colorForRisk(riskLabel);
 
   return (
-    <div className="space-y-8 max-w-[1400px]">
+    <div className="mx-auto w-full max-w-[1400px] space-y-8">
       {/* Back + header */}
       <div className="animate-fade-up">
         <Link
