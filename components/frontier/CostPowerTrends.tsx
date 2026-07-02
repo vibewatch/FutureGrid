@@ -15,6 +15,7 @@ import {
 import { useTheme } from "next-themes";
 import { getCostTrend, getPowerTrend } from "@/lib/ai-frontier";
 import { useT } from "@/lib/i18n/useT";
+import AccessibleChart from "@/components/charts/AccessibleChart";
 
 ChartJS.register(
   CategoryScale,
@@ -246,24 +247,32 @@ export default function CostPowerTrends() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Cost chart */}
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 space-y-2">
+      <AccessibleChart
+        label={t("costChartTitle")}
+        summary={t("a11yCostPowerSummary")}
+        className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 space-y-2"
+      >
         <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">
           {t("costChartTitle")}
         </h3>
         <div className="h-64">
           <Line options={costOptions} data={costData} />
         </div>
-      </div>
+      </AccessibleChart>
 
       {/* Power chart */}
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 space-y-2">
+      <AccessibleChart
+        label={t("powerChartTitle")}
+        summary={t("a11yCostPowerSummary")}
+        className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 space-y-2"
+      >
         <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">
           {t("powerChartTitle")}
         </h3>
         <div className="h-64">
           <Line options={powerOptions} data={powerData} />
         </div>
-      </div>
+      </AccessibleChart>
 
       {/* Coverage note */}
       <p className="lg:col-span-2 text-xs text-zinc-500 dark:text-zinc-500 leading-relaxed">

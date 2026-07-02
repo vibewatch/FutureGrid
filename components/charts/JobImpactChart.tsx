@@ -6,6 +6,7 @@ import * as d3 from "d3";
 import { colorForRisk } from "@/lib/utils";
 import { generateAllCareerInsights } from "@/lib/data";
 import { useT } from "@/lib/i18n/useT";
+import AccessibleChart from "./AccessibleChart";
 
 interface JobImpactChartProps {
   selectedSector?: string;
@@ -222,10 +223,35 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
   }, [data, selectedSector, isDark, labelOccupations, labelAIExposure, emptyText]);
 
   return (
-    <div ref={containerRef} className="relative w-full overflow-x-auto">
-      <svg ref={svgRef} className="w-full h-auto min-h-[400px]" />
+    <AccessibleChart
+      label={t("a11yJobImpactName")}
+      summary={
+        <>
+          <p>{t("a11yJobImpactSummary")}</p>
+          <table>
+            <caption>{t("a11yJobImpactName")}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{t("labelOccupations")}</th>
+                <th scope="col">{t("labelAIExposure")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((d) => (
+                <tr key={d.occupationCode}>
+                  <td>{d.occupationName}</td>
+                  <td>{(d.automationProbability * 100).toFixed(1)}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      }
+    >
+      <div ref={containerRef} className="relative w-full overflow-x-auto">
+        <svg ref={svgRef} className="w-full h-auto min-h-[400px]" aria-hidden="true" />
 
-      {tooltip.visible && (
+        {tooltip.visible && (
         <div
           className="pointer-events-none absolute z-50 rounded-xl border px-3 py-2.5 text-sm"
           style={{
@@ -264,5 +290,6 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
         </div>
       )}
     </div>
+    </AccessibleChart>
   );
 }
