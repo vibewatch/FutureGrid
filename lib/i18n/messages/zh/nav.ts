@@ -12,6 +12,7 @@ export const navZh = {
   pulse: "市场脉搏",
   layoffs: "裁员通报",
   sources: "数据来源",
+  methodology: "方法论",
   labor: "劳动力市场",
   secOverview: "概览",
   secExposure: "风险敞口",
