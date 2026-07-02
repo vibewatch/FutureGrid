@@ -19,6 +19,7 @@ import { pulseEn } from "./en/pulse";
 import { layoffsEn } from "./en/layoffs";
 import { laborEn } from "./en/labor";
 import { frontierEn } from "./en/frontier";
+import { errorEn } from "./en/error";
 import { commonZh } from "./zh/common";
 import { navZh } from "./zh/nav";
 import { dashboardZh } from "./zh/dashboard";
@@ -40,10 +41,11 @@ import { pulseZh } from "./zh/pulse";
 import { layoffsZh } from "./zh/layoffs";
 import { laborZh } from "./zh/labor";
 import { frontierZh } from "./zh/frontier";
+import { errorZh } from "./zh/error";
 
 export const messages = {
-  en: { common: commonEn, nav: navEn, dashboard: dashboardEn, careers: careersEn, sectors: sectorsEn, skills: skillsEn, global: globalEn, checker: checkerEn, command: commandEn, sources: sourcesEn, heatmap: heatmapEn, explore: exploreEn, report: reportEn, analysis: analysisEn, keyfindings: keyfindingsEn, dataexport: dataexportEn, charts: chartsEn, pulse: pulseEn, layoffs: layoffsEn, labor: laborEn, frontier: frontierEn },
-  zh: { common: commonZh, nav: navZh, dashboard: dashboardZh, careers: careersZh, sectors: sectorsZh, skills: skillsZh, global: globalZh, checker: checkerZh, command: commandZh, sources: sourcesZh, heatmap: heatmapZh, explore: exploreZh, report: reportZh, analysis: analysisZh, keyfindings: keyfindingsZh, dataexport: dataexportZh, charts: chartsZh, pulse: pulseZh, layoffs: layoffsZh, labor: laborZh, frontier: frontierZh },
+  en: { common: commonEn, nav: navEn, dashboard: dashboardEn, careers: careersEn, sectors: sectorsEn, skills: skillsEn, global: globalEn, checker: checkerEn, command: commandEn, sources: sourcesEn, heatmap: heatmapEn, explore: exploreEn, report: reportEn, analysis: analysisEn, keyfindings: keyfindingsEn, dataexport: dataexportEn, charts: chartsEn, pulse: pulseEn, layoffs: layoffsEn, labor: laborEn, frontier: frontierEn, error: errorEn },
+  zh: { common: commonZh, nav: navZh, dashboard: dashboardZh, careers: careersZh, sectors: sectorsZh, skills: skillsZh, global: globalZh, checker: checkerZh, command: commandZh, sources: sourcesZh, heatmap: heatmapZh, explore: exploreZh, report: reportZh, analysis: analysisZh, keyfindings: keyfindingsZh, dataexport: dataexportZh, charts: chartsZh, pulse: pulseZh, layoffs: layoffsZh, labor: laborZh, frontier: frontierZh, error: errorZh },
 } as const;
 
 export type Messages = typeof messages;

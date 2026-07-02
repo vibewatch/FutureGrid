@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
+import { useT } from "@/lib/i18n/useT";
 
 export default function Error({
   error,
@@ -12,6 +13,7 @@ export default function Error({
   unstable_retry?: () => void;
   reset?: () => void;
 }) {
+  const t = useT("error");
   const handleRetry = unstable_retry ?? reset;
 
   useEffect(() => {
@@ -30,17 +32,16 @@ export default function Error({
       </div>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white leading-snug">
-        Something went wrong
+        {t("errorTitle")}
       </h2>
 
       <p className="mt-3 text-base text-zinc-600 dark:text-zinc-400 max-w-sm leading-relaxed">
-        An unexpected error disrupted this page. You can try again or go back
-        to the dashboard.
+        {t("errorBody")}
       </p>
 
       {error.digest && (
         <p className="mt-2 text-xs text-zinc-600 font-mono">
-          Error ID: {error.digest}
+          {t("errorId")}: {error.digest}
         </p>
       )}
 
@@ -52,7 +53,7 @@ export default function Error({
             onClick={handleRetry}
             className="brand-grad inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white shadow-lg hover:opacity-90 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
           >
-            ↺ Try again
+            {t("tryAgain")}
           </button>
         )}
 
@@ -60,7 +61,7 @@ export default function Error({
           href="/"
           className="glass inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
         >
-          ← Dashboard
+          {t("dashboard")}
         </Link>
       </div>
     </div>

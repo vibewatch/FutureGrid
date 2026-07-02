@@ -202,4 +202,40 @@ export const chartsZh: Record<string, string> = {
   a11yHeatmapTableCaption: "热力图数据：25 个国家 × 8 项 AI 指标",
   a11yHeatmapThCountry:    "国家",
   a11yHeatmapThValue:      "数值",
+
+  // ── CountryExposureChart view-toggle button aria-labels ──────────────────
+  ariaLabelRankedBarBtn:    "排名柱状图",
+  ariaLabelGDPScatterBtn:   "GDP 与 AI 使用量散点图",
+
+  // ── CountryExposureChart SVG aria-labels (template: {n}, {metric}) ───────
+  ariaLabelTopCountriesBar:  "按{metric}排名的前{n}个国家，柱状图",
+  ariaMetricPerCapitaIndex:  "AI 使用人均指数",
+  ariaMetricGlobalShare:     "全球 AI 使用份额",
+  ariaLabelScatterGDPUsage:  "散点图：各国 AI 使用指数与劳动年龄人口人均 GDP",
+
+  // ── CountryExposureChart screen-reader list ───────────────────────────────
+  ariaLabelTopCountriesList: "AI 采用率最高的国家",
+  srTextUsageIndex:          "使用指数",
+  srTextGlobalShare:         "全球份额",
+
+  // ── QuadrantScatterChart ──────────────────────────────────────────────────
+  a11yQuadrantScatterName:
+    "职业暴露度与薪酬象限散点图：AI 暴露度（x 轴）与年薪中位数（y 轴，对数刻度），按自动化风险着色。滚动或捏合缩放；点击点探索该职业。",
+  a11yResetZoomToDefault: "重置缩放至默认视图",
+  a11yOccupationsList:    "职业",
+
+  // ── TreemapChart ─────────────────────────────────────────────────────────
+  a11yBackToAllSectors: "返回全部行业",
+
+  // ── WorldChoropleth control aria-labels ──────────────────────────────────
+  a11yMapMetricSelector: "地图指标",
+  a11yViewModeSelector:  "查看模式",
+  a11yResetZoomLabel:    "重置缩放",
+
+  // ── SectorScatterChart ────────────────────────────────────────────────────
+  a11ySectorScatterName: "行业散点图：AI 暴露度与光明前景占比",
+  a11ySectorsList:       "行业",
+
+  // ── SkillFlowSankey ───────────────────────────────────────────────────────
+  a11ySkillFlowName: "职业转型流向图",
 };

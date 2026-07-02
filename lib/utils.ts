@@ -1,9 +1,9 @@
-export function formatNumber(n: number, decimals = 0): string {
-  return n.toLocaleString("en-US", { maximumFractionDigits: decimals });
+export function formatNumber(n: number, decimals = 0, locale = "en-US"): string {
+  return n.toLocaleString(locale, { maximumFractionDigits: decimals });
 }
 
-export function formatCurrency(n: number): string {
-  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+export function formatCurrency(n: number, locale = "en-US"): string {
+  return new Intl.NumberFormat(locale, { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
 }
 
 export function formatPercent(n: number, decimals = 1): string {

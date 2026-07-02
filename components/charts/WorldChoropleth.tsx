@@ -589,7 +589,7 @@ export default function WorldChoropleth({
         {/* Metric toggle — segmented control */}
         <div
           role="group"
-          aria-label="Map metric"
+          aria-label={t("a11yMapMetricSelector")}
           className="flex w-fit rounded-xl glass p-0.5 text-xs font-medium"
         >
           {(["claude", "diffusion", "demand", "readiness", "govReadiness"] as Metric[]).map((m) => {
@@ -620,7 +620,7 @@ export default function WorldChoropleth({
         {/* View-mode toggle: Map / Bubbles */}
         <div
           role="group"
-          aria-label="View mode"
+          aria-label={t("a11yViewModeSelector")}
           className="flex rounded-xl glass p-0.5 text-xs font-medium"
         >
           {(["map", "bubble"] as ViewMode[]).map((mode) => {
@@ -705,7 +705,7 @@ export default function WorldChoropleth({
             <button
               type="button"
               onClick={handleResetZoom}
-              aria-label="Reset zoom"
+              aria-label={t("a11yResetZoomLabel")}
               className="absolute right-1 top-1 z-10 rounded-lg glass px-2 py-1 text-[11px] text-zinc-500 hover:text-zinc-200 transition-colors"
             >
               {t("buttonResetView")}

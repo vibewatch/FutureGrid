@@ -2,8 +2,49 @@
 
 // global-error renders *outside* the root layout — it must own its html/body.
 // Keep this file minimal: inline styles only (no globals.css import).
+// LanguageProvider is NOT available here, so we read the locale defensively
+// from localStorage / document.documentElement.lang and default to "en".
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
+
+type Locale = "en" | "zh";
+
+/** Read locale without the LanguageProvider (best-effort, default "en"). */
+function detectLocale(): Locale {
+  try {
+    const stored = localStorage.getItem("fg-locale");
+    if (stored === "en" || stored === "zh") return stored;
+    if (
+      typeof document !== "undefined" &&
+      document.documentElement.lang === "zh"
+    )
+      return "zh";
+  } catch {
+    // localStorage / document unavailable (SSR guard)
+  }
+  return "en";
+}
+
+/** Inline bilingual dictionary — no dependency on catalog imports. */
+const DICT: Record<Locale, Record<string, string>> = {
+  en: {
+    pageTitle:  "Something went wrong · FutureGrid",
+    heading:    "Something went wrong",
+    body:       "An unexpected error disrupted the grid.",
+    errorId:    "Error ID",
+    tryAgain:   "↺ Try again",
+    goHome:     "← Go home",
+  },
+  zh: {
+    pageTitle:  "出了些问题 · FutureGrid",
+    heading:    "出了些问题",
+    body:       "网格发生了意外错误。",
+    errorId:    "错误 ID",
+    tryAgain:   "↺ 重试",
+    goHome:     "← 返回首页",
+  },
+};
 
 export default function GlobalError({
   error,
@@ -16,13 +57,20 @@ export default function GlobalError({
 }) {
   const handleRetry = unstable_retry ?? reset;
 
+  // Start with "en" for SSR/SSG; correct to detected locale on mount.
+  const [locale, setLocale] = useState<Locale>("en");
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { setLocale(detectLocale()); }, []);
+
+  const d = DICT[locale];
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* React title tag — metadata exports are not supported in global-error */}
-        <title>Something went wrong · FutureGrid</title>
+        <title>{d.pageTitle}</title>
       </head>
       <body
         style={{
@@ -79,7 +127,7 @@ export default function GlobalError({
               backgroundClip: "text",
             }}
           >
-            Something went wrong
+            {d.heading}
           </h1>
 
           <p
@@ -90,7 +138,7 @@ export default function GlobalError({
               lineHeight: 1.6,
             }}
           >
-            An unexpected error disrupted the grid.
+            {d.body}
           </p>
 
           {/* Digest for support — shown only when available */}
@@ -103,7 +151,7 @@ export default function GlobalError({
                 fontFamily: "monospace",
               }}
             >
-              Error ID: {error.digest}
+              {d.errorId}: {error.digest}
             </p>
           )}
 
@@ -157,7 +205,7 @@ export default function GlobalError({
                   (e.currentTarget as HTMLButtonElement).style.outline = "none";
                 }}
               >
-                ↺ Try again
+                {d.tryAgain}
               </button>
             )}
 
@@ -188,7 +236,7 @@ export default function GlobalError({
                 (e.currentTarget as HTMLAnchorElement).style.outline = "none";
               }}
             >
-              ← Go home
+              {d.goHome}
             </Link>
           </div>
         </div>

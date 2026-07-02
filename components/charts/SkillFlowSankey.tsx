@@ -374,7 +374,7 @@ export default function SkillFlowSankey() {
   return (
     <div ref={wrapRef} className="relative w-full overflow-x-auto">
       {/* Accessible wrapper */}
-      <div role="img" aria-label="Career transition flow diagram">
+      <div role="img" aria-label={t("a11ySkillFlowName")}>
         {/* Screen-reader summary */}
         <p className="sr-only">{summary}</p>
         <svg
