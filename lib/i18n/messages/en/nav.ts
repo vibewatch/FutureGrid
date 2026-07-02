@@ -12,6 +12,7 @@ export const navEn = {
   pulse: "Pulse",
   layoffs: "Layoffs",
   sources: "Sources",
+  methodology: "Methodology",
   labor: "Labor Market",
   secOverview: "Overview",
   secExposure: "Exposure",

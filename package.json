@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm run build:downloads",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest",
     "test:run": "vitest run",
-    "build:data": "npm run build:proxies && node scripts/build-data-snapshot.mjs && node scripts/build-snapshot-slim.mjs && npm run build:provenance",
+    "build:data": "npm run build:proxies && node scripts/build-data-snapshot.mjs && node scripts/build-snapshot-slim.mjs && npm run build:provenance && npm run build:downloads",
     "build:proxies": "node scripts/build-ai-usage-proxies.mjs",
     "build:snapshot-slim": "node scripts/build-snapshot-slim.mjs",
     "build:provenance": "node scripts/build-provenance.mjs",
@@ -27,7 +28,8 @@
     "check:a11y": "node scripts/a11y-test.mjs",
     "build:ai-signals": "node scripts/build-ai-signals.mjs",
     "build:market-signals": "node scripts/build-market-signals.mjs",
-    "build:ai-frontier": "node scripts/build-ai-frontier.mjs"
+    "build:ai-frontier": "node scripts/build-ai-frontier.mjs",
+    "build:downloads": "node scripts/build-downloads.mjs"
   },
   "dependencies": {
     "chart.js": "^4.5.1",

@@ -117,6 +117,19 @@ function IconReport() {
   );
 }
 
+function IconMethodology() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M9 3H5a2 2 0 0 0-2 2v4" />
+      <path d="M9 3h10a2 2 0 0 1 2 2v4" />
+      <path d="M3 9v10a2 2 0 0 0 2 2h4" />
+      <path d="M21 9v10a2 2 0 0 1-2 2h-4" />
+      <line x1="9" y1="12" x2="15" y2="12" />
+      <line x1="9" y1="16" x2="13" y2="16" />
+    </svg>
+  );
+}
+
 function IconInsights() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -226,7 +239,7 @@ const NAV_SECTIONS = [
   { key: "secExposure",   items: [ { href: "/careers", labelKey: "careers",   Icon: IconCareers   }, { href: "/sectors",  labelKey: "sectors",  Icon: IconSectors }, { href: "/explore", labelKey: "explore", Icon: IconExplore } ] },
   { key: "secLabor",      items: [ { href: "/labor",   labelKey: "labor",     Icon: IconLabor     }, { href: "/global",   labelKey: "global",   Icon: IconGlobe   } ] },
   { key: "secTransition", items: [ { href: "/skills",  labelKey: "skills",    Icon: IconSkills    } ] },
-  { key: "secAbout",      items: [ { href: "/sources", labelKey: "sources",   Icon: IconSources   } ] },
+  { key: "secAbout",      items: [ { href: "/sources", labelKey: "sources", Icon: IconSources }, { href: "/methodology", labelKey: "methodology", Icon: IconMethodology } ] },
 ];
 
 // ─── Logo ──────────────────────────────────────────────────────────────────────
