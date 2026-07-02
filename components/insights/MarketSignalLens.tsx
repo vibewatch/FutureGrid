@@ -354,6 +354,7 @@ export default function MarketSignalLens() {
               <text x={MARGIN.left + INNER_WIDTH / 2} y={CHART_HEIGHT - 6} textAnchor="middle" className="fill-zinc-500 text-[11px]">{t("marketSignalXAxis")}</text>
               <text transform={`rotate(-90 ${18} ${MARGIN.top + INNER_HEIGHT / 2})`} x="18" y={MARGIN.top + INNER_HEIGHT / 2} textAnchor="middle" className="fill-zinc-500 text-[11px]">{t("marketSignalYAxis", { benchmark: source.benchmark })}</text>
 
+              <g role="list" aria-label={t("marketSignalScatterAria")}>
               {sectors.map((sector) => {
                 const isActive = active?.key === sector.key;
                 const radius = rScale(sector.employment);
@@ -386,6 +387,7 @@ export default function MarketSignalLens() {
                   </g>
                 );
               })}
+              </g>
             </svg>
             <ul className="sr-only" aria-label={t("marketSignalScatterSrList")}>
               {sectors.map((sector) => <li key={sector.key}>{pointLabel(sector, t, source.benchmark)}</li>)}

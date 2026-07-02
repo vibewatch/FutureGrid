@@ -170,6 +170,49 @@ of the `build:data` chain. The typed loader `lib/provenance.ts` exposes the
 dataset list plus `getDataAsOf(id)`, `getDatasetProvenance(id)`, and
 `getLatestAsOf()` helpers for the UI provenance badge and methodology changelog.
 
+## CI guardrails
+
+Two extra guardrails run after every build to catch performance and
+accessibility regressions.
+
+### Bundle-size budget (`npm run check:bundle`)
+
+Scans `out/_next/static/chunks/*.js` and fails if any single client JS chunk
+exceeds **700 KB** (today's largest is ≈ 503 KB — the budget gives ~40 % headroom
+while catching the 3 MB-class regressions that were fixed in #47).
+
+Run locally:
+```bash
+npm run build
+npm run check:bundle
+```
+
+### Accessibility audit (`npm run check:a11y`)
+
+Serves the static export on a local port, loads each representative page in
+headless Chrome via Chrome DevTools Protocol, injects [axe-core](https://github.com/dequelabs/axe-core),
+and asserts **zero critical and zero serious violations** (the `color-contrast`
+rule is temporarily excluded pending a design-system palette update — tracked
+as a follow-up) across:
+
+| Page | Path |
+|------|------|
+| Home | `/` |
+| Careers | `/careers` |
+| Global | `/global` |
+| Labor | `/labor` |
+| Frontier | `/frontier` |
+| Analysis | `/analysis` |
+
+Run locally:
+```bash
+npm run build
+npm run check:a11y
+```
+
+No Playwright/Puppeteer dependency — uses system Chrome (`/usr/bin/google-chrome`)
+via CDP; override with `CHROME_BIN`. Both scripts are Node 20 compatible.
+
 ## Scheduled data refresh
 
 `.github/workflows/refresh-data.yml` refreshes the committed snapshots on a

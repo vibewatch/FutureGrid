@@ -651,11 +651,7 @@ export default function CountryDetailPanel({
                 {/* Progress bar */}
                 <div
                   className="h-1.5 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden"
-                  role="progressbar"
-                  aria-valuenow={Math.round(barWidth)}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-label={t("countryRelativeUsageAria", { name: country.name })}
+                  aria-hidden="true"
                 >
                   <div
                     className="h-full rounded-full brand-grad"

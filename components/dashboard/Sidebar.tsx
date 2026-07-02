@@ -434,6 +434,7 @@ export default function Sidebar() {
         }`}
         aria-label="Navigation drawer"
         aria-hidden={!drawerOpen}
+        inert={!drawerOpen ? true : undefined}
       >
         <div className="p-4 border-b border-zinc-200 dark:border-zinc-800/60 flex items-center justify-between">
           <Logo onClick={() => setDrawerOpen(false)} />
