@@ -1,0 +1,10 @@
+{
+  "range": "Originals!A1:G4",
+  "majorDimension": "ROWS",
+  "values": [
+    ["Company", "City", "AffectedWorkers", "NoticeRcvd", "NoticeType", "LayoffBeginDate", "County"],
+    ["Acme Manufacturing", "Milwaukee", "125", "20240115", "Permanent Layoff", "2024-03-01", "Milwaukee"],
+    ["Beta Logistics Inc", "Madison", "50", "20240220", "Plant Closure", "2024-04-15", "Dane"],
+    ["Gamma Retail LLC", "Green Bay", "200", "20240310", "Layoff", "2024-05-01", "Brown"]
+  ]
+}
