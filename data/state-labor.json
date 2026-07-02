@@ -29345,5 +29345,15 @@
         ]
       }
     }
-  ]
+  ],
+  "meta": {
+    "generatedAt": "2026-07-02T07:02:26.024Z",
+    "asOf": "2026-07-02",
+    "source": {
+      "name": "BLS Local Area Unemployment Statistics",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "url": "https://www.bls.gov/lau/"
+    },
+    "version": "1.0.0"
+  }
 }

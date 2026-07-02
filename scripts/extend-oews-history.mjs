@@ -114,8 +114,9 @@ async function main() {
   const parserPath = path.join(WORK_DIR, "parse_oews.py");
   writeFileSync(parserPath, PARSE_OEWS_PY);
 
-  // Load snapshot
-  const snapshot = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf8"));
+  // Load snapshot (supports the { meta, data } wrapper; issue #52)
+  const snapshotRaw = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf8"));
+  const snapshot = Array.isArray(snapshotRaw) ? snapshotRaw : snapshotRaw.data;
   console.log(`Loaded snapshot: ${snapshot.length} occupations\n`);
 
   const summaryLines = [];
@@ -229,8 +230,18 @@ async function main() {
     }
   }
 
-  // ── Write snapshot ────────────────────────────────────────────────────────
-  writeFileSync(SNAPSHOT_PATH, JSON.stringify(snapshot, null, 2) + "\n", "utf8");
+  // ── Write snapshot (preserve the { meta, data } wrapper) ──────────────────
+  let output;
+  if (Array.isArray(snapshotRaw)) {
+    output = snapshot;
+  } else {
+    output = snapshotRaw;
+    output.data = snapshot;
+    if (output.meta && typeof output.meta === "object") {
+      output.meta.generatedAt = new Date().toISOString();
+    }
+  }
+  writeFileSync(SNAPSHOT_PATH, JSON.stringify(output, null, 2) + "\n", "utf8");
   console.log(`\nWrote ${SNAPSHOT_PATH}`);
 
   // ── Summary ───────────────────────────────────────────────────────────────

@@ -146783,5 +146783,15 @@
         "state": "TN"
       }
     ]
+  },
+  "meta": {
+    "generatedAt": "2026-07-01T19:53:29.838Z",
+    "asOf": "2026-07-01",
+    "source": {
+      "name": "California WARN Act Notices",
+      "publisher": "California Employment Development Department (EDD)",
+      "url": "https://edd.ca.gov/en/jobs_and_training/layoff_services_warn/"
+    },
+    "version": "1.0.0"
   }
 }

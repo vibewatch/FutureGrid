@@ -3,6 +3,7 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useT } from "@/lib/i18n/useT";
+import DataAsOfBadge from "@/components/ui/DataAsOfBadge";
 
 function LoadingStub() {
   const t = useT("labor");
@@ -47,6 +48,9 @@ export default function LaborMarketView() {
         <p className="text-zinc-600 dark:text-zinc-400 mt-1.5 max-w-2xl">
           {t("pageSubhead")}
         </p>
+        <div className="mt-3">
+          <DataAsOfBadge datasetIds={["state-labor", "warn-notices"]} />
+        </div>
       </div>
 
       {/* ── Tab bar ────────────────────────────────────────────────────────── */}

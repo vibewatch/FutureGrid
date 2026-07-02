@@ -2740,5 +2740,13 @@
       "Yahoo Finance endpoint is unofficial/undocumented and may change or rate-limit.",
       "Occupation-to-market-sector mapping is hand-authored and coarse; coverage counts should be shown with the score."
     ]
+  },
+  "meta": {
+    "generatedAt": "2026-07-01T22:34:40.317Z",
+    "asOf": "2026-07-01",
+    "source": {
+      "name": "Yahoo Finance chart JSON endpoint"
+    },
+    "version": "1.0.0"
   }
 }

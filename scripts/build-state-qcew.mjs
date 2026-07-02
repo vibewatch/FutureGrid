@@ -10,6 +10,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { validateStateQcew } from "./lib/validate.mjs";
+import { deriveMeta } from "./lib/meta.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -578,6 +579,7 @@ async function main() {
     states,
   };
 
+  output.meta = deriveMeta(output);
   const jsonStr = JSON.stringify(output, null, 2) + "\n";
   validateStateQcew(output);
   writeFileSync(OUT_PATH, jsonStr);

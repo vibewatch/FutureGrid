@@ -44,7 +44,7 @@ type SnapshotRow = {
   skills: string[];
 };
 
-const snapshot = occupationSnapshot as SnapshotRow[];
+const snapshot = (occupationSnapshot as { data: SnapshotRow[] }).data;
 
 let _insightsCache: CareerInsight[] | null = null;
 
@@ -360,7 +360,7 @@ export interface CountryExposure {
 }
 
 export function getCountryExposure(): CountryExposure[] {
-  return countryExposureData as CountryExposure[];
+  return (countryExposureData as { data: CountryExposure[] }).data;
 }
 
 // ─── Supplemental AI usage proxies ───────────────────────────────────────────

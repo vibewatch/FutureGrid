@@ -9,12 +9,12 @@ export interface AutomationScore {
 
 // Build lookup from the real Anthropic Economic Index snapshot
 const AUTOMATION_SCORES: Map<string, AutomationScore> = new Map(
-  (occupationSnapshot as Array<{
+  (occupationSnapshot as { data: Array<{
     socCode: string;
     title: string;
     aiExposure: number;
     automationRisk: "Low" | "Medium" | "High" | "Very High";
-  }>).map((row) => [
+  }> }).data.map((row) => [
     row.socCode,
     {
       socCode: row.socCode,

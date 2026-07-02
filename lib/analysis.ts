@@ -270,7 +270,7 @@ type GrowthResult = { rate: number; fromYear: number; toYear: number };
 type ForecastCache = { byCode: Map<string, OccupationForecast>; national: NationalForecast };
 type ExposureBySocJson = { bySoc: Record<string, number> };
 
-const snapshot = occupationSnapshot as SnapshotRow[];
+const snapshot = (occupationSnapshot as { data: SnapshotRow[] }).data;
 const LATEST_ACTUAL_YEAR = 2025;
 const DEFAULT_AI_SENSITIVITY = 0.5;
 

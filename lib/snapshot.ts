@@ -26,7 +26,7 @@ export type SnapshotRow = {
   wageHistory?: Record<string, number>;
 };
 
-const snapshot = occupationSnapshot as SnapshotRow[];
+const snapshot = (occupationSnapshot as { data: SnapshotRow[] }).data;
 
 export interface TrendPoint {
   year: number;

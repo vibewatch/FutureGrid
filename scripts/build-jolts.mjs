@@ -11,6 +11,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
 import { validateJolts } from "./lib/validate.mjs";
+import { deriveMeta } from "./lib/meta.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -231,6 +232,7 @@ async function main() {
   };
 
   // If JSON exceeds ~3 MB, trim industry monthly series to start at 2005-01
+  output.meta = deriveMeta(output);
   let jsonStr = JSON.stringify(output, null, 2) + "\n";
   if (jsonStr.length > 3 * 1024 * 1024) {
     console.warn("Output > 3 MB — trimming industry series to 2005-01+");

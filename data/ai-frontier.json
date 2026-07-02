@@ -15032,5 +15032,15 @@
     "Future-dated entries reflect the source snapshot and are shown as-is.",
     "Descriptive trends, not predictions.",
     "Multi-country collaboration models are co-attributed to each participating country in the country leaderboard."
-  ]
+  ],
+  "meta": {
+    "generatedAt": "2026-07-02T05:01:46.320Z",
+    "asOf": "2026-07-02",
+    "source": {
+      "name": "Epoch AI — Notable AI Models",
+      "publisher": "Epoch AI",
+      "url": "https://epoch.ai/data/notable-ai-models"
+    },
+    "version": "1.0.0"
+  }
 }

@@ -14,6 +14,7 @@ import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
 import { feature as topoFeature } from "topojson-client";
 import { validateOccupationSnapshot } from "./lib/validate.mjs";
+import { buildMeta, deriveMeta } from "./lib/meta.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -560,7 +561,18 @@ async function buildWorldGeo({ DATA_DIR: dataDir, PUBLIC_DIR: publicDir, CACHE_D
     });
   }
 
-  const out = { type: "FeatureCollection", features };
+  const out = {
+    type: "FeatureCollection",
+    meta: buildMeta({
+      asOf: "2023",
+      source: {
+        name: "Natural Earth / world-atlas — 110m Country Polygons",
+        publisher: "Natural Earth / Mike Bostock (world-atlas)",
+        url: "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+      },
+    }),
+    features,
+  };
   const outJson = JSON.stringify(out);
   writeFileSync(path.join(dataDir, "world-countries.geo.json"), outJson);
   writeFileSync(path.join(publicDir, "world-countries.geo.json"), outJson);
@@ -1022,16 +1034,43 @@ async function main() {
   };
 
   // ─── Write JSON files ──────────────────────────────────────────────────────
+  const nowIso = new Date().toISOString();
+
   const occupationOut = path.join(DATA_DIR, "occupation-snapshot.json");
-  validateOccupationSnapshot(snapshot);
-  writeFileSync(occupationOut, JSON.stringify(snapshot, null, 2));
+  const occupationDataset = {
+    meta: buildMeta({
+      generatedAt: nowIso,
+      asOf: "2025",
+      source: {
+        name: "Anthropic Economic Index — Job Exposure",
+        publisher: "Anthropic",
+        url: "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+      },
+    }),
+    data: snapshot,
+  };
+  validateOccupationSnapshot(occupationDataset);
+  writeFileSync(occupationOut, JSON.stringify(occupationDataset, null, 2));
   console.log(`\n✓ Written ${occupationOut} (${snapshot.length} occupations)`);
 
   const countryOut = path.join(DATA_DIR, "country-exposure.json");
-  writeFileSync(countryOut, JSON.stringify(countryExposure, null, 2));
+  const countryDataset = {
+    meta: buildMeta({
+      generatedAt: nowIso,
+      asOf: "2025",
+      source: {
+        name: "Anthropic Economic Index — Country Usage",
+        publisher: "Anthropic",
+        url: "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+      },
+    }),
+    data: countryExposure,
+  };
+  writeFileSync(countryOut, JSON.stringify(countryDataset, null, 2));
   console.log(`✓ Written ${countryOut} (${countryExposure.length} countries)`);
 
   const sourcesOut = path.join(DATA_DIR, "sources.json");
+  sources.meta = deriveMeta(sources);
   writeFileSync(sourcesOut, JSON.stringify(sources, null, 2));
   console.log(`✓ Written ${sourcesOut}`);
 

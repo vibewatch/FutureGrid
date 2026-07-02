@@ -1,0 +1,82 @@
+name: Scheduled data refresh
+
+# Weekly refresh of the committed data snapshots. Each build step is guarded by
+# the issue #49 sanity gates, so a degenerate fetch (empty/short dataset,
+# missing live states, etc.) throws and FAILS the job — which is the alert.
+# On success, any changed snapshots are proposed as a pull request.
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: refresh-data
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refresh WARN notices
+        # GOOGLE_SHEETS_API_KEY powers the manual-coverage WARN sheet ingest.
+        env:
+          GOOGLE_SHEETS_API_KEY: ${{ secrets.GOOGLE_SHEETS_API_KEY }}
+        run: npm run build:warn
+
+      - name: Refresh state labor
+        run: npm run build:state-labor
+
+      - name: Refresh state QCEW
+        run: npm run build:state-qcew
+
+      - name: Refresh JOLTS
+        run: npm run build:jolts
+
+      - name: Refresh occupation snapshot
+        run: npm run build:data
+
+      - name: Refresh slim snapshot
+        run: npm run build:snapshot-slim
+
+      - name: Refresh public WARN payload
+        run: npm run build:warn-public
+
+      - name: Rebuild provenance registry
+        run: npm run build:provenance
+
+      - name: Open pull request with refreshed snapshots
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(data): scheduled snapshot refresh"
+          title: "chore(data): scheduled snapshot refresh"
+          body: |
+            Automated weekly data refresh.
+
+            Regenerated committed snapshots via the `build:*` pipeline. Each
+            build step is sanity-gated (issue #49); a failing job indicates a
+            bad upstream fetch, not a code regression.
+          branch: data/scheduled-refresh
+          delete-branch: true
+          add-paths: |
+            data/**
+            public/**

@@ -762,5 +762,14 @@
     "53-7073": 0,
     "53-7081": 0.196429,
     "53-7121": 0.071429
+  },
+  "meta": {
+    "generatedAt": "2026-07-01T10:01:06.104Z",
+    "asOf": "2026-07-01",
+    "source": {
+      "name": "OpenAI \"GPTs are GPTs\"",
+      "url": "https://raw.githubusercontent.com/openai/GPTs-are-GPTs/main/data/occ_level.csv"
+    },
+    "version": "1.0.0"
   }
 }

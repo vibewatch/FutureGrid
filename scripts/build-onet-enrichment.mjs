@@ -11,6 +11,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
 import occupationSnapshot from "../data/occupation-snapshot.json" with { type: "json" };
+import { deriveMeta } from "./lib/meta.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -217,7 +218,7 @@ async function buildOccupationEnrichment(snapshotRow, onetOccupation) {
 async function main() {
   console.log("=== FutureGrid O*NET enrichment pipeline ===");
   const limit = Number(process.env.ONET_ENRICH_LIMIT ?? "120");
-  const snapshot = occupationSnapshot;
+  const snapshot = occupationSnapshot.data ?? occupationSnapshot;
   const onetOccupations = await fetchAllOccupations();
   const onetCodeMap = buildOnetCodeMap(onetOccupations);
   const selected = choosePriorityOccupations(snapshot, Number.isFinite(limit) ? limit : 120);
@@ -259,6 +260,7 @@ async function main() {
     occupations,
   };
 
+  output.meta = deriveMeta(output);
   writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, 2) + "\n");
   console.log(`✓ Written ${OUTPUT_FILE}`);
 }

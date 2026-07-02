@@ -10,6 +10,7 @@ import CountryDetailPanel, {
 } from "@/components/dashboard/CountryDetailPanel";
 import AIAdoptionSignals from "@/components/global/AIAdoptionSignals";
 import { useT } from "@/lib/i18n/useT";
+import DataAsOfBadge from "@/components/ui/DataAsOfBadge";
 import type { AdoptionSignalsDataset } from "@/lib/adoption-signals";
 import type { DiffusionRiser } from "@/lib/data";
 
@@ -115,6 +116,9 @@ export default function GlobalView({
             </span>{" "}
             {t("heroIntroAfter")}
           </p>
+          <div className="mt-3">
+            <DataAsOfBadge datasetIds={["country-exposure", "global-ai-metrics"]} />
+          </div>
         </Reveal>
 
         {/* ─── HEADLINE STATS ──────────────────────────────────────────── */}

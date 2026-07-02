@@ -12,6 +12,7 @@ import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
 import ExcelJS from "exceljs";
 import { validateWarnNotices } from "./lib/validate.mjs";
+import { deriveMeta } from "./lib/meta.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -1924,6 +1925,7 @@ async function main() {
     summary,
   };
 
+  output.meta = deriveMeta(output);
   const jsonStr = JSON.stringify(output, null, 2) + "\n";
   const outPath = path.join(DATA_DIR, "warn-notices.json");
   validateWarnNotices(output);

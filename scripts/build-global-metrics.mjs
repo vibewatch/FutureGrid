@@ -12,6 +12,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import https from "https";
 import http from "http";
+import { deriveMeta } from "./lib/meta.mjs";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -642,6 +643,7 @@ async function main() {
   };
 
   const outPath = path.join(DATA_DIR, "global-ai-metrics.json");
+  output.meta = deriveMeta(output);
   writeFileSync(outPath, JSON.stringify(output, null, 2) + "\n");
   console.log(`\n  ✓ Wrote ${path.relative(ROOT, outPath)}`);
   console.log(`    diffusion countries: ${Object.keys(diffusion).length}`);

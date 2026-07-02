@@ -670,5 +670,14 @@
     "53-7073": 0.84,
     "53-7081": 0.93,
     "53-7121": 0.72
+  },
+  "meta": {
+    "generatedAt": "2026-07-01T10:01:06.104Z",
+    "asOf": "2026-07-01",
+    "source": {
+      "name": "Frey & Osborne (2013)",
+      "url": "https://raw.githubusercontent.com/WorkForce-Central/Future-of-Work/master/Frey%20and%20Osborne%20Computerization%20Probability%20by%20SOC.xlsx"
+    },
+    "version": "1.0.0"
   }
 }

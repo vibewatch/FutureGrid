@@ -1,0 +1,244 @@
+{
+  "generatedAt": "2026-07-02T08:48:01.584Z",
+  "datasets": [
+    {
+      "id": "ai-demand",
+      "file": "data/ai-demand.json",
+      "generatedAt": "2026-07-01T10:01:06.104Z",
+      "asOf": "2026-07-01",
+      "source": {
+        "name": "Indeed Hiring Lab",
+        "url": "https://raw.githubusercontent.com/hiring-lab/ai-tracker/master/AI_posting.csv"
+      },
+      "version": "1.0.0",
+      "rows": 9
+    },
+    {
+      "id": "ai-frontier",
+      "file": "data/ai-frontier.json",
+      "generatedAt": "2026-07-02T05:01:46.320Z",
+      "asOf": "2026-07-02",
+      "source": {
+        "name": "Epoch AI — Notable AI Models",
+        "publisher": "Epoch AI",
+        "url": "https://epoch.ai/data/notable-ai-models"
+      },
+      "version": "1.0.0",
+      "rows": 528
+    },
+    {
+      "id": "ai-layoffs",
+      "file": "data/ai-layoffs.json",
+      "generatedAt": "2026-07-01T10:01:06.104Z",
+      "asOf": "2026-07-01",
+      "source": {
+        "name": "Challenger, Gray & Christmas",
+        "url": "https://gist.githubusercontent.com/mcphil/08f8f011f27c9864d157ead0b9d716d9/raw"
+      },
+      "version": "1.0.0",
+      "rows": 9
+    },
+    {
+      "id": "ai-usage-proxies",
+      "file": "data/ai-usage-proxies.json",
+      "generatedAt": "2026-07-02T08:41:00.816Z",
+      "asOf": "2026-07-02",
+      "source": {
+        "name": "Multiple public AI-usage proxy sources",
+        "publisher": "FutureGrid (aggregated)",
+        "url": "https://github.com/huangyingting/FutureGrid"
+      },
+      "version": "1.0.0",
+      "rows": 8
+    },
+    {
+      "id": "aioe-exposure",
+      "file": "data/aioe-exposure.json",
+      "generatedAt": "2026-07-01T10:01:06.104Z",
+      "asOf": "2026-07-01",
+      "source": {
+        "name": "AIOE (Felten/Raj/Seamans)",
+        "url": "https://raw.githubusercontent.com/AIOE-Data/AIOE/main/AIOE_DataAppendix.xlsx"
+      },
+      "version": "1.0.0",
+      "rows": null
+    },
+    {
+      "id": "automation-baseline",
+      "file": "data/automation-baseline.json",
+      "generatedAt": "2026-07-01T10:01:06.104Z",
+      "asOf": "2026-07-01",
+      "source": {
+        "name": "Frey & Osborne (2013)",
+        "url": "https://raw.githubusercontent.com/WorkForce-Central/Future-of-Work/master/Frey%20and%20Osborne%20Computerization%20Probability%20by%20SOC.xlsx"
+      },
+      "version": "1.0.0",
+      "rows": null
+    },
+    {
+      "id": "country-exposure",
+      "file": "data/country-exposure.json",
+      "generatedAt": "2026-07-02T08:42:54.780Z",
+      "asOf": "2025",
+      "source": {
+        "name": "Anthropic Economic Index — Country Usage",
+        "publisher": "Anthropic",
+        "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex"
+      },
+      "version": "1.0.0",
+      "rows": 195
+    },
+    {
+      "id": "global-ai-metrics",
+      "file": "data/global-ai-metrics.json",
+      "generatedAt": "2026-06-30T14:10:06.478Z",
+      "asOf": "2026-06-30",
+      "source": {
+        "name": "Microsoft AI Diffusion Report (AI Economic Impact & Insights)",
+        "publisher": "Microsoft",
+        "url": "https://github.com/microsoft/ai-diffusion-report"
+      },
+      "version": "1.0.0",
+      "rows": 4
+    },
+    {
+      "id": "jolts",
+      "file": "data/jolts.json",
+      "generatedAt": "2026-07-01T03:33:52.824Z",
+      "asOf": "2026-07-01",
+      "source": {
+        "name": "BLS Job Openings and Labor Turnover Survey (JOLTS)",
+        "publisher": "U.S. Bureau of Labor Statistics",
+        "url": "https://www.bls.gov/jlt/"
+      },
+      "version": "1.0.0",
+      "rows": 21
+    },
+    {
+      "id": "llm-exposure",
+      "file": "data/llm-exposure.json",
+      "generatedAt": "2026-07-01T10:01:06.104Z",
+      "asOf": "2026-07-01",
+      "source": {
+        "name": "OpenAI \"GPTs are GPTs\"",
+        "url": "https://raw.githubusercontent.com/openai/GPTs-are-GPTs/main/data/occ_level.csv"
+      },
+      "version": "1.0.0",
+      "rows": null
+    },
+    {
+      "id": "market-ai-signals",
+      "file": "data/market-ai-signals.json",
+      "generatedAt": "2026-07-01T22:34:40.317Z",
+      "asOf": "2026-07-01",
+      "source": {
+        "name": "Yahoo Finance chart JSON endpoint"
+      },
+      "version": "1.0.0",
+      "rows": 11
+    },
+    {
+      "id": "occupation-snapshot-slim",
+      "file": "data/occupation-snapshot-slim.json",
+      "generatedAt": "2026-07-02T08:43:00.241Z",
+      "asOf": "2025",
+      "source": {
+        "name": "Anthropic Economic Index — Job Exposure",
+        "publisher": "Anthropic",
+        "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex"
+      },
+      "version": "1.0.0",
+      "rows": 756
+    },
+    {
+      "id": "occupation-snapshot",
+      "file": "data/occupation-snapshot.json",
+      "generatedAt": "2026-07-02T08:42:54.780Z",
+      "asOf": "2025",
+      "source": {
+        "name": "Anthropic Economic Index — Job Exposure",
+        "publisher": "Anthropic",
+        "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex"
+      },
+      "version": "1.0.0",
+      "rows": 756
+    },
+    {
+      "id": "onet-enrichment",
+      "file": "data/onet-enrichment.json",
+      "generatedAt": "2026-06-30T13:09:05.302Z",
+      "asOf": "2026-06-30",
+      "source": {
+        "name": "O*NET Web Services API v2",
+        "url": "https://services.onetcenter.org/reference/"
+      },
+      "version": "1.0.0",
+      "rows": null
+    },
+    {
+      "id": "sources",
+      "file": "data/sources.json",
+      "generatedAt": "2026-07-02T08:42:54.780Z",
+      "asOf": "2026-07-02",
+      "source": {
+        "name": "Anthropic Economic Index — Job Exposure",
+        "publisher": "Anthropic",
+        "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex"
+      },
+      "version": "1.0.0",
+      "rows": 23
+    },
+    {
+      "id": "state-labor",
+      "file": "data/state-labor.json",
+      "generatedAt": "2026-07-02T07:02:26.024Z",
+      "asOf": "2026-07-02",
+      "source": {
+        "name": "BLS Local Area Unemployment Statistics",
+        "publisher": "U.S. Bureau of Labor Statistics",
+        "url": "https://www.bls.gov/lau/"
+      },
+      "version": "1.0.0",
+      "rows": 51
+    },
+    {
+      "id": "state-qcew",
+      "file": "data/state-qcew.json",
+      "generatedAt": "2026-07-01T22:01:32.633Z",
+      "asOf": "2026-07-01",
+      "source": {
+        "name": "BLS Quarterly Census of Employment and Wages Annual Area CSVs",
+        "publisher": "U.S. Bureau of Labor Statistics",
+        "url": "https://www.bls.gov/cew/downloadable-data-files.htm"
+      },
+      "version": "1.0.0",
+      "rows": 51
+    },
+    {
+      "id": "warn-notices",
+      "file": "data/warn-notices.json",
+      "generatedAt": "2026-07-01T19:53:29.838Z",
+      "asOf": "2026-07-01",
+      "source": {
+        "name": "California WARN Act Notices",
+        "publisher": "California Employment Development Department (EDD)",
+        "url": "https://edd.ca.gov/en/jobs_and_training/layoff_services_warn/"
+      },
+      "version": "1.0.0",
+      "rows": 12527
+    },
+    {
+      "id": "world-countries.geo",
+      "file": "data/world-countries.geo.json",
+      "generatedAt": "2026-07-02T08:42:54.808Z",
+      "asOf": "2023",
+      "source": {
+        "name": "Natural Earth / world-atlas — 110m Country Polygons",
+        "publisher": "Natural Earth / Mike Bostock (world-atlas)",
+        "url": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
+      },
+      "version": "1.0.0",
+      "rows": 173
+    }
+  ]
+}
