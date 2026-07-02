@@ -113,4 +113,16 @@ export const frontierEn = {
   sectionOf: "of",
   showMore: "Show more",
   globalPageLink: "/global",
+
+  // ── Accessible names / summaries ─────────────────────────────────────────
+  a11yCostPowerSummary:
+    "Two line charts on a logarithmic y-axis. Left: AI training cost trends in 2023 USD " +
+    "showing median and maximum cost lines over time. Right: AI training power draw trends " +
+    "in watts showing median and maximum power lines over time. Both charts cover recent AI model history.",
+  a11yFrontierLeadersSummary:
+    "Horizontal bar chart showing top AI organizations and countries. " +
+    "Organizations tab: top 12 by total model count and frontier model count. " +
+    "Countries tab: top 10 by total and frontier model count. " +
+    "A supplemental data table is visible below the chart.",
+  a11yFrontierLeadersName: "Bar chart: top AI organizations and countries by frontier model count",
 };

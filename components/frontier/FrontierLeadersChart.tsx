@@ -186,7 +186,11 @@ export default function FrontierLeadersChart() {
       {/* Charts */}
       {activeTab === "orgs" && (
         <div className="space-y-3">
-          <div style={{ height: Math.max(280, orgs.length * 34 + 60) }}>
+          <div
+            style={{ height: Math.max(280, orgs.length * 34 + 60) }}
+            role="img"
+            aria-label={t("a11yFrontierLeadersName")}
+          >
             <Bar options={commonOptions} data={orgChartData} />
           </div>
           {/* Supplemental table */}
@@ -242,7 +246,11 @@ export default function FrontierLeadersChart() {
 
       {activeTab === "countries" && (
         <div className="space-y-3">
-          <div style={{ height: Math.max(240, countries.length * 34 + 60) }}>
+          <div
+            style={{ height: Math.max(240, countries.length * 34 + 60) }}
+            role="img"
+            aria-label={t("a11yFrontierLeadersName")}
+          >
             <Bar options={commonOptions} data={countryChartData} />
           </div>
           {/* Supplemental table */}

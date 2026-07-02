@@ -112,4 +112,15 @@ export const frontierZh = {
   sectionOf: "共",
   showMore: "显示更多",
   globalPageLink: "/global",
+
+  // ── Accessible names / summaries ─────────────────────────────────────────
+  a11yCostPowerSummary:
+    "两幅对数 Y 轴折线图。左图：AI 训练成本趋势（2023 年美元），展示中位数与最高值折线。" +
+    "右图：AI 训练能耗趋势（瓦特），展示中位数与最高值折线。两图均涵盖近期 AI 模型历史。",
+  a11yFrontierLeadersSummary:
+    "横向柱状图，展示顶尖 AI 组织与国家。" +
+    "组织标签页：按总模型数与前沿模型数排名前 12 名。" +
+    "国家标签页：按总模型数与前沿模型数排名前 10 名。" +
+    "图表下方提供数据表，方便屏幕阅读器用户访问。",
+  a11yFrontierLeadersName: "柱状图：前沿 AI 模型最多的组织与国家排名",
 };

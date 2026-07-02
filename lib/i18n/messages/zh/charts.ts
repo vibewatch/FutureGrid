@@ -156,4 +156,50 @@ export const chartsZh: Record<string, string> = {
   heatmapLabelHumanCapital:   "人力资本",
   heatmapLabelInnovation:     "创新",
   heatmapLabelRegEthics:      "监管与伦理",
+
+  // ── Accessible names (aria-label / figure label) ─────────────────────────
+  a11yCareerTrendName:     "柱状图：各行业平均 AI 暴露度",
+  a11yJobImpactName:       "柱状图：AI 暴露概率最高的职业",
+  a11ySkillTransitionName: "发散柱状图：高风险与低风险 AI 从业者的技能类别对比",
+  a11yCostPowerName:       "折线图：AI 训练成本与能耗趋势",
+  a11yFrontierLeadersName: "柱状图：前沿 AI 模型最多的组织与国家排名",
+  a11yHeatmapName:         "热力图：25 个主要国家的 8 项 AI 就绪度指标",
+  a11yPredictiveName:      "横向柱状图：年预计招聘岗位最多的职业",
+
+  // ── Screen-reader summaries (figcaption / sr-only) ────────────────────────
+  a11yCareerTrendSummary:
+    "柱状图，比较各就业行业的平均 AI 暴露概率。" +
+    "每根柱子代表一个行业。柱子颜色表示风险等级：绿色 = 低，" +
+    "黄色 = 中，橙色 = 高，红色 = 极高。",
+  a11yJobImpactSummary:
+    "垂直柱状图，展示最高风险职业（最多 20 个）的 AI 暴露概率，从高到低排列。" +
+    "柱子颜色表示风险等级：绿色 = 低，黄色 = 中，橙色 = 高，红色 = 极高。" +
+    "悬停于柱子可查看职业名称及具体概率。",
+  a11ySkillTransitionSummary:
+    "发散柱状图，比较技术、认知、人际、行政、管理五大技能类别，" +
+    "分别针对高 AI 风险从业者（柱子向左延伸，红色）和低风险职业路径（柱子向右延伸，绿色）。" +
+    "柱子长度与估计从业人数成正比。",
+  a11yCostPowerSummary:
+    "两幅对数 Y 轴折线图。左图：AI 训练成本趋势（2023 年美元），展示中位数与最高值折线。" +
+    "右图：AI 训练能耗趋势（瓦特），展示中位数与最高值折线。两图均涵盖近期 AI 模型历史。",
+  a11yFrontierLeadersSummary:
+    "横向柱状图，展示顶尖 AI 组织与国家。" +
+    "组织标签页：按总模型数与前沿模型数排名前 12 名。" +
+    "国家标签页：按总模型数与前沿模型数排名前 10 名。" +
+    "图表下方提供数据表，方便屏幕阅读器用户访问。",
+  a11yHeatmapSummary:
+    "热力图，比较 25 个国家的 8 项 AI 指标：AI 使用指数、生成式 AI 普及率、" +
+    "AI 就绪度（IMF AIPI）、政府 AI 就绪度（牛津大学，0–100）、" +
+    "数字基础设施、人力资本、创新、监管与伦理子指数。" +
+    "每项指标独立归一化至 0–1 以供颜色比较。灰色单元格表示无数据。" +
+    "键盘和屏幕阅读器用户可通过以下数据表访问各单元格数值。",
+  a11yPredictiveSummary:
+    "横向柱状图，展示年预计招聘岗位最多的职业。" +
+    "每根柱子的长度代表年预计招聘岗位数。" +
+    "颜色渐变从紫色（较低）到青色（较高）。图表上方显示汇总统计数据。",
+
+  // ── Heatmap accessible data table headers ────────────────────────────────
+  a11yHeatmapTableCaption: "热力图数据：25 个国家 × 8 项 AI 指标",
+  a11yHeatmapThCountry:    "国家",
+  a11yHeatmapThValue:      "数值",
 };

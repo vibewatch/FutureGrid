@@ -14,6 +14,7 @@ import { useMemo } from "react";
 import { useTheme } from "next-themes";
 import { getSectorAggregates } from "@/lib/data";
 import { useT } from "@/lib/i18n/useT";
+import AccessibleChart from "./AccessibleChart";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -121,8 +122,34 @@ export default function CareerTrendChart() {
   }), [sectors, datasetLabel]);
 
   return (
-    <div className="w-full h-[400px]">
-      <Bar options={options} data={data} />
-    </div>
+    <AccessibleChart
+      label={t("a11yCareerTrendName")}
+      summary={
+        <>
+          <p>{t("a11yCareerTrendSummary")}</p>
+          <table>
+            <caption>{t("chartTitleAvgAIExposure")}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{t("labelOccupations")}</th>
+                <th scope="col">{t("labelAIExposure")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sectors.map((s) => (
+                <tr key={s.sector}>
+                  <td>{s.sector}</td>
+                  <td>{(s.avgRisk * 100).toFixed(1)}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      }
+    >
+      <div className="w-full h-[400px]">
+        <Bar options={options} data={data} />
+      </div>
+    </AccessibleChart>
   );
 }

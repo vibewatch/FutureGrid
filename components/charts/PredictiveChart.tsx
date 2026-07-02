@@ -270,9 +270,12 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
           ref={svgRef}
           className="w-full h-auto"
           style={{ minHeight: 300 }}
-          aria-label="Horizontal bar chart: top occupations by projected annual openings"
+          aria-label={t("a11yPredictiveName")}
           role="img"
         />
+
+        {/* Screen-reader summary */}
+        <span className="sr-only">{t("a11yPredictiveSummary")}</span>
 
         {tooltip.visible && (
           <div

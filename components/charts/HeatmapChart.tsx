@@ -287,18 +287,43 @@ export default function HeatmapChart() {
         ref={svgRef}
         className="w-full h-auto min-h-[600px]"
         role="img"
-        aria-label="Country × AI-metric heatmap: 25 major economies scored on 8 real AI indicators"
+        aria-label={t("a11yHeatmapName")}
       >
-        <title>Country × AI-Metric Heatmap</title>
+        <title>{t("a11yHeatmapName")}</title>
       </svg>
-      <span className="sr-only">
-        Heatmap comparing 25 countries on 8 real AI metrics: AI Usage Index, GenAI Diffusion
-        rate, AI Readiness (IMF AIPI composite), Government AI Readiness (Oxford Insights
-        GAIRI 2023, 0–100), and four AIPI sub-indices (digital infrastructure, human capital,
-        innovation, regulation &amp; ethics). Each metric is independently normalised to 0–1
-        for colour comparability. Grey cells indicate no data. Hover over individual cells to
-        see the real underlying value.
-      </span>
+
+      {/* Screen-reader summary */}
+      <span className="sr-only">{t("a11yHeatmapSummary")}</span>
+
+      {/* Accessible data table — keyboard/AT users navigate via Tab + arrow keys */}
+      <table className="sr-only" aria-label={t("a11yHeatmapTableCaption")}>
+        <caption>{t("a11yHeatmapTableCaption")}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{t("a11yHeatmapThCountry")}</th>
+            {METRICS.map((m) => (
+              <th key={m.key} scope="col">{heatShortLabels[m.key] ?? m.shortLabel}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {countries.map((iso3) => {
+            const row = cells.filter((c) => c.iso3 === iso3);
+            const countryName = row[0]?.country ?? iso3;
+            return (
+              <tr key={iso3}>
+                <th scope="row">{countryName}</th>
+                {METRICS.map((m) => {
+                  const cell = row.find((c) => c.metricKey === m.key);
+                  return (
+                    <td key={m.key}>{cell?.rawDisplay ?? "—"}</td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
 
       {tooltip.visible && (
         <div

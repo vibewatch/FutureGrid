@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import { generateAllCareerInsights } from "@/lib/data";
 import { useT } from "@/lib/i18n/useT";
+import AccessibleChart from "./AccessibleChart";
 
 const GROUP_COLORS: Record<string, string> = {
   Technical:      "#8b5cf6",
@@ -231,40 +232,45 @@ export default function SkillTransitionChart() {
   }, [filtered, isDark, headerHighRisk, headerLowRisk, axisSkillFlows]);
 
   return (
-    <div ref={containerRef} className="relative w-full overflow-x-auto">
-      <svg ref={svgRef} className="w-full h-auto min-h-[500px]" />
+    <AccessibleChart
+      label={t("a11ySkillTransitionName")}
+      summary={t("a11ySkillTransitionSummary")}
+    >
+      <div ref={containerRef} className="relative w-full overflow-x-auto">
+        <svg ref={svgRef} className="w-full h-auto min-h-[500px]" aria-hidden="true" />
 
-      {tooltip.visible && (
-        <div
-          className="pointer-events-none absolute z-50 rounded-xl border px-3 py-2.5 text-sm"
-          style={{
-            left: tooltip.x > tooltip.cw * 0.65 ? tooltip.x - 200 : tooltip.x + 14,
-            top: tooltip.y,
-            transform: "translateY(-50%)",
-            background: isDark ? "rgba(9,9,11,0.93)" : "rgba(255,255,255,0.95)",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            borderColor: (GROUP_COLORS[tooltip.group] ?? "#6b7280") + "44",
-            minWidth: 180,
-            boxShadow: isDark ? "0 4px 24px rgba(0,0,0,0.4)" : "0 4px 16px rgba(0,0,0,0.10)",
-          }}
-        >
-          <p
-            className="font-semibold text-sm mb-2"
-            style={{ color: GROUP_COLORS[tooltip.group] ?? "#e4e4e7" }}
+        {tooltip.visible && (
+          <div
+            className="pointer-events-none absolute z-50 rounded-xl border px-3 py-2.5 text-sm"
+            style={{
+              left: tooltip.x > tooltip.cw * 0.65 ? tooltip.x - 200 : tooltip.x + 14,
+              top: tooltip.y,
+              transform: "translateY(-50%)",
+              background: isDark ? "rgba(9,9,11,0.93)" : "rgba(255,255,255,0.95)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              borderColor: (GROUP_COLORS[tooltip.group] ?? "#6b7280") + "44",
+              minWidth: 180,
+              boxShadow: isDark ? "0 4px 24px rgba(0,0,0,0.4)" : "0 4px 16px rgba(0,0,0,0.10)",
+            }}
           >
-          {t("tooltipSkillsGroup", { group: tooltip.group })}
-          </p>
-          <div className="flex justify-between gap-4 text-xs mb-1">
-            <span className="text-zinc-500">{t("tooltipHighRiskWorkers")}</span>
-            <span className="font-semibold" style={{ color: "#ef4444" }}>{tooltip.highCount}k</span>
+            <p
+              className="font-semibold text-sm mb-2"
+              style={{ color: GROUP_COLORS[tooltip.group] ?? "#e4e4e7" }}
+            >
+            {t("tooltipSkillsGroup", { group: tooltip.group })}
+            </p>
+            <div className="flex justify-between gap-4 text-xs mb-1">
+              <span className="text-zinc-500">{t("tooltipHighRiskWorkers")}</span>
+              <span className="font-semibold" style={{ color: "#ef4444" }}>{tooltip.highCount}k</span>
+            </div>
+            <div className="flex justify-between gap-4 text-xs">
+              <span className="text-zinc-500">{t("tooltipLowRiskPathway")}</span>
+              <span className="font-semibold" style={{ color: "#22c55e" }}>{tooltip.lowCount}k</span>
+            </div>
           </div>
-          <div className="flex justify-between gap-4 text-xs">
-            <span className="text-zinc-500">{t("tooltipLowRiskPathway")}</span>
-            <span className="font-semibold" style={{ color: "#22c55e" }}>{tooltip.lowCount}k</span>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </AccessibleChart>
   );
 }
