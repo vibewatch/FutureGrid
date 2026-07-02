@@ -7,6 +7,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { validateWarnNotices } from "./lib/validate.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
@@ -17,6 +18,7 @@ const dest = join(root, "public", "warn-notices.json");
 const raw = readFileSync(src, "utf8");
 // Re-serialize (drops any incidental formatting) and validate it parses.
 const parsed = JSON.parse(raw);
+validateWarnNotices(parsed);
 writeFileSync(dest, JSON.stringify(parsed));
 
 console.log(

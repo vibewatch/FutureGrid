@@ -13,6 +13,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
 import { feature as topoFeature } from "topojson-client";
+import { validateOccupationSnapshot } from "./lib/validate.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -1022,6 +1023,7 @@ async function main() {
 
   // ─── Write JSON files ──────────────────────────────────────────────────────
   const occupationOut = path.join(DATA_DIR, "occupation-snapshot.json");
+  validateOccupationSnapshot(snapshot);
   writeFileSync(occupationOut, JSON.stringify(snapshot, null, 2));
   console.log(`\n✓ Written ${occupationOut} (${snapshot.length} occupations)`);
 
