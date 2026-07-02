@@ -25,6 +25,8 @@ FutureGrid maps AI's real impact on careers, sectors, and countries using observ
 
 All snapshots are committed to the repository — the app build is fully **offline** (no API calls at build time unless you explicitly refresh the snapshots).
 
+> **License & redistribution compliance:** See [data/COMPLIANCE.md](data/COMPLIANCE.md) for the full per-dataset audit matrix, `/sources` attribution gaps fixed, and the remediation plan for flagged non-redistributable items. Issue #57 (bulk-download) is gated on that document.
+
 | Dataset | Publisher | License | Used for |
 |---------|-----------|---------|---------|
 | [Anthropic Economic Index](https://huggingface.co/datasets/Anthropic/EconomicIndex) | Anthropic (2025) | CC-BY 4.0 | Primary AI-exposure metric (`observed_exposure`) per SOC occupation; replaces Frey-Osborne 2013. Also provides salary fallback, job forecast, job zone, Bright Outlook, and sector. |
