@@ -128,6 +128,22 @@ npm run build:og
 
 Regenerates the branded OpenGraph image (`public/og.png`).
 
+### WARN notices (Wisconsin via Google Sheets)
+
+```bash
+npm run build:warn
+```
+
+Fetches Wisconsin WARN-act notices from a Google Sheets spreadsheet.
+
+**Required environment variable:**
+
+| Variable | Where to get it | Used for |
+|----------|----------------|---------|
+| `GOOGLE_SHEETS_API_KEY` | [Google Cloud Console](https://console.cloud.google.com/) — create a restricted Sheets API key | Authenticates the Google Sheets API call to pull WI WARN data |
+
+Set this as a CI/build secret (e.g., a GitHub Actions secret). **Never commit it to the repository.** The script will fail with a clear error message if the variable is absent.
+
 ## Tech Stack
 
 - **Framework:** Next.js 16 / React 19 (static export)

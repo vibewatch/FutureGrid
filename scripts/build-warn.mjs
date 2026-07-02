@@ -715,8 +715,15 @@ async function fetchOH() {
 }
 
 async function fetchWI() {
-  const url =
-    "https://sheets.googleapis.com/v4/spreadsheets/1cyZiHZcepBI7ShB3dMcRprUFRG24lbwEnEDRBMhAqsA/values/Originals?key=AIzaSyBF5bsJ9oCetBmqXL5LQII4G639YaKritw";
+  const apiKey = process.env.GOOGLE_SHEETS_API_KEY;
+  if (!apiKey) {
+    throw new Error(
+      "GOOGLE_SHEETS_API_KEY is not set — required to fetch the Wisconsin WARN sheet. " +
+        "Set it as a build/CI secret (do not commit)."
+    );
+  }
+  const WI_SPREADSHEET_ID = "1cyZiHZcepBI7ShB3dMcRprUFRG24lbwEnEDRBMhAqsA";
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${WI_SPREADSHEET_ID}/values/Originals?key=${encodeURIComponent(apiKey)}`;
   const buffer = await fetchBuffer(url);
   const data = JSON.parse(buffer.toString("utf-8"));
   const rows = data.values;
