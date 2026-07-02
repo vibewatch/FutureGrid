@@ -95,9 +95,10 @@ export interface WarnPressureState {
   pressureScore: number | null;
   pressureLevel: WarnPressureLevel;
   pressurePercentiles: WarnPressurePercentiles;
-  warnEmployees12m: number;
-  warnNotices12m: number;
+  warnEmployees12m: number | null;
+  warnNotices12m: number | null;
   warnEmployeesPer10kLaborForce: number | null;
+  coverageUnavailable: boolean;
   series: StateLaborSeries;
 }
 

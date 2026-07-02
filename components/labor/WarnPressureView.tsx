@@ -224,12 +224,13 @@ interface StateLaborState {
   laborForce?: number | null;
   warnEmployees3m?: number;
   warnNotices3m?: number;
-  warnEmployees12m?: number;
-  warnNotices12m?: number;
+  warnEmployees12m?: number | null;
+  warnNotices12m?: number | null;
   warnEmployeesPer10kLaborForce?: number | null;
   warnEmployeesPer100kLaborForce?: number | null;
   coverageStatus?: string;
   warnCoverageStatus?: string;
+  coverageUnavailable?: boolean;
   recordsIncluded?: boolean;
   rankEligible?: boolean;
   rankStatus?: string;
@@ -441,23 +442,23 @@ function isRankEligible(state: StateLaborState): boolean {
   return getRank(state) !== null && getPressureScore(state) !== null;
 }
 
-function getWarnEmployees(state: StateLaborState): number {
+function getWarnEmployees(state: StateLaborState): number | null {
   return (
     state.warnWindow?.employees12m ??
     state.warnWindow?.employees3m ??
     state.warnEmployees12m ??
     state.warnEmployees3m ??
-    0
+    null
   );
 }
 
-function getWarnNotices(state: StateLaborState): number {
+function getWarnNotices(state: StateLaborState): number | null {
   return (
     state.warnWindow?.notices12m ??
     state.warnWindow?.notices3m ??
     state.warnNotices12m ??
     state.warnNotices3m ??
-    0
+    null
   );
 }
 
@@ -488,7 +489,7 @@ function getWarnRatePer10k(state: StateLaborState): number | null {
 
   const laborForce = state.latest?.laborForce ?? state.lausLatest?.laborForce ?? state.laborForce;
   if (isFiniteNumber(laborForce) && laborForce > 0) {
-    return (getWarnEmployees(state) / laborForce) * 10_000;
+    return ((getWarnEmployees(state) ?? 0) / laborForce) * 10_000;
   }
 
   return null;
@@ -764,7 +765,7 @@ export default function WarnPressureView() {
   const excludedCount =
     mergedSummary.excludedStates ?? Math.max(totalStates - rankedCount, notRankedStates.length);
   const totalWarnEmployees =
-    mergedSummary.totalWarnEmployees ?? rankedStates.reduce((sum, state) => sum + getWarnEmployees(state), 0);
+    mergedSummary.totalWarnEmployees ?? rankedStates.reduce((sum, state) => sum + (getWarnEmployees(state) ?? 0), 0);
   const windowMonths = getWindowMonths(data, mergedSummary, topState);
   const latestBlsMonth =
     data.latestBlsMonth ?? data.analysisMonth ?? mergedSummary.latestMonth ?? getLatestMonth(topState);

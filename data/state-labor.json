@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-01T19:53:40.871Z",
+  "generatedAt": "2026-07-02T07:02:26.024Z",
   "source": {
     "name": "BLS Local Area Unemployment Statistics",
     "publisher": "U.S. Bureau of Labor Statistics",
@@ -50,6 +50,7 @@
         "notes": "Official page exists but returned access/bot-protection errors to deterministic server-side fetches during adapter evaluation; keep manual-only until a stable public export is available.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -60,9 +61,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -623,6 +624,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -633,9 +635,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -1196,6 +1198,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -1206,9 +1209,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -1769,6 +1772,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -1779,9 +1783,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -2345,6 +2349,7 @@
         "notes": "Machine-readable public source is fetched by this pipeline.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
@@ -2918,6 +2923,7 @@
         "notes": "Official page exists but returned access/bot-protection errors to deterministic server-side fetches during adapter evaluation; keep manual-only until a stable public export is available.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -2928,9 +2934,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -3491,6 +3497,7 @@
         "notes": "Official page exists but returned access/bot-protection errors to deterministic server-side fetches during adapter evaluation; keep manual-only until a stable public export is available.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -3501,9 +3508,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -4064,6 +4071,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -4074,9 +4082,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -4637,6 +4645,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -4647,9 +4656,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -5210,6 +5219,7 @@
         "notes": "Registered FloridaCommerce WARN URL returned 404 during adapter evaluation; keep manual-only until the current official listing URL or export is confirmed.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -5220,9 +5230,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -5786,6 +5796,7 @@
         "notes": "Machine-readable public source is fetched by this pipeline.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN feed has no notices in the current 12-month window",
@@ -6359,6 +6370,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -6369,9 +6381,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -6932,6 +6944,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -6942,9 +6955,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -7505,6 +7518,7 @@
         "notes": "Official page rendered no static WARN table or export in fetched HTML during adapter evaluation; keep manual-only until a deterministic endpoint is identified.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -7515,9 +7529,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -8081,6 +8095,7 @@
         "notes": "Official static HTML table with company, city, affected workers, notice date, LO/CL date, and LO/CL action.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
@@ -8657,6 +8672,7 @@
         "notes": "Machine-readable public source is fetched by this pipeline.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
@@ -9230,6 +9246,7 @@
         "notes": "Official notices are available for manual/PDF/HTML review, but no stable CSV/XLSX/JSON adapter is registered.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -9240,9 +9257,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -9806,6 +9823,7 @@
         "notes": "Machine-readable public source is fetched by this pipeline.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN feed has no notices in the current 12-month window",
@@ -10379,6 +10397,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -10389,9 +10408,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -10952,6 +10971,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -10962,9 +10982,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -11528,6 +11548,7 @@
         "notes": "Official yearly HTML tables are parsed; PDF downloads are not used.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
@@ -12101,6 +12122,7 @@
         "notes": "Official page exists but returned access/bot-protection errors to deterministic server-side fetches during adapter evaluation; keep manual-only until a stable public export is available.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -12111,9 +12133,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -12674,6 +12696,7 @@
         "notes": "Official page exists but returned access/bot-protection errors to deterministic server-side fetches during adapter evaluation; keep manual-only until a stable public export is available.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -12684,9 +12707,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -13247,6 +13270,7 @@
         "notes": "Official Minnesota WARN URL led to a bot-manager CAPTCHA during adapter evaluation; keep manual-only until a deterministic public export is available.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -13257,9 +13281,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -13820,6 +13844,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -13830,9 +13855,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -14393,6 +14418,7 @@
         "notes": "Official page exists but returned access/bot-protection errors to deterministic server-side fetches during adapter evaluation; keep manual-only until a stable public export is available.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -14403,9 +14429,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -14966,6 +14992,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -14976,9 +15003,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -15539,6 +15566,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -15549,9 +15577,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -16112,6 +16140,7 @@
         "notes": "Official notices are available for manual/PDF/HTML review, but no stable CSV/XLSX/JSON adapter is registered.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -16122,9 +16151,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -16685,6 +16714,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -16695,9 +16725,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -17261,6 +17291,7 @@
         "notes": "Machine-readable public source is fetched by this pipeline.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
@@ -17834,6 +17865,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -17844,9 +17876,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -18410,6 +18442,7 @@
         "notes": "Machine-readable public source is fetched by this pipeline.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN feed has no notices in the current 12-month window",
@@ -18986,6 +19019,7 @@
         "notes": "Official current-year report CSV export is discovered from the state report page; archived PDFs remain manual-only.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
@@ -19559,6 +19593,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -19569,9 +19604,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -20135,6 +20170,7 @@
         "notes": "Machine-readable public source is fetched by this pipeline.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN feed has no notices in the current 12-month window",
@@ -20708,6 +20744,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -20718,9 +20755,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -21284,6 +21321,7 @@
         "notes": "Machine-readable public source is fetched by this pipeline.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
@@ -21860,6 +21898,7 @@
         "notes": "Official accordion entries are parsed for company, county, affected workers, effective date, and action; noticeDate is null because the page does not expose an explicit notice/received date, so effectiveDate is not used for pressure-ranking provenance.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN feed lacks notice dates for current-window pressure ranking; no notices in the current 12-month window can be verified from notice dates",
@@ -22433,6 +22472,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -22443,9 +22483,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -23006,6 +23046,7 @@
         "notes": "Official notices are available for manual/PDF/HTML review, but no stable CSV/XLSX/JSON adapter is registered.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -23016,9 +23057,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -23579,6 +23620,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -23589,9 +23631,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -24155,6 +24197,7 @@
         "notes": "Machine-readable public source is fetched by this pipeline.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN feed has no notices in the current 12-month window",
@@ -24731,6 +24774,7 @@
         "notes": "Machine-readable public source is fetched by this pipeline.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN feed has no notices in the current 12-month window",
@@ -25304,6 +25348,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -25314,9 +25359,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -25877,6 +25922,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -25887,9 +25933,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -26453,6 +26499,7 @@
         "notes": "Official page exposes a Download Filtered List CSV with notice date, impact date, affected employees, location, and notice type; the timestamped CSV export URL is discovered at build time.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
@@ -27026,6 +27073,7 @@
         "notes": "Official page exists but returned access/bot-protection errors to deterministic server-side fetches during adapter evaluation; keep manual-only until a stable public export is available.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -27036,9 +27084,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -27599,6 +27647,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -27609,9 +27658,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -28175,6 +28224,7 @@
         "notes": "Machine-readable public source is fetched by this pipeline.",
         "error": null
       },
+      "coverageUnavailable": false,
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
@@ -28748,6 +28798,7 @@
         "notes": "No reliable public statewide WARN notice listing or machine-readable feed is registered in this pipeline yet.",
         "error": null
       },
+      "coverageUnavailable": true,
       "rankEligible": false,
       "rankStatus": "not-ranked",
       "rankIneligibleReason": "WARN source is not currently machine-readable",
@@ -28758,9 +28809,9 @@
         "warnEmployeesPer10kLaborForce": null,
         "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 0,
-      "warnNotices12m": 0,
-      "warnEmployeesPer10kLaborForce": 0,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
