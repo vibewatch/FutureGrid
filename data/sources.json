@@ -186,6 +186,110 @@
       "url": "https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes",
       "license": "Creative Commons Attribution-ShareAlike 4.0",
       "usedFor": "Numeric ISO 3166-1 → alpha-3 mapping used to annotate world-atlas country features"
+    },
+    {
+      "name": "Indeed Hiring Lab AI Tracker",
+      "publisher": "Indeed Hiring Lab",
+      "year": 2026,
+      "url": "https://github.com/hiring-lab/ai-tracker",
+      "license": "CC BY 4.0",
+      "usedFor": "Share of AI and generative-AI job postings as a % of all postings (7-day trailing average); country-level time series in ai-demand.json"
+    },
+    {
+      "name": "Challenger, Gray & Christmas — AI-Attributed Job Cuts",
+      "publisher": "Challenger, Gray & Christmas, Inc.",
+      "year": 2026,
+      "url": "https://www.challengergray.com/",
+      "license": "Proprietary — redistribution requires explicit permission",
+      "usedFor": "US employer-announced job cuts citing AI as stated reason (monthly and annual totals); ai-layoffs.json — ⚠️ LICENSE RISK: data is proprietary; see data/COMPLIANCE.md"
+    },
+    {
+      "name": "AIOE — Occupational Exposure to AI (Felten, Raj & Seamans 2021)",
+      "publisher": "Ed Felten, Manav Raj, Robert Seamans",
+      "year": 2021,
+      "url": "https://github.com/AIOE-Data/AIOE",
+      "license": "No explicit open license — citation required (SMJ 42(12):2195–2217)",
+      "usedFor": "Per-SOC AIOE exposure scores (application-ability relatedness) as a supplemental AI-exposure metric; aioe-exposure.json — ⚠️ LICENSE RISK: no open license; see data/COMPLIANCE.md"
+    },
+    {
+      "name": "Frey & Osborne (2013) — Computerization Probability by SOC",
+      "publisher": "Carl Benedikt Frey & Michael A. Osborne, Oxford Martin School",
+      "year": 2013,
+      "url": "https://www.oxfordmartin.ox.ac.uk/publications/the-future-of-employment/",
+      "license": "No open license — academic research; redistribution unclear",
+      "usedFor": "Historical automation probability per SOC (702 occupations) as a context/comparison baseline; automation-baseline.json — ⚠️ LICENSE RISK: no open license; see data/COMPLIANCE.md"
+    },
+    {
+      "name": "Microsoft AI Diffusion Report (AI Economic Impact & Insights)",
+      "publisher": "Microsoft AI Economy Institute",
+      "year": 2026,
+      "url": "https://github.com/microsoft/ai-diffusion-report",
+      "license": "MIT",
+      "usedFor": "GenAI diffusion % of working-age population across three periods (H1 2025 / H2 2025 / Q1 2026) for 147 economies; global-ai-metrics.json"
+    },
+    {
+      "name": "IMF AI Preparedness Index (AIPI) — composite and sub-indices",
+      "publisher": "International Monetary Fund",
+      "year": 2023,
+      "url": "https://www.imf.org/external/datamapper/AI_PI@AIPI/ADVEC/EME/LIC",
+      "license": "IMF terms (https://www.imf.org/external/terms.htm) — non-commercial redistribution with attribution; commercial use requires IMF permission",
+      "usedFor": "Overall AI readiness composite (0–1, 178 countries) and four AIPI sub-indices (DI, HCLMP, IEI, RE); global-ai-metrics.json — ⚠️ CONDITIONAL: non-commercial only; see data/COMPLIANCE.md"
+    },
+    {
+      "name": "Oxford Insights Government AI Readiness Index 2023",
+      "publisher": "Oxford Insights",
+      "year": 2023,
+      "url": "https://open.africa/dataset/government-ai-readiness-index-2023",
+      "license": "CC BY 4.0",
+      "usedFor": "Government AI readiness composite score 0–100 for 193 countries; global-ai-metrics.json"
+    },
+    {
+      "name": "BLS Job Openings and Labor Turnover Survey (JOLTS)",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "year": 2026,
+      "url": "https://www.bls.gov/jlt/",
+      "license": "Public Domain",
+      "usedFor": "Monthly job openings, hires, quits, layoffs & separations by industry (JOLTS); jolts.json"
+    },
+    {
+      "name": "OpenAI \"GPTs are GPTs\" — LLM Occupation Exposure",
+      "publisher": "OpenAI",
+      "year": 2023,
+      "url": "https://github.com/openai/GPTs-are-GPTs",
+      "license": "MIT",
+      "usedFor": "Per-SOC GPT-4 exposure ratings (E1/E2/E3 tiers, dv_rating + human annotation); llm-exposure.json"
+    },
+    {
+      "name": "Yahoo Finance chart JSON endpoint (unofficial)",
+      "publisher": "Yahoo Finance / Verizon Media",
+      "year": 2026,
+      "url": "https://finance.yahoo.com/",
+      "license": "Yahoo Terms of Service — redistribution PROHIBITED; no official API license granted",
+      "usedFor": "Monthly closing prices for AI-sector ETF tickers (XLC, XLK, BOTZ, ARKQ, etc.) used to derive AI market signals; market-ai-signals.json — ⚠️ HIGH LICENSE RISK: Yahoo ToS prohibits redistribution; see data/COMPLIANCE.md"
+    },
+    {
+      "name": "BLS Local Area Unemployment Statistics (LAUS)",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "year": 2026,
+      "url": "https://www.bls.gov/lau/",
+      "license": "Public Domain",
+      "usedFor": "State-level monthly unemployment rate, employment, and labor force totals; state-labor.json"
+    },
+    {
+      "name": "BLS Quarterly Census of Employment and Wages (QCEW) — Annual Area CSVs",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "year": 2025,
+      "url": "https://www.bls.gov/cew/downloadable-data-files.htm",
+      "license": "Public Domain",
+      "usedFor": "State-level annual employment and wages by industry (NAICS) from QCEW; state-qcew.json"
+    },
+    {
+      "name": "California WARN Act Notices",
+      "publisher": "California Employment Development Department (EDD)",
+      "year": 2026,
+      "url": "https://edd.ca.gov/en/jobs_and_training/layoff_services_warn/",
+      "license": "Public Records (California Public Records Act / California Labor Code § 1401)",
+      "usedFor": "Mass layoff and plant closure notices filed with California EDD under the WARN Act; warn-notices.json"
     }
   ],
   "note": "automationRisk bands are percentile-calibrated from the aiExposure distribution (756 occupations): Very High = top ~8% (aiExposure > 0.3104), High = next ~12% (> 0.1378), Medium = next ~25% (> 0.0080), Low = remainder (≤ 0.0080). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: real OEWS 2025 figures (755 occupations updated via BLS Public Data API). medianSalary: OEWS 2025 where available (752 updated), AEI-bundled wage otherwise. employmentHistory/wageHistory: OEWS multi-year annual series 2019–2025 — 2025 via BLS Public Data API (755 occ); 2019–2023 via archived national Excel flat files (Wayback Machine); note that BLS OEWS OEUN API series stores only the current-vintage snapshot so older years require flat-file download. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: successfully loaded",
