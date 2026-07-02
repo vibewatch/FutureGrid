@@ -5,6 +5,7 @@ export const navEn = {
   skills: "Skills",
   explore: "Explore",
   analysis: "Insights Lab",
+  frontier: "AI Frontier",
   report: "Report",
   heatmap: "Heatmap",
   global: "Global",

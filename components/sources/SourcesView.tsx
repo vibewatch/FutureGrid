@@ -8,17 +8,26 @@ import DataExport from "@/components/sources/DataExport";
 function LicenseBadge({ license }: { license: string }) {
   const isOpen =
     license.startsWith("CC") || license === "Public Domain";
-  return (
-    <span
-      className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full border font-mono ${
-        isOpen
-          ? "bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 border-green-200 dark:border-green-500/20"
-          : "bg-zinc-100 dark:bg-zinc-700/40 text-zinc-600 dark:text-zinc-400 border-zinc-300 dark:border-zinc-600/40"
-      }`}
-    >
-      {license}
-    </span>
-  );
+  const badgeClass = `inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full border font-mono ${
+    isOpen
+      ? "bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 border-green-200 dark:border-green-500/20"
+      : "bg-zinc-100 dark:bg-zinc-700/40 text-zinc-600 dark:text-zinc-400 border-zinc-300 dark:border-zinc-600/40"
+  }`;
+
+  if (license.startsWith("CC")) {
+    return (
+      <a
+        href="https://creativecommons.org/licenses/by/4.0/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${badgeClass} hover:underline`}
+      >
+        {license}
+      </a>
+    );
+  }
+
+  return <span className={badgeClass}>{license}</span>;
 }
 
 export interface SourcesViewProps {

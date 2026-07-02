@@ -21,7 +21,8 @@
     "build:og": "node scripts/build-og-image.mjs",
     "smoke": "node scripts/smoke-test.mjs",
     "build:ai-signals": "node scripts/build-ai-signals.mjs",
-    "build:market-signals": "node scripts/build-market-signals.mjs"
+    "build:market-signals": "node scripts/build-market-signals.mjs",
+    "build:ai-frontier": "node scripts/build-ai-frontier.mjs"
   },
   "dependencies": {
     "chart.js": "^4.5.1",
