@@ -58,6 +58,126 @@ export const globalZh: Record<string, string> = {
   chinaCaveatSee: "请参阅",
   chinaCaveatPage: "页面了解完整数据来源详情。",
 
+  // AI adoption signals
+  adoptionSignalsEyebrow: "补充替代证据",
+  adoptionSignalsTitle: "AI Adoption Signals",
+  adoptionSignalsSubtitle:
+    "来自调查、应用市场指标、开放模型活动、开发者来源与研究活动的异质替代证据。这些信号不合并到 Claude 使用指数中。",
+  adoptionSignalsCaveatLabel: "注意：",
+  adoptionSignalsSourceLabel: "来源：",
+  adoptionSignalsPeriodLabel: "时期：",
+  adoptionSignalsViewSources: "查看数据与来源 →",
+  adoptionSignalsCollectedFamilies: "已采集来源族",
+  adoptionSignalsVisualizedFamilies: "已可视化来源族",
+  adoptionSignalsFutureCatalogCount: "未来候选",
+  adoptionSignalsBarListAria: "{title} 条形列表",
+  adoptionSignalsStackedShareAria: "{title} 份额分布",
+  adoptionSignalsProviderModelsAria: "{provider} 热门模型活动替代指标",
+  adoptionSignalsBenchmarksLabel: "基准",
+  adoptionSignalsModelLabel: "模型",
+  adoptionSignalsStars: "Stars",
+  adoptionSignalsForks: "Forks",
+  adoptionSignalsOpenIssues: "Open issues",
+  adoptionSignalsUpdated: "更新",
+  adoptionSignalsFutureSources: "未来采集候选",
+  adoptionSignalsFutureSourcesSummary: "{count} 个目录来源",
+  adoptEnterpriseTitle: "企业 AI 调查份额",
+  adoptEnterpriseDesc:
+    "企业调查中报告至少使用一种 AI 技术的受访者份额。仅适合在各自来源族内比较。",
+  adoptEnterpriseDescription:
+    "企业调查中报告至少使用一种 AI 技术的受访者份额。仅适合在各自来源族内比较。",
+  adoptIndividualTitle: "个人 GenAI 受访者份额",
+  adoptIndividualDesc:
+    "个人使用生成式 AI 的调查型受访者份额，作为替代证据展示，而非产品遥测。",
+  adoptIndividualDescription:
+    "个人使用生成式 AI 的调查型受访者份额，作为替代证据展示，而非产品遥测。",
+  adoptCensusBusinessTitle: "美国企业 AI 活动替代指标",
+  adoptCensusBusinessDesc:
+    "美国 Census 企业技术指标因地理范围、时间版本与分母不同，独立于全球使用指标展示。",
+  adoptUsBusinessTitle: "美国企业 AI 活动替代指标",
+  adoptUsBusinessDescription:
+    "美国 Census 企业技术指标因地理范围、时间版本与分母不同，独立于全球使用指标展示。",
+  adoptCountrySurveyTitle: "国家调查替代指标",
+  adoptCountrySurveyDesc:
+    "国家层面的生成式 AI 使用调查与公开渗透率指标，与应用和 Claude 使用指标分开呈现。",
+  adoptCountrySurveyDescription:
+    "国家层面的生成式 AI 使用调查与公开渗透率指标，与应用和 Claude 使用指标分开呈现。",
+  adoptChinaAppMarketTitle: "中国应用市场活动替代指标",
+  adoptChinaAppMarketDesc:
+    "中国移动 AI 应用市场指标，使用供应商报告的类别与时期作为活动替代证据。",
+  adoptChinaAppsTitle: "中国应用市场活动替代指标",
+  adoptChinaAppsDescription:
+    "中国移动 AI 应用市场指标，使用供应商报告的类别与时期作为活动替代证据。",
+  adoptChinaAppsMauTitle: "中国应用市场 MAU 替代指标",
+  adoptChinaAppsMauDescription:
+    "中国移动 AI 应用市场中以月活用户报告的行，使用一致的用户数尺度展示。",
+  adoptChinaAppsUsageTitle: "中国应用市场使用量替代指标",
+  adoptChinaAppsUsageDescription:
+    "中国应用市场中以 tokens 或其他使用量单位报告的行，以独立 KPI 卡片展示，不使用共享排名。",
+  adoptChinaNativeAppTitle: "中国本土应用 MAU 替代指标",
+  adoptChinaNativeAppDesc:
+    "本土 AI 应用的产品级月活信号，不与调查或遥测指标合并。",
+  adoptChinaNativeTitle: "中国本土应用 MAU 替代指标",
+  adoptChinaNativeDescription:
+    "本土 AI 应用的产品级月活信号，不与调查或遥测指标合并。",
+  adoptDeveloperSurveyTitle: "开发者 AI 使用调查",
+  adoptDeveloperSurveyDesc:
+    "开发者调查受访者份额，反映不同国家和受访组中报告的 AI 工具使用情况。",
+  adoptDeveloperSurveyDescription:
+    "开发者调查受访者份额，反映不同国家和受访组中报告的 AI 工具使用情况。",
+  adoptDeveloperSurveyOverallTitle: "开发者调查总体分布",
+  adoptDeveloperSurveyOverallDescription:
+    "Stack Overflow AI 工具相关总体回答分布，每个调查问题单独保留。",
+  adoptDeveloperSurveyCountriesTitle: "开发者调查国家受访者份额",
+  adoptDeveloperSurveyCountriesDescription:
+    "国家行展示 Stack Overflow 受访者报告使用 AI 工具的 yes-share，不代表人口采用率。",
+  adoptOpenModelDownloadsTitle: "开放模型下载活动",
+  adoptOpenModelDownloadsDesc:
+    "开放模型仓库中的提供方与模型下载量，作为带来源注意事项的活动替代证据展示。",
+  adoptDeveloperEcosystemTitle: "开发者生态仓库 KPI",
+  adoptDeveloperEcosystemDesc:
+    "仓库 stars、forks、open issues 与更新近况，作为开发者生态活动替代指标。",
+  adoptDevEcosystemTitle: "开发者生态仓库 KPI",
+  adoptDevEcosystemDescription:
+    "仓库 stars、forks、open issues 与更新近况，作为开发者生态活动替代指标。",
+  adoptResearchActivityTitle: "AI 研究活动替代指标",
+  adoptResearchActivityDesc:
+    "国家层面的 AI 论文活动指标；用于研究背景，不代表直接产品使用。",
+  adoptResearchTitle: "AI 研究活动替代指标",
+  adoptResearchDescription:
+    "国家层面的 AI 论文活动指标；用于研究背景，不代表直接产品使用。",
+  adoptFutureSourcesTitle: "未来来源目录",
+  adoptFutureSourcesDesc:
+    "已编目的来源族，作为未来采集候选；尚未作为当前采用信号可视化。",
+  adoptFutureSourcesDescription:
+    "已编目的来源族，作为未来采集候选；尚未作为当前采用信号可视化。",
+  adoptEnterpriseAiTitle: "企业 AI 调查份额",
+  adoptEnterpriseAiDesc:
+    "企业调查中报告至少使用一种 AI 技术的受访者份额。仅适合在各自来源族内比较。",
+  adoptBusinessTitle: "企业 AI 替代指标",
+  adoptBusinessDesc:
+    "企业层面的 AI 调查指标按来源族展示，不合并不同分母。",
+  adoptIndividualGenAiTitle: "个人 GenAI 受访者份额",
+  adoptIndividualGenAiDesc:
+    "个人使用生成式 AI 的调查型受访者份额，作为替代证据展示，而非产品遥测。",
+  adoptUsCensusBusinessTitle: "美国企业 AI 活动替代指标",
+  adoptUsCensusBusinessDesc:
+    "美国 Census 企业技术指标因地理范围、时间版本与分母不同，独立于全球使用指标展示。",
+  adoptDeveloperTitle: "开发者 AI 使用调查",
+  adoptDeveloperDesc:
+    "开发者调查受访者份额，反映不同国家和受访组中报告的 AI 工具使用情况。",
+  adoptOpenModelsTitle: "开放模型下载活动",
+  adoptOpenModelsDesc:
+    "开放模型仓库中的提供方与模型下载量，作为带来源注意事项的活动替代证据展示。",
+  adoptOpenModelsDescription:
+    "开放模型仓库中的提供方与模型下载量，作为带来源注意事项的活动替代证据展示。",
+  adoptRepoKpisTitle: "开发者生态仓库 KPI",
+  adoptRepoKpisDesc:
+    "仓库 stars、forks、open issues 与更新近况，作为开发者生态活动替代指标。",
+  adoptAiResearchTitle: "AI 研究活动替代指标",
+  adoptAiResearchDesc:
+    "国家层面的 AI 论文活动指标；用于研究背景，不代表直接产品使用。",
+
   // Fastest-rising adopters
   risersHeading: "增速最快的采用国",
   risersSourceLink: "微软AIEI \u00b7 查看来源",
