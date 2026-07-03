@@ -7,3 +7,4 @@
 - Normalized country dedup, co-attribution, blank orgs, short names
 - Revision: nullable regression types, hardened normalizeCountries comma-split
 - Feature shipped as PR #45 (merged to main, 2026-07-02)
+2026-07-03T00:40:00 - Implemented job-postings pipeline components (build:job-postings, scripts/build-job-postings.mjs, data/job-postings.json, lib/job-postings.ts); tests added by Mouse. Reviewed and validated by Coordinator.

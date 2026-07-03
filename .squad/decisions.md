@@ -2087,3 +2087,43 @@ H-1B visa sponsorship is a critical signal of employer demand and occupational v
 ### Status
 
 ✅ **SHIPPED** — merged to branch feat/h1b-extend; validation complete; final gate passed (tsc/lint/test/build).
+
+
+### 2026-07-03T00-39-00: Use a proxy-first job-demand layer now; reserve a provider-backed historical postings adapter for licensed data later
+**By:** Trinity
+**What:** Use a proxy-first job-demand layer now; reserve a provider-backed historical postings adapter for licensed data later
+**References:** data/h1b-trends.json, lib/h1b.ts, data/ai-demand.json, data/provenance.json, scripts/lib/soc-crosswalk.mjs, data/COMPLIANCE.md, data/sources.json
+
+**Why:** Decision: FutureGrid should NOT add a dataset labeled as true "historical job postings" until a licensed provider feed is available. Implement the integration contract around source/provenance semantics that distinguish (a) open proxy demand series usable now and (b) credentialed true-postings series that can be swapped in later.
+
+Use now (no credentials):
+1) H-1B LCA trends as the only current 10-year occupation-keyed demand proxy already in-repo (FY2016–FY2025), joined to occupations by normalized 2018 SOC code.
+2) Indeed Hiring Lab AI tracker only as a macro posting-share signal (2019+, 9 countries), joined by country code only; do not merge it into occupation-level job-posting counts.
+
+Future licensed path:
+- Prefer Lightcast or LinkUp for true historical postings because public docs indicate multi-year coverage back to at least 2010/2007 respectively and credentialed enterprise access.
+- Treat TheirStack as insufficient for a 10-year requirement (history starts around 2021).
+- Treat Adzuna as a lighter future option but still credentialed and not equivalent to a full enterprise occupation-history feed.
+
+Required canonical fields for a future provider-backed occupation-demand dataset:
+- provider, sourceDataset, sourceUrl, license, accessModel, generatedAt, asOf, coverageStart, coverageEnd
+- seriesSemantics (one of: posting-count, deduped-posting-count, posting-share, demand-proxy, visa-filing-proxy)
+- taxonomySystem, taxonomyVintage, providerOccupationId, socCode, mappingMethod, mappingConfidence
+- geographyLevel, countryCode, stateCode?, metroCode?
+- period (month or fiscalYear), postingCount?, dedupedPostingCount?, postingShare?, uniqueEmployers?, medianSalary?, currency?
+- notes/caveats array
+
+Primary correlation key(s):
+- Primary: socCode normalized to 2018 SOC (reuse existing SOC crosswalk convention already used by H-1B and OEWS data).
+- Secondary: period + geography.
+- Provider-native occupation ids and raw titles should be retained only for traceability, not as the canonical join key.
+
+Mandatory metadata/doc caveats:
+- Proxy vs true-posting semantics must be explicit; do not present H-1B or Indeed share data as equivalent to all-job posting counts.
+- Coverage is source-specific (Indeed only 9 countries; H-1B only visa-sponsored roles; provider site/network coverage varies).
+- Provider deduplication and reposting rules differ, so counts are not portable across sources.
+- Title/category mapping to SOC can be lossy; store mappingConfidence.
+- Historical backfills may mix SOC vintages; normalize to SOC 2018 and record the original vintage.
+- Redistribution/licensing must be surfaced in source metadata before any bulk export.
+
+Rationale: this is the safest implement-now path because it uses already-cleared/open data already present in FutureGrid, preserves honest provenance semantics, and creates a clean adapter boundary for Lightcast/LinkUp/Adzuna/TheirStack if/when licensed later.

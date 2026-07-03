@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-02T21:52:45.223Z",
+  "generatedAt": "2026-07-03T00:46:48.467Z",
   "datasets": [
     {
       "id": "ai-demand",
@@ -113,6 +113,19 @@
       },
       "version": "1.0.0",
       "rows": 776
+    },
+    {
+      "id": "job-postings",
+      "file": "data/job-postings.json",
+      "generatedAt": "2026-07-03T00:46:46.842Z",
+      "asOf": "2025",
+      "source": {
+        "name": "FutureGrid provider-ready job postings seed",
+        "publisher": "FutureGrid",
+        "url": "https://github.com/huangyingting/FutureGrid"
+      },
+      "version": "1.0.0",
+      "rows": 756
     },
     {
       "id": "jolts",

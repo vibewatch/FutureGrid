@@ -7,3 +7,4 @@
 - Verified static-export safety
 - Full validation: 217/217 tests PASS, 0 lint, build OK
 - Feature shipped as PR #45 (merged to main, 2026-07-02)
+2026-07-03T00:45:00 - Added tests for job-postings and data schema coverage (tests/job-postings.test.ts, tests/data-schema.test.ts). Validation passed during merge.

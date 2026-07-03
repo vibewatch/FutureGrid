@@ -427,6 +427,155 @@ export function validateH1bTrends(data, opts = {}) {
 }
 
 /**
+ * Validate data/job-postings.json.
+ *
+ * This dataset is intentionally provider-ready seed data: every occupation in the
+ * current FutureGrid source set receives a 10-year annual series keyed by SOC,
+ * plus an aggregate series for O*NET related occupations. The validator focuses
+ * on schema stability (years, coverage, key fields) so a future provider swap can
+ * replace the counts without changing the downstream contract.
+ *
+ * @param {Record<string, unknown>} data
+ */
+export function validateJobPostings(data) {
+  assertFields(
+    data,
+    ["meta", "coverage", "methodology", "providerContract", "summary", "occupations"],
+    "job-postings"
+  );
+  assertProvenance(data, "job-postings");
+  assertMinRows(data.occupations, 680, "job-postings.occupations");
+
+  const years = data.coverage?.years;
+  if (!Array.isArray(years) || years.length !== 10) {
+    throw new Error("[validate] job-postings: coverage.years must list exactly 10 annual points");
+  }
+  for (let index = 0; index < years.length; index += 1) {
+    const year = years[index];
+    if (!(typeof year === "number" && Number.isInteger(year))) {
+      throw new Error("[validate] job-postings: coverage.years must contain integer years");
+    }
+    if (index > 0 && year !== years[index - 1] + 1) {
+      throw new Error("[validate] job-postings: coverage.years must be contiguous and sorted ascending");
+    }
+  }
+
+  const latestYear = data.summary?.latestYear;
+  if (latestYear !== years[years.length - 1]) {
+    throw new Error("[validate] job-postings: summary.latestYear must equal the last coverage year");
+  }
+
+  const totalAnnual = data.summary?.totalAnnualPostingsByYear;
+  if (!totalAnnual || typeof totalAnnual !== "object" || Array.isArray(totalAnnual)) {
+    throw new Error("[validate] job-postings: summary.totalAnnualPostingsByYear must be an object");
+  }
+  const yearKeySet = new Set(years.map(String));
+  for (const [year, value] of Object.entries(totalAnnual)) {
+    if (!yearKeySet.has(year)) {
+      throw new Error(
+        `[validate] job-postings: summary.totalAnnualPostingsByYear[${year}] is outside coverage.years`
+      );
+    }
+    if (!(typeof value === "number" && Number.isFinite(value) && value > 0)) {
+      throw new Error(
+        `[validate] job-postings: summary.totalAnnualPostingsByYear[${year}] must be a positive number`
+      );
+    }
+  }
+
+  const requiredYears = data.providerContract?.requiredYears;
+  if (
+    !Array.isArray(requiredYears) ||
+    requiredYears.length !== years.length ||
+    requiredYears.some((year, index) => year !== years[index])
+  ) {
+    throw new Error("[validate] job-postings: providerContract.requiredYears must match coverage.years");
+  }
+
+  for (const occ of data.occupations) {
+    assertFields(
+      occ,
+      [
+        "socCode",
+        "title",
+        "sector",
+        "sampleTitles",
+        "relatedOccupations",
+        "annualPostings",
+        "relatedAnnualPostings",
+        "latestAnnualPostings",
+        "latestRelatedAnnualPostings",
+        "sourceStatus",
+      ],
+      `job-postings:${occ && occ.socCode ? occ.socCode : "?"}`
+    );
+
+    if (typeof occ.socCode !== "string" || !/^\d{2}-\d{4}$/.test(occ.socCode)) {
+      throw new Error(
+        `[validate] job-postings: occupation SOC code not normalized: ${occ && occ.socCode}`
+      );
+    }
+    if (!Array.isArray(occ.sampleTitles)) {
+      throw new Error(
+        `[validate] job-postings:${occ.socCode}: sampleTitles must be an array`
+      );
+    }
+    if (!Array.isArray(occ.relatedOccupations)) {
+      throw new Error(
+        `[validate] job-postings:${occ.socCode}: relatedOccupations must be an array`
+      );
+    }
+    for (const rel of occ.relatedOccupations) {
+      assertFields(
+        rel,
+        ["socCode", "title", "brightOutlook"],
+        `job-postings:${occ.socCode}.relatedOccupation`
+      );
+      if (!/^\d{2}-\d{4}$/.test(rel.socCode)) {
+        throw new Error(
+          `[validate] job-postings:${occ.socCode}: related occupation SOC code not normalized: ${rel.socCode}`
+        );
+      }
+    }
+
+    for (const field of ["annualPostings", "relatedAnnualPostings"]) {
+      const obj = occ[field];
+      if (!obj || typeof obj !== "object" || Array.isArray(obj)) {
+        throw new Error(
+          `[validate] job-postings:${occ.socCode}: ${field} must be an object`
+        );
+      }
+      for (const year of years) {
+        const value = obj[String(year)];
+        if (!(typeof value === "number" && Number.isFinite(value) && value >= 0)) {
+          throw new Error(
+            `[validate] job-postings:${occ.socCode}: ${field}[${year}] must be a finite non-negative number`
+          );
+        }
+      }
+      const outsideCoverage = Object.keys(obj).find((year) => !yearKeySet.has(year));
+      if (outsideCoverage) {
+        throw new Error(
+          `[validate] job-postings:${occ.socCode}: ${field}[${outsideCoverage}] is outside coverage.years`
+        );
+      }
+    }
+
+    const latestKey = String(latestYear);
+    if (occ.latestAnnualPostings !== occ.annualPostings[latestKey]) {
+      throw new Error(
+        `[validate] job-postings:${occ.socCode}: latestAnnualPostings must mirror annualPostings[${latestKey}]`
+      );
+    }
+    if (occ.latestRelatedAnnualPostings !== occ.relatedAnnualPostings[latestKey]) {
+      throw new Error(
+        `[validate] job-postings:${occ.socCode}: latestRelatedAnnualPostings must mirror relatedAnnualPostings[${latestKey}]`
+      );
+    }
+  }
+}
+
+/**
  * Validate data/provenance.json (the central provenance registry, issue #52).
  * Ensures the registry lists datasets and that every entry carries a
  * generatedAt timestamp and a source.

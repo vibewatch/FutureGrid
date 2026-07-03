@@ -18,6 +18,7 @@ import {
   assertFields,
   assertProvenance,
   assertLiveStates,
+  validateJobPostings,
   validateWarnNotices,
   validateStateLabor,
   validateStateQcew,
@@ -474,5 +475,107 @@ describe("validateProvenance — negative cases", () => {
         { expectedIds: ["x", "y"] }
       )
     ).toThrow(/provenance: registry is missing dataset\(s\): y/);
+  });
+});
+
+// ─── validateJobPostings ───────────────────────────────────────────────────────
+
+describe("validateJobPostings — committed file", () => {
+  const data = read("data/job-postings.json");
+
+  it("committed data/job-postings.json passes validation", () => {
+    expect(() => validateJobPostings(data)).not.toThrow();
+  });
+});
+
+describe("validateJobPostings — negative cases", () => {
+  const base = () => ({
+    meta: {
+      generatedAt: "2026-07-03T00:00:00Z",
+      source: {
+        name: "FutureGrid provider-ready job postings seed",
+        url: "https://github.com/huangyingting/FutureGrid",
+      },
+    },
+    coverage: {
+      years: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    },
+    methodology: {},
+    providerContract: {
+      requiredYears: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    },
+    summary: {
+      latestYear: 2025,
+      totalAnnualPostingsByYear: {
+        "2016": 1,
+        "2017": 1,
+        "2018": 1,
+        "2019": 1,
+        "2020": 1,
+        "2021": 1,
+        "2022": 1,
+        "2023": 1,
+        "2024": 1,
+        "2025": 1,
+      },
+    },
+    occupations: Array.from({ length: 700 }, (_, index) => ({
+      socCode: `11-${String(1000 + index).padStart(4, "0")}`,
+      title: `Occupation ${index}`,
+      sector: "Management",
+      sampleTitles: [],
+      relatedOccupations: [],
+      annualPostings: {
+        "2016": 1,
+        "2017": 1,
+        "2018": 1,
+        "2019": 1,
+        "2020": 1,
+        "2021": 1,
+        "2022": 1,
+        "2023": 1,
+        "2024": 1,
+        "2025": 1,
+      },
+      relatedAnnualPostings: {
+        "2016": 0,
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "2024": 0,
+        "2025": 0,
+      },
+      latestAnnualPostings: 1,
+      latestRelatedAnnualPostings: 0,
+      sourceStatus: "seed-derived",
+    })),
+  });
+
+  it("throws when coverage.years does not contain 10 annual points", () => {
+    const data = base();
+    data.coverage.years = [2021, 2022];
+    expect(() => validateJobPostings(data)).toThrow(
+      /job-postings: coverage\.years must list exactly 10 annual points/
+    );
+  });
+
+  it("throws when an occupation misses a coverage-year posting value", () => {
+    const data = base();
+    delete data.occupations[0].annualPostings["2022"];
+    expect(() => validateJobPostings(data)).toThrow(
+      /job-postings:11-1000: annualPostings\[2022\] must be a finite non-negative number/
+    );
+  });
+
+  it("throws when an occupation includes year keys outside coverage", () => {
+    const data = base();
+    data.occupations[0].annualPostings["2030"] = 1;
+    expect(() => validateJobPostings(data)).toThrow(
+      /job-postings:11-1000: annualPostings\[2030\] is outside coverage\.years/
+    );
   });
 });
