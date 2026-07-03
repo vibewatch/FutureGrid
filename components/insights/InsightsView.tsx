@@ -2,6 +2,7 @@
 
 import Reveal from "@/components/ui/Reveal";
 import EvidenceStack from "@/components/insights/EvidenceStack";
+import AIPressureSynthesisLens from "@/components/insights/AIPressureSynthesisLens";
 import AISignalScatter from "@/components/insights/AISignalScatter";
 import ExposureLensComparison from "@/components/insights/ExposureLensComparison";
 import MarketSignalLens from "@/components/insights/MarketSignalLens";
@@ -11,12 +12,13 @@ import AIForcesTimeline from "@/components/insights/AIForcesTimeline";
 import DisruptionLeaderboard from "@/components/insights/DisruptionLeaderboard";
 import { useT } from "@/lib/i18n/useT";
 import type { AnalysisPageData } from "@/lib/analysis";
+import type { AIPressureSynthesisData } from "@/lib/ai-pressure-synthesis";
 import type { AICompanyStocksData } from "@/lib/ai-company-stocks";
 
-function Section({ eyebrow, title, explainer, children }: { eyebrow: string; title: string; explainer: string; children: React.ReactNode }) {
+function Section({ id, eyebrow, title, explainer, children }: { id?: string; eyebrow: string; title: string; explainer: string; children: React.ReactNode }) {
   return (
     <Reveal>
-      <section className="space-y-5">
+      <section id={id} className="space-y-5">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500">{eyebrow}</p>
           <h2 className="mt-1 text-2xl font-bold text-gradient">{title}</h2>
@@ -28,7 +30,7 @@ function Section({ eyebrow, title, explainer, children }: { eyebrow: string; tit
   );
 }
 
-export default function InsightsView({ data, aiCompanyStocks }: { data: AnalysisPageData; aiCompanyStocks: AICompanyStocksData }) {
+export default function InsightsView({ data, aiCompanyStocks, aiPressureSynthesis }: { data: AnalysisPageData; aiCompanyStocks: AICompanyStocksData; aiPressureSynthesis: AIPressureSynthesisData }) {
   const t = useT("analysis");
   return (
     <div className="mx-auto w-full max-w-[1680px] space-y-14 xl:space-y-16">
@@ -48,6 +50,8 @@ export default function InsightsView({ data, aiCompanyStocks }: { data: Analysis
       </section>
 
       <hr className="divider-glow" />
+      <AIPressureSynthesisLens data={aiPressureSynthesis} />
+      <hr className="divider-glow" />
       <Reveal>
         <EvidenceStack />
       </Reveal>
@@ -56,9 +60,9 @@ export default function InsightsView({ data, aiCompanyStocks }: { data: Analysis
       <hr className="divider-glow" />
       <Section eyebrow="02" title={t("exposureLensesTitle")} explainer={t("exposureLensesExplainer")}><ExposureLensComparison comparison={data.exposureComparison} leaders={data.exposureGapLeaders} /></Section>
       <hr className="divider-glow" />
-      <Section eyebrow="03" title={t("marketSignalTitle")} explainer={t("marketSignalExplainer")}><MarketSignalLens /></Section>
+      <Section id="market-ai-sensitivity" eyebrow="03" title={t("marketSignalTitle")} explainer={t("marketSignalExplainer")}><MarketSignalLens /></Section>
       <hr className="divider-glow" />
-      <Section eyebrow="04" title={t("aiCompanyStockTitle")} explainer={t("aiCompanyStockExplainer")}><AICompanyStockLens data={aiCompanyStocks} /></Section>
+      <Section id="ai-company-stock-signals" eyebrow="04" title={t("aiCompanyStockTitle")} explainer={t("aiCompanyStockExplainer")}><AICompanyStockLens data={aiCompanyStocks} /></Section>
       <hr className="divider-glow" />
       <Section eyebrow="05" title={t("forecastTitle")} explainer={t("forecastExplainer")}><EmploymentForecastChart national={data.nationalForecast} signalPoints={data.aiSignal.points} forecasts={data.forecasts} /></Section>
       <hr className="divider-glow" />
