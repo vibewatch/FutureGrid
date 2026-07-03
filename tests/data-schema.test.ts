@@ -25,6 +25,7 @@ import {
   validateJolts,
   validateOccupationSnapshot,
   validateOccupationSnapshotSlim,
+  validateEmploymentProjections,
   validateProvenance,
 } from "../scripts/lib/validate.mjs";
 
@@ -339,8 +340,54 @@ describe("validateOccupationSnapshot — committed file", () => {
   it("is a { meta, data } wrapper with provenance and rows", () => {
     expect(dataset.meta).toBeTruthy();
     expect(typeof dataset.meta.generatedAt).toBe("string");
+    expect(typeof dataset.meta.source?.name).toBe("string");
     expect(Array.isArray(dataset.data)).toBe(true);
     expect(dataset.data.length).toBeGreaterThanOrEqual(680);
+  });
+
+  it("keeps SOC-keyed OEWS histories aligned with current employment and wage values", () => {
+    expect(dataset.data.length).toBeGreaterThanOrEqual(680);
+    let rowsWithWageHistory = 0;
+    let rowsWithMultiYearWages = 0;
+    for (const row of dataset.data) {
+      expect(row.socCode).toMatch(/^\d{2}-\d{4}$/);
+      expect(row.employmentHistory).toBeTruthy();
+
+      const employmentYears = Object.keys(row.employmentHistory ?? {});
+      const wageYears = Object.keys(row.wageHistory ?? {});
+      expect(employmentYears.length).toBeGreaterThanOrEqual(2);
+      if (wageYears.length > 0) {
+        rowsWithWageHistory++;
+        expect(wageYears.length).toBeGreaterThanOrEqual(1);
+        if (wageYears.length >= 4) rowsWithMultiYearWages++;
+      }
+      for (const year of new Set([...employmentYears, ...wageYears])) {
+        expect(year).toMatch(/^\d{4}$/);
+      }
+
+      const latestEmploymentYear = employmentYears
+        .map((year: string) => Number(year))
+        .sort((a: number, b: number) => b - a)[0];
+      const latestWageYear = wageYears
+        .map((year: string) => Number(year))
+        .sort((a: number, b: number) => b - a)[0];
+
+      if (row.employment !== null) {
+        expect(row.employmentHistory?.[String(latestEmploymentYear)]).toBeGreaterThan(0);
+      }
+      if (row.wageHistory?.[String(latestWageYear)] != null) {
+        expect(row.wageHistory[String(latestWageYear)]).toBeGreaterThan(0);
+      }
+
+      if (row.employmentHistory?.["2025"] != null && row.employment !== null) {
+        expect(row.employmentHistory["2025"]).toBe(row.employment);
+      }
+      if (row.wageHistory?.["2025"] != null) {
+        expect(row.wageHistory["2025"]).toBe(row.medianSalary);
+      }
+    }
+    expect(rowsWithWageHistory).toBeGreaterThanOrEqual(750);
+    expect(rowsWithMultiYearWages).toBeGreaterThanOrEqual(730);
   });
 });
 
@@ -382,8 +429,32 @@ describe("validateOccupationSnapshotSlim — committed file", () => {
   it("is a { meta, data } wrapper with provenance and rows", () => {
     expect(dataset.meta).toBeTruthy();
     expect(typeof dataset.meta.generatedAt).toBe("string");
+    expect(typeof dataset.meta.source?.name).toBe("string");
     expect(Array.isArray(dataset.data)).toBe(true);
     expect(dataset.data.length).toBeGreaterThanOrEqual(680);
+  });
+
+  it("preserves projection enrichment on the committed slim snapshot", () => {
+    const rows = dataset.data;
+    const withOpenings = rows.filter(
+      (row: { projectedOpenings: number | null }) => row.projectedOpenings !== null
+    );
+
+    expect(withOpenings.length).toBeGreaterThanOrEqual(650);
+    expect(rows.length - withOpenings.length).toBeGreaterThan(0);
+
+    for (const row of rows) {
+      expect(row.socCode).toMatch(/^\d{2}-\d{4}$/);
+      if (row.projectedOpenings !== null) {
+        expect(row.projectedOpenings).toBeGreaterThan(0);
+      }
+      expect(typeof row.growthRate).toBe("number");
+      expect(row.growthWindow).toEqual({
+        fromYear: expect.any(Number),
+        toYear: expect.any(Number),
+      });
+      expect(row.growthWindow.fromYear).toBeLessThan(row.growthWindow.toYear);
+    }
   });
 });
 
@@ -576,6 +647,79 @@ describe("validateJobPostings — negative cases", () => {
     data.occupations[0].annualPostings["2030"] = 1;
     expect(() => validateJobPostings(data)).toThrow(
       /job-postings:11-1000: annualPostings\[2030\] is outside coverage\.years/
+    );
+  });
+});
+
+// ─── validateEmploymentProjections ────────────────────────────────────────────
+
+describe("validateEmploymentProjections — committed file", () => {
+  const data = read("data/employment-projections.json");
+
+  it("committed data/employment-projections.json passes validation", () => {
+    expect(() => validateEmploymentProjections(data)).not.toThrow();
+  });
+});
+
+describe("validateEmploymentProjections — negative cases", () => {
+  const base = () => ({
+    meta: {
+      generatedAt: "2026-07-03T00:00:00Z",
+      source: {
+        name: "BLS Employment Projections occupational data",
+        url: "https://www.bls.gov/emp/data/occupational-data.htm",
+      },
+    },
+    coverage: {
+      baseYear: 2024,
+      projectionYear: 2034,
+      windowYears: 10,
+      matchedSnapshotRows: 700,
+      rowsWithProjectedOpenings: 650,
+    },
+    methodology: {},
+    summary: {
+      totalEmployment2024: 120000000,
+      totalEmployment2034: 130000000,
+      totalEmploymentChange: 10000000,
+    },
+    rows: Array.from({ length: 700 }, (_, index) => ({
+      socCode: `15-${String(1000 + index).padStart(4, "0")}`,
+      title: `Occupation ${index}`,
+      sector: "Computer and Mathematical",
+      employment2024: 1000,
+      employment2034: 1200,
+      employmentChange: 200,
+      employmentChangePct: 20,
+      projectedOpenings: 100,
+      aiExposure: 0.2,
+      automationRisk: "Medium",
+      automationProbability: 0.2,
+      brightOutlook: false,
+    })),
+  });
+
+  it("throws when the projection window is not 10 years", () => {
+    const data = base();
+    data.coverage.windowYears = 9;
+    expect(() => validateEmploymentProjections(data)).toThrow(
+      /employment-projections: expected a 10-year projection window/
+    );
+  });
+
+  it("throws when a row has a non-normalized SOC code", () => {
+    const data = base();
+    data.rows[0].socCode = "151001";
+    expect(() => validateEmploymentProjections(data)).toThrow(
+      /employment-projections: occupation SOC code not normalized/
+    );
+  });
+
+  it("throws when coverage rowsWithProjectedOpenings is too low", () => {
+    const data = base();
+    data.coverage.rowsWithProjectedOpenings = 12;
+    expect(() => validateEmploymentProjections(data)).toThrow(
+      /employment-projections: coverage\.rowsWithProjectedOpenings is unexpectedly low/
     );
   });
 });

@@ -65,6 +65,14 @@ const CLEARED: ClearedDownload[] = [
     attribution: "BLS Quarterly Census of Employment and Wages (QCEW).",
   },
   {
+    id: "employment-projections",
+    filename: "employment-projections.json",
+    label: "BLS Employment Projections",
+    license: "Public Domain",
+    attribution:
+      "U.S. Bureau of Labor Statistics Employment Projections, transformed into a SOC-keyed FutureGrid snapshot.",
+  },
+  {
     id: "warn-notices",
     filename: "warn-notices.json",
     label: "WARN Notices (public)",
@@ -108,6 +116,14 @@ const CLEARED: ClearedDownload[] = [
     license: "Public Domain",
     attribution:
       "U.S. DOL OFLC LCA Disclosure Data. Derived aggregate — certified H-1B LCAs FY2016–FY2025.",
+  },
+  {
+    id: "job-postings",
+    filename: "job-postings.json",
+    label: "Job Postings Trend Seed",
+    license: "CC BY 4.0 + Public Domain",
+    attribution:
+      "FutureGrid deterministic provider-ready seed derived from occupation-snapshot and O*NET related occupations.",
   },
   {
     id: "llm-exposure",

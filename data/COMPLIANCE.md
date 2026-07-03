@@ -62,6 +62,8 @@ This distinction matters legally:
 | 18 | `data/world-countries.geo.json` | [Natural Earth / world-atlas@2](https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json) (Public Domain); [lukes/ISO-3166-Countries-with-Regional-Codes](https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes) (CC BY-SA 4.0) | Public Domain + CC BY-SA 4.0 | ✅ Yes (see note) | Natural Earth + Luke Duncalfe attributed | 110m TopoJSON converted to GeoJSON; Antarctica dropped; numeric IDs mapped to ISO 3166-1 alpha-3 via crosswalk | 🟢 Low | Natural Earth geometry is public domain. The ISO crosswalk (CC BY-SA 4.0) contributed only the numeric→alpha-3 mapping; the committed file contains standard ISO country codes (international standard designations, not independently copyrightable) as `id` fields. Risk is low, but to be conservative, note CC BY-SA provenance in attribution. |
 | 19 | `data/sources.json` | Self-generated from build | MIT (project license) | ✅ Yes | FutureGrid (MIT) | Machine-generated source registry | 🟢 Low | This file is the attribution manifest itself; freely redistributable. |
 | 20 | `data/provenance.json` | Self-generated from build | MIT (project license) | ✅ Yes | FutureGrid (MIT) | Machine-generated dataset provenance registry | 🟢 Low | Same as sources.json. |
+| 21 | `data/job-postings.json` | FutureGrid seed derived from `occupation-snapshot.json` and `onet-enrichment.json` | CC BY 4.0 + Public Domain + MIT project output | ✅ Yes-with-attribution | FutureGrid + Anthropic + BLS + O\*NET | Deterministic SOC-keyed 2016–2025 provider-ready demand seed; not observed historical postings | 🟢 Low | Clearly marked as seed/proxy data in metadata. Replace counts with licensed Lightcast/LinkUp/TheirStack/Adzuna data when available. |
+| 22 | `data/employment-projections.json` | [BLS Employment Projections occupational data](https://www.bls.gov/emp/data/occupational-data.htm) via public `jeffbaumes/jobs` mirror | Public Domain (US Government) | ✅ Yes | "U.S. Bureau of Labor Statistics" | SOC-keyed 2024–2034 projection rows joined to FutureGrid occupation snapshot and reshaped for visualization | 🟢 Low | Builder records that BLS direct download was HTTP 403 in this environment and uses the mirror; underlying source is official BLS public-domain data. |
 
 ---
 
@@ -194,7 +196,7 @@ The ISO crosswalk contributed only the numeric→alpha-3 code mapping used as `i
 | Epoch AI Notable AI Models | CC BY 4.0 | https://epoch.ai/data/notable-ai-models |
 | Microsoft AI Diffusion Report | MIT | https://github.com/microsoft/ai-diffusion-report (repo license) |
 | OpenAI GPTs-are-GPTs | MIT | https://github.com/openai/GPTs-are-GPTs/blob/main/LICENSE |
-| BLS (OEWS, JOLTS, LAUS, QCEW) | Public Domain (US Gov) | https://www.bls.gov/bls/linksite.htm |
+| BLS (OEWS, Employment Projections, JOLTS, LAUS, QCEW) | Public Domain (US Gov) | https://www.bls.gov/bls/linksite.htm |
 | Natural Earth | Public Domain | https://www.naturalearthdata.com/about/terms-of-use/ |
 | World Bank Open Data | CC BY 4.0 | https://datacatalog.worldbank.org/public-licenses |
 | Eurostat | CC BY 4.0 | https://ec.europa.eu/eurostat/about/legal-notice |
@@ -227,4 +229,4 @@ Before shipping any public bulk-download or API endpoint (issue #57), the follow
 
 ---
 
-*This document was produced as part of spike issue #56 (license audit). It should be updated whenever new data sources are added or existing source licenses change. Last updated: 2026-07-02.*
+*This document was produced as part of spike issue #56 (license audit). It should be updated whenever new data sources are added or existing source licenses change. Last updated: 2026-07-03.*

@@ -1,10 +1,63 @@
 export const laborEn = {
   pageTitle: "Labor Market",
-  pageSubhead: "Turnover trends and layoff notices — BLS JOLTS data and WARN Act filings.",
+  pageSubhead:
+    "Turnover trends, employment opportunity projections, and layoff notices — BLS labor datasets in one view.",
   tabTrends: "Turnover & Trends",
+  tabOpportunity: "Opportunity Lens",
   tabPressure: "WARN Pressure",
   tabNotices: "Layoff Notices",
   loading: "Loading…",
+  opportunityBadge: "BLS projections × AI exposure",
+  opportunityHeroTitle: "Where projected demand and AI exposure meet",
+  opportunityHeroSubhead:
+    "Compare projected annual openings against Anthropic AI exposure for the most in-demand mapped occupations, then jump into the matching FutureGrid career cards.",
+  opportunitySourceTitle: "Source context",
+  opportunitySourceModeDataset: "SOC-keyed dataset",
+  opportunitySourceModeFallback: "Snapshot fallback",
+  opportunitySourceDescriptionDataset:
+    "This lens is using a dedicated SOC-keyed projections snapshot, then joining it back to FutureGrid occupations for exposure, wage, and career-link context.",
+  opportunitySourceDescriptionFallback:
+    "Tank’s dedicated SOC-keyed projections helper has not landed in this checkout yet, so this view is using the bundled occupation snapshot’s BLS-linked annual openings and the existing job-postings overlay.",
+  opportunitySourceDisclaimer:
+    "Projected openings are medium-term demand estimates, not live vacancies or evidence that AI causes future employment changes. Use the scatter as a descriptive planning lens.",
+  opportunitySourceAsOf: "as of {date}",
+  opportunitySeeSources: "View source notes",
+  opportunityStatOccupations: "mapped occupations",
+  opportunityStatOpenings: "projected annual openings",
+  opportunityStatHighExposureShare: "openings in higher-exposure roles",
+  opportunityStatMedianWage: "median wage in top-demand set",
+  opportunityChartTitle: "Projected annual openings vs AI exposure",
+  opportunityChartDesc:
+    "Each bubble is one occupation. X = Anthropic AI exposure, Y = projected annual openings, bubble size = employment base when available.",
+  opportunityMedianNote:
+    "Dashed lines mark the median exposure and median projected openings across mapped occupations in this lens.",
+  opportunityLegendExposure: "X-axis: AI exposure",
+  opportunityLegendDemand: "Y-axis: projected annual openings",
+  opportunityLegendBubble: "Bubble size: employment base",
+  opportunityLegendRisk: "Color: exposure band",
+  opportunityAxisExposure: "AI exposure",
+  opportunityAxisDemand: "Projected annual openings",
+  opportunitySpotlightLowerTitle: "Lower-exposure demand leaders",
+  opportunitySpotlightLowerDesc:
+    "Occupations below the mapped median AI exposure, sorted by projected annual openings.",
+  opportunitySpotlightHighTitle: "High-demand roles with higher AI exposure",
+  opportunitySpotlightHighDesc:
+    "Projected-demand leaders at or above the mapped median AI exposure — useful for monitoring disruption at scale.",
+  opportunityViewCareer: "Open career card",
+  opportunityChipOpenings: "{n} projected annual openings",
+  opportunityChipExposure: "{pct}% AI exposure",
+  opportunityChipWage: "{value} median wage",
+  opportunityChipPostings: "{n} latest annual postings",
+  opportunityChipGrowth: "{pct} projected growth",
+  opportunityA11yLabel: "Opportunity lens scatter chart: projected annual openings versus AI exposure",
+  opportunityA11yTableCaption:
+    "Opportunity lens summary table for the leading mapped occupations by projected annual openings",
+  opportunityA11yThOccupation: "Occupation",
+  opportunityA11yThRisk: "Risk band",
+  opportunityA11yThExposure: "AI exposure",
+  opportunityA11yThOpenings: "Projected annual openings",
+  opportunityA11yThWage: "Median wage",
+  opportunityNoRows: "No projection-linked occupations are available for this lens yet.",
   pressureBadge: "WARN Pressure",
   pressureHeroTitle: "WARN Pressure Index",
   pressureHeroSubhead:

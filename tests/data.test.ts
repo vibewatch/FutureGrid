@@ -73,6 +73,37 @@ describe("generateAllCareerInsights", () => {
       expect(item.medianSalary).toBeGreaterThanOrEqual(0);
     }
   });
+
+  it("projection enrichment exposes positive annual openings for a large majority", () => {
+    const withOpenings = insights.filter((item) => item.projectedOpenings !== null);
+    expect(withOpenings.length).toBeGreaterThanOrEqual(650);
+    expect(insights.length - withOpenings.length).toBeGreaterThan(0);
+    for (const item of withOpenings) {
+      expect(item.projectedOpenings).toBeGreaterThan(0);
+    }
+  });
+
+  it("growth enrichment carries a valid derived window for every occupation", () => {
+    for (const item of insights) {
+      expect(item.growthRate).not.toBeNull();
+      expect(item.growthWindow).toEqual({
+        fromYear: expect.any(Number),
+        toYear: expect.any(Number),
+      });
+      expect(item.growthWindow!.fromYear).toBeLessThan(item.growthWindow!.toYear);
+    }
+  });
+
+  it("top projected-opening occupation remains the BLS-backed Cashiers record", () => {
+    const topProjected = [...insights]
+      .filter((item) => item.projectedOpenings !== null)
+      .sort((a, b) => (b.projectedOpenings ?? 0) - (a.projectedOpenings ?? 0))[0];
+
+    expect(topProjected.occupationCode).toBe("41-2011");
+    expect(topProjected.occupationName).toBe("Cashiers");
+    expect(topProjected.projectedOpenings).toBeGreaterThan(600_000);
+    expect(topProjected.outlook).toBe("Bright");
+  });
 });
 
 // ─── getSectorAggregatesExtended ─────────────────────────────────────────────

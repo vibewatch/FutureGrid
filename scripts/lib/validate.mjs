@@ -576,6 +576,134 @@ export function validateJobPostings(data) {
 }
 
 /**
+ * Validate data/employment-projections.json.
+  *
+ * This dataset joins a public BLS Employment Projections mirror onto the
+ * committed FutureGrid occupation snapshot so every SOC gets a 2024→2034
+ * projection row plus the existing AI-risk lens fields used by the UI.
+ *
+ * @param {Record<string, unknown>} data
+ */
+export function validateEmploymentProjections(data) {
+  assertFields(
+    data,
+    ["meta", "coverage", "methodology", "summary", "rows"],
+    "employment-projections"
+  );
+  assertProvenance(data, "employment-projections");
+  assertMinRows(data.rows, 680, "employment-projections.rows");
+
+  const baseYear = data.coverage?.baseYear;
+  const projectionYear = data.coverage?.projectionYear;
+  const windowYears = data.coverage?.windowYears;
+  if (
+    !Number.isInteger(baseYear) ||
+    !Number.isInteger(projectionYear) ||
+    !Number.isInteger(windowYears)
+  ) {
+    throw new Error(
+      "[validate] employment-projections: coverage years must be integers"
+    );
+  }
+  if (projectionYear - baseYear !== windowYears || windowYears !== 10) {
+    throw new Error(
+      "[validate] employment-projections: expected a 10-year projection window"
+    );
+  }
+  if (data.coverage?.matchedSnapshotRows !== data.rows.length) {
+    throw new Error(
+      "[validate] employment-projections: coverage.matchedSnapshotRows must equal rows.length"
+    );
+  }
+  if (
+    typeof data.coverage?.rowsWithProjectedOpenings !== "number" ||
+    data.coverage.rowsWithProjectedOpenings < 600
+  ) {
+    throw new Error(
+      "[validate] employment-projections: coverage.rowsWithProjectedOpenings is unexpectedly low"
+    );
+  }
+
+  for (const row of data.rows) {
+    const label = `employment-projections:${row && row.socCode ? row.socCode : "?"}`;
+    assertFields(
+      row,
+      [
+        "socCode",
+        "title",
+        "sector",
+        "employment2024",
+        "employment2034",
+        "employmentChange",
+        "employmentChangePct",
+        "projectedOpenings",
+        "aiExposure",
+        "automationRisk",
+        "automationProbability",
+        "brightOutlook",
+      ],
+      label
+    );
+
+    if (typeof row.socCode !== "string" || !/^\d{2}-\d{4}$/.test(row.socCode)) {
+      throw new Error(
+        `[validate] employment-projections: occupation SOC code not normalized: ${row && row.socCode}`
+      );
+    }
+
+    for (const field of ["employment2024", "employment2034", "employmentChange"]) {
+      if (!(typeof row[field] === "number" && Number.isFinite(row[field]))) {
+        throw new Error(
+          `[validate] ${label}: ${field} must be a finite number`
+        );
+      }
+    }
+
+    if (
+      !(
+        typeof row.employmentChangePct === "number" &&
+        Number.isFinite(row.employmentChangePct)
+      )
+    ) {
+      throw new Error(
+        `[validate] ${label}: employmentChangePct must be a finite number`
+      );
+    }
+
+    if (
+      row.projectedOpenings !== null &&
+      !(
+        typeof row.projectedOpenings === "number" &&
+        Number.isFinite(row.projectedOpenings) &&
+        row.projectedOpenings >= 0
+      )
+    ) {
+      throw new Error(
+        `[validate] ${label}: projectedOpenings must be null or a finite non-negative number`
+      );
+    }
+  }
+
+  const summary = data.summary;
+  if (
+    !(
+      typeof summary?.totalEmployment2024 === "number" &&
+      typeof summary?.totalEmployment2034 === "number" &&
+      typeof summary?.totalEmploymentChange === "number"
+    )
+  ) {
+    throw new Error(
+      "[validate] employment-projections: summary employment totals must be numeric"
+    );
+  }
+  if (summary.totalEmployment2024 <= 100000000) {
+    throw new Error(
+      "[validate] employment-projections: summary.totalEmployment2024 is implausibly low"
+    );
+  }
+}
+
+/**
  * Validate data/provenance.json (the central provenance registry, issue #52).
  * Ensures the registry lists datasets and that every entry carries a
  * generatedAt timestamp and a source.

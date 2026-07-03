@@ -8,3 +8,5 @@
 - Verdict: ✅ APPROVE
 - Feature shipped as PR #45 (merged to main, 2026-07-02)
 2026-07-03T00:39:00 - Submitted decision: Use a proxy-first job-demand layer now; reserve provider-backed historical postings adapter for licensed data later. (Merged into squad decisions.)
+
+2026-07-03: Decision: Prioritize BLS Employment Projections as first enrichment; recommended /analysis placement and visualization guidance. (See decisions/decisions.md)

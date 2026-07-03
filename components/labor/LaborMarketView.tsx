@@ -4,6 +4,7 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useT } from "@/lib/i18n/useT";
 import DataAsOfBadge from "@/components/ui/DataAsOfBadge";
+import type { LaborOpportunityData } from "@/lib/labor-opportunity";
 
 function LoadingStub() {
   const t = useT("labor");
@@ -32,9 +33,21 @@ const WarnPressureView = dynamic(
   },
 );
 
-type Tab = "trends" | "pressure" | "notices";
+const OpportunityLensView = dynamic(
+  () => import("@/components/labor/OpportunityLensView"),
+  {
+    ssr: false,
+    loading: () => <LoadingStub />,
+  },
+);
 
-export default function LaborMarketView() {
+type Tab = "trends" | "opportunity" | "pressure" | "notices";
+
+interface LaborMarketViewProps {
+  opportunityData?: LaborOpportunityData | null;
+}
+
+export default function LaborMarketView({ opportunityData }: LaborMarketViewProps) {
   const t = useT("labor");
   const [activeTab, setActiveTab] = useState<Tab>("trends");
 
@@ -69,6 +82,18 @@ export default function LaborMarketView() {
         </button>
         <button
           type="button"
+          onClick={() => setActiveTab("opportunity")}
+          aria-pressed={activeTab === "opportunity"}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
+            activeTab === "opportunity"
+              ? "bg-violet-600 text-white shadow"
+              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50"
+          }`}
+        >
+          {t("tabOpportunity")}
+        </button>
+        <button
+          type="button"
           onClick={() => setActiveTab("notices")}
           aria-pressed={activeTab === "notices"}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
@@ -95,6 +120,8 @@ export default function LaborMarketView() {
 
       {/* ── Tab content ────────────────────────────────────────────────────── */}
       {activeTab === "trends" && <PulseView />}
+      {activeTab === "opportunity" && opportunityData && <OpportunityLensView data={opportunityData} />}
+      {activeTab === "opportunity" && !opportunityData && <LoadingStub />}
       {activeTab === "pressure" && <WarnPressureView />}
       {activeTab === "notices" && <LayoffsView />}
     </div>

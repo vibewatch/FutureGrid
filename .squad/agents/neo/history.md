@@ -8,3 +8,5 @@
 - Softened causal copy ("engine underlying workforce disruption")
 - Neutralized geopolitics wording, hyperlinked CC BY attribution
 - Feature shipped as PR #45 (merged to main, 2026-07-02)
+
+2026-07-03: Added /labor Opportunity Lens tab and proposed server-side adapter fallback to normalize projections. (See decisions/decisions.md)

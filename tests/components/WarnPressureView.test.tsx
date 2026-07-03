@@ -145,13 +145,14 @@ describe("WarnPressureView", () => {
 });
 
 describe("LaborMarketView WARN Pressure tab", () => {
-  it("adds WARN Pressure as the third labor tab", async () => {
+  it("adds the opportunity lens tab without dropping WARN Pressure", async () => {
     const LaborMarketView = await importLaborMarketView();
     render(<LaborMarketView />);
 
     const tabs = screen.getAllByRole("button");
     expect(tabs.map((tab) => tab.textContent?.trim())).toEqual([
       expect.stringMatching(/turnover|trend/i),
+      expect.stringMatching(/opportunity|机会/i),
       expect.stringMatching(/layoff|notice/i),
       expect.stringMatching(/warn pressure/i),
     ]);

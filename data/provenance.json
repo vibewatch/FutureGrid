@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-03T00:46:48.467Z",
+  "generatedAt": "2026-07-03T05:27:59.635Z",
   "datasets": [
     {
       "id": "ai-demand",
@@ -87,6 +87,19 @@
       },
       "version": "1.0.0",
       "rows": 195
+    },
+    {
+      "id": "employment-projections",
+      "file": "data/employment-projections.json",
+      "generatedAt": "2026-07-03T05:27:12.367Z",
+      "asOf": "2024-2034",
+      "source": {
+        "name": "BLS Employment Projections occupational data",
+        "publisher": "U.S. Bureau of Labor Statistics",
+        "url": "https://www.bls.gov/emp/data/occupational-data.htm"
+      },
+      "version": "1.0.0",
+      "rows": 756
     },
     {
       "id": "global-ai-metrics",
@@ -204,15 +217,15 @@
     {
       "id": "sources",
       "file": "data/sources.json",
-      "generatedAt": "2026-07-02T08:42:54.780Z",
-      "asOf": "2026-07-02",
+      "generatedAt": "2026-07-03T05:27:14.000Z",
+      "asOf": "2026-07-03",
       "source": {
         "name": "Anthropic Economic Index — Job Exposure",
         "publisher": "Anthropic",
         "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex"
       },
       "version": "1.0.0",
-      "rows": 37
+      "rows": 39
     },
     {
       "id": "state-labor",

@@ -1,5 +1,6 @@
 import LaborMarketView from "@/components/labor/LaborMarketView";
+import { getLaborOpportunityData } from "@/lib/labor-opportunity";
 
 export default function LaborPage() {
-  return <LaborMarketView />;
+  return <LaborMarketView opportunityData={getLaborOpportunityData()} />;
 }

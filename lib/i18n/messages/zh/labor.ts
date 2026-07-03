@@ -1,10 +1,62 @@
 export const laborZh = {
   pageTitle: "劳动力市场",
-  pageSubhead: "就业流动趋势与裁员通告——BLS JOLTS 数据及 WARN 法案申报。",
+  pageSubhead:
+    "在一个视图中查看就业流动趋势、职业机会预测与裁员通告——整合多组 BLS 劳动力数据。",
   tabTrends: "流动与趋势",
+  tabOpportunity: "机会透镜",
   tabPressure: "WARN Pressure",
   tabNotices: "裁员通告",
   loading: "加载中…",
+  opportunityBadge: "BLS 预测 × AI 暴露度",
+  opportunityHeroTitle: "把未来岗位需求与 AI 暴露度放在同一张图里",
+  opportunityHeroSubhead:
+    "将预计年度招聘量与 Anthropic AI 暴露度放在同一坐标系中，对照最具需求的职业，并跳转到对应的 FutureGrid 职业卡片。",
+  opportunitySourceTitle: "数据来源背景",
+  opportunitySourceModeDataset: "SOC 键控数据集",
+  opportunitySourceModeFallback: "快照回退",
+  opportunitySourceDescriptionDataset:
+    "当前视图正在使用专门的 SOC 键控就业预测快照，并与 FutureGrid 职业卡片重新关联，以补充 AI 暴露度、薪资与职业链接上下文。",
+  opportunitySourceDescriptionFallback:
+    "当前代码库里还没有落地 Tank 的专用 SOC 键控预测 helper，因此本视图先使用现有 occupation snapshot 中已捆绑的 BLS 年度招聘量，以及已有的 job-postings 叠加层。",
+  opportunitySourceDisclaimer:
+    "预计招聘量反映的是中期需求估计，不代表实时职位空缺，也不表示 AI 会导致未来就业变化。请把这张图当作描述性规划透镜。",
+  opportunitySourceAsOf: "截至 {date}",
+  opportunitySeeSources: "查看来源说明",
+  opportunityStatOccupations: "已映射职业",
+  opportunityStatOpenings: "预计年度招聘量",
+  opportunityStatHighExposureShare: "高暴露职业占比",
+  opportunityStatMedianWage: "高需求职业工资中位数",
+  opportunityChartTitle: "预计年度招聘量 vs AI 暴露度",
+  opportunityChartDesc:
+    "每个气泡代表一个职业。横轴 = Anthropic AI 暴露度，纵轴 = 预计年度招聘量，气泡大小 = 可用时的就业基数。",
+  opportunityMedianNote:
+    "虚线表示该透镜下已映射职业的 AI 暴露度中位数与预计招聘量中位数。",
+  opportunityLegendExposure: "横轴：AI 暴露度",
+  opportunityLegendDemand: "纵轴：预计年度招聘量",
+  opportunityLegendBubble: "气泡大小：就业基数",
+  opportunityLegendRisk: "颜色：暴露等级",
+  opportunityAxisExposure: "AI 暴露度",
+  opportunityAxisDemand: "预计年度招聘量",
+  opportunitySpotlightLowerTitle: "较低暴露度的需求领跑职业",
+  opportunitySpotlightLowerDesc:
+    "位于映射后 AI 暴露度中位数以下、并按预计年度招聘量排序的职业。",
+  opportunitySpotlightHighTitle: "高需求且 AI 暴露度更高的职业",
+  opportunitySpotlightHighDesc:
+    "位于映射后 AI 暴露度中位数及以上的需求领跑职业，适合持续跟踪大规模岗位受影响的可能性。",
+  opportunityViewCareer: "打开职业卡片",
+  opportunityChipOpenings: "{n} 个预计年度招聘量",
+  opportunityChipExposure: "{pct}% AI 暴露度",
+  opportunityChipWage: "{value} 工资中位数",
+  opportunityChipPostings: "{n} 个最近年度招聘量",
+  opportunityChipGrowth: "{pct} 预计增长",
+  opportunityA11yLabel: "机会透镜散点图：预计年度招聘量与 AI 暴露度",
+  opportunityA11yTableCaption: "机会透镜汇总表：按预计年度招聘量排序的重点映射职业",
+  opportunityA11yThOccupation: "职业",
+  opportunityA11yThRisk: "风险等级",
+  opportunityA11yThExposure: "AI 暴露度",
+  opportunityA11yThOpenings: "预计年度招聘量",
+  opportunityA11yThWage: "工资中位数",
+  opportunityNoRows: "该透镜暂时没有可用的预测职业数据。",
   pressureBadge: "WARN Pressure",
   pressureHeroTitle: "WARN Pressure 指数",
   pressureHeroSubhead:
