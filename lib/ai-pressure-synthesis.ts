@@ -19,17 +19,18 @@ import {
   getTalentBottleneckData,
   type TalentBottleneckData,
 } from "@/lib/talent-bottleneck";
+import { DEEP_LINK_HREFS } from "@/lib/section-anchors";
 
 export interface AIPressureSynthesisData {
   global: {
-    href: "/global";
+    href: typeof DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint;
     modelCount: number;
     endpointProviderCount: number;
     rankableCountries: number;
     topReadinessGapCountry: ReadinessGapSummaryCountry | null;
   };
   talent: {
-    href: "/visa";
+    href: typeof DEEP_LINK_HREFS.visaTalentBottleneckLens;
     occupationsTracked: number;
     latestH1bFiscalYear: number | null;
     latestJobPostingYear: number | null;
@@ -94,7 +95,7 @@ export function getAIPressureSynthesisData(
 
   return {
     global: {
-      href: "/global",
+      href: DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint,
       modelCount: openRouter.summary.sourceModelCount,
       endpointProviderCount: openRouter.summary.endpointProviderCount,
       rankableCountries: readinessGap.summary.rankableCountries,
@@ -103,7 +104,7 @@ export function getAIPressureSynthesisData(
       ),
     },
     talent: {
-      href: "/visa",
+      href: DEEP_LINK_HREFS.visaTalentBottleneckLens,
       occupationsTracked: talentBottleneck.summary.occupationsTracked,
       latestH1bFiscalYear: talentBottleneck.summary.latestH1bFiscalYear,
       latestJobPostingYear: talentBottleneck.summary.latestJobPostingYear,

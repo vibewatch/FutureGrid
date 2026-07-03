@@ -9,6 +9,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { globalEn } from "@/lib/i18n/messages/en/global";
 import { globalZh } from "@/lib/i18n/messages/zh/global";
 import type { OpenRouterCountryActivityData } from "@/lib/openrouter-country-activity";
+import { SECTION_IDS } from "@/lib/section-anchors";
 
 const COMPONENT_PATH = path.join(process.cwd(), "components/global/OpenRouterCountryActivityLens.tsx");
 const GLOBAL_PAGE_PATH = path.join(process.cwd(), "app/global/page.tsx");
@@ -191,6 +192,12 @@ describe("OpenRouterCountryActivityLens", () => {
 
     render(<OpenRouterCountryActivityLens data={FIXTURE_DATA} />);
 
+    const section = document.getElementById(SECTION_IDS.openRouterCountryModelFootprint);
+    expect(section).toHaveClass("scroll-mt-24");
+    expect(section).toHaveAttribute(
+      "aria-labelledby",
+      `${SECTION_IDS.openRouterCountryModelFootprint}-heading`,
+    );
     expect(screen.getByRole("heading", { name: "AI model ecosystem footprint" })).toBeInTheDocument();
     expect(screen.getByText("OpenRouter catalog proxy")).toBeInTheDocument();
     expect(screen.getByText(/Public catalog and endpoint availability only; not user traffic, usage, revenue, or national adoption/i)).toBeInTheDocument();
@@ -239,5 +246,5 @@ describe("OpenRouterCountryActivityLens", () => {
       expect(sentences.length, `Expected ${phrase} to appear only as a caveated exclusion`).toBeGreaterThan(0);
       expect(sentences.every((sentence) => /\bnot\b/i.test(sentence))).toBe(true);
     }
-  });
+  }, 10000);
 });

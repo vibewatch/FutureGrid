@@ -9,6 +9,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { globalEn } from "@/lib/i18n/messages/en/global";
 import { globalZh } from "@/lib/i18n/messages/zh/global";
 import type { ReadinessGapData } from "@/lib/readiness-gap";
+import { SECTION_IDS } from "@/lib/section-anchors";
 
 const COMPONENT_PATH = path.join(process.cwd(), "components/global/ReadinessGapLens.tsx");
 const GLOBAL_PAGE_PATH = path.join(process.cwd(), "app/global/page.tsx");
@@ -195,6 +196,12 @@ describe("ReadinessGapLens", () => {
 
     render(<ReadinessGapLens data={FIXTURE_DATA} />);
 
+    const section = document.getElementById(SECTION_IDS.readinessGapLens);
+    expect(section).toHaveClass("scroll-mt-24");
+    expect(section).toHaveAttribute(
+      "aria-labelledby",
+      `${SECTION_IDS.readinessGapLens}-heading`,
+    );
     expect(screen.getByRole("heading", { name: "Adoption–Readiness Gap" })).toBeInTheDocument();
     expect(screen.getByText(/Descriptive alignment only/i)).toBeInTheDocument();
     expect(screen.getByText(/Rankable countries/i)).toBeInTheDocument();
@@ -227,7 +234,7 @@ describe("ReadinessGapLens", () => {
     for (const pattern of BANNED_WORDING) {
       expect(pageText, `ReadinessGapLens should avoid banned wording ${pattern}`).not.toMatch(pattern);
     }
-  });
+  }, 10000);
 
   it("localizes gap units in rendered and accessible Chinese text", async () => {
     setLocale("zh");

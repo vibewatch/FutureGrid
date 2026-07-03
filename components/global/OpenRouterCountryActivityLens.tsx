@@ -6,6 +6,7 @@ import type {
   OpenRouterCountryActivityCountry,
   OpenRouterCountryActivityData,
 } from "@/lib/openrouter-country-activity";
+import { SECTION_IDS } from "@/lib/section-anchors";
 import type { Locale } from "@/lib/i18n/types";
 import { useLocale, useT } from "@/lib/i18n/useT";
 
@@ -155,12 +156,16 @@ export default function OpenRouterCountryActivityLens({
   const t = useT("global");
   const locale = useLocale();
   const numberLocale = NUMBER_LOCALES[locale] ?? NUMBER_LOCALES.en;
-  const headingId = useId();
+  const headingId = `${SECTION_IDS.openRouterCountryModelFootprint}-heading`;
   const summary = data.summary;
   const countries = data.countries;
 
   return (
-    <section aria-labelledby={headingId} className="space-y-5">
+    <section
+      id={SECTION_IDS.openRouterCountryModelFootprint}
+      aria-labelledby={headingId}
+      className="scroll-mt-24 space-y-5"
+    >
       <div className="glass p-5 sm:p-6">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
           <div className="max-w-3xl">

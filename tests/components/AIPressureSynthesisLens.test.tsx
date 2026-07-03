@@ -8,6 +8,7 @@ import AIPressureSynthesisLens from "@/components/insights/AIPressureSynthesisLe
 import { analysisEn } from "@/lib/i18n/messages/en/analysis";
 import { analysisZh } from "@/lib/i18n/messages/zh/analysis";
 import type { AIPressureSynthesisData } from "@/lib/ai-pressure-synthesis";
+import { DEEP_LINK_HREFS } from "@/lib/section-anchors";
 
 vi.mock("@/lib/i18n/LanguageProvider", () => ({
   useLanguage: () => ({ locale: "en" as const, setLocale: vi.fn() }),
@@ -15,7 +16,7 @@ vi.mock("@/lib/i18n/LanguageProvider", () => ({
 
 const FIXTURE: AIPressureSynthesisData = {
   global: {
-    href: "/global",
+    href: DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint,
     modelCount: 340,
     endpointProviderCount: 72,
     rankableCountries: 122,
@@ -26,7 +27,7 @@ const FIXTURE: AIPressureSynthesisData = {
     },
   },
   talent: {
-    href: "/visa",
+    href: DEEP_LINK_HREFS.visaTalentBottleneckLens,
     occupationsTracked: 756,
     latestH1bFiscalYear: 2025,
     latestJobPostingYear: 2025,
@@ -82,8 +83,14 @@ describe("AIPressureSynthesisLens", () => {
     expect(screen.getByText("FY2025")).toBeInTheDocument();
     expect(screen.getByText("34 / 47")).toBeInTheDocument();
 
-    expect(screen.getByRole("link", { name: "Open /global context" })).toHaveAttribute("href", "/global");
-    expect(screen.getByRole("link", { name: "Open /visa context" })).toHaveAttribute("href", "/visa");
+    expect(screen.getByRole("link", { name: "Open /global context" })).toHaveAttribute(
+      "href",
+      DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint,
+    );
+    expect(screen.getByRole("link", { name: "Open /visa context" })).toHaveAttribute(
+      "href",
+      DEEP_LINK_HREFS.visaTalentBottleneckLens,
+    );
     expect(screen.getByRole("link", { name: "Jump to market sensitivity" })).toHaveAttribute(
       "href",
       "/analysis#market-ai-sensitivity",

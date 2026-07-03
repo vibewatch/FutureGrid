@@ -4,19 +4,20 @@ import {
   type AICompanyStocksData,
 } from "@/lib/ai-company-stocks";
 import { getAIPressureSynthesisData } from "@/lib/ai-pressure-synthesis";
+import { DEEP_LINK_HREFS, SECTION_IDS } from "@/lib/section-anchors";
 
 describe("getAIPressureSynthesisData", () => {
   it("builds compact cross-dataset props from existing loaders", () => {
     const data = getAIPressureSynthesisData();
 
-    expect(data.global.href).toBe("/global");
+    expect(data.global.href).toBe(DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint);
     expect(data.global.modelCount).toBeGreaterThan(200);
     expect(data.global.endpointProviderCount).toBeGreaterThan(10);
     expect(data.global.rankableCountries).toBeGreaterThan(100);
     expect(data.global.topReadinessGapCountry?.name).toEqual(expect.any(String));
     expect(Number.isFinite(data.global.topReadinessGapCountry?.gap)).toBe(true);
 
-    expect(data.talent.href).toBe("/visa");
+    expect(data.talent.href).toBe(DEEP_LINK_HREFS.visaTalentBottleneckLens);
     expect(data.talent.occupationsTracked).toBeGreaterThan(700);
     expect(data.talent.latestH1bFiscalYear).toBeGreaterThanOrEqual(2020);
     expect(data.talent.topOccupation).toMatchObject({
@@ -44,6 +45,17 @@ describe("getAIPressureSynthesisData", () => {
       "stockDescriptiveHistory",
       "jobPostingsProxy",
     ]);
+  });
+
+  it("keeps mined-data section anchors stable for cross-page CTAs", () => {
+    expect(SECTION_IDS.openRouterCountryModelFootprint).toBe("openrouter-country-model-footprint");
+    expect(SECTION_IDS.readinessGapLens).toBe("readiness-gap-lens");
+    expect(SECTION_IDS.talentBottleneckLens).toBe("talent-bottleneck-lens");
+    expect(DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint).toBe(
+      "/global#openrouter-country-model-footprint",
+    );
+    expect(DEEP_LINK_HREFS.globalReadinessGapLens).toBe("/global#readiness-gap-lens");
+    expect(DEEP_LINK_HREFS.visaTalentBottleneckLens).toBe("/visa#talent-bottleneck-lens");
   });
 
   it("recomputes positive 1Y breadth when summary exceeds company count", () => {

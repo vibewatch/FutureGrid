@@ -4,6 +4,7 @@ import { useId } from "react";
 import DataAsOfBadge from "@/components/ui/DataAsOfBadge";
 import { useFormatters } from "@/lib/i18n/useFormatters";
 import { useLocale, useT } from "@/lib/i18n/useT";
+import { SECTION_IDS } from "@/lib/section-anchors";
 import type { TalentBottleneckData, TalentBottleneckRow } from "@/lib/talent-bottleneck";
 
 const PLOT_WIDTH = 760;
@@ -396,7 +397,7 @@ export default function TalentBottleneckLens({ data }: { data: TalentBottleneckD
   const t = useT("visa");
   const locale = useLocale();
   const { formatNumber, formatCurrency } = useFormatters();
-  const headingId = useId();
+  const headingId = `${SECTION_IDS.talentBottleneckLens}-heading`;
   const topRow = data.summary.topRows[0] ?? data.rows[0] ?? null;
   const projectionWindow =
     data.summary.projectionWindow.baseYear != null &&
@@ -409,7 +410,11 @@ export default function TalentBottleneckLens({ data }: { data: TalentBottleneckD
   });
 
   return (
-    <section aria-labelledby={headingId} className="space-y-5">
+    <section
+      id={SECTION_IDS.talentBottleneckLens}
+      aria-labelledby={headingId}
+      className="scroll-mt-24 space-y-5"
+    >
       <div className="glass rounded-2xl border border-zinc-200 bg-white/70 p-5 dark:border-zinc-800 dark:bg-zinc-900/50 sm:p-6">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
           <div className="max-w-3xl">
