@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { colorForRisk, formatCurrency } from "@/lib/utils";
+import { colorForRisk, formatCurrency, formatNumber } from "@/lib/utils";
 import { computeResiliencyScore } from "@/lib/data";
 import type { CareerInsight, SectorAggregate, ReskillingTarget } from "@/lib/data";
 import type { OnetEnrichmentOccupation } from "@/lib/onet";
 import type { TrendPoint } from "@/lib/snapshot";
 import type { OccExposureLenses } from "@/lib/exposure";
+import type { H1bOccupationSignal } from "@/lib/h1b";
 import OccupationTrendChart from "@/components/charts/OccupationTrendChart";
 import PredictiveChart from "@/components/charts/PredictiveChart";
 import { useT } from "@/lib/i18n/useT";
@@ -20,6 +21,9 @@ interface CareerDetailClientProps {
   trend: TrendPoint[];
   transitions: ReskillingTarget[];
   exposureLenses: OccExposureLenses | null;
+  h1bSignal: H1bOccupationSignal | null;
+  h1bFirst: number;
+  h1bLatest: number;
 }
 
 export default function CareerDetailClient({
@@ -31,6 +35,9 @@ export default function CareerDetailClient({
   trend,
   transitions,
   exposureLenses,
+  h1bSignal,
+  h1bFirst,
+  h1bLatest,
 }: CareerDetailClientProps) {
   const t = useT("careers");
 
@@ -369,6 +376,79 @@ export default function CareerDetailClient({
         </div>
       </div>
 
+      {/* H-1B Visa Sponsorship Demand */}
+      <section
+        aria-labelledby="h1b-section-heading"
+        className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6"
+      >
+        <div className="flex items-start justify-between gap-4 mb-1">
+          <h2 id="h1b-section-heading" className="text-lg font-semibold text-gradient">
+            {t("h1bSectionTitle")}
+          </h2>
+          <Link
+            href="/visa"
+            className="shrink-0 text-xs text-violet-500 dark:text-violet-400 hover:text-violet-400 dark:hover:text-violet-300 underline underline-offset-2 transition-colors"
+          >
+            {t("h1bViewTrends")}
+          </Link>
+        </div>
+        {h1bSignal ? (
+          <>
+            <p className="text-xs text-zinc-500 mb-4 max-w-2xl">
+              {t("h1bSectionSubtitle", { first: h1bSignal.firstYear, latest: h1bSignal.latestYear })}
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+              <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
+                <div className="text-2xl font-bold tabular-nums text-zinc-900 dark:text-white">
+                  {formatNumber(h1bSignal.totalCount)}
+                </div>
+                <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
+                  {t("h1bStatDecadeTotal")}
+                </div>
+              </div>
+              <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
+                <div className="text-2xl font-bold tabular-nums text-zinc-900 dark:text-white">
+                  {formatNumber(h1bSignal.latestYearCount)}
+                </div>
+                <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
+                  {t("h1bStatLatestVolume", { year: h1bSignal.latestYear })}
+                </div>
+                <div className="text-[11px] text-zinc-500 mt-0.5">
+                  {t("h1bShareNote", {
+                    pct: Math.round(h1bSignal.shareOfLatestYear * 100) + "%",
+                    year: h1bSignal.latestYear,
+                  })}
+                </div>
+              </div>
+              <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
+                <div className="text-2xl font-bold tabular-nums text-zinc-900 dark:text-white">
+                  {formatCurrency(h1bSignal.medianWageAnnualLatest)}
+                </div>
+                <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
+                  {t("h1bStatMedianWage")}
+                </div>
+              </div>
+              <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
+                <div className="text-xl font-bold tabular-nums text-zinc-900 dark:text-white">
+                  {t("h1bRankValue", {
+                    rank: h1bSignal.rankByTotal,
+                    total: h1bSignal.totalOccupations,
+                  })}
+                </div>
+                <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
+                  {t("h1bStatRank")}
+                </div>
+              </div>
+            </div>
+            <H1bSparkline countByYear={h1bSignal.countByYear} label={t("h1bSparklineLabel", { first: h1bFirst, latest: h1bLatest })} />
+          </>
+        ) : (
+          <p className="text-sm text-zinc-500 italic mt-2">
+            {t("h1bNoData", { first: h1bFirst, latest: h1bLatest })}
+          </p>
+        )}
+      </section>
+
       {onet && (
         <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 space-y-6">
           <div>
@@ -553,4 +633,52 @@ function formatLensPct(value: number) {
 
 function clampPct(value: number) {
   return Math.min(100, Math.max(0, value));
+}
+
+function H1bSparkline({
+  countByYear,
+  label,
+}: {
+  countByYear: Record<string, number>;
+  label: string;
+}) {
+  const entries = Object.entries(countByYear).sort(
+    (a, b) => Number(a[0]) - Number(b[0]),
+  );
+  if (entries.length < 2) return null;
+  const values = entries.map(([, v]) => v);
+  const max = Math.max(...values, 1);
+  const min = Math.min(...values);
+  const range = max - min || 1;
+  const W = 200;
+  const H = 40;
+  const n = values.length;
+  const pts = values
+    .map((v, i) => {
+      const x = (i / (n - 1)) * W;
+      const y = H - 4 - ((v - min) / range) * (H - 8);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
+  return (
+    <svg
+      width={W}
+      height={H}
+      viewBox={`0 0 ${W} ${H}`}
+      preserveAspectRatio="none"
+      role="img"
+      aria-labelledby="h1b-sparkline-title"
+      className="w-full max-w-xs text-violet-500 dark:text-violet-400 mt-1"
+    >
+      <title id="h1b-sparkline-title">{label}</title>
+      <polyline
+        points={pts}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
 }

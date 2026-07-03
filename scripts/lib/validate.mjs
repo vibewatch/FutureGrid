@@ -261,12 +261,16 @@ export function validateOccupationSnapshotSlim(dataset) {
  *  - a minimum certifiedLcas per year (guards against an empty/broken parse)
  *  - coverage.fiscalYears matches the fiscalYears present in byYear
  *  - occupations/byState/topEmployers are present and non-empty
+ *  - occupations[].wageByYear (when present) hold positive-or-null medians
+ *  - byState[] carry wageByYear + topOccupations; topEmployers carry meanWageAnnual
+ *  - at least `minEmployers` (default 50) top employers are present
  *
  * @param {Record<string, unknown>} data
- * @param {{ minYears?: number, minCertifiedPerYear?: number }} [opts]
+ * @param {{ minYears?: number, minCertifiedPerYear?: number, minEmployers?: number }} [opts]
  */
 export function validateH1bTrends(data, opts = {}) {
   const minYears = opts.minYears ?? 4;
+  const minEmployers = opts.minEmployers ?? 50;
   // Full-year figures: FY2020+ sum all four quarterly files (distinct
   // CASE_NUMBER union), and FY2016–FY2019 use the annual workbook, so every
   // covered year now carries a full fiscal year of certified H-1B LCAs
@@ -343,7 +347,7 @@ export function validateH1bTrends(data, opts = {}) {
   }
 
   assertMinRows(data.occupations, 50, "h1b-trends.occupations");
-  assertMinRows(data.topEmployers, 5, "h1b-trends.topEmployers");
+  assertMinRows(data.topEmployers, minEmployers, "h1b-trends.topEmployers");
   assertMinRows(data.byState, 20, "h1b-trends.byState");
 
   // Spot-check that SOC codes are normalized to ##-#### form.
@@ -354,6 +358,71 @@ export function validateH1bTrends(data, opts = {}) {
     throw new Error(
       `[validate] h1b-trends: occupation SOC code not normalized: ${bad && bad.socCode}`
     );
+  }
+
+  // ── New enrichment fields (wage-by-occupation, state/employer deep-dives) ──
+
+  // occupations[].wageByYear: emitted for high-volume occupations; every value
+  // must be a positive number or null (noisy/low-sample years are nulled).
+  for (const o of data.occupations) {
+    if (o.wageByYear === undefined) continue; // omitted for low-volume SOCs — OK
+    if (o.wageByYear === null || typeof o.wageByYear !== "object" || Array.isArray(o.wageByYear)) {
+      throw new Error(
+        `[validate] h1b-trends: occupation ${o.socCode} wageByYear must be an object`
+      );
+    }
+    for (const [y, v] of Object.entries(o.wageByYear)) {
+      if (v !== null && !(typeof v === "number" && v > 0)) {
+        throw new Error(
+          `[validate] h1b-trends: occupation ${o.socCode} wageByYear[${y}] must be a positive number or null`
+        );
+      }
+    }
+  }
+
+  // byState[].wageByYear + topOccupations must be present and well-formed.
+  for (const s of data.byState) {
+    if (!s.wageByYear || typeof s.wageByYear !== "object" || Array.isArray(s.wageByYear)) {
+      throw new Error(
+        `[validate] h1b-trends: byState ${s && s.state} missing/invalid wageByYear`
+      );
+    }
+    for (const [y, v] of Object.entries(s.wageByYear)) {
+      if (v !== null && !(typeof v === "number" && v > 0)) {
+        throw new Error(
+          `[validate] h1b-trends: byState ${s.state} wageByYear[${y}] must be a positive number or null`
+        );
+      }
+    }
+    if (!Array.isArray(s.topOccupations)) {
+      throw new Error(
+        `[validate] h1b-trends: byState ${s.state} missing topOccupations array`
+      );
+    }
+    for (const t of s.topOccupations) {
+      if (
+        !t ||
+        typeof t.socCode !== "string" ||
+        !(typeof t.count === "number" && t.count > 0)
+      ) {
+        throw new Error(
+          `[validate] h1b-trends: byState ${s.state} topOccupations entry malformed`
+        );
+      }
+    }
+  }
+
+  // topEmployers[].meanWageAnnual must be a positive number or null.
+  for (const e of data.topEmployers) {
+    if (
+      e.meanWageAnnual !== null &&
+      e.meanWageAnnual !== undefined &&
+      !(typeof e.meanWageAnnual === "number" && e.meanWageAnnual > 0)
+    ) {
+      throw new Error(
+        `[validate] h1b-trends: topEmployers ${e && e.employer} meanWageAnnual must be a positive number or null`
+      );
+    }
   }
 }
 

@@ -95,4 +95,19 @@ export const careersZh = {
   sectionSectorComparison: "行业对比",
   colThisCareer: "本职业",
   colSectorAverage: "行业平均",
+
+  // H-1B 签证赞助需求
+  h1bSectionTitle: "H-1B 签证赞助需求",
+  h1bSectionSubtitle:
+    "以该职业为申请对象的 H-1B 劳工条件认证申请（LCA），FY{first}–FY{latest}。描述性高技能劳动力需求信号——雇主申请记录，非签证批准或个人结果。注意：一份 LCA 可涵盖多个岗位。",
+  h1bStatDecadeTotal: "十年总计（认证 LCA）",
+  h1bStatLatestVolume: "FY{year} 申请量",
+  h1bStatMedianWage: "申报工资中位数（最新年度）",
+  h1bStatRank: "总量排名",
+  h1bRankValue: "第 {rank} 名（共 {total} 个职业）",
+  h1bShareNote: "占 FY{year} 全部 H-1B 申请的 {pct}",
+  h1bViewTrends: "查看完整 H-1B 趋势 →",
+  h1bSparklineLabel: "H-1B 申请量，FY{first}–FY{latest}",
+  h1bNoData:
+    "该职业在 FY{first}–FY{latest} 期间无 H-1B 认证 LCA 申请记录。",
 };

@@ -14,7 +14,7 @@
 // so the wrapping accessible markup is still emitted and can be asserted.
 
 import { describe, it, expect, vi } from "vitest";
-import { render, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 // ── Mocks required by chart components ───────────────────────────────────────
 

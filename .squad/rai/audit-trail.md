@@ -6,6 +6,51 @@
 
 ---
 
+## RAI Audit — 2026-07-02T22:18Z (Round 4 — H-1B Visa Sponsorship Demand section)
+
+**Reviewer:** Rai
+**Requested by:** huangyingting
+**Scope:** New "H-1B Visa Sponsorship Demand" section on per-occupation career detail view: `components/careers/CareerDetailClient.tsx` (H-1B section + sparkline), `lib/i18n/messages/en/careers.ts` and `lib/i18n/messages/zh/careers.ts` (11 new `h1b*` keys), cross-checked against `/visa` framing in `lib/i18n/messages/en/visa.ts`.
+**Overall Verdict:** 🟡 Yellow — three advisory findings, no blockers; ship can proceed
+
+### R4-F1 — 🟡 ZH drops "Offered" qualifier from median-wage stat label
+- **File:** `lib/i18n/messages/zh/careers.ts:h1bStatMedianWage`
+- **WHAT:** EN reads `"Median Offered Wage (Latest Year)"`. ZH reads `"工资中位数（最新年度）"` — the word "Offered" (申报/提供) is absent.
+- **WHY:** "Offered wage" is the annualised wage stated on the LCA filing by the employer, not the actual paid wage or the occupation-wide BLS median. Omitting the qualifier in ZH silently widens the implied precision of the figure for Chinese-language users and creates a caveat inconsistency across languages.
+- **HOW:** Update ZH key to `"申报工资中位数（最新年度）"`. One-line copy change; no structural work.
+
+### R4-F2 — 🟡 Career-detail section omits the "one LCA ≠ one worker" caveat present on /visa
+- **Files:** `lib/i18n/messages/en/careers.ts:h1bSectionSubtitle`, `lib/i18n/messages/zh/careers.ts:h1bSectionSubtitle`
+- **WHAT:** The subtitle correctly states "employer filings, not visa approvals or individual outcomes," but does not include the additional caveat on the `/visa` page (`caveatBody`): *"a single LCA can cover multiple worker positions, and not every certified filing results in a hire or an issued visa."* The headline stat `"Decade Total (Certified LCAs)"` has no inline qualification.
+- **WHY:** A user reading only the career-detail section without clicking through to `/visa` could read the decade-total as an individual-worker headcount. On immigration-adjacent data the one-LCA-covers-multiple-positions distinction is material.
+- **HOW:** Expand `h1bSectionSubtitle` (EN + ZH) to add: *"Note: one LCA may cover multiple worker positions."* Alternatively, a tooltip or 10px footnote below the stat grid suffices. Advisory only.
+
+### R4-F3 — 🟡 Sparkline SVG lacks inline `<title>` element (accessibility)
+- **File:** `components/careers/CareerDetailClient.tsx:664–680`
+- **WHAT:** `H1bSparkline` uses `role="img"` and `aria-label={label}` but has no `<title>` child element. WCAG 2.1 SC 4.1.2 and SVG accessibility best-practice prefer an inline `<title>` as the primary accessible name; `aria-label` is an acceptable fallback but screen-reader compatibility is broader with `<title>`.
+- **HOW:** Add `<title id="h1b-sparkline-title">{label}</title>` as first child of the SVG; add `aria-labelledby="h1b-sparkline-title"`. Advisory; no logic or data change.
+
+### Clean (🟢)
+
+| Check | Result |
+|-------|--------|
+| Causal/predictive overclaiming | ✅ "Descriptive signal" framing throughout; no "will", "guarantees", "leads to", "causes" |
+| "Filings, not approvals" visible | ✅ Subtitle (EN + ZH) explicitly states "employer filings, not visa approvals or individual outcomes" |
+| Stigmatising / othering language | ✅ No foreign-vs-domestic framing, no winners/losers, no nationality stereotypes |
+| Financial/career advice | ✅ No advice-to-pursue or sponsorship-promise language found |
+| PII / secrets | ✅ No personal data or credentials in changed copy/code |
+| EN/ZH substantive consistency | ✅ Caveats and neutrality equivalent (minor omission flagged in R4-F1) |
+
+### Action items (non-blocking)
+
+| Priority | ID | Suggested fix |
+|----------|----|---------------|
+| Medium | R4-F1 | Add "申报" qualifier to ZH `h1bStatMedianWage` key |
+| Medium | R4-F2 | Append "one LCA may cover multiple worker positions" clause to EN + ZH subtitle |
+| Low | R4-F3 | Add `<title>` child to `H1bSparkline` SVG + `aria-labelledby` |
+
+---
+
 ## RAI Audit — 2026-06-30T06:43Z (Round 3 — Real-Data Integration)
 
 **Reviewer:** Rai  

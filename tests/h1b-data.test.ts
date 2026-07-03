@@ -15,6 +15,11 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { validateH1bTrends } from "../scripts/lib/validate.mjs";
+import {
+  getOccupationSignalBySoc,
+  getFiscalYears,
+  type H1bOccupationSignal,
+} from "@/lib/h1b";
 
 const ROOT = process.cwd();
 const read = (rel: string) =>
@@ -37,7 +42,11 @@ type Occupation = {
   totalCount: number;
   medianWageAnnualLatest: number | null;
   cagr: number | null;
+  wageByYear?: Record<string, number | null>;
+  medianWageByYear?: Record<string, number | null>;
 };
+
+type TopOccupation = { socCode: string; socTitle: string | null; count: number };
 
 type H1bTrends = {
   meta: { generatedAt: string; source: { name?: string; url?: string } };
@@ -49,8 +58,20 @@ type H1bTrends = {
   };
   byYear: ByYear[];
   occupations: Occupation[];
-  topEmployers: { employer: string; totalCount: number; countByYear: Record<string, number> }[];
-  byState: { state: string; totalCount: number; countByYear: Record<string, number>; medianWageAnnualLatest: number | null }[];
+  topEmployers: {
+    employer: string;
+    totalCount: number;
+    countByYear: Record<string, number>;
+    meanWageAnnual: number | null;
+  }[];
+  byState: {
+    state: string;
+    totalCount: number;
+    countByYear: Record<string, number>;
+    medianWageAnnualLatest: number | null;
+    wageByYear: Record<string, number | null>;
+    topOccupations: TopOccupation[];
+  }[];
 };
 
 // ─── Committed file ───────────────────────────────────────────────────────────
@@ -153,8 +174,8 @@ describe("validateH1bTrends — committed file", () => {
   });
 
   it("topEmployers and byState are non-empty and count-ordered", () => {
-    expect(data.topEmployers.length).toBeGreaterThan(0);
-    expect(data.topEmployers.length).toBeLessThanOrEqual(30);
+    expect(data.topEmployers.length).toBeGreaterThanOrEqual(50);
+    expect(data.topEmployers.length).toBeLessThanOrEqual(50);
     for (let i = 1; i < data.topEmployers.length; i++) {
       expect(data.topEmployers[i - 1].totalCount).toBeGreaterThanOrEqual(
         data.topEmployers[i].totalCount
@@ -164,6 +185,67 @@ describe("validateH1bTrends — committed file", () => {
     expect(states).toContain("CA");
     // Two-letter USPS codes only.
     for (const s of states) expect(s).toMatch(/^[A-Z]{2}$/);
+  });
+
+  it("topEmployers carry a running mean offered wage (positive or null)", () => {
+    for (const e of data.topEmployers) {
+      expect("meanWageAnnual" in e).toBe(true);
+      if (e.meanWageAnnual !== null) {
+        expect(e.meanWageAnnual).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("high-volume occupations carry wageByYear (positive-or-null medians)", () => {
+    const tracked = data.occupations.filter((o) => o.totalCount >= 5000);
+    expect(tracked.length).toBeGreaterThan(50);
+    for (const o of tracked) {
+      expect(o.wageByYear).toBeDefined();
+      for (const v of Object.values(o.wageByYear ?? {})) {
+        if (v !== null) expect(v).toBeGreaterThan(0);
+      }
+    }
+    // Low-volume occupations omit the field (noisy medians).
+    const small = data.occupations.find((o) => o.totalCount < 5000);
+    if (small) expect(small.wageByYear).toBeUndefined();
+  });
+
+  it("Software Developers (15-1252) has a plausible wage trend", () => {
+    const dev = data.occupations.find((o) => o.socCode === "15-1252");
+    expect(dev).toBeDefined();
+    expect(dev?.wageByYear).toBeDefined();
+    const latest = String(Math.max(...data.coverage.fiscalYears));
+    const w = dev?.wageByYear?.[latest];
+    if (w != null) {
+      expect(w).toBeGreaterThan(80000);
+      expect(w).toBeLessThan(400000);
+    }
+  });
+
+  it("every state carries wageByYear and topOccupations (top 5 by count)", () => {
+    const coverage = new Set(data.coverage.fiscalYears.map(String));
+    for (const s of data.byState) {
+      expect(s.wageByYear).toBeDefined();
+      for (const [y, v] of Object.entries(s.wageByYear)) {
+        expect(coverage.has(y)).toBe(true);
+        if (v !== null) expect(v).toBeGreaterThan(0);
+      }
+      expect(Array.isArray(s.topOccupations)).toBe(true);
+      expect(s.topOccupations.length).toBeLessThanOrEqual(5);
+      for (const t of s.topOccupations) {
+        expect(t.socCode).toMatch(/^\d{2}-\d{4}$/);
+        expect(t.count).toBeGreaterThan(0);
+      }
+      // topOccupations must be ordered by descending count.
+      for (let i = 1; i < s.topOccupations.length; i++) {
+        expect(s.topOccupations[i - 1].count).toBeGreaterThanOrEqual(
+          s.topOccupations[i].count
+        );
+      }
+    }
+    // CA's top occupation should be present and count-ranked.
+    const ca = data.byState.find((s) => s.state === "CA");
+    expect(ca?.topOccupations.length).toBeGreaterThan(0);
   });
 });
 
@@ -194,16 +276,19 @@ describe("validateH1bTrends — negative cases", () => {
       medianWageAnnualLatest: 100000,
       cagr: 0,
     })),
-    topEmployers: Array.from({ length: 10 }, (_, i) => ({
+    topEmployers: Array.from({ length: 50 }, (_, i) => ({
       employer: `E${i}`,
-      totalCount: 100 - i,
+      totalCount: 1000 - i,
       countByYear: { "2023": 10 },
+      meanWageAnnual: 100000,
     })),
     byState: Array.from({ length: 25 }, (_, i) => ({
       state: `S${i}`,
       totalCount: 100,
       countByYear: { "2023": 10 },
       medianWageAnnualLatest: 100000,
+      wageByYear: { "2023": 100000 },
+      topOccupations: [{ socCode: "15-1252", socTitle: "Software Developers", count: 10 }],
     })),
   });
 
@@ -252,5 +337,98 @@ describe("validateH1bTrends — negative cases", () => {
     const d = base();
     d.meta.source = {} as { name: string; url: string };
     expect(() => validateH1bTrends(d)).toThrow(/missing meta\.source/);
+  });
+});
+
+// ─── getOccupationSignalBySoc ─────────────────────────────────────────────────
+
+describe("getOccupationSignalBySoc", () => {
+  const rawData = read("data/h1b-trends.json") as { occupations: { socCode: string; countByYear: Record<string, number>; totalCount: number }[] };
+
+  it("returns non-null for the top SOC 15-1252 (Software Developers)", () => {
+    const signal = getOccupationSignalBySoc("15-1252");
+    expect(signal).not.toBeNull();
+  });
+
+  it("15-1252: rankByTotal === 1 and totalCount === 1774152", () => {
+    const signal = getOccupationSignalBySoc("15-1252") as H1bOccupationSignal;
+    expect(signal.rankByTotal).toBe(1);
+    expect(signal.totalCount).toBe(1774152);
+  });
+
+  it("15-1252: latestYearCount and medianWageAnnualLatest are positive", () => {
+    const signal = getOccupationSignalBySoc("15-1252") as H1bOccupationSignal;
+    expect(signal.latestYearCount).toBeGreaterThan(0);
+    expect(signal.medianWageAnnualLatest).toBeGreaterThan(0);
+  });
+
+  it("15-1252: countByYear has an entry for every fiscal year", () => {
+    const signal = getOccupationSignalBySoc("15-1252") as H1bOccupationSignal;
+    const years = getFiscalYears();
+    for (const y of years) {
+      expect(signal.countByYear).toHaveProperty(String(y));
+    }
+  });
+
+  it("15-1252: firstYear / latestYear match first/last fiscal year", () => {
+    const signal = getOccupationSignalBySoc("15-1252") as H1bOccupationSignal;
+    const years = getFiscalYears();
+    expect(signal.firstYear).toBe(years[0]);
+    expect(signal.latestYear).toBe(years[years.length - 1]);
+  });
+
+  it("15-1252: shareOfLatestYear is in (0, 1] and equals latestYearCount / sum-of-latest", () => {
+    const signal = getOccupationSignalBySoc("15-1252") as H1bOccupationSignal;
+    expect(signal.shareOfLatestYear).toBeGreaterThan(0);
+    expect(signal.shareOfLatestYear).toBeLessThanOrEqual(1);
+
+    const years = getFiscalYears();
+    const latestKey = String(years[years.length - 1]);
+    const sumLatest = rawData.occupations.reduce(
+      (s, o) => s + (o.countByYear[latestKey] ?? 0),
+      0,
+    );
+    const expected = signal.latestYearCount / sumLatest;
+    expect(signal.shareOfLatestYear).toBeCloseTo(expected, 10);
+  });
+
+  it("returns null for an unknown SOC code", () => {
+    expect(getOccupationSignalBySoc("99-9999")).toBeNull();
+  });
+
+  it("rankByTotal === 1 belongs to the occupation with the highest totalCount", () => {
+    const sorted = [...rawData.occupations].sort(
+      (a, b) => b.totalCount - a.totalCount,
+    );
+    const topSoc = sorted[0].socCode;
+    const signal = getOccupationSignalBySoc(topSoc) as H1bOccupationSignal;
+    expect(signal.rankByTotal).toBe(1);
+  });
+
+  it("a lower-volume known SOC has rankByTotal > 1", () => {
+    // 15-1221 (Computer and Information Research Scientists) is present but
+    // well below Software Developers in volume.
+    const lower = getOccupationSignalBySoc("15-1221");
+    if (lower !== null) {
+      expect(lower.rankByTotal).toBeGreaterThan(1);
+    } else {
+      // Fallback: use the second-ranked occupation.
+      const sorted = [...rawData.occupations].sort(
+        (a, b) => b.totalCount - a.totalCount,
+      );
+      const second = getOccupationSignalBySoc(sorted[1].socCode) as H1bOccupationSignal;
+      expect(second.rankByTotal).toBeGreaterThan(1);
+    }
+  });
+
+  it("totalOccupations equals the raw dataset occupation count", () => {
+    const signal = getOccupationSignalBySoc("15-1252") as H1bOccupationSignal;
+    expect(signal.totalOccupations).toBe(rawData.occupations.length);
+  });
+
+  it("two calls for the same SOC return deep-equal objects (determinism)", () => {
+    const a = getOccupationSignalBySoc("15-1252");
+    const b = getOccupationSignalBySoc("15-1252");
+    expect(a).toEqual(b);
   });
 });

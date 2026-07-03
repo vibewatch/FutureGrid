@@ -96,4 +96,19 @@ export const careersEn = {
   sectionSectorComparison: "Sector Comparison",
   colThisCareer: "This Career",
   colSectorAverage: "Sector Average",
+
+  // H-1B Visa Sponsorship Demand
+  h1bSectionTitle: "H-1B Visa Sponsorship Demand",
+  h1bSectionSubtitle:
+    "Certified H-1B Labor Condition Applications naming this occupation, FY{first}–FY{latest}. A descriptive high-skill labor-demand signal — employer filings, not visa approvals or individual outcomes. Note: one LCA can cover multiple worker positions.",
+  h1bStatDecadeTotal: "Decade Total (Certified LCAs)",
+  h1bStatLatestVolume: "FY{year} Volume",
+  h1bStatMedianWage: "Median Offered Wage (Latest Year)",
+  h1bStatRank: "Rank by Total Volume",
+  h1bRankValue: "#{rank} of {total}",
+  h1bShareNote: "{pct} of all H-1B filings in FY{year}",
+  h1bViewTrends: "View full H-1B trends →",
+  h1bSparklineLabel: "H-1B filing volume, FY{first}–FY{latest}",
+  h1bNoData:
+    "No H-1B certified LCA filings recorded for this occupation in FY{first}–FY{latest}.",
 };

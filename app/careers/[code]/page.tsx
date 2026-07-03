@@ -6,6 +6,7 @@ import {
 import { getOnetEnrichment } from "@/lib/onet";
 import { getOccupationTrend } from "@/lib/snapshot";
 import { getOccupationExposureLenses } from "@/lib/exposure";
+import { getOccupationSignalBySoc, getCoverage } from "@/lib/h1b";
 import CareerDetailClient from "@/components/careers/CareerDetailClient";
 
 // All data is read here at BUILD time (Server Component + static export) so the
@@ -31,6 +32,10 @@ export default async function CareerDetailPage({
   const trend = getOccupationTrend(code);
   const transitions = getReskillingPaths(code, 3, "score");
   const exposureLenses = getOccupationExposureLenses(code) ?? null;
+  const h1bSignal = getOccupationSignalBySoc(code);
+  const { fiscalYears } = getCoverage();
+  const h1bFirst = fiscalYears.at(0) ?? 0;
+  const h1bLatest = fiscalYears.at(-1) ?? 0;
 
   return (
     <CareerDetailClient
@@ -42,6 +47,9 @@ export default async function CareerDetailPage({
       trend={trend}
       transitions={transitions}
       exposureLenses={exposureLenses}
+      h1bSignal={h1bSignal}
+      h1bFirst={h1bFirst}
+      h1bLatest={h1bLatest}
     />
   );
 }

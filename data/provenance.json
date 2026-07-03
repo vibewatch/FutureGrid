@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-02T19:07:15.581Z",
+  "generatedAt": "2026-07-02T21:52:45.223Z",
   "datasets": [
     {
       "id": "ai-demand",
@@ -104,7 +104,7 @@
     {
       "id": "h1b-trends",
       "file": "data/h1b-trends.json",
-      "generatedAt": "2026-07-02T18:42:04.146Z",
+      "generatedAt": "2026-07-02T21:51:40.316Z",
       "asOf": "FY2025",
       "source": {
         "name": "DOL OFLC LCA Disclosure Data",
