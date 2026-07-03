@@ -2127,3 +2127,84 @@ Mandatory metadata/doc caveats:
 - Redistribution/licensing must be surfaced in source metadata before any bulk export.
 
 Rationale: this is the safest implement-now path because it uses already-cleared/open data already present in FutureGrid, preserves honest provenance semantics, and creates a clean adapter boundary for Lightcast/LinkUp/Adzuna/TheirStack if/when licensed later.
+
+
+### Global Adoption–Readiness Gap Lens (2026-07-03)
+
+**Requested by:** huangyingting  
+**Status:** Approved (🟢 Trinity final review; Mouse validation passed)  
+**Scope:** New `/global` mined-data lens comparing adoption diffusion to AI readiness without duplicating `/analysis` forecast/regression work.
+
+**Decision:** Ship the Global Adoption–Readiness Gap Lens using existing `getCountryMapData()` metrics. Countries are rankable only when both `diffusionPct` and `aiReadiness` are present; each metric is converted to a tie-aware 0–100 percentile rank, and the displayed gap is adoption percentile minus readiness percentile. A material gap uses a fixed ±15 percentile-point threshold; balanced leaders require both percentiles >= 66 and no material gap. `usageIndex` / Claude API-session proxy telemetry is excluded from scoring.
+
+**Implementation notes:** Server code calls `getReadinessGapData()` in `app/global/page.tsx` and passes serializable data through `components/global/GlobalView.tsx` into `components/global/ReadinessGapLens.tsx`, using type-only imports from `lib/readiness-gap.ts`. The lens is placed after AI Adoption Signals and includes EN/ZH i18n parity with localized gap units.
+
+**Validation:** Targeted readiness-gap tests passed (2 files / 10 tests), lint passed (exit 0), full tests passed (45 files / 480 tests), and build passed (806 static pages).
+
+**Merged inbox decisions:** Tank — percentile-rank readiness-gap scoring and thresholds; Neo — server-loaded `/global` rendering path.
+
+
+### 2026-07-03T10:19:02.301+00:00: Talent Bottleneck Lens scoring uses SOC union with fixed missing-data weights
+**By:** Tank  
+**Status:** Approved (🟢 Trinity final review; Mouse validation passed)  
+**Scope:** /visa H-1B Talent Bottleneck Lens data-mining implementation.  
+**References:** /visa, lib/talent-bottleneck.ts, tests/talent-bottleneck.test.ts, components/visa/TalentBottleneckLens.tsx
+
+Tank set the ranked universe to the union of SOC codes from H-1B trends, employment projections, job postings, and occupation snapshots. Missing fields remain null and contribute zero against fixed weights, preserving deterministic, comparable descriptive scores. Neo integrated the lens in /visa with EN/ZH i18n and tests; Switch corrected CAGR display by converting decimal CAGR to percent at display time without changing scoring semantics. Methodology copy must keep caveats: certified LCAs are filings, not approvals; scores are descriptive, not proof of shortage or causality; bundled job postings can be proxy/seed-derived.
+
+
+### 2026-07-03T11:59:08.288+00:00: Use official OpenRouter public APIs for model prediction data
+**By:** Tank, Trinity, Mouse  
+**Status:** Approved  
+**References:** `scripts/build-openrouter-models.mjs`, `data/openrouter-models.json`, `scripts/lib/validate.mjs`, `build:openrouter-models`  
+**Decision:** Collect OpenRouter model catalog and provider/endpoint metadata for prediction through official public REST APIs only: `/api/v1/models` and `/api/v1/models/{modelId}/endpoints`.
+**Rationale:** Do not scrape `#activity`, use account analytics, require API keys, or depend on private/management endpoints because no stable public global activity time-series endpoint was found.
+**Outcome:** Tank implemented the builder, generated snapshot, validation, tests, package script, and provenance integration. Snapshot contains 340 models and 878 endpoints. Mouse validation passed `npm run build:openrouter-models`, `npm run build:provenance`, targeted tests 59/59, lint, full tests, and production build with 806 pages. Trinity final review: APPROVE.
+
+### /global AI Model Ecosystem Footprint — OpenRouter Country Catalog Proxy (2026-07-03)
+
+**Requested by:** huangyingting  
+**Status:** Approved (🟢 Trinity final review; Mouse validation passed)  
+**Scope:** Use OpenRouter model catalog and endpoint-provider metadata on `/global` as a country-level AI model ecosystem footprint proxy, not as real usage, adoption, traffic, or activity analytics.
+
+**Decision:**
+- Present the feature as **AI Model Ecosystem Footprint** and keep copy explicit that it is a public catalog/provider identity proxy.
+- Keep model publisher footprint and endpoint provider footprint as separate lenses; do not combine them into an overall activity score.
+- Use `recentModelCount` with a 365-day window ending at the OpenRouter snapshot `asOf` date.
+- Surface unknown or ambiguous endpoint providers in `unknownProviders` instead of allocating them to countries.
+- Place the `/global` section after AI Adoption Signals and before the Adoption–Readiness Gap lens.
+
+**Implementation:** Tank added `lib/openrouter-provider-geography.ts`, `lib/openrouter-country-activity.ts`, and tests for publisher/provider aggregation. Neo added `components/global/OpenRouterCountryActivityLens.tsx`, wired `/global`, and added EN/ZH i18n plus component tests. Switch fixed the TypeScript narrowing issue found during validation under reviewer lockout.
+
+**Validation:** Mouse passed targeted OpenRouter tests (3 files / 11 tests), readiness + country tests (4 files / 18 tests), lint, full tests (50 files / 503 tests), and production build generating 806 static pages. Trinity final review: APPROVE.
+
+
+### Finance-safe AI Company Stock Lens for `/analysis` (2026-07-03)
+
+**Requested by:** huangyingting  
+**Status:** Approved (🟢 Trinity final review; Mouse validation passed)  
+**Scope:** Descriptive historical adjusted-close stock signals for 22 AI-related companies plus 3 benchmarks. No investment advice, recommendations, forecasts, buy/sell/hold labels, or live scraping.
+
+**Decision:** Use `scripts/build-ai-company-stocks.mjs` to rebuild `data/ai-company-stocks.json`. Prefer Alpha Vantage `TIME_SERIES_DAILY_ADJUSTED` when `ALPHA_VANTAGE_API_KEY` is present; otherwise use the committed deterministic fixture following the existing market-signal source pattern and provenance caveat.
+
+**Accuracy note:** Period-return logic must use the latest observation on or before the target date, or `null` when coverage is insufficient, avoiding sparse-monthly first-observation-after-target bias.
+
+**Validation:** Builder and provenance passed; targeted AI-stock tests passed (3 files / 69 tests); lint passed; full tests passed (52 files / 516 tests); production build generated 806 pages.
+
+**Implemented by:** Trinity (plan/review), Tank (data/build), Neo (UI/i18n), Mouse (validation).  
+**Merged from inbox:** `decisions/inbox/Tank-ai-company-stock-insights-use-alpha-vantage-when-k.md`
+
+
+## 2026-07-03T19:44:32.001+00:00 — AI Company Stock Lens Coverage Expansion
+
+**Requested by:** huangyingting  
+**Status:** Approved (Trinity final review ✅)  
+**Decision:** Expand the AI company stock insights dataset from the prior 22-company lens to 47 companies, preserving the existing finance-safe scope: descriptive historical stock signals only, no recommendations, advice, or forecasts.
+
+**Coverage added:** 25 tickers across semiconductors/equipment/EDA, AI cloud/platforms, enterprise/data AI software, data-center/power/networking, and AI memory/interconnect/storage: ARM, INTC, MU, MRVL, QCOM, LRCX, KLAC, CDNS, ALAB, IBM, SAP, CRWV, NBIS, BABA, BIDU, AI, DDOG, MDB, NET, CSCO, HPE, GEV, PSTG, CLS, and CRDO.
+
+**Dataset shape:** `data/ai-company-stocks.json` now covers 47 companies, 3 benchmarks, and 7 categories, including new `ai-cloud-infrastructure` and `ai-memory-interconnect-storage` categories. `scripts/build-ai-company-stocks.mjs`, `data/provenance.json`, and tests were updated accordingly.
+
+**Data-quality note:** PSTG is retained using the current Yahoo/market source symbol `P` with an explicit caveat in `dataQualityNotes`.
+
+**Validation:** Mouse passed the builder, provenance, targeted AI-stock tests (3 files / 71 tests), lint, full exact test run, and production build with 806 pages. A supplemental unrelated WARN timeout flake was noted as not caused by the watchlist expansion.

@@ -80,6 +80,43 @@ export const visaZh = {
   tierVeryHigh: "极高",
   tierUnclassified: "未分类",
 
+  // ── Talent bottleneck lens ───────────────────────────────────────────────────
+  talentBottleneckEyebrow: "挖掘数据透镜",
+  talentBottleneckTitle: "人才瓶颈透镜",
+  talentBottleneckSubtitle:
+    "按 SOC 职业层级连接获批 H-1B LCA、预计岗位空缺、招聘信号、工资与 AI 暴露度，形成描述性瓶颈指数。",
+  talentBottleneckCaveatLabel: "按指数解读：",
+  talentBottleneckCaveat:
+    "获批 LCA 并非签证批准；瓶颈分数是指数，并非短缺或因果关系证明；招聘帖数据在适用处为代理/种子衍生信号。",
+  talentBottleneckOccupationsTracked: "追踪职业数",
+  talentBottleneckOccupationsTrackedDetail: "展示 {rows} 条排名记录",
+  talentBottleneckLatestFiscalYear: "最新 H-1B 财年",
+  talentBottleneckLatestFiscalYearDetail: "获批 LCA 信号使用最新财年切片",
+  talentBottleneckProjectionWindow: "预测窗口",
+  talentBottleneckProjectionWindowDetail: "就业预测基准年至目标年",
+  talentBottleneckTopScore: "最高分 / 职业",
+  talentBottleneckChartTitle: "AI 暴露度 × 预计岗位空缺",
+  talentBottleneckChartSubtitle: "气泡大小代表最新获批 LCA；颜色代表自动化风险等级。",
+  talentBottleneckChartAria:
+    "人才瓶颈气泡图，横轴为 AI 暴露度，纵轴为预计年度岗位空缺。",
+  talentBottleneckChartDesc:
+    "每个气泡代表一个职业。气泡越大表示最新年度获批 LCA 越多，颜色表示自动化风险等级。",
+  talentBottleneckXAxis: "AI 暴露度",
+  talentBottleneckYAxis: "预计年度岗位空缺",
+  talentBottleneckTableName: "人才瓶颈排名前 12 个职业",
+  talentBottleneckTableCaption:
+    "排名前 12 的职业，包含瓶颈分数、获批 LCA、预计岗位空缺、招聘帖、工资、AI 暴露度和自动化风险等级。",
+  talentBottleneckScoreLabel: "分数",
+  talentBottleneckOccupation: "职业",
+  talentBottleneckLatestLcas: "最新 LCA",
+  talentBottleneckOpenings: "岗位空缺",
+  talentBottleneckPostings: "招聘帖",
+  talentBottleneckWage: "工资",
+  talentBottleneckAiExposure: "AI 暴露度",
+  talentBottleneckRiskColumn: "AI 暴露度 / 风险",
+  talentBottleneckMethodology: "方法：",
+  talentBottleneckH1bTrendLabel: "首位职业 H-1B CAGR：",
+
   // ── Employers ────────────────────────────────────────────────────────────────
   employersSectionTitle: "顶尖担保雇主",
   employersSectionSubhead:

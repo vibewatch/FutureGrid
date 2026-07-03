@@ -182,6 +182,74 @@ export const globalEn: Record<string, string> = {
   adoptAiResearchDesc:
     "Country-level AI publication activity measures; useful for research context, not direct product usage.",
 
+  // OpenRouter country activity lens
+  openRouterCountryActivityEyebrow: "OpenRouter catalog proxy",
+  openRouterCountryActivityTitle: "AI model ecosystem footprint",
+  openRouterCountryActivitySubtitle:
+    "Country-level provider identity proxy from the OpenRouter public model catalog snapshot as of {asOf}. Model catalog counts and endpoint entries are separate lenses.",
+  openRouterCountryActivityCaveatLabel: "Caveat:",
+  openRouterCountryActivityCaveat:
+    "Public catalog and endpoint availability only; not user traffic, usage, revenue, or national adoption. It is also not physical server location, training location, or a definitive national AI activity measure.",
+  openRouterCountryActivitySourcesLink: "View Data & Sources →",
+  openRouterCountryActivityModelsSnapshotLabel: "Models in snapshot",
+  openRouterCountryActivityModelsSnapshotDetail:
+    "{mapped} mapped to country-level provider identities.",
+  openRouterCountryActivityCountriesMappedLabel: "Countries mapped",
+  openRouterCountryActivityCountriesMappedDetail:
+    "{providers} mapped model-provider entries across countries.",
+  openRouterCountryActivityEndpointEntriesLabel: "Endpoint entries",
+  openRouterCountryActivityEndpointEntriesDetail:
+    "{mapped} mapped endpoint entries kept separate from model counts.",
+  openRouterCountryActivityUnknownProvidersLabel: "Unknown/unmapped providers",
+  openRouterCountryActivityUnknownProvidersDetail:
+    "{models} model rows and {endpoints} endpoint entries remain unmapped.",
+  openRouterCountryActivityChartTitle:
+    "Top countries by model catalog count",
+  openRouterCountryActivityChartDesc:
+    "Model catalog counts are the primary bars. Endpoint entries are shown as secondary bars and labels, without combining the two measures.",
+  openRouterCountryActivityChartAria:
+    "Top countries by OpenRouter model catalog count, with endpoint entries shown separately.",
+  openRouterCountryActivityModelsLegend: "Models",
+  openRouterCountryActivityEndpointsLegend: "Endpoint entries",
+  openRouterCountryActivityTableTitle:
+    "Country-level OpenRouter catalog proxy table",
+  openRouterCountryActivityCountryHeader: "Country",
+  openRouterCountryActivityRegionHeader: "Region",
+  openRouterCountryActivityModelProvidersHeader: "Model providers",
+  openRouterCountryActivityModelsHeader: "Models",
+  openRouterCountryActivityEndpointProvidersHeader: "Endpoint providers",
+  openRouterCountryActivityEndpointsHeader: "Endpoints",
+  openRouterCountryActivityTopFamiliesHeader: "Top families",
+
+  // Adoption-readiness gap lens
+  readinessGapEyebrow: "Alignment lens",
+  readinessGapTitle: "Adoption–Readiness Gap",
+  readinessGapSubtitle:
+    "Compares each country’s generative-AI diffusion percentile with its AI readiness percentile to surface where observed use and capacity are not aligned.",
+  readinessGapCaveatLabel: "Caveat:",
+  readinessGapCaveat:
+    "Descriptive alignment only; the gap compares percentile ranks across two sources and is not a causal claim.",
+  readinessGapSourcesLink: "View Data & Sources →",
+  readinessGapRankableLabel: "Rankable countries",
+  readinessGapRankableDetail: "{coverage}% coverage of {total} mapped countries with both inputs.",
+  readinessGapPositiveLabel: "Largest positive gap",
+  readinessGapLatentLabel: "Largest latent capacity",
+  readinessGapScatterTitle: "Readiness score vs. GenAI diffusion",
+  readinessGapScatterAria:
+    "Scatter plot of readiness score on the x-axis and generative-AI diffusion percent on the y-axis.",
+  readinessGapScatterDesc:
+    "Each point is a country with both readiness and diffusion data; ranked lists below provide text equivalents.",
+  readinessGapXAxis: "Readiness score",
+  readinessGapYAxis: "Diffusion %",
+  readinessGapGapLabel: "Gap",
+  readinessGapGapUnit: "pctile",
+  readinessGapDiffusionLabel: "Diffusion",
+  readinessGapReadinessLabel: "Readiness",
+  readinessGapAdoptionListTitle: "Adoption outpacing readiness",
+  readinessGapLatentListTitle: "Latent capacity",
+  readinessGapBalancedListTitle: "Balanced leaders",
+  readinessGapEmptyList: "No countries in this group.",
+
   // Fastest-rising adopters
   risersHeading: "Fastest-Rising Adopters",
   risersSourceLink: "Microsoft AIEI \u00b7 see sources",

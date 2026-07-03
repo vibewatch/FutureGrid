@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import VisaTrendsView from "@/components/visa/VisaTrendsView";
+import { getTalentBottleneckData } from "@/lib/talent-bottleneck";
 import { BASE_PATH, SITE_NAME } from "@/lib/seo";
 
 const title = "H-1B Work-Visa Trends";
@@ -26,5 +27,7 @@ export const metadata: Metadata = {
 };
 
 export default function VisaPage() {
-  return <VisaTrendsView />;
+  const talentBottleneck = getTalentBottleneckData();
+
+  return <VisaTrendsView talentBottleneck={talentBottleneck} />;
 }

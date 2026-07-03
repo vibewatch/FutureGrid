@@ -26,6 +26,8 @@ import {
   validateOccupationSnapshot,
   validateOccupationSnapshotSlim,
   validateEmploymentProjections,
+  validateOpenRouterModels,
+  validateAICompanyStocks,
   validateProvenance,
 } from "../scripts/lib/validate.mjs";
 
@@ -721,5 +723,220 @@ describe("validateEmploymentProjections — negative cases", () => {
     expect(() => validateEmploymentProjections(data)).toThrow(
       /employment-projections: coverage\.rowsWithProjectedOpenings is unexpectedly low/
     );
+  });
+});
+
+// ─── validateOpenRouterModels ─────────────────────────────────────────────────
+
+describe("validateOpenRouterModels — committed file", () => {
+  const data = read("data/openrouter-models.json");
+
+  it("committed data/openrouter-models.json passes validation", () => {
+    expect(() => validateOpenRouterModels(data)).not.toThrow();
+  });
+});
+
+describe("validateOpenRouterModels — negative cases", () => {
+  const base = () => ({
+    meta: {
+      generatedAt: "2026-07-03T00:00:00Z",
+      source: {
+        name: "OpenRouter public model catalog API",
+        url: "https://openrouter.ai/api/v1/models",
+      },
+    },
+    coverage: {
+      modelCount: 1,
+      endpointDetails: {
+        attempted: 1,
+        fetched: 1,
+        failed: 0,
+        modelCountWithEndpoints: 1,
+        endpointCount: 1,
+        providerCount: 1,
+        providerNames: ["OpenAI"],
+      },
+      createdDateRange: { earliest: "2026-01-01", latest: "2026-01-01" },
+    },
+    methodology: {},
+    models: [
+      {
+        id: "openai/gpt-example",
+        name: "OpenAI: GPT Example",
+        canonicalSlug: "openai/gpt-example",
+        provider: { slug: "openai", name: "OpenAI" },
+        family: { slug: "gpt", name: "Gpt", inferredFrom: "openai/gpt-example" },
+        createdAt: "2026-01-01T00:00:00.000Z",
+        createdDate: "2026-01-01",
+        contextLength: 128000,
+        maxOutputTokens: 16000,
+        architecture: {
+          modality: "text->text",
+          inputModalities: ["text"],
+          outputModalities: ["text"],
+          tokenizer: "GPT",
+          instructType: null,
+        },
+        pricing: { prompt: 0.000001, completion: 0.000002 },
+        topProvider: {
+          contextLength: 128000,
+          maxCompletionTokens: 16000,
+          isModerated: true,
+        },
+        endpoints: {
+          endpointCount: 1,
+          providerCount: 1,
+          providers: [{ name: "OpenAI", endpointCount: 1 }],
+          supportedParameters: ["max_tokens"],
+        },
+        supportedParameters: ["max_tokens"],
+        description: "Example",
+      },
+    ],
+  });
+
+  it("throws when endpoint detail coverage is too low", () => {
+    const data = base();
+    data.coverage.endpointDetails.fetched = 0;
+    expect(() =>
+      validateOpenRouterModels(data, { minModels: 1, minEndpointDetailRatio: 0.5 })
+    ).toThrow(/openrouter-models: too few public endpoint detail responses/);
+  });
+
+  it("throws when a model is missing architecture modalities", () => {
+    const data = base();
+    delete data.models[0].architecture.inputModalities;
+    expect(() =>
+      validateOpenRouterModels(data, { minModels: 1, minEndpointDetailRatio: 0 })
+    ).toThrow(/architecture\.inputModalities must be an array/);
+  });
+});
+
+// ─── validateAICompanyStocks ─────────────────────────────────────────────────
+
+describe("validateAICompanyStocks — committed file", () => {
+  const data = read("data/ai-company-stocks.json");
+
+  it("committed data/ai-company-stocks.json passes validation", () => {
+    expect(() => validateAICompanyStocks(data)).not.toThrow();
+  });
+});
+
+describe("validateAICompanyStocks — negative cases", () => {
+  it("throws for empty company rows", () => {
+    expect(() =>
+      validateAICompanyStocks({
+        generatedAt: "2026-07-03T00:00:00Z",
+        meta: {
+          generatedAt: "2026-07-03T00:00:00Z",
+          source: { name: "fixture" },
+        },
+        source: {},
+        methodology: {
+          feature: "descriptive only; not financial advice and not a recommendation",
+        },
+        coverage: {
+          sourceMode: "committed-static-fixture",
+          companyCount: 0,
+        },
+        benchmarks: [],
+        companies: [],
+        categories: [],
+        summary: {
+          companyCount: 0,
+        },
+      })
+    ).toThrow(/ai-company-stocks\.companies.*too few rows/);
+  });
+
+  it("throws when trading-action labels appear", () => {
+    const price = [
+      { date: "2026-01-31", close: 100 },
+      { date: "2026-02-28", close: 110 },
+    ];
+    const returns = {
+      "1M": 0.1,
+      "3M": null,
+      "6M": null,
+      YTD: 0.1,
+      "1Y": null,
+      fullPeriod: 0.1,
+    };
+    const metrics = {
+      startDate: "2026-01-31",
+      latestDate: "2026-02-28",
+      latestClose: 110,
+      observationCount: 2,
+      observationInterval: "1mo",
+      returns,
+      annualizedVolatility: null,
+      maxDrawdown: 0,
+      momentum50d: 0.1,
+      momentum200d: null,
+    };
+    const benchmarks = ["spy", "qqq"].map((id) => ({
+      id,
+      ticker: id.toUpperCase(),
+      name: `${id} benchmark`,
+      prices: price,
+      metrics,
+      dataQualityNotes: [],
+    }));
+    const companies = Array.from({ length: 15 }, (_, index) => ({
+      id: `c${index}`,
+      ticker: `C${String.fromCharCode(65 + index)}`,
+      name: `Company ${index}`,
+      primaryCategory: "category",
+      categories: ["category"],
+      prices: price,
+      metrics,
+      relativeReturns: {
+        spy: returns,
+        qqq: returns,
+      },
+      categoryRanks: [
+        {
+          categoryId: "category",
+          oneYearReturnRank: null,
+          ytdReturnRank: index + 1,
+          momentum200dRank: null,
+          memberCount: 15,
+        },
+      ],
+      dataQualityNotes: [],
+      ...(index === 0 ? { recommendation: "not allowed" } : {}),
+    }));
+
+    expect(() =>
+      validateAICompanyStocks({
+        generatedAt: "2026-07-03T00:00:00Z",
+        meta: {
+          generatedAt: "2026-07-03T00:00:00Z",
+          source: { name: "fixture" },
+        },
+        source: {},
+        methodology: {
+          feature: "descriptive only; not financial advice and not a recommendation",
+        },
+        coverage: {
+          sourceMode: "committed-static-fixture",
+          companyCount: 15,
+        },
+        benchmarks,
+        companies,
+        categories: Array.from({ length: 5 }, (_, index) => ({
+          id: `cat-${index}`,
+          label: `Category ${index}`,
+          companyCount: 1,
+          tickers: ["CA"],
+          breadth: {},
+          topGainers1Y: [],
+          laggards1Y: [],
+        })),
+        summary: {
+          companyCount: 15,
+        },
+      })
+    ).toThrow(/trading-action labels/);
   });
 });

@@ -38,3 +38,9 @@ Switch specified the centered wide-screen layout direction and Evidence Stack ma
 - Fixed Trinity/Rai blockers by splitting China app metrics into MAU and usage panels.
 - Split developer survey data into overall distribution and country-share panels to avoid denominator mixing.
 - Preserved bundle hygiene by keeping raw JSON/server loader imports out of client components.
+
+
+2026-07-03T10:19:02.301+00:00 - Fixed Talent Bottleneck CAGR display by converting decimal CAGR to rendered percent and added regression coverage without changing scoring semantics.
+
+
+2026-07-03T12:48:40.595+00:00 - Fixed the OpenRouter country helper TypeScript narrowing build failure under reviewer lockout, unblocking Mouse's final validation without changing feature scope.

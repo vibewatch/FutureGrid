@@ -5,11 +5,13 @@ import EvidenceStack from "@/components/insights/EvidenceStack";
 import AISignalScatter from "@/components/insights/AISignalScatter";
 import ExposureLensComparison from "@/components/insights/ExposureLensComparison";
 import MarketSignalLens from "@/components/insights/MarketSignalLens";
+import AICompanyStockLens from "@/components/insights/AICompanyStockLens";
 import EmploymentForecastChart from "@/components/insights/EmploymentForecastChart";
 import AIForcesTimeline from "@/components/insights/AIForcesTimeline";
 import DisruptionLeaderboard from "@/components/insights/DisruptionLeaderboard";
 import { useT } from "@/lib/i18n/useT";
 import type { AnalysisPageData } from "@/lib/analysis";
+import type { AICompanyStocksData } from "@/lib/ai-company-stocks";
 
 function Section({ eyebrow, title, explainer, children }: { eyebrow: string; title: string; explainer: string; children: React.ReactNode }) {
   return (
@@ -26,7 +28,7 @@ function Section({ eyebrow, title, explainer, children }: { eyebrow: string; tit
   );
 }
 
-export default function InsightsView({ data }: { data: AnalysisPageData }) {
+export default function InsightsView({ data, aiCompanyStocks }: { data: AnalysisPageData; aiCompanyStocks: AICompanyStocksData }) {
   const t = useT("analysis");
   return (
     <div className="mx-auto w-full max-w-[1680px] space-y-14 xl:space-y-16">
@@ -56,11 +58,13 @@ export default function InsightsView({ data }: { data: AnalysisPageData }) {
       <hr className="divider-glow" />
       <Section eyebrow="03" title={t("marketSignalTitle")} explainer={t("marketSignalExplainer")}><MarketSignalLens /></Section>
       <hr className="divider-glow" />
-      <Section eyebrow="04" title={t("forecastTitle")} explainer={t("forecastExplainer")}><EmploymentForecastChart national={data.nationalForecast} signalPoints={data.aiSignal.points} forecasts={data.forecasts} /></Section>
+      <Section eyebrow="04" title={t("aiCompanyStockTitle")} explainer={t("aiCompanyStockExplainer")}><AICompanyStockLens data={aiCompanyStocks} /></Section>
       <hr className="divider-glow" />
-      <Section eyebrow="05" title={t("aiForcesTitle")} explainer={t("aiForcesExplainer")}><AIForcesTimeline /></Section>
+      <Section eyebrow="05" title={t("forecastTitle")} explainer={t("forecastExplainer")}><EmploymentForecastChart national={data.nationalForecast} signalPoints={data.aiSignal.points} forecasts={data.forecasts} /></Section>
       <hr className="divider-glow" />
-      <Section eyebrow="06" title={t("disruptionTitle")} explainer={t("disruptionExplainer")}><DisruptionLeaderboard index={data.disruptionIndex} /></Section>
+      <Section eyebrow="06" title={t("aiForcesTitle")} explainer={t("aiForcesExplainer")}><AIForcesTimeline /></Section>
+      <hr className="divider-glow" />
+      <Section eyebrow="07" title={t("disruptionTitle")} explainer={t("disruptionExplainer")}><DisruptionLeaderboard index={data.disruptionIndex} /></Section>
     </div>
   );
 }

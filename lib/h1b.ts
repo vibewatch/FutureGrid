@@ -59,6 +59,7 @@ export interface H1bOccupation {
   countByYear: Record<string, number>;
   totalCount: number;
   medianWageAnnualLatest: number;
+  /** Compound annual growth rate as a decimal fraction; 0.0572 means +5.72%. */
   cagr: number;
   /** Median annual wage by fiscal year — present only for occupations with ≥ 5,000 total filings. Null values indicate < 50 filings in that year. */
   wageByYear?: Record<string, number | null>;

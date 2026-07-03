@@ -85,6 +85,44 @@ export const visaEn = {
   tierVeryHigh: "Very High",
   tierUnclassified: "Unclassified",
 
+  // ── Talent bottleneck lens ───────────────────────────────────────────────────
+  talentBottleneckEyebrow: "Mined-data lens",
+  talentBottleneckTitle: "Talent Bottleneck Lens",
+  talentBottleneckSubtitle:
+    "A SOC-level view joining certified H-1B LCAs, projected openings, job-posting signals, wages, and AI exposure into a descriptive bottleneck index.",
+  talentBottleneckCaveatLabel: "Read as an index:",
+  talentBottleneckCaveat:
+    "Certified LCAs are not visa approvals; the bottleneck score is an index, not proof of shortage or causality; job postings are proxy/seed-derived where applicable.",
+  talentBottleneckOccupationsTracked: "Occupations tracked",
+  talentBottleneckOccupationsTrackedDetail: "{rows} ranked rows displayed",
+  talentBottleneckLatestFiscalYear: "Latest H-1B fiscal year",
+  talentBottleneckLatestFiscalYearDetail: "Certified-LCA signals use the latest fiscal-year slice",
+  talentBottleneckProjectionWindow: "Projection window",
+  talentBottleneckProjectionWindowDetail: "Employment projections base year to target year",
+  talentBottleneckTopScore: "Top score / occupation",
+  talentBottleneckChartTitle: "AI exposure × projected openings",
+  talentBottleneckChartSubtitle:
+    "Bubble size follows latest certified LCAs; colour follows automation-risk tier.",
+  talentBottleneckChartAria:
+    "Talent bottleneck bubble chart with AI exposure on the x-axis and projected annual openings on the y-axis.",
+  talentBottleneckChartDesc:
+    "Each bubble is an occupation. Larger bubbles have more latest-year certified LCAs, and colour indicates automation-risk tier.",
+  talentBottleneckXAxis: "AI exposure",
+  talentBottleneckYAxis: "Projected annual openings",
+  talentBottleneckTableName: "Top 12 talent bottleneck occupations",
+  talentBottleneckTableCaption:
+    "Top 12 ranked occupations with bottleneck score, certified LCAs, projected openings, job postings, wage, AI exposure, and automation-risk tier.",
+  talentBottleneckScoreLabel: "Score",
+  talentBottleneckOccupation: "Occupation",
+  talentBottleneckLatestLcas: "Latest LCAs",
+  talentBottleneckOpenings: "Openings",
+  talentBottleneckPostings: "Postings",
+  talentBottleneckWage: "Wage",
+  talentBottleneckAiExposure: "AI exposure",
+  talentBottleneckRiskColumn: "AI exposure / risk",
+  talentBottleneckMethodology: "Method:",
+  talentBottleneckH1bTrendLabel: "Top row H-1B CAGR:",
+
   // ── Employers ────────────────────────────────────────────────────────────────
   employersSectionTitle: "Top Sponsoring Employers",
   employersSectionSubhead:

@@ -704,6 +704,389 @@ export function validateEmploymentProjections(data) {
 }
 
 /**
+ * Validate data/openrouter-models.json.
+ *
+ * The dataset captures OpenRouter's public model catalog plus public per-model
+ * endpoint/provider counts. It intentionally excludes scraped activity pages and
+ * private account usage/activity endpoints.
+ *
+ * @param {Record<string, unknown>} data
+ * @param {{ minModels?: number, minEndpointDetailRatio?: number }} [opts]
+ */
+export function validateOpenRouterModels(data, opts = {}) {
+  const minModels = opts.minModels ?? 200;
+  const minEndpointDetailRatio = opts.minEndpointDetailRatio ?? 0.75;
+
+  assertFields(
+    data,
+    ["meta", "coverage", "methodology", "models"],
+    "openrouter-models"
+  );
+  assertProvenance(data, "openrouter-models");
+  assertMinRows(data.models, minModels, "openrouter-models.models");
+
+  if (!data.meta?.source) {
+    throw new Error("[validate] openrouter-models: missing meta.source");
+  }
+  if (data.coverage?.modelCount !== data.models.length) {
+    throw new Error(
+      "[validate] openrouter-models: coverage.modelCount must equal models.length"
+    );
+  }
+
+  const details = data.coverage?.endpointDetails;
+  if (!details || typeof details !== "object" || Array.isArray(details)) {
+    throw new Error(
+      "[validate] openrouter-models: coverage.endpointDetails must be an object"
+    );
+  }
+  if (details.attempted !== data.models.length) {
+    throw new Error(
+      "[validate] openrouter-models: endpointDetails.attempted must equal models.length"
+    );
+  }
+  if (
+    typeof details.fetched !== "number" ||
+    details.fetched < data.models.length * minEndpointDetailRatio
+  ) {
+    throw new Error(
+      "[validate] openrouter-models: too few public endpoint detail responses fetched"
+    );
+  }
+  if (
+    typeof details.endpointCount !== "number" ||
+    details.endpointCount < details.fetched
+  ) {
+    throw new Error(
+      "[validate] openrouter-models: endpointDetails.endpointCount is unexpectedly low"
+    );
+  }
+  if (!Array.isArray(details.providerNames) || details.providerNames.length === 0) {
+    throw new Error(
+      "[validate] openrouter-models: endpointDetails.providerNames must be non-empty"
+    );
+  }
+
+  for (const model of data.models) {
+    const label = `openrouter-models:${model && model.id ? model.id : "?"}`;
+    assertFields(
+      model,
+      [
+        "id",
+        "name",
+        "canonicalSlug",
+        "provider",
+        "family",
+        "createdAt",
+        "createdDate",
+        "contextLength",
+        "maxOutputTokens",
+        "architecture",
+        "pricing",
+        "topProvider",
+        "endpoints",
+        "supportedParameters",
+        "description",
+      ],
+      label
+    );
+
+    if (typeof model.id !== "string" || !model.id.includes("/")) {
+      throw new Error(`[validate] ${label}: id must be a provider/model string`);
+    }
+    if (typeof model.name !== "string" || model.name.length === 0) {
+      throw new Error(`[validate] ${label}: name must be non-empty`);
+    }
+    if (
+      model.canonicalSlug !== null &&
+      typeof model.canonicalSlug !== "string"
+    ) {
+      throw new Error(`[validate] ${label}: canonicalSlug must be string or null`);
+    }
+    if (
+      model.createdAt !== null &&
+      !/^\d{4}-\d{2}-\d{2}T/.test(model.createdAt)
+    ) {
+      throw new Error(`[validate] ${label}: createdAt must be ISO-like or null`);
+    }
+    if (
+      model.createdDate !== null &&
+      !/^\d{4}-\d{2}-\d{2}$/.test(model.createdDate)
+    ) {
+      throw new Error(`[validate] ${label}: createdDate must be YYYY-MM-DD or null`);
+    }
+    for (const field of ["contextLength", "maxOutputTokens"]) {
+      if (
+        model[field] !== null &&
+        !(typeof model[field] === "number" && Number.isFinite(model[field]) && model[field] >= 0)
+      ) {
+        throw new Error(`[validate] ${label}: ${field} must be null or a non-negative number`);
+      }
+    }
+
+    const provider = model.provider;
+    if (
+      !provider ||
+      typeof provider !== "object" ||
+      typeof provider.slug !== "string" ||
+      provider.slug.length === 0
+    ) {
+      throw new Error(`[validate] ${label}: provider.slug must be non-empty`);
+    }
+    const family = model.family;
+    if (
+      !family ||
+      typeof family !== "object" ||
+      (family.slug !== null && typeof family.slug !== "string")
+    ) {
+      throw new Error(`[validate] ${label}: family.slug must be string or null`);
+    }
+
+    const architecture = model.architecture;
+    if (!architecture || typeof architecture !== "object" || Array.isArray(architecture)) {
+      throw new Error(`[validate] ${label}: architecture must be an object`);
+    }
+    for (const field of ["inputModalities", "outputModalities"]) {
+      if (!Array.isArray(architecture[field])) {
+        throw new Error(`[validate] ${label}: architecture.${field} must be an array`);
+      }
+    }
+    if (!Array.isArray(model.supportedParameters)) {
+      throw new Error(`[validate] ${label}: supportedParameters must be an array`);
+    }
+
+    const topProvider = model.topProvider;
+    if (!topProvider || typeof topProvider !== "object" || Array.isArray(topProvider)) {
+      throw new Error(`[validate] ${label}: topProvider must be an object`);
+    }
+    for (const field of ["contextLength", "maxCompletionTokens"]) {
+      if (
+        topProvider[field] !== null &&
+        !(typeof topProvider[field] === "number" && Number.isFinite(topProvider[field]))
+      ) {
+        throw new Error(`[validate] ${label}: topProvider.${field} must be numeric or null`);
+      }
+    }
+
+    if (model.endpoints !== null) {
+      const endpoints = model.endpoints;
+      assertFields(
+        endpoints,
+        ["endpointCount", "providerCount", "providers", "supportedParameters"],
+        `${label}.endpoints`
+      );
+      if (
+        typeof endpoints.endpointCount !== "number" ||
+        endpoints.endpointCount < 0 ||
+        typeof endpoints.providerCount !== "number" ||
+        endpoints.providerCount < 0
+      ) {
+        throw new Error(`[validate] ${label}: endpoint/provider counts must be non-negative`);
+      }
+      if (!Array.isArray(endpoints.providers)) {
+        throw new Error(`[validate] ${label}: endpoints.providers must be an array`);
+      }
+    }
+  }
+}
+
+/**
+ * Validate data/ai-company-stocks.json.
+ *
+ * The dataset is a finance-safe descriptive stock-history layer for /analysis.
+ * It may be refreshed from Alpha Vantage when ALPHA_VANTAGE_API_KEY is present,
+ * or rebuilt deterministically from a committed static fixture when credentials
+ * are absent.
+ *
+ * @param {Record<string, unknown>} data
+ * @param {{ minCompanies?: number, minBenchmarks?: number }} [opts]
+ */
+export function validateAICompanyStocks(data, opts = {}) {
+  const minCompanies = opts.minCompanies ?? 15;
+  const minBenchmarks = opts.minBenchmarks ?? 2;
+
+  assertFields(
+    data,
+    ["meta", "source", "methodology", "coverage", "benchmarks", "companies", "categories", "summary"],
+    "ai-company-stocks"
+  );
+  assertProvenance(data, "ai-company-stocks");
+  if (!data.meta?.source) {
+    throw new Error("[validate] ai-company-stocks: missing meta.source");
+  }
+  assertMinRows(data.companies, minCompanies, "ai-company-stocks.companies");
+  assertMinRows(data.benchmarks, minBenchmarks, "ai-company-stocks.benchmarks");
+  assertMinRows(data.categories, 5, "ai-company-stocks.categories");
+
+  const sourceMode = data.coverage?.sourceMode;
+  if (!["alpha-vantage-daily-adjusted", "committed-static-fixture"].includes(sourceMode)) {
+    throw new Error("[validate] ai-company-stocks: coverage.sourceMode must identify Alpha Vantage or committed fixture mode");
+  }
+
+  const methodologyText = Object.values(data.methodology)
+    .flatMap((value) => (Array.isArray(value) ? value : [value]))
+    .filter((value) => typeof value === "string")
+    .join(" ");
+  if (!/descriptive/i.test(methodologyText) || !/not financial advice|not a recommendation/i.test(methodologyText)) {
+    throw new Error("[validate] ai-company-stocks: methodology must state descriptive, non-advisory use");
+  }
+
+  const benchmarkIds = new Set();
+  for (const benchmark of data.benchmarks) {
+    validateStockAssetRow(benchmark, `ai-company-stocks.benchmarks:${benchmark && benchmark.ticker ? benchmark.ticker : "?"}`);
+    if (benchmarkIds.has(benchmark.id)) {
+      throw new Error(`[validate] ai-company-stocks: duplicate benchmark id ${benchmark.id}`);
+    }
+    benchmarkIds.add(benchmark.id);
+  }
+
+  for (const requiredBenchmark of ["spy", "qqq"]) {
+    if (!benchmarkIds.has(requiredBenchmark)) {
+      throw new Error(`[validate] ai-company-stocks: missing ${requiredBenchmark.toUpperCase()} benchmark`);
+    }
+  }
+
+  const tickers = new Set();
+  for (const company of data.companies) {
+    const label = `ai-company-stocks.companies:${company && company.ticker ? company.ticker : "?"}`;
+    validateStockAssetRow(company, label);
+    assertFields(
+      company,
+      ["id", "primaryCategory", "categories", "relativeReturns", "categoryRanks"],
+      label
+    );
+    if (tickers.has(company.ticker)) {
+      throw new Error(`[validate] ai-company-stocks: duplicate company ticker ${company.ticker}`);
+    }
+    tickers.add(company.ticker);
+    if (!Array.isArray(company.categories) || company.categories.length === 0) {
+      throw new Error(`[validate] ${label}: categories must be a non-empty array`);
+    }
+    if (!Array.isArray(company.categoryRanks) || company.categoryRanks.length === 0) {
+      throw new Error(`[validate] ${label}: categoryRanks must be a non-empty array`);
+    }
+    if (hasTradingActionLabel(company)) {
+      throw new Error(`[validate] ${label}: trading-action labels are not allowed`);
+    }
+    for (const benchmarkId of benchmarkIds) {
+      if (!company.relativeReturns || typeof company.relativeReturns !== "object" || !(benchmarkId in company.relativeReturns)) {
+        throw new Error(`[validate] ${label}: missing relativeReturns.${benchmarkId}`);
+      }
+      validateReturns(company.relativeReturns[benchmarkId], `${label}.relativeReturns.${benchmarkId}`);
+    }
+  }
+
+  for (const category of data.categories) {
+    assertFields(
+      category,
+      ["id", "label", "companyCount", "tickers", "breadth", "topGainers1Y", "laggards1Y"],
+      `ai-company-stocks.categories:${category && category.id ? category.id : "?"}`
+    );
+    if (!Array.isArray(category.tickers) || category.tickers.length === 0) {
+      throw new Error(`[validate] ai-company-stocks.categories:${category.id}: tickers must be non-empty`);
+    }
+    if (category.companyCount !== category.tickers.length) {
+      throw new Error(`[validate] ai-company-stocks.categories:${category.id}: companyCount must equal tickers.length`);
+    }
+  }
+
+  if (data.summary?.companyCount !== data.companies.length) {
+    throw new Error("[validate] ai-company-stocks: summary.companyCount must equal companies.length");
+  }
+  if (data.coverage?.companyCount !== data.companies.length) {
+    throw new Error("[validate] ai-company-stocks: coverage.companyCount must equal companies.length");
+  }
+}
+
+function validateStockAssetRow(row, label) {
+  assertFields(row, ["ticker", "name", "prices", "metrics", "dataQualityNotes"], label);
+  if (typeof row.ticker !== "string" || !/^[A-Z.]{1,8}$/.test(row.ticker)) {
+    throw new Error(`[validate] ${label}: ticker must be an uppercase market symbol`);
+  }
+  if (typeof row.name !== "string" || row.name.length === 0) {
+    throw new Error(`[validate] ${label}: name must be non-empty`);
+  }
+  assertMinRows(row.prices, 2, `${label}.prices`);
+  let prevDate = "";
+  for (const point of row.prices) {
+    if (
+      !point ||
+      typeof point.date !== "string" ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(point.date) ||
+      !(typeof point.close === "number" && Number.isFinite(point.close) && point.close > 0)
+    ) {
+      throw new Error(`[validate] ${label}: prices must contain { date: YYYY-MM-DD, close: positive number }`);
+    }
+    if (prevDate && point.date <= prevDate) {
+      throw new Error(`[validate] ${label}: prices must be sorted ascending by date`);
+    }
+    prevDate = point.date;
+  }
+
+  const metrics = row.metrics;
+  assertFields(
+    metrics,
+    [
+      "startDate",
+      "latestDate",
+      "latestClose",
+      "observationCount",
+      "observationInterval",
+      "returns",
+      "annualizedVolatility",
+      "maxDrawdown",
+      "momentum50d",
+      "momentum200d",
+    ],
+    `${label}.metrics`
+  );
+  if (metrics.observationCount !== row.prices.length) {
+    throw new Error(`[validate] ${label}: metrics.observationCount must equal prices.length`);
+  }
+  if (metrics.startDate !== row.prices[0].date || metrics.latestDate !== row.prices[row.prices.length - 1].date) {
+    throw new Error(`[validate] ${label}: metrics date bounds must match prices`);
+  }
+  if (!(typeof metrics.latestClose === "number" && metrics.latestClose > 0)) {
+    throw new Error(`[validate] ${label}: metrics.latestClose must be positive`);
+  }
+  validateReturns(metrics.returns, `${label}.metrics.returns`);
+  for (const field of ["annualizedVolatility", "maxDrawdown", "momentum50d", "momentum200d"]) {
+    const value = metrics[field];
+    if (value !== null && !(typeof value === "number" && Number.isFinite(value))) {
+      throw new Error(`[validate] ${label}: metrics.${field} must be numeric or null`);
+    }
+  }
+}
+
+function validateReturns(returns, label) {
+  if (!returns || typeof returns !== "object" || Array.isArray(returns)) {
+    throw new Error(`[validate] ${label}: returns must be an object`);
+  }
+  for (const key of ["1M", "3M", "6M", "YTD", "1Y", "fullPeriod"]) {
+    if (!(key in returns)) {
+      throw new Error(`[validate] ${label}: missing ${key}`);
+    }
+    const value = returns[key];
+    if (value !== null && !(typeof value === "number" && Number.isFinite(value))) {
+      throw new Error(`[validate] ${label}: ${key} must be numeric or null`);
+    }
+  }
+}
+
+function hasTradingActionLabel(row) {
+  const forbiddenKeys = [
+    "advice",
+    "action",
+    "rating",
+    "recommendation",
+    "signal",
+    "tradingAction",
+    "tradingLabel",
+  ];
+  return forbiddenKeys.some((key) => key in row);
+}
+
+/**
  * Validate data/provenance.json (the central provenance registry, issue #52).
  * Ensures the registry lists datasets and that every entry carries a
  * generatedAt timestamp and a source.

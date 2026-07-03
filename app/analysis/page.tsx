@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import InsightsView from "@/components/insights/InsightsView";
 import { getAnalysisPageData } from "@/lib/analysis";
+import { getAICompanyStocksData } from "@/lib/ai-company-stocks";
 import { BASE_PATH, SITE_NAME } from "@/lib/seo";
 
 const title = "Insights Lab";
@@ -25,5 +26,6 @@ export default function AnalysisPage() {
   // occupation snapshot (needed for the history-based forecasts) stays out of
   // the client bundle. Only the resolved results are handed to the islands.
   const data = getAnalysisPageData();
-  return <InsightsView data={data} />;
+  const aiCompanyStocks = getAICompanyStocksData();
+  return <InsightsView data={data} aiCompanyStocks={aiCompanyStocks} />;
 }

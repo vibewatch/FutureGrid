@@ -9,10 +9,14 @@ import CountryDetailPanel, {
   type EnrichedCountry,
 } from "@/components/dashboard/CountryDetailPanel";
 import AIAdoptionSignals from "@/components/global/AIAdoptionSignals";
+import OpenRouterCountryActivityLens from "@/components/global/OpenRouterCountryActivityLens";
+import ReadinessGapLens from "@/components/global/ReadinessGapLens";
 import { useT } from "@/lib/i18n/useT";
 import DataAsOfBadge from "@/components/ui/DataAsOfBadge";
 import type { AdoptionSignalsDataset } from "@/lib/adoption-signals";
 import type { DiffusionRiser } from "@/lib/data";
+import type { OpenRouterCountryActivityData } from "@/lib/openrouter-country-activity";
+import type { ReadinessGapData } from "@/lib/readiness-gap";
 
 // ─── Tiny 3-point sparkline (pure SVG, no animation, reduced-motion safe) ─────
 function Sparkline3({ h1, h2, q1 }: { h1: number; h2: number; q1: number }) {
@@ -73,6 +77,8 @@ export interface GlobalViewProps {
   top12: EnrichedCountry[];
   maxIndex: number;
   adoptionSignals: AdoptionSignalsDataset;
+  openRouterCountryActivity: OpenRouterCountryActivityData;
+  readinessGap: ReadinessGapData;
 }
 
 export default function GlobalView({
@@ -90,6 +96,8 @@ export default function GlobalView({
   top12,
   maxIndex,
   adoptionSignals,
+  openRouterCountryActivity,
+  readinessGap,
 }: GlobalViewProps) {
   const t = useT("global");
 
@@ -358,6 +366,20 @@ export default function GlobalView({
       {/* ─── AI ADOPTION SIGNALS ───────────────────────────────────────────── */}
       <Reveal delay={100}>
         <AIAdoptionSignals dataset={adoptionSignals} />
+      </Reveal>
+
+      <hr className="divider-glow" />
+
+      {/* ─── OPENROUTER COUNTRY-LEVEL CATALOG PROXY ───────────────────────── */}
+      <Reveal delay={100}>
+        <OpenRouterCountryActivityLens data={openRouterCountryActivity} />
+      </Reveal>
+
+      <hr className="divider-glow" />
+
+      {/* ─── ADOPTION–READINESS GAP LENS ───────────────────────────────────── */}
+      <Reveal delay={100}>
+        <ReadinessGapLens data={readinessGap} />
       </Reveal>
 
       <hr className="divider-glow" />

@@ -20,9 +20,11 @@ import {
   getOccupationsWithWageTrend,
   EXPOSURE_TIERS,
 } from "@/lib/h1b";
+import type { TalentBottleneckData } from "@/lib/talent-bottleneck";
 // Deep-dive sections (client components with local state — no canvas, so no need for ssr:false)
 import EmployerDeepDiveSection from "./EmployerDeepDiveSection";
 import StateDeepDiveSection from "./StateDeepDiveSection";
+import TalentBottleneckLens from "./TalentBottleneckLens";
 
 // ── Loading stub ──────────────────────────────────────────────────────────────
 
@@ -125,7 +127,11 @@ const CARD =
 
 // ── Main view ─────────────────────────────────────────────────────────────────
 
-export default function VisaTrendsView() {
+export interface VisaTrendsViewProps {
+  talentBottleneck?: TalentBottleneckData;
+}
+
+export default function VisaTrendsView({ talentBottleneck }: VisaTrendsViewProps = {}) {
   const t = useT("visa");
   const { formatNumber, formatCurrency } = useFormatters();
 
@@ -336,6 +342,8 @@ export default function VisaTrendsView() {
           </p>
         </div>
       </Section>
+
+      {talentBottleneck && <TalentBottleneckLens data={talentBottleneck} />}
 
       {/* ── Employer deep-dive (deep-dive 2) ─────────────────────────────── */}
       <Section

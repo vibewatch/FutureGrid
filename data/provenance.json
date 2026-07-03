@@ -1,6 +1,19 @@
 {
-  "generatedAt": "2026-07-03T05:27:59.635Z",
+  "generatedAt": "2026-07-03T19:52:50.893Z",
   "datasets": [
+    {
+      "id": "ai-company-stocks",
+      "file": "data/ai-company-stocks.json",
+      "generatedAt": "2026-07-03T19:49:58.883Z",
+      "asOf": "2026-07-02",
+      "source": {
+        "name": "Committed AI company stock fixture derived from FutureGrid's accepted market-signal source pattern",
+        "publisher": "FutureGrid",
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/{ticker}"
+      },
+      "version": "1.0.0",
+      "rows": 47
+    },
     {
       "id": "ai-demand",
       "file": "data/ai-demand.json",
@@ -213,6 +226,19 @@
       },
       "version": "1.0.0",
       "rows": null
+    },
+    {
+      "id": "openrouter-models",
+      "file": "data/openrouter-models.json",
+      "generatedAt": "2026-07-03T12:19:30.895Z",
+      "asOf": "2026-07-03",
+      "source": {
+        "name": "OpenRouter public model catalog API",
+        "publisher": "OpenRouter",
+        "url": "https://openrouter.ai/api/v1/models"
+      },
+      "version": "1.0.0",
+      "rows": 340
     },
     {
       "id": "sources",

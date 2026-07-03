@@ -2,11 +2,15 @@ import { getCountryExposure, getAIUsageProxies, getCountryMapData, getDiffusionR
 import GlobalView from "@/components/global/GlobalView";
 import type { EnrichedCountry } from "@/components/dashboard/CountryDetailPanel";
 import { getAdoptionSignals } from "@/lib/adoption-signals";
+import { getOpenRouterCountryActivityData } from "@/lib/openrouter-country-activity";
+import { getReadinessGapData } from "@/lib/readiness-gap";
 
 export default function GlobalPage() {
   const allCountries = getCountryExposure();
   const proxies = getAIUsageProxies();
   const adoptionSignals = getAdoptionSignals({ topN: 8 });
+  const openRouterCountryActivity = getOpenRouterCountryActivityData();
+  const readinessGap = getReadinessGapData();
 
   // Extract China proxy figures from live data (with hardcoded fallbacks)
   const cnnicEntry = proxies.countrySurveyMetrics.find(
@@ -82,6 +86,8 @@ export default function GlobalPage() {
       top12={top12}
       maxIndex={maxIndex}
       adoptionSignals={adoptionSignals}
+      openRouterCountryActivity={openRouterCountryActivity}
+      readinessGap={readinessGap}
     />
   );
 }

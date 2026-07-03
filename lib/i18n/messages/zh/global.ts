@@ -178,6 +178,74 @@ export const globalZh: Record<string, string> = {
   adoptAiResearchDesc:
     "国家层面的 AI 论文活动指标；用于研究背景，不代表直接产品使用。",
 
+  // OpenRouter country activity lens
+  openRouterCountryActivityEyebrow: "OpenRouter 目录替代视角",
+  openRouterCountryActivityTitle: "AI 模型生态足迹",
+  openRouterCountryActivitySubtitle:
+    "基于截至 {asOf} 的 OpenRouter 公共模型目录快照，按提供方身份映射到国家层面。模型目录计数与端点条目是分开的视角。",
+  openRouterCountryActivityCaveatLabel: "注意：",
+  openRouterCountryActivityCaveat:
+    "仅代表公共目录与端点可用性；不代表用户流量、使用、收入或国家采用率。也不代表物理服务器位置、训练位置或确定性的国家 AI 活动。",
+  openRouterCountryActivitySourcesLink: "查看数据与来源 →",
+  openRouterCountryActivityModelsSnapshotLabel: "快照中的模型",
+  openRouterCountryActivityModelsSnapshotDetail:
+    "{mapped} 个已映射到国家层面的提供方身份。",
+  openRouterCountryActivityCountriesMappedLabel: "已映射国家",
+  openRouterCountryActivityCountriesMappedDetail:
+    "各国合计 {providers} 个已映射模型提供方条目。",
+  openRouterCountryActivityEndpointEntriesLabel: "端点条目",
+  openRouterCountryActivityEndpointEntriesDetail:
+    "{mapped} 个已映射端点条目，与模型计数分开呈现。",
+  openRouterCountryActivityUnknownProvidersLabel: "未知/未映射提供方",
+  openRouterCountryActivityUnknownProvidersDetail:
+    "{models} 个模型行和 {endpoints} 个端点条目仍未映射。",
+  openRouterCountryActivityChartTitle:
+    "按模型目录计数排名的国家",
+  openRouterCountryActivityChartDesc:
+    "模型目录计数为主条形。端点条目作为次级条形与标签单独展示，不合并两项指标。",
+  openRouterCountryActivityChartAria:
+    "按 OpenRouter 模型目录计数排名的国家，端点条目单独显示。",
+  openRouterCountryActivityModelsLegend: "模型",
+  openRouterCountryActivityEndpointsLegend: "端点条目",
+  openRouterCountryActivityTableTitle:
+    "国家层面 OpenRouter 目录替代数据表",
+  openRouterCountryActivityCountryHeader: "国家",
+  openRouterCountryActivityRegionHeader: "地区",
+  openRouterCountryActivityModelProvidersHeader: "模型提供方",
+  openRouterCountryActivityModelsHeader: "模型",
+  openRouterCountryActivityEndpointProvidersHeader: "端点提供方",
+  openRouterCountryActivityEndpointsHeader: "端点",
+  openRouterCountryActivityTopFamiliesHeader: "主要模型族",
+
+  // Adoption-readiness gap lens
+  readinessGapEyebrow: "对齐视角",
+  readinessGapTitle: "采用–准备度差距",
+  readinessGapSubtitle:
+    "比较各国生成式 AI 普及率百分位与 AI 准备度百分位，呈现观测使用与能力基础不完全对齐的地方。",
+  readinessGapCaveatLabel: "注意：",
+  readinessGapCaveat:
+    "仅描述对齐关系；该差距比较两个来源的百分位排名，并非因果判断。",
+  readinessGapSourcesLink: "查看数据与来源 →",
+  readinessGapRankableLabel: "可排名国家",
+  readinessGapRankableDetail: "在 {total} 个地图国家中，{coverage}% 同时具备两项输入。",
+  readinessGapPositiveLabel: "最大正向差距",
+  readinessGapLatentLabel: "最大潜在容量",
+  readinessGapScatterTitle: "准备度分数 vs. GenAI 普及率",
+  readinessGapScatterAria:
+    "散点图，横轴为准备度分数，纵轴为生成式 AI 普及率百分比。",
+  readinessGapScatterDesc:
+    "每个点代表同时具备准备度和普及率数据的国家；下方排名列表提供文本等价内容。",
+  readinessGapXAxis: "准备度分数",
+  readinessGapYAxis: "普及率 %",
+  readinessGapGapLabel: "差距",
+  readinessGapGapUnit: "百分位",
+  readinessGapDiffusionLabel: "普及率",
+  readinessGapReadinessLabel: "准备度",
+  readinessGapAdoptionListTitle: "采用超过准备度",
+  readinessGapLatentListTitle: "潜在容量",
+  readinessGapBalancedListTitle: "均衡领先者",
+  readinessGapEmptyList: "此分组暂无国家。",
+
   // Fastest-rising adopters
   risersHeading: "增速最快的采用国",
   risersSourceLink: "微软AIEI \u00b7 查看来源",
