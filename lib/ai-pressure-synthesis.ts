@@ -121,7 +121,10 @@ export function getAIPressureSynthesisData(
       sectorProxyCount: marketSignal.summary.sectorCount,
       companyCount: aiCompanyStocks.summary.companyCount,
       positiveBreadth1Y:
-        finiteOrNull(aiCompanyStocks.summary.breadth.positive1Y) ??
+        validPositiveBreadthOrNull(
+          aiCompanyStocks.summary.breadth.positive1Y,
+          aiCompanyStocks.summary.companyCount,
+        ) ??
         countPositiveOneYearReturns(aiCompanyStocks),
       latestStockDate: aiCompanyStocks.summary.latestDate,
       benchmarkTickers: [...aiCompanyStocks.summary.benchmarkTickers],
@@ -151,8 +154,20 @@ function cloneSummaryCountry(
   return country ? { ...country } : null;
 }
 
-function finiteOrNull(value: unknown): number | null {
-  return typeof value === "number" && Number.isFinite(value) ? value : null;
+function validPositiveBreadthOrNull(
+  value: unknown,
+  companyCount: number,
+): number | null {
+  return typeof value === "number" &&
+    Number.isFinite(value) &&
+    Number.isInteger(value) &&
+    value >= 0 &&
+    Number.isFinite(companyCount) &&
+    Number.isInteger(companyCount) &&
+    companyCount >= 0 &&
+    value <= companyCount
+    ? value
+    : null;
 }
 
 function countPositiveOneYearReturns(data: AICompanyStocksData): number | null {

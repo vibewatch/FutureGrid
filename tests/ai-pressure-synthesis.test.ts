@@ -1,4 +1,8 @@
 import { describe, expect, it } from "vitest";
+import {
+  getAICompanyStocksData,
+  type AICompanyStocksData,
+} from "@/lib/ai-company-stocks";
 import { getAIPressureSynthesisData } from "@/lib/ai-pressure-synthesis";
 
 describe("getAIPressureSynthesisData", () => {
@@ -41,4 +45,58 @@ describe("getAIPressureSynthesisData", () => {
       "jobPostingsProxy",
     ]);
   });
+
+  it("recomputes positive 1Y breadth when summary exceeds company count", () => {
+    const aiCompanyStocks = stockDataWithPositiveBreadthSummary(4);
+
+    const data = getAIPressureSynthesisData({ aiCompanyStocks });
+
+    expect(data.market.companyCount).toBe(3);
+    expect(data.market.positiveBreadth1Y).toBe(2);
+  });
+
+  it.each([
+    ["non-integer", 1.5],
+    ["negative", -1],
+  ])(
+    "recomputes positive 1Y breadth when summary is %s",
+    (_label, summaryPositive1Y) => {
+      const aiCompanyStocks =
+        stockDataWithPositiveBreadthSummary(summaryPositive1Y);
+
+      const data = getAIPressureSynthesisData({ aiCompanyStocks });
+
+      expect(data.market.companyCount).toBe(3);
+      expect(data.market.positiveBreadth1Y).toBe(2);
+    },
+  );
 });
+
+function stockDataWithPositiveBreadthSummary(
+  summaryPositive1Y: number,
+): AICompanyStocksData {
+  const base = getAICompanyStocksData();
+  const companies = base.companies.slice(0, 3).map((company, index) => ({
+    ...company,
+    metrics: {
+      ...company.metrics,
+      returns: {
+        ...company.metrics.returns,
+        "1Y": index < 2 ? 0.1 : -0.1,
+      },
+    },
+  }));
+
+  return {
+    ...base,
+    companies,
+    summary: {
+      ...base.summary,
+      companyCount: companies.length,
+      breadth: {
+        ...base.summary.breadth,
+        positive1Y: summaryPositive1Y,
+      },
+    },
+  };
+}
