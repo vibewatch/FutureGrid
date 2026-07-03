@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useId } from "react";
 import type { ReadinessGapCountry, ReadinessGapData } from "@/lib/readiness-gap";
+import { SECTION_IDS } from "@/lib/section-anchors";
 import type { Locale } from "@/lib/i18n/types";
 import { useLocale, useT } from "@/lib/i18n/useT";
 
@@ -270,7 +271,7 @@ export default function ReadinessGapLens({ data }: { data: ReadinessGapData }) {
   const locale = useLocale();
   const numberLocale = NUMBER_LOCALES[locale] ?? NUMBER_LOCALES.en;
   const gapUnit = t("readinessGapGapUnit");
-  const headingId = useId();
+  const headingId = `${SECTION_IDS.readinessGapLens}-heading`;
   const topPositive = data.summary.topAdoptionOutpacingReadiness;
   const topLatent = data.summary.topLatentCapacity;
   const topPositiveDetail = topPositive
@@ -281,7 +282,11 @@ export default function ReadinessGapLens({ data }: { data: ReadinessGapData }) {
     : t("readinessGapEmptyList");
 
   return (
-    <section aria-labelledby={headingId} className="space-y-5">
+    <section
+      id={SECTION_IDS.readinessGapLens}
+      aria-labelledby={headingId}
+      className="scroll-mt-24 space-y-5"
+    >
       <div className="glass p-5 sm:p-6">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
           <div className="max-w-3xl">

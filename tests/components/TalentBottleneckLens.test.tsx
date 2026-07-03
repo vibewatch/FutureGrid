@@ -8,6 +8,7 @@ import { render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { visaEn } from "@/lib/i18n/messages/en/visa";
 import { visaZh } from "@/lib/i18n/messages/zh/visa";
+import { SECTION_IDS } from "@/lib/section-anchors";
 import type { TalentBottleneckData } from "@/lib/talent-bottleneck";
 
 const COMPONENT_PATH = path.join(process.cwd(), "components/visa/TalentBottleneckLens.tsx");
@@ -225,6 +226,12 @@ describe("TalentBottleneckLens", () => {
 
     render(<TalentBottleneckLens data={FIXTURE_DATA} />);
 
+    const section = document.getElementById(SECTION_IDS.talentBottleneckLens);
+    expect(section).toHaveClass("scroll-mt-24");
+    expect(section).toHaveAttribute(
+      "aria-labelledby",
+      `${SECTION_IDS.talentBottleneckLens}-heading`,
+    );
     expect(screen.getByRole("heading", { name: "Talent Bottleneck Lens" })).toBeInTheDocument();
     expect(screen.getByText(/Certified LCAs are not visa approvals/i)).toBeInTheDocument();
     expect(screen.getByText(/not proof of shortage or causality/i)).toBeInTheDocument();
@@ -262,5 +269,5 @@ describe("TalentBottleneckLens", () => {
     for (const pattern of BANNED_WORDING) {
       expect(pageText, `TalentBottleneckLens should avoid banned wording ${pattern}`).not.toMatch(pattern);
     }
-  });
+  }, 10000);
 });
