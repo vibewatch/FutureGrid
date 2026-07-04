@@ -67,7 +67,7 @@ describe("CommandPalette", () => {
     expect(options.length).toBeLessThanOrEqual(20);
   });
 
-  it("shows grouped section headings (Occupations, Sectors, or Skills)", async () => {
+  it("shows page shortcuts before searchable data groups", async () => {
     render(<CommandPalette />);
     await act(async () => {
       openPaletteViaEvent();
@@ -75,11 +75,25 @@ describe("CommandPalette", () => {
     });
 
     const text = document.body.textContent ?? "";
-    const hasAnyGroup =
-      text.includes("Occupations") ||
-      text.includes("Sectors") ||
-      text.includes("Skills");
-    expect(hasAnyGroup).toBe(true);
+    expect(text).toContain("Pages");
+    expect(text).toContain("Overview dashboard");
+    expect(text).toMatch(/Occupations|Sectors|Skills/);
+  });
+
+  it("filters page shortcuts by journey keywords", async () => {
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    render(<CommandPalette />);
+
+    await act(async () => {
+      openPaletteViaEvent();
+      vi.runAllTimers();
+    });
+
+    const input = screen.getByRole("textbox", { name: /search/i });
+    await user.type(input, "visa");
+
+    expect(screen.getByText("H-1B Visas")).toBeInTheDocument();
+    expect(screen.getByText(/Certified LCA filings/i)).toBeInTheDocument();
   });
 
   it("typing filters results to matching items", async () => {

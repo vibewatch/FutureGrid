@@ -11,6 +11,31 @@ export const dashboardZh = {
   aboutDataNotePost:
     "中观测到的 AI（大语言模型）使用情况，映射至 O*NET 任务——为相对暴露程度衡量指标，并非对失业的预测。",
   exploreAllCareers: "探索所有职业",
+  chooseLensKicker: "选择你的视角",
+  chooseLensHeading: "从你要回答的问题开始。",
+  chooseLensSubhead:
+    "同样可信的页面，现在按用户探索 AI、工作、劳动力信号与数据可信度的旅程分组。",
+  chooseLensCta: "打开视角",
+  lensGlobalEyebrow: "全球",
+  lensGlobalTitle: "全球 AI 信号",
+  lensGlobalDesc:
+    "比较国家采用、就绪度与代理指标语境；不把目录型代理指标当作实际使用量。",
+  lensWorkforceEyebrow: "劳动力",
+  lensWorkforceTitle: "职业、行业、技能",
+  lensWorkforceDesc:
+    "结合更稳健路径，探索职业、行业与技能层面的暴露度衡量。",
+  lensLaborEyebrow: "劳动力 / 签证",
+  lensLaborTitle: "劳动力市场压力",
+  lensLaborDesc:
+    "查看劳动力市场压力与已认证 H-1B LCA 申请信号；LCA 不是签证批准数。",
+  lensAnalysisEyebrow: "分析 / 市场",
+  lensAnalysisTitle: "交叉视角情报",
+  lensAnalysisDesc:
+    "比较暴露度视角与描述性市场信号，不作预测性或投资类结论。",
+  lensGovernanceEyebrow: "数据治理",
+  lensGovernanceTitle: "来源与方法",
+  lensGovernanceDesc:
+    "在使用任何信号前，查看数据集、方法论、来源追踪与限制说明。",
   summaryOccupationsTracked: "职业追踪数",
   summaryAcross22Sectors: "覆盖 22 个主要行业",
   summaryAvgAIExposure: "平均 AI 暴露率",
