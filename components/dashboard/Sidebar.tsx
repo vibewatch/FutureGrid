@@ -246,11 +246,44 @@ function ThemeToggle() {
 
 // ─── Nav sections ──────────────────────────────────────────────────────────────
 const NAV_SECTIONS = [
-  { key: "secOverview",   items: [ { href: "/",        labelKey: "dashboard", Icon: IconDashboard }, { href: "/report",   labelKey: "report",   Icon: IconReport  }, { href: "/analysis", labelKey: "analysis", Icon: IconInsights }, { href: "/frontier", labelKey: "frontier", Icon: IconFrontier } ] },
-  { key: "secExposure",   items: [ { href: "/careers", labelKey: "careers",   Icon: IconCareers   }, { href: "/sectors",  labelKey: "sectors",  Icon: IconSectors }, { href: "/explore", labelKey: "explore", Icon: IconExplore } ] },
-  { key: "secLabor",      items: [ { href: "/labor",   labelKey: "labor",     Icon: IconLabor     }, { href: "/visa",     labelKey: "visa",     Icon: IconVisa    }, { href: "/global",   labelKey: "global",   Icon: IconGlobe   } ] },
-  { key: "secTransition", items: [ { href: "/skills",  labelKey: "skills",    Icon: IconSkills    } ] },
-  { key: "secAbout",      items: [ { href: "/sources", labelKey: "sources", Icon: IconSources }, { href: "/methodology", labelKey: "methodology", Icon: IconMethodology } ] },
+  {
+    key: "secOverview",
+    items: [
+      { href: "/", labelKey: "dashboard", Icon: IconDashboard },
+      { href: "/report", labelKey: "report", Icon: IconReport },
+      { href: "/analysis", labelKey: "analysis", Icon: IconInsights },
+    ],
+  },
+  {
+    key: "secWorkforce",
+    items: [
+      { href: "/careers", labelKey: "careers", Icon: IconCareers },
+      { href: "/sectors", labelKey: "sectors", Icon: IconSectors },
+      { href: "/explore", labelKey: "explore", Icon: IconExplore },
+      { href: "/skills", labelKey: "skills", Icon: IconSkills },
+    ],
+  },
+  {
+    key: "secLaborSignals",
+    items: [
+      { href: "/labor", labelKey: "labor", Icon: IconLabor },
+      { href: "/visa", labelKey: "visa", Icon: IconVisa },
+    ],
+  },
+  {
+    key: "secAIEcosystem",
+    items: [
+      { href: "/global", labelKey: "global", Icon: IconGlobe },
+      { href: "/frontier", labelKey: "frontier", Icon: IconFrontier },
+    ],
+  },
+  {
+    key: "secDataGovernance",
+    items: [
+      { href: "/sources", labelKey: "sources", Icon: IconSources },
+      { href: "/methodology", labelKey: "methodology", Icon: IconMethodology },
+    ],
+  },
 ];
 
 // ─── Logo ──────────────────────────────────────────────────────────────────────
@@ -269,6 +302,7 @@ function Logo({ onClick }: { onClick?: () => void }) {
 
 // ─── Search button ─────────────────────────────────────────────────────────────
 function SearchButton({ onNavigate }: { onNavigate?: () => void }) {
+  const t = useT("nav");
   const handleClick = () => {
     window.dispatchEvent(new Event("open-command-palette"));
     onNavigate?.();
@@ -277,7 +311,7 @@ function SearchButton({ onNavigate }: { onNavigate?: () => void }) {
     <div className="px-3 pt-3 pb-1">
       <button
         onClick={handleClick}
-        aria-label="Open search command palette (Cmd K)"
+        aria-label={t("openSearch")}
         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg glass text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
       >
         {/* Search icon */}
@@ -285,7 +319,7 @@ function SearchButton({ onNavigate }: { onNavigate?: () => void }) {
           <circle cx="11" cy="11" r="8" />
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
-        <span className="flex-1 text-left text-xs">Search…</span>
+        <span className="flex-1 text-left text-xs">{t("searchPlaceholder")}</span>
         <kbd className="text-[10px] border border-zinc-300 dark:border-zinc-700 rounded px-1.5 py-0.5 font-sans">⌘K</kbd>
       </button>
     </div>
@@ -342,12 +376,12 @@ function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
         </ul>
       </nav>
       <div className="p-4 border-t border-zinc-200 dark:border-zinc-800/60 text-xs text-zinc-500 space-y-1">
-        <p className="leading-snug">Data: Anthropic Economic Index · BLS · O*NET</p>
+        <p className="leading-snug">{t("dataAttribution")}</p>
         <Link href="/sources" className="text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors">
-          View sources →
+          {t("viewSources")} →
         </Link>
         {_dataAsOf && (
-          <p className="text-zinc-400 dark:text-zinc-600 leading-snug">Data as of {_dataAsOf}</p>
+          <p className="text-zinc-400 dark:text-zinc-600 leading-snug">{t("dataAsOf", { date: _dataAsOf })}</p>
         )}
       </div>
     </>

@@ -12,6 +12,31 @@ export const dashboardEn = {
   aboutDataNotePost:
     ", mapped to O*NET tasks — a relative exposure measure, not a prediction of job loss.",
   exploreAllCareers: "Explore all careers",
+  chooseLensKicker: "Choose your lens",
+  chooseLensHeading: "Start from the question you need to answer.",
+  chooseLensSubhead:
+    "The same trusted pages are grouped around how people explore AI, work, labor signals, and data confidence.",
+  chooseLensCta: "Open lens",
+  lensGlobalEyebrow: "Global",
+  lensGlobalTitle: "Global AI signals",
+  lensGlobalDesc:
+    "Compare country adoption, readiness, and proxy-context signals without treating catalogs as usage.",
+  lensWorkforceEyebrow: "Workforce",
+  lensWorkforceTitle: "Careers, sectors, skills",
+  lensWorkforceDesc:
+    "Explore occupation, sector, and skill exposure measures alongside resilient paths.",
+  lensLaborEyebrow: "Labor / Visa",
+  lensLaborTitle: "Labor-market pressure",
+  lensLaborDesc:
+    "Read labor-market pressure and certified H-1B LCA filing signals; LCAs are not approvals.",
+  lensAnalysisEyebrow: "Analysis / Market",
+  lensAnalysisTitle: "Cross-lens intelligence",
+  lensAnalysisDesc:
+    "Compare exposure lenses and descriptive market signals without predictive or investment claims.",
+  lensGovernanceEyebrow: "Data Governance",
+  lensGovernanceTitle: "Sources and methods",
+  lensGovernanceDesc:
+    "Review datasets, methodology, provenance, and caveats before using any signal.",
   summaryOccupationsTracked: "Occupations Tracked",
   summaryAcross22Sectors: "Across 22 major sectors",
   summaryAvgAIExposure: "Average AI Exposure",

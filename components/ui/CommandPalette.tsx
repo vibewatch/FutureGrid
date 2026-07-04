@@ -21,7 +21,41 @@ function IconSearch() {
   );
 }
 
-const TYPE_META: Record<SearchItem["type"], { labelKey: string; abbr: string; colorClass: string }> = {
+type PageShortcutDefinition = {
+  href: string;
+  labelKey: string;
+  sublabelKey: string;
+  keywordsKey: string;
+};
+
+type PageShortcut = {
+  type: "page";
+  label: string;
+  sublabel: string;
+  href: string;
+  keywords: string;
+};
+
+type CommandItem = SearchItem | PageShortcut;
+
+const PAGE_SHORTCUTS: PageShortcutDefinition[] = [
+  { href: "/", labelKey: "pageHome", sublabelKey: "pageHomeSub", keywordsKey: "pageHomeKeywords" },
+  { href: "/report", labelKey: "pageReport", sublabelKey: "pageReportSub", keywordsKey: "pageReportKeywords" },
+  { href: "/analysis", labelKey: "pageAnalysis", sublabelKey: "pageAnalysisSub", keywordsKey: "pageAnalysisKeywords" },
+  { href: "/careers", labelKey: "pageCareers", sublabelKey: "pageCareersSub", keywordsKey: "pageCareersKeywords" },
+  { href: "/sectors", labelKey: "pageSectors", sublabelKey: "pageSectorsSub", keywordsKey: "pageSectorsKeywords" },
+  { href: "/explore", labelKey: "pageExplore", sublabelKey: "pageExploreSub", keywordsKey: "pageExploreKeywords" },
+  { href: "/skills", labelKey: "pageSkills", sublabelKey: "pageSkillsSub", keywordsKey: "pageSkillsKeywords" },
+  { href: "/labor", labelKey: "pageLabor", sublabelKey: "pageLaborSub", keywordsKey: "pageLaborKeywords" },
+  { href: "/visa", labelKey: "pageVisa", sublabelKey: "pageVisaSub", keywordsKey: "pageVisaKeywords" },
+  { href: "/global", labelKey: "pageGlobal", sublabelKey: "pageGlobalSub", keywordsKey: "pageGlobalKeywords" },
+  { href: "/frontier", labelKey: "pageFrontier", sublabelKey: "pageFrontierSub", keywordsKey: "pageFrontierKeywords" },
+  { href: "/sources", labelKey: "pageSources", sublabelKey: "pageSourcesSub", keywordsKey: "pageSourcesKeywords" },
+  { href: "/methodology", labelKey: "pageMethodology", sublabelKey: "pageMethodologySub", keywordsKey: "pageMethodologyKeywords" },
+];
+
+const TYPE_META: Record<CommandItem["type"], { labelKey: string; abbr: string; colorClass: string }> = {
+  page:       { labelKey: "groupPages",      abbr: "Pg", colorClass: "bg-sky-500/15 text-sky-400"       },
   occupation: { labelKey: "groupOccupations", abbr: "J",  colorClass: "bg-violet-500/15 text-violet-400" },
   sector:     { labelKey: "groupSectors",     abbr: "S",  colorClass: "bg-cyan-500/15 text-cyan-400"    },
   skill:      { labelKey: "groupSkills",      abbr: "Sk", colorClass: "bg-green-500/15 text-green-400"  },
@@ -75,6 +109,23 @@ export default function CommandPalette() {
     [router]
   );
 
+  const pageShortcuts = useMemo<CommandItem[]>(
+    () =>
+      PAGE_SHORTCUTS.map((shortcut) => ({
+        type: "page",
+        label: t(shortcut.labelKey),
+        sublabel: t(shortcut.sublabelKey),
+        href: shortcut.href,
+        keywords: t(shortcut.keywordsKey),
+      })),
+    [t],
+  );
+
+  const commandItems = useMemo<CommandItem[]>(
+    () => [...pageShortcuts, ...allItems],
+    [pageShortcuts, allItems],
+  );
+
   // ── Global: Cmd/Ctrl+K ─────────────────────────────────────────────────────
 
   useEffect(() => {
@@ -106,20 +157,25 @@ export default function CommandPalette() {
 
   // ── Filter + group ─────────────────────────────────────────────────────────
 
-  const filtered = useMemo((): SearchItem[] => {
+  const filtered = useMemo((): CommandItem[] => {
     const q = query.trim().toLowerCase();
-    if (!q) return allItems.slice(0, 20);
-    return allItems
+    if (!q) return commandItems.slice(0, 20);
+    return commandItems
       .filter(
-        (item) =>
-          item.label.toLowerCase().includes(q) ||
-          item.sublabel?.toLowerCase().includes(q)
+        (item) => {
+          const fields = [
+            item.label,
+            item.sublabel,
+            "keywords" in item ? item.keywords : "",
+          ];
+          return fields.some((field) => field?.toLowerCase().includes(q));
+        }
       )
       .slice(0, 20);
-  }, [allItems, query]);
+  }, [commandItems, query]);
 
   const groups = useMemo(() => {
-    const map = new Map<SearchItem["type"], SearchItem[]>();
+    const map = new Map<CommandItem["type"], CommandItem[]>();
     for (const item of filtered) {
       if (!map.has(item.type)) map.set(item.type, []);
       map.get(item.type)!.push(item);
@@ -265,6 +321,7 @@ export default function CommandPalette() {
                   {items.map((item, ii) => {
                     const idx        = offset + ii;
                     const isSelected = idx === selected;
+                    const itemRisk   = item.type === "page" ? undefined : item.risk;
                     return (
                       <div
                         key={`${item.type}::${item.href}`}
@@ -296,12 +353,12 @@ export default function CommandPalette() {
                         </div>
 
                         {/* Risk badge */}
-                        {item.risk !== undefined && (
+                        {itemRisk !== undefined && (
                           <span
                             className="ml-auto text-xs font-semibold shrink-0 tabular-nums"
-                            style={{ color: riskColor(item.risk) }}
+                            style={{ color: riskColor(itemRisk) }}
                           >
-                            {item.risk.toFixed(0)}%
+                            {itemRisk.toFixed(0)}%
                           </span>
                         )}
                       </div>

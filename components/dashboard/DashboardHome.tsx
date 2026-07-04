@@ -47,6 +47,38 @@ export default function DashboardHome({
 }: DashboardHomeProps) {
   const t = useT("dashboard");
   const tc = useT("common");
+  const lensCards = [
+    {
+      href: "/global",
+      eyebrow: t("lensGlobalEyebrow"),
+      title: t("lensGlobalTitle"),
+      description: t("lensGlobalDesc"),
+    },
+    {
+      href: "/careers",
+      eyebrow: t("lensWorkforceEyebrow"),
+      title: t("lensWorkforceTitle"),
+      description: t("lensWorkforceDesc"),
+    },
+    {
+      href: "/labor",
+      eyebrow: t("lensLaborEyebrow"),
+      title: t("lensLaborTitle"),
+      description: t("lensLaborDesc"),
+    },
+    {
+      href: "/analysis",
+      eyebrow: t("lensAnalysisEyebrow"),
+      title: t("lensAnalysisTitle"),
+      description: t("lensAnalysisDesc"),
+    },
+    {
+      href: "/sources",
+      eyebrow: t("lensGovernanceEyebrow"),
+      title: t("lensGovernanceTitle"),
+      description: t("lensGovernanceDesc"),
+    },
+  ];
 
   return (
     <div className="mx-auto w-full max-w-[1400px] space-y-12">
@@ -153,6 +185,46 @@ export default function DashboardHome({
           </Link>
         </Reveal>
       </section>
+
+      <hr className="divider-glow" />
+
+      <Reveal delay={0}>
+        <section aria-labelledby="choose-lens-heading" className="space-y-5">
+          <div className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-600 dark:text-violet-400">
+              {t("chooseLensKicker")}
+            </p>
+            <h2 id="choose-lens-heading" className="mt-2 text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white">
+              {t("chooseLensHeading")}
+            </h2>
+            <p className="mt-2 text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              {t("chooseLensSubhead")}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+            {lensCards.map((card) => (
+              <Link
+                key={card.href}
+                href={card.href}
+                className="glass glass-hover group flex min-h-48 flex-col rounded-2xl p-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
+              >
+                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                  {card.eyebrow}
+                </span>
+                <h3 className="mt-3 text-lg font-bold text-zinc-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-300 transition-colors">
+                  {card.title}
+                </h3>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                  {card.description}
+                </p>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-violet-600 dark:text-violet-400">
+                  {t("chooseLensCta")} <span aria-hidden="true">→</span>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </Reveal>
 
       <hr className="divider-glow" />
 
