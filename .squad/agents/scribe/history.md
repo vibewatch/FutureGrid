@@ -48,3 +48,12 @@ Scribe merged 2 decision inbox entries into `decisions.md`, cleared the inbox, r
 ## 2026-07-02T00:34:32.844+00:00 — Widescreen UI polish state closeout
 
 Scribe merged 1 decision inbox entry into `decisions.md`, cleared the inbox, recorded per-agent orchestration logs and session/health logs, checked the 7-day decisions archive gate (0 eligible old entries), and verified no history file exceeded the summarization threshold.
+
+### 2026-07-03T22:49:27.110+00:00 — Spawn manifest state recorded
+- Verified Squad state backend via `squad_state_health` (FSStorageProvider) and recorded the merged-work milestone using state tools only.
+- Current queue: #73/#74/#75 closed through PRs #85/#87/#86 on main c4d84fa; continue with open issues #76-#84.
+
+
+### 2026-07-04T12:23:54.134+00:00 — IA refactor state recording
+- Verified Squad state backend via `squad_state_health` (FSStorageProvider), recorded the preserve-URLs IA decision, wrote a session log, and appended Trinity/Switch/Neo/Mouse history updates using squad_state tools only.
+- Noted validation passed: targeted CommandPalette/DashboardHome tests, `npm run lint`, and `npm run build`; no commit requested or made.

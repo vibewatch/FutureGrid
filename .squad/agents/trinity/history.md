@@ -28,3 +28,15 @@
 
 
 2026-07-03T19:44:32.001+00:00 - Planned and final-approved the AI Company Stock Lens coverage expansion across semis/equipment/EDA, AI cloud/platforms, enterprise/data AI software, data-center/power/networking, and AI memory/interconnect/storage. Decision merged into decisions.md.
+
+
+2026-07-03T21:27:13.860+00:00 - Recommended mined-dataset product directions: Career Evidence Passport, AI Opportunity Radar, and Global AI Ecosystem Map; set Career Evidence Passport as first major future build while accepting `/analysis` AI Pressure Synthesis as the immediate MVP.
+
+### 2026-07-03T22:49:27.110+00:00 — Review cycle and queue handoff
+- Completed 4 of 20 squad review rounds; findings were consolidated into GitHub issues #73-#84 with owner labels.
+- First tranche merged: #73 via PR #85, #75 via PR #86, #74 via PR #87; main synced to c4d84fa, with #76-#84 remaining open.
+
+
+### 2026-07-04T12:23:54.134+00:00 — IA refactor review direction
+- Recommended preserving existing URLs for the first information-architecture refactor and improving navigation/discovery around user journeys instead of route moves.
+- Final decision recorded after Sidebar taxonomy, DashboardHome lens cards, CommandPalette grouping, i18n, and validation passed.

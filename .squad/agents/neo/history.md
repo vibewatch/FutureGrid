@@ -22,3 +22,15 @@
 
 
 2026-07-03T13:23:16.634+00:00 - Built and wired `AICompanyStockLens` into `/analysis` with EN/ZH i18n and component tests; fixed period-return selection to use observations on/before target dates or `null` when sparse coverage is insufficient.
+
+
+2026-07-03T21:27:13.860+00:00 - Implemented `/analysis` AI Pressure Synthesis MVP via `lib/ai-pressure-synthesis.ts`, `AIPressureSynthesisLens`, `InsightsView`/page wiring, i18n, and tests, combining OpenRouter/readiness, H-1B/SOC, and stock-market signals.
+
+### 2026-07-03T22:49:27.110+00:00 — Review cycle and queue handoff
+- Completed 4 of 20 squad review rounds; planned next feature/improvement/bug work as issues #73-#84.
+- #73, #75, and #74 are merged via PRs #85, #86, and #87; continue remaining open items #76-#84 from main c4d84fa.
+
+
+### 2026-07-04T12:23:54.134+00:00 — IA refactor implementation
+- Implemented the safe first IA refactor across Sidebar taxonomy, DashboardHome Choose your lens cards, CommandPalette shortcuts/grouping, EN/ZH i18n, and tests while preserving URLs.
+- Fixed the build-blocking CommandItem union-risk property access with type-safe rendering; validation later passed.

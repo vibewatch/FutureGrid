@@ -44,3 +44,15 @@ Switch specified the centered wide-screen layout direction and Evidence Stack ma
 
 
 2026-07-03T12:48:40.595+00:00 - Fixed the OpenRouter country helper TypeScript narrowing build failure under reviewer lockout, unblocking Mouse's final validation without changing feature scope.
+
+
+2026-07-03T21:27:13.860+00:00 - Proposed visual storytelling concepts for mined datasets: Global AI Signal Atlas, Talent Bottleneck Matrix, and Market-Labor Pressure Radar; reinforced proxy/descriptive guardrails for the website narrative.
+
+### 2026-07-03T22:49:27.110+00:00 — Review cycle and queue handoff
+- Completed 4 of 20 squad review rounds; review output was converted into owner-labeled issues #73-#84.
+- Merged completed items #73/#75/#74 through PRs #85/#86/#87 with targeted validation, lint, and build; remaining open work is #76-#84.
+
+
+### 2026-07-04T12:23:54.134+00:00 — IA taxonomy guidance
+- Shaped the safe first IA refactor around journey-based navigation: Overview, Workforce, Labor Signals, AI Ecosystem, and Data Governance.
+- DashboardHome lens-card discovery and CommandPalette grouping landed with EN/ZH copy updates and validation passing.
