@@ -110,7 +110,7 @@ export default function StateDeepDiveSection({
       </div>
 
       {/* ── Sortable summary table ──────────────────────────────────────────── */}
-      <div className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
+      <div className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800" tabIndex={0}>
         <table
           className="w-full text-sm"
           aria-label={t("statesDeepTableName")}

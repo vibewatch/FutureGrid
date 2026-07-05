@@ -89,7 +89,7 @@ export default function AICompanyStockLens({ data }: AICompanyStockLensProps) {
             </p>
             <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{t("aiCompanyStockChartExplainer")}</p>
           </div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto" tabIndex={0}>
             <svg
               className="h-auto w-full min-w-[720px]"
               viewBox={`0 0 ${CHART_WIDTH} ${chartHeight}`}
@@ -123,7 +123,7 @@ export default function AICompanyStockLens({ data }: AICompanyStockLensProps) {
                 const returnWidth = Math.min(100, (Math.abs(row.average1Y ?? 0) / returnExtent) * 100);
                 const returnPositive = (row.average1Y ?? 0) >= 0;
                 return (
-                  <g key={row.id} role="listitem" aria-label={categoryLabel(row, t)}>
+                  <g key={row.id}>
                     <text x={CHART_PADDING.left - 14} y={y + 18} textAnchor="end" className="fill-zinc-700 text-[12px] font-semibold dark:fill-zinc-200">
                       {row.label}
                     </text>
@@ -198,7 +198,7 @@ export default function AICompanyStockLens({ data }: AICompanyStockLensProps) {
           <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500">{t("aiCompanyStockTableTitle")}</p>
           <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{t("aiCompanyStockTableExplainer")}</p>
         </div>
-        <div className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
+        <div className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800" tabIndex={0}>
           <table className="min-w-[980px] w-full divide-y divide-zinc-200 text-sm dark:divide-zinc-800">
             <thead className="bg-zinc-100/70 text-left text-[11px] uppercase tracking-widest text-zinc-500 dark:bg-zinc-900/70">
               <tr>

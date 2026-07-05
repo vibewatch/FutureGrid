@@ -233,7 +233,7 @@ export default function OpenRouterCountryActivityLens({
           <h3 className="text-sm font-bold text-zinc-900 dark:text-white">
             {t("openRouterCountryActivityTableTitle")}
           </h3>
-          <div className="mt-3 overflow-x-auto">
+          <div className="mt-3 overflow-x-auto" tabIndex={0}>
             <table className="min-w-[52rem] text-left text-xs">
               <thead className="text-[10px] uppercase tracking-widest text-zinc-500">
                 <tr className="border-b border-zinc-200 dark:border-zinc-800">

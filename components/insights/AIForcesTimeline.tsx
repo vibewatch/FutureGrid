@@ -181,7 +181,7 @@ export default function AIForcesTimeline() {
         </div>
       </div>
 
-      <div ref={containerRef} className="relative w-full overflow-x-auto">
+      <div ref={containerRef} className="relative w-full overflow-x-auto" tabIndex={0}>
         <svg ref={svgRef} className="h-auto w-full" style={{ minHeight: 320 }} role="img" aria-label={t("aiForcesAria")} />
         {tooltip.visible && (
           <div

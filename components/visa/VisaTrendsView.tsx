@@ -358,7 +358,7 @@ export default function VisaTrendsView({ talentBottleneck }: VisaTrendsViewProps
 
       {/* ── Top states (existing accessible table) ───────────────────────── */}
       <Section title={t("statesSectionTitle")} subhead={t("statesSectionSubhead")} delay={180}>
-        <div className={`${CARD} overflow-x-auto`}>
+        <div className={`${CARD} overflow-x-auto`} tabIndex={0}>
           <table className="w-full text-sm" aria-label={t("statesTableName")}>
             <caption className="sr-only">{t("statesTableCaption")}</caption>
             <thead>

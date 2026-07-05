@@ -181,7 +181,7 @@ export default function EmploymentForecastChart({ national, signalPoints, foreca
           {!selectedForecast && <p className="text-[11px] text-zinc-500">{t("sensitivityNationalNote")}</p>}
         </div>
       </div>
-      <div ref={containerRef} className="relative w-full overflow-x-auto">
+      <div ref={containerRef} className="relative w-full overflow-x-auto" tabIndex={0}>
         <svg ref={svgRef} className="h-auto w-full" style={{ minHeight: 300 }} role="img" aria-label={t("forecastAria")} />
         {tooltip.visible && tooltip.point && (
           <div className="pointer-events-none absolute z-50 rounded-xl border px-3.5 py-3 text-sm shadow-xl backdrop-blur" style={{ left: tooltip.x > tooltip.cw * 0.62 ? tooltip.x - 220 : tooltip.x + 14, top: tooltip.y, transform: "translateY(-50%)", background: isDark ? "rgba(9,9,11,0.94)" : "rgba(255,255,255,0.96)", borderColor: "rgba(139,92,246,0.35)" }}>
