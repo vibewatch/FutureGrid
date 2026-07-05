@@ -176,7 +176,7 @@ export default function AISignalScatter({ data }: { data: AISignalData }) {
         </div>
       </div>
 
-      <div ref={containerRef} className="relative w-full overflow-x-auto">
+      <div ref={containerRef} className="relative w-full overflow-x-auto" tabIndex={0}>
         <svg ref={svgRef} className="h-auto w-full" style={{ minHeight: 320 }} role="img" aria-label={t("signalAria")} />
         <ul className="sr-only" aria-label={t("signalSrList")}>
           {data.points.map((p) => <li key={p.code}><Link href={`/careers/${encodeURIComponent(p.code)}`}>{p.name}</Link></li>)}

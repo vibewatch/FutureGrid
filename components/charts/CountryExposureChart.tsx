@@ -479,7 +479,7 @@ export default function CountryExposureChart() {
       </div>
 
       {/* ── SVG canvas ─────────────────────────────────────────────────────── */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto" tabIndex={0}>
         <svg
           ref={svgRef}
           className="w-full h-auto"

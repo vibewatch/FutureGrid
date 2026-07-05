@@ -163,7 +163,7 @@ function TalentScatter({
         </div>
       </div>
 
-      <div className="mt-4 overflow-x-auto">
+      <div className="mt-4 overflow-x-auto" tabIndex={0}>
         <svg
           role="img"
           aria-label={t("talentBottleneckChartAria")}
@@ -310,7 +310,7 @@ function RankedTable({
   formatCurrency: (n: number) => string;
 }) {
   return (
-    <div className="overflow-x-auto rounded-2xl border border-zinc-200 bg-white/60 p-4 dark:border-zinc-800 dark:bg-zinc-950/35">
+    <div className="overflow-x-auto rounded-2xl border border-zinc-200 bg-white/60 p-4 dark:border-zinc-800 dark:bg-zinc-950/35" tabIndex={0}>
       <table className="w-full min-w-[54rem] text-sm" aria-label={t("talentBottleneckTableName")}>
         <caption className="sr-only">{t("talentBottleneckTableCaption")}</caption>
         <thead>

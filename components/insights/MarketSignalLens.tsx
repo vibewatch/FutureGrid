@@ -329,7 +329,7 @@ export default function MarketSignalLens() {
             </span>
           </div>
 
-          <div className="overflow-x-auto rounded-2xl border border-zinc-200 bg-white/55 p-3 dark:border-zinc-800 dark:bg-zinc-950/35">
+          <div className="overflow-x-auto rounded-2xl border border-zinc-200 bg-white/55 p-3 dark:border-zinc-800 dark:bg-zinc-950/35" tabIndex={0}>
             <svg className="h-auto w-full min-w-[720px]" viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} role="img" aria-labelledby={`${titleId} ${descId}`}>
               <title id={titleId}>{t("marketSignalScatterAria")}</title>
               <desc id={descId}>{t("marketSignalScatterDescription", { count: sectors.length, benchmark: source.benchmark, start: source.start })}</desc>
