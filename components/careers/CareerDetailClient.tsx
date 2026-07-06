@@ -645,6 +645,7 @@ function CareerEvidencePassportPanel({
     mode: passport.jobPostingsMode,
     status: passport.jobPostingsSourceStatus ?? "proxy",
   });
+  const orsCoverage = formatOrsCoverage(passport.orsCoverage);
 
   return (
     <section
@@ -673,11 +674,27 @@ function CareerEvidencePassportPanel({
         </div>
       </div>
 
-      <dl className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <dl className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
         <PassportMetric
           label={t("passportExposureLabel")}
           value={`${passport.aiExposurePct.toFixed(1)}%`}
           detail={`${passport.automationRisk} · ${t("passportSourceAnthropic")}`}
+        />
+        <PassportMetric
+          label={t("passportOrsFrictionLabel")}
+          value={
+            passport.orsAutomationFrictionScore == null
+              ? "—"
+              : `${passport.orsAutomationFrictionScore}/100`
+          }
+          detail={
+            passport.orsAutomationFrictionScore == null
+              ? t("passportOrsFrictionMissing")
+              : t("passportOrsFrictionDetail", {
+                  band: passport.orsAutomationFrictionBand ?? t("passportOrsFrictionBandUnknown"),
+                  coverage: orsCoverage,
+                })
+          }
         />
         <PassportMetric
           label={t("passportWageLabel")}
@@ -770,6 +787,12 @@ function CareerEvidencePassportPanel({
       </ul>
     </section>
   );
+}
+
+function formatOrsCoverage(coverage: CareerEvidencePassport["orsCoverage"]) {
+  if (coverage === "exact-soc") return "exact SOC";
+  if (coverage === "broad-soc") return "broad SOC seed";
+  return "missing";
 }
 
 function PassportMetric({

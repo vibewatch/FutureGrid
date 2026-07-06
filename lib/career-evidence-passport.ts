@@ -10,6 +10,12 @@ import {
   getJobPostingsSummary,
   getOccupationJobPostingsBySoc,
 } from "@/lib/job-postings";
+import {
+  getOccupationalRequirementBySoc,
+  interpretAutomationFrictionScore,
+  OCCUPATIONAL_REQUIREMENTS_CAVEAT,
+  type OccupationalRequirementsCoverage,
+} from "@/lib/occupational-requirements";
 
 export interface CareerEvidencePassportTransition {
   socCode: string;
@@ -40,6 +46,12 @@ export interface CareerEvidencePassport {
   jobPostingYear: number | null;
   jobPostingsSourceStatus: string | null;
   jobPostingsMode: string;
+  orsAutomationFrictionScore: number | null;
+  orsAutomationFrictionBand: string | null;
+  orsCoverage: OccupationalRequirementsCoverage | null;
+  orsPhysicalPresenceScore: number | null;
+  orsDecisionMakingPct: number | null;
+  orsPreparationRequirement: string | null;
   skills: string[];
   transitions: CareerEvidencePassportTransition[];
   caveats: string[];
@@ -52,6 +64,10 @@ export function getCareerEvidencePassport(socCode: string): CareerEvidencePasspo
   const projection = getEmploymentProjectionBySoc(socCode);
   const h1b = getOccupationSignalBySoc(socCode);
   const postings = getOccupationJobPostingsBySoc(socCode);
+  const requirements = getOccupationalRequirementBySoc(socCode);
+  const friction = interpretAutomationFrictionScore(
+    requirements?.automationFrictionScore ?? null,
+  );
   const postingCoverage = getJobPostingsCoverage();
   const postingSummary = getJobPostingsSummary();
   const transitions = getReskillingPaths(socCode, 3, "score").map((row) => ({
@@ -83,12 +99,22 @@ export function getCareerEvidencePassport(socCode: string): CareerEvidencePasspo
     jobPostingYear: postingSummary.latestYear,
     jobPostingsSourceStatus: postings?.sourceStatus ?? null,
     jobPostingsMode: postingCoverage.mode,
+    orsAutomationFrictionScore: requirements?.automationFrictionScore ?? null,
+    orsAutomationFrictionBand: friction?.label ?? null,
+    orsCoverage: requirements?.coverage ?? null,
+    orsPhysicalPresenceScore: requirements?.physical.physicalPresenceScore ?? null,
+    orsDecisionMakingPct: requirements?.cognitive.decisionMakingPct ?? null,
+    orsPreparationRequirement:
+      requirements?.preparation.educationRequirement ??
+      requirements?.preparation.relatedWorkExperience ??
+      null,
     skills: career.skills.slice(0, 8),
     transitions,
     caveats: [
       "H-1B values are certified Labor Condition Applications, not visa approvals.",
       `Job postings are ${postingCoverage.mode} ${postings?.sourceStatus ?? "proxy"} data until a licensed observed provider is wired in.`,
       "Transition matches are directional skill-overlap context, not placement guarantees.",
+      OCCUPATIONAL_REQUIREMENTS_CAVEAT,
     ],
   };
 }

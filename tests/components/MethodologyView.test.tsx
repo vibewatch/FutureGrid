@@ -3,6 +3,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import MethodologyView from "@/components/methodology/MethodologyView";
+import MethodologyPage from "@/app/methodology/page";
 import type { DatasetProvenance } from "@/lib/provenance";
 import type {
   ClearedDownload,
@@ -232,6 +233,20 @@ describe("MethodologyView", () => {
   it("renders download section", () => {
     renderView();
     expect(screen.getByTestId("section-download")).toBeTruthy();
+  });
+
+  it("methodology page exposes the occupational requirements download", () => {
+    render(<MethodologyPage />);
+    const cleared = screen.getByTestId("cleared-downloads");
+    expect(cleared.textContent).toContain("Occupational Requirements Seed");
+    const links = cleared.querySelectorAll("a[download]");
+    const orsLink = Array.from(links).find(
+      (link) =>
+        (link as HTMLAnchorElement).getAttribute("download") ===
+        "occupational-requirements.json",
+    ) as HTMLAnchorElement | undefined;
+    expect(orsLink).toBeTruthy();
+    expect(orsLink?.getAttribute("href")).toBe("/data/occupational-requirements.json");
   });
 });
 

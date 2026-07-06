@@ -105,6 +105,20 @@ export function assertLiveStates(states, requiredSet, name) {
   }
 }
 
+function finiteNonNegativeInteger(value) {
+  return Number.isInteger(value) && value >= 0 ? value : null;
+}
+
+function nullableFiniteInRange(value, min, max) {
+  return (
+    value == null ||
+    (typeof value === "number" &&
+      Number.isFinite(value) &&
+      value >= min &&
+      value <= max)
+  );
+}
+
 // ─── Per-dataset validators ───────────────────────────────────────────────────
 
 // Minimum live WARN states that MUST always be present in coverage.
@@ -572,6 +586,174 @@ export function validateJobPostings(data) {
         `[validate] job-postings:${occ.socCode}: latestRelatedAnnualPostings must mirror relatedAnnualPostings[${latestKey}]`
       );
     }
+  }
+}
+
+/**
+ * Validate data/occupational-requirements.json.
+ *
+ * ORS is a SOC-keyed job-requirements layer. The committed snapshot may be a
+ * broad-SOC FutureGrid seed or exact SOC provider/ORS overlay, but the contract
+ * must stay stable so downstream career evidence cards can consume the same
+ * fields when expanded public ORS rows are wired in later.
+ *
+ * @param {Record<string, unknown>} data
+ */
+export function validateOccupationalRequirements(data) {
+  assertFields(
+    data,
+    [
+      "meta",
+      "coverage",
+      "methodology",
+      "providerContract",
+      "summary",
+      "occupations",
+    ],
+    "occupational-requirements"
+  );
+  assertProvenance(data, "occupational-requirements");
+  assertMinRows(data.occupations, 680, "occupational-requirements.occupations");
+
+  if (data.coverage?.primaryKey !== "socCode") {
+    throw new Error(
+      "[validate] occupational-requirements: coverage.primaryKey must be socCode"
+    );
+  }
+  const exactSocRows = finiteNonNegativeInteger(data.coverage?.exactSocRows);
+  const broadSocRows = finiteNonNegativeInteger(data.coverage?.broadSocRows);
+  const missingRows = finiteNonNegativeInteger(data.coverage?.missingRows);
+  if (exactSocRows == null || broadSocRows == null || missingRows == null) {
+    throw new Error(
+      "[validate] occupational-requirements: coverage row counts must be non-negative integers"
+    );
+  }
+  if (exactSocRows + broadSocRows + missingRows !== data.occupations.length) {
+    throw new Error(
+      "[validate] occupational-requirements: coverage row counts must sum to occupations.length"
+    );
+  }
+
+  const caveat = String(data.methodology?.caveat ?? "");
+  if (
+    !/not worker ability, AI capability, or displacement probability/i.test(
+      caveat
+    )
+  ) {
+    throw new Error(
+      "[validate] occupational-requirements: methodology.caveat must include the ORS limitations language"
+    );
+  }
+  if (
+    data.coverage?.mode === "seed-static" &&
+    exactSocRows === 0 &&
+    !/FutureGrid broad-SOC seed derived from public BLS ORS requirement concepts/i.test(
+      caveat
+    )
+  ) {
+    throw new Error(
+      "[validate] occupational-requirements: seed-static data must be caveated as a FutureGrid broad-SOC seed, not direct ORS estimates"
+    );
+  }
+  if (
+    data.coverage?.mode === "seed-static" &&
+    exactSocRows === 0 &&
+    /come from BLS ORS employer survey estimates/i.test(caveat)
+  ) {
+    throw new Error(
+      "[validate] occupational-requirements: seed-static caveat must not imply direct ORS employer survey estimates"
+    );
+  }
+
+  let scoredRows = 0;
+  const seen = new Set();
+  for (const occ of data.occupations) {
+    const label = `occupational-requirements:${
+      occ && occ.socCode ? occ.socCode : "?"
+    }`;
+    assertFields(
+      occ,
+      [
+        "socCode",
+        "title",
+        "preparation",
+        "physical",
+        "cognitive",
+        "automationFrictionScore",
+        "coverage",
+      ],
+      label
+    );
+    if (typeof occ.socCode !== "string" || !/^\d{2}-\d{4}$/.test(occ.socCode)) {
+      throw new Error(
+        `[validate] occupational-requirements: occupation SOC code not normalized: ${
+          occ && occ.socCode
+        }`
+      );
+    }
+    if (seen.has(occ.socCode)) {
+      throw new Error(
+        `[validate] occupational-requirements:${occ.socCode}: duplicate SOC code`
+      );
+    }
+    seen.add(occ.socCode);
+    if (!["exact-soc", "broad-soc", "missing"].includes(occ.coverage)) {
+      throw new Error(
+        `[validate] occupational-requirements:${occ.socCode}: invalid coverage ${occ.coverage}`
+      );
+    }
+    assertFields(
+      occ.preparation,
+      [
+        "educationRequirement",
+        "relatedWorkExperience",
+        "onTheJobTraining",
+        "svp",
+      ],
+      `${label}.preparation`
+    );
+    if (!nullableFiniteInRange(occ.preparation.svp, 0, 9)) {
+      throw new Error(
+        `[validate] occupational-requirements:${occ.socCode}: preparation.svp must be null or 0-9`
+      );
+    }
+    for (const [objectName, fields] of [
+      [
+        "physical",
+        ["standingWalkingPct", "heavyLiftingPct", "physicalPresenceScore"],
+      ],
+      ["cognitive", ["decisionMakingPct", "problemSolvingPct"]],
+      ["workConditions", ["hazardousPct", "outdoorsPct", "physicalEnvironmentScore"]],
+    ]) {
+      if (occ[objectName] == null) continue;
+      assertFields(occ[objectName], fields, `${label}.${objectName}`);
+      for (const field of fields) {
+        if (!nullableFiniteInRange(occ[objectName][field], 0, 100)) {
+          throw new Error(
+            `[validate] occupational-requirements:${occ.socCode}: ${objectName}.${field} must be null or 0-100`
+          );
+        }
+      }
+    }
+    if (!nullableFiniteInRange(occ.automationFrictionScore, 0, 100)) {
+      throw new Error(
+        `[validate] occupational-requirements:${occ.socCode}: automationFrictionScore must be null or 0-100`
+      );
+    }
+    if (occ.automationFrictionScore != null) scoredRows += 1;
+  }
+  if (scoredRows < 650) {
+    throw new Error(
+      `[validate] occupational-requirements: too few scored occupations — got ${scoredRows}, need at least 650`
+    );
+  }
+  if (
+    data.coverage?.scoredRows != null &&
+    data.coverage.scoredRows !== scoredRows
+  ) {
+    throw new Error(
+      "[validate] occupational-requirements: coverage.scoredRows must equal scored occupation rows"
+    );
   }
 }
 

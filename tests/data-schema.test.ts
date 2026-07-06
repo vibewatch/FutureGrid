@@ -25,6 +25,7 @@ import {
   validateJolts,
   validateOccupationSnapshot,
   validateOccupationSnapshotSlim,
+  validateOccupationalRequirements,
   validateEmploymentProjections,
   validateOpenRouterModels,
   validateAICompanyStocks,
@@ -653,6 +654,24 @@ describe("validateJobPostings — negative cases", () => {
     expect(() => validateJobPostings(data)).toThrow(
       /job-postings:11-1000: annualPostings\[2030\] is outside coverage\.years/
     );
+  });
+});
+
+// ─── validateOccupationalRequirements ─────────────────────────────────────────
+
+describe("validateOccupationalRequirements — committed file", () => {
+  const data = read("data/occupational-requirements.json");
+
+  it("committed data/occupational-requirements.json passes validation", () => {
+    expect(() => validateOccupationalRequirements(data)).not.toThrow();
+  });
+
+  it("caveats seed-static ORS data as a broad-SOC seed, not direct survey estimates", () => {
+    expect(data.coverage.mode).toBe("seed-static");
+    expect(data.coverage.exactSocRows).toBe(0);
+    expect(data.methodology.caveat).toMatch(/FutureGrid broad-SOC seed/i);
+    expect(data.methodology.caveat).toMatch(/not direct occupation-level ORS survey estimates/i);
+    expect(data.methodology.caveat).not.toMatch(/come from BLS ORS employer survey estimates/i);
   });
 });
 

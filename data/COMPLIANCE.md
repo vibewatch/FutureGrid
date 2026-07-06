@@ -66,6 +66,7 @@ This distinction matters legally:
 | 22 | `data/employment-projections.json` | [BLS Employment Projections occupational data](https://www.bls.gov/emp/data/occupational-data.htm) via public `jeffbaumes/jobs` mirror | Public Domain (US Government) | ✅ Yes | "U.S. Bureau of Labor Statistics" | SOC-keyed 2024–2034 projection rows joined to FutureGrid occupation snapshot and reshaped for visualization | 🟢 Low | Builder records that BLS direct download was HTTP 403 in this environment and uses the mirror; underlying source is official BLS public-domain data. |
 | 23 | `data/openrouter-models.json` | [OpenRouter public model catalog API](https://openrouter.ai/api/v1/models) | Public API/catalog terms — verify before bulk redistribution | ⚠️ Conditional | "OpenRouter" + API URL | Public model catalog normalized into model, provider, family, and endpoint summary fields | 🟡 Medium | Treat strictly as catalog metadata/proxy footprint. It is not observed usage, traffic, demand, or deployment geography. Bulk-download/API redistribution should be gated on OpenRouter terms review. |
 | 24 | `data/ai-company-stocks.json` | Static adjusted-close fixture bootstrapped from Yahoo Finance chart JSON; optional Alpha Vantage refresh path | Yahoo ToS / Alpha Vantage API terms | ❌ Not cleared for public redistribution in current fixture mode | N/A for Yahoo redistribution; Alpha Vantage attribution if refreshed under its terms | Historical adjusted-close observations transformed into descriptive return, volatility, drawdown, and breadth metrics | 🔴 High | Same market-data caveat as `market-ai-signals.json`: descriptive history only, not investment advice, forecasts, or recommendations. Exclude from public bulk-download until rebuilt from a redistribution-cleared provider/license. |
+| 25 | `data/occupational-requirements.json` | [BLS Occupational Requirements Survey (ORS)](https://www.bls.gov/ors/data.htm) plus FutureGrid seed derivation from cleared occupation metadata | Public Domain (US Government) + MIT project output | ✅ Yes | "U.S. Bureau of Labor Statistics" | ORS-concept seed estimates by SOC for preparation, physical presence, work conditions, decision-making, and derived automation-friction score | 🟢 Low | Clearly marked as seed/broad-SOC coverage until exact public ORS rows are wired through the provider contract. ORS measures job requirements, not AI capability or displacement probability. |
 
 ---
 
@@ -92,13 +93,14 @@ Cross-checking all committed dataset files against `data/sources.json` entries (
 | `h1b-trends.json` | **MISSING** — DOL OFLC LCA Disclosure Data not in `sources.json` | ✅ **Added** entry (US Government public domain / public records). Verdict: **Yes** — public domain, redistributable with attribution; cleared for bulk download. |
 | `openrouter-models.json` | **MISSING** — OpenRouter public model catalog API not in `sources.json` | ✅ **Added** entry (catalog/API terms review required before bulk redistribution; catalog proxy only). |
 | `ai-company-stocks.json` | **MISSING** — AI company adjusted-close fixture not in `sources.json` | ✅ **Added** entry (historical market-data caveat; not redistribution-cleared while sourced from Yahoo fixture). |
+| `occupational-requirements.json` | **MISSING** — BLS ORS not in `sources.json` | ✅ **Added** entry (Public Domain; seed coverage caveated until exact ORS rows are ingested). |
 | `world-countries.geo.json` | Natural Earth ✅ in `sources.json`; ISO crosswalk ✅ in `sources.json` | No action needed |
 | `ai-usage-proxies.json` | All sub-sources present in `sources.json` (entries 5–16) | No action needed |
 | `occupation-snapshot*.json` | All sub-sources present (AEI, BLS, O\*NET entries) | No action needed |
 | `onet-enrichment.json` | O\*NET entries present | No action needed |
 | `country-exposure.json` | AEI + World Bank entries present | No action needed |
 
-**Result:** 15 entries added to `data/sources.json`. Total source count: 23 → 38. All dataset files are now represented on the `/sources` page or explicitly marked as dynamically injected/exempt in tests.
+**Result:** `data/sources.json` now contains 42 entries. All dataset files are represented on the `/sources` page or explicitly marked as dynamically injected/exempt in tests.
 
 ---
 
