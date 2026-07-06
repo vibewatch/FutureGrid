@@ -23,7 +23,7 @@ import { DEEP_LINK_HREFS } from "@/lib/section-anchors";
 
 export interface AIPressureSynthesisData {
   global: {
-    href: typeof DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint;
+    href: typeof DEEP_LINK_HREFS.globalAIEcosystemMap;
     modelCount: number;
     endpointProviderCount: number;
     rankableCountries: number;
@@ -95,7 +95,7 @@ export function getAIPressureSynthesisData(
 
   return {
     global: {
-      href: DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint,
+      href: DEEP_LINK_HREFS.globalAIEcosystemMap,
       modelCount: openRouter.summary.sourceModelCount,
       endpointProviderCount: openRouter.summary.endpointProviderCount,
       rankableCountries: readinessGap.summary.rankableCountries,

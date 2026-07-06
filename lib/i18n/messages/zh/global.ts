@@ -217,6 +217,30 @@ export const globalZh: Record<string, string> = {
   openRouterCountryActivityEndpointsHeader: "端点",
   openRouterCountryActivityTopFamiliesHeader: "主要模型族",
 
+  // Global AI ecosystem comparison map
+  ecosystemMapEyebrow: "国家综合对比",
+  ecosystemMapTitle: "全球 AI 生态系统对比地图",
+  ecosystemMapSubtitle:
+    "将 OpenRouter 模型目录足迹、生成式 AI 扩散、就绪度评分和采用-就绪度缺口合并到同一国家表格。筛选器会把目录代理指标与采用/就绪度指标分开呈现。",
+  ecosystemMapSourcesLink: "查看数据与来源 →",
+  ecosystemMapCountriesCompared: "对比国家数",
+  ecosystemMapCatalogCountries: "有目录足迹",
+  ecosystemMapReadinessCountries: "有就绪度指标",
+  ecosystemMapJoinedCountries: "两类指标都有",
+  ecosystemMapRegionFilter: "地区",
+  ecosystemMapAllRegions: "所有地区",
+  ecosystemMapQuadrantFilter: "象限",
+  ecosystemMapAllQuadrants: "所有象限",
+  ecosystemMapTableCaption:
+    "按国家对比 AI 生态系统：模型目录足迹、就绪度、扩散率与缺口象限。",
+  ecosystemMapCountryHeader: "国家",
+  ecosystemMapModelsHeader: "模型 / 端点",
+  ecosystemMapReadinessHeader: "就绪度",
+  ecosystemMapDiffusionHeader: "扩散率",
+  ecosystemMapQuadrantHeader: "象限",
+  ecosystemMapCaveat:
+    "代理指标提示：OpenRouter 是公开目录/提供商身份足迹，不代表流量、使用量、需求、物理部署或国家采用率。就绪度与扩散率使用不同分母，不应与目录计数取平均。",
+
   // Adoption-readiness gap lens
   readinessGapEyebrow: "对齐视角",
   readinessGapTitle: "采用–准备度差距",

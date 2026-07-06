@@ -221,6 +221,30 @@ export const globalEn: Record<string, string> = {
   openRouterCountryActivityEndpointsHeader: "Endpoints",
   openRouterCountryActivityTopFamiliesHeader: "Top families",
 
+  // Global AI ecosystem comparison map
+  ecosystemMapEyebrow: "Joined country comparison",
+  ecosystemMapTitle: "Global AI ecosystem comparison map",
+  ecosystemMapSubtitle:
+    "Joins OpenRouter model catalog footprint, GenAI diffusion, readiness scores, and adoption-readiness gaps into one country table. Filters keep catalog proxies separate from adoption/readiness metrics.",
+  ecosystemMapSourcesLink: "View Data & Sources →",
+  ecosystemMapCountriesCompared: "Countries compared",
+  ecosystemMapCatalogCountries: "With catalog footprint",
+  ecosystemMapReadinessCountries: "With readiness metrics",
+  ecosystemMapJoinedCountries: "With both lenses",
+  ecosystemMapRegionFilter: "Region",
+  ecosystemMapAllRegions: "All regions",
+  ecosystemMapQuadrantFilter: "Quadrant",
+  ecosystemMapAllQuadrants: "All quadrants",
+  ecosystemMapTableCaption:
+    "Country-level AI ecosystem comparison across model catalog footprint, readiness, diffusion, and gap quadrant.",
+  ecosystemMapCountryHeader: "Country",
+  ecosystemMapModelsHeader: "Models / endpoints",
+  ecosystemMapReadinessHeader: "Readiness",
+  ecosystemMapDiffusionHeader: "Diffusion",
+  ecosystemMapQuadrantHeader: "Quadrant",
+  ecosystemMapCaveat:
+    "Proxy caveat: OpenRouter is a public catalog/provider-identity footprint, not traffic, usage, demand, physical deployment, or national adoption. Readiness and diffusion use different denominators and should not be averaged with catalog counts.",
+
   // Adoption-readiness gap lens
   readinessGapEyebrow: "Alignment lens",
   readinessGapTitle: "Adoption–Readiness Gap",
