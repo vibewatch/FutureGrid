@@ -115,6 +115,44 @@ describe("AIPressureSynthesisLens", () => {
       expect(renderedText).not.toMatch(pattern);
     }
   });
+
+  it("preserves long occupation and country labels in metric cards", () => {
+    const longOccupation =
+      "Software Developers, Quality Assurance Analysts, and Testers with Extremely Long SOC Context";
+    const longCountry =
+      "The Federated Example Republic of AI Readiness and Adoption Measurement";
+
+    render(
+      <AIPressureSynthesisLens
+        data={{
+          ...FIXTURE,
+          global: {
+            ...FIXTURE.global,
+            topReadinessGapCountry: {
+              ...FIXTURE.global.topReadinessGapCountry!,
+              name: longCountry,
+            },
+          },
+          talent: {
+            ...FIXTURE.talent,
+            topOccupation: {
+              ...FIXTURE.talent.topOccupation!,
+              title: longOccupation,
+            },
+          },
+        }}
+      />,
+    );
+
+    const occupationMetric = screen.getByText(longOccupation);
+    expect(occupationMetric).toHaveAttribute("title", longOccupation);
+    expect(occupationMetric.getAttribute("aria-label")).toContain(longOccupation);
+    expect(occupationMetric).not.toHaveClass("truncate");
+
+    const countryDetail = screen.getByText(new RegExp(longCountry));
+    expect(countryDetail.getAttribute("title")).toContain(longCountry);
+    expect(countryDetail).not.toHaveClass("truncate");
+  });
 });
 
 describe("AI pressure synthesis wiring", () => {
