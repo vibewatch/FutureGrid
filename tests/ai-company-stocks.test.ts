@@ -80,7 +80,7 @@ describe("AI company stock insights data", () => {
         expect(company.metrics.returns).toHaveProperty(period);
         expect(company.relativeReturns.spy).toHaveProperty(period);
       }
-      expect((company as Record<string, unknown>).recommendation).toBeUndefined();
+      expect("recommendation" in company).toBe(false);
     }
   });
 
