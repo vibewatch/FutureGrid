@@ -252,6 +252,14 @@
       "usedFor": "Government AI readiness composite score 0–100 for 193 countries; global-ai-metrics.json"
     },
     {
+      "name": "OpenRouter public model catalog API",
+      "publisher": "OpenRouter",
+      "year": 2026,
+      "url": "https://openrouter.ai/api/v1/models",
+      "license": "OpenRouter public API/catalog terms — attribution and terms review required before bulk redistribution",
+      "usedFor": "Provider/model catalog snapshot, endpoint-provider counts, and country-level catalog-proxy mapping; openrouter-models.json — catalog footprint only, not usage, traffic, demand, or deployment geography"
+    },
+    {
       "name": "BLS Job Openings and Labor Turnover Survey (JOLTS)",
       "publisher": "U.S. Bureau of Labor Statistics",
       "year": 2026,
@@ -274,6 +282,14 @@
       "url": "https://finance.yahoo.com/",
       "license": "Yahoo Terms of Service — redistribution PROHIBITED; no official API license granted",
       "usedFor": "Monthly closing prices for AI-sector ETF tickers (XLC, XLK, BOTZ, ARKQ, etc.) used to derive AI market signals; market-ai-signals.json — ⚠️ HIGH LICENSE RISK: Yahoo ToS prohibits redistribution; see data/COMPLIANCE.md"
+    },
+    {
+      "name": "AI company adjusted-close fixture / Alpha Vantage refresh path",
+      "publisher": "FutureGrid / Yahoo Finance / Alpha Vantage",
+      "year": 2026,
+      "url": "https://www.alphavantage.co/documentation/",
+      "license": "Committed fixture bootstrapped from Yahoo chart JSON; Alpha Vantage refresh requires API-key terms compliance",
+      "usedFor": "Historical adjusted-close observations for public AI-company watchlist; ai-company-stocks.json — descriptive market history only, not investment advice, forecasts, recommendations, or redistribution-cleared market data"
     },
     {
       "name": "BLS Local Area Unemployment Statistics (LAUS)",

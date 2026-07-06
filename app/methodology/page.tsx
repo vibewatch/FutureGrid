@@ -152,6 +152,12 @@ const FLAGGED: FlaggedDownload[] = [
       "Challenger, Gray & Christmas proprietary data — redistribution requires explicit permission.",
   },
   {
+    id: "ai-company-stocks",
+    label: "AI Company Stock Signals",
+    reason:
+      "Historical adjusted-close market data is descriptive only and not redistribution-cleared while the committed fixture is sourced from Yahoo chart JSON.",
+  },
+  {
     id: "global-ai-metrics",
     label: "Global AI Metrics (IMF)",
     reason:
@@ -162,6 +168,12 @@ const FLAGGED: FlaggedDownload[] = [
     label: "AI Usage Proxies",
     reason:
       "QuestMobile terms — rows sourced from QuestMobile reports are not cleared for redistribution.",
+  },
+  {
+    id: "openrouter-models",
+    label: "OpenRouter Model Catalog",
+    reason:
+      "Public catalog/API metadata is a proxy for model availability, not usage or traffic; bulk redistribution is gated on OpenRouter terms review.",
   },
   {
     id: "aioe-exposure",

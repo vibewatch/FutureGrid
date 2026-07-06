@@ -86,6 +86,11 @@ const FLAGGED: FlaggedDownload[] = [
     reason: "Challenger proprietary.",
   },
   {
+    id: "ai-company-stocks",
+    label: "AI Company Stock Signals",
+    reason: "Historical market data fixture not redistribution-cleared.",
+  },
+  {
     id: "global-ai-metrics",
     label: "Global AI Metrics",
     reason: "IMF non-commercial terms.",
@@ -94,6 +99,11 @@ const FLAGGED: FlaggedDownload[] = [
     id: "ai-usage-proxies",
     label: "AI Usage Proxies",
     reason: "QuestMobile terms.",
+  },
+  {
+    id: "openrouter-models",
+    label: "OpenRouter Model Catalog",
+    reason: "Catalog/API redistribution terms review required.",
   },
   {
     id: "aioe-exposure",
@@ -200,8 +210,10 @@ describe("MethodologyView", () => {
     const excludedFilenames = [
       "market-ai-signals.json",
       "ai-layoffs.json",
+      "ai-company-stocks.json",
       "global-ai-metrics.json",
       "ai-usage-proxies.json",
+      "openrouter-models.json",
       "aioe-exposure.json",
       "automation-baseline.json",
     ];
