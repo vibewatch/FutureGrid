@@ -64,6 +64,8 @@ This distinction matters legally:
 | 20 | `data/provenance.json` | Self-generated from build | MIT (project license) | ✅ Yes | FutureGrid (MIT) | Machine-generated dataset provenance registry | 🟢 Low | Same as sources.json. |
 | 21 | `data/job-postings.json` | FutureGrid seed derived from `occupation-snapshot.json` and `onet-enrichment.json` | CC BY 4.0 + Public Domain + MIT project output | ✅ Yes-with-attribution | FutureGrid + Anthropic + BLS + O\*NET | Deterministic SOC-keyed 2016–2025 provider-ready demand seed; not observed historical postings | 🟢 Low | Clearly marked as seed/proxy data in metadata. Replace counts with licensed Lightcast/LinkUp/TheirStack/Adzuna data when available. |
 | 22 | `data/employment-projections.json` | [BLS Employment Projections occupational data](https://www.bls.gov/emp/data/occupational-data.htm) via public `jeffbaumes/jobs` mirror | Public Domain (US Government) | ✅ Yes | "U.S. Bureau of Labor Statistics" | SOC-keyed 2024–2034 projection rows joined to FutureGrid occupation snapshot and reshaped for visualization | 🟢 Low | Builder records that BLS direct download was HTTP 403 in this environment and uses the mirror; underlying source is official BLS public-domain data. |
+| 23 | `data/openrouter-models.json` | [OpenRouter public model catalog API](https://openrouter.ai/api/v1/models) | Public API/catalog terms — verify before bulk redistribution | ⚠️ Conditional | "OpenRouter" + API URL | Public model catalog normalized into model, provider, family, and endpoint summary fields | 🟡 Medium | Treat strictly as catalog metadata/proxy footprint. It is not observed usage, traffic, demand, or deployment geography. Bulk-download/API redistribution should be gated on OpenRouter terms review. |
+| 24 | `data/ai-company-stocks.json` | Static adjusted-close fixture bootstrapped from Yahoo Finance chart JSON; optional Alpha Vantage refresh path | Yahoo ToS / Alpha Vantage API terms | ❌ Not cleared for public redistribution in current fixture mode | N/A for Yahoo redistribution; Alpha Vantage attribution if refreshed under its terms | Historical adjusted-close observations transformed into descriptive return, volatility, drawdown, and breadth metrics | 🔴 High | Same market-data caveat as `market-ai-signals.json`: descriptive history only, not investment advice, forecasts, or recommendations. Exclude from public bulk-download until rebuilt from a redistribution-cleared provider/license. |
 
 ---
 
@@ -88,13 +90,15 @@ Cross-checking all committed dataset files against `data/sources.json` entries (
 | `state-qcew.json` | **MISSING** — BLS QCEW not in `sources.json` | ✅ **Added** entry (Public Domain) |
 | `warn-notices.json` | **MISSING** — California EDD not in `sources.json` | ✅ **Added** entry (Public Records) |
 | `h1b-trends.json` | **MISSING** — DOL OFLC LCA Disclosure Data not in `sources.json` | ✅ **Added** entry (US Government public domain / public records). Verdict: **Yes** — public domain, redistributable with attribution; cleared for bulk download. |
+| `openrouter-models.json` | **MISSING** — OpenRouter public model catalog API not in `sources.json` | ✅ **Added** entry (catalog/API terms review required before bulk redistribution; catalog proxy only). |
+| `ai-company-stocks.json` | **MISSING** — AI company adjusted-close fixture not in `sources.json` | ✅ **Added** entry (historical market-data caveat; not redistribution-cleared while sourced from Yahoo fixture). |
 | `world-countries.geo.json` | Natural Earth ✅ in `sources.json`; ISO crosswalk ✅ in `sources.json` | No action needed |
 | `ai-usage-proxies.json` | All sub-sources present in `sources.json` (entries 5–16) | No action needed |
 | `occupation-snapshot*.json` | All sub-sources present (AEI, BLS, O\*NET entries) | No action needed |
 | `onet-enrichment.json` | O\*NET entries present | No action needed |
 | `country-exposure.json` | AEI + World Bank entries present | No action needed |
 
-**Result:** 13 entries added to `data/sources.json`. Total source count: 23 → 36. All dataset files are now represented on the `/sources` page.
+**Result:** 15 entries added to `data/sources.json`. Total source count: 23 → 38. All dataset files are now represented on the `/sources` page or explicitly marked as dynamically injected/exempt in tests.
 
 ---
 
@@ -112,6 +116,8 @@ Cross-checking all committed dataset files against `data/sources.json` entries (
 3. **Gate bulk-download:** If the upstream source is not replaced, the `market-ai-signals.json` file must be excluded from any public bulk-download or API endpoint until cleared.
 
 **Issue #57 gate:** Issue #57 bulk-download MUST NOT include `market-ai-signals.json` until option 1 or 2 is implemented.
+
+**Also applies to `data/ai-company-stocks.json`:** The current committed stock-watchlist fixture is bootstrapped from the same Yahoo chart JSON source pattern. Although the UI labels it as delayed descriptive history and avoids recommendation language, the file is not redistribution-cleared in fixture mode. It must be excluded from bulk-download/API surfaces until rebuilt from a provider/license that explicitly permits redistribution (or removed from committed data).
 
 ---
 
@@ -206,6 +212,8 @@ The ISO crosswalk contributed only the numeric→alpha-3 code mapping used as `i
 | California EDD WARN Notices | Public Records (CA Law) | https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=LAB&sectionNum=1401 |
 | lukes/ISO-3166-Countries-with-Regional-Codes | CC BY-SA 4.0 | https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes/blob/master/LICENSE |
 | IMF AI Preparedness Index | IMF terms | https://www.imf.org/external/terms.htm |
+| OpenRouter public model catalog API | OpenRouter API/catalog terms | https://openrouter.ai/api/v1/models |
+| Alpha Vantage | Alpha Vantage API terms | https://www.alphavantage.co/terms_of_service/ |
 | Yahoo Finance | Yahoo ToS (redistribution PROHIBITED) | https://legal.yahoo.com/us/en/yahoo/terms/otos/index.html |
 | Challenger, Gray & Christmas | Proprietary (no public license) | https://www.challengergray.com/ |
 | AIOE (Felten/Raj/Seamans) | No explicit license (cite-only) | https://github.com/AIOE-Data/AIOE |
@@ -220,11 +228,13 @@ Before shipping any public bulk-download or API endpoint (issue #57), the follow
 | File | Status | Pre-condition |
 |------|--------|---------------|
 | `market-ai-signals.json` | 🔴 BLOCKED | Replace Yahoo Finance with a licensed source, OR exclude from bulk-download |
+| `ai-company-stocks.json` | 🔴 BLOCKED | Rebuild from a redistribution-cleared market-data provider, OR exclude from bulk-download |
 | `ai-layoffs.json` | 🔴 BLOCKED | Obtain Challenger license, OR replace with cleared source, OR exclude |
 | `aioe-exposure.json` | 🟡 GATED | Obtain author redistribution permission, OR exclude |
 | `automation-baseline.json` | 🟡 GATED | Obtain Oxford Martin clearance, OR remove file, OR exclude |
 | `global-ai-metrics.json` (IMF AIPI) | 🟡 GATED | Add IMF attribution inline to Global Map page; obtain IMF permission if commercial |
 | `ai-usage-proxies.json` (QuestMobile/CNNIC rows) | 🟡 GATED | Exclude these rows from any bulk-download export |
+| `openrouter-models.json` | 🟡 GATED | Confirm OpenRouter catalog/API redistribution terms; keep catalog-proxy caveat visible |
 | All others | ✅ Clear | Attribution requirements met; may be included in bulk-download |
 
 ---
