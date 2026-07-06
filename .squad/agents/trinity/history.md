@@ -40,3 +40,9 @@
 ### 2026-07-04T12:23:54.134+00:00 — IA refactor review direction
 - Recommended preserving existing URLs for the first information-architecture refactor and improving navigation/discovery around user journeys instead of route moves.
 - Final decision recorded after Sidebar taxonomy, DashboardHome lens cards, CommandPalette grouping, i18n, and validation passed.
+
+### 2026-07-05T22:02:38.948+00:00 — Action fix review
+- Reviewed the working tree diff for the GitHub Actions failure fixes and found no blockers. PR #89 merged to main; post-merge CI, Squad Release, and Pages deploy were green.
+
+### 2026-07-05T22:47:39.971+00:00 — Dead legacy code cleanup review
+- Audited dead/legacy code and recommended safe cleanup targets. Reviewed Tank's cleanup diff and found no blockers; PR #90 merged to main after build, lint, and test validation.

@@ -53,3 +53,6 @@ Regression coverage verified: `tests/components/TalentBottleneckLens.test.tsx` a
 ### 2026-07-04T12:23:54.134+00:00 — IA refactor validation
 - Approved the navigation/discovery IA refactor after targeted CommandPalette/DashboardHome tests, `npm run lint`, and `npm run build` passed.
 - Confirmed Neo's CommandItem union-risk fix unblocked the production build; no commit requested or made.
+
+### 2026-07-05T22:02:38.948+00:00 — Action validation mapping
+- Independently mapped the GitHub Actions failures to validation coverage for the CHANGELOG release gate, accessibility axe checks, and SVG role fix. PR #89 merged with post-merge workflows green.

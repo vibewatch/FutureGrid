@@ -35,3 +35,9 @@
 ### 2026-07-03T22:49:27.110+00:00 — Review cycle and queue handoff
 - Completed 4 of 20 squad review rounds; consolidated backlog now tracks #73-#84 with squad owner labels.
 - Validated and merged #73/#75/#74 through PRs #85/#86/#87; remaining execution queue is #76-#84 from main c4d84fa.
+
+### 2026-07-05T22:02:38.948+00:00 — GitHub Actions failure fixes
+- Investigated failing post-merge GitHub Actions and fixed the missing CHANGELOG release gate, axe accessibility failures, and invalid SVG role. PR #89 merged to main; post-merge CI, Squad Release, and Pages deploy were green.
+
+### 2026-07-05T22:47:39.971+00:00 — Dead legacy code cleanup
+- Removed unused legacy modules under `lib/automation`, `lib/bls`, `lib/oecd`, and `lib/onet`, unused default SVG assets, and obsolete `scripts/extend-oews-history.mjs`. Coordinator validated build, lint, and tests; PR #90 merged to main.

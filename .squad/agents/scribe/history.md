@@ -57,3 +57,12 @@ Scribe merged 1 decision inbox entry into `decisions.md`, cleared the inbox, rec
 ### 2026-07-04T12:23:54.134+00:00 — IA refactor state recording
 - Verified Squad state backend via `squad_state_health` (FSStorageProvider), recorded the preserve-URLs IA decision, wrote a session log, and appended Trinity/Switch/Neo/Mouse history updates using squad_state tools only.
 - Noted validation passed: targeted CommandPalette/DashboardHome tests, `npm run lint`, and `npm run build`; no commit requested or made.
+
+### 2026-07-05T22:02:38.948+00:00 — Action failure fix closeout
+- Recorded session state after PR #89 (`fix: address action run failures`) was committed, merged to main, and local main synced.
+- Noted fixes for the missing CHANGELOG release gate, axe accessibility failures, and invalid SVG role; post-merge workflows were green: CI 28756646091, Squad Release 28756646100, Deploy GitHub Pages 28756646103.
+- No commit requested or made for local Squad state updates.
+
+### 2026-07-05T22:47:39.971+00:00 — Dead legacy code cleanup closeout
+- Recorded local Squad state after dead/legacy code cleanup was audited, implemented, reviewed, validated, committed, merged via PR #90, and confirmed green post-merge.
+- Noted validation passed: `npm run build`, `npm run lint`, and `npm run test:run`; no commit requested or made for local Squad state updates.
