@@ -17,6 +17,10 @@ vi.mock("@/lib/i18n/LanguageProvider", () => ({
 const FIXTURE: AIPressureSynthesisData = {
   global: {
     href: DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint,
+    freshness: {
+      asOf: "2026-07-03 / metrics through 2026",
+      source: "OpenRouter public model catalog API / Microsoft + International Monetary Fund + Oxford Insights metrics",
+    },
     modelCount: 340,
     endpointProviderCount: 72,
     rankableCountries: 122,
@@ -28,6 +32,10 @@ const FIXTURE: AIPressureSynthesisData = {
   },
   talent: {
     href: DEEP_LINK_HREFS.visaTalentBottleneckLens,
+    freshness: {
+      asOf: "FY2025 / 2025",
+      source: "DOL OFLC LCA Disclosure Data / FutureGrid provider-ready job postings seed",
+    },
     occupationsTracked: 756,
     latestH1bFiscalYear: 2025,
     latestJobPostingYear: 2025,
@@ -40,6 +48,10 @@ const FIXTURE: AIPressureSynthesisData = {
   market: {
     href: "/analysis#market-ai-sensitivity",
     stockHref: "/analysis#ai-company-stock-signals",
+    freshness: {
+      asOf: "2026-07-02",
+      source: "Yahoo Finance chart JSON endpoint / Static adjusted-close fixture sourced from Yahoo Finance chart JSON",
+    },
     sectorProxyCount: 11,
     companyCount: 47,
     positiveBreadth1Y: 34,
@@ -82,6 +94,8 @@ describe("AIPressureSynthesisLens", () => {
     expect(screen.getByText("340")).toBeInTheDocument();
     expect(screen.getByText("FY2025")).toBeInTheDocument();
     expect(screen.getByText("34 / 47")).toBeInTheDocument();
+    expect(screen.getByText("As of 2026-07-03 / metrics through 2026")).toBeInTheDocument();
+    expect(screen.getByText("Source: DOL OFLC LCA Disclosure Data / FutureGrid provider-ready job postings seed")).toBeInTheDocument();
 
     expect(screen.getByRole("link", { name: "Open /global context" })).toHaveAttribute(
       "href",

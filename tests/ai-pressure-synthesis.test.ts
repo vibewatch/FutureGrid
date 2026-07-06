@@ -14,12 +14,16 @@ describe("getAIPressureSynthesisData", () => {
     expect(data.global.modelCount).toBeGreaterThan(200);
     expect(data.global.endpointProviderCount).toBeGreaterThan(10);
     expect(data.global.rankableCountries).toBeGreaterThan(100);
+    expect(data.global.freshness.asOf).toMatch(/2026|metrics through/);
+    expect(data.global.freshness.source).toMatch(/OpenRouter|metrics/);
     expect(data.global.topReadinessGapCountry?.name).toEqual(expect.any(String));
     expect(Number.isFinite(data.global.topReadinessGapCountry?.gap)).toBe(true);
 
     expect(data.talent.href).toBe(DEEP_LINK_HREFS.visaTalentBottleneckLens);
     expect(data.talent.occupationsTracked).toBeGreaterThan(700);
     expect(data.talent.latestH1bFiscalYear).toBeGreaterThanOrEqual(2020);
+    expect(data.talent.freshness.asOf).toMatch(/FY2025|2025/);
+    expect(data.talent.freshness.source).toMatch(/DOL OFLC|job postings/i);
     expect(data.talent.topOccupation).toMatchObject({
       socCode: expect.stringMatching(/^\d{2}-\d{4}$/),
       title: expect.any(String),
@@ -32,6 +36,8 @@ describe("getAIPressureSynthesisData", () => {
     expect(data.market.sectorProxyCount).toBe(11);
     expect(data.market.companyCount).toBeGreaterThan(10);
     expect(data.market.positiveBreadth1Y).not.toBeNull();
+    expect(data.market.freshness.asOf).toMatch(/2026-07/);
+    expect(data.market.freshness.source).toMatch(/Yahoo Finance|stock/i);
     expect(data.market.positiveBreadth1Y ?? 0).toBeLessThanOrEqual(data.market.companyCount);
     expect(data.market.topSector?.ticker).toEqual(expect.any(String));
     expect(data.market.topSector?.score).toBeGreaterThan(0);

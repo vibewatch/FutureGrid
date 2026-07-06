@@ -68,6 +68,8 @@ export const analysisZh = {
   aiPressureMarketBreadthDetail: "跟踪公司中一年调整收盘价回报为正的数量。",
   aiPressureOpenMarket: "跳至市场敏感度",
   aiPressureOpenStocks: "跳至股票信号",
+  aiPressureFreshnessAsOf: "截至 {date}",
+  aiPressureFreshnessSource: "来源：{source}",
   aiPressureGuardrailsTitle: "按描述性而非因果性阅读",
   aiPressureGuardrail_openrouterCatalogProxy: "OpenRouter 足迹是提供方/模型目录代理，不是使用量、流量、需求或部署地理。",
   aiPressureGuardrail_h1bLcaFilings: "H-1B 数值是认证 Labor Condition Application 申请，不是签证批准。",
