@@ -83,6 +83,12 @@ const evidencePassport: CareerEvidencePassport = {
   jobPostingYear: 2025,
   jobPostingsSourceStatus: "seed-derived",
   jobPostingsMode: "seed-static",
+  orsAutomationFrictionScore: 34,
+  orsAutomationFrictionBand: "Moderate friction",
+  orsCoverage: "broad-soc",
+  orsPhysicalPresenceScore: 28,
+  orsDecisionMakingPct: 72,
+  orsPreparationRequirement: "Bachelor's degree",
   skills: ["Programming", "Systems Analysis"],
   transitions: [
     {
@@ -97,6 +103,7 @@ const evidencePassport: CareerEvidencePassport = {
     "H-1B values are certified Labor Condition Applications, not visa approvals.",
     "Job postings are seed-static seed-derived data.",
     "Transition matches are directional skill-overlap context, not placement guarantees.",
+    "This release is a FutureGrid broad-SOC seed derived from public BLS ORS requirement concepts and categories, not direct occupation-level ORS survey estimates. It describes job requirements, not worker ability, AI capability, or displacement probability. Automation friction is a FutureGrid derived score and should be read alongside exposure, demand, wage, and projection signals.",
   ],
 };
 
@@ -124,8 +131,11 @@ describe("CareerDetailClient", () => {
     expect(screen.getByText("Descriptive-only")).toBeInTheDocument();
     const passportPanel = screen.getByRole("region", { name: "Career Evidence Passport" });
     expect(within(passportPanel).getByText("42.0%")).toBeInTheDocument();
+    expect(within(passportPanel).getByText("34/100")).toBeInTheDocument();
+    expect(within(passportPanel).getByText(/broad SOC seed ORS job-requirements coverage/i)).toBeInTheDocument();
     expect(within(passportPanel).getByText(/H-1B offered wage \$145,000/i)).toBeInTheDocument();
     expect(within(passportPanel).getByText(/not visa approvals/i)).toBeInTheDocument();
+    expect(within(passportPanel).getByText(/not worker ability, AI capability, or displacement probability/i)).toBeInTheDocument();
     expect(within(passportPanel).getByText(/seed-static \/ seed-derived/i)).toBeInTheDocument();
     expect(within(passportPanel).getByRole("link", { name: /Computer Occupations, All Other/i })).toHaveAttribute(
       "href",

@@ -17,9 +17,13 @@ describe("getCareerEvidencePassport", () => {
     expect(passport?.projectedOpenings ?? 0).toBeGreaterThan(0);
     expect(passport?.h1bTotalLcas ?? 0).toBeGreaterThan(0);
     expect(passport?.latestAnnualPostings ?? 0).toBeGreaterThan(0);
+    expect(passport?.orsAutomationFrictionScore ?? 0).toBeGreaterThan(0);
+    expect(passport?.orsCoverage).toBe("broad-soc");
     expect(passport?.skills.length).toBeGreaterThan(0);
     expect(passport?.transitions.length).toBeGreaterThan(0);
-    expect(passport?.caveats.join(" ")).toMatch(/not visa approvals|proxy/i);
+    expect(passport?.caveats.join(" ")).toMatch(
+      /not visa approvals|proxy|FutureGrid broad-SOC seed/i,
+    );
   });
 
   it("returns null for an unknown SOC", () => {

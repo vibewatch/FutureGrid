@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-03T19:52:50.893Z",
+  "generatedAt": "2026-07-06T04:09:48.277Z",
   "datasets": [
     {
       "id": "ai-company-stocks",
@@ -143,7 +143,7 @@
     {
       "id": "job-postings",
       "file": "data/job-postings.json",
-      "generatedAt": "2026-07-03T00:46:46.842Z",
+      "generatedAt": "2026-07-06T01:17:08.242Z",
       "asOf": "2025",
       "source": {
         "name": "FutureGrid provider-ready job postings seed",
@@ -216,6 +216,19 @@
       "rows": 756
     },
     {
+      "id": "occupational-requirements",
+      "file": "data/occupational-requirements.json",
+      "generatedAt": "2026-07-06T04:09:47.927Z",
+      "asOf": "2025 ORS concepts / FutureGrid seed v1",
+      "source": {
+        "name": "BLS Occupational Requirements Survey (ORS)",
+        "publisher": "U.S. Bureau of Labor Statistics",
+        "url": "https://www.bls.gov/ors/data.htm"
+      },
+      "version": "1.0.0",
+      "rows": 756
+    },
+    {
       "id": "onet-enrichment",
       "file": "data/onet-enrichment.json",
       "generatedAt": "2026-06-30T13:09:05.302Z",
@@ -251,7 +264,7 @@
         "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex"
       },
       "version": "1.0.0",
-      "rows": 39
+      "rows": 42
     },
     {
       "id": "state-labor",

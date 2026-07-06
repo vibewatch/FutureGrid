@@ -45,6 +45,7 @@ const CLEARED_FILES = [
   "llm-exposure.json",
   "occupation-snapshot-slim.json",
   "occupation-snapshot.json",
+  "occupational-requirements.json",
   "onet-enrichment.json",
   "state-labor.json",
   "state-qcew.json",

@@ -73,6 +73,14 @@ const CLEARED: ClearedDownload[] = [
       "U.S. Bureau of Labor Statistics Employment Projections, transformed into a SOC-keyed FutureGrid snapshot.",
   },
   {
+    id: "occupational-requirements",
+    filename: "occupational-requirements.json",
+    label: "Occupational Requirements Seed",
+    license: "Public Domain concepts + CC-BY 4.0 derived seed",
+    attribution:
+      "FutureGrid broad-SOC seed derived from public BLS ORS requirement concepts/categories and FutureGrid occupation metadata.",
+  },
+  {
     id: "warn-notices",
     filename: "warn-notices.json",
     label: "WARN Notices (public)",
