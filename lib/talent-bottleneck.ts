@@ -4,7 +4,11 @@ import {
   type EmploymentProjectionRow,
 } from "@/lib/employment-projections";
 import { getFiscalYears, getOccupationsSorted, type H1bOccupation } from "@/lib/h1b";
-import { getJobPostingsData, type JobPostingsOccupation } from "@/lib/job-postings";
+import {
+  getJobPostingsData,
+  type JobPostingsMode,
+  type JobPostingsOccupation,
+} from "@/lib/job-postings";
 
 type AutomationRisk = CareerInsight["automationRisk"];
 
@@ -78,6 +82,8 @@ export interface TalentBottleneckSummary {
   rowsReturned: number;
   latestH1bFiscalYear: number | null;
   latestJobPostingYear: number | null;
+  jobPostingsMode: JobPostingsMode;
+  jobPostingsObserved: boolean;
   projectionWindow: {
     baseYear: number | null;
     projectionYear: number | null;
@@ -188,6 +194,8 @@ export function getTalentBottleneckData(
       rows.length,
       latestH1bFiscalYear,
       latestNumber(jobPostingsData.coverage.years),
+      jobPostingsData.coverage.mode,
+      jobPostingsData.coverage.observedHistoricalPostings,
       employmentData.coverage.baseYear,
       employmentData.coverage.projectionYear,
     ),
@@ -293,6 +301,8 @@ function buildSummary(
   rowsReturned: number,
   latestH1bFiscalYear: number | null,
   latestJobPostingYear: number | null,
+  jobPostingsMode: JobPostingsMode,
+  jobPostingsObserved: boolean,
   baseYear: number | null,
   projectionYear: number | null,
 ): TalentBottleneckSummary {
@@ -303,6 +313,8 @@ function buildSummary(
     rowsReturned,
     latestH1bFiscalYear,
     latestJobPostingYear,
+    jobPostingsMode,
+    jobPostingsObserved,
     projectionWindow: { baseYear, projectionYear },
     matched: {
       h1b: rankedRows.filter((row) => row.sourceFlags.hasH1b).length,
