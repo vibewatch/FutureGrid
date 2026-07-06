@@ -88,6 +88,10 @@ export const visaZh = {
   talentBottleneckCaveatLabel: "按指数解读：",
   talentBottleneckCaveat:
     "获批 LCA 并非签证批准；瓶颈分数是指数，并非短缺或因果关系证明；招聘帖数据在适用处为代理/种子衍生信号。",
+  talentBottleneckJobPostingsModeLabel: "招聘帖模式",
+  talentBottleneckJobPostingsObserved: "观测提供商",
+  talentBottleneckJobPostingsObservedFallback: "观测 + 种子回退",
+  talentBottleneckJobPostingsSeed: "种子/代理回退",
   talentBottleneckOccupationsTracked: "追踪职业数",
   talentBottleneckOccupationsTrackedDetail: "展示 {rows} 条排名记录",
   talentBottleneckLatestFiscalYear: "最新 H-1B 财年",

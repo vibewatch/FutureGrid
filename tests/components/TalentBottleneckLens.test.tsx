@@ -49,6 +49,8 @@ const FIXTURE_DATA: TalentBottleneckData = {
     rowsReturned: 3,
     latestH1bFiscalYear: 2025,
     latestJobPostingYear: 2025,
+    jobPostingsMode: "observed-provider-with-seed-fallback",
+    jobPostingsObserved: true,
     projectionWindow: { baseYear: 2023, projectionYear: 2033 },
     matched: {
       h1b: 3,
@@ -236,6 +238,8 @@ describe("TalentBottleneckLens", () => {
     expect(screen.getByText(/Certified LCAs are not visa approvals/i)).toBeInTheDocument();
     expect(screen.getByText(/not proof of shortage or causality/i)).toBeInTheDocument();
     expect(screen.getByText(/proxy\/seed-derived/i)).toBeInTheDocument();
+    expect(screen.getByText(/Job postings mode/i)).toBeInTheDocument();
+    expect(screen.getByText(/Observed \+ seed fallback/i)).toBeInTheDocument();
 
     expect(screen.getByText(/Occupations tracked/i)).toBeInTheDocument();
     expect(screen.getByText(/Latest H-1B fiscal year/i)).toBeInTheDocument();

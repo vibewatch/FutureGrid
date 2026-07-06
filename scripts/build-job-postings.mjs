@@ -2,16 +2,22 @@
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
+import { dirname, isAbsolute, join, resolve } from "node:path";
 import { buildMeta } from "./lib/meta.mjs";
 import { validateJobPostings } from "./lib/validate.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const DATA_DIR = join(ROOT, "data");
-const OUTPUT_FILE = join(DATA_DIR, "job-postings.json");
+const OUTPUT_FILE = process.env.JOB_POSTINGS_OUTPUT_FILE
+  ? resolvePath(process.env.JOB_POSTINGS_OUTPUT_FILE)
+  : join(DATA_DIR, "job-postings.json");
+const OBSERVED_PROVIDER_FILE = process.env.JOB_POSTINGS_PROVIDER_FILE
+  ? resolvePath(process.env.JOB_POSTINGS_PROVIDER_FILE)
+  : null;
 
 if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
+mkdirSync(dirname(OUTPUT_FILE), { recursive: true });
 
 const OCCUPATION_SNAPSHOT_RAW = JSON.parse(
   readFileSync(join(DATA_DIR, "occupation-snapshot.json"), "utf8")
@@ -46,12 +52,17 @@ const knownCodes = new Set(OCCUPATIONS.map((row) => row.socCode));
 function main() {
   const seedRows = OCCUPATIONS.map((row) => buildOccupationSeedRow(row))
     .sort((a, b) => a.socCode.localeCompare(b.socCode));
+  const observedInput = OBSERVED_PROVIDER_FILE
+    ? readObservedProviderInput(OBSERVED_PROVIDER_FILE)
+    : null;
+  const { rows, coverageMode, observedOccupationCount, seedFallbackOccupationCount } =
+    applyObservedProviderRows(seedRows, observedInput);
 
   const annualPostingsBySoc = new Map(
-    seedRows.map((row) => [row.socCode, row.annualPostings])
+    rows.map((row) => [row.socCode, row.annualPostings])
   );
 
-  for (const row of seedRows) {
+  for (const row of rows) {
     row.relatedAnnualPostings = Object.fromEntries(
       YEARS.map((year) => [
         String(year),
@@ -65,38 +76,44 @@ function main() {
     row.latestRelatedAnnualPostings = row.relatedAnnualPostings[String(LATEST_YEAR)];
   }
 
-  seedRows.sort(
+  rows.sort(
     (a, b) =>
       b.latestAnnualPostings - a.latestAnnualPostings ||
       a.socCode.localeCompare(b.socCode)
   );
 
   const totalAnnualPostingsByYear = sumYearObjects(
-    seedRows.map((row) => row.annualPostings)
+    rows.map((row) => row.annualPostings)
   );
   const totalRelatedAnnualPostingsByYear = sumYearObjects(
-    seedRows.map((row) => row.relatedAnnualPostings)
+    rows.map((row) => row.relatedAnnualPostings)
   );
 
   const dataset = {
     meta: buildMeta({
-      asOf: String(LATEST_YEAR),
-      source: {
-        name: "FutureGrid provider-ready job postings seed",
-        publisher: "FutureGrid",
-        url: "https://github.com/huangyingting/FutureGrid",
-      },
+      asOf: observedInput?.asOf ?? String(LATEST_YEAR),
+      source:
+        observedInput?.source ?? {
+          name: "FutureGrid provider-ready job postings seed",
+          publisher: "FutureGrid",
+          url: "https://github.com/huangyingting/FutureGrid",
+        },
     }),
     coverage: {
       years: YEARS,
-      occupations: seedRows.length,
-      occupationsWithRelatedJobs: seedRows.filter(
+      occupations: rows.length,
+      occupationsWithRelatedJobs: rows.filter(
         (row) => row.relatedOccupations.length > 0
       ).length,
       currentSourceDataset: "data/occupation-snapshot.json",
       relatedOccupationSourceDataset: "data/onet-enrichment.json",
-      observedHistoricalPostings: false,
-      mode: "seed-static",
+      observedHistoricalPostings: observedOccupationCount > 0,
+      mode: coverageMode,
+      observedOccupations: observedOccupationCount,
+      seedFallbackOccupations: seedFallbackOccupationCount,
+      observedProviderInput: OBSERVED_PROVIDER_FILE
+        ? OBSERVED_PROVIDER_FILE.replace(`${ROOT}/`, "")
+        : null,
       primaryKey: "socCode",
     },
     methodology: {
@@ -118,6 +135,7 @@ function main() {
       replaceFields: [
         "occupations[].annualPostings",
         "occupations[].relatedAnnualPostings",
+        "occupations[].sourceStatus",
         "summary.totalAnnualPostingsByYear",
       ],
       recommendedProviders: ["Lightcast", "LinkUp", "TheirStack", "Adzuna"],
@@ -126,13 +144,13 @@ function main() {
       latestYear: LATEST_YEAR,
       totalAnnualPostingsByYear,
       totalRelatedAnnualPostingsByYear,
-      topOccupationsLatestYear: seedRows.slice(0, 10).map((row) => ({
+      topOccupationsLatestYear: rows.slice(0, 10).map((row) => ({
         socCode: row.socCode,
         title: row.title,
         annualPostings: row.latestAnnualPostings,
       })),
     },
-    occupations: seedRows,
+    occupations: rows,
   };
 
   validateJobPostings(dataset);
@@ -140,6 +158,140 @@ function main() {
   console.log(
     `[build-job-postings] wrote data/job-postings.json (${seedRows.length} occupations, ${YEARS.length} annual points)`
   );
+}
+
+function resolvePath(filePath) {
+  return isAbsolute(filePath) ? filePath : resolve(ROOT, filePath);
+}
+
+function readObservedProviderInput(filePath) {
+  const raw = JSON.parse(readFileSync(filePath, "utf8"));
+  const rows = Array.isArray(raw?.rows)
+    ? raw.rows
+    : Array.isArray(raw?.occupations)
+      ? raw.occupations
+      : null;
+  if (!rows) {
+    throw new Error(
+      "[build-job-postings] observed provider input must contain a rows or occupations array"
+    );
+  }
+
+  const normalizedRows = rows.map((row, index) => normalizeObservedProviderRow(row, index));
+  return {
+    asOf: typeof raw?.meta?.asOf === "string" ? raw.meta.asOf : String(LATEST_YEAR),
+    source:
+      raw?.meta?.source && typeof raw.meta.source === "object"
+        ? raw.meta.source
+        : {
+            name: "Observed job-postings provider input",
+            publisher: "Configured provider",
+            url: null,
+          },
+    rows: normalizedRows,
+  };
+}
+
+function normalizeObservedProviderRow(row, index) {
+  const socCode = typeof row?.socCode === "string" ? row.socCode : row?.soc;
+  if (typeof socCode !== "string" || !/^\d{2}-\d{4}$/.test(socCode)) {
+    throw new Error(
+      `[build-job-postings] observed row ${index + 1} has invalid or missing SOC code`
+    );
+  }
+
+  const annualPostings =
+    row.annualPostings ?? row.postingsByYear ?? row.countsByYear ?? row.counts;
+  if (!annualPostings || typeof annualPostings !== "object" || Array.isArray(annualPostings)) {
+    throw new Error(
+      `[build-job-postings] observed row ${socCode} must include annualPostings/postingsByYear/counts`
+    );
+  }
+
+  const observedAnnualPostings = {};
+  for (const year of YEARS) {
+    const value = toFiniteNumber(annualPostings[String(year)]);
+    if (value == null) continue;
+    if (value < 0) {
+      throw new Error(
+        `[build-job-postings] observed row ${socCode} has a negative count for ${year}`
+      );
+    }
+    observedAnnualPostings[String(year)] = roundCount(value);
+  }
+
+  if (Object.keys(observedAnnualPostings).length === 0) {
+    throw new Error(
+      `[build-job-postings] observed row ${socCode} has no counts inside the ${YEARS[0]}-${LATEST_YEAR} coverage window`
+    );
+  }
+
+  return {
+    socCode,
+    observedAnnualPostings,
+  };
+}
+
+function applyObservedProviderRows(seedRows, observedInput) {
+  if (!observedInput) {
+    return {
+      rows: seedRows,
+      coverageMode: "seed-static",
+      observedOccupationCount: 0,
+      seedFallbackOccupationCount: seedRows.length,
+    };
+  }
+
+  const observedBySoc = new Map(
+    observedInput.rows.map((row) => [row.socCode, row.observedAnnualPostings])
+  );
+  const rows = seedRows.map((seedRow) => {
+    const observedAnnualPostings = observedBySoc.get(seedRow.socCode);
+    if (!observedAnnualPostings) {
+      return {
+        ...seedRow,
+        sourceStatus: "seed-derived",
+      };
+    }
+
+    const observedYears = new Set(Object.keys(observedAnnualPostings));
+    const annualPostings = Object.fromEntries(
+      YEARS.map((year) => {
+        const yearKey = String(year);
+        return [
+          yearKey,
+          observedAnnualPostings[yearKey] ?? seedRow.annualPostings[yearKey],
+        ];
+      })
+    );
+
+    return {
+      ...seedRow,
+      annualPostings,
+      latestAnnualPostings: annualPostings[String(LATEST_YEAR)],
+      observedYears: [...observedYears].sort(),
+      sourceStatus:
+        observedYears.size === YEARS.length
+          ? "observed-provider"
+          : "observed-provider-with-seed-fallback",
+    };
+  });
+  const observedOccupationCount = rows.filter((row) =>
+    row.sourceStatus.startsWith("observed-provider")
+  ).length;
+  const fullyObservedCount = rows.filter(
+    (row) => row.sourceStatus === "observed-provider"
+  ).length;
+
+  return {
+    rows,
+    coverageMode:
+      fullyObservedCount === rows.length
+        ? "observed-provider"
+        : "observed-provider-with-seed-fallback",
+    observedOccupationCount,
+    seedFallbackOccupationCount: rows.length - fullyObservedCount,
+  };
 }
 
 function buildOccupationSeedRow(row) {
