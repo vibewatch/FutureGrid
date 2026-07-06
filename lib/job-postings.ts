@@ -1,5 +1,17 @@
 import jobPostingsData from "@/data/job-postings.json";
 
+export type JobPostingsMode =
+  | "seed-static"
+  | "observed-provider"
+  | "observed-provider-with-seed-fallback"
+  | (string & {});
+
+export type JobPostingsSourceStatus =
+  | "seed-derived"
+  | "observed-provider"
+  | "observed-provider-with-seed-fallback"
+  | (string & {});
+
 export interface JobPostingsRelatedOccupation {
   socCode: string;
   title: string;
@@ -16,7 +28,8 @@ export interface JobPostingsOccupation {
   relatedAnnualPostings: Record<string, number>;
   latestAnnualPostings: number;
   latestRelatedAnnualPostings: number;
-  sourceStatus: "seed-derived" | (string & {});
+  sourceStatus: JobPostingsSourceStatus;
+  observedYears?: string[];
 }
 
 export interface JobPostingsCoverage {
@@ -26,7 +39,10 @@ export interface JobPostingsCoverage {
   currentSourceDataset: string;
   relatedOccupationSourceDataset: string;
   observedHistoricalPostings: boolean;
-  mode: "seed-static" | (string & {});
+  mode: JobPostingsMode;
+  observedOccupations?: number;
+  seedFallbackOccupations?: number;
+  observedProviderInput?: string | null;
   primaryKey: "socCode" | (string & {});
 }
 
@@ -159,5 +175,6 @@ function cloneOccupation(row: JobPostingsOccupation): JobPostingsOccupation {
     relatedOccupations: row.relatedOccupations.map((related) => ({ ...related })),
     annualPostings: { ...row.annualPostings },
     relatedAnnualPostings: { ...row.relatedAnnualPostings },
+    observedYears: row.observedYears ? [...row.observedYears] : undefined,
   };
 }

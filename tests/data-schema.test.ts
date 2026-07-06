@@ -562,6 +562,31 @@ describe("validateJobPostings — committed file", () => {
 });
 
 describe("validateJobPostings — negative cases", () => {
+  const annualPostings = (): Record<string, number | undefined> => ({
+    "2016": 1,
+    "2017": 1,
+    "2018": 1,
+    "2019": 1,
+    "2020": 1,
+    "2021": 1,
+    "2022": 1,
+    "2023": 1,
+    "2024": 1,
+    "2025": 1,
+  });
+  const relatedAnnualPostings = (): Record<string, number | undefined> => ({
+    "2016": 0,
+    "2017": 0,
+    "2018": 0,
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 0,
+    "2025": 0,
+  });
+
   const base = () => ({
     meta: {
       generatedAt: "2026-07-03T00:00:00Z",
@@ -598,30 +623,8 @@ describe("validateJobPostings — negative cases", () => {
       sector: "Management",
       sampleTitles: [],
       relatedOccupations: [],
-      annualPostings: {
-        "2016": 1,
-        "2017": 1,
-        "2018": 1,
-        "2019": 1,
-        "2020": 1,
-        "2021": 1,
-        "2022": 1,
-        "2023": 1,
-        "2024": 1,
-        "2025": 1,
-      },
-      relatedAnnualPostings: {
-        "2016": 0,
-        "2017": 0,
-        "2018": 0,
-        "2019": 0,
-        "2020": 0,
-        "2021": 0,
-        "2022": 0,
-        "2023": 0,
-        "2024": 0,
-        "2025": 0,
-      },
+      annualPostings: annualPostings(),
+      relatedAnnualPostings: relatedAnnualPostings(),
       latestAnnualPostings: 1,
       latestRelatedAnnualPostings: 0,
       sourceStatus: "seed-derived",
@@ -737,6 +740,20 @@ describe("validateOpenRouterModels — committed file", () => {
 });
 
 describe("validateOpenRouterModels — negative cases", () => {
+  const architecture = (): {
+    modality: string;
+    inputModalities?: string[];
+    outputModalities: string[];
+    tokenizer: string;
+    instructType: null;
+  } => ({
+    modality: "text->text",
+    inputModalities: ["text"],
+    outputModalities: ["text"],
+    tokenizer: "GPT",
+    instructType: null,
+  });
+
   const base = () => ({
     meta: {
       generatedAt: "2026-07-03T00:00:00Z",
@@ -770,13 +787,7 @@ describe("validateOpenRouterModels — negative cases", () => {
         createdDate: "2026-01-01",
         contextLength: 128000,
         maxOutputTokens: 16000,
-        architecture: {
-          modality: "text->text",
-          inputModalities: ["text"],
-          outputModalities: ["text"],
-          tokenizer: "GPT",
-          instructType: null,
-        },
+        architecture: architecture(),
         pricing: { prompt: 0.000001, completion: 0.000002 },
         topProvider: {
           contextLength: 128000,

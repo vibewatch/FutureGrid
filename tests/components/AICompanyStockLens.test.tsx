@@ -9,7 +9,7 @@ import { analysisEn } from "@/lib/i18n/messages/en/analysis";
 import { analysisZh } from "@/lib/i18n/messages/zh/analysis";
 import type {
   AICompanyStockMetrics,
-  AICompanyStockReturnPeriod,
+  AICompanyStockReturns,
   AICompanyStocksData,
 } from "@/lib/ai-company-stocks";
 
@@ -17,7 +17,6 @@ vi.mock("@/lib/i18n/LanguageProvider", () => ({
   useLanguage: () => ({ locale: "en" as const, setLocale: vi.fn() }),
 }));
 
-const PERIODS: AICompanyStockReturnPeriod[] = ["1M", "3M", "6M", "YTD", "1Y", "fullPeriod"];
 const FORBIDDEN_WORDING = [
   /\bbuy\b/i,
   /\bsell\b/i,
@@ -27,23 +26,50 @@ const FORBIDDEN_WORDING = [
   /\bshould invest\b/i,
 ];
 
-function metrics(overrides: Partial<AICompanyStockMetrics>): AICompanyStockMetrics {
+function emptyReturns(): AICompanyStockReturns {
+  return {
+    "1M": null,
+    "3M": null,
+    "6M": null,
+    YTD: null,
+    "1Y": null,
+    fullPeriod: null,
+  };
+}
+
+function emptyLeaders(): AICompanyStocksData["summary"]["topGainers"] {
+  return {
+    "1M": [],
+    "3M": [],
+    "6M": [],
+    YTD: [],
+    "1Y": [],
+    fullPeriod: [],
+  };
+}
+
+function metrics(
+  overrides: Omit<Partial<AICompanyStockMetrics>, "returns"> & {
+    returns?: Partial<AICompanyStockReturns>;
+  },
+): AICompanyStockMetrics {
+  const { returns, ...rest } = overrides;
+
   return {
     startDate: "2025-07-01",
     latestDate: "2026-07-02",
     latestClose: 100,
     observationCount: 13,
     observationInterval: "1mo",
-    returns: Object.fromEntries(PERIODS.map((period) => [period, null])) as AICompanyStockMetrics["returns"],
+    returns: {
+      ...emptyReturns(),
+      ...returns,
+    },
     annualizedVolatility: 0.31,
     maxDrawdown: -0.18,
     momentum50d: null,
     momentum200d: null,
-    ...overrides,
-    returns: {
-      ...(Object.fromEntries(PERIODS.map((period) => [period, null])) as AICompanyStockMetrics["returns"]),
-      ...overrides.returns,
-    },
+    ...rest,
   };
 }
 
@@ -70,7 +96,7 @@ const fixture: AICompanyStocksData = {
       ticker: "SPY",
       name: "S&P 500 ETF benchmark",
       prices: [],
-      metrics: metrics({ returns: { "1Y": 0.12 } as AICompanyStockMetrics["returns"] }),
+      metrics: metrics({ returns: { "1Y": 0.12 } }),
       dataQualityNotes: [],
     },
     {
@@ -78,7 +104,7 @@ const fixture: AICompanyStocksData = {
       ticker: "QQQ",
       name: "Nasdaq 100 ETF benchmark",
       prices: [],
-      metrics: metrics({ returns: { "1Y": 0.18 } as AICompanyStockMetrics["returns"] }),
+      metrics: metrics({ returns: { "1Y": 0.18 } }),
       dataQualityNotes: [],
     },
   ],
@@ -90,10 +116,10 @@ const fixture: AICompanyStocksData = {
       primaryCategory: "platforms",
       categories: ["platforms"],
       prices: [],
-      metrics: metrics({ returns: { "1M": 0.04, "6M": 0.22, "1Y": 0.36 } as AICompanyStockMetrics["returns"] }),
+      metrics: metrics({ returns: { "1M": 0.04, "6M": 0.22, "1Y": 0.36 } }),
       relativeReturns: {
-        qqq: { ...metrics({ returns: { "1Y": 0.18 } as AICompanyStockMetrics["returns"] }).returns, "1Y": 0.18 },
-        spy: { ...metrics({ returns: { "1Y": 0.24 } as AICompanyStockMetrics["returns"] }).returns, "1Y": 0.24 },
+        qqq: { ...metrics({ returns: { "1Y": 0.18 } }).returns, "1Y": 0.18 },
+        spy: { ...metrics({ returns: { "1Y": 0.24 } }).returns, "1Y": 0.24 },
       },
       categoryRanks: [],
       dataQualityNotes: [],
@@ -106,13 +132,13 @@ const fixture: AICompanyStocksData = {
       categories: ["infrastructure"],
       prices: [],
       metrics: metrics({
-        returns: { "1M": -0.02, "6M": 0.08, "1Y": -0.05 } as AICompanyStockMetrics["returns"],
+        returns: { "1M": -0.02, "6M": 0.08, "1Y": -0.05 },
         maxDrawdown: -0.27,
         annualizedVolatility: 0.42,
       }),
       relativeReturns: {
-        qqq: { ...metrics({ returns: { "1Y": -0.23 } as AICompanyStockMetrics["returns"] }).returns, "1Y": -0.23 },
-        spy: { ...metrics({ returns: { "1Y": -0.17 } as AICompanyStockMetrics["returns"] }).returns, "1Y": -0.17 },
+        qqq: { ...metrics({ returns: { "1Y": -0.23 } }).returns, "1Y": -0.23 },
+        spy: { ...metrics({ returns: { "1Y": -0.17 } }).returns, "1Y": -0.17 },
       },
       categoryRanks: [],
       dataQualityNotes: [],
@@ -124,10 +150,10 @@ const fixture: AICompanyStocksData = {
       primaryCategory: "infrastructure",
       categories: ["infrastructure"],
       prices: [],
-      metrics: metrics({ returns: { "1M": 0.01, "6M": -0.04, "1Y": 0.11 } as AICompanyStockMetrics["returns"] }),
+      metrics: metrics({ returns: { "1M": 0.01, "6M": -0.04, "1Y": 0.11 } }),
       relativeReturns: {
-        qqq: { ...metrics({ returns: { "1Y": -0.07 } as AICompanyStockMetrics["returns"] }).returns, "1Y": -0.07 },
-        spy: { ...metrics({ returns: { "1Y": -0.01 } as AICompanyStockMetrics["returns"] }).returns, "1Y": -0.01 },
+        qqq: { ...metrics({ returns: { "1Y": -0.07 } }).returns, "1Y": -0.07 },
+        spy: { ...metrics({ returns: { "1Y": -0.01 } }).returns, "1Y": -0.01 },
       },
       categoryRanks: [],
       dataQualityNotes: [],
@@ -158,8 +184,8 @@ const fixture: AICompanyStocksData = {
     benchmarkCount: 2,
     latestDate: "2026-07-02",
     benchmarkTickers: ["SPY", "QQQ"],
-    topGainers: Object.fromEntries(PERIODS.map((period) => [period, []])) as AICompanyStocksData["summary"]["topGainers"],
-    laggards: Object.fromEntries(PERIODS.map((period) => [period, []])) as AICompanyStocksData["summary"]["laggards"],
+    topGainers: emptyLeaders(),
+    laggards: emptyLeaders(),
     breadth: { positive1Y: 2 },
     benchmarkLatestClose: { SPY: 600, QQQ: 500 },
     caveats: ["Descriptive historical signals only; not investment advice, not a forecast, and not a recommendation."],

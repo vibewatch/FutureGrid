@@ -16,7 +16,7 @@ vi.mock("@/lib/i18n/LanguageProvider", () => ({
 
 const FIXTURE: AIPressureSynthesisData = {
   global: {
-    href: DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint,
+    href: DEEP_LINK_HREFS.globalAIEcosystemMap,
     modelCount: 340,
     endpointProviderCount: 72,
     rankableCountries: 122,
@@ -85,11 +85,15 @@ describe("AIPressureSynthesisLens", () => {
 
     expect(screen.getByRole("link", { name: "Open /global context" })).toHaveAttribute(
       "href",
-      DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint,
+      DEEP_LINK_HREFS.globalAIEcosystemMap,
     );
     expect(screen.getByRole("link", { name: "Open /visa context" })).toHaveAttribute(
       "href",
       DEEP_LINK_HREFS.visaTalentBottleneckLens,
+    );
+    expect(screen.getByRole("link", { name: "Software Developers" })).toHaveAttribute(
+      "href",
+      "/careers/15-1252",
     );
     expect(screen.getByRole("link", { name: "Jump to market sensitivity" })).toHaveAttribute(
       "href",

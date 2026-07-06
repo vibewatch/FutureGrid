@@ -152,6 +152,9 @@ export default function AIPressureSynthesisLens({
                 {
                   label: t("aiPressureTalentTopLabel"),
                   value: data.talent.topOccupation?.title ?? "—",
+                  href: data.talent.topOccupation
+                    ? `/careers/${data.talent.topOccupation.socCode}`
+                    : undefined,
                   detail: topOccupationDetail,
                   width: data.talent.topOccupation
                     ? ratioWidth(data.talent.topOccupation.score, 100)
@@ -240,6 +243,7 @@ function LaneCard({
   metrics: Array<{
     label: string;
     value: string;
+    href?: string;
     detail: string;
     width: number;
   }>;
@@ -277,7 +281,18 @@ function LaneCard({
               title={metric.value}
               aria-label={`${metric.label}: ${metric.value}`}
             >
-              {metric.value}
+              {metric.href ? (
+                <Link
+                  href={metric.href}
+                  className="underline decoration-violet-400/50 underline-offset-4 transition-colors hover:text-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-400"
+                  title={metric.value}
+                  aria-label={metric.value}
+                >
+                  {metric.value}
+                </Link>
+              ) : (
+                metric.value
+              )}
             </dd>
             <dd
               className="mt-1 whitespace-normal break-words text-xs leading-relaxed text-zinc-500 [overflow-wrap:anywhere] dark:text-zinc-400"

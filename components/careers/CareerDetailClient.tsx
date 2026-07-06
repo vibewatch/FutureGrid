@@ -8,6 +8,7 @@ import type { OnetEnrichmentOccupation } from "@/lib/onet";
 import type { TrendPoint } from "@/lib/snapshot";
 import type { OccExposureLenses } from "@/lib/exposure";
 import type { H1bOccupationSignal } from "@/lib/h1b";
+import type { CareerEvidencePassport } from "@/lib/career-evidence-passport";
 import OccupationTrendChart from "@/components/charts/OccupationTrendChart";
 import PredictiveChart from "@/components/charts/PredictiveChart";
 import { useT } from "@/lib/i18n/useT";
@@ -22,6 +23,7 @@ interface CareerDetailClientProps {
   transitions: ReskillingTarget[];
   exposureLenses: OccExposureLenses | null;
   h1bSignal: H1bOccupationSignal | null;
+  evidencePassport: CareerEvidencePassport | null;
   h1bFirst: number;
   h1bLatest: number;
 }
@@ -36,6 +38,7 @@ export default function CareerDetailClient({
   transitions,
   exposureLenses,
   h1bSignal,
+  evidencePassport,
   h1bFirst,
   h1bLatest,
 }: CareerDetailClientProps) {
@@ -161,6 +164,10 @@ export default function CareerDetailClient({
         </Link>
         .
       </p>
+
+      {evidencePassport && (
+        <CareerEvidencePassportPanel passport={evidencePassport} />
+      )}
 
       {/* Best transitions from here */}
       {transitions.length > 0 && (
@@ -623,6 +630,168 @@ export default function CareerDetailClient({
           </table>
         </div>
       </div>
+    </div>
+  );
+}
+
+function CareerEvidencePassportPanel({
+  passport,
+}: {
+  passport: CareerEvidencePassport;
+}) {
+  const t = useT("careers");
+  const lcaCaveat = t("passportLcaCaveat");
+  const postingsCaveat = t("passportPostingsCaveat", {
+    mode: passport.jobPostingsMode,
+    status: passport.jobPostingsSourceStatus ?? "proxy",
+  });
+
+  return (
+    <section
+      aria-labelledby="career-evidence-passport-title"
+      className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6"
+    >
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-600 dark:text-cyan-300">
+            {t("passportEyebrow")}
+          </p>
+          <h2 id="career-evidence-passport-title" className="mt-1 text-xl font-bold text-gradient">
+            {t("passportTitle")}
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+            {t("passportSubtitle", { soc: passport.socCode })}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 text-[11px] font-semibold">
+          <span className="rounded-full border border-amber-300/60 bg-amber-100/70 px-2.5 py-1 text-amber-800 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-200">
+            {t("passportBadgeProxy")}
+          </span>
+          <span className="rounded-full border border-violet-300/60 bg-violet-100/70 px-2.5 py-1 text-violet-800 dark:border-violet-500/40 dark:bg-violet-500/10 dark:text-violet-200">
+            {t("passportBadgeDescriptive")}
+          </span>
+        </div>
+      </div>
+
+      <dl className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <PassportMetric
+          label={t("passportExposureLabel")}
+          value={`${passport.aiExposurePct.toFixed(1)}%`}
+          detail={`${passport.automationRisk} · ${t("passportSourceAnthropic")}`}
+        />
+        <PassportMetric
+          label={t("passportWageLabel")}
+          value={formatCurrency(passport.medianAnnualSalary)}
+          detail={
+            passport.h1bMedianWageAnnual
+              ? t("passportH1bWageDetail", {
+                  wage: formatCurrency(passport.h1bMedianWageAnnual),
+                })
+              : t("passportNoH1bWage")
+          }
+        />
+        <PassportMetric
+          label={t("passportProjectionLabel")}
+          value={
+            passport.projectedOpenings != null
+              ? formatNumber(passport.projectedOpenings)
+              : "—"
+          }
+          detail={t("passportProjectionDetail", {
+            window: passport.projectionWindow ?? "2024–2034",
+            change:
+              passport.employmentChangePct == null
+                ? "—"
+                : `${passport.employmentChangePct > 0 ? "+" : ""}${passport.employmentChangePct.toFixed(1)}%`,
+          })}
+        />
+        <PassportMetric
+          label={t("passportDemandLabel")}
+          value={
+            passport.h1bLatestLcas != null
+              ? formatNumber(passport.h1bLatestLcas)
+              : "—"
+          }
+          detail={t("passportDemandDetail", {
+            year: passport.h1bLatestFiscalYear ? `FY${passport.h1bLatestFiscalYear}` : "FY—",
+            postings:
+              passport.latestAnnualPostings == null
+                ? "—"
+                : formatNumber(passport.latestAnnualPostings),
+            postingYear: passport.jobPostingYear ?? "—",
+          })}
+        />
+      </dl>
+
+      <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="rounded-xl border border-zinc-200 bg-white/60 p-4 dark:border-zinc-800 dark:bg-zinc-900/45">
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
+            {t("passportSkillsTitle")}
+          </h3>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {passport.skills.map((skill) => (
+              <span
+                key={skill}
+                className="rounded-lg border border-cyan-200 bg-cyan-50 px-2.5 py-1 text-xs text-cyan-800 dark:border-cyan-700/30 dark:bg-cyan-900/20 dark:text-cyan-200"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="rounded-xl border border-zinc-200 bg-white/60 p-4 dark:border-zinc-800 dark:bg-zinc-900/45">
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
+            {t("passportTransitionsTitle")}
+          </h3>
+          <div className="mt-3 space-y-2">
+            {passport.transitions.map((transition) => (
+              <Link
+                key={transition.socCode}
+                href={`/careers/${transition.socCode}`}
+                className="flex items-center justify-between gap-3 rounded-lg border border-zinc-200 bg-white/60 px-3 py-2 text-sm transition-colors hover:border-violet-300 hover:text-violet-700 dark:border-zinc-800 dark:bg-zinc-950/35 dark:hover:border-violet-500/50 dark:hover:text-violet-200"
+              >
+                <span>{transition.title}</span>
+                <span className="shrink-0 text-xs font-semibold text-zinc-500">
+                  {t("passportTransitionScore", { score: transition.transitionScore })}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <ul className="mt-5 grid gap-2 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400 md:grid-cols-3">
+        {[lcaCaveat, postingsCaveat, ...passport.caveats.slice(2)].map((caveat) => (
+          <li key={caveat} className="flex gap-2">
+            <span aria-hidden="true">•</span>
+            <span>{caveat}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function PassportMetric({
+  label,
+  value,
+  detail,
+}: {
+  label: string;
+  value: string;
+  detail: string;
+}) {
+  return (
+    <div className="rounded-xl border border-zinc-200 bg-white/60 p-4 dark:border-zinc-800 dark:bg-zinc-900/45">
+      <dt className="text-[10px] font-semibold uppercase tracking-widest text-zinc-500">
+        {label}
+      </dt>
+      <dd className="mt-1 text-2xl font-bold text-zinc-900 dark:text-white">
+        {value}
+      </dd>
+      <dd className="mt-1 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+        {detail}
+      </dd>
     </div>
   );
 }

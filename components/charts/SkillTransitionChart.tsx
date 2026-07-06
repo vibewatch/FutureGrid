@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import * as d3 from "d3";
 import { generateAllCareerInsights } from "@/lib/data";
@@ -61,6 +61,19 @@ export default function SkillTransitionChart() {
       lowRisk:  insights.filter((i) => i.automationRisk === "Low"),
     };
   });
+  const transitionRows = useMemo(() => {
+    const skillNames = Object.keys(GROUP_COLORS);
+    const totalHigh = filtered.highRisk.length;
+    const totalLow = filtered.lowRisk.length;
+
+    return skillNames.map((group) => {
+      const highMax = Math.max(Math.floor(totalHigh * 0.4) - 1, 0);
+      const lowMax = Math.max(Math.floor(totalLow * 0.4) - 1, 0);
+      const highCount = deterministicInt(group + ":high", 0, highMax);
+      const lowCount = deterministicInt(group + ":low", 0, lowMax);
+      return { group, highCount, lowCount };
+    });
+  }, [filtered]);
 
   const headerHighRisk  = t("sectionHighRisk");
   const headerLowRisk   = t("sectionLowRiskPathways");
@@ -83,27 +96,19 @@ export default function SkillTransitionChart() {
     const M = { top: 50, right: 40, bottom: 40, left: 180 };
     svg.attr("viewBox", `0 0 ${W} ${H}`);
 
-    const skillNames = Object.keys(GROUP_COLORS);
     const xLeft  = M.left;
     const xRight = W - M.right - 150;
-    const rowH   = (H - M.top - M.bottom) / skillNames.length;
+    const rowH   = (H - M.top - M.bottom) / transitionRows.length;
 
-    const totalHigh = filtered.highRisk.length;
-    const totalLow  = filtered.lowRisk.length;
-
-    const rows: RowDatum[] = skillNames.map((group, i) => {
-      const highMax   = Math.max(Math.floor(totalHigh * 0.4) - 1, 0);
-      const lowMax    = Math.max(Math.floor(totalLow  * 0.4) - 1, 0);
-      const highCount = deterministicInt(group + ":high", 0, highMax);
-      const lowCount  = deterministicInt(group + ":low",  0, lowMax);
+    const rows: RowDatum[] = transitionRows.map((row, i) => {
       return {
-        group,
+        group: row.group,
         y:          M.top + i * rowH + rowH / 2,
-        leftWidth:  Math.max(highCount * 3, 30),
-        rightWidth: Math.max(lowCount  * 3, 30),
-        highCount,
-        lowCount,
-        color: GROUP_COLORS[group] ?? "#6b7280",
+        leftWidth:  Math.max(row.highCount * 3, 30),
+        rightWidth: Math.max(row.lowCount  * 3, 30),
+        highCount: row.highCount,
+        lowCount: row.lowCount,
+        color: GROUP_COLORS[row.group] ?? "#6b7280",
       };
     });
 
@@ -229,14 +234,42 @@ export default function SkillTransitionChart() {
       .attr("text-anchor", "middle")
       .attr("fill", axisLabel).attr("font-size", "12px")
       .text(axisSkillFlows);
-  }, [filtered, isDark, headerHighRisk, headerLowRisk, axisSkillFlows]);
+  }, [transitionRows, isDark, headerHighRisk, headerLowRisk, axisSkillFlows]);
 
   return (
     <AccessibleChart
       label={t("a11ySkillTransitionName")}
-      summary={t("a11ySkillTransitionSummary")}
+      summary={
+        <>
+          <p>{t("a11ySkillTransitionSummary")}</p>
+          <table>
+            <caption>{t("a11ySkillTransitionTableCaption")}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{axisSkillFlows}</th>
+                <th scope="col">{t("tooltipHighRiskWorkers")}</th>
+                <th scope="col">{t("tooltipLowRiskPathway")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transitionRows.map((row) => (
+                <tr key={row.group}>
+                  <th scope="row">{row.group}</th>
+                  <td>{row.highCount}k</td>
+                  <td>{row.lowCount}k</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      }
     >
-      <div ref={containerRef} className="relative w-full overflow-x-auto">
+      <div
+        ref={containerRef}
+        className="relative w-full overflow-x-auto"
+        tabIndex={0}
+        aria-label={t("a11ySkillTransitionName")}
+      >
         <svg ref={svgRef} className="w-full h-auto min-h-[500px]" aria-hidden="true" />
 
         {tooltip.visible && (

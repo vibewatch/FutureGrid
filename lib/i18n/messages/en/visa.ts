@@ -93,6 +93,10 @@ export const visaEn = {
   talentBottleneckCaveatLabel: "Read as an index:",
   talentBottleneckCaveat:
     "Certified LCAs are not visa approvals; the bottleneck score is an index, not proof of shortage or causality; job postings are proxy/seed-derived where applicable.",
+  talentBottleneckJobPostingsModeLabel: "Job postings mode",
+  talentBottleneckJobPostingsObserved: "Observed provider",
+  talentBottleneckJobPostingsObservedFallback: "Observed + seed fallback",
+  talentBottleneckJobPostingsSeed: "Seed/proxy fallback",
   talentBottleneckOccupationsTracked: "Occupations tracked",
   talentBottleneckOccupationsTrackedDetail: "{rows} ranked rows displayed",
   talentBottleneckLatestFiscalYear: "Latest H-1B fiscal year",

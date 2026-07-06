@@ -155,6 +155,20 @@ describe("SkillTransitionChart accessibility", () => {
     expect(fc).not.toBeNull();
     expect((fc?.textContent ?? "").length).toBeGreaterThan(0);
   });
+
+  it("includes a keyboard path and structured data equivalent", () => {
+    const { container } = render(<SkillTransitionChart />);
+    const scrollRegion = container.querySelector("figure div[tabindex='0']");
+    const table = container.querySelector("figcaption.sr-only table");
+
+    expect(scrollRegion).not.toBeNull();
+    expect(scrollRegion?.getAttribute("aria-label") ?? "").toContain("skill category transitions");
+    expect(table).not.toBeNull();
+    expect(table?.querySelector("caption")?.textContent ?? "").toContain("Skill category transition");
+    expect(table?.querySelectorAll("tbody tr").length).toBeGreaterThanOrEqual(5);
+    expect(table?.querySelectorAll("th[scope='col']").length).toBe(3);
+    expect(table?.querySelectorAll("th[scope='row']").length).toBeGreaterThanOrEqual(5);
+  });
 });
 
 // ── PredictiveChart ───────────────────────────────────────────────────────────
