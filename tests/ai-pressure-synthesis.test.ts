@@ -10,7 +10,7 @@ describe("getAIPressureSynthesisData", () => {
   it("builds compact cross-dataset props from existing loaders", () => {
     const data = getAIPressureSynthesisData();
 
-    expect(data.global.href).toBe(DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint);
+    expect(data.global.href).toBe(DEEP_LINK_HREFS.globalAIEcosystemMap);
     expect(data.global.modelCount).toBeGreaterThan(200);
     expect(data.global.endpointProviderCount).toBeGreaterThan(10);
     expect(data.global.rankableCountries).toBeGreaterThan(100);
@@ -49,11 +49,13 @@ describe("getAIPressureSynthesisData", () => {
 
   it("keeps mined-data section anchors stable for cross-page CTAs", () => {
     expect(SECTION_IDS.openRouterCountryModelFootprint).toBe("openrouter-country-model-footprint");
+    expect(SECTION_IDS.globalAIEcosystemMap).toBe("global-ai-ecosystem-map");
     expect(SECTION_IDS.readinessGapLens).toBe("readiness-gap-lens");
     expect(SECTION_IDS.talentBottleneckLens).toBe("talent-bottleneck-lens");
     expect(DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint).toBe(
       "/global#openrouter-country-model-footprint",
     );
+    expect(DEEP_LINK_HREFS.globalAIEcosystemMap).toBe("/global#global-ai-ecosystem-map");
     expect(DEEP_LINK_HREFS.globalReadinessGapLens).toBe("/global#readiness-gap-lens");
     expect(DEEP_LINK_HREFS.visaTalentBottleneckLens).toBe("/visa#talent-bottleneck-lens");
   });
