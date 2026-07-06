@@ -31,7 +31,7 @@ export interface AIPressureLaneFreshness {
 
 export interface AIPressureSynthesisData {
   global: {
-    href: typeof DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint;
+    href: typeof DEEP_LINK_HREFS.globalAIEcosystemMap;
     freshness: AIPressureLaneFreshness;
     modelCount: number;
     endpointProviderCount: number;
@@ -108,7 +108,7 @@ export function getAIPressureSynthesisData(
 
   return {
     global: {
-      href: DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint,
+      href: DEEP_LINK_HREFS.globalAIEcosystemMap,
       freshness: {
         asOf: joinLabels([
           openRouter.summary.asOf,

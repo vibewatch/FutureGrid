@@ -16,7 +16,7 @@ vi.mock("@/lib/i18n/LanguageProvider", () => ({
 
 const FIXTURE: AIPressureSynthesisData = {
   global: {
-    href: DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint,
+    href: DEEP_LINK_HREFS.globalAIEcosystemMap,
     freshness: {
       asOf: "2026-07-03 / metrics through 2026",
       source: "OpenRouter public model catalog API / Microsoft + International Monetary Fund + Oxford Insights metrics",
@@ -99,11 +99,15 @@ describe("AIPressureSynthesisLens", () => {
 
     expect(screen.getByRole("link", { name: "Open /global context" })).toHaveAttribute(
       "href",
-      DEEP_LINK_HREFS.globalOpenRouterCountryModelFootprint,
+      DEEP_LINK_HREFS.globalAIEcosystemMap,
     );
     expect(screen.getByRole("link", { name: "Open /visa context" })).toHaveAttribute(
       "href",
       DEEP_LINK_HREFS.visaTalentBottleneckLens,
+    );
+    expect(screen.getByRole("link", { name: "Software Developers" })).toHaveAttribute(
+      "href",
+      "/careers/15-1252",
     );
     expect(screen.getByRole("link", { name: "Jump to market sensitivity" })).toHaveAttribute(
       "href",
@@ -128,6 +132,44 @@ describe("AIPressureSynthesisLens", () => {
     for (const pattern of BANNED_OVERCLAIMS) {
       expect(renderedText).not.toMatch(pattern);
     }
+  });
+
+  it("preserves long occupation and country labels in metric cards", () => {
+    const longOccupation =
+      "Software Developers, Quality Assurance Analysts, and Testers with Extremely Long SOC Context";
+    const longCountry =
+      "The Federated Example Republic of AI Readiness and Adoption Measurement";
+
+    render(
+      <AIPressureSynthesisLens
+        data={{
+          ...FIXTURE,
+          global: {
+            ...FIXTURE.global,
+            topReadinessGapCountry: {
+              ...FIXTURE.global.topReadinessGapCountry!,
+              name: longCountry,
+            },
+          },
+          talent: {
+            ...FIXTURE.talent,
+            topOccupation: {
+              ...FIXTURE.talent.topOccupation!,
+              title: longOccupation,
+            },
+          },
+        }}
+      />,
+    );
+
+    const occupationMetric = screen.getByText(longOccupation);
+    expect(occupationMetric).toHaveAttribute("title", longOccupation);
+    expect(occupationMetric.getAttribute("aria-label")).toContain(longOccupation);
+    expect(occupationMetric).not.toHaveClass("truncate");
+
+    const countryDetail = screen.getByText(new RegExp(longCountry));
+    expect(countryDetail.getAttribute("title")).toContain(longCountry);
+    expect(countryDetail).not.toHaveClass("truncate");
   });
 });
 

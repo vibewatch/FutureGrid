@@ -4,6 +4,7 @@ import Reveal from "@/components/ui/Reveal";
 import { useT } from "@/lib/i18n/useT";
 import type { DataSource } from "@/lib/data";
 import DataExport from "@/components/sources/DataExport";
+import GuardrailBadge, { inferGuardrailBadgeKind } from "@/components/ui/GuardrailBadge";
 
 function LicenseBadge({ license }: { license: string }) {
   const isOpen =
@@ -28,6 +29,10 @@ function LicenseBadge({ license }: { license: string }) {
   }
 
   return <span className={badgeClass}>{license}</span>;
+}
+
+function sourceGuardrailText(source: DataSource): string {
+  return `${source.name} ${source.publisher} ${source.license} ${source.usedFor}`;
 }
 
 export interface SourcesViewProps {
@@ -108,7 +113,10 @@ export default function SourcesView({
                         {source.publisher} &middot; {source.year}
                       </p>
                     </div>
-                    <LicenseBadge license={source.license} />
+                    <div className="flex flex-wrap items-center justify-end gap-2">
+                      <GuardrailBadge kind={inferGuardrailBadgeKind(sourceGuardrailText(source))} />
+                      <LicenseBadge license={source.license} />
+                    </div>
                   </div>
 
                   <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -161,6 +169,7 @@ export default function SourcesView({
                       </p>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
+                      <GuardrailBadge kind={inferGuardrailBadgeKind(sourceGuardrailText(source))} />
                       <LicenseBadge license={source.license} />
                       <a
                         href={source.url}

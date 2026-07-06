@@ -200,6 +200,7 @@ describe("OpenRouterCountryActivityLens", () => {
     );
     expect(screen.getByRole("heading", { name: "AI model ecosystem footprint" })).toBeInTheDocument();
     expect(screen.getByText("OpenRouter catalog proxy")).toBeInTheDocument();
+    expect(screen.getByLabelText(/Proxy: Proxy or seed-derived signal/i)).toBeInTheDocument();
     expect(screen.getByText(/Public catalog and endpoint availability only; not user traffic, usage, revenue, or national adoption/i)).toBeInTheDocument();
 
     for (const label of [

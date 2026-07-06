@@ -3,6 +3,7 @@
 import Reveal from "@/components/ui/Reveal";
 import { useT } from "@/lib/i18n/useT";
 import type { DatasetProvenance } from "@/lib/provenance";
+import GuardrailBadge from "@/components/ui/GuardrailBadge";
 
 // ─── Cleared download entries ─────────────────────────────────────────────────
 export interface ClearedDownload {
@@ -461,6 +462,7 @@ export default function MethodologyView({
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">
                       {dl.label}
+                      <GuardrailBadge kind="observed" className="ml-2 align-middle" />
                       {dl.sizeNote && (
                         <span className="ml-2 text-xs font-normal text-zinc-400">
                           {t("downloadSizeNote", { size: dl.sizeNote })}
@@ -515,6 +517,7 @@ export default function MethodologyView({
                   </span>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
+                  <GuardrailBadge kind="restricted" />
                   <span className="inline-flex items-center text-xs font-medium text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700/30 px-2 py-0.5 rounded-full">
                     {t("downloadUnavailable")}
                   </span>

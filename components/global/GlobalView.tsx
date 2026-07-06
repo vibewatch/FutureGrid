@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
@@ -17,6 +18,8 @@ import type { AdoptionSignalsDataset } from "@/lib/adoption-signals";
 import type { DiffusionRiser } from "@/lib/data";
 import type { OpenRouterCountryActivityData } from "@/lib/openrouter-country-activity";
 import type { ReadinessGapData } from "@/lib/readiness-gap";
+import type { GlobalAIEcosystemData, GlobalAIEcosystemQuadrant } from "@/lib/global-ai-ecosystem";
+import { SECTION_IDS } from "@/lib/section-anchors";
 
 // ─── Tiny 3-point sparkline (pure SVG, no animation, reduced-motion safe) ─────
 function Sparkline3({ h1, h2, q1 }: { h1: number; h2: number; q1: number }) {
@@ -78,6 +81,7 @@ export interface GlobalViewProps {
   maxIndex: number;
   adoptionSignals: AdoptionSignalsDataset;
   openRouterCountryActivity: OpenRouterCountryActivityData;
+  globalAIEcosystem: GlobalAIEcosystemData;
   readinessGap: ReadinessGapData;
 }
 
@@ -97,6 +101,7 @@ export default function GlobalView({
   maxIndex,
   adoptionSignals,
   openRouterCountryActivity,
+  globalAIEcosystem,
   readinessGap,
 }: GlobalViewProps) {
   const t = useT("global");
@@ -377,6 +382,12 @@ export default function GlobalView({
 
       <hr className="divider-glow" />
 
+      <Reveal delay={100}>
+        <GlobalAIEcosystemComparison data={globalAIEcosystem} />
+      </Reveal>
+
+      <hr className="divider-glow" />
+
       {/* ─── ADOPTION–READINESS GAP LENS ───────────────────────────────────── */}
       <Reveal delay={100}>
         <ReadinessGapLens data={readinessGap} />
@@ -512,4 +523,148 @@ export default function GlobalView({
       </Reveal>
     </div>
   );
+}
+
+export function GlobalAIEcosystemComparison({ data }: { data: GlobalAIEcosystemData }) {
+  const t = useT("global");
+  const [region, setRegion] = useState("all");
+  const [quadrant, setQuadrant] = useState<"all" | GlobalAIEcosystemQuadrant>("all");
+  const filteredRows = useMemo(
+    () =>
+      data.rows
+        .filter((row) => region === "all" || row.region === region)
+        .filter((row) => quadrant === "all" || row.quadrant === quadrant)
+        .slice(0, 16),
+    [data.rows, quadrant, region],
+  );
+
+  return (
+    <section
+      id={SECTION_IDS.globalAIEcosystemMap}
+      className="scroll-mt-24"
+      aria-labelledby={`${SECTION_IDS.globalAIEcosystemMap}-heading`}
+    >
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-600 dark:text-cyan-300">
+            {t("ecosystemMapEyebrow")}
+          </p>
+          <h2
+            id={`${SECTION_IDS.globalAIEcosystemMap}-heading`}
+            className="mt-1 text-2xl sm:text-3xl font-extrabold tracking-tight text-gradient"
+          >
+            {t("ecosystemMapTitle")}
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+            {t("ecosystemMapSubtitle")}
+          </p>
+        </div>
+        <Link
+          href="/sources"
+          className="shrink-0 text-xs text-zinc-500 hover:text-violet-400 underline underline-offset-2 transition-colors"
+        >
+          {t("ecosystemMapSourcesLink")}
+        </Link>
+      </div>
+
+      <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
+        <EcosystemKpi label={t("ecosystemMapCountriesCompared")} value={data.summary.comparedCountries} />
+        <EcosystemKpi label={t("ecosystemMapCatalogCountries")} value={data.summary.countriesWithCatalog} />
+        <EcosystemKpi label={t("ecosystemMapReadinessCountries")} value={data.summary.countriesWithReadiness} />
+        <EcosystemKpi label={t("ecosystemMapJoinedCountries")} value={data.summary.countriesWithBoth} />
+      </div>
+
+      <div className="mt-5 flex flex-wrap gap-3 rounded-2xl border border-zinc-200 bg-white/70 p-4 dark:border-zinc-800 dark:bg-zinc-900/50">
+        <label className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+          {t("ecosystemMapRegionFilter")}
+          <select
+            value={region}
+            onChange={(event) => setRegion(event.target.value)}
+            className="ml-2 rounded-lg border border-zinc-300 bg-white px-2 py-1 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+          >
+            <option value="all">{t("ecosystemMapAllRegions")}</option>
+            {data.regions.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+          {t("ecosystemMapQuadrantFilter")}
+          <select
+            value={quadrant}
+            onChange={(event) => setQuadrant(event.target.value as "all" | GlobalAIEcosystemQuadrant)}
+            className="ml-2 rounded-lg border border-zinc-300 bg-white px-2 py-1 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+          >
+            <option value="all">{t("ecosystemMapAllQuadrants")}</option>
+            {data.quadrants.map((item) => (
+              <option key={item} value={item}>
+                {formatQuadrant(item)}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <div className="mt-5 overflow-x-auto rounded-2xl border border-zinc-200 bg-white/70 dark:border-zinc-800 dark:bg-zinc-900/50">
+        <table className="min-w-full text-sm">
+          <caption className="sr-only">{t("ecosystemMapTableCaption")}</caption>
+          <thead>
+            <tr className="border-b border-zinc-200 text-left text-xs uppercase tracking-widest text-zinc-500 dark:border-zinc-800">
+              <th className="px-4 py-3">{t("ecosystemMapCountryHeader")}</th>
+              <th className="px-4 py-3 text-right">{t("ecosystemMapModelsHeader")}</th>
+              <th className="px-4 py-3 text-right">{t("ecosystemMapReadinessHeader")}</th>
+              <th className="px-4 py-3 text-right">{t("ecosystemMapDiffusionHeader")}</th>
+              <th className="px-4 py-3">{t("ecosystemMapQuadrantHeader")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredRows.map((row) => (
+              <tr key={row.iso3} className="border-b border-zinc-100 last:border-0 dark:border-zinc-800/70">
+                <td className="px-4 py-3">
+                  <div className="font-medium text-zinc-900 dark:text-white">{row.countryName}</div>
+                  <div className="text-xs text-zinc-500">{row.region} · {row.iso3}</div>
+                </td>
+                <td className="px-4 py-3 text-right tabular-nums">
+                  {row.modelCount.toLocaleString()} / {row.endpointCount.toLocaleString()}
+                </td>
+                <td className="px-4 py-3 text-right tabular-nums">
+                  {row.readinessScore == null ? "—" : row.readinessScore.toFixed(1)}
+                </td>
+                <td className="px-4 py-3 text-right tabular-nums">
+                  {row.diffusionPct == null ? "—" : `${row.diffusionPct.toFixed(1)}%`}
+                </td>
+                <td className="px-4 py-3">
+                  <span className="rounded-full border border-violet-300/40 bg-violet-500/10 px-2 py-1 text-xs font-semibold text-violet-700 dark:text-violet-200">
+                    {formatQuadrant(row.quadrant)}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p className="mt-3 rounded-xl border border-amber-300/40 bg-amber-500/10 px-4 py-3 text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
+        {t("ecosystemMapCaveat")}
+      </p>
+    </section>
+  );
+}
+
+function EcosystemKpi({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-xl border border-zinc-200 bg-white/70 p-4 dark:border-zinc-800 dark:bg-zinc-900/50">
+      <div className="text-2xl font-extrabold text-gradient tabular-nums">{value.toLocaleString()}</div>
+      <div className="mt-1 text-xs text-zinc-500">{label}</div>
+    </div>
+  );
+}
+
+function formatQuadrant(value: GlobalAIEcosystemQuadrant): string {
+  return value
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }

@@ -85,6 +85,19 @@ function formatSignedDecimalPercent(
   return `${percentagePoints > 0 ? "+" : ""}${formatNumber(percentagePoints, 1)}%`;
 }
 
+function jobPostingModeLabel(
+  mode: TalentBottleneckData["summary"]["jobPostingsMode"],
+  observed: boolean,
+  t: ReturnType<typeof useT>,
+): string {
+  if (mode === "observed-provider") return t("talentBottleneckJobPostingsObserved");
+  if (mode === "observed-provider-with-seed-fallback") {
+    return t("talentBottleneckJobPostingsObservedFallback");
+  }
+  if (observed) return t("talentBottleneckJobPostingsObservedFallback");
+  return t("talentBottleneckJobPostingsSeed");
+}
+
 function KpiCard({ label, value, detail }: { label: string; value: string; detail: string }) {
   return (
     <div className="glass rounded-2xl border border-zinc-200 bg-white/70 p-4 dark:border-zinc-800 dark:bg-zinc-900/50">
@@ -404,6 +417,11 @@ export default function TalentBottleneckLens({ data }: { data: TalentBottleneckD
     data.summary.projectionWindow.projectionYear != null
       ? `${data.summary.projectionWindow.baseYear}–${data.summary.projectionWindow.projectionYear}`
       : "—";
+  const jobPostingsModeLabel = jobPostingModeLabel(
+    data.summary.jobPostingsMode,
+    data.summary.jobPostingsObserved,
+    t,
+  );
   const compactNumber = new Intl.NumberFormat(locale === "zh" ? "zh-CN" : "en-US", {
     notation: "compact",
     maximumFractionDigits: 1,
@@ -435,6 +453,9 @@ export default function TalentBottleneckLens({ data }: { data: TalentBottleneckD
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-2">
+            <span className="inline-flex rounded-full border border-sky-300/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold text-sky-700 dark:text-sky-200">
+              {t("talentBottleneckJobPostingsModeLabel")}: {jobPostingsModeLabel}
+            </span>
             <DataAsOfBadge datasetIds={data.datasetBadgeIds} />
           </div>
         </div>

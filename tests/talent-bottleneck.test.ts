@@ -19,6 +19,9 @@ describe("getTalentBottleneckData", () => {
       hasJobPostings: true,
       hasOccupationSnapshot: true,
     });
+    expect(data.summary.jobPostingsMode).toBe("seed-static");
+    expect(data.summary.jobPostingsObserved).toBe(false);
+    expect(developer.sourceFlags.jobPostingsSourceStatus).toBe("seed-derived");
     expect(developer.latestLcas).toBeGreaterThan(0);
     expect(developer.totalLcas).toBeGreaterThan(0);
     expect(developer.h1bCagr).not.toBeNull();

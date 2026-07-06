@@ -8,6 +8,7 @@ import {
 } from "@/lib/data";
 import type { CareerInsight, CountryMapDatum, DataSource } from "@/lib/data";
 import { useT } from "@/lib/i18n/useT";
+import GuardrailBadge, { type GuardrailBadgeKind } from "@/components/ui/GuardrailBadge";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -113,6 +114,7 @@ function buildCsv(key: DatasetKey): string {
 interface DatasetRowProps {
   label: string;
   description: string;
+  guardrailKind: GuardrailBadgeKind;
   dataKey: DatasetKey;
   downloading: string | null;
   onDownload: (key: DatasetKey, fmt: Format) => void;
@@ -122,6 +124,7 @@ interface DatasetRowProps {
 function DatasetRow({
   label,
   description,
+  guardrailKind,
   dataKey,
   downloading,
   onDownload,
@@ -145,6 +148,9 @@ function DatasetRow({
         <p className="text-sm font-medium text-zinc-800 dark:text-zinc-100">
           {label}
         </p>
+        <div className="mt-1">
+          <GuardrailBadge kind={guardrailKind} />
+        </div>
         <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 leading-snug">
           {description}
         </p>
@@ -178,21 +184,29 @@ function DatasetRow({
 
 // ─── Main export component ────────────────────────────────────────────────────
 
-const DATASETS: { key: DatasetKey; labelKey: string; descKey: string }[] = [
+const DATASETS: {
+  key: DatasetKey;
+  labelKey: string;
+  descKey: string;
+  guardrailKind: GuardrailBadgeKind;
+}[] = [
   {
     key: "occupations",
     labelKey: "datasetOccupations",
     descKey: "datasetOccupationsDesc",
+    guardrailKind: "descriptive",
   },
   {
     key: "countries",
     labelKey: "datasetCountries",
     descKey: "datasetCountriesDesc",
+    guardrailKind: "proxy",
   },
   {
     key: "sources",
     labelKey: "datasetSources",
     descKey: "datasetSourcesDesc",
+    guardrailKind: "observed",
   },
 ];
 
@@ -246,11 +260,12 @@ export default function DataExport() {
       </div>
 
       <div>
-        {DATASETS.map(({ key, labelKey, descKey }) => (
+        {DATASETS.map(({ key, labelKey, descKey, guardrailKind }) => (
           <DatasetRow
             key={key}
             label={t(labelKey)}
             description={t(descKey)}
+            guardrailKind={guardrailKind}
             dataKey={key}
             downloading={downloading}
             onDownload={handleDownload}
