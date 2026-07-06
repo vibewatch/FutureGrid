@@ -251,7 +251,7 @@ function LaneCard({
   const toneClasses = TONE_CLASSES[tone];
 
   return (
-    <article className="flex h-full flex-col rounded-2xl border border-zinc-200 bg-white/60 p-4 dark:border-zinc-800 dark:bg-zinc-950/35">
+    <article className="flex h-full min-w-0 flex-col rounded-2xl border border-zinc-200 bg-white/60 p-4 dark:border-zinc-800 dark:bg-zinc-950/35">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-widest text-zinc-500">
@@ -272,15 +272,21 @@ function LaneCard({
 
       <dl className="mt-4 space-y-3">
         {metrics.map((metric) => (
-          <div key={metric.label} className="rounded-xl border border-zinc-200 bg-white/60 p-3 dark:border-zinc-800 dark:bg-zinc-900/45">
+          <div key={metric.label} className="min-w-0 rounded-xl border border-zinc-200 bg-white/60 p-3 dark:border-zinc-800 dark:bg-zinc-900/45">
             <dt className="text-[10px] font-semibold uppercase tracking-widest text-zinc-500">
               {metric.label}
             </dt>
-            <dd className="mt-1 truncate text-xl font-extrabold text-gradient tabular-nums">
+            <dd
+              className="mt-1 whitespace-normal break-words text-xl font-extrabold text-gradient tabular-nums [overflow-wrap:anywhere]"
+              title={metric.value}
+              aria-label={`${metric.label}: ${metric.value}`}
+            >
               {metric.href ? (
                 <Link
                   href={metric.href}
                   className="underline decoration-violet-400/50 underline-offset-4 transition-colors hover:text-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-400"
+                  title={metric.value}
+                  aria-label={metric.value}
                 >
                   {metric.value}
                 </Link>
@@ -288,7 +294,10 @@ function LaneCard({
                 metric.value
               )}
             </dd>
-            <dd className="mt-1 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+            <dd
+              className="mt-1 whitespace-normal break-words text-xs leading-relaxed text-zinc-500 [overflow-wrap:anywhere] dark:text-zinc-400"
+              title={metric.detail}
+            >
               {metric.detail}
             </dd>
             <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800" aria-hidden="true">
