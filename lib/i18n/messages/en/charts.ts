@@ -180,6 +180,8 @@ export const chartsEn: Record<string, string> = {
     "Interpersonal, Administrative, Management — for high AI-risk workers (bars extend " +
     "left, red) versus low-risk career pathways (bars extend right, green). " +
     "Bar length is proportional to estimated worker count.",
+  a11ySkillTransitionTableCaption:
+    "Skill category transition counts for high AI-risk workers and low-risk pathways.",
   a11yCostPowerSummary:
     "Two line charts on a logarithmic y-axis. Left: AI training cost trends in 2023 USD " +
     "showing median and maximum cost lines over time. Right: AI training power draw trends " +
