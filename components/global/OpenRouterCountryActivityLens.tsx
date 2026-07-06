@@ -9,6 +9,7 @@ import type {
 import { SECTION_IDS } from "@/lib/section-anchors";
 import type { Locale } from "@/lib/i18n/types";
 import { useLocale, useT } from "@/lib/i18n/useT";
+import GuardrailBadge from "@/components/ui/GuardrailBadge";
 
 const CHART_LIMIT = 8;
 const NUMBER_LOCALES: Record<Locale, string> = {
@@ -185,12 +186,15 @@ export default function OpenRouterCountryActivityLens({
               {t("openRouterCountryActivityCaveat")}
             </p>
           </div>
-          <Link
-            href="/sources"
-            className="inline-flex shrink-0 rounded-full text-sm font-semibold text-violet-600 underline underline-offset-4 transition-colors hover:text-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-400 dark:text-violet-300 dark:hover:text-violet-200"
-          >
-            {t("openRouterCountryActivitySourcesLink")}
-          </Link>
+          <div className="flex shrink-0 flex-wrap items-center gap-2">
+            <GuardrailBadge kind="proxy" />
+            <Link
+              href="/sources"
+              className="inline-flex rounded-full text-sm font-semibold text-violet-600 underline underline-offset-4 transition-colors hover:text-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-400 dark:text-violet-300 dark:hover:text-violet-200"
+            >
+              {t("openRouterCountryActivitySourcesLink")}
+            </Link>
+          </div>
         </div>
 
         <dl className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">

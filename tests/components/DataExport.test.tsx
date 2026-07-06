@@ -47,4 +47,12 @@ describe("DataExport", () => {
     expect(heading).not.toBeNull();
     expect((heading?.textContent ?? "").length).toBeGreaterThan(0);
   });
+
+  it("shows guardrail badges for exported datasets", () => {
+    render(<DataExport />);
+
+    expect(screen.getByText("Descriptive-only")).toBeInTheDocument();
+    expect(screen.getByText("Proxy")).toBeInTheDocument();
+    expect(screen.getByText("Observed")).toBeInTheDocument();
+  });
 });

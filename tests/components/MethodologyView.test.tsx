@@ -163,6 +163,7 @@ describe("MethodologyView", () => {
     const cleared = screen.getByTestId("cleared-downloads");
     const links = cleared.querySelectorAll("a[download]");
     expect(links.length).toBe(CLEARED.length);
+    expect(cleared.textContent).toContain("Observed");
   });
 
   it("cleared download for warn-notices uses the /warn-notices.json publicPath", () => {
@@ -185,6 +186,7 @@ describe("MethodologyView", () => {
       expect(item).toBeTruthy();
       expect(flaggedContainer.contains(item)).toBe(true);
     }
+    expect(flaggedContainer.textContent).toContain("Restricted");
   });
 
   it("excluded datasets are NOT offered as download links", () => {

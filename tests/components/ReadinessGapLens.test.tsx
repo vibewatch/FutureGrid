@@ -204,6 +204,7 @@ describe("ReadinessGapLens", () => {
     );
     expect(screen.getByRole("heading", { name: "Adoption–Readiness Gap" })).toBeInTheDocument();
     expect(screen.getByText(/Descriptive alignment only/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Descriptive-only: Descriptive context only/i)).toBeInTheDocument();
     expect(screen.getByText(/Rankable countries/i)).toBeInTheDocument();
     expect(screen.getByText(/Largest positive gap/i)).toBeInTheDocument();
     expect(screen.getByText(/Largest latent capacity/i)).toBeInTheDocument();
