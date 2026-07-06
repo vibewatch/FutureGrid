@@ -91,6 +91,10 @@ describe("AIPressureSynthesisLens", () => {
       "href",
       DEEP_LINK_HREFS.visaTalentBottleneckLens,
     );
+    expect(screen.getByRole("link", { name: "Software Developers" })).toHaveAttribute(
+      "href",
+      "/careers/15-1252",
+    );
     expect(screen.getByRole("link", { name: "Jump to market sensitivity" })).toHaveAttribute(
       "href",
       "/analysis#market-ai-sensitivity",
