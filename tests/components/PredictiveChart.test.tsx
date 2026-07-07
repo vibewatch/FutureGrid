@@ -52,16 +52,24 @@ describe("PredictiveChart", () => {
     expect(metricValue("Bright Outlook")).toBe("10");
   });
 
-  it("shows the empty-state message for sectors without projection rows", async () => {
+  it("falls back to projected employment for the 15-1251 sector when annual openings are unavailable", async () => {
     const { container } = render(<PredictiveChart selectedSector="Computer & Mathematical" />);
 
     await waitFor(() => {
-      expect(screen.getByText("No projection data available for this sector")).toBeInTheDocument();
+      expect(container.querySelectorAll("rect.pc-bar")).toHaveLength(15);
     });
 
-    expect(container.querySelectorAll("rect.pc-bar")).toHaveLength(0);
-    expect(metricValue("Occupations Shown")).toBe("0");
-    expect(metricValue("Avg AI Exposure")).toBe("0.0%");
+    expect(
+      screen.getByLabelText("Horizontal bar chart: top occupations by projected 2034 employment")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Top Occupations by Projected 2034 Employment: Computer & Mathematical")
+    ).toBeInTheDocument();
+    expect(screen.queryByText("No projection data available for this sector")).not.toBeInTheDocument();
+    expect(screen.getByText("Computer Programmers")).toBeInTheDocument();
+    expect(screen.getByText("114,000")).toBeInTheDocument();
+    expect(metricValue("Occupations Shown")).toBe("15");
+    expect(metricValue("Avg AI Exposure")).toBe("40.1%");
     expect(metricValue("Bright Outlook")).toBe("0");
   });
 });

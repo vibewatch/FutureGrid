@@ -3,7 +3,10 @@
 import { useEffect, useRef, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
 import * as d3 from "d3";
-import { generateAllCareerInsights } from "@/lib/data";
+import {
+  getEmploymentProjectionRows,
+  type EmploymentProjectionRow,
+} from "@/lib/employment-projections";
 import { colorForRisk } from "@/lib/utils";
 import { useT } from "@/lib/i18n/useT";
 
@@ -18,10 +21,18 @@ interface TooltipState {
   cw: number;
   name: string;
   sector: string;
-  openings: number;
+  metricLabel: string;
+  metricValue: number;
   risk: string;
   prob: number;
 }
+
+type ProjectionMetric = "openings" | "employment2034";
+
+type PredictiveDatum = EmploymentProjectionRow & {
+  metricValue: number;
+  exposureProbability: number;
+};
 
 export default function PredictiveChart({ selectedSector }: PredictiveChartProps) {
   const t            = useT("charts");
@@ -30,26 +41,60 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
   const { resolvedTheme } = useTheme();
   const isDark = (resolvedTheme ?? "dark") !== "light";
   const [tooltip, setTooltip] = useState<TooltipState>({
-    visible: false, x: 0, y: 0, cw: 800, name: "", sector: "", openings: 0, risk: "", prob: 0,
+    visible: false, x: 0, y: 0, cw: 800, name: "", sector: "", metricLabel: "", metricValue: 0, risk: "", prob: 0,
   });
 
-  const { topOccupations, summary } = useMemo(() => {
-    const insights = generateAllCareerInsights();
-    const filtered = selectedSector
-      ? insights.filter((i) => i.sectorName === selectedSector)
-      : insights;
-    const withOpenings = filtered.filter((i) => i.projectedOpenings != null && i.projectedOpenings > 0);
-    const top = [...withOpenings]
-      .sort((a, b) => (b.projectedOpenings as number) - (a.projectedOpenings as number))
+  const { topOccupations, summary, metric } = useMemo(() => {
+    const filtered = getEmploymentProjectionRows().filter(
+      (row) =>
+        (!selectedSector || row.sector === selectedSector) &&
+        row.employment2024 != null &&
+        row.employment2034 != null &&
+        row.employmentChangePct != null,
+    );
+    const hasOpenings = filtered.some(
+      (row) => row.projectedOpenings != null && row.projectedOpenings > 0,
+    );
+    const metric: ProjectionMetric = hasOpenings ? "openings" : "employment2034";
+    const top = filtered
+      .map((row): PredictiveDatum | null => {
+        const metricValue =
+          metric === "openings" ? row.projectedOpenings : row.employment2034;
+        if (metricValue == null || metricValue <= 0) return null;
+        return {
+          ...row,
+          metricValue,
+          exposureProbability: row.automationProbability ?? row.aiExposure ?? 0,
+        };
+      })
+      .filter((row): row is PredictiveDatum => row != null)
+      .sort((a, b) =>
+        b.metricValue - a.metricValue ||
+        (b.employmentChangePct ?? 0) - (a.employmentChangePct ?? 0) ||
+        a.title.localeCompare(b.title),
+      )
       .slice(0, 15);
-    const brightCount = top.filter((i) => i.outlook === "Bright").length;
+    const brightCount = top.filter((i) => i.brightOutlook).length;
     const avgExposure = top.length > 0
-      ? top.reduce((s, i) => s + i.automationProbability, 0) / top.length
+      ? top.reduce((s, i) => s + i.exposureProbability, 0) / top.length
       : 0;
-    return { topOccupations: top, summary: { count: top.length, avgExposure, brightCount } };
+    return { topOccupations: top, summary: { count: top.length, avgExposure, brightCount }, metric };
   }, [selectedSector]);
 
   const emptyText = t("emptyNoProjectionData");
+  const metricLabel =
+    metric === "openings"
+      ? t("labelProjectedOpenings")
+      : t("labelProjectedEmployment2034");
+  const chartTitle = t(
+    metric === "openings" ? "predictiveTitleOpenings" : "predictiveTitleEmployment2034",
+  );
+  const a11yName = t(
+    metric === "openings" ? "a11yPredictiveName" : "a11yPredictiveNameEmployment2034",
+  );
+  const a11ySummary = t(
+    metric === "openings" ? "a11yPredictiveSummary" : "a11yPredictiveSummaryEmployment2034",
+  );
 
   useEffect(() => {
     const svgEl       = svgRef.current;
@@ -91,14 +136,14 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
     grad.append("stop").attr("offset", "0%").attr("stop-color", "#8b5cf6").attr("stop-opacity", "0.9");
     grad.append("stop").attr("offset", "100%").attr("stop-color", "#22d3ee").attr("stop-opacity", "0.82");
 
-    const maxOpenings = d3.max(topOccupations, (d) => d.projectedOpenings as number) ?? 1;
+    const maxOpenings = d3.max(topOccupations, (d) => d.metricValue) ?? 1;
     const xScale = d3.scaleLinear()
       .domain([0, maxOpenings])
       .range([0, W - M.left - M.right])
       .nice();
 
     const yScale = d3.scaleBand()
-      .domain(topOccupations.map((d) => d.occupationName))
+      .domain(topOccupations.map((d) => d.title))
       .range([0, topOccupations.length * rowH])
       .padding(0.28);
 
@@ -113,7 +158,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
       .attr("fill", titleText)
       .attr("font-size", "13px")
       .attr("font-weight", "500")
-      .text(`Top Occupations by Projected Annual Openings${selectedSector ? `: ${selectedSector}` : ""}`);
+      .text(`${chartTitle}${selectedSector ? `: ${selectedSector}` : ""}`);
 
     // X-axis at top
     const xAxisG = g.append("g").call(
@@ -168,7 +213,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
       .data(topOccupations)
       .join("rect")
       .attr("class", "pc-bar")
-      .attr("y", (d) => yScale(d.occupationName)!)
+      .attr("y", (d) => yScale(d.title)!)
       .attr("height", yScale.bandwidth())
       .attr("rx", 3)
       .attr("fill", "url(#pc-grad)")
@@ -177,7 +222,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
       .style("cursor", "default");
 
     if (reduced) {
-      bars.attr("x", 0).attr("width", (d) => xScale(d.projectedOpenings as number));
+      bars.attr("x", 0).attr("width", (d) => xScale(d.metricValue));
     } else {
       bars
         .attr("x", 0)
@@ -186,7 +231,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
         .duration(600)
         .delay((_, i) => i * 40)
         .ease(d3.easeCubicOut)
-        .attr("width", (d) => xScale(d.projectedOpenings as number));
+        .attr("width", (d) => xScale(d.metricValue));
     }
 
     // Value labels at end of bars
@@ -194,13 +239,13 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
       .data(topOccupations)
       .join("text")
       .attr("class", "pc-label")
-      .attr("y", (d) => (yScale(d.occupationName) as number) + yScale.bandwidth() / 2)
+      .attr("y", (d) => (yScale(d.title) as number) + yScale.bandwidth() / 2)
       .attr("dy", "0.35em")
       .attr("fill", axisText)
       .attr("font-size", "10px")
       .attr("pointer-events", "none")
-      .attr("x", (d) => xScale(d.projectedOpenings as number) + 6)
-      .text((d) => (d.projectedOpenings as number).toLocaleString());
+      .attr("x", (d) => xScale(d.metricValue) + 6)
+      .text((d) => d.metricValue.toLocaleString());
 
     // Hover interactions
     bars
@@ -211,14 +256,15 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
           x: event.clientX - rect.left,
           y: event.clientY - rect.top,
           cw: containerEl.clientWidth,
-          name: d.occupationName,
-          sector: d.sectorName,
-          openings: d.projectedOpenings as number,
+          name: d.title,
+          sector: d.sector,
+          metricLabel,
+          metricValue: d.metricValue,
           risk: d.automationRisk,
-          prob: d.automationProbability,
+          prob: d.exposureProbability,
         });
         g.selectAll<SVGRectElement, Datum>("rect.pc-bar")
-          .attr("opacity", (b) => b.occupationName === d.occupationName ? 1 : 0.3);
+          .attr("opacity", (b) => b.socCode === d.socCode ? 1 : 0.3);
       })
       .on("mouseleave", () => {
         setTooltip((p) => ({ ...p, visible: false }));
@@ -226,7 +272,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
       });
 
     return () => { svg.selectAll("*").interrupt(); };
-  }, [topOccupations, selectedSector, isDark, emptyText]);
+  }, [topOccupations, selectedSector, isDark, emptyText, chartTitle, metricLabel]);
 
   return (
     <div className="space-y-4">
@@ -270,12 +316,12 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
           ref={svgRef}
           className="w-full h-auto"
           style={{ minHeight: 300 }}
-          aria-label={t("a11yPredictiveName")}
+          aria-label={a11yName}
           role="img"
         />
 
         {/* Screen-reader summary */}
-        <span className="sr-only">{t("a11yPredictiveSummary")}</span>
+        <span className="sr-only">{a11ySummary}</span>
 
         {tooltip.visible && (
           <div
@@ -296,12 +342,12 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
             <p className="text-xs text-zinc-500 mb-2">{tooltip.sector}</p>
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between gap-4">
-                <span className="text-zinc-500">{t("labelProjectedOpenings")}</span>
+                <span className="text-zinc-500">{tooltip.metricLabel}</span>
                 <span
                   className="font-bold"
                   style={{ background: "linear-gradient(90deg,#8b5cf6,#22d3ee)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
                 >
-                  {tooltip.openings.toLocaleString()}
+                  {tooltip.metricValue.toLocaleString()}
                 </span>
               </div>
               <div className="flex justify-between gap-4">

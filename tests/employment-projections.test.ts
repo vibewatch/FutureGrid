@@ -55,6 +55,20 @@ describe("employment-projections dataset", () => {
     expect(row?.employmentChangePct).not.toBeNull();
   });
 
+  it("retains 15-1251 projection fields even when annual openings are unavailable", () => {
+    const row = getEmploymentProjectionBySoc("15-1251");
+
+    expect(row).toMatchObject({
+      socCode: "15-1251",
+      title: "Computer Programmers",
+      employment2024: 121200,
+      employment2034: 114000,
+      employmentChangePct: -6,
+      projectedOpenings: null,
+    });
+    expect(row?.aiExposure).not.toBeNull();
+  });
+
   it("provides chart-ready rows sorted by projected openings by default", () => {
     const rows = getEmploymentProjectionChartRows({ limit: 20 });
     expect(rows).toHaveLength(20);
