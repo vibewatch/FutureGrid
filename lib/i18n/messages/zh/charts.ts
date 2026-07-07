@@ -26,6 +26,7 @@ export const chartsZh: Record<string, string> = {
   labelUsageCount:       "使用量",
   labelGDPWorker:        "人均 GDP",
   labelProjectedOpenings: "年预计招聘岗位",
+  labelProjectedEmployment2034: "2034 年预计就业人数",
 
   // ── Click-to-explore tooltip footers ────────────────────────────────────
   tooltipClickSector:     "点击探索行业 →",
@@ -117,6 +118,8 @@ export const chartsZh: Record<string, string> = {
   statAvgAIExposure:     "平均 AI 暴露度",
   statBrightOutlook:     "光明前景",
   emptyNoProjectionData: "该行业暂无预测数据",
+  predictiveTitleOpenings: "年预计招聘岗位最多的职业",
+  predictiveTitleEmployment2034: "2034 年预计就业人数最多的职业",
 
   // ── JobImpactChart ───────────────────────────────────────────────────────
   emptyNoSectorData: "该行业暂无数据",
@@ -165,6 +168,7 @@ export const chartsZh: Record<string, string> = {
   a11yFrontierLeadersName: "柱状图：前沿 AI 模型最多的组织与国家排名",
   a11yHeatmapName:         "热力图：25 个主要国家的 8 项 AI 就绪度指标",
   a11yPredictiveName:      "横向柱状图：年预计招聘岗位最多的职业",
+  a11yPredictiveNameEmployment2034: "横向柱状图：2034 年预计就业人数最多的职业",
 
   // ── Screen-reader summaries (figcaption / sr-only) ────────────────────────
   a11yCareerTrendSummary:
@@ -198,6 +202,10 @@ export const chartsZh: Record<string, string> = {
   a11yPredictiveSummary:
     "横向柱状图，展示年预计招聘岗位最多的职业。" +
     "每根柱子的长度代表年预计招聘岗位数。" +
+    "颜色渐变从紫色（较低）到青色（较高）。图表上方显示汇总统计数据。",
+  a11yPredictiveSummaryEmployment2034:
+    "横向柱状图，在年度招聘岗位不可用时展示 2034 年预计就业人数最多的职业。" +
+    "每根柱子的长度代表 2034 年预计就业人数，并保留年度招聘岗位缺失状态。" +
     "颜色渐变从紫色（较低）到青色（较高）。图表上方显示汇总统计数据。",
 
   // ── Heatmap accessible data table headers ────────────────────────────────

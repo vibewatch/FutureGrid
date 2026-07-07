@@ -29,4 +29,19 @@ describe("getCareerEvidencePassport", () => {
   it("returns null for an unknown SOC", () => {
     expect(getCareerEvidencePassport("00-0000")).toBeNull();
   });
+
+  it("keeps 15-1251 employment projections and AI exposure when annual openings are unavailable", () => {
+    const passport = getCareerEvidencePassport("15-1251");
+
+    expect(passport).toMatchObject({
+      socCode: "15-1251",
+      title: "Computer Programmers",
+      currentEmployment: 121200,
+      projectedEmployment: 114000,
+      employmentChangePct: -6,
+      projectedOpenings: null,
+      projectionWindow: "2024–2034",
+    });
+    expect(passport?.aiExposurePct).toBeGreaterThan(0);
+  });
 });

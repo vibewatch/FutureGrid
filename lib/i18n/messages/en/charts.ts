@@ -26,6 +26,7 @@ export const chartsEn: Record<string, string> = {
   labelUsageCount:       "Usage Count",
   labelGDPWorker:        "GDP / Worker",
   labelProjectedOpenings: "Projected Openings / yr",
+  labelProjectedEmployment2034: "Projected 2034 Employment",
 
   // ── Click-to-explore tooltip footers ────────────────────────────────────
   tooltipClickSector:     "Click to explore sector →",
@@ -117,6 +118,8 @@ export const chartsEn: Record<string, string> = {
   statAvgAIExposure:     "Avg AI Exposure",
   statBrightOutlook:     "Bright Outlook",
   emptyNoProjectionData: "No projection data available for this sector",
+  predictiveTitleOpenings: "Top Occupations by Projected Annual Openings",
+  predictiveTitleEmployment2034: "Top Occupations by Projected 2034 Employment",
 
   // ── JobImpactChart ───────────────────────────────────────────────────────
   emptyNoSectorData: "No data available for this sector",
@@ -165,6 +168,8 @@ export const chartsEn: Record<string, string> = {
   a11yFrontierLeadersName: "Bar chart: top AI organizations and countries by frontier model count",
   a11yHeatmapName:         "Heatmap: 25 major countries scored on 8 AI readiness indicators",
   a11yPredictiveName:      "Horizontal bar chart: top occupations by projected annual openings",
+  a11yPredictiveNameEmployment2034:
+    "Horizontal bar chart: top occupations by projected 2034 employment",
 
   // ── Screen-reader summaries (figcaption / sr-only) ────────────────────────
   a11yCareerTrendSummary:
@@ -200,6 +205,11 @@ export const chartsEn: Record<string, string> = {
   a11yPredictiveSummary:
     "Horizontal bar chart showing occupations with the highest projected annual openings. " +
     "Each bar length represents annual projected openings. " +
+    "Color uses a gradient from violet (lower) to cyan (higher). " +
+    "Summary statistics are shown above the chart.",
+  a11yPredictiveSummaryEmployment2034:
+    "Horizontal bar chart showing occupations with the highest projected 2034 employment when annual openings are unavailable. " +
+    "Each bar length represents projected 2034 employment, preserving missing annual openings as unavailable. " +
     "Color uses a gradient from violet (lower) to cyan (higher). " +
     "Summary statistics are shown above the chart.",
 
