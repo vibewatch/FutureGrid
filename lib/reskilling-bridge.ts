@@ -10,6 +10,8 @@
  * All values are derived from existing helpers; no source formulas are re-implemented here.
  */
 
+import "server-only";
+
 import { getReskillingPaths, type CareerInsight, type ReskillingTarget } from "@/lib/data";
 import { getEmploymentProjectionBySoc } from "@/lib/employment-projections";
 import { getTalentBottleneckData, type TalentBottleneckRow } from "@/lib/talent-bottleneck";

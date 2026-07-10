@@ -228,6 +228,7 @@ const COMPONENT_SEARCH_PATHS = [
   path.join(process.cwd(), "components/visa/ReskillingBridge.tsx"),
 ];
 const SKILLS_PAGE_PATH = path.join(process.cwd(), "app/skills/page.tsx");
+const SKILLS_CLIENT_PATH = path.join(process.cwd(), "components/skills/SkillsPageClient.tsx");
 
 function resolveComponentPath(): string | null {
   return COMPONENT_SEARCH_PATHS.find(existsSync) ?? null;
@@ -280,10 +281,14 @@ describe("skills page source — bridge wiring and SkillTransitionChart removal"
   });
 
   it("skills page renders <ReskillingBridge> with data prop", () => {
-    const source = readFileSync(SKILLS_PAGE_PATH, "utf8");
+    // After the server/client split (PR #107), ReskillingBridge is rendered
+    // inside SkillsPageClient, not directly in the page server component.
+    const clientSource = existsSync(SKILLS_CLIENT_PATH)
+      ? readFileSync(SKILLS_CLIENT_PATH, "utf8")
+      : readFileSync(SKILLS_PAGE_PATH, "utf8");
     expect(
-      source,
-      "BLOCKER: app/skills/page.tsx must render <ReskillingBridge with data prop",
+      clientSource,
+      "ReskillingBridge must be rendered with a data prop — check SkillsPageClient.tsx or app/skills/page.tsx",
     ).toMatch(/<ReskillingBridge\b[^>]*\bdata=/);
   });
 

@@ -1,0 +1,228 @@
+"use client";
+
+import SkillFlowSankey from "@/components/charts/SkillFlowSankey";
+import ReskillingBridge from "@/components/skills/ReskillingBridge";
+import { colorForRisk, formatCurrency } from "@/lib/utils";
+import { useState, useMemo } from "react";
+import Link from "next/link";
+import ReskillExplorer from "@/components/skills/ReskillExplorer";
+import { useT } from "@/lib/i18n/useT";
+import type { CareerInsight } from "@/lib/data";
+import type { ReskillingBridgeData } from "@/lib/reskilling-bridge";
+
+const GROUPS = ["Technical", "Cognitive", "Interpersonal", "Administrative", "Management"];
+
+const GROUP_SKILLS: Record<string, string[]> = {
+  Technical:      ["Programming", "Systems Analysis", "Complex Problem Solving", "Mathematics", "Quality Control"],
+  Cognitive:      ["Critical Thinking", "Active Learning", "Judgment and Decision Making", "Creativity", "Monitoring"],
+  Interpersonal:  ["Active Listening", "Speaking", "Persuasion", "Service Orientation", "Social Perceptiveness"],
+  Administrative: ["Reading Comprehension", "Writing", "Coordination", "Time Management", "Management of Material Resources"],
+  Management:     ["Management of Personnel", "Negotiation", "Instructing", "Learning Strategies", "Systems Evaluation"],
+};
+
+const GROUP_DESCRIPTIONS: Record<string, string> = {
+  Technical:      "Programming, analysis, and STEM competencies most resistant to automation.",
+  Cognitive:      "Higher-order thinking and judgment that AI struggles to replicate.",
+  Interpersonal:  "Human-centric communication and relationship skills.",
+  Administrative: "Coordination, documentation, and organizational skills.",
+  Management:     "Leadership, strategy, and people-management capabilities.",
+};
+
+type SkillSortKey = "risk-desc" | "risk-asc" | "salary" | "openings";
+
+interface Props {
+  bridgeData: ReskillingBridgeData;
+  allInsights: CareerInsight[];
+}
+
+export default function SkillsPageClient({ bridgeData, allInsights }: Props) {
+  const t = useT("skills");
+  const [selectedGroup, setSelectedGroup] = useState<string>("Technical");
+  const [sortKey, setSortKey] = useState<SkillSortKey>("risk-asc");
+
+  const occupationsWithSkill = useMemo(() => {
+    const skills = GROUP_SKILLS[selectedGroup] ?? [];
+    const filtered = allInsights.filter((i) =>
+      i.skills.some((s) => skills.includes(s)),
+    );
+    return [...filtered].sort((a, b) => {
+      switch (sortKey) {
+        case "risk-desc": return b.automationProbability - a.automationProbability;
+        case "risk-asc":  return a.automationProbability - b.automationProbability;
+        case "salary":    return b.medianSalary - a.medianSalary;
+        case "openings":  return (b.projectedOpenings ?? -Infinity) - (a.projectedOpenings ?? -Infinity);
+      }
+    });
+  }, [selectedGroup, sortKey, allInsights]);
+
+  return (
+    <div className="mx-auto w-full max-w-[1400px] space-y-8">
+      {/* Header */}
+      <div className="animate-fade-up">
+        <h1 className="text-3xl font-bold tracking-tight text-gradient">
+          {t("pageTitle")}
+        </h1>
+        <p className="text-zinc-600 dark:text-zinc-400 mt-1">
+          {t("pageIntro")}
+        </p>
+      </div>
+
+      {/* Reskilling Bridge */}
+      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+        <ReskillingBridge data={bridgeData} />
+      </div>
+
+      {/* Skill group tabs */}
+      <div className="space-y-3">
+        <div className="flex flex-wrap gap-2">
+          {GROUPS.map((group) => (
+            <button
+              key={group}
+              onClick={() => setSelectedGroup(group)}
+              aria-pressed={selectedGroup === group}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 ${
+                selectedGroup === group
+                  ? "brand-grad text-white shadow-md"
+                  : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-white"
+              }`}
+            >
+              {t(`groupName${group}`)}
+            </button>
+          ))}
+        </div>
+        {GROUP_DESCRIPTIONS[selectedGroup] && (
+          <p className="text-zinc-500 text-sm">{t(`groupDesc${selectedGroup}`)}</p>
+        )}
+      </div>
+
+      {/* Result bar + sort */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <p className="text-zinc-600 dark:text-zinc-400 text-sm">
+          <span className="text-zinc-900 dark:text-white font-semibold">{occupationsWithSkill.length}</span>{" "}
+          {t("occupationsUseSkillsPre", { suffix: occupationsWithSkill.length !== 1 ? "s" : "" })}{" "}
+          <span className="text-violet-400">{t(`groupName${selectedGroup}`)}</span>
+          {t("occupationsUseSkillsPost") ? ` ${t("occupationsUseSkillsPost")}` : ""}
+        </p>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-zinc-500">{t("sort")}</span>
+          {(
+            [
+              { key: "risk-asc",  label: t("sortSafestFirst")  },
+              { key: "risk-desc", label: t("sortMostAtRisk")   },
+              { key: "salary",    label: t("sortHighestPay")   },
+              { key: "openings",  label: t("sortMostOpenings") },
+            ] as { key: SkillSortKey; label: string }[]
+          ).map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setSortKey(key)}
+              aria-pressed={sortKey === key}
+              className={`px-2.5 py-1 rounded text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 ${
+                sortKey === key
+                  ? "bg-violet-600 text-white"
+                  : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-white"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Occupation grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {occupationsWithSkill.map((i) => {
+          const riskColor = colorForRisk(i.automationRisk);
+          const matchedSkills = Array.from(
+            new Set(
+              i.skills.filter((s) => GROUP_SKILLS[selectedGroup]?.includes(s)),
+            ),
+          );
+          return (
+            <Link
+              key={i.occupationCode}
+              href={`/careers/${i.occupationCode}`}
+              className="block glass glass-hover bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 focus:outline-none focus:ring-2 focus:ring-violet-500 group transition-all"
+            >
+              {/* Header */}
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex-1 pr-2">
+                  <h3 className="font-semibold text-zinc-900 dark:text-white text-sm leading-tight group-hover:text-cyan-300 transition-colors">
+                    {i.occupationName}
+                  </h3>
+                  <p className="text-xs text-zinc-500 mt-0.5">{i.sectorName}</p>
+                </div>
+                <span
+                  className="shrink-0 px-2 py-0.5 rounded text-xs font-semibold"
+                  style={{
+                    backgroundColor: `${riskColor}22`,
+                    color: riskColor,
+                  }}
+                >
+                  {(i.automationProbability * 100).toFixed(0)}%
+                </span>
+              </div>
+
+              {/* Risk bar */}
+              <div className="h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden mb-3">
+                <div
+                  className="h-full rounded-full"
+                  style={{
+                    width: `${i.automationProbability * 100}%`,
+                    backgroundColor: riskColor,
+                  }}
+                />
+              </div>
+
+              {/* Salary */}
+              <p className="text-xs text-zinc-500 mb-2.5">
+                {t("salaryLabel")}{" "}
+                <span className="text-zinc-700 dark:text-zinc-300 font-medium">
+                  {formatCurrency(i.medianSalary)}
+                </span>
+              </p>
+
+              {/* Matched skills */}
+              <div className="flex flex-wrap gap-1">
+                {matchedSkills.map((s) => (
+                  <span
+                    key={s}
+                    className="px-2 py-0.5 rounded bg-violet-50 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-700/30 text-violet-700 dark:text-violet-300 text-xs"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+
+      {occupationsWithSkill.length === 0 && (
+        <div className="glass bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 rounded-xl py-12 flex items-center justify-center">
+          <p className="text-zinc-500 text-sm">{t("noOccupationsFound")}</p>
+        </div>
+      )}
+
+      {/* Divider */}
+      <hr className="border-zinc-200 dark:border-zinc-800" />
+
+      {/* Career Transition Flows */}
+      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 space-y-2">
+        <h2 className="text-xl font-bold tracking-tight text-gradient">
+          {t("sankeyTitle")}
+        </h2>
+        <p className="text-zinc-600 dark:text-zinc-400 text-sm">
+          {t("sankeySubhead")}
+        </p>
+        <SkillFlowSankey />
+      </div>
+
+      {/* Divider */}
+      <hr className="border-zinc-200 dark:border-zinc-800" />
+
+      {/* Reskilling Pathways Explorer */}
+      <ReskillExplorer />
+    </div>
+  );
+}
