@@ -1,6 +1,7 @@
 "use client";
 
 import Reveal from "@/components/ui/Reveal";
+import EvidenceConvergenceStrip from "@/components/insights/EvidenceConvergenceStrip";
 import EvidenceStack from "@/components/insights/EvidenceStack";
 import AIPressureSynthesisLens from "@/components/insights/AIPressureSynthesisLens";
 import AISignalScatter from "@/components/insights/AISignalScatter";
@@ -51,6 +52,10 @@ export default function InsightsView({ data, aiCompanyStocks, aiPressureSynthesi
 
       <hr className="divider-glow" />
       <AIPressureSynthesisLens data={aiPressureSynthesis} />
+      <hr className="divider-glow" />
+      <Reveal>
+        <EvidenceConvergenceStrip />
+      </Reveal>
       <hr className="divider-glow" />
       <Reveal>
         <EvidenceStack />

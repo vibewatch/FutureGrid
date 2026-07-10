@@ -234,4 +234,12 @@ export const analysisEn = {
   weight_employmentDecline: "employment weakness",
   weight_wageStagnation: "wage stagnation",
   weight_lackBrightOutlook: "lack of bright outlook",
+  convergenceStripEyebrow: "Signal convergence",
+  convergenceStripTitle: "Evidence Convergence",
+  convergenceStripExplainer: "A scannable summary across all convergence conclusions. Select a view link to explore detail, or scroll down to the full Evidence Stack.",
+  convergenceStripAria: "Evidence convergence summary items",
+  convergenceStripCaveatLabel: "Caveat",
+  convergenceStripGeneratedLabel: "Generated {date}",
+  convergenceStripViewLink: "Open view",
+  convergenceStripViewLinkAria: "Open view for {title}",
 };
