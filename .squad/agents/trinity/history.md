@@ -46,3 +46,11 @@
 
 ### 2026-07-05T22:47:39.971+00:00 — Dead legacy code cleanup review
 - Audited dead/legacy code and recommended safe cleanup targets. Reviewed Tank's cleanup diff and found no blockers; PR #90 merged to main after build, lint, and test validation.
+
+### 2026-07-06T03:44:30.653+00:00 — ORS automation-friction review
+- Selected BLS ORS as the best data enhancement for a SOC-keyed job-requirements / automation-friction axis.
+- Rejected the first implementation for overclaiming seed data as direct ORS survey estimates and missing Methodology download discoverability; approved after Rai's caveat/download revision and PR #100 merged.
+
+### 2026-07-07T01:48:47.300+00:00 — Career projection fallback review
+- Approved the PredictiveChart fallback after confirming it labels projected 2034 employment clearly and does not imply annual openings are known.
+- PR #101 merged to main after CI passed.

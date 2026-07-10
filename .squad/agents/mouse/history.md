@@ -56,3 +56,11 @@ Regression coverage verified: `tests/components/TalentBottleneckLens.test.tsx` a
 
 ### 2026-07-05T22:02:38.948+00:00 — Action validation mapping
 - Independently mapped the GitHub Actions failures to validation coverage for the CHANGELOG release gate, accessibility axe checks, and SVG role fix. PR #89 merged with post-merge workflows green.
+
+### 2026-07-06T03:44:30.653+00:00 — ORS automation-friction validation
+- Validated the ORS automation-friction work with targeted tests, lint, build, full test suite, and a11y checks.
+- Final revision was approved and merged via PR #100.
+
+### 2026-07-07T01:48:47.300+00:00 — Career projection fallback validation
+- Validated the `/careers/15-1251` fix with targeted tests, lint, typecheck, build, static page generation, and content checks for AI Exposure plus BLS Employment Projections employment change.
+- Confirmed full validation before PR #101 was merged to main.
