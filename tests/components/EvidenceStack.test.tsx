@@ -31,7 +31,7 @@ const LINK_KEYS = [
 ];
 const RELEVANT_VIEW_PATTERN = /^\/(analysis|careers|sectors|labor|skills|explore|global|sources|report)(?:\/|#|$)/;
 const ANALYSIS_COMPONENT_MARKERS = [
-  "<AISignalScatter",
+  "<ExposureOutcomeMatrix",
   "<ExposureLensComparison",
   "<MarketSignalLens",
   "<EmploymentForecastChart",

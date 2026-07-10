@@ -55,7 +55,7 @@ vi.mock("@/lib/evidence", async (importOriginal) => {
 // Mocking them to null lets InsightsView render in jsdom without fixtures,
 // while EvidenceConvergenceStrip and EvidenceStack render their real output.
 vi.mock("@/components/insights/AIPressureSynthesisLens", () => ({ default: () => null }));
-vi.mock("@/components/insights/AISignalScatter", () => ({ default: () => null }));
+vi.mock("@/components/insights/ExposureOutcomeMatrix", () => ({ default: () => null }));
 vi.mock("@/components/insights/ExposureLensComparison", () => ({ default: () => null }));
 vi.mock("@/components/insights/MarketSignalLens", () => ({ default: () => null }));
 vi.mock("@/components/insights/AICompanyStockLens", () => ({ default: () => null }));
