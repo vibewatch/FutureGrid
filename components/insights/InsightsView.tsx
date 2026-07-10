@@ -4,7 +4,7 @@ import Reveal from "@/components/ui/Reveal";
 import EvidenceConvergenceStrip from "@/components/insights/EvidenceConvergenceStrip";
 import EvidenceStack from "@/components/insights/EvidenceStack";
 import AIPressureSynthesisLens from "@/components/insights/AIPressureSynthesisLens";
-import AISignalScatter from "@/components/insights/AISignalScatter";
+import ExposureOutcomeMatrix from "@/components/insights/ExposureOutcomeMatrix";
 import ExposureLensComparison from "@/components/insights/ExposureLensComparison";
 import MarketSignalLens from "@/components/insights/MarketSignalLens";
 import AICompanyStockLens from "@/components/insights/AICompanyStockLens";
@@ -15,6 +15,7 @@ import { useT } from "@/lib/i18n/useT";
 import type { AnalysisPageData } from "@/lib/analysis";
 import type { AIPressureSynthesisData } from "@/lib/ai-pressure-synthesis";
 import type { AICompanyStocksData } from "@/lib/ai-company-stocks";
+import type { ExposureOutcomeMatrix as ExposureOutcomeMatrixData } from "@/lib/exposure-outcome";
 
 function Section({ id, eyebrow, title, explainer, children }: { id?: string; eyebrow: string; title: string; explainer: string; children: React.ReactNode }) {
   return (
@@ -31,7 +32,7 @@ function Section({ id, eyebrow, title, explainer, children }: { id?: string; eye
   );
 }
 
-export default function InsightsView({ data, aiCompanyStocks, aiPressureSynthesis }: { data: AnalysisPageData; aiCompanyStocks: AICompanyStocksData; aiPressureSynthesis: AIPressureSynthesisData }) {
+export default function InsightsView({ data, aiCompanyStocks, aiPressureSynthesis, exposureOutcomeMatrix }: { data: AnalysisPageData; aiCompanyStocks: AICompanyStocksData; aiPressureSynthesis: AIPressureSynthesisData; exposureOutcomeMatrix?: ExposureOutcomeMatrixData }) {
   const t = useT("analysis");
   return (
     <div className="mx-auto w-full max-w-[1680px] space-y-14 xl:space-y-16">
@@ -61,9 +62,13 @@ export default function InsightsView({ data, aiCompanyStocks, aiPressureSynthesi
         <EvidenceStack />
       </Reveal>
       <hr className="divider-glow" />
-      <Section eyebrow="01" title={t("signalTitle")} explainer={t("signalExplainer")}><AISignalScatter data={data.aiSignal} /></Section>
-      <hr className="divider-glow" />
-      <Section eyebrow="02" title={t("exposureLensesTitle")} explainer={t("exposureLensesExplainer")}><ExposureLensComparison comparison={data.exposureComparison} leaders={data.exposureGapLeaders} /></Section>
+      {exposureOutcomeMatrix && (
+        <>
+          <Section eyebrow="01" title={t("matrixTitle")} explainer={t("matrixExplainer")}><ExposureOutcomeMatrix matrix={exposureOutcomeMatrix} /></Section>
+          <hr className="divider-glow" />
+        </>
+      )}
+      <Section eyebrow={exposureOutcomeMatrix ? "02" : "01"} title={t("exposureLensesTitle")} explainer={t("exposureLensesExplainer")}><ExposureLensComparison comparison={data.exposureComparison} leaders={data.exposureGapLeaders} /></Section>
       <hr className="divider-glow" />
       <Section id="market-ai-sensitivity" eyebrow="03" title={t("marketSignalTitle")} explainer={t("marketSignalExplainer")}><MarketSignalLens /></Section>
       <hr className="divider-glow" />

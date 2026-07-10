@@ -3,6 +3,7 @@ import InsightsView from "@/components/insights/InsightsView";
 import { getAnalysisPageData } from "@/lib/analysis";
 import { getAIPressureSynthesisData } from "@/lib/ai-pressure-synthesis";
 import { getAICompanyStocksData } from "@/lib/ai-company-stocks";
+import { getExposureOutcomeMatrix } from "@/lib/exposure-outcome";
 import { BASE_PATH, SITE_NAME } from "@/lib/seo";
 
 const title = "Insights Lab";
@@ -29,12 +30,14 @@ export default function AnalysisPage() {
   const data = getAnalysisPageData();
   const aiCompanyStocks = getAICompanyStocksData();
   const aiPressureSynthesis = getAIPressureSynthesisData({ aiCompanyStocks });
+  const exposureOutcomeMatrix = getExposureOutcomeMatrix();
 
   return (
     <InsightsView
       data={data}
       aiCompanyStocks={aiCompanyStocks}
       aiPressureSynthesis={aiPressureSynthesis}
+      exposureOutcomeMatrix={exposureOutcomeMatrix}
     />
   );
 }
