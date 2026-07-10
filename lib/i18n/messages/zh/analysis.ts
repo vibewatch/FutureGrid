@@ -234,4 +234,12 @@ export const analysisZh = {
   weight_employmentDecline: "就业疲弱",
   weight_wageStagnation: "工资停滞",
   weight_lackBrightOutlook: "缺少明朗前景",
+  convergenceStripEyebrow: "信号汇聚",
+  convergenceStripTitle: "证据汇聚",
+  convergenceStripExplainer: "所有汇聚结论的可扫描摘要。选择视图链接深入探索，或向下滚动至完整证据栈。",
+  convergenceStripAria: "证据汇聚摘要项目",
+  convergenceStripCaveatLabel: "说明",
+  convergenceStripGeneratedLabel: "生成于 {date}",
+  convergenceStripViewLink: "打开视图",
+  convergenceStripViewLinkAria: "打开{title}的视图",
 };

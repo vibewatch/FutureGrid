@@ -310,6 +310,64 @@ export function getEvidenceStack(): EvidenceStack {
   };
 }
 
+/** Compact per-item shape derived from a single EvidenceConclusion. */
+export interface EvidenceConvergenceItem {
+  id: string;
+  /** Human-readable conclusion title (same value as EvidenceConclusion.title). */
+  title: string;
+  status: EvidenceStatus;
+  confidence: EvidenceConfidence;
+  /** Primary drill-down route (EvidenceConclusion.recommendedViewHref). */
+  primaryHref: string;
+}
+
+/** Summary counts and provenance drawn directly from EvidenceStackSummary and EvidenceStack.generatedAt. */
+export interface EvidenceConvergenceSummary {
+  title: string;
+  finding: string;
+  agreementCount: number;
+  mixedCount: number;
+  coverageGapCount: number;
+  watchCount: number;
+  caveat: string;
+  /** ISO timestamp from the source catalog; reflects EvidenceStack.generatedAt. */
+  generatedAt: string;
+}
+
+export interface EvidenceConvergence {
+  summary: EvidenceConvergenceSummary;
+  items: EvidenceConvergenceItem[];
+}
+
+/**
+ * Returns a compact convergence view derived entirely from {@link getEvidenceStack}.
+ * Each item carries a stable id, title, status, confidence, and the primary drill-down href.
+ * Summary counts and generatedAt are lifted unchanged from the stack.
+ * Missing values are never reweighted — they would surface as null/undefined on the item.
+ */
+export function getEvidenceConvergence(): EvidenceConvergence {
+  const stack = getEvidenceStack();
+  return {
+    summary: {
+      title: stack.summary.title,
+      finding: stack.summary.finding,
+      agreementCount: stack.summary.agreementCount,
+      mixedCount: stack.summary.mixedCount,
+      coverageGapCount: stack.summary.coverageGapCount,
+      watchCount: stack.summary.watchCount,
+      caveat: stack.summary.caveat,
+      generatedAt: stack.generatedAt,
+    },
+    items: stack.conclusions.map((conclusion) => ({
+      id: conclusion.id,
+      title: conclusion.title,
+      status: conclusion.status,
+      confidence: conclusion.confidence,
+      primaryHref: conclusion.recommendedViewHref,
+    })),
+  };
+}
+
 function metric(id: string, label: string, value: string, detail?: string): EvidenceMetric {
   return { id, label, value, ...(detail ? { detail } : {}) };
 }
