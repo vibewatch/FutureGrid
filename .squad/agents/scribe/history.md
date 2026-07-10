@@ -66,3 +66,7 @@ Scribe merged 1 decision inbox entry into `decisions.md`, cleared the inbox, rec
 ### 2026-07-05T22:47:39.971+00:00 — Dead legacy code cleanup closeout
 - Recorded local Squad state after dead/legacy code cleanup was audited, implemented, reviewed, validated, committed, merged via PR #90, and confirmed green post-merge.
 - Noted validation passed: `npm run build`, `npm run lint`, and `npm run test:run`; no commit requested or made for local Squad state updates.
+
+### 2026-07-07T01:48:47.300+00:00 — Career projection fallback closeout
+- Recorded local Squad state for PR #101 after the `/careers/15-1251` Employment Projections + AI Exposure fix was validated, approved, CI-passed, and merged to main.
+- Added the chart fallback decision and appended Tank/Mouse/Trinity history updates; mutable Squad state was not committed.

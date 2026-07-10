@@ -2208,3 +2208,18 @@ Tank set the ranked universe to the union of SOC codes from H-1B trends, employm
 **Data-quality note:** PSTG is retained using the current Yahoo/market source symbol `P` with an explicit caveat in `dataQualityNotes`.
 
 **Validation:** Mouse passed the builder, provenance, targeted AI-stock tests (3 files / 71 tests), lint, full exact test run, and production build with 806 pages. A supplemental unrelated WARN timeout flake was noted as not caused by the watchlist expansion.
+
+
+### 2026-07-06T03:44:30.653+00:00: ORS broad-SOC seed data requires explicit caveats
+**By:** Trinity, Tank, Mouse, Rai
+**Status:** Approved; PR #100 merged
+**Scope:** BLS ORS-inspired automation-friction data for Career Evidence / Methodology surfaces.
+
+**Decision:** FutureGrid may ship broad-SOC ORS seed data only when caveats are clear that the dataset is derived from public BLS ORS concepts/categories and FutureGrid broad-SOC mapping. It must not be presented as direct occupation-level ORS survey estimates until provider rows exist.
+
+**Outcome:** Tank implemented the dataset, build script, helpers, UI/provenance/download/compliance wiring, and tests. Mouse validated targeted tests, lint, build, full test suite, and a11y checks. Trinity rejected the first pass for overclaiming and missing Methodology download discoverability; Rai corrected the caveats and exposed `occupational-requirements.json` in cleared downloads. Trinity approved the revision, and Coordinator merged PR #100 into remote `main`.
+
+### 2026-07-07: Career projection chart fallback for unavailable annual openings
+**By:** Scribe
+**What:** When annual openings are unavailable but projected employment is available, career projection charts may show projected 2034 employment with explicit labeling. The UI must preserve null annual-openings provenance and must not imply annual openings are known.
+**Why:** BLS Employment Projections data can include projected 2034 employment while annual openings are unavailable for some occupations/sectors, such as Computer & Mathematical / SOC 15-1251. Showing a clearly labeled employment projection avoids an empty chart without misrepresenting unavailable openings.

@@ -41,3 +41,11 @@
 
 ### 2026-07-05T22:47:39.971+00:00 — Dead legacy code cleanup
 - Removed unused legacy modules under `lib/automation`, `lib/bls`, `lib/oecd`, and `lib/onet`, unused default SVG assets, and obsolete `scripts/extend-oews-history.mjs`. Coordinator validated build, lint, and tests; PR #90 merged to main.
+
+### 2026-07-06T03:44:30.653+00:00 — ORS automation-friction implementation
+- Implemented the ORS automation-friction seed dataset, build script, library helpers, career evidence UI integration, provenance/source/download/compliance wiring, and tests.
+- Work shipped through PR #100 after reviewer caveat and Methodology-download fixes.
+
+### 2026-07-07T01:48:47.300+00:00 — Career projection fallback fix
+- Diagnosed missing Employment Projections on `/careers/15-1251` as a chart filter issue: annual openings were unavailable even though projected employment existed.
+- Implemented fallback to show explicitly labeled projected 2034 employment while preserving null openings provenance; PR #101 merged to main.
