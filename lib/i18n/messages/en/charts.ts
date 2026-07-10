@@ -42,13 +42,6 @@ export const chartsEn: Record<string, string> = {
   legendSankeyLinkWidth: "Link width = shared skill count · Click a target to explore",
   legendHeatmapNorm:     "Normalised 0–1 per metric (colour only) · grey = no data",
 
-  // ── SkillTransitionChart ─────────────────────────────────────────────────
-  sectionHighRisk:        "High Risk",
-  sectionLowRiskPathways: "Low Risk Pathways",
-  tooltipHighRiskWorkers: "High Risk Workers",
-  tooltipLowRiskPathway:  "Low Risk Pathway",
-  tooltipSkillsGroup:     "{group} Skills",
-
   // ── SkillFlowSankey ──────────────────────────────────────────────────────
   sankeyHighAIExposure:        "High AI Exposure",
   sankeyResilientPathways:     "Resilient Pathways",
@@ -163,7 +156,6 @@ export const chartsEn: Record<string, string> = {
   // ── Accessible names (aria-label / figure label) ─────────────────────────
   a11yCareerTrendName:     "Bar chart: average AI exposure by sector",
   a11yJobImpactName:       "Bar chart: top occupations by AI exposure probability",
-  a11ySkillTransitionName: "Diverging bar chart: skill category transitions for high vs low AI-risk workers",
   a11yCostPowerName:       "Line charts: AI training cost and power draw trends over time",
   a11yFrontierLeadersName: "Bar chart: top AI organizations and countries by frontier model count",
   a11yHeatmapName:         "Heatmap: 25 major countries scored on 8 AI readiness indicators",
@@ -180,13 +172,6 @@ export const chartsEn: Record<string, string> = {
     "Vertical bar chart showing AI exposure probability for up to 20 top-risk occupations, " +
     "sorted highest first. Bar color encodes risk level: green = low, yellow = medium, " +
     "orange = high, red = very high. Hover over a bar to see the occupation name and exact probability.",
-  a11ySkillTransitionSummary:
-    "Diverging bar chart comparing five skill categories — Technical, Cognitive, " +
-    "Interpersonal, Administrative, Management — for high AI-risk workers (bars extend " +
-    "left, red) versus low-risk career pathways (bars extend right, green). " +
-    "Bar length is proportional to estimated worker count.",
-  a11ySkillTransitionTableCaption:
-    "Skill category transition counts for high AI-risk workers and low-risk pathways.",
   a11yCostPowerSummary:
     "Two line charts on a logarithmic y-axis. Left: AI training cost trends in 2023 USD " +
     "showing median and maximum cost lines over time. Right: AI training power draw trends " +

@@ -6,7 +6,7 @@
 // region (role="img" + aria-label OR <figure aria-label>) AND provides a
 // visually-hidden text / table alternative (sr-only).
 //
-// Scope: CareerTrendChart, JobImpactChart, SkillTransitionChart, PredictiveChart,
+// Scope: CareerTrendChart, JobImpactChart, PredictiveChart,
 // and the AccessibleChart primitive itself.
 //
 // Note: Chart.js (<Bar>, <Line>) requires a canvas element. jsdom does not
@@ -40,7 +40,6 @@ import AccessibleChart from "@/components/charts/AccessibleChart";
 import CareerTrendChart from "@/components/charts/CareerTrendChart";
 import JobImpactChart from "@/components/charts/JobImpactChart";
 import PredictiveChart from "@/components/charts/PredictiveChart";
-import SkillTransitionChart from "@/components/charts/SkillTransitionChart";
 
 // ── AccessibleChart primitive ─────────────────────────────────────────────────
 
@@ -135,39 +134,6 @@ describe("JobImpactChart accessibility", () => {
     // The SVG is decorated with aria-hidden="true" since the figure carries the role
     const svg = container.querySelector("figure svg[aria-hidden='true']");
     expect(svg).not.toBeNull();
-  });
-});
-
-// ── SkillTransitionChart ──────────────────────────────────────────────────────
-
-describe("SkillTransitionChart accessibility", () => {
-  it("wraps the chart in a <figure> with a non-empty aria-label", () => {
-    const { container } = render(<SkillTransitionChart />);
-    const fig = container.querySelector("figure[aria-label]");
-    expect(fig).not.toBeNull();
-    const label = fig?.getAttribute("aria-label") ?? "";
-    expect(label.length).toBeGreaterThan(0);
-  });
-
-  it("provides an sr-only <figcaption> summary", () => {
-    const { container } = render(<SkillTransitionChart />);
-    const fc = container.querySelector("figcaption.sr-only");
-    expect(fc).not.toBeNull();
-    expect((fc?.textContent ?? "").length).toBeGreaterThan(0);
-  });
-
-  it("includes a keyboard path and structured data equivalent", () => {
-    const { container } = render(<SkillTransitionChart />);
-    const scrollRegion = container.querySelector("figure div[tabindex='0']");
-    const table = container.querySelector("figcaption.sr-only table");
-
-    expect(scrollRegion).not.toBeNull();
-    expect(scrollRegion?.getAttribute("aria-label") ?? "").toContain("skill category transitions");
-    expect(table).not.toBeNull();
-    expect(table?.querySelector("caption")?.textContent ?? "").toContain("Skill category transition");
-    expect(table?.querySelectorAll("tbody tr").length).toBeGreaterThanOrEqual(5);
-    expect(table?.querySelectorAll("th[scope='col']").length).toBe(3);
-    expect(table?.querySelectorAll("th[scope='row']").length).toBeGreaterThanOrEqual(5);
   });
 });
 

@@ -1,13 +1,17 @@
 "use client";
 
-import SkillTransitionChart from "@/components/charts/SkillTransitionChart";
 import SkillFlowSankey from "@/components/charts/SkillFlowSankey";
+import ReskillingBridge from "@/components/skills/ReskillingBridge";
 import { generateAllCareerInsights } from "@/lib/data";
+import { getReskillingBridgeData } from "@/lib/reskilling-bridge";
 import { colorForRisk, formatCurrency } from "@/lib/utils";
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import ReskillExplorer from "@/components/skills/ReskillExplorer";
 import { useT } from "@/lib/i18n/useT";
+
+// Computed once at module load — deterministic, static data.
+const bridgeData = getReskillingBridgeData();
 
 const GROUPS = ["Technical", "Cognitive", "Interpersonal", "Administrative", "Management"];
 
@@ -62,9 +66,9 @@ export default function SkillsPage() {
         </p>
       </div>
 
-      {/* Chart */}
+      {/* Reskilling Bridge */}
       <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
-        <SkillTransitionChart />
+        <ReskillingBridge data={bridgeData} />
       </div>
 
       {/* Skill group tabs */}

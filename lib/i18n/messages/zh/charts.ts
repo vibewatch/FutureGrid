@@ -42,13 +42,6 @@ export const chartsZh: Record<string, string> = {
   legendSankeyLinkWidth: "连接宽度 = 共同技能数 · 点击目标职业探索",
   legendHeatmapNorm:     "各指标标准化至 0–1（仅颜色）· 灰色 = 无数据",
 
-  // ── SkillTransitionChart ─────────────────────────────────────────────────
-  sectionHighRisk:        "高风险",
-  sectionLowRiskPathways: "低风险转型路径",
-  tooltipHighRiskWorkers: "高风险从业者",
-  tooltipLowRiskPathway:  "低风险路径",
-  tooltipSkillsGroup:     "{group} 技能",
-
   // ── SkillFlowSankey ──────────────────────────────────────────────────────
   sankeyHighAIExposure:        "高 AI 暴露度",
   sankeyResilientPathways:     "韧性职业路径",
@@ -163,7 +156,6 @@ export const chartsZh: Record<string, string> = {
   // ── Accessible names (aria-label / figure label) ─────────────────────────
   a11yCareerTrendName:     "柱状图：各行业平均 AI 暴露度",
   a11yJobImpactName:       "柱状图：AI 暴露概率最高的职业",
-  a11ySkillTransitionName: "发散柱状图：高风险与低风险 AI 从业者的技能类别对比",
   a11yCostPowerName:       "折线图：AI 训练成本与能耗趋势",
   a11yFrontierLeadersName: "柱状图：前沿 AI 模型最多的组织与国家排名",
   a11yHeatmapName:         "热力图：25 个主要国家的 8 项 AI 就绪度指标",
@@ -179,12 +171,6 @@ export const chartsZh: Record<string, string> = {
     "垂直柱状图，展示最高风险职业（最多 20 个）的 AI 暴露概率，从高到低排列。" +
     "柱子颜色表示风险等级：绿色 = 低，黄色 = 中，橙色 = 高，红色 = 极高。" +
     "悬停于柱子可查看职业名称及具体概率。",
-  a11ySkillTransitionSummary:
-    "发散柱状图，比较技术、认知、人际、行政、管理五大技能类别，" +
-    "分别针对高 AI 风险从业者（柱子向左延伸，红色）和低风险职业路径（柱子向右延伸，绿色）。" +
-    "柱子长度与估计从业人数成正比。",
-  a11ySkillTransitionTableCaption:
-    "高 AI 风险从业者与低风险路径的技能类别转移计数。",
   a11yCostPowerSummary:
     "两幅对数 Y 轴折线图。左图：AI 训练成本趋势（2023 年美元），展示中位数与最高值折线。" +
     "右图：AI 训练能耗趋势（瓦特），展示中位数与最高值折线。两图均涵盖近期 AI 模型历史。",
