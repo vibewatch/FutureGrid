@@ -1,0 +1,620 @@
+{
+  "meta": {
+    "generatedAt": "2026-07-11T02:05:04.306Z",
+    "asOf": "2025",
+    "source": {
+      "name": "ILOSTAT — Employment by sex and occupation (thousands) — Annual",
+      "publisher": "International Labour Organization (ILO)",
+      "url": "https://rplumber.ilo.org/data/indicator/?id=EMP_TEMP_SEX_OCU_NB_A&lang=en&format=.csv"
+    },
+    "version": "1.0.0"
+  },
+  "source": {
+    "name": "ILOSTAT — Employment by sex and occupation (thousands) — Annual",
+    "indicator": "EMP_TEMP_SEX_OCU_NB",
+    "dataflow": "DF_EMP_TEMP_SEX_OCU_NB",
+    "accessEndpoint": "https://rplumber.ilo.org/data/indicator/?id=EMP_TEMP_SEX_OCU_NB_A&lang=en&format=.csv",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://www.ilo.org/global/copyright/lang--en/index.htm",
+    "publisher": "International Labour Organization (ILO)",
+    "publisherUrl": "https://ilostat.ilo.org/",
+    "accessDate": "2026-07-11T02:05:00.537Z"
+  },
+  "coverage": {
+    "classification": "ISCO-08",
+    "sex": "SEX_T",
+    "frequency": "Annual",
+    "datasetLatestYear": 2025,
+    "withinYearsWindow": 3,
+    "minGroupCoverageRatio": 0.98,
+    "minGroupCount": 9,
+    "includedCount": 9,
+    "excludedCount": 2
+  },
+  "included": [
+    "AUS",
+    "DEU",
+    "ESP",
+    "FRA",
+    "GBR",
+    "ITA",
+    "KOR",
+    "NLD",
+    "USA"
+  ],
+  "excluded": [
+    {
+      "iso3": "CAN",
+      "name": "Canada",
+      "reason": "No ISCO-08 data within 3 years of dataset latest year (2025)",
+      "latestYear": null
+    },
+    {
+      "iso3": "JPN",
+      "name": "Japan",
+      "reason": "Insufficient ISCO-08 groups in all qualifying years: only 7 of 9 present at latest year 2025 (missing groups: 3,7)",
+      "latestYear": 2025
+    }
+  ],
+  "countries": {
+    "AUS": {
+      "iso3": "AUS",
+      "name": "Australia",
+      "year": 2025,
+      "iloSource": "BA:518",
+      "observationStatuses": [],
+      "noteIndicators": [],
+      "totalEmployment": 14608.302,
+      "groupCoverageRatio": 0.9996,
+      "groups": {
+        "1": {
+          "label": "Managers",
+          "employment": 1676.7,
+          "share": 0.114827
+        },
+        "2": {
+          "label": "Professionals",
+          "employment": 3687.023,
+          "share": 0.252503
+        },
+        "3": {
+          "label": "Technicians and associate professionals",
+          "employment": 1956.006,
+          "share": 0.133955
+        },
+        "4": {
+          "label": "Clerical support workers",
+          "employment": 1239.13,
+          "share": 0.084861
+        },
+        "5": {
+          "label": "Service and sales workers",
+          "employment": 2490.45,
+          "share": 0.170556
+        },
+        "6": {
+          "label": "Skilled agricultural, forestry and fishery workers",
+          "employment": 259.687,
+          "share": 0.017784
+        },
+        "7": {
+          "label": "Craft and related trades workers",
+          "employment": 1406.33,
+          "share": 0.096311
+        },
+        "8": {
+          "label": "Plant and machine operators, and assemblers",
+          "employment": 849.409,
+          "share": 0.058171
+        },
+        "9": {
+          "label": "Elementary occupations",
+          "employment": 1037.181,
+          "share": 0.07103
+        }
+      }
+    },
+    "DEU": {
+      "iso3": "DEU",
+      "name": "Germany",
+      "year": 2025,
+      "iloSource": "BA:2242",
+      "observationStatuses": [],
+      "noteIndicators": [],
+      "totalEmployment": 42553.38,
+      "groupCoverageRatio": 0.9912,
+      "groups": {
+        "1": {
+          "label": "Managers",
+          "employment": 1879.272,
+          "share": 0.044556
+        },
+        "2": {
+          "label": "Professionals",
+          "employment": 10042.855,
+          "share": 0.238106
+        },
+        "3": {
+          "label": "Technicians and associate professionals",
+          "employment": 8481.335,
+          "share": 0.201084
+        },
+        "4": {
+          "label": "Clerical support workers",
+          "employment": 5246.187,
+          "share": 0.124382
+        },
+        "5": {
+          "label": "Service and sales workers",
+          "employment": 5949.536,
+          "share": 0.141058
+        },
+        "6": {
+          "label": "Skilled agricultural, forestry and fishery workers",
+          "employment": 508.204,
+          "share": 0.012049
+        },
+        "7": {
+          "label": "Craft and related trades workers",
+          "employment": 4602.43,
+          "share": 0.109119
+        },
+        "8": {
+          "label": "Plant and machine operators, and assemblers",
+          "employment": 2345.564,
+          "share": 0.055611
+        },
+        "9": {
+          "label": "Elementary occupations",
+          "employment": 3122.653,
+          "share": 0.074035
+        }
+      }
+    },
+    "ESP": {
+      "iso3": "ESP",
+      "name": "Spain",
+      "year": 2025,
+      "iloSource": "BA:2244",
+      "observationStatuses": [],
+      "noteIndicators": [],
+      "totalEmployment": 22221.112,
+      "groupCoverageRatio": 0.9957,
+      "groups": {
+        "1": {
+          "label": "Managers",
+          "employment": 942.228,
+          "share": 0.042586
+        },
+        "2": {
+          "label": "Professionals",
+          "employment": 4509.644,
+          "share": 0.203824
+        },
+        "3": {
+          "label": "Technicians and associate professionals",
+          "employment": 2731.359,
+          "share": 0.12345
+        },
+        "4": {
+          "label": "Clerical support workers",
+          "employment": 2178.944,
+          "share": 0.098482
+        },
+        "5": {
+          "label": "Service and sales workers",
+          "employment": 4584.204,
+          "share": 0.207194
+        },
+        "6": {
+          "label": "Skilled agricultural, forestry and fishery workers",
+          "employment": 438.12,
+          "share": 0.019802
+        },
+        "7": {
+          "label": "Craft and related trades workers",
+          "employment": 2417.424,
+          "share": 0.109261
+        },
+        "8": {
+          "label": "Plant and machine operators, and assemblers",
+          "employment": 1644.565,
+          "share": 0.07433
+        },
+        "9": {
+          "label": "Elementary occupations",
+          "employment": 2678.705,
+          "share": 0.12107
+        }
+      }
+    },
+    "FRA": {
+      "iso3": "FRA",
+      "name": "France",
+      "year": 2025,
+      "iloSource": "BA:148",
+      "observationStatuses": [],
+      "noteIndicators": [],
+      "totalEmployment": 29382.907,
+      "groupCoverageRatio": 0.9828,
+      "groups": {
+        "1": {
+          "label": "Managers",
+          "employment": 2181.208,
+          "share": 0.075533
+        },
+        "2": {
+          "label": "Professionals",
+          "employment": 7488.352,
+          "share": 0.259315
+        },
+        "3": {
+          "label": "Technicians and associate professionals",
+          "employment": 5172.322,
+          "share": 0.179113
+        },
+        "4": {
+          "label": "Clerical support workers",
+          "employment": 2281.564,
+          "share": 0.079009
+        },
+        "5": {
+          "label": "Service and sales workers",
+          "employment": 4119.48,
+          "share": 0.142654
+        },
+        "6": {
+          "label": "Skilled agricultural, forestry and fishery workers",
+          "employment": 707.52,
+          "share": 0.024501
+        },
+        "7": {
+          "label": "Craft and related trades workers",
+          "employment": 2702.812,
+          "share": 0.093596
+        },
+        "8": {
+          "label": "Plant and machine operators, and assemblers",
+          "employment": 1798.226,
+          "share": 0.062271
+        },
+        "9": {
+          "label": "Elementary occupations",
+          "employment": 2425.961,
+          "share": 0.084009
+        }
+      }
+    },
+    "GBR": {
+      "iso3": "GBR",
+      "name": "United Kingdom",
+      "year": 2025,
+      "iloSource": "BA:666",
+      "observationStatuses": [],
+      "noteIndicators": [],
+      "totalEmployment": 34120.427,
+      "groupCoverageRatio": 0.9981,
+      "groups": {
+        "1": {
+          "label": "Managers",
+          "employment": 5547.083,
+          "share": 0.162884
+        },
+        "2": {
+          "label": "Professionals",
+          "employment": 8565.555,
+          "share": 0.251518
+        },
+        "3": {
+          "label": "Technicians and associate professionals",
+          "employment": 4816.506,
+          "share": 0.141431
+        },
+        "4": {
+          "label": "Clerical support workers",
+          "employment": 3018.432,
+          "share": 0.088633
+        },
+        "5": {
+          "label": "Service and sales workers",
+          "employment": 5085.03,
+          "share": 0.149316
+        },
+        "6": {
+          "label": "Skilled agricultural, forestry and fishery workers",
+          "employment": 353.503,
+          "share": 0.01038
+        },
+        "7": {
+          "label": "Craft and related trades workers",
+          "employment": 2085.94,
+          "share": 0.061251
+        },
+        "8": {
+          "label": "Plant and machine operators, and assemblers",
+          "employment": 1475.275,
+          "share": 0.04332
+        },
+        "9": {
+          "label": "Elementary occupations",
+          "employment": 3108.146,
+          "share": 0.091267
+        }
+      }
+    },
+    "ITA": {
+      "iso3": "ITA",
+      "name": "Italy",
+      "year": 2025,
+      "iloSource": "BA:2238",
+      "observationStatuses": [],
+      "noteIndicators": [],
+      "totalEmployment": 24117.234,
+      "groupCoverageRatio": 0.9899,
+      "groups": {
+        "1": {
+          "label": "Managers",
+          "employment": 961.939,
+          "share": 0.040293
+        },
+        "2": {
+          "label": "Professionals",
+          "employment": 3861.744,
+          "share": 0.161756
+        },
+        "3": {
+          "label": "Technicians and associate professionals",
+          "employment": 4185,
+          "share": 0.175296
+        },
+        "4": {
+          "label": "Clerical support workers",
+          "employment": 2852.9,
+          "share": 0.119499
+        },
+        "5": {
+          "label": "Service and sales workers",
+          "employment": 4246.704,
+          "share": 0.177881
+        },
+        "6": {
+          "label": "Skilled agricultural, forestry and fishery workers",
+          "employment": 535.82,
+          "share": 0.022444
+        },
+        "7": {
+          "label": "Craft and related trades workers",
+          "employment": 3185.468,
+          "share": 0.133429
+        },
+        "8": {
+          "label": "Plant and machine operators, and assemblers",
+          "employment": 1499.09,
+          "share": 0.062792
+        },
+        "9": {
+          "label": "Elementary occupations",
+          "employment": 2545.186,
+          "share": 0.10661
+        }
+      }
+    },
+    "KOR": {
+      "iso3": "KOR",
+      "name": "Republic of Korea",
+      "year": 2025,
+      "iloSource": "BA:222",
+      "observationStatuses": [],
+      "noteIndicators": [],
+      "totalEmployment": 28880.992,
+      "groupCoverageRatio": 0.9961,
+      "groups": {
+        "1": {
+          "label": "Managers",
+          "employment": 415.132,
+          "share": 0.01443
+        },
+        "2": {
+          "label": "Professionals",
+          "employment": 6647.251,
+          "share": 0.231057
+        },
+        "3": {
+          "label": "Technicians and associate professionals",
+          "employment": 5162.329,
+          "share": 0.179441
+        },
+        "4": {
+          "label": "Clerical support workers",
+          "employment": 3603.728,
+          "share": 0.125265
+        },
+        "5": {
+          "label": "Service and sales workers",
+          "employment": 2496.032,
+          "share": 0.086761
+        },
+        "6": {
+          "label": "Skilled agricultural, forestry and fishery workers",
+          "employment": 1354.952,
+          "share": 0.047098
+        },
+        "7": {
+          "label": "Craft and related trades workers",
+          "employment": 2230.556,
+          "share": 0.077534
+        },
+        "8": {
+          "label": "Plant and machine operators, and assemblers",
+          "employment": 2941.705,
+          "share": 0.102253
+        },
+        "9": {
+          "label": "Elementary occupations",
+          "employment": 3917.212,
+          "share": 0.136161
+        }
+      }
+    },
+    "NLD": {
+      "iso3": "NLD",
+      "name": "Netherlands",
+      "year": 2025,
+      "iloSource": "BA:2236",
+      "observationStatuses": [],
+      "noteIndicators": [],
+      "totalEmployment": 9898.995,
+      "groupCoverageRatio": 0.9919,
+      "groups": {
+        "1": {
+          "label": "Managers",
+          "employment": 592.808,
+          "share": 0.060376
+        },
+        "2": {
+          "label": "Professionals",
+          "employment": 3262.016,
+          "share": 0.332231
+        },
+        "3": {
+          "label": "Technicians and associate professionals",
+          "employment": 1702.214,
+          "share": 0.173368
+        },
+        "4": {
+          "label": "Clerical support workers",
+          "employment": 807.316,
+          "share": 0.082224
+        },
+        "5": {
+          "label": "Service and sales workers",
+          "employment": 1605.069,
+          "share": 0.163474
+        },
+        "6": {
+          "label": "Skilled agricultural, forestry and fishery workers",
+          "employment": 135.889,
+          "share": 0.01384
+        },
+        "7": {
+          "label": "Craft and related trades workers",
+          "employment": 623.496,
+          "share": 0.063502
+        },
+        "8": {
+          "label": "Plant and machine operators, and assemblers",
+          "employment": 379.579,
+          "share": 0.038659
+        },
+        "9": {
+          "label": "Elementary occupations",
+          "employment": 710.136,
+          "share": 0.072326
+        }
+      }
+    },
+    "USA": {
+      "iso3": "USA",
+      "name": "United States of America",
+      "year": 2025,
+      "iloSource": "BA:453",
+      "observationStatuses": [
+        "B"
+      ],
+      "noteIndicators": [
+        "I11:264"
+      ],
+      "totalEmployment": 163492.861,
+      "groupCoverageRatio": 1,
+      "groups": {
+        "1": {
+          "label": "Managers",
+          "employment": 19125.201,
+          "share": 0.116979
+        },
+        "2": {
+          "label": "Professionals",
+          "employment": 37604.991,
+          "share": 0.23001
+        },
+        "3": {
+          "label": "Technicians and associate professionals",
+          "employment": 29057.892,
+          "share": 0.177732
+        },
+        "4": {
+          "label": "Clerical support workers",
+          "employment": 13525.102,
+          "share": 0.082726
+        },
+        "5": {
+          "label": "Service and sales workers",
+          "employment": 24057.853,
+          "share": 0.147149
+        },
+        "6": {
+          "label": "Skilled agricultural, forestry and fishery workers",
+          "employment": 651.845,
+          "share": 0.003987
+        },
+        "7": {
+          "label": "Craft and related trades workers",
+          "employment": 13322.34,
+          "share": 0.081486
+        },
+        "8": {
+          "label": "Plant and machine operators, and assemblers",
+          "employment": 9178.089,
+          "share": 0.056138
+        },
+        "9": {
+          "label": "Elementary occupations",
+          "employment": 16969.549,
+          "share": 0.103794
+        }
+      }
+    }
+  },
+  "dissimilarity": {
+    "method": "Half-L1 (Bray-Curtis dissimilarity): D = 0.5 * sum(|share_i_A - share_i_B|) over ISCO-08 groups 1-9",
+    "note": "Descriptive only. Values range 0 (identical occupation mix) to 1 (completely different). No ranking implied.",
+    "pairs": {
+      "AUS_DEU": 0.1225,
+      "AUS_ESP": 0.1314,
+      "AUS_FRA": 0.0758,
+      "AUS_GBR": 0.0795,
+      "AUS_ITA": 0.1653,
+      "AUS_KOR": 0.2244,
+      "AUS_NLD": 0.1204,
+      "AUS_USA": 0.0787,
+      "DEU_ESP": 0.1398,
+      "DEU_FRA": 0.0829,
+      "DEU_GBR": 0.1572,
+      "DEU_ITA": 0.1113,
+      "DEU_KOR": 0.1447,
+      "DEU_NLD": 0.1342,
+      "DEU_USA": 0.1088,
+      "ESP_FRA": 0.1488,
+      "ESP_GBR": 0.186,
+      "ESP_ITA": 0.0997,
+      "ESP_KOR": 0.1803,
+      "ESP_NLD": 0.1961,
+      "ESP_USA": 0.1549,
+      "FRA_GBR": 0.1109,
+      "FRA_ITA": 0.1387,
+      "FRA_KOR": 0.1613,
+      "FRA_NLD": 0.097,
+      "FRA_USA": 0.0694,
+      "GBR_ITA": 0.2124,
+      "GBR_KOR": 0.2315,
+      "GBR_NLD": 0.1325,
+      "GBR_USA": 0.0819,
+      "ITA_KOR": 0.1729,
+      "ITA_NLD": 0.1906,
+      "ITA_USA": 0.1474,
+      "KOR_NLD": 0.2238,
+      "KOR_USA": 0.1669,
+      "NLD_USA": 0.1284
+    }
+  }
+}

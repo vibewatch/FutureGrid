@@ -40,6 +40,7 @@ const CLEARED_FILES = [
   "country-exposure.json",
   "employment-projections.json",
   "h1b-trends.json",
+  "international-occupation-mix.json",
   "job-postings.json",
   "jolts.json",
   "llm-exposure.json",

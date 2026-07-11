@@ -57,7 +57,6 @@ const DOWNLOADS_SCRIPT = path.join(ROOT, "scripts/build-downloads.mjs");
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const INCLUDED_ISO3 = ["AUS", "DEU", "ESP", "FRA", "GBR", "ITA", "KOR", "NLD", "USA"] as const;
-const EXCLUDED_ISO3 = ["CAN", "JPN"] as const;
 const ISCO08_GROUPS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"] as const;
 
 // ─── Pattern helpers ──────────────────────────────────────────────────────────
@@ -504,8 +503,8 @@ describe("lib/international-occupation-mix.ts — getOccupationMixSlim() compact
 
   it("compact payload does NOT expose raw totalEmployment or groups employment breakdown", () => {
     for (const c of slim.countries) {
-      expect((c as Record<string, unknown>).totalEmployment).toBeUndefined();
-      expect((c as Record<string, unknown>).groups).toBeUndefined();
+      expect(Object.prototype.hasOwnProperty.call(c, "totalEmployment")).toBe(false);
+      expect(Object.prototype.hasOwnProperty.call(c, "groups")).toBe(false);
     }
   });
 
