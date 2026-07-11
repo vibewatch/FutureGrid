@@ -392,4 +392,26 @@ export const globalZh: Record<string, string> = {
   intlOccMixStatus_E: "估算",
   intlOccMixStatus_F: "预测",
   intlOccMixStatus_I: "插补",
+
+  // ─── 消费者生成式AI普及增长对比 ──────────────────────────────────────────────
+  diffusionGrowthEyebrow: "微软AIEI \u00b7 MIT许可证",
+  diffusionGrowthTitle: "消费者生成式AI普及增长",
+  diffusionGrowthSubtitle:
+    "按2026年第一季度劳动年龄人口使用生成式AI产品的比例，列出前10个经济体，涵盖三个调查期。所有行均具备完整的三期数据，按2026年Q1降序排列。",
+  diffusionGrowthH1Label: "2025年上半年",
+  diffusionGrowthH2Label: "2025年下半年",
+  diffusionGrowthQ1Label: "2026年第一季度",
+  diffusionGrowthAxisLabel: "劳动年龄人口占比（%）",
+  diffusionGrowthSourceLink: "数据与来源",
+  diffusionGrowthTableCaption:
+    "消费者生成式AI普及率 \u2014 2026年Q1占比前10经济体（微软AIEI，MIT许可）",
+  diffusionGrowthColCountry: "经济体",
+  diffusionGrowthColH1: "2025上半年（%）",
+  diffusionGrowthColH2: "2025下半年（%）",
+  diffusionGrowthColQ1: "2026Q1（%）",
+  diffusionGrowthColChange: "变化（Q1\u2212H1，百分点）",
+  diffusionGrowthFigureAria:
+    "分组条形图：消费者生成式AI普及增长 \u2014 前10经济体在2025H1、2025H2、2026Q1三期的占比",
+  diffusionGrowthCaveat:
+    "指标：各调查期内报告使用生成式AI产品的劳动年龄人口比例（微软AI经济影响与洞察）。使用率 ≠ 能力水平、职场采用、生产率或劳动力市场影响。三个调查期（2025上半年、2025下半年、2026第一季度）窗口较短，趋势外推需谨慎。西方遥测可能低估中国等市场的本土AI应用（如豆包、Kimi）。来源：微软AI扩散报告（MIT许可）。不与Claude使用指数、Indeed招聘需求、Anthropic指数或IMF指标合并。",
 };

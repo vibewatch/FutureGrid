@@ -4,6 +4,7 @@ export const SECTION_IDS = {
   readinessGapLens: "readiness-gap-lens",
   talentBottleneckLens: "talent-bottleneck-lens",
   workforceStructure: "workforce-structure",
+  diffusionGrowthComparison: "diffusion-growth-comparison",
 } as const;
 
 export const DEEP_LINK_HREFS = {
@@ -12,4 +13,5 @@ export const DEEP_LINK_HREFS = {
   globalReadinessGapLens: `/global#${SECTION_IDS.readinessGapLens}`,
   visaTalentBottleneckLens: `/visa#${SECTION_IDS.talentBottleneckLens}`,
   globalWorkforceStructure: `/global#${SECTION_IDS.workforceStructure}`,
+  globalDiffusionGrowthComparison: `/global#${SECTION_IDS.diffusionGrowthComparison}`,
 } as const;
