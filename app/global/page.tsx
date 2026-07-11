@@ -1,4 +1,4 @@
-import { getCountryExposure, getAIUsageProxies, getCountryMapData, getDiffusionRisers } from "@/lib/data";
+import { getCountryExposure, getAIUsageProxies, getCountryMapData, getDiffusionRisers, getTopDiffusionComparison } from "@/lib/data";
 import GlobalView from "@/components/global/GlobalView";
 import type { EnrichedCountry } from "@/components/dashboard/CountryDetailPanel";
 import { getAdoptionSignals } from "@/lib/adoption-signals";
@@ -69,6 +69,9 @@ export default function GlobalPage() {
     return { ...r, h2: trend?.h2_2025 ?? null };
   });
 
+  // Top 10 by Q1 2026 for Consumer GenAI Diffusion Growth comparison
+  const diffusionComparison = getTopDiffusionComparison(10);
+
   const top12 = rankedEnriched.slice(0, 12);
   const totalCovered = allCountries.length;
   const topCountry = rankedEnriched[0];
@@ -97,6 +100,7 @@ export default function GlobalPage() {
       globalAIEcosystem={globalAIEcosystem}
       readinessGap={readinessGap}
       occupationMix={occupationMix}
+      diffusionComparison={diffusionComparison}
     />
   );
 }

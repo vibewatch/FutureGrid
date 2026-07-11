@@ -16,12 +16,13 @@ import InternationalOccupationMixSection from "@/components/global/International
 import { useT } from "@/lib/i18n/useT";
 import DataAsOfBadge from "@/components/ui/DataAsOfBadge";
 import type { AdoptionSignalsDataset } from "@/lib/adoption-signals";
-import type { DiffusionRiser } from "@/lib/data";
+import type { DiffusionRiser, DiffusionComparisonRow } from "@/lib/data";
 import type { OpenRouterCountryActivityData } from "@/lib/openrouter-country-activity";
 import type { ReadinessGapData } from "@/lib/readiness-gap";
 import type { GlobalAIEcosystemData, GlobalAIEcosystemQuadrant } from "@/lib/global-ai-ecosystem";
 import type { OccupationMixSlim } from "@/lib/international-occupation-mix";
 import { SECTION_IDS } from "@/lib/section-anchors";
+import DiffusionGrowthComparison from "@/components/global/DiffusionGrowthComparison";
 
 // ─── Tiny 3-point sparkline (pure SVG, no animation, reduced-motion safe) ─────
 function Sparkline3({ h1, h2, q1 }: { h1: number; h2: number; q1: number }) {
@@ -86,6 +87,7 @@ export interface GlobalViewProps {
   globalAIEcosystem: GlobalAIEcosystemData;
   readinessGap: ReadinessGapData;
   occupationMix: OccupationMixSlim;
+  diffusionComparison: DiffusionComparisonRow[];
 }
 
 export default function GlobalView({
@@ -107,6 +109,7 @@ export default function GlobalView({
   globalAIEcosystem,
   readinessGap,
   occupationMix,
+  diffusionComparison,
 }: GlobalViewProps) {
   const t = useT("global");
 
@@ -474,6 +477,15 @@ export default function GlobalView({
               {t("risersCaptionAfter")}
             </p>
           </section>
+        </Reveal>
+      )}
+
+      <hr className="divider-glow" />
+
+      {/* ─── CONSUMER GENAI DIFFUSION GROWTH COMPARISON ───────────────── */}
+      {diffusionComparison.length > 0 && (
+        <Reveal delay={100}>
+          <DiffusionGrowthComparison data={diffusionComparison} />
         </Reveal>
       )}
 

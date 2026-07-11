@@ -541,6 +541,40 @@ export function getDiffusionRisers(limit = 5): DiffusionRiser[] {
     }));
 }
 
+/** Compact DTO for Consumer GenAI Diffusion Growth comparison.
+ *  Carries only the three AIEI survey periods — no composite metrics.
+ *  Source: Microsoft AI Diffusion Report (MIT). */
+export interface DiffusionComparisonRow {
+  iso3: string;
+  name: string;
+  h1_2025: number;
+  h2_2025: number;
+  q1_2026: number;
+}
+
+/**
+ * Returns the top N economies by Q1 2026 Consumer GenAI diffusion share.
+ * Only includes rows where ALL THREE periods (H1 2025, H2 2025, Q1 2026) are
+ * non-null. Sorted descending by q1_2026. Rows with any missing period are
+ * excluded. Source: Microsoft AIEI (MIT). NOT merged with any other metric.
+ */
+export function getTopDiffusionComparison(limit = 10): DiffusionComparisonRow[] {
+  return getCountryMapData()
+    .filter(
+      (c): c is typeof c & { diffusionTrend: NonNullable<typeof c.diffusionTrend> } =>
+        c.diffusionTrend !== null,
+    )
+    .sort((a, b) => b.diffusionTrend.q1_2026 - a.diffusionTrend.q1_2026)
+    .slice(0, limit)
+    .map((c) => ({
+      iso3: c.iso3,
+      name: c.name,
+      h1_2025: c.diffusionTrend.h1_2025,
+      h2_2025: c.diffusionTrend.h2_2025,
+      q1_2026: c.diffusionTrend.q1_2026,
+    }));
+}
+
 export interface DataSource {
   name: string;
   publisher: string;
