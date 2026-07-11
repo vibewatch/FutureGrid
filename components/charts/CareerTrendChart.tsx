@@ -148,7 +148,7 @@ export default function CareerTrendChart() {
       }
     >
       <div className="w-full h-[400px]">
-        <Bar options={options} data={data} />
+        <Bar options={options} data={data} aria-hidden="true" />
       </div>
     </AccessibleChart>
   );
