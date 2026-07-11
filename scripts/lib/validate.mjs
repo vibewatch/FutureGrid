@@ -1275,6 +1275,163 @@ function hasTradingActionLabel(row) {
  * @param {Record<string, unknown>} registry
  * @param {{ expectedIds?: string[] }} [opts]
  */
+/**
+ * Validate data/international-occupation-mix.json.
+ * Enforces structural completeness, gate outcomes, and share integrity.
+ * @param {Record<string, unknown>} data
+ */
+export function validateInternationalOccupationMix(data) {
+  assertFields(
+    data,
+    ["meta", "source", "coverage", "included", "excluded", "countries", "dissimilarity"],
+    "international-occupation-mix"
+  );
+  assertProvenance(data, "international-occupation-mix");
+
+  // Source block
+  assertFields(
+    data.source,
+    ["name", "indicator", "dataflow", "accessEndpoint", "license", "licenseUrl", "publisher", "accessDate"],
+    "international-occupation-mix.source"
+  );
+  if (!/CC BY 4\.0/i.test(String(data.source?.license ?? ""))) {
+    throw new Error(
+      "[validate] international-occupation-mix: source.license must state CC BY 4.0"
+    );
+  }
+
+  // Coverage block
+  assertFields(
+    data.coverage,
+    ["classification", "sex", "frequency", "datasetLatestYear", "withinYearsWindow",
+     "minGroupCoverageRatio", "minGroupCount", "includedCount", "excludedCount"],
+    "international-occupation-mix.coverage"
+  );
+  if (data.coverage.classification !== "ISCO-08") {
+    throw new Error(
+      "[validate] international-occupation-mix: coverage.classification must be ISCO-08"
+    );
+  }
+  if (data.coverage.sex !== "SEX_T") {
+    throw new Error(
+      "[validate] international-occupation-mix: coverage.sex must be SEX_T"
+    );
+  }
+  const datasetLatestYear = data.coverage.datasetLatestYear;
+  if (!(typeof datasetLatestYear === "number" && datasetLatestYear > 2000 && datasetLatestYear <= 2100)) {
+    throw new Error(
+      "[validate] international-occupation-mix: coverage.datasetLatestYear must be a plausible 4-digit year"
+    );
+  }
+
+  // Minimum included countries
+  if (!Array.isArray(data.included) || data.included.length < 4) {
+    throw new Error(
+      `[validate] international-occupation-mix: fewer than 4 countries passed gates (got ${Array.isArray(data.included) ? data.included.length : 0})`
+    );
+  }
+  if (data.included.length !== data.coverage.includedCount) {
+    throw new Error(
+      "[validate] international-occupation-mix: included.length must equal coverage.includedCount"
+    );
+  }
+
+  // Excluded block
+  if (!Array.isArray(data.excluded)) {
+    throw new Error("[validate] international-occupation-mix: excluded must be an array");
+  }
+  for (const e of data.excluded) {
+    assertFields(e, ["iso3", "reason"], "international-occupation-mix.excluded[]");
+    if (!e.reason || String(e.reason).trim().length === 0) {
+      throw new Error(
+        `[validate] international-occupation-mix: excluded entry for ${e.iso3} missing reason`
+      );
+    }
+  }
+
+  // Countries block
+  if (!data.countries || typeof data.countries !== "object" || Array.isArray(data.countries)) {
+    throw new Error("[validate] international-occupation-mix: countries must be an object");
+  }
+  const ISCO08_GROUPS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  for (const iso3 of data.included) {
+    const c = data.countries[iso3];
+    if (!c) {
+      throw new Error(`[validate] international-occupation-mix: countries.${iso3} missing`);
+    }
+    assertFields(
+      c,
+      ["iso3", "name", "year", "totalEmployment", "groupCoverageRatio", "groups"],
+      `international-occupation-mix.countries.${iso3}`
+    );
+
+    // Year within window
+    const yr = c.year;
+    if (typeof yr !== "number" || yr < datasetLatestYear - 3 || yr > datasetLatestYear) {
+      throw new Error(
+        `[validate] international-occupation-mix.countries.${iso3}: year ${yr} outside qualifying window (${datasetLatestYear - 3}–${datasetLatestYear})`
+      );
+    }
+
+    // All 9 groups present
+    for (const g of ISCO08_GROUPS) {
+      const grp = c.groups[String(g)];
+      if (!grp || typeof grp !== "object") {
+        throw new Error(
+          `[validate] international-occupation-mix.countries.${iso3}: missing group ${g}`
+        );
+      }
+      assertFields(grp, ["employment", "share"], `international-occupation-mix.countries.${iso3}.groups.${g}`);
+      if (!(typeof grp.employment === "number" && grp.employment > 0)) {
+        throw new Error(
+          `[validate] international-occupation-mix.countries.${iso3}.groups.${g}: employment must be positive`
+        );
+      }
+      if (!(typeof grp.share === "number" && grp.share > 0 && grp.share < 1)) {
+        throw new Error(
+          `[validate] international-occupation-mix.countries.${iso3}.groups.${g}: share must be between 0 and 1`
+        );
+      }
+    }
+
+    // Share sum within 0.005 of 1.0 (normalized to group sum, not total)
+    const shareSum = ISCO08_GROUPS.reduce((s, g) => s + c.groups[String(g)].share, 0);
+    if (Math.abs(shareSum - 1.0) > 0.005) {
+      throw new Error(
+        `[validate] international-occupation-mix.countries.${iso3}: share sum ${shareSum.toFixed(6)} not within 0.005 of 1.0`
+      );
+    }
+
+    // Coverage ratio >= 98%
+    if (c.groupCoverageRatio < 0.98) {
+      throw new Error(
+        `[validate] international-occupation-mix.countries.${iso3}: groupCoverageRatio ${c.groupCoverageRatio} below 0.98`
+      );
+    }
+
+    // No imputed status
+    if (Array.isArray(c.observationStatuses)) {
+      const IMPUTED = new Set(["I"]);
+      const imputed = c.observationStatuses.filter((s) => IMPUTED.has(s));
+      if (imputed.length > 0) {
+        throw new Error(
+          `[validate] international-occupation-mix.countries.${iso3}: imputed observation status present: ${imputed.join(",")}`
+        );
+      }
+    }
+  }
+
+  // Dissimilarity block
+  assertFields(
+    data.dissimilarity,
+    ["method", "note", "pairs"],
+    "international-occupation-mix.dissimilarity"
+  );
+  if (!data.dissimilarity.method || String(data.dissimilarity.method).trim().length === 0) {
+    throw new Error("[validate] international-occupation-mix: dissimilarity.method must be non-empty");
+  }
+}
+
 export function validateProvenance(registry, opts = {}) {
   assertFields(registry, ["generatedAt", "datasets"], "provenance");
   assertProvenance(registry, "provenance");

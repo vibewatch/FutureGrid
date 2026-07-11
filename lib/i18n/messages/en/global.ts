@@ -340,4 +340,62 @@ export const globalEn: Record<string, string> = {
   countryChinaProxyNote:
     "These proxies use different measurement methods and cannot be summed or compared directly. Claude.ai is unavailable in mainland China — it appears grey on the Claude.ai usage layer.",
   countryFullProvenance: "Full provenance:",
+
+  // ─── Workforce structure section ──────────────────────────────────────────
+  workforceEyebrow: "International labor view",
+  workforceTitle: "Workforce Structure by Major Economy",
+  workforceSubtitle:
+    "{count} economies included. ISCO-08 major-group employment shares; source: ILOSTAT annual data, total employment, latest year within 3 years of {year}. National survey definitions, reference periods, and coverage differ — descriptive comparison only.",
+  workforceSourcesLink: "View Data & Sources →",
+  workforceCaveat:
+    "This section describes occupation composition only. No AI-exposure scores, wage rankings, or AI-impact claims are made. Displayed shares are normalized across the nine ISCO-08 major groups and sum to approximately 100%; each economy's coverage ratio separately discloses the share of total national employment those groups represent. Coverage is limited to economies with complete harmonized ISCO-08 data in the seed universe and does not represent all major economies.",
+  workforceAttribution: "Source: ILOSTAT — Employment by sex and occupation (EMP_TEMP_SEX_OCU_NB_A).",
+  workforceAttributionLicense: "CC BY 4.0 · International Labour Organization (ILO)",
+  workforcePartialCoverage:
+    "{count} economies passed the minimum coverage filter (all 9 of 9 ISCO-08 groups present, ≥ 98% of national employment covered, within 3 years of dataset latest year). Coverage is verified, not complete.",
+  workforceExclusionCaveat: "Not included in comparable set:",
+  workforceExposureNote: "For U.S.-only AI occupation-exposure analysis, see the",
+  workforceExposureLinkText: "Analysis page",
+  workforceExposureNoteAfter:
+    "— a separate U.S.-only view using different methodology and data. It is not merged with the international occupation-mix data shown here.",
+  workforceDrilldownHeading: "{name} — ISCO-08 Detail",
+  workforceDrilldownNone:
+    "Select a country bar above to see its detailed ISCO-08 occupation-mix breakdown.",
+  workforceDrilldownClear: "Clear selection: {name}",
+  workforceDrilldownClearLabel: "Clear selection",
+  workforceDrilldownYear: "Survey year:",
+  workforceDrilldownCoverage: "ISCO-08 group coverage:",
+  workforceDrilldownStatuses: "Observation flags:",
+  workforceDrilldownTableCaption: "ISCO-08 major-group employment shares — {name} ({year})",
+  workforceDrilldownGroup: "Group",
+  workforceDrilldownLabel: "Occupation type",
+  workforceDrilldownShare: "Share",
+
+  // ─── InternationalOccupationMixChart i18n keys ────────────────────────────
+  intlOccMixFigureCaption:
+    "Harmonized ISCO-08 major-group occupation shares across major economies",
+  intlOccMixGroupPrefix: "Group",
+  intlOccMixChartAria: "{classification} occupation shares across major economies",
+  intlOccMixChartDesc:
+    "100% stacked horizontal bars showing each country's employment share across {classification} major groups 1–9, ordered alphabetically by country name. This is not a ranked leaderboard.",
+  intlOccMixCoverageInline: "cov.\u00a0{coverage}",
+  intlOccMixDissimilarityInline: "dist.\u00a0{value}\u00a0vs\u00a0{reference}",
+  intlOccMixTableTitle: "Full data table",
+  intlOccMixTableCaption: "{classification} employment shares by country",
+  intlOccMixColCountry: "Country",
+  intlOccMixColYear: "Year",
+  intlOccMixColCoverage: "Coverage",
+  intlOccMixColStatus: "Status",
+  intlOccMixColDissimilarity: "Dissimilarity",
+  intlOccMixCaptionShares:
+    "{classification} employment shares (fraction of total national employment) for {count} included countries. Values reflect each country's latest year within a 3-year window of {year}.",
+  intlOccMixCaptionDissimilarity:
+    "Dissimilarity (half-L1 / Bray\u2013Curtis, 0\u20131) relative to {reference}. Descriptive structural distance only; not a ranking or quality measure.",
+  intlOccMixCaptionExcluded: "Not included in comparable set:",
+  // ILOSTAT observation-status code labels
+  intlOccMixStatus_B: "Break in series",
+  intlOccMixStatus_P: "Provisional",
+  intlOccMixStatus_E: "Estimated",
+  intlOccMixStatus_F: "Forecast",
+  intlOccMixStatus_I: "Imputed",
 };

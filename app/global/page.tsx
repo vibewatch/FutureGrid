@@ -5,6 +5,7 @@ import { getAdoptionSignals } from "@/lib/adoption-signals";
 import { getOpenRouterCountryActivityData } from "@/lib/openrouter-country-activity";
 import { getReadinessGapData } from "@/lib/readiness-gap";
 import { getGlobalAIEcosystemData } from "@/lib/global-ai-ecosystem";
+import { getOccupationMixSlim } from "@/lib/international-occupation-mix";
 
 export default function GlobalPage() {
   const allCountries = getCountryExposure();
@@ -16,6 +17,7 @@ export default function GlobalPage() {
     openRouterCountryActivity,
     readinessGap,
   });
+  const occupationMix = getOccupationMixSlim();
 
   // Extract China proxy figures from live data (with hardcoded fallbacks)
   const cnnicEntry = proxies.countrySurveyMetrics.find(
@@ -94,6 +96,7 @@ export default function GlobalPage() {
       openRouterCountryActivity={openRouterCountryActivity}
       globalAIEcosystem={globalAIEcosystem}
       readinessGap={readinessGap}
+      occupationMix={occupationMix}
     />
   );
 }

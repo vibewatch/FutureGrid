@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit --pretty false",
     "test": "vitest",
     "test:run": "vitest run",
-    "build:data": "npm run build:proxies && node scripts/build-data-snapshot.mjs && node scripts/build-snapshot-slim.mjs && npm run build:job-postings && npm run build:employment-projections && npm run build:ors && npm run build:openrouter-models && npm run build:ai-company-stocks && npm run build:provenance && npm run build:downloads",
+    "build:data": "npm run build:proxies && node scripts/build-data-snapshot.mjs && node scripts/build-snapshot-slim.mjs && npm run build:job-postings && npm run build:employment-projections && npm run build:ors && npm run build:openrouter-models && npm run build:ai-company-stocks && npm run build:international-occupation-mix && npm run build:provenance && npm run build:downloads",
     "build:proxies": "node scripts/build-ai-usage-proxies.mjs",
     "build:snapshot-slim": "node scripts/build-snapshot-slim.mjs",
     "build:provenance": "node scripts/build-provenance.mjs",
@@ -36,7 +36,8 @@
     "build:employment-projections": "node scripts/build-employment-projections.mjs",
     "build:openrouter-models": "node scripts/build-openrouter-models.mjs",
     "build:ai-company-stocks": "node scripts/build-ai-company-stocks.mjs",
-    "build:ors": "node scripts/build-occupational-requirements.mjs"
+    "build:ors": "node scripts/build-occupational-requirements.mjs",
+    "build:international-occupation-mix": "node scripts/build-international-occupation-mix.mjs"
   },
   "dependencies": {
     "chart.js": "^4.5.1",

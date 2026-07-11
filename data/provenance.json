@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-06T04:09:48.277Z",
+  "generatedAt": "2026-07-11T02:05:35.616Z",
   "datasets": [
     {
       "id": "ai-company-stocks",
@@ -141,6 +141,19 @@
       "rows": 776
     },
     {
+      "id": "international-occupation-mix",
+      "file": "data/international-occupation-mix.json",
+      "generatedAt": "2026-07-11T02:05:04.306Z",
+      "asOf": "2025",
+      "source": {
+        "name": "ILOSTAT — Employment by sex and occupation (thousands) — Annual",
+        "publisher": "International Labour Organization (ILO)",
+        "url": "https://rplumber.ilo.org/data/indicator/?id=EMP_TEMP_SEX_OCU_NB_A&lang=en&format=.csv"
+      },
+      "version": "1.0.0",
+      "rows": 9
+    },
+    {
       "id": "job-postings",
       "file": "data/job-postings.json",
       "generatedAt": "2026-07-06T01:17:08.242Z",
@@ -264,7 +277,7 @@
         "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex"
       },
       "version": "1.0.0",
-      "rows": 42
+      "rows": 43
     },
     {
       "id": "state-labor",

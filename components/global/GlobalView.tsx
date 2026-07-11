@@ -12,6 +12,7 @@ import CountryDetailPanel, {
 import AIAdoptionSignals from "@/components/global/AIAdoptionSignals";
 import OpenRouterCountryActivityLens from "@/components/global/OpenRouterCountryActivityLens";
 import ReadinessGapLens from "@/components/global/ReadinessGapLens";
+import InternationalOccupationMixSection from "@/components/global/InternationalOccupationMixSection";
 import { useT } from "@/lib/i18n/useT";
 import DataAsOfBadge from "@/components/ui/DataAsOfBadge";
 import type { AdoptionSignalsDataset } from "@/lib/adoption-signals";
@@ -19,6 +20,7 @@ import type { DiffusionRiser } from "@/lib/data";
 import type { OpenRouterCountryActivityData } from "@/lib/openrouter-country-activity";
 import type { ReadinessGapData } from "@/lib/readiness-gap";
 import type { GlobalAIEcosystemData, GlobalAIEcosystemQuadrant } from "@/lib/global-ai-ecosystem";
+import type { OccupationMixSlim } from "@/lib/international-occupation-mix";
 import { SECTION_IDS } from "@/lib/section-anchors";
 
 // ─── Tiny 3-point sparkline (pure SVG, no animation, reduced-motion safe) ─────
@@ -83,6 +85,7 @@ export interface GlobalViewProps {
   openRouterCountryActivity: OpenRouterCountryActivityData;
   globalAIEcosystem: GlobalAIEcosystemData;
   readinessGap: ReadinessGapData;
+  occupationMix: OccupationMixSlim;
 }
 
 export default function GlobalView({
@@ -103,6 +106,7 @@ export default function GlobalView({
   openRouterCountryActivity,
   globalAIEcosystem,
   readinessGap,
+  occupationMix,
 }: GlobalViewProps) {
   const t = useT("global");
 
@@ -391,6 +395,13 @@ export default function GlobalView({
       {/* ─── ADOPTION–READINESS GAP LENS ───────────────────────────────────── */}
       <Reveal delay={100}>
         <ReadinessGapLens data={readinessGap} />
+      </Reveal>
+
+      <hr className="divider-glow" />
+
+      {/* ─── WORKFORCE STRUCTURE ───────────────────────────────────────────── */}
+      <Reveal delay={100}>
+        <InternationalOccupationMixSection data={occupationMix} />
       </Reveal>
 
       <hr className="divider-glow" />

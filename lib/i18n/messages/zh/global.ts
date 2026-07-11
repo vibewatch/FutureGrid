@@ -336,4 +336,60 @@ export const globalZh: Record<string, string> = {
   countryChinaProxyNote:
     "这些替代数据采用不同测量方法，不可相加或直接比较。Claude.ai 在中国大陆不可用——因此在 Claude.ai 使用图层上显示为灰色。",
   countryFullProvenance: "完整来源：",
+
+  // ─── Workforce structure section ──────────────────────────────────────────
+  workforceEyebrow: "国际劳动力视角",
+  workforceTitle: "主要经济体劳动力结构",
+  workforceSubtitle:
+    "共包含 {count} 个经济体。ISCO-08 主要职业大类就业份额；数据来源：ILOSTAT 年度数据，全口径就业，最近距离 {year} 年以内的最新年份。各国调查定义、参考期与覆盖范围不同——仅作描述性比较。",
+  workforceSourcesLink: "查看数据与来源 →",
+  workforceCaveat:
+    "本节仅描述职业构成，不涉及 AI 暴露评分、薪资排名或 AI 影响判断。所显示的各份额已在九个 ISCO-08 主要大类之间归一化，其总和约为 100%；每个经济体的覆盖率另行披露这些大类占全国总就业的比例。覆盖范围仅限于种子数据集中具有完整调和 ISCO-08 数据的经济体，不代表所有主要经济体。",
+  workforceAttribution: "数据来源：ILOSTAT — 按性别和职业分类的就业人数（EMP_TEMP_SEX_OCU_NB_A）。",
+  workforceAttributionLicense: "CC BY 4.0 · 国际劳工组织（ILO）",
+  workforcePartialCoverage:
+    "{count} 个经济体通过了最低覆盖率筛选（9 个 ISCO-08 大类全部有数据、全国就业覆盖率 ≥ 98%、年份在数据集最新年份 3 年以内）。覆盖已核实，但并非完整。",
+  workforceExclusionCaveat: "未纳入可比集合：",
+  workforceExposureNote: "如需美国专项 AI 职业暴露分析，请访问",
+  workforceExposureLinkText: "分析页面",
+  workforceExposureNoteAfter:
+    "——该视图仅针对美国，采用不同方法和数据，与此处展示的国际职业混合数据不合并。",
+  workforceDrilldownHeading: "{name} — ISCO-08 详情",
+  workforceDrilldownNone: "请在上方选择一个国家，以查看其 ISCO-08 职业构成详细分解。",
+  workforceDrilldownClear: "取消选择：{name}",
+  workforceDrilldownClearLabel: "取消选择",
+  workforceDrilldownYear: "调查年份：",
+  workforceDrilldownCoverage: "ISCO-08 分组覆盖率：",
+  workforceDrilldownStatuses: "观测标记：",
+  workforceDrilldownTableCaption: "ISCO-08 主要职业大类就业份额 — {name}（{year}）",
+  workforceDrilldownGroup: "大类",
+  workforceDrilldownLabel: "职业类型",
+  workforceDrilldownShare: "份额",
+
+  // ─── InternationalOccupationMixChart i18n keys ────────────────────────────
+  intlOccMixFigureCaption: "主要经济体 ISCO-08 主要大类职业份额（经调和）",
+  intlOccMixGroupPrefix: "大类",
+  intlOccMixChartAria: "主要经济体 {classification} 职业份额",
+  intlOccMixChartDesc:
+    "100% 堆叠水平条形图，展示各国就业在 {classification} 第 1–9 大类间的分布，按国家名称字母顺序排列。这不是排名榜单。",
+  intlOccMixCoverageInline: "覆盖率\u00a0{coverage}",
+  intlOccMixDissimilarityInline: "差异\u00a0{value}\u00a0对比\u00a0{reference}",
+  intlOccMixTableTitle: "完整数据表",
+  intlOccMixTableCaption: "{classification} 各国就业份额",
+  intlOccMixColCountry: "国家",
+  intlOccMixColYear: "年份",
+  intlOccMixColCoverage: "覆盖率",
+  intlOccMixColStatus: "状态",
+  intlOccMixColDissimilarity: "差异度",
+  intlOccMixCaptionShares:
+    "{count} 个纳入国家的 {classification} 就业份额（占全国总就业的比例）。数值取各国距 {year} 年 3 年以内的最新年份。",
+  intlOccMixCaptionDissimilarity:
+    "相对于 {reference} 的差异度（半 L1 / Bray\u2013Curtis，0\u20131）。仅为描述性结构距离，不代表排名或质量评估。",
+  intlOccMixCaptionExcluded: "未纳入可比集合：",
+  // ILOSTAT 观测状态代码标签
+  intlOccMixStatus_B: "序列断裂",
+  intlOccMixStatus_P: "初步数据",
+  intlOccMixStatus_E: "估算",
+  intlOccMixStatus_F: "预测",
+  intlOccMixStatus_I: "插补",
 };
