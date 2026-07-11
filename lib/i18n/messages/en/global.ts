@@ -401,9 +401,9 @@ export const globalEn: Record<string, string> = {
 
   // ─── Consumer GenAI Diffusion Growth comparison ───────────────────────────
   diffusionGrowthEyebrow: "Microsoft AIEI \u00b7 MIT License",
-  diffusionGrowthTitle: "Consumer GenAI Diffusion Growth",
+  diffusionGrowthTitle: "Consumer GenAI Diffusion \u2014 Top Economies",
   diffusionGrowthSubtitle:
-    "Top 10 economies by Q1\u00a02026 share of working-age population using a generative AI product, across three survey periods. All rows have complete three-period values. Sorted by Q1\u00a02026 descending.",
+    "Top 10 economies ranked by Q1\u00a02026 share of working-age population using a generative AI product. H1 2025, H2 2025, and Q1 2026 values shown for trend context. Ranked by Q1\u00a02026 level, descending \u2014 not a fastest-growth ranking.",
   diffusionGrowthH1Label: "H1 2025",
   diffusionGrowthH2Label: "H2 2025",
   diffusionGrowthQ1Label: "Q1 2026",
@@ -417,7 +417,10 @@ export const globalEn: Record<string, string> = {
   diffusionGrowthColQ1: "Q1 2026 (%)",
   diffusionGrowthColChange: "Change (Q1\u2212H1, pp)",
   diffusionGrowthFigureAria:
-    "Grouped bar chart: Consumer GenAI Diffusion Growth — top 10 economies by Q1 2026 share across H1 2025, H2 2025, Q1 2026",
+    "Grouped bar chart: Consumer GenAI Diffusion \u2014 top 10 economies by Q1 2026 level, with H1 2025, H2 2025, Q1 2026 trend",
+  diffusionGrowthGuardrail:
+    "Usage \u2260 capability, workplace adoption, productivity, or labor-market impact.",
+  diffusionGrowthLegendLabel: "Legend",
   diffusionGrowthCaveat:
-    "Metric: % of working-age population who reported using a generative AI product in each survey period (Microsoft AI Economic Impact \u0026 Insights). Usage ≠ capability, workplace adoption, productivity, or labor-market impact. Three survey periods (H1\u00a02025, H2\u00a02025, Q1\u00a02026) is a short window; caution on trend extrapolation. Western telemetry may undercount domestic AI apps (e.g.\u00a0Doubao, Kimi) in China and other markets. Source: Microsoft AI Diffusion Report (MIT). Not merged with Claude\u00a0usage\u00a0index, Indeed\u00a0job\u00a0demand, Anthropic indices, or IMF metrics.",
+    "Metric: % of working-age population who reported using a generative AI product in each survey period (Microsoft AI Economic Impact \u0026 Insights). Usage \u2260 capability, workplace adoption, productivity, or labor-market impact. Three survey periods (H1\u00a02025, H2\u00a02025, Q1\u00a02026) is a short window; caution on trend extrapolation. This absolute-share top 10 reflects economies with high Microsoft product penetration and digital-access infrastructure; it is not a representative sample of global AI diffusion. Digital-access gaps and Microsoft product reach independently affect which economies appear in this ranking. Western telemetry may undercount domestic AI apps (e.g.\u00a0Doubao, Kimi) in China and other markets. Source: Microsoft AI Diffusion Report (MIT). Not merged with Claude\u00a0usage\u00a0index, Indeed\u00a0job\u00a0demand, Anthropic indices, or IMF metrics.",
 };

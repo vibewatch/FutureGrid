@@ -109,30 +109,66 @@ describe("DiffusionGrowthComparison component", () => {
     const headingId = section?.getAttribute("aria-labelledby");
     expect(headingId).toBeTruthy();
     const heading = document.getElementById(headingId!);
-    expect(heading?.textContent).toMatch(/Consumer GenAI Diffusion Growth/i);
+    expect(heading?.textContent).toMatch(/Consumer GenAI Diffusion/i);
   });
 
-  it("renders the chart SVG with accessible role and aria-label", () => {
-    render(<DiffusionGrowthComparison data={FIXTURE_ROWS} />);
-    const img = screen.getByRole("img");
-    expect(img.tagName.toLowerCase()).toBe("svg");
-    expect(img.getAttribute("aria-label")).toMatch(/Consumer GenAI Diffusion Growth/i);
+  it("renders the chart SVG as aria-hidden (no double announcement with figure)", () => {
+    const { container } = render(<DiffusionGrowthComparison data={FIXTURE_ROWS} />);
+    const svg = container.querySelector("figure svg");
+    expect(svg).not.toBeNull();
+    expect(svg?.getAttribute("aria-hidden")).toBe("true");
+    // SVG must NOT carry role=img — the figure element carries the accessible name
+    expect(svg?.getAttribute("role")).toBeNull();
   });
 
-  it("renders a figure element wrapping the chart", () => {
+  it("renders a figure element with accessible aria-label", () => {
     const { container } = render(<DiffusionGrowthComparison data={FIXTURE_ROWS} />);
     const figure = container.querySelector("figure");
     expect(figure).not.toBeNull();
-    expect(figure?.getAttribute("aria-label")).toMatch(/Consumer GenAI Diffusion Growth/i);
+    expect(figure?.getAttribute("aria-label")).toMatch(/Consumer GenAI Diffusion/i);
   });
 
-  it("chart uses a single shared scale (SCALE_MAX constant is 75)", () => {
-    // All bars are scaled relative to the same 75% maximum — verify via SVG viewBox
+  it("bars use a single shared 75% scale — geometry assertions prove SCALE_MAX and no per-row normalization", () => {
     const { container } = render(<DiffusionGrowthComparison data={FIXTURE_ROWS} />);
-    const svg = container.querySelector("svg[role='img']");
+    const svg = container.querySelector("figure svg");
     expect(svg).not.toBeNull();
-    const viewBox = svg?.getAttribute("viewBox") ?? "";
-    expect(viewBox).toMatch(/^0 0 680 /);
+
+    // Layout constants mirror component source (must stay in sync)
+    const CHART_W = 680;
+    const MARGIN_LEFT = 152;
+    const MARGIN_RIGHT = 44;
+    const SCALE_MAX_EXPECTED = 75;
+    const plotW = CHART_W - MARGIN_LEFT - MARGIN_RIGHT; // 484
+
+    function expectedW(v: number) {
+      return Math.max((v / SCALE_MAX_EXPECTED) * plotW, 2);
+    }
+
+    // SVG rects: 10 rows × 3 bars each = rects[0..29]; rects[30..32] are legend swatches
+    const rects = Array.from(svg?.querySelectorAll("rect") ?? []);
+    expect(rects.length).toBeGreaterThanOrEqual(30);
+
+    // Row 0 = ARE (h1=59.4, h2=64.0, q1=70.1)
+    const areH1W = parseFloat(rects[0].getAttribute("width")!);
+    const areH2W = parseFloat(rects[1].getAttribute("width")!);
+    const areQ1W = parseFloat(rects[2].getAttribute("width")!);
+
+    expect(areH1W).toBeCloseTo(expectedW(59.4), 1);
+    expect(areH2W).toBeCloseTo(expectedW(64.0), 1);
+    expect(areQ1W).toBeCloseTo(expectedW(70.1), 1);
+
+    // Row 2 = NOR (h1=45.3)
+    const norH1W = parseFloat(rects[6].getAttribute("width")!);
+    expect(norH1W).toBeCloseTo(expectedW(45.3), 1);
+
+    // Shared-scale proof: cross-row width ratio must equal cross-row value ratio.
+    // Under per-row normalization each row's max bar fills plotW — this ratio would differ.
+    expect(areQ1W / norH1W).toBeCloseTo(70.1 / 45.3, 2);
+
+    // SCALE_MAX=75 proof: ARE q1 at 70.1% must be ~93.5% of plotW, not 100%.
+    // If SCALE_MAX were 100 the width would be ~339.3 instead of ~452.4.
+    expect(areQ1W).toBeLessThan(plotW);
+    expect(areQ1W).toBeCloseTo((70.1 / SCALE_MAX_EXPECTED) * plotW, 1);
   });
 
   it("renders a visible table (not sr-only) with all required column headers", () => {
@@ -150,6 +186,14 @@ describe("DiffusionGrowthComparison component", () => {
     expect(screen.getByRole("columnheader", { name: /H2 2025/i })).toBeInTheDocument();
     expect(screen.getByRole("columnheader", { name: /Q1 2026/i })).toBeInTheDocument();
     expect(screen.getByRole("columnheader", { name: /Change/i })).toBeInTheDocument();
+  });
+
+  it("economy column uses th scope=row for each data row", () => {
+    render(<DiffusionGrowthComparison data={FIXTURE_ROWS} />);
+    const rowHeaders = screen.getAllByRole("rowheader");
+    expect(rowHeaders).toHaveLength(FIXTURE_ROWS.length);
+    expect(rowHeaders[0].textContent).toContain("United Arab Emirates");
+    expect(rowHeaders[0].closest("th")?.getAttribute("scope")).toBe("row");
   });
 
   it("table contains all 10 country names and their values", () => {
@@ -190,6 +234,14 @@ describe("DiffusionGrowthComparison component", () => {
     expect(body).toMatch(/MIT/i);
   });
 
+  it("usage guardrail is visible near the heading/chart (not only in the bottom caveat)", () => {
+    const { container } = render(<DiffusionGrowthComparison data={FIXTURE_ROWS} />);
+    // The guardrail paragraph sits inside the header flex div, before the chart
+    const headerDiv = container.querySelector("section > div.flex");
+    const guardrailText = headerDiv?.textContent ?? "";
+    expect(guardrailText).toMatch(/[Uu]sage\s*\u2260/);
+  });
+
   it("renders a source link to /sources", () => {
     render(<DiffusionGrowthComparison data={FIXTURE_ROWS} />);
     const link = screen.getByRole("link", { name: /Data & Sources/i });
@@ -206,6 +258,13 @@ describe("DiffusionGrowthComparison component", () => {
     expect(text).toContain("H1 2025");
     expect(text).toContain("H2 2025");
     expect(text).toContain("Q1 2026");
+  });
+
+  it("legend aria-label uses localized key (ZH locale shows 图例)", () => {
+    setLocale("zh");
+    render(<DiffusionGrowthComparison data={FIXTURE_ROWS} />);
+    const legend = screen.getByRole("list", { name: "图例" });
+    expect(legend).toBeInTheDocument();
   });
 
   it("returns null when data array is empty", () => {
@@ -229,16 +288,17 @@ describe("DiffusionGrowthComparison i18n", () => {
     expect(zhKeys).toEqual(enKeys);
   });
 
-  it("EN title says 'Consumer GenAI Diffusion Growth' — not workplace wording", () => {
+  it("EN title presents top economies by Q1 2026 level — not fastest-growth wording", () => {
     const title = globalEn.diffusionGrowthTitle ?? "";
-    expect(title).toMatch(/Consumer GenAI Diffusion Growth/i);
+    expect(title).toMatch(/Consumer GenAI Diffusion/i);
+    // Must not imply fastest-growth ranking
+    expect(title).not.toMatch(/fastest.{0,20}growth/i);
     expect(title).not.toMatch(/workplace/i);
-    expect(title).not.toMatch(/workplace adoption/i);
     expect(title).not.toMatch(/economic impact/i);
     expect(title).not.toMatch(/labor impact/i);
   });
 
-  it("ZH title is a faithful equivalent (消费者生成式AI普及增长)", () => {
+  it("ZH title is a faithful equivalent (消费者生成式AI普及)", () => {
     expect(globalZh.diffusionGrowthTitle).toMatch(/消费者生成式AI普及/);
   });
 
@@ -262,6 +322,21 @@ describe("DiffusionGrowthComparison i18n", () => {
     const caveat = globalEn.diffusionGrowthCaveat ?? "";
     expect(caveat).toMatch(/Not merged/i);
     expect(caveat).toMatch(/Indeed|Anthropic|IMF/);
+  });
+
+  it("EN caveat states absolute-share top 10 is not a representative global sample", () => {
+    const caveat = globalEn.diffusionGrowthCaveat ?? "";
+    expect(caveat).toMatch(/absolute[- ]share|top 10.*not.*global|not.*representative/i);
+    expect(caveat).toMatch(/digital.{0,30}access|Microsoft.{0,40}penetration/i);
+  });
+
+  it("EN subtitle explicitly states ranked by Q1 2026 level, not fastest-growth", () => {
+    const subtitle = globalEn.diffusionGrowthSubtitle ?? "";
+    expect(subtitle).toMatch(/Q1.*2026/i);
+    // Subtitle must clarify ranking basis — negation of fastest-growth ranking is acceptable
+    // but must not read as "ranked by fastest growth"
+    expect(subtitle).not.toMatch(/ranked\s+by\s+.{0,30}growth/i);
+    expect(subtitle).toMatch(/Q1.*2026.*level|level.*descending|Ranked by Q1/i);
   });
 
   it("ZH caveat is non-empty and contains core guardrail terms", () => {

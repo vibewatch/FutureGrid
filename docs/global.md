@@ -28,7 +28,7 @@ Documents the Global AI Ecosystem composite: OpenRouter model-catalog footprint 
 | Country Exposure | `data/country-exposure.json` | `lib/data.ts` |
 | World Countries (geo) | `data/world-countries.geo.json` | Client-side map rendering |
 | Readiness Gap | Derived | `lib/readiness-gap.ts` |
-| **Consumer GenAI Diffusion Growth** | `data/global-ai-metrics.json` (diffusionTrend) | `lib/data.ts` `getTopDiffusionComparison` |
+| **Consumer GenAI Diffusion — Top Economies** | `data/global-ai-metrics.json` (diffusionTrend) | `lib/data.ts` `getTopDiffusionComparison` |
 | Global AI Ecosystem | Derived composite | `lib/global-ai-ecosystem.ts` |
 
 ---
@@ -322,7 +322,7 @@ The `global-ai-ecosystem` and `readiness-gap` computations are **fully derived a
 | `data/ai-usage-proxies.json` | Multi-source AI adoption proxies |
 | `data/world-countries.geo.json` | GeoJSON for map rendering |
 | `data/country-exposure.json` | Country-level AI exposure data |
-| `components/global/DiffusionGrowthComparison.tsx` | Consumer GenAI Diffusion Growth grouped-bar comparison + visible table |
+| `components/global/DiffusionGrowthComparison.tsx` | Consumer GenAI Diffusion — Top Economies ranked by Q1 2026 absolute level with trend context |
 | `scripts/build-openrouter-models.mjs` | OpenRouter catalog builder |
 | `scripts/build-global-metrics.mjs` | Global metrics builder |
 | `scripts/build-ai-usage-proxies.mjs` | Usage proxies builder |
@@ -331,7 +331,7 @@ The `global-ai-ecosystem` and `readiness-gap` computations are **fully derived a
 
 ---
 
-## Consumer GenAI Diffusion Growth
+## Consumer GenAI Diffusion — Top Economies
 
 **Section:** `/global#diffusion-growth-comparison`
 **Source:** Microsoft AI Diffusion Report (MIT) — `data/global-ai-metrics.json` → `metrics.diffusionTrend`
@@ -339,7 +339,7 @@ The `global-ai-ecosystem` and `readiness-gap` computations are **fully derived a
 
 ### What it shows
 
-Top 10 economies by Q1 2026 share of working-age population using a generative AI product, across three survey periods: H1 2025, H2 2025, Q1 2026. All rows have complete three-period data; rows with any missing period are excluded. Sorted descending by Q1 2026.
+Top 10 economies ranked by Q1 2026 absolute level (share of working-age population using a generative AI product), with three survey periods for trend context: H1 2025, H2 2025, Q1 2026. This is **not** a fastest-growth ranking — economies are ranked by Q1 2026 absolute adoption level, not growth rate or acceleration. All rows have complete three-period data; rows with any missing period are excluded. Sorted descending by Q1 2026.
 
 ### DTO type
 
@@ -356,6 +356,7 @@ export interface DiffusionComparisonRow {
 ### Claim guardrails
 
 - Metric: % of working-age population using a generative AI product (behavior-based survey).
+- **Ranking criterion: Q1 2026 absolute adoption level, not growth rate or fastest-growth.**
 - **Usage ≠ capability, workplace adoption, productivity, or labor-market impact.**
 - Short three-period window (H1 2025, H2 2025, Q1 2026); extrapolation from three points is unreliable.
 - Western telemetry may undercount domestic AI apps (e.g. Doubao, Kimi in China).

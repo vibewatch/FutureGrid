@@ -51,14 +51,12 @@ function BarChart({
   h2Label,
   q1Label,
   axisLabel,
-  figureAria,
 }: {
   rows: DiffusionComparisonRow[];
   h1Label: string;
   h2Label: string;
   q1Label: string;
   axisLabel: string;
-  figureAria: string;
 }) {
   const n = rows.length;
   const plotW = CHART_W - MARGIN.left - MARGIN.right;
@@ -73,8 +71,7 @@ function BarChart({
 
   return (
     <svg
-      role="img"
-      aria-label={figureAria}
+      aria-hidden="true"
       viewBox={`0 0 ${CHART_W} ${totalH}`}
       className="w-full"
       style={{ height: "auto" }}
@@ -254,6 +251,9 @@ export default function DiffusionGrowthComparison({
           <p className="mt-2 max-w-3xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
             {t("diffusionGrowthSubtitle")}
           </p>
+          <p className="mt-1 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+            {t("diffusionGrowthGuardrail")}
+          </p>
         </div>
         <Link
           href="/sources"
@@ -266,7 +266,7 @@ export default function DiffusionGrowthComparison({
       {/* ─── Legend (non-SVG, keyboard accessible) ─── */}
       <div
         role="list"
-        aria-label="Legend"
+        aria-label={t("diffusionGrowthLegendLabel")}
         className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5"
       >
         {(
@@ -303,7 +303,6 @@ export default function DiffusionGrowthComparison({
             h2Label={t("diffusionGrowthH2Label")}
             q1Label={t("diffusionGrowthQ1Label")}
             axisLabel={t("diffusionGrowthAxisLabel")}
-            figureAria={t("diffusionGrowthFigureAria")}
           />
           {/* Screen-reader summary list — all values readable without color */}
           <figcaption className="sr-only">
@@ -354,12 +353,10 @@ export default function DiffusionGrowthComparison({
                   key={row.iso3}
                   className="border-b border-zinc-100 last:border-0 dark:border-zinc-800/70"
                 >
-                  <td className="px-4 py-3">
-                    <span className="font-medium text-zinc-900 dark:text-white">
-                      {row.name}
-                    </span>
-                    <span className="ml-2 text-xs text-zinc-500">{row.iso3}</span>
-                  </td>
+                  <th scope="row" className="px-4 py-3 text-left font-medium text-zinc-900 dark:text-white">
+                    {row.name}
+                    <span className="ml-2 text-xs font-normal text-zinc-500">{row.iso3}</span>
+                  </th>
                   <td className="px-4 py-3 text-right tabular-nums">
                     {fmtPct(row.h1_2025, numberLocale)}
                   </td>
