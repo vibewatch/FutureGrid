@@ -1,3 +1,7 @@
+"use client";
+
+import { useT } from "@/lib/i18n/useT";
+
 export type GuardrailBadgeKind = "observed" | "proxy" | "restricted" | "descriptive";
 
 export const GUARDRAIL_BADGES: Record<
@@ -55,15 +59,18 @@ export default function GuardrailBadge({
   kind: GuardrailBadgeKind;
   className?: string;
 }) {
+  const tc = useT("common");
   const badge = GUARDRAIL_BADGES[kind];
+  const label = tc(`guardrailLabel_${kind}`) || badge.label;
+  const description = tc(`guardrailDesc_${kind}`) || badge.description;
 
   return (
     <span
       className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-semibold leading-none ${badge.className} ${className}`}
-      title={badge.description}
-      aria-label={`${badge.label}: ${badge.description}`}
+      title={description}
+      aria-label={`${label}: ${description}`}
     >
-      {badge.label}
+      {label}
     </span>
   );
 }

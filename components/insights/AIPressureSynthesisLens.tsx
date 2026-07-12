@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
+import DataAsOfBadge from "@/components/ui/DataAsOfBadge";
+import GuardrailBadge, { type GuardrailBadgeKind } from "@/components/ui/GuardrailBadge";
 import { useLocale, useT } from "@/lib/i18n/useT";
-import type { AIPressureSynthesisData } from "@/lib/ai-pressure-synthesis";
+import type { AIPressureSynthesisData, LaneProvenance } from "@/lib/ai-pressure-synthesis";
 
 interface AIPressureSynthesisLensProps {
   data: AIPressureSynthesisData;
@@ -27,6 +29,13 @@ const TONE_CLASSES: Record<LaneTone, { dot: string; bar: string; chip: string }>
     bar: "from-amber-400 to-orange-500",
     chip: "border-amber-400/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
   },
+};
+
+/** GuardrailBadge kind that best represents each lane's data character. */
+const LANE_GUARDRAIL: Record<LaneTone, GuardrailBadgeKind> = {
+  global: "proxy",
+  talent: "proxy",
+  market: "descriptive",
 };
 
 export default function AIPressureSynthesisLens({
@@ -111,6 +120,8 @@ export default function AIPressureSynthesisLens({
               body={t("aiPressureGlobalBody")}
               href={data.global.href}
               linkLabel={t("aiPressureOpenGlobal")}
+              provenance={data.global.provenance}
+              sourceAttrib={t("aiPressureGlobalSource")}
               metrics={[
                 {
                   label: t("aiPressureGlobalCatalogLabel"),
@@ -136,6 +147,8 @@ export default function AIPressureSynthesisLens({
               body={t("aiPressureTalentBody")}
               href={data.talent.href}
               linkLabel={t("aiPressureOpenTalent")}
+              provenance={data.talent.provenance}
+              sourceAttrib={t("aiPressureTalentSource")}
               metrics={[
                 {
                   label: t("aiPressureTalentOccupationsLabel"),
@@ -172,6 +185,8 @@ export default function AIPressureSynthesisLens({
               linkLabel={t("aiPressureOpenMarket")}
               secondaryHref={data.market.stockHref}
               secondaryLinkLabel={t("aiPressureOpenStocks")}
+              provenance={data.market.provenance}
+              sourceAttrib={t("aiPressureMarketSource")}
               metrics={[
                 {
                   label: t("aiPressureMarketSectorLabel"),
@@ -229,6 +244,8 @@ function LaneCard({
   linkLabel,
   secondaryHref,
   secondaryLinkLabel,
+  provenance,
+  sourceAttrib,
   metrics,
 }: {
   tone: LaneTone;
@@ -240,6 +257,8 @@ function LaneCard({
   linkLabel: string;
   secondaryHref?: string;
   secondaryLinkLabel?: string;
+  provenance: LaneProvenance;
+  sourceAttrib: string;
   metrics: Array<{
     label: string;
     value: string;
@@ -249,6 +268,7 @@ function LaneCard({
   }>;
 }) {
   const toneClasses = TONE_CLASSES[tone];
+  const guardrailKind = LANE_GUARDRAIL[tone];
 
   return (
     <article className="flex h-full min-w-0 flex-col rounded-2xl border border-zinc-200 bg-white/60 p-4 dark:border-zinc-800 dark:bg-zinc-950/35">
@@ -309,6 +329,17 @@ function LaneCard({
           </div>
         ))}
       </dl>
+
+      {/* Per-lane freshness badge, guardrail kind, and compact source attribution */}
+      <div className="mt-4 space-y-1.5">
+        <div className="flex flex-wrap items-center gap-2">
+          <DataAsOfBadge datasetIds={provenance.datasetIds} />
+          <GuardrailBadge kind={guardrailKind} />
+        </div>
+        <p className="text-[10px] leading-snug text-zinc-400 dark:text-zinc-500">
+          {sourceAttrib}
+        </p>
+      </div>
 
       <div className="mt-auto flex flex-wrap gap-3 pt-4 text-sm font-semibold">
         <Link

@@ -7,4 +7,12 @@ export const commonEn = {
   langSwitchLabel: "Language selection",
   switchToEn: "Switch to English",
   switchToZh: "Switch to Chinese",
+  guardrailLabel_observed: "Observed",
+  guardrailDesc_observed: "Provider or public-record observations, not modeled estimates.",
+  guardrailLabel_proxy: "Proxy",
+  guardrailDesc_proxy: "Proxy or seed-derived signal; use directionally, not as direct measurement.",
+  guardrailLabel_restricted: "Restricted",
+  guardrailDesc_restricted: "Source terms restrict redistribution or complete raw-data access.",
+  guardrailLabel_descriptive: "Descriptive-only",
+  guardrailDesc_descriptive: "Descriptive context only; not causal, predictive, or prescriptive.",
 };

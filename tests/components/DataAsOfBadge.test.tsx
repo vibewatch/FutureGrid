@@ -37,13 +37,21 @@ describe("DataAsOfBadge", () => {
     expect(container).toBeTruthy();
   });
 
-  it("uses the most-recent asOf when datasetIds contains multiple ids", () => {
-    // country-exposure → asOf "2025"; ai-frontier → asOf "2026-07-02"
+  it("uses the chronologically latest asOf when datasetIds contains multiple ids", () => {
+    // country-exposure → asOf "2025" (Dec 31, 2025); ai-frontier → asOf "2026-07-02"
     render(
       <DataAsOfBadge datasetIds={["country-exposure", "ai-frontier"]} />,
     );
-    // "2026-07-02" > "2025", so Jul 2026 wins
+    // Jul 2, 2026 is later than Dec 31, 2025, so "2026-07-02" wins → "Jul 2026"
     expect(screen.getByText(/Data as of Jul 2026/i)).toBeInTheDocument();
+  });
+
+  it("FY2025 (Sep 30) does not win over plain 2025 (Dec 31) — calendar-aware ordering", () => {
+    // h1b-trends asOf="FY2025" ends Sep 30, 2025.
+    // job-postings asOf="2025" represents Dec 31, 2025 — which is later.
+    render(<DataAsOfBadge datasetIds={["h1b-trends", "job-postings"]} />);
+    // Plain "2025" wins and is displayed as-is (not formatted as a month string)
+    expect(screen.getByText(/Data as of 2025/i)).toBeInTheDocument();
   });
 
   it("has an accessible aria-label matching visible text", () => {
@@ -60,39 +68,35 @@ describe("DataAsOfBadge", () => {
   });
 });
 
-// ── formatAsOf unit-level tests via the rendering contract ────────────────────
-// These tests verify calendar-parsing behaviour without importing internals.
+// ── Projection-window provenance — canonical employment-projections path ───────
 
-describe("DataAsOfBadge formatAsOf — projection windows and invalid months", () => {
-  // We exercise formatAsOf indirectly by mocking provenance to return controlled strings.
+describe("DataAsOfBadge — employment-projections 2024-2034 provenance", () => {
+  it("renders the canonical 2024-2034 projection window without date corruption", () => {
+    // employment-projections has asOf="2024-2034" in data/provenance.json.
+    // The old regex /^\d{4}-\d{2}/ would naively match "2024-20" and parse
+    // month=2034-1=2033 → year ~2193. The fixed regex requires valid months
+    // 01–12, so "2024-2034" passes through as-is.
+    render(<DataAsOfBadge datasetId="employment-projections" />);
 
-  it("passes through a projection-window string unchanged (e.g. '2024-2034' must not overflow)", () => {
-    // The badge can't render a provenance string directly, but we can test the
-    // pure function via the exported module boundary.  Since formatAsOf is an
-    // internal helper, we test the *invariant*: the regex must NOT match
-    // '2024-2034', so it should NOT be treated as a month date.
-    // We verify this by checking that the string "2193" does NOT appear in any
-    // rendered badge output when the underlying asOf is "2024-2034".
-    const { container } = render(<DataAsOfBadge datasetId="this-dataset-does-not-exist" />);
-    // No badge should render for an unknown id, so there's no risk of "2193".
-    expect(container.textContent).not.toMatch(/2193/);
+    // Must show the window string as-is, not a mangled calendar date.
+    expect(screen.getByText(/Data as of 2024-2034/i)).toBeInTheDocument();
+
+    // Must NOT produce a corrupted far-future year or Unix epoch.
+    const rendered = document.body.textContent ?? "";
+    expect(rendered).not.toMatch(/\b(1970|2193|2[1-9]\d{2})\b/);
   });
 
-  // Isolated regex-invariant checks — guards against future regressions in formatAsOf.
-  it("valid ISO date month 07 should parse correctly (month in range 01–12)", () => {
-    // "2026-07-02" is already covered above — month 07 is valid.
-    render(<DataAsOfBadge datasetId="ai-frontier" />);
-    expect(screen.getByText(/Jul 2026/i)).toBeInTheDocument();
-    // Must not overflow to a year beyond 2026.
-    expect(screen.queryByText(/2193/)).toBeNull();
+  it("aria-label for employment-projections badge includes '2024-2034'", () => {
+    render(<DataAsOfBadge datasetId="employment-projections" />);
+    const badge = screen.getByText(/Data as of 2024-2034/i);
+    expect(badge).toHaveAttribute("aria-label", expect.stringContaining("2024-2034"));
   });
 
-  it("does not overflow when asOf would have month value > 12 if parsed naively", () => {
-    // This test validates the regex guard in formatAsOf.
-    // The regex /^\d{4}-(0[1-9]|1[0-2])(-\d{2})?$/ rejects month values like
-    // "20" (from "2024-2034"), "13", "00", etc.
-    // We check this by asserting the year "2193" is never rendered.
-    const { container } = render(<DataAsOfBadge />);
-    expect(container.textContent).not.toMatch(/\b21[0-9]{2}\b/);
+  it("ZH locale renders employment-projections window without corruption", () => {
+    mockUseLanguage.mockReturnValueOnce({ locale: "zh", setLocale: vi.fn() });
+    render(<DataAsOfBadge datasetId="employment-projections" />);
+    expect(screen.getByText(/数据截至 2024-2034/)).toBeInTheDocument();
+    const rendered = document.body.textContent ?? "";
+    expect(rendered).not.toMatch(/\b(1970|2193|2[1-9]\d{2})\b/);
   });
 });

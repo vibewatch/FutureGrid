@@ -5,6 +5,8 @@ export const SECTION_IDS = {
   talentBottleneckLens: "talent-bottleneck-lens",
   workforceStructure: "workforce-structure",
   diffusionGrowthComparison: "diffusion-growth-comparison",
+  analysisMarketAISensitivity: "market-ai-sensitivity",
+  analysisAICompanyStockSignals: "ai-company-stock-signals",
 } as const;
 
 export const DEEP_LINK_HREFS = {
@@ -14,4 +16,6 @@ export const DEEP_LINK_HREFS = {
   visaTalentBottleneckLens: `/visa#${SECTION_IDS.talentBottleneckLens}`,
   globalWorkforceStructure: `/global#${SECTION_IDS.workforceStructure}`,
   globalDiffusionGrowthComparison: `/global#${SECTION_IDS.diffusionGrowthComparison}`,
+  analysisMarketAISensitivity: `/analysis#${SECTION_IDS.analysisMarketAISensitivity}`,
+  analysisAICompanyStockSignals: `/analysis#${SECTION_IDS.analysisAICompanyStockSignals}`,
 } as const;
