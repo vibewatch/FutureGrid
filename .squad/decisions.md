@@ -3,8 +3,8 @@
 ## Active Decisions
 ### FutureGrid "Insights Lab" — Analytics & Statistical Forecasting Layer (2026-07-01)
 
-**Requested by:** huangyingting  
-**Status:** Approved (🟢 Coordinator integration verified)  
+**Requested by:** huangyingting
+**Status:** Approved (🟢 Coordinator integration verified)
 **Scope:** Descriptive analytics layer: linearRegression + Pearson correlation (OLS), AI-exposure-to-employment/wage regression, employment forecast extrapolation to 2030 (fixed default sensitivity vs. reactive per-occupation slider), Disruption Index (0-100 composite occupation/sector ranking).
 
 #### Design Decision — Descriptive, Not Causal
@@ -47,8 +47,8 @@ Insights Lab frames all outputs as exploratory/descriptive: correlation analysis
 
 ### FutureGrid Round 2 — Engagement Features (2026-06-30)
 
-**Requested by:** huangyingting  
-**Status:** Approved (🟢 Trinity re-review), advisory notes (🟡 Rai)  
+**Requested by:** huangyingting
+**Status:** Approved (🟢 Trinity re-review), advisory notes (🟡 Rai)
 **Scope:** Command palette (⌘K), hero risk-checker (personal search), RiskGauge (animated radial gauge), Highlights bento, Sector bubble chart (D3 scatter), data layer enrichment
 
 #### Marquee Features
@@ -80,8 +80,8 @@ Insights Lab frames all outputs as exploratory/descriptive: correlation analysis
 
 ### FutureGrid Upgrade — Design & Data Layer (2026-06-30)
 
-**Requested by:** huangyingting  
-**Status:** Approved (🟢 Trinity), advisory only (🟡 Rai)  
+**Requested by:** huangyingting
+**Status:** Approved (🟢 Trinity), advisory only (🟡 Rai)
 **Scope:** Design system, UI primitives, explorer UX, data layer, charts, responsive shell
 
 #### Vision: "Eye-catching + Substantive"
@@ -133,12 +133,12 @@ FutureGrid is a **refined future-grid aesthetic** with deep near-black backgroun
 
 ### FutureGrid Round 3 — Real Data Integration (2026-06-30)
 
-**Requested by:** huangyingting  
-**Status:** Approved (🟢 Rai), Implemented & committed  
+**Requested by:** huangyingting
+**Status:** Approved (🟢 Rai), Implemented & committed
 **Scope:** Replace dated Frey & Osborne (2013) with Anthropic Economic Index + BLS + O*NET real, authoritative, multi-country data
 
 #### Research & Data Source Selection (Scout)
-Scout cataloged authoritative data landscape with 16 sources across US, UK, EU, Canada, Australia. Recommendation adopted: 
+Scout cataloged authoritative data landscape with 16 sources across US, UK, EU, Canada, Australia. Recommendation adopted:
 - **Primary AI exposure:** Anthropic Economic Index (CC-BY, real Claude-usage AI-penetration metric, 756 occupations, 194 countries)
 - **Employment & Growth:** BLS Employment Projections 2024–2034 (public domain, SOC-keyed, 800+ occupations) + OEWS May 2024 (public domain, wages/employment)
 - **Emerging patterns:** Microsoft AIEI GenAI Diffusion (Q1 2026, 146 countries, 16.4% China), IMF AIPI Readiness Index (178 countries, China 0.64, Singapore 0.80), GAIIRI (Oxford Insights, 188 countries).
@@ -177,8 +177,8 @@ Scout cataloged authoritative data landscape with 16 sources across US, UK, EU, 
 
 ### FutureGrid Round 4 — Global Data Discovery + Flat World Map + China-Inclusive Metrics (2026-06-30)
 
-**Requested by:** huangyingting  
-**Status:** Approved (🟢 Rai), Implemented & committed  
+**Requested by:** huangyingting
+**Status:** Approved (🟢 Rai), Implemented & committed
 **Scope:** Global geospatial layer, world-map choropleth (Claude usage ↔ GenAI diffusion toggle), China proxy rendering, diffusion-trend data (3-period Microsoft AIEI time series)
 
 #### Data Sources & Research (Scout)
@@ -246,8 +246,8 @@ Scout cataloged authoritative data landscape with 16 sources across US, UK, EU, 
 
 ### FutureGrid Round 5 — Data Layer Test Suite + Vitest Integration (2026-06-30)
 
-**Requested by:** huangyingting  
-**Status:** Approved (🟢 Rai), Implemented & committed  
+**Requested by:** huangyingting
+**Status:** Approved (🟢 Rai), Implemented & committed
 **Scope:** Comprehensive vitest data-layer test suite; package.json scripts; vitest.config.ts; 27 tests covering all career/sector/skill generation + BLS + search indexing
 
 #### Test Framework Setup (Mouse)
@@ -285,8 +285,8 @@ Scout cataloged authoritative data landscape with 16 sources across US, UK, EU, 
 
 ### FutureGrid Round 6 — Performance: Geometry Extraction to Static Asset (2026-06-30)
 
-**Requested by:** huangyingting  
-**Status:** Approved (🟢 Trinity + Rai), Implemented & committed  
+**Requested by:** huangyingting
+**Status:** Approved (🟢 Trinity + Rai), Implemented & committed
 **Scope:** Move world geometry (412 KB) from JS bundle → fetched static asset; basePath-aware; loading skeleton; /global JS size reduction
 
 #### Performance Motivation
@@ -359,8 +359,8 @@ Scout cataloged authoritative data landscape with 16 sources across US, UK, EU, 
 
 ## FutureGrid Batch 5 — Multi-Year Real Data + Theme + i18n (2026-06-30)
 
-**Requested by:** huangyingting  
-**Status:** ✅ **COMPLETE — ALL 22 ISSUES NOW CLOSED** (Issues #19–#22 shipped)  
+**Requested by:** huangyingting
+**Status:** ✅ **COMPLETE — ALL 22 ISSUES NOW CLOSED** (Issues #19–#22 shipped)
 **Scope:** BLS OEWS 2019–2025 employment & wage history; Oxford GAIRI 2023 (193 countries); full light-mode toggle; i18n English + Chinese
 
 ### Summary
@@ -371,7 +371,7 @@ Batch 5 ships the final 4 user-requested features, bringing FutureGrid to projec
 #### #22: BLS OEWS Employment & Wage History (2019–2025) — Tank + Switch
 - **Data Source:** BLS OEWS live API + Wayback-archived historical files (public domain)
 - **Coverage:** 756 occupations, full wage + employment trends across 7 years
-- **Deliverable:** 
+- **Deliverable:**
   - scripts/build-oews-history.mjs (multi-source fetch + archive logic)
   - data/oews-history.json ({ occupation, year, wage, totalEmployment })
   - `getOccupationTrend(occupationCode) → { year, wage, employment }[]` lib export
@@ -386,7 +386,7 @@ Batch 5 ships the final 4 user-requested features, bringing FutureGrid to projec
 - **Deliverable:**
   - data/oxford-gairi-2023.json (194 countries with GAIRI score)
   - Integration with world-map metric toggle system
-- **UI Integration:** 
+- **UI Integration:**
   - WorldChoropleth.tsx 4th metric toggle: "Claude Usage" ↔ "GenAI Diffusion %" ↔ "AI Readiness (IMF)" ↔ "Government Readiness (GAIRI)"
   - CountryDetailPanel heatmap column displays GAIRI score
   - Legend auto-updates with quartile coloring
@@ -394,7 +394,7 @@ Batch 5 ships the final 4 user-requested features, bringing FutureGrid to projec
 
 #### #21: Full Light-Mode Toggle & Theme System — Switch + Neo
 - **Library:** next-themes (client-side, hydration-safe)
-- **Architecture:** 
+- **Architecture:**
   - ThemeProvider wrapper in app/layout.tsx
   - useTheme hook exports { theme, setTheme }
   - Persistent localStorage + system preference fallback
@@ -418,7 +418,7 @@ Batch 5 ships the final 4 user-requested features, bringing FutureGrid to projec
   - useT(key) hook resolves UI strings; unrecognized keys fall back to key name
   - localStorage persists language choice; system locale fallback available
 - **Scope:** All UI strings translated (nav labels, page titles, chart tooltips, footer text, button labels, etc.)
-- **Pages Translated:** 
+- **Pages Translated:**
   - Dashboard (hero, stats, card titles, "About this data")
   - Careers (search, filter/sort labels, detail view headers)
   - Sectors (grid labels, chart tooltips)
@@ -524,13 +524,13 @@ Each of the 4 issues in batch 5 has associated commits including "Closes #N" tra
 
 ## Batch 6: Advanced Data Visualization — Shared-File Concurrency Constraint (2026-06-30)
 
-**Requested by:** huangyingting  
-**Status:** Approved (🟢 Complete + Lesson Recorded)  
+**Requested by:** huangyingting
+**Status:** Approved (🟢 Complete + Lesson Recorded)
 **Scope:** 4 new chart components (Beeswarm, Treemap, QuadrantScatter, SkillFlowSankey), /explore showcase, WorldChoropleth enhancements
 
 ### Decision: Shared-File Integration Must Be Solo/Sequenced
 
-**Problem Encountered:**  
+**Problem Encountered:**
 5 parallel general-purpose agents (Neo, Switch, Tank, Rai, Scout) simultaneously modified 3 shared files:
 - `components/layout/Sidebar.tsx` (nav route integration for /explore)
 - `package.json` (d3-sankey + @types/d3-sankey dependencies)
@@ -538,37 +538,37 @@ Each of the 4 issues in batch 5 has associated commits including "Closes #N" tra
 
 Result: Last-sync-wins conflict. Only the final agent's edits persisted; 4 other edits were lost.
 
-**Root Cause:**  
+**Root Cause:**
 Concurrent general-purpose agents writing to the same files in isolation. No coordination mechanism. Git/file system resolved via "last write wins" — the 5th agent's state became canonical, overwriting the prior 4.
 
-**Solution Applied:**  
+**Solution Applied:**
 Solo sequential recovery agent re-applied all 5 lost edits in strict sequence (no parallelism) to the shared files. Validated build integrity (exit 0, 103/103 tests pass).
 
 ### Durable Decision Record
 
 **Rule: Shared-file integration edits must be performed by a SOLO or sequenced agent — concurrent general-purpose agents sharing the working tree clobber each other's edits to existing files (last-sync-wins). Only newly-created files survive.**
 
-**Implication for Future Batches:**  
+**Implication for Future Batches:**
 When delegating to concurrent agents, ensure:
 1. **Each agent creates only new files** (no modifications to existing Sidebar, package.json, main route files, etc.)
 2. **OR: Reserve shared-file edits for a solo or strictly sequenced integration agent** at the end of the batch
 3. **OR: Serialize agent execution explicitly** (run agents sequentially for this batch, not in parallel)
 
-**Context:**  
+**Context:**
 This lesson applies to high-velocity, multi-agent batches. Single-agent or fully-isolated multi-agent work (each with disjoint file scopes) is unaffected.
 
 ### Outcome
 
-✅ **Batch 6 complete. 5 chart components + /explore + enhancements shipped (commit cc49d58).** Build exit 0; 103/103 tests pass; eslint clean. No regressions.  
+✅ **Batch 6 complete. 5 chart components + /explore + enhancements shipped (commit cc49d58).** Build exit 0; 103/103 tests pass; eslint clean. No regressions.
 ✅ **Shared-file concurrency constraint documented and added to architecture guidelines.**
 
 ---
 
 ## Batch 7: Storytelling & Polish — Scrollytelling Report + Key Findings + Data Export (2026-06-30)
 
-**Requested by:** huangyingting  
-**Status:** ✅ **COMPLETE — ALL 5 ISSUES CLOSED + 1 PRODUCTION HOTFIX**  
-**Issues:** #28 (Trinity), #29 (Neo), #30 (Switch), #31 (Switch solo), #32 (Tank)  
+**Requested by:** huangyingting
+**Status:** ✅ **COMPLETE — ALL 5 ISSUES CLOSED + 1 PRODUCTION HOTFIX**
+**Issues:** #28 (Trinity), #29 (Neo), #30 (Switch), #31 (Switch solo), #32 (Tank)
 **Scope:** Scrollytelling narrative report at `/report` (5 story beats), animated bar-chart-race (2019–2025 BLS employment), Key Findings stat cards on home, chart i18n (14 charts localized), CSV+JSON data export on `/sources`
 
 ### Summary
@@ -643,7 +643,7 @@ Neo served as SOLO **Integrator**, wiring all 4 new components into shared files
 
 ### PRODUCTION INCIDENT: /report & /skills Runtime Crash (Fixed d915eea)
 
-**Discovered:** During real-browser smoke-test (headless Chrome at desktop + mobile viewports)  
+**Discovered:** During real-browser smoke-test (headless Chrome at desktop + mobile viewports)
 **Error:** `Error: missing: 0` thrown by d3-sankey in SkillFlowSankey component (error boundary caught)
 
 **Root Cause:** Pre-existing bug from Batch 6 (#26)
@@ -692,28 +692,28 @@ Neo served as SOLO **Integrator**, wiring all 4 new components into shared files
 
 ### Durable Lessons Recorded
 
-**Lesson 1: Clobber-safe Orchestration Works**  
+**Lesson 1: Clobber-safe Orchestration Works**
 4 concurrent builders (Trinity, Neo, Switch, Tank) created ONLY new files. Neo (SOLO integrator) then sequenced all shared-file wiring. Zero clobbering (vs Batch 6 which lost edits due to concurrent agents). Confirms: shared-file edits must be solo/sequenced.
 
-**Lesson 2: Production Crash in D3 Charts**  
+**Lesson 2: Production Crash in D3 Charts**
 Pre-existing bug (SkillFlowSankey link ids) only surfaced in real browser. jsdom + mocked ResizeObserver never execute d3 layout path → tests pass, production crashes. Lesson: always real-browser smoke check for chart-heavy work before ship.
 
-**Lesson 3: Testing Gap**  
+**Lesson 3: Testing Gap**
 105 tests (vitest) passing does NOT guarantee charts render in real browser. d3 layout runs behind ResizeObserver (jsdom-invisible). Regression test added for SkillFlowSankey crash; future chart work must include headless Chrome verification.
 
 ### Outcome
 
-✅ **Batch 7 complete. All 5 issues (#28–#32) closed + production hotfix shipped (commit d915eea).**  
-✅ **Build exit 0; 105/105 tests pass; eslint clean; headless Chrome smoke test verified.**  
-✅ **Clobber-safe orchestration + real-browser testing lessons recorded in architecture guidelines.**  
+✅ **Batch 7 complete. All 5 issues (#28–#32) closed + production hotfix shipped (commit d915eea).**
+✅ **Build exit 0; 105/105 tests pass; eslint clean; headless Chrome smoke test verified.**
+✅ **Clobber-safe orchestration + real-browser testing lessons recorded in architecture guidelines.**
 ✅ **FutureGrid now ships scrollytelling narrative, auto-generated insights, full chart i18n, and data export.**
 
 ---
 
 ## Architectural Guidelines — Chart Testing & D3 Render Verification (2026-06-30)
 
-**Recorded by:** Scribe  
-**Basis:** Batch 7 production incident + testing gap discovery  
+**Recorded by:** Scribe
+**Basis:** Batch 7 production incident + testing gap discovery
 **Status:** ✅ Adopted
 
 ### Decision
@@ -754,8 +754,8 @@ Test suite alone is insufficient for D3-heavy work. Adopt a lightweight real-bro
 
 ## Batch 8: Quality Hardening — Render Regression Tests & Headless Smoke Test (2026-06-30)
 
-**Shipped:** Issue #33 (6a6160b) + Issue #34 (442441b), commits merged to origin/main  
-**Requested by:** huangyingting  
+**Shipped:** Issue #33 (6a6160b) + Issue #34 (442441b), commits merged to origin/main
+**Requested by:** huangyingting
 **Status:** ✅ CLOSED, shipped
 
 ### Render Regression Tests (Mouse, #33)
@@ -801,16 +801,16 @@ Test suite alone is insufficient for D3-heavy work. Adopt a lightweight real-bro
 
 ### Outcome
 
-✅ **Batch 8 complete. All 5 issues (#28–#34, split across batches) closed + shipped.**  
-✅ **121/121 tests pass; headless Chrome smoke test GREEN.**  
+✅ **Batch 8 complete. All 5 issues (#28–#34, split across batches) closed + shipped.**
+✅ **121/121 tests pass; headless Chrome smoke test GREEN.**
 ✅ **Two-layer chart testing strategy now adopted; smoke-test async-spawn pattern documented for reuse.**
 
 ---
 
 ## Batch 9: Data Richness — JOLTS + CA WARN + Growth Rate (2026-07-01)
 
-**Shipped:** Issues #35–#37 (commits 7aa0f49, da1c0e1, c6523bd), all merged to origin/main  
-**Requested by:** huangyingting  
+**Shipped:** Issues #35–#37 (commits 7aa0f49, da1c0e1, c6523bd), all merged to origin/main
+**Requested by:** huangyingting
 **Status:** ✅ CLOSED, shipped (121 tests, all 11 routes smoke-test GREEN)
 
 ### JOLTS Data Snapshot (Tank, GitHub #35)
@@ -993,17 +993,17 @@ Test suite alone is insufficient for D3-heavy work. Adopt a lightweight real-bro
 
 ### Outcome
 
-✅ **Batch 9 complete. Issues #35–#37 closed + shipped.**  
-✅ **Two new i18n namespaces registered (pulse, layoffs). 82 i18n keys added (all mirrored en/zh).**  
-✅ **121/121 tests pass; all 11 routes smoke-test GREEN.**  
-✅ **1.1MB JOLTS snapshot + 0.5MB CA WARN snapshot bundled separately (no bloat to main routes).**  
+✅ **Batch 9 complete. Issues #35–#37 closed + shipped.**
+✅ **Two new i18n namespaces registered (pulse, layoffs). 82 i18n keys added (all mirrored en/zh).**
+✅ **121/121 tests pass; all 11 routes smoke-test GREEN.**
+✅ **1.1MB JOLTS snapshot + 0.5MB CA WARN snapshot bundled separately (no bloat to main routes).**
 ✅ **Three durable lessons recorded: government data landscape, bundle-hygiene rule for snapshots, authentic growthRate derivation.**
 
 
 ### WARN Multi-State Data Pipeline + Skill Transition Score (2026-07-01)
 
-**Requested by:** huangyingting  
-**Status:** ✅ Complete & deployed (commits 334120e, 2ad4c72, c3e70de)  
+**Requested by:** huangyingting
+**Status:** ✅ Complete & deployed (commits 334120e, 2ad4c72, c3e70de)
 **Scope:** Multi-state WARN notice aggregation (CA/NJ/NY/TX/OH/WI), state-aware UI, reskilling transition score formula, real-browser validation
 
 #### Feature A: Multi-State WARN Data Pipeline (Tank)
@@ -1129,18 +1129,18 @@ transitionScore = (
 
 #### Outcome
 
-✅ **13,799 WARN notices (1.45M workers) from 6 states, 1999–2026.**  
-✅ **Multi-state UI shipped, state filter + coverage badge + source attribution.**  
-✅ **Reskilling transition score formula: 0.35 transferability / 0.25 safety / 0.15 salary / 0.15 health / 0.10 ease.**  
-✅ **ReskillExplorer now ranks destinations by transition viability.**  
+✅ **13,799 WARN notices (1.45M workers) from 6 states, 1999–2026.**
+✅ **Multi-state UI shipped, state filter + coverage badge + source attribution.**
+✅ **Reskilling transition score formula: 0.35 transferability / 0.25 safety / 0.15 salary / 0.15 health / 0.10 ease.**
+✅ **ReskillExplorer now ranks destinations by transition viability.**
 ✅ **All validation passed; zero regressions.**
 
 ---
 
 ### FutureGrid Iteration — IA Refactor, Visual QA & 10yr Data Extension (2026-07-01)
 
-**Requested by:** huangyingting  
-**Status:** Approved (✅ shipped to origin/main)  
+**Requested by:** huangyingting
+**Status:** Approved (✅ shipped to origin/main)
 **Scope:** Sidebar IA restructure, Playwright visual QA, OEWS 10-year history backfill (2016–2025)
 
 #### 1. Sidebar & Navigation IA Refactor (Neo)
@@ -1259,8 +1259,8 @@ transitionScore = (
 
 ## i18n System Activation (2026-07-01)
 
-**Status:** ✅ Implemented  
-**Scope:** Internationalization (English + Chinese), system wiring, data layer  
+**Status:** ✅ Implemented
+**Scope:** Internationalization (English + Chinese), system wiring, data layer
 **Authors:** Neo-28 (i18n components), Coordinator (system mount + wiring)
 
 ### Summary
@@ -1308,7 +1308,7 @@ i18n system was inert: `LanguageProvider` was never mounted in the app layout, `
 ### Decision
 
 Added external data sources to enrich AI-exposure analytics:
-- OpenAI 'GPTs are GPTs' (MIT license) — O*NET-SOC capability exposure  
+- OpenAI 'GPTs are GPTs' (MIT license) — O*NET-SOC capability exposure
 - Indeed Hiring Lab (CC BY 4.0) — AI-job demand time series
 - Challenger AI data (verified monthly + annual 2023–2025)
 - AIOE data (Wayback SOC-2010→2018 crosswalk via BLS)
@@ -1327,7 +1327,7 @@ Added external data sources to enrich AI-exposure analytics:
 
 **Historical automation risk is NEGATIVELY correlated with modern AI exposure:**
 - Capability vs. Automation: r = -0.29
-- Ability vs. Automation: r = -0.42  
+- Ability vs. Automation: r = -0.42
 - Capability vs. Ability (modern lenses): r = 0.84 (strong consensus)
 
 Gap leaders (high AI capability, low adoption): Telephone Operators, Proofreaders, Payroll Clerks
@@ -1336,9 +1336,9 @@ This inversion suggests historical vulnerability assessments (Frey & Osborne) ca
 
 ### Implementation
 
-- `scripts/build-ai-signals.mjs` — fetches 5 sources → data/{llm-exposure,ai-demand,ai-layoffs,aioe-exposure,automation-baseline}.json  
-- `lib/analysis.ts` — getExposureComparison, getExposureGapLeaders, getAIDemandSeries, getAILayoffSeries  
-- `sources.json` — +7 entries (all verified, CCs-BY/public-domain)  
+- `scripts/build-ai-signals.mjs` — fetches 5 sources → data/{llm-exposure,ai-demand,ai-layoffs,aioe-exposure,automation-baseline}.json
+- `lib/analysis.ts` — getExposureComparison, getExposureGapLeaders, getAIDemandSeries, getAILayoffSeries
+- `sources.json` — +7 entries (all verified, CCs-BY/public-domain)
 - Frontend: ExposureLensComparison scatter + gap matrix; AIForcesTimeline demand vs. cuts dual-axis
 
 ### Validation
@@ -1355,8 +1355,8 @@ This inversion suggests historical vulnerability assessments (Frey & Osborne) ca
 
 ### FutureGrid "Multi-Lens AI Exposure + Demand Layer" (2026-07-01)
 
-**Requested by:** huangyingting  
-**Status:** Approved (🟢 Coordinator integration verified)  
+**Requested by:** huangyingting
+**Status:** Approved (🟢 Coordinator integration verified)
 **Scope:** Extracted labor-signal APIs into lean route-scoped modules to surface multi-lens AI exposure comparison on career detail pages and a global AI job-demand layer without bloating shared bundles. 146 tests preserved.
 
 #### Architecture Decision — Route-Scoped Module Extraction
@@ -1380,12 +1380,12 @@ Extracted AI-signal computation into two lean, route-scoped modules:
 - **Build exit 0, lint clean, test:run 150 passed** (4 exposure tests new; 146 baseline preserved). Smoke 10/10 routes verified EN+ZH. Playwright career-detail + global both error-free.
 
 #### Concrete Example — Software Developers
-**Anthropic adoption:** 28.8% (some adoption, not full)  
-**OpenAI capability:** 86.8% (high technical capability)  
-**AIOE ability:** 52% (moderate exposure, conservative)  
-**Frey & Osborne 2013 automation baseline:** 8.6% (muted, historical)  
-**Consensus:** 54% (modern average)  
-**Gap callout:** "Capability (87%) significantly exceeds adoption (29%), suggesting adoption acceleration potential."  
+**Anthropic adoption:** 28.8% (some adoption, not full)
+**OpenAI capability:** 86.8% (high technical capability)
+**AIOE ability:** 52% (moderate exposure, conservative)
+**Frey & Osborne 2013 automation baseline:** 8.6% (muted, historical)
+**Consensus:** 54% (modern average)
+**Gap callout:** "Capability (87%) significantly exceeds adoption (29%), suggesting adoption acceleration potential."
 **Automation Flip Insight:** Historical 2013 automation estimates NEGATIVELY correlate with modern AI exposure (r=-0.29 capability, r=-0.42 ability); modern lenses agree strongly (r=0.84 capability~ability).
 
 #### Validation (Coordinator)
@@ -2008,9 +2008,9 @@ None of these nits are blocking. No correctness bugs, no bundle violations, no i
 
 ## Fold H-1B Sponsorship Signal into /careers/[code] (2026-07-02)
 
-**Requested by:** huangyingting  
-**Decision Date:** 2026-07-02T23:13:00Z  
-**Status:** ✅ SHIPPED (merged commit a8f2c68 to branch feat/h1b-extend)  
+**Requested by:** huangyingting
+**Decision Date:** 2026-07-02T23:13:00Z
+**Status:** ✅ SHIPPED (merged commit a8f2c68 to branch feat/h1b-extend)
 
 ### Scope & Outcome
 
@@ -2131,8 +2131,8 @@ Rationale: this is the safest implement-now path because it uses already-cleared
 
 ### Global Adoption–Readiness Gap Lens (2026-07-03)
 
-**Requested by:** huangyingting  
-**Status:** Approved (🟢 Trinity final review; Mouse validation passed)  
+**Requested by:** huangyingting
+**Status:** Approved (🟢 Trinity final review; Mouse validation passed)
 **Scope:** New `/global` mined-data lens comparing adoption diffusion to AI readiness without duplicating `/analysis` forecast/regression work.
 
 **Decision:** Ship the Global Adoption–Readiness Gap Lens using existing `getCountryMapData()` metrics. Countries are rankable only when both `diffusionPct` and `aiReadiness` are present; each metric is converted to a tie-aware 0–100 percentile rank, and the displayed gap is adoption percentile minus readiness percentile. A material gap uses a fixed ±15 percentile-point threshold; balanced leaders require both percentiles >= 66 and no material gap. `usageIndex` / Claude API-session proxy telemetry is excluded from scoring.
@@ -2145,26 +2145,26 @@ Rationale: this is the safest implement-now path because it uses already-cleared
 
 
 ### 2026-07-03T10:19:02.301+00:00: Talent Bottleneck Lens scoring uses SOC union with fixed missing-data weights
-**By:** Tank  
-**Status:** Approved (🟢 Trinity final review; Mouse validation passed)  
-**Scope:** /visa H-1B Talent Bottleneck Lens data-mining implementation.  
+**By:** Tank
+**Status:** Approved (🟢 Trinity final review; Mouse validation passed)
+**Scope:** /visa H-1B Talent Bottleneck Lens data-mining implementation.
 **References:** /visa, lib/talent-bottleneck.ts, tests/talent-bottleneck.test.ts, components/visa/TalentBottleneckLens.tsx
 
 Tank set the ranked universe to the union of SOC codes from H-1B trends, employment projections, job postings, and occupation snapshots. Missing fields remain null and contribute zero against fixed weights, preserving deterministic, comparable descriptive scores. Neo integrated the lens in /visa with EN/ZH i18n and tests; Switch corrected CAGR display by converting decimal CAGR to percent at display time without changing scoring semantics. Methodology copy must keep caveats: certified LCAs are filings, not approvals; scores are descriptive, not proof of shortage or causality; bundled job postings can be proxy/seed-derived.
 
 
 ### 2026-07-03T11:59:08.288+00:00: Use official OpenRouter public APIs for model prediction data
-**By:** Tank, Trinity, Mouse  
-**Status:** Approved  
-**References:** `scripts/build-openrouter-models.mjs`, `data/openrouter-models.json`, `scripts/lib/validate.mjs`, `build:openrouter-models`  
+**By:** Tank, Trinity, Mouse
+**Status:** Approved
+**References:** `scripts/build-openrouter-models.mjs`, `data/openrouter-models.json`, `scripts/lib/validate.mjs`, `build:openrouter-models`
 **Decision:** Collect OpenRouter model catalog and provider/endpoint metadata for prediction through official public REST APIs only: `/api/v1/models` and `/api/v1/models/{modelId}/endpoints`.
 **Rationale:** Do not scrape `#activity`, use account analytics, require API keys, or depend on private/management endpoints because no stable public global activity time-series endpoint was found.
 **Outcome:** Tank implemented the builder, generated snapshot, validation, tests, package script, and provenance integration. Snapshot contains 340 models and 878 endpoints. Mouse validation passed `npm run build:openrouter-models`, `npm run build:provenance`, targeted tests 59/59, lint, full tests, and production build with 806 pages. Trinity final review: APPROVE.
 
 ### /global AI Model Ecosystem Footprint — OpenRouter Country Catalog Proxy (2026-07-03)
 
-**Requested by:** huangyingting  
-**Status:** Approved (🟢 Trinity final review; Mouse validation passed)  
+**Requested by:** huangyingting
+**Status:** Approved (🟢 Trinity final review; Mouse validation passed)
 **Scope:** Use OpenRouter model catalog and endpoint-provider metadata on `/global` as a country-level AI model ecosystem footprint proxy, not as real usage, adoption, traffic, or activity analytics.
 
 **Decision:**
@@ -2181,8 +2181,8 @@ Tank set the ranked universe to the union of SOC codes from H-1B trends, employm
 
 ### Finance-safe AI Company Stock Lens for `/analysis` (2026-07-03)
 
-**Requested by:** huangyingting  
-**Status:** Approved (🟢 Trinity final review; Mouse validation passed)  
+**Requested by:** huangyingting
+**Status:** Approved (🟢 Trinity final review; Mouse validation passed)
 **Scope:** Descriptive historical adjusted-close stock signals for 22 AI-related companies plus 3 benchmarks. No investment advice, recommendations, forecasts, buy/sell/hold labels, or live scraping.
 
 **Decision:** Use `scripts/build-ai-company-stocks.mjs` to rebuild `data/ai-company-stocks.json`. Prefer Alpha Vantage `TIME_SERIES_DAILY_ADJUSTED` when `ALPHA_VANTAGE_API_KEY` is present; otherwise use the committed deterministic fixture following the existing market-signal source pattern and provenance caveat.
@@ -2191,14 +2191,14 @@ Tank set the ranked universe to the union of SOC codes from H-1B trends, employm
 
 **Validation:** Builder and provenance passed; targeted AI-stock tests passed (3 files / 69 tests); lint passed; full tests passed (52 files / 516 tests); production build generated 806 pages.
 
-**Implemented by:** Trinity (plan/review), Tank (data/build), Neo (UI/i18n), Mouse (validation).  
+**Implemented by:** Trinity (plan/review), Tank (data/build), Neo (UI/i18n), Mouse (validation).
 **Merged from inbox:** `decisions/inbox/Tank-ai-company-stock-insights-use-alpha-vantage-when-k.md`
 
 
 ## 2026-07-03T19:44:32.001+00:00 — AI Company Stock Lens Coverage Expansion
 
-**Requested by:** huangyingting  
-**Status:** Approved (Trinity final review ✅)  
+**Requested by:** huangyingting
+**Status:** Approved (Trinity final review ✅)
 **Decision:** Expand the AI company stock insights dataset from the prior 22-company lens to 47 companies, preserving the existing finance-safe scope: descriptive historical stock signals only, no recommendations, advice, or forecasts.
 
 **Coverage added:** 25 tickers across semiconductors/equipment/EDA, AI cloud/platforms, enterprise/data AI software, data-center/power/networking, and AI memory/interconnect/storage: ARM, INTC, MU, MRVL, QCOM, LRCX, KLAC, CDNS, ALAB, IBM, SAP, CRWV, NBIS, BABA, BIDU, AI, DDOG, MDB, NET, CSCO, HPE, GEV, PSTG, CLS, and CRDO.
@@ -2223,3 +2223,129 @@ Tank set the ranked universe to the union of SOC codes from H-1B trends, employm
 **By:** Scribe
 **What:** When annual openings are unavailable but projected employment is available, career projection charts may show projected 2034 employment with explicit labeling. The UI must preserve null annual-openings provenance and must not imply annual openings are known.
 **Why:** BLS Employment Projections data can include projected 2034 employment while annual openings are unavailable for some occupations/sectors, such as Computer & Mathematical / SOC 15-1251. Showing a clearly labeled employment projection avoids an empty chart without misrepresenting unavailable openings.
+
+
+## Consumer GenAI Diffusion Research-to-Release Batch (2026-07-11)
+
+**Requested by:** huangyingting
+**Status:** Merged (PR #115 2026-07-11T22:41:25Z, merge commit 7089b05a2881014b693a91df362694a6eb8e7eb0)
+**Issues:** #114 (research) closed | #115 (implementation) merged
+**Scope:** Data-driven feature for consumer-side GenAI adoption metrics across 147 economies; Q1 2026 snapshot with H1/H2 time-series context.
+
+### Phase 1: Research & Source Evaluation
+
+**Question:** Which public, redistributable dataset best represents consumer GenAI adoption across economies without forcing US-centric labor-market scoring?
+
+**Candidates Evaluated (8 sources):**
+1. **BLS Productivity (LPC)** — US-only aggregate; no consumer segmentation → Rejected
+2. **USPTO PatentsView API** — AI innovation proxy, not adoption; no consumption signal → Rejected
+3. **Census CPS/ACS** — US-only occupational employment; no consumer usage metrics → Rejected
+4. **OECD EPL & PIAAC** — Skills/labor-policy focus; explicit redistribution restrictions → Rejected
+5. **Cedefop Skills Surveys** — EU-only; API instability documented in Q2 2026 → Rejected
+6. **Dingel-Neiman Teleworkability Index** — Task-level work exposure; age (2020) and license (no explicit data-file permission) ambiguity → Rejected
+7. **Microsoft AI Diffusion (MIT, 147 economies)** — Consumer usage-share of working-age population, Q1/H1/H2 2026, MIT-licensed CSV → **Selected**
+8. **Indeed AI Demand Indices** — Vacancy-side bias; different axis (employer demand, not consumer usage) → Rejected for primary; no composite
+
+**Boundary Decision (Approved)**
+- **Claim:** Consumer GenAI usage share of working-age population; Q1 2026 absolute snapshot
+- **Out of Scope:** Workplace adoption rates, productivity impact, capability inference, composite scores with other vendors (Indeed, Anthropic, IMF)
+- **Validation:** No data cross-tabulation with occupation/sector data; enforcement via server-side DTO scope validation
+
+**Risk Adjudication: Microsoft vs. Indeed (Empirical)**
+- Tested claim independence: Microsoft consumer adoption metric vs. Indeed occupational AI-job demand
+- Result: No spurious correlation; metrics measure orthogonal phenomena
+- Top-10 economies stable across all 3 time periods (Q1/H1/H2)
+- Outcome: Proceed with Microsoft as authoritative source; no composite modeling
+
+**Compliance: MIT License & Redistribution**
+- Microsoft AI Diffusion: MIT-licensed dataset; no redistribution negotiation required
+- Server DTO: Pre-ranked economies + scale normalization bounds (no raw Microsoft data exposed)
+- ILO GenAI Supplement: Deferred (data-file redistribution license unresolved; blocking criterion remains in force)
+
+### Phase 2: Feature Implementation (`/global`)
+
+**Route:** `/global` (public, server-rendered, accessible)
+**Content:** Deterministic top-10 economies by Q1 2026 consumer GenAI usage share
+
+**Specification:**
+- **Visualization:** SVG bar chart; locked aspect ratio; row headers with economy names; localized legend (EN/ZH)
+- **Timeline:** Three periods (Q1, H1, H2) on single shared y-axis (0–100%) with geometry-verified scale alignment
+- **Accessibility:**
+  - Visual layer: `<Bar aria-hidden="true">` (SVG chart)
+  - Label layer: `<figure aria-label="...">` (figure semantic)
+  - Data layer: sr-only `<figcaption>` with accessible data table (screen reader fallback)
+  - i18n: 5 localized keys (`a11yCareerTrendSummary`, `chartTitleAvgAIExposure`, `labelOccupations`, `labelAIExposure`, implicit figure label)
+- **Guardrails:** Early visible caveat block; source attribution (Microsoft AI Diffusion, MIT); confidence boundaries; no cross-national labor-market claims
+- **Server DTO:** Compact JSON (ranked economies, min/max scale bounds, refresh timestamps)
+
+**Authoring & Review Cycle:**
+
+| Turn | Agent | Action | Outcome |
+|------|-------|--------|---------|
+| 1 | Neo | Initial impl. PR #115 | **Rejected** — duplicate SR naming (accessibility), unvalidated shared-scale test |
+| 2 | Trinity | Assigned as revision owner (Neo locked out) | **Approved** — SVG semantics fixed, geometry proof added, guardrails clarified, all i18n keys present |
+| 3 | Mouse (Reviewer) | Gate review of Trinity revision | **Approved** — duplicate naming resolved, scale test validity confirmed |
+| 4 | Rai (Reviewer) | Yellow-flag resolution | **Approved** — 8 flags (caveat clarity, a11y semantics, i18n completeness, guardrail visibility) all resolved in Trinity revision |
+| 5 | Fact Checker | Final compliance gate | **Approved** — source/caveat accuracy verified, no stale cross-references |
+
+**Merge & Cleanup:**
+- PR #115 merged 2026-07-11T22:41:25Z (commit 7089b05a2881014b693a91df362694a6eb8e7eb0)
+- Issue #114 closed
+- Worktree removed; local feature branch cleaned up
+- Primary checkout and SPRINT_SUMMARY.txt preserved
+
+### Validation Results
+
+| Category | Result | Status |
+|----------|--------|--------|
+| Targeted test suite | 38/38 pass | ✓ |
+| TypeScript (`tsc`) | 0 errors | ✓ |
+| Lint (`npm run lint`) | 0 errors | ✓ |
+| Bundle size check | 394.1 KB (< 700 KB cap) | ✓ |
+| Static export (`npm run build`) | 806 pages, all routes | ✓ |
+| Accessibility (axe-core, `/global` route) | 0 serious/critical violations | ✓ |
+| CI workflow (GitHub Actions) | All checks passed | ✓ |
+
+### Key Cross-Agent Learnings
+
+**1. Research-to-Release Source Evaluation Pipeline**
+- Evaluating 8+ candidate datasets prevents premature selection and catches rejection criteria early
+- Explicit claim boundaries (e.g., "consumer adoption only; never workplace scoring") must be enforced server-side
+- MIT-licensed third-party datasets simplify redistribution compliance; no negotiation pathway needed
+- Empirical adjudication of competing metrics (Microsoft vs. Indeed) required before design decision; prevents false equivalence
+
+**2. Chart Accessibility Pattern (Dual-Render + Data Table)**
+- SVG bar charts require three layers: visual (`aria-hidden="true"`), label (`<figure aria-label="...">`), accessible data (`<figcaption>`)
+- All i18n keys for chart semantics must be present and tested before review; missing keys block accessibility validation
+- Bundle size remained stable (394 KB) across both `/sectors` and `/global` features; shared infrastructure working as designed
+
+**3. Shared-Scale Geometry in Multi-Period Charts**
+- Shared y-axis scales require mathematical proof (verifiable min/max normalization); false test scaffolding wastes review cycles
+- Neo's unvalidated test was caught by Mouse in revision review; Trinity added explicit geometry proof before merge
+
+**4. Review Lockout Protocol for Conflict-of-Interest Isolation**
+- Initial author (Neo) excluded from revision after rejection; no re-admission until next unrelated feature
+- Revision owner (Trinity) locked into all changes; reviewer agents (Mouse, Rai) cannot commit to same PR
+- Protocol reduced re-work cycles and prevented author-bias in subsequent reviews; effective for high-stakes features
+
+**5. Yellow-Flag Process Efficiency**
+- Rai's 8 yellow flags (caveat clarity, a11y semantics, i18n completeness, guardrail visibility) all resolved in single Trinity revision
+- No blocking rejections; flags cleared without re-review from original author
+- Process effective for rapid iteration on non-technical correctness items
+
+### Data Governance & Compliance Notes
+
+- **Source:** Microsoft AI Diffusion (147 economies, MIT license, Q1 2026 consumer usage-share %)
+- **Redistribution:** MIT-licensed third-party data; no redistribution compliance negotiation required
+- **Claim isolation:** Consumer adoption metrics (%) are safe for direct cross-national comparison without methodological alignment study
+- **No cross-national labor-market scoring:** Server-side DTO scope validation prevents accidental application of US-derived exposure models to international data
+- **ILO Deferral:** ILO GenAI Supplement remains blocked pending explicit data-file license clarity; waiting criterion in force
+
+### Recommendation: Follow-Up Feature Dependencies
+
+Suggested next features leveraging `/global` infrastructure:
+1. **Talent-Bottleneck Bridge** — Requires NAICS-SOC mapping (blocked on #77 — Provenance & Freshness Cues)
+2. **Evidence Convergence Strip** — AI exposure + talent shortage + demand dynamics timeline
+3. **Exposure-to-Outcome Reality Matrix** — Retrospective wage/employment paired with exposure scores (validation phase)
+
+---

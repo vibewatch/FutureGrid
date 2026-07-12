@@ -1,0 +1,74 @@
+FutureGrid Sprint Closeout — Issues #103/#104/#105
+====================================================
+
+SHIPPED FEATURES
+================
+✅ Issue #103: Evidence Convergence Strip (PR #106)
+   - Artifact convergence visualization over time
+   - 587 tests passing, a11y: 0 violations
+   - No rejection cycles; Trinity approved on design review
+
+✅ Issue #104: Talent Bottleneck → Reskilling Bridge (PR #107)
+   - Canonical SOC join with reskilling bridge UI
+   - 663 tests passing, a11y: clean across 7 routes
+   - 3-cycle strict-lockout: synthetic component, listbox semantics, dead i18n keys
+   - Bundle optimization: 905.1KB → 394.1KB (budget: 700KB)
+   - Root cause: client page imported raw h1b/job-postings/projections JSON
+   - Fix: Neo server/client split; Tank server-only guards
+
+✅ Issue #105: Exposure → Outcome Reality Matrix (PR #108)
+   - Correlation analysis with employment/wage outcomes
+   - 751 tests passing, bundle maintained at 394.1KB
+   - Post-merge Trinity rejection (committed): nested-interactive SVG a11y, focus-visible, EN/ZH hardcoded
+   - Per-artifact lockout: Tank a11y fix, Mouse dead-test cleanup
+
+POST-MERGE WORKFLOW STATUS
+===========================
+All three PRs merged to main:
+- PR #106 commit 0ac3f2d
+- PR #107 commit 09c6ca8
+- PR #108 commit 6aa4c23
+
+CI results: green (bundle, a11y, test matrix)
+
+REVIEWER REJECTION OUTCOMES
+===========================
+Issue #103: No rejections
+Issue #104: 3-cycle strict-lockout (all blockers cleared, shipped)
+Issue #105: Post-merge rejection on committed work (pending revision)
+
+BUNDLE RETROSPECTIVE
+====================
+Peak optimization: Issue #104 client chunk bloat (905.1KB)
+Root: app/skills/page.tsx ("use client") imported heavy JSON transitively
+Solution:
+  - Neo: Server/Client split (compute bridgeData server-side)
+  - Tank: import "server-only" guards on lib modules
+  - Mouse: bundle-regression architecture guard
+Result: 394.1KB (normalized, maintained through #105)
+
+KEY LEARNINGS
+=============
+1. Raw data imports in client components are the highest bundle risk
+2. Server-side data computation + prop passing required for derived-only clients
+3. SVG role="img" + focusable descendants = WCAG nested-interactive violation
+4. All user-visible text (aria-labels, legends, metadata) must route through i18n
+5. Test dead-code cleanup (mocks, markers) is deletion-artifact owner responsibility
+6. Design notes flagged during proposal need explicit escalation to release criteria
+7. Per-artifact lockout swap (reviewer protocol) effectively clears cumulative blockers
+
+SEPARATE OPEN WORK
+==================
+Issue #77: Per-lane provenance/freshness cues (unchanged by this sprint)
+
+ORCHESTRATION LOGS
+==================
+- agents/tank/history.md: appended
+- agents/neo/history.md: appended
+- agents/mouse/history.md: appended
+- agents/trinity/history.md: appended
+- agents/switch/history.md: appended
+- agents/rai/history.md: appended
+- sessions/2026-07-10-issues-103-104-105-closeout.md: created
+
+NO COMMITS MADE — Squad state recorded locally only

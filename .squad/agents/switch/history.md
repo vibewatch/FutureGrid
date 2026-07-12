@@ -56,3 +56,129 @@ Switch specified the centered wide-screen layout direction and Evidence Stack ma
 ### 2026-07-04T12:23:54.134+00:00 — IA taxonomy guidance
 - Shaped the safe first IA refactor around journey-based navigation: Overview, Workforce, Labor Signals, AI Ecosystem, and Data Governance.
 - DashboardHome lens-card discovery and CommandPalette grouping landed with EN/ZH copy updates and validation passing.
+
+
+## 2026-07-10T03:57:05.444+00:00 — Audit Session: Visualization Surfaces & IA Assessment
+
+Switch completed read-only audit of visualization surfaces, information architecture, and accessibility/provenance gaps. All production surfaces pass WCAG AA, reduced-motion compliance, and keyboard-accessible requirements. Information architecture (Overview → Workforce → Labor Signals → AI Ecosystem → Data Governance) is journey-coherent and discovery-ready.
+
+**IA Gaps Identified:**
+- Data Governance page exists; missing live pipeline-status widget
+- Methodology transparency clear; drill-down per-metric provenance deferred to v1.1
+
+**Prioritized Visual Storytelling Concepts (No Action Pending):**
+- Global AI Signal Atlas (convergence of country-level exposure, adoption, readiness)
+- Talent Bottleneck Matrix (SOC severity × projection × reskilling pathway surfacing)
+- Market-Labor Pressure Radar (mined datasets cross-referenced to labor market friction)
+- Narrative guardrails: all metrics positioned as proxy/descriptive, no predictive claims without confidence
+
+See orchestration-log/2026-07-10T03-57-05.444+00-00-switch.md and log/2026-07-10T03-57-05.444+00-00-session-audit.md for full findings.
+
+
+### 2026-07-10T09:40:05Z — Issues #103/#104/#105 design & responsible-AI review
+
+**Issue #103: Evidence Convergence Strip (PR #106 merged)**
+- Design review (approved design direction early)
+- a11y: responsive layout, reduced-motion, WCAG AA maintained
+- Final: shipped to main
+
+**Issue #104: Reskilling Bridge (PR #107 merged, 3-cycle strict-lockout → shipped)**
+- Design guidance: listbox interaction patterns (keyboard/focus/tabindex semantics)
+- v1 lockout: component author (Neo) locked out of fixes. Switch owned reviewer-protocol fix for listbox semantics revision (aria-activedescendant → roving tabindex). Per-artifact swap: Tank component fix + Switch deletion completion (dead i18n keys atomically removed).
+- v2 lockout: Tank (author) locked out. Switch confirmed deletion completeness while Tank fixed aria-required-children blocker.
+- Final: a11y 7-routes clean, shipped to main
+
+**Issue #105: Exposure→Outcome Matrix (PR #108 merged, post-rejection work pending)**
+- Design guidance noted (Trinity captured): hardcoded descriptive text, nested-interactive SVG as non-blocking design notes at proposal time
+- Trinity rejection (committed): when released, hardcoded text + nested-interactive SVG became user-visible blockers under release criteria
+- Switch advises on a11y SVG remediation (Tank executing as locked-out revision owner)
+- Learning: Design notes flagged during proposal are not automatically release blockers, but when user-visible they require explicit EN/ZH + a11y compliance before merge. Always escalate design-noted risks to strict criteria before final approval.
+
+
+## 2026-07-11T00:00:00Z — Wage-Tier Polarization & Major Economy Occupational Mix Batch Closeout
+
+**PRs merged:** #110 (/sectors wage-tier polarization) | #112 (/global occupational mix)
+**Batch focus:** Accessibility patterns, a11y compliance, focus-visible semantics
+
+### Accessibility & A11y Gate Patterns
+
+**CareerTrendChart Canvas Accessibility (Reusable Pattern)**
+- **Issue:** Chart canvas `aria-hidden="true"` requires paired accessible alternative
+- **Solution:** AccessibleChart wrapper provides:
+  - Visual: `<Bar aria-hidden="true">` (chart-only, no a11y burden)
+  - Screen reader: `<figure aria-label="[translated]">` + `<figcaption>` with sr-only `<table>` (accessible data summary)
+  - Keyboard: All interactive labels/tooltips wired to `AriaLive` regions (no focus-visible loss)
+- **i18n requirement:** Figure label + accessible table headers MUST have EN/ZH keys (parity check enforced)
+- **Applied:** Both /sectors (wage-tier chart) and /global (occupational distribution chart)
+- **Gate:** axe-core focused route 0 violations; accessibility tree valid for screen readers
+
+**Responsive Accessible Tables**
+- Visible table (responsive with overflow-x-auto): tier/country-keyed rows, band-shares columns
+- Accessible data companion: Same data structure, sr-only table headers, no visual overhead
+- i18n: All visible table headers + cell content route through `t("sectors")`/`t("global")`
+- Pattern: Eliminates need for separate accessible table (visual + sr-only in one component)
+
+**Keyboard Interaction Consistency**
+- Focus-visible on all interactive elements (no hover-only emphasis)
+- Roving tabindex pattern (where applicable): single tab-stop into group, arrow keys navigate
+- Tooltip show/hide: Keyboard open (Enter/Space) + screen-reader announcement via `aria-live="polite"`
+
+### A11y Compliance Gates (All Green)
+
+**Bundle & Test Coverage (1,944 tests combined)**
+- typecheck: 0 errors (no unsafe DOM operations)
+- lint: 0 errors (no a11y rule violations in ESLint)
+- test:run: 846 + 1,098 all pass (including accessibility boundary tests)
+- axe standard (8 routes): 0 critical | 0 serious
+- axe focused (/sectors + /global): 0 violations
+
+**Reduced-Motion & Animation Safety**
+- All chart entrance animations respect `prefers-reduced-motion`
+- Transitions (fade-in, scale-up) have no-motion equivalent (instant render)
+- Tooltip animations disabled for `prefers-reduced-motion: reduce`
+- Pattern: CSS custom property `--safe-transition` (0ms for no-motion, 300ms for full motion)
+
+### Learnings for Accessible Data Visualization
+
+**CareerTrendChart Canvas Best Practice**
+- `role="img"` on canvas is valid for charts IF paired with accessible alternative
+- Never nest interactive elements (buttons, links) inside `role="img"`; breaks screen-reader focus
+- Always provide sr-only data table (not just description text) for complex visualizations
+- Pattern is reusable: apply to any D3/Recharts/Bar component with data-heavy visualization
+
+**i18n + A11y Parity**
+- All chart labels, axes, legends MUST have EN/ZH keys
+- Test case: i18n parity check (no empty values, all keys present in both languages)
+- Dead i18n keys (unused chart components) must be atomically removed (don't orphan translations)
+
+**Accessible Table Patterns**
+- Visible responsive table + sr-only data table can share component (no duplication)
+- Table headers MUST be `<th>` with explicit `scope="col"`/`scope="row"` (not `<td>`)
+- Numeric cells: Use `text-align: right` (visual) + no semantic change (AT reads as normal cell)
+
+### Review Cycle a11y Findings
+
+**PR #110 Cycle-1 Findings (Resolved)**
+- Issue: CareerTrendChart canvas lacked accessible alternative (Trinity flagged)
+- Fix: Switch + Tank applied AccessibleChart wrapper + sr-only data table
+- Result: axe /sectors focused 0 violations; a11y gate satisfied
+
+**PR #112 Pre-Implementation Approval (No Rejection Cycles)**
+- Accessibility pre-approved with scope (no discovery during implementation)
+- Pattern reused from #110 (CareerTrendChart canvas + AccessibleChart wrapper)
+- Result: a11y gate satisfied at merge
+
+### Recommendations for Future Data Features
+
+**Accessible Chart Checklist**
+- ✅ Visual chart (interactive or display): Include sr-only data table alternative
+- ✅ Chart canvas: Always pair `aria-hidden="true"` with `<figure aria-label>` + `<figcaption>`
+- ✅ Focus-visible: Ensure keyboard users see emphasis (no hover-only patterns)
+- ✅ i18n completeness: All user-visible text (labels, legends, descriptions) must have EN/ZH keys
+- ✅ Reduced-motion: Entrance animations respect `prefers-reduced-motion: reduce`
+- ✅ Gate: axe-core standard + focused runs must be 0 critical/serious violations
+
+**Reusable Patterns**
+- AccessibleChart wrapper (handles figure label + sr-only table scaffolding)
+- CareerTrendChart canvas pattern (applies to any chart component using Bar/Line/Scatter)
+- Accessible table responsive pattern (visible overflow-x + sr-only data structure)
