@@ -80,15 +80,103 @@ export function getDataGeneratedAt(datasetId: string): string | null {
 }
 
 /**
- * The overall latest `asOf` across all datasets (lexicographically max, which
- * is chronological for ISO-8601 / year strings), or `null` when none present.
+ * Parse an asOf label to its latest representable calendar date for ordering.
+ * This function is comparison-only — it never modifies the original string.
+ *
+ * Recognized canonical forms (Node 20 compatible):
+ *   YYYY-MM-DD  → that UTC date
+ *   YYYY-MM     → last day of that month (UTC)
+ *   YYYY        → Dec 31 of that year (UTC)
+ *   FY2025 / FY 2025 → Sep 30 of the fiscal year (US federal FY end)
+ *
+ * Returns null for projection windows (e.g. "2024-2034"), free-form text, or
+ * any other unrecognized form.  Unknown labels are intentionally not assigned
+ * a date so they can never be falsely promoted as "newest".
+ *
+ * Assumption: US fiscal year ends Sep 30 (documented here for transparency).
+ * This is used for ordering only; display strings are never rewritten.
+ */
+export function asOfToComparableDate(asOf: string): Date | null {
+  const s = asOf.trim();
+
+  // US fiscal year: FY2025 or FY 2025 (case-insensitive)
+  const fyMatch = /^FY\s*(\d{4})$/i.exec(s);
+  if (fyMatch) {
+    const year = parseInt(fyMatch[1], 10);
+    // US federal FY ends Sep 30; use that date for chronological ordering.
+    return new Date(Date.UTC(year, 8, 30)); // month index 8 = September
+  }
+
+  // Full ISO date YYYY-MM-DD (months 01–12, days 01–31)
+  if (/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(s)) {
+    const d = new Date(s + "T00:00:00Z");
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  // Partial date YYYY-MM with valid month (01–12).
+  // This also excludes projection windows like "2024-2034" since 34 > 12.
+  if (/^\d{4}-(0[1-9]|1[0-2])$/.test(s)) {
+    const [yr, mo] = s.split("-").map(Number);
+    // day=0 of month (mo + 1) resolves to the last day of month mo
+    const d = new Date(Date.UTC(yr, mo, 0));
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  // Plain 4-digit calendar year
+  if (/^\d{4}$/.test(s)) {
+    const year = parseInt(s, 10);
+    return new Date(Date.UTC(year, 11, 31)); // Dec 31
+  }
+
+  // Everything else: projection windows ("2024-2034"), free-form text, etc.
+  return null;
+}
+
+/**
+ * Return the chronologically latest asOf label from a collection of candidates.
+ * Preserves the original display string — selection is done by calendar date,
+ * but the winner's label is returned verbatim.
+ *
+ * - Recognized forms (YYYY-MM-DD, YYYY-MM, YYYY, FY YYYY) are ranked by their
+ *   calendar end-date via asOfToComparableDate.
+ * - Unrecognized labels (projection windows, free-form text) are skipped when
+ *   any recognized label is available — they never win over a recognized date.
+ * - When NO recognized label is present, the first non-null value is returned
+ *   as a deterministic fallback so projection windows (e.g. "2024-2034")
+ *   remain displayable.  No recency claim is implied.
+ * - Returns null only when all candidates are null.
+ */
+export function selectLatestAsOf(
+  values: ReadonlyArray<string | null>,
+): string | null {
+  let bestLabel: string | null = null;
+  let bestTime = -Infinity;
+  let firstNonNull: string | null = null;
+
+  for (const v of values) {
+    if (v === null) continue;
+    if (firstNonNull === null) firstNonNull = v;
+    const d = asOfToComparableDate(v);
+    if (d === null) continue; // unrecognized — skip during ordered selection
+    const t = d.getTime();
+    if (t > bestTime) {
+      bestTime = t;
+      bestLabel = v;
+    }
+  }
+
+  // Return the best recognized label, or the first non-null as a display
+  // fallback (e.g. "2024-2034" projection windows still render in badges).
+  return bestLabel ?? firstNonNull;
+}
+
+/**
+ * The overall latest `asOf` across all datasets (chronologically latest by
+ * calendar date), or `null` when none present.  Uses asOfToComparableDate so
+ * FY labels and projection windows are handled correctly.
  */
 export function getLatestAsOf(): string | null {
-  let latest: string | null = null;
-  for (const d of registry.datasets) {
-    if (d.asOf && (latest === null || d.asOf > latest)) latest = d.asOf;
-  }
-  return latest;
+  return selectLatestAsOf(registry.datasets.map((d) => d.asOf));
 }
 
 /** The overall most-recent `generatedAt` across all datasets. */

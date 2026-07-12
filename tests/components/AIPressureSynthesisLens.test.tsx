@@ -7,12 +7,21 @@ import { describe, expect, it, vi } from "vitest";
 import AIPressureSynthesisLens from "@/components/insights/AIPressureSynthesisLens";
 import { analysisEn } from "@/lib/i18n/messages/en/analysis";
 import { analysisZh } from "@/lib/i18n/messages/zh/analysis";
-import type { AIPressureSynthesisData } from "@/lib/ai-pressure-synthesis";
+import type { AIPressureSynthesisData, LaneProvenance } from "@/lib/ai-pressure-synthesis";
 import { DEEP_LINK_HREFS } from "@/lib/section-anchors";
 
+const mockUseLanguage = vi.fn(() => ({ locale: "en" as "en" | "zh", setLocale: vi.fn() }));
 vi.mock("@/lib/i18n/LanguageProvider", () => ({
-  useLanguage: () => ({ locale: "en" as const, setLocale: vi.fn() }),
+  useLanguage: () => mockUseLanguage(),
 }));
+
+function stubProvenance(datasetIds: string[]): LaneProvenance {
+  return {
+    datasetIds,
+    latestAsOf: "2026-07-01",
+    sources: datasetIds.map((id) => ({ id, asOf: "2026-07-01", name: "Stub" })),
+  };
+}
 
 const FIXTURE: AIPressureSynthesisData = {
   global: {
@@ -25,6 +34,7 @@ const FIXTURE: AIPressureSynthesisData = {
       name: "Exampleland",
       gap: 24.5,
     },
+    provenance: stubProvenance(["openrouter-models", "country-exposure", "global-ai-metrics"]),
   },
   talent: {
     href: DEEP_LINK_HREFS.visaTalentBottleneckLens,
@@ -36,10 +46,11 @@ const FIXTURE: AIPressureSynthesisData = {
       title: "Software Developers",
       score: 91.4,
     },
+    provenance: stubProvenance(["h1b-trends", "job-postings"]),
   },
   market: {
-    href: "/analysis#market-ai-sensitivity",
-    stockHref: "/analysis#ai-company-stock-signals",
+    href: DEEP_LINK_HREFS.analysisMarketAISensitivity,
+    stockHref: DEEP_LINK_HREFS.analysisAICompanyStockSignals,
     sectorProxyCount: 11,
     companyCount: 47,
     positiveBreadth1Y: 34,
@@ -52,6 +63,7 @@ const FIXTURE: AIPressureSynthesisData = {
       excessReturn: 0.22,
       employmentWeightedAIExposure: 0.31,
     },
+    provenance: stubProvenance(["ai-company-stocks", "market-ai-signals"]),
   },
   guardrailIds: [
     "openrouterCatalogProxy",
@@ -109,6 +121,31 @@ describe("AIPressureSynthesisLens", () => {
     expect(renderedText).toMatch(/not visa approvals/i);
     expect(renderedText).toMatch(/not investment advice/i);
     expect(renderedText).toMatch(/seed\/proxy data/i);
+  });
+
+  it("renders exactly one DataAsOfBadge per lane (three total)", () => {
+    render(<AIPressureSynthesisLens data={FIXTURE} />);
+    // DataAsOfBadge renders aria-label "Data as of <date>" — count those
+    const freshnessBadges = screen.getAllByText(/Data as of/i);
+    expect(freshnessBadges).toHaveLength(3);
+  });
+
+  it("renders lane-appropriate GuardrailBadge kinds: two Proxy, one Descriptive-only", () => {
+    render(<AIPressureSynthesisLens data={FIXTURE} />);
+    // global lane = proxy, talent lane = proxy, market lane = descriptive
+    const proxyBadges = screen.getAllByText(/^Proxy$/);
+    const descriptiveBadges = screen.getAllByText(/^Descriptive-only$/);
+    expect(proxyBadges).toHaveLength(2);
+    expect(descriptiveBadges).toHaveLength(1);
+  });
+
+  it("renders localized source attribution text for each lane", () => {
+    render(<AIPressureSynthesisLens data={FIXTURE} />);
+    const renderedText = document.body.textContent ?? "";
+    // EN source attributions from analysis.ts
+    expect(renderedText).toMatch(/OpenRouter catalog snapshot/i);
+    expect(renderedText).toMatch(/DOL OFLC LCA filings/i);
+    expect(renderedText).toMatch(/Yahoo Finance historical data/i);
   });
 
   it("avoids causal, adoption, and investment overclaim wording", () => {
@@ -180,5 +217,29 @@ describe("AI pressure synthesis wiring", () => {
     );
     expect(insightsSource).toContain('id="market-ai-sensitivity"');
     expect(insightsSource).toContain('id="ai-company-stock-signals"');
+  });
+
+  it("ZH locale renders localized source attribution and guardrail labels", () => {
+    // Set ZH for ALL useLanguage() calls during this render
+    mockUseLanguage.mockImplementation(() => ({ locale: "zh" as const, setLocale: vi.fn() }));
+    render(<AIPressureSynthesisLens data={FIXTURE} />);
+    const renderedText = document.body.textContent ?? "";
+    // Restore EN default for subsequent tests
+    mockUseLanguage.mockImplementation(() => ({ locale: "en" as const, setLocale: vi.fn() }));
+
+    // ZH source attributions from zh/analysis.ts
+    expect(renderedText).toMatch(/OpenRouter 目录快照/);
+    expect(renderedText).toMatch(/美国劳工部 OFLC LCA 申请/);
+    expect(renderedText).toMatch(/Yahoo Finance 历史数据/);
+
+    // ZH guardrail badge labels from zh/common.ts
+    expect(renderedText).toMatch(/代理/);
+    expect(renderedText).toMatch(/仅描述/);
+  });
+
+  it("analysis Section deep-link targets have scroll-mt-24 class", () => {
+    const insightsSource = readFileSync(path.join(process.cwd(), "components/insights/InsightsView.tsx"), "utf8");
+    // scroll-mt-24 must be present in the className expression for sectioned targets
+    expect(insightsSource).toMatch(/scroll-mt-24/);
   });
 });

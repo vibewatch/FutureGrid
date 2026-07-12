@@ -130,13 +130,60 @@ interface ExposureOutcomePoint {
 
 ```ts
 interface AIPressureSynthesisData {
-  global: { href; modelCount; endpointProviderCount; rankableCountries; topReadinessGapCountry };
-  talent: { href; occupationsTracked; latestH1bFiscalYear; latestJobPostingYear; topOccupation };
-  market: { href; stockHref; sectorProxyCount; companyCount; positiveBreadth1Y; latestStockDate;
-            benchmarkTickers; topSector };
-  guardrailIds: string[];
+  global: {
+    href: string;                             // typed DEEP_LINK_HREFS constant
+    modelCount: number;
+    endpointProviderCount: number;
+    rankableCountries: number;
+    topReadinessGapCountry: ReadinessGapSummaryCountry | null;
+    provenance: LaneProvenance;              // per-lane registry-derived freshness
+  };
+  talent: {
+    href: string;
+    occupationsTracked: number;
+    latestH1bFiscalYear: number | null;
+    latestJobPostingYear: number | null;
+    topOccupation: { socCode; title; score } | null;
+    provenance: LaneProvenance;
+  };
+  market: {
+    href: string;                             // typed DEEP_LINK_HREFS.analysisMarketAISensitivity
+    stockHref: string;                        // typed DEEP_LINK_HREFS.analysisAICompanyStockSignals
+    sectorProxyCount: number;
+    companyCount: number;
+    positiveBreadth1Y: number | null;
+    latestStockDate: string | null;
+    benchmarkTickers: string[];
+    topSector: { name; ticker; score; excessReturn; employmentWeightedAIExposure } | null;
+    provenance: LaneProvenance;
+  };
+  guardrailIds: string[];  // "openrouterCatalogProxy" | "h1bLcaFilings" | "stockDescriptiveHistory" | "jobPostingsProxy"
+}
+
+interface LaneProvenance {
+  datasetIds: string[];          // canonical provenance.json IDs for this lane
+  latestAsOf: string | null;     // latest asOf selected via calendar-aware chronological ordering
+  sources: LaneProvenanceSource[];
+}
+
+interface LaneProvenanceSource {
+  id: string;
+  asOf: string | null;
+  name: string | null;
 }
 ```
+
+#### Lane dataset IDs
+
+| Lane   | datasetIds                                              | GuardrailBadge kind |
+|--------|----------------------------------------------------------|---------------------|
+| global | `openrouter-models`, `country-exposure`, `global-ai-metrics` | `proxy`          |
+| talent | `h1b-trends`, `job-postings`                             | `proxy`             |
+| market | `ai-company-stocks`, `market-ai-signals`                 | `descriptive`       |
+
+`AIPressureSynthesisLens` renders exactly **one `DataAsOfBadge`** per lane using `provenance.datasetIds`,
+one lane-appropriate `GuardrailBadge`, and compact localized source attribution from the `analysis` i18n
+namespace keys `aiPressureGlobalSource`, `aiPressureTalentSource`, `aiPressureMarketSource`.
 
 ---
 
@@ -225,15 +272,27 @@ All charts use `Reveal` for scroll-gated fade-in animation.
 
 ## i18n
 
-All strings routed through `useT("analysis")`:
+All strings routed through `useT("analysis")` or `useT("common")`:
 
 | Namespace | Files |
 |---|---|
 | `analysis` | `lib/i18n/messages/en/analysis.ts`, `lib/i18n/messages/zh/analysis.ts` |
+| `common` | `lib/i18n/messages/en/common.ts`, `lib/i18n/messages/zh/common.ts` |
 
 Notable keys: `pageTitle`, `pageSubhead`, `framingNote`, `matrixTitle`, `matrixExplainer`, `exposureLensesTitle`, `marketSignalTitle`, `forecastTitle`, `disruptionTitle`, evidence status labels (`evidenceStatusAgreement`, `evidenceStatusMixed`, etc.), `evidenceConfidenceHigh/Medium/Low`.
 
+**AIPressureSynthesisLens lane provenance keys (analysis namespace):**
+- `aiPressureGlobalSource` — compact EN/ZH attribution for the global lane (OpenRouter, Anthropic, Microsoft)
+- `aiPressureTalentSource` — compact EN/ZH attribution for the talent lane (DOL OFLC, job-posting seeds)
+- `aiPressureMarketSource` — compact EN/ZH attribution for the market lane (Yahoo Finance, BLS market-signal proxies)
+
+**GuardrailBadge keys (common namespace):**
+- `guardrailLabel_{kind}` / `guardrailDesc_{kind}` for each of `observed`, `proxy`, `restricted`, `descriptive`
+- Both EN and ZH translations are present; the component uses `useT("common")` with English fallback
+
 `AIPressureSynthesisLens` formats numbers via `Intl.NumberFormat` using the active locale (`zh-CN` for Chinese, `en-US` otherwise).
+
+**Capability-usage gap units:** `ExposureLensComparison` displays the capability-minus-usage gap in **percentage-point (pp)** units (e.g., "+42.7pp") in both the tooltip and the gap-leaderboard list. Individual lens values (usage, capability, ability, automation) remain in `%`.
 
 ---
 
@@ -242,11 +301,13 @@ Notable keys: `pageTitle`, `pageSubhead`, `framingNote`, `matrixTitle`, `matrixE
 - Framing note at page top: `role="note"` (corrects the common misconception that correlation = causation).
 - Each section wrapped in `<section>` with heading; headings follow h1 → h2 → h3 hierarchy.
 - `Reveal` wrapper defers animation only — content is always in the DOM.
+- `Section` helper adds `scroll-mt-24` when an `id` is provided, so deep links clear the fixed navigation header without truncating section headings.
 - `ExposureOutcomeMatrix` chart: `<svg>` with `aria-label`; tooltip is a positioned `<div>` with role/aria-live on update (implemented in the component).
 - `AccessibleChart` wrapper used where applicable; provides screen-reader-accessible data tables as fallback.
 - All interactive controls carry keyboard-accessible focus rings.
 - Colour-only information avoided: disruption score is shown numerically alongside colour.
 - Language-localised number formatting via `Intl.NumberFormat` ensures correct decimal/grouping separators for both locales.
+- `GuardrailBadge` labels and descriptions are fully localised in EN/ZH via the `common` i18n namespace; the `aria-label` carries both the localized label and the localized description for screen-reader users.
 
 ---
 
@@ -289,6 +350,10 @@ No skeleton/loading UI — page is SSG.
 - Vitest: `tests/` covers `lib/analysis.ts` helpers (`linearRegression`, `pearson`, `getAISignalData`, `getDisruptionIndex`, `getExposureComparison`).
 - `lib/exposure-outcome.ts` is tested in `tests/` (Mouse's domain); tests verify null handling, Pearson r computation, and methodology caveats.
 - `lib/wage-tier-polarization.ts` has dedicated tests for tier assignment and band cross-tabulation (relevant to the `/sectors` page, not directly to `/analysis`).
+- `tests/components/AIPressureSynthesisLens.test.tsx`: renders exactly three `DataAsOfBadge` elements (one per lane), two `Proxy` and one `Descriptive-only` guardrail badges, EN source attribution, ZH locale render parity.
+- `tests/components/ExposureLensComparison.test.tsx`: asserts that capability-usage gap values render with `pp` unit in the leaderboard list (visible DOM), not raw `%`.
+- `tests/components/DataAsOfBadge.test.tsx`: exercises the canonical `employment-projections` dataset (asOf=`2024-2034`) and proves the badge does not corrupt the projection window into a 1970 epoch or a far-future year.
+- `tests/components/GuardrailBadge.test.tsx`: verifies EN and ZH labels and descriptions are present in both locales; all four kinds have i18n parity.
 
 ---
 

@@ -11,11 +11,9 @@ import type {
 } from "@/components/methodology/MethodologyView";
 
 // ─── Mock i18n ────────────────────────────────────────────────────────────────
-vi.mock("@/lib/i18n/useT", () => ({
-  useT: (ns: string) =>
-    (key: string) =>
-      `${ns}.${key}`,
-  useLocale: () => "en",
+// Use a real EN locale so GuardrailBadge renders correct localized labels.
+vi.mock("@/lib/i18n/LanguageProvider", () => ({
+  useLanguage: () => ({ locale: "en" as const, setLocale: vi.fn() }),
 }));
 
 // ─── Mock next/navigation (usePathname used by LanguageProvider chain) ────────

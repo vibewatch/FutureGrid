@@ -1,6 +1,6 @@
 "use client";
 
-import { getDataAsOf, getLatestAsOf } from "@/lib/provenance";
+import { getDataAsOf, getLatestAsOf, selectLatestAsOf } from "@/lib/provenance";
 import { useT } from "@/lib/i18n/useT";
 
 export interface DataAsOfBadgeProps {
@@ -42,13 +42,8 @@ function resolveAsOf(props: DataAsOfBadgeProps): string | null {
   if (props.datasetIds) ids.push(...props.datasetIds);
 
   if (ids.length > 0) {
-    // Pick the most-recent (lexicographic max) non-null asOf
-    let best: string | null = null;
-    for (const id of ids) {
-      const val = getDataAsOf(id);
-      if (val && (best === null || val > best)) best = val;
-    }
-    return best;
+    // Pick the chronologically latest non-null asOf via the shared helper
+    return selectLatestAsOf(ids.map((id) => getDataAsOf(id)));
   }
 
   return getLatestAsOf();

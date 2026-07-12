@@ -7,4 +7,12 @@ export const commonZh = {
   langSwitchLabel: "语言选择",
   switchToEn: "切换至英文",
   switchToZh: "切换至中文",
+  guardrailLabel_observed: "已观察",
+  guardrailDesc_observed: "来自提供方或公开记录的观察值，不是建模估算。",
+  guardrailLabel_proxy: "代理",
+  guardrailDesc_proxy: "代理或种子衍生信号；仅作方向性参考，不适合直接测量。",
+  guardrailLabel_restricted: "受限",
+  guardrailDesc_restricted: "来源条款限制再分发或完整原始数据访问。",
+  guardrailLabel_descriptive: "仅描述",
+  guardrailDesc_descriptive: "仅作描述性背景；不具备因果、预测或指导性。",
 };

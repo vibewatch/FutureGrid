@@ -10,8 +10,9 @@ vi.mock("@/components/ui/Reveal", () => ({
   default: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }));
 
-vi.mock("@/lib/i18n/useT", () => ({
-  useT: () => (key: string) => key,
+// Use a real EN locale so GuardrailBadge renders localized labels correctly.
+vi.mock("@/lib/i18n/LanguageProvider", () => ({
+  useLanguage: () => ({ locale: "en" as const, setLocale: vi.fn() }),
 }));
 
 const SOURCES: DataSource[] = [

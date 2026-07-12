@@ -20,7 +20,7 @@ import type { ExposureOutcomeMatrix as ExposureOutcomeMatrixData } from "@/lib/e
 function Section({ id, eyebrow, title, explainer, children }: { id?: string; eyebrow: string; title: string; explainer: string; children: React.ReactNode }) {
   return (
     <Reveal>
-      <section id={id} className="space-y-5">
+      <section id={id} className={`space-y-5${id ? " scroll-mt-24" : ""}`}>
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500">{eyebrow}</p>
           <h2 className="mt-1 text-2xl font-bold text-gradient">{title}</h2>
