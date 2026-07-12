@@ -17,7 +17,16 @@
     "rows": 756,
     "sourceRows": 832,
     "matchedSnapshotRows": 756,
-    "rowsWithProjectedOpenings": 671
+    "rowsWithProjectedOpenings": 671,
+    "dataQualityNotes": {
+      "nullProjectedOpenings": {
+        "count": 85,
+        "explanation": "The BLS Employment Projections source does not publish annual-openings estimates for all SOC codes. 85 occupations have projectedOpenings = null because no matching BLS-EP openings row exists. These nulls are intentional and represent genuine data unavailability \u2014 they must not be imputed or converted to zero.",
+        "affectedField": "projectedOpenings",
+        "sentinel": null,
+        "handling": "Preserve null; UI surfaces should display \"not available\" rather than omitting the field or showing 0."
+      }
+    }
   },
   "methodology": {
     "provenanceDecision": "The official BLS Employment Projections download pages were bot-blocked (HTTP 403) from this build environment, so the builder consumes the public GitHub mirror in jeffbaumes/jobs, whose README documents that occupations.csv is regenerated from the official BLS Employment Projections occupational workbook.",

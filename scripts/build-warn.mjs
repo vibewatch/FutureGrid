@@ -27,6 +27,10 @@ const MAX_NOTICES_PER_STATE = 2500;
 const MIN_NOTICE_YEAR = new Date().getUTCFullYear() - 10;
 const MIN_NOTICE_DATE = `${MIN_NOTICE_YEAR}-01-01`;
 const MIN_PLAUSIBLE_WARN_DATE = "2010-01-01";
+// Upper bound: WARN Act requires 60 days' notice; allow up to 2 years from today
+// to accommodate legitimate near-future layoffs (some large restructurings file
+// months ahead). Anything beyond current_year + 2 is a data-entry or parsing error.
+const MAX_PLAUSIBLE_WARN_EFFECTIVE_DATE = `${new Date().getUTCFullYear() + 2}-12-31`;
 
 // ─── Generic HTTP fetch with retry + exponential backoff ────────────────────
 
@@ -131,14 +135,19 @@ function parsePlausibleWarnDate(val, minDate = MIN_PLAUSIBLE_WARN_DATE) {
 }
 
 function scrubImplausibleEffectiveDates(records, state) {
-  let scrubbed = 0;
+  let scrubbedPast = 0;
+  let scrubbedFuture = 0;
   for (const record of records) {
     if (record.effectiveDate && record.effectiveDate < MIN_PLAUSIBLE_WARN_DATE) {
       record.effectiveDate = null;
-      scrubbed++;
+      scrubbedPast++;
+    } else if (record.effectiveDate && record.effectiveDate > MAX_PLAUSIBLE_WARN_EFFECTIVE_DATE) {
+      record.effectiveDate = null;
+      scrubbedFuture++;
     }
   }
-  if (scrubbed > 0) console.warn(`  ${state}: nulled ${scrubbed} implausible pre-2010 effective date(s)`);
+  if (scrubbedPast > 0) console.warn(`  ${state}: nulled ${scrubbedPast} implausible pre-2010 effective date(s)`);
+  if (scrubbedFuture > 0) console.warn(`  ${state}: nulled ${scrubbedFuture} implausible future effective date(s) (>${MAX_PLAUSIBLE_WARN_EFFECTIVE_DATE})`);
   return records;
 }
 

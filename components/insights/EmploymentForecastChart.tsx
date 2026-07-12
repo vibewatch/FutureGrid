@@ -191,6 +191,9 @@ export default function EmploymentForecastChart({ national, signalPoints, foreca
         )}
       </div>
       {selectedForecast && <Link className="inline-flex text-xs font-semibold text-violet-600 hover:underline dark:text-violet-300" href={`/careers/${encodeURIComponent(selectedForecast.code)}`}>{t("openCareerProfile")} →</Link>}
+      <p className="text-xs text-zinc-500 dark:text-zinc-400 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/55 dark:bg-zinc-950/35 px-3 py-2" role="note" aria-label={t("forecastScenarioCaveat")}>
+        {t("forecastScenarioCaveat")}
+      </p>
     </div>
   );
 }

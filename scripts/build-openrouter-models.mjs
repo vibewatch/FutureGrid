@@ -344,6 +344,29 @@ function summarizeCoverage(models, endpointResults) {
   };
 }
 
+function buildDataQualityNotes(models) {
+  const affectedModels = models
+    .filter(
+      (m) =>
+        m.pricing &&
+        (m.pricing.prompt === -1 || m.pricing.completion === -1)
+    )
+    .map((m) => m.id)
+    .sort();
+
+  return {
+    pricingNegativeOneSentinel: {
+      affectedModels,
+      affectedFields: ["pricing.prompt", "pricing.completion"],
+      sentinel: -1,
+      explanation:
+        'OpenRouter returns pricing = -1 for dynamic/meta-router models whose actual cost depends on the downstream model selected at inference time. The -1 value is a sentinel indicating "price unavailable/dynamic" — it is NOT a real cost and must not be treated as zero or averaged with other models.',
+      handling:
+        'Preserve -1 as-is; UI surfaces should display "dynamic pricing" or "varies" rather than a numeric cost.',
+    },
+  };
+}
+
 async function main() {
   console.log("=== Building OpenRouter model catalog data ===");
   const generatedAt = new Date().toISOString();
@@ -388,6 +411,7 @@ async function main() {
         "No #activity page scraping, no account usage/activity APIs, no management keys, and no private analytics endpoints are used.",
       caveats:
         "Catalog, pricing, availability, and endpoint routing fields describe OpenRouter's public API response at build time; no stable public global activity time-series was identified.",
+      dataQualityNotes: buildDataQualityNotes(models),
     },
     models,
   };

@@ -55615,7 +55615,7 @@
       "city": null,
       "employees": 170,
       "noticeDate": "2020-10-20",
-      "effectiveDate": "2030-12-15",
+      "effectiveDate": null,
       "layoffType": null,
       "state": "TN",
       "stateName": "Tennessee"
@@ -58981,7 +58981,7 @@
       "city": "burlington",
       "employees": 20,
       "noticeDate": "2020-09-01",
-      "effectiveDate": "3030-08-23",
+      "effectiveDate": null,
       "layoffType": null,
       "state": "NJ",
       "stateName": "New Jersey"

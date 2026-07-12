@@ -491,3 +491,122 @@ describe("ExposureOutcomeMatrix quadrant labels and causal language", () => {
     }
   });
 });
+
+// ── Gap unit labeling (pp, not %) ─────────────────────────────────────────────
+
+describe("ExposureOutcomeMatrix gap unit labeling", () => {
+  it("renders gap values with pp suffix, not % suffix in accessible table", async () => {
+    if (!existsSync(COMPONENT_PATH)) return;
+    const Matrix = await importMatrix();
+    const { container } = render(<Matrix matrix={fixture} />);
+
+    // The fixture has gap values of 22 (Software Developers) and 36 (Word Processors).
+    // These are percentage points, not raw percentages.
+    const allText = container.textContent ?? "";
+
+    // The gap table header should say (pp)
+    expect(
+      allText,
+      "Accessible table header for gap column must indicate percentage-point units (pp)",
+    ).toMatch(/\bpp\b/);
+
+    // No gap value should be rendered with a bare % that misrepresents it as a raw percentage.
+    // The gap label should be "Gap (pp)" not just "Gap".
+    expect(
+      allText,
+      "Gap label must include (pp) unit to distinguish from raw percentage lenses",
+    ).toMatch(/Gap.*pp|pp.*Gap/i);
+  });
+
+  it("does not format gap as a bare percentage (e.g. '+22.00%') in tooltip or list", async () => {
+    if (!existsSync(COMPONENT_PATH)) return;
+    const Matrix = await importMatrix();
+    const { container } = render(<Matrix matrix={fixture} />);
+    const srContent = Array.from(container.querySelectorAll(".sr-only, [class*='sr-only'], caption"))
+      .map((el) => el.textContent ?? "")
+      .join(" ");
+
+    // The table caption must acknowledge truncation
+    expect(
+      srContent + (container.textContent ?? ""),
+      "Accessible table must include a truncation caption or note",
+    ).toMatch(/first 60|showing.*60|60.*occupation|60.*total|前.*60/i);
+  });
+
+  it("renders gap column in accessible table with pp suffix for fixture data", async () => {
+    if (!existsSync(COMPONENT_PATH)) return;
+    const Matrix = await importMatrix();
+    const { container } = render(<Matrix matrix={fixture} />);
+
+    // Look for the formatted gap value '+22.00pp' or '+36.00pp' anywhere in the DOM.
+    const fullText = container.innerHTML;
+    expect(
+      fullText,
+      "Gap values in the accessible table or ARIA attributes must use pp suffix, not % suffix",
+    ).toMatch(/\+22\.00pp|\+36\.00pp|\+5\.00pp/);
+  });
+});
+
+// ── Mobile-card gap unit regression ──────────────────────────────────────────
+// Regression guard for the mobile fallback path in ExposureOutcomeMatrix.
+// Bug: mobile card formatted p.gap with fmtPct (yielding "+22.00%") while the
+// gapLabel already says "pp".  Fix: use fmtGap (yielding "+22.00pp").
+// mobileRows includes occupations with a non-null disruptionRank sorted
+// ascending by rank.  Fixture: Word Processors (rank=5, gap=36),
+// Software Developers (rank=120, gap=22).
+
+describe("ExposureOutcomeMatrix mobile-card gap unit (regression)", () => {
+  it("mobile cards render gap values with pp suffix, not % suffix", async () => {
+    if (!existsSync(COMPONENT_PATH)) return;
+    const Matrix = await importMatrix();
+    const { container } = render(<Matrix matrix={fixture} />);
+
+    // jsdom does not apply CSS — sm:hidden is present in the DOM regardless.
+    const mobileSection = container.querySelector('[class*="sm:hidden"]');
+    expect(
+      mobileSection,
+      "Mobile card section (sm:hidden) must be present in the rendered DOM",
+    ).not.toBeNull();
+
+    const mobileHTML = mobileSection!.innerHTML;
+
+    // Gap values must use pp (fmtGap), not % (fmtPct).
+    // Fixture: Word Processors gap=36 → +36.00pp; Software Developers gap=22 → +22.00pp.
+    expect(
+      mobileHTML,
+      "Mobile card gap must be formatted with pp suffix (fmtGap), not bare % (fmtPct)",
+    ).toMatch(/\+36\.00pp|\+22\.00pp/);
+
+    // Employment and wage growth must still use % — this guards against over-correction.
+    // Fixture: Word Processors empGrowth=−3.2 → −3.20%; Software Developers empGrowth=+1.8 → +1.80%.
+    expect(
+      mobileHTML,
+      "Mobile card employment growth must still be formatted as a percentage (%)",
+    ).toMatch(/-3\.20%|\+1\.80%/);
+  });
+
+  it("mobile cards must NOT render the fixture gap values with bare % suffix", async () => {
+    if (!existsSync(COMPONENT_PATH)) return;
+    const Matrix = await importMatrix();
+    const { container } = render(<Matrix matrix={fixture} />);
+
+    const mobileSection = container.querySelector('[class*="sm:hidden"]');
+    expect(
+      mobileSection,
+      "Mobile card section (sm:hidden) must be present in the rendered DOM",
+    ).not.toBeNull();
+
+    const mobileText = mobileSection!.textContent ?? "";
+
+    // The pre-fix bug rendered fmtPct(gap) → "+22.00%" and "+36.00%".
+    // These strings must NOT appear after the fix (gap is pp, not %).
+    expect(
+      mobileText,
+      "Gap value +22.00% must NOT appear — gap is in percentage points (pp), not raw %",
+    ).not.toContain("+22.00%");
+    expect(
+      mobileText,
+      "Gap value +36.00% must NOT appear — gap is in percentage points (pp), not raw %",
+    ).not.toContain("+36.00%");
+  });
+});

@@ -16,10 +16,12 @@ export interface DataAsOfBadgeProps {
  *  "2025"        → "2025"
  *  "2026-07-02"  → "Jul 2026"
  *  "2026-06"     → "Jun 2026"
+ *  "2024-2034"   → "2024-2034"  (projection window: pass through unchanged)
  */
 function formatAsOf(asOf: string): string {
-  // Full ISO date (YYYY-MM-DD) or partial (YYYY-MM)
-  if (/^\d{4}-\d{2}/.test(asOf)) {
+  // Full ISO date (YYYY-MM-DD) or partial (YYYY-MM) — only accept valid months 01–12.
+  // Projection windows like "2024-2034" do NOT match (2034 is not a valid month).
+  if (/^\d{4}-(0[1-9]|1[0-2])(-\d{2})?$/.test(asOf)) {
     const [year, monthStr] = asOf.split("-");
     const month = parseInt(monthStr, 10) - 1;
     const date = new Date(Date.UTC(parseInt(year, 10), month, 1));
@@ -29,7 +31,7 @@ function formatAsOf(asOf: string): string {
       timeZone: "UTC",
     });
   }
-  // Plain year string ("2025")
+  // Plain year string ("2025"), FY label ("FY 2025"), or projection window ("2024-2034") — display as-is.
   return asOf;
 }
 

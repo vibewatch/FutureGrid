@@ -19,6 +19,12 @@ function formatPct(value: number | null): string {
   return value == null ? "—" : `${value.toFixed(1)}%`;
 }
 
+/** Gap values are in percentage points (pp), not raw percentages. */
+function formatPp(value: number | null): string {
+  if (value == null) return "—";
+  return `${value >= 0 ? "+" : ""}${value.toFixed(1)}pp`;
+}
+
 function formatJobs(value: number): string {
   if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
   if (value >= 1_000) return `${Math.round(value / 1_000).toLocaleString()}K`;
@@ -163,7 +169,7 @@ export default function ExposureLensComparison({ comparison, leaders }: { compar
                 <p className="mt-1 text-xs text-zinc-500">{tooltip.point.sector}</p>
                 <div className="mt-2 space-y-1 text-xs">
                   {LENSES.map((lens) => <div key={lens} className="flex justify-between gap-4"><span className="text-zinc-500">{t(`lens_${lens}`)}</span><span className="font-semibold">{formatPct(tooltip.point?.[lens] ?? null)}</span></div>)}
-                  <div className="flex justify-between gap-4"><span className="text-zinc-500">{gapLabel}</span><span className="font-semibold">{formatPct(tooltip.point.gap)}</span></div>
+                  <div className="flex justify-between gap-4"><span className="text-zinc-500">{gapLabel}</span><span className="font-semibold">{formatPp(tooltip.point.gap)}</span></div>
                   <div className="flex justify-between gap-4"><span className="text-zinc-500">{t("labelEmployment")}</span><span className="font-semibold">{formatJobs(tooltip.point.employment)}</span></div>
                 </div>
                 <p className="mt-2 text-[10px] text-zinc-500">{t("tooltipClickCareer")}</p>
@@ -225,7 +231,7 @@ export default function ExposureLensComparison({ comparison, leaders }: { compar
                 <span className="grid grid-cols-[74px_1fr_44px] items-center gap-2 text-[11px] text-zinc-500"><span>{t("lens_capability")}</span><span className="h-2 rounded-full bg-zinc-200 dark:bg-zinc-800"><span className="block h-2 rounded-full bg-violet-500" style={{ width: barWidth(occupation.capability) }} /></span><span className="tabular-nums">{formatPct(occupation.capability)}</span></span>
                 <span className="grid grid-cols-[74px_1fr_44px] items-center gap-2 text-[11px] text-zinc-500"><span>{t("lens_usage")}</span><span className="h-2 rounded-full bg-zinc-200 dark:bg-zinc-800"><span className="block h-2 rounded-full bg-cyan-400" style={{ width: barWidth(occupation.usage) }} /></span><span className="tabular-nums">{formatPct(occupation.usage)}</span></span>
               </span>
-              <span className="text-right text-sm font-bold text-amber-600 dark:text-amber-300">{formatPct(occupation.gap)}</span>
+              <span className="text-right text-sm font-bold text-amber-600 dark:text-amber-300">{formatPp(occupation.gap)}</span>
             </button>
           ))}
         </div>

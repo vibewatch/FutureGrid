@@ -103,7 +103,24 @@
     "endpointDetails": "Endpoint/provider counts and endpoint-level maxima are aggregated from public model endpoint details when available.",
     "inferredFields": "provider is inferred from the model id prefix and display name; family is a heuristic grouping inferred from the model id/canonical slug.",
     "exclusions": "No #activity page scraping, no account usage/activity APIs, no management keys, and no private analytics endpoints are used.",
-    "caveats": "Catalog, pricing, availability, and endpoint routing fields describe OpenRouter's public API response at build time; no stable public global activity time-series was identified."
+    "caveats": "Catalog, pricing, availability, and endpoint routing fields describe OpenRouter's public API response at build time; no stable public global activity time-series was identified.",
+    "dataQualityNotes": {
+      "pricingNegativeOneSentinel": {
+        "affectedModels": [
+          "openrouter/auto",
+          "openrouter/bodybuilder",
+          "openrouter/fusion",
+          "openrouter/pareto-code"
+        ],
+        "affectedFields": [
+          "pricing.prompt",
+          "pricing.completion"
+        ],
+        "sentinel": -1,
+        "explanation": "OpenRouter returns pricing = -1 for dynamic/meta-router models whose actual cost depends on the downstream model selected at inference time. The -1 value is a sentinel indicating \"price unavailable/dynamic\" — it is NOT a real cost and must not be treated as zero or averaged with other models.",
+        "handling": "Preserve -1 as-is; UI surfaces should display \"dynamic pricing\" or \"varies\" rather than a numeric cost."
+      }
+    }
   },
   "models": [
     {

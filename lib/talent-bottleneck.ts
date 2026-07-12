@@ -367,7 +367,7 @@ function toSnapshotSignal(career: CareerInsight): SnapshotSignal {
     socCode: career.occupationCode,
     title: career.occupationName,
     sector: career.sectorName,
-    aiExposure: career.automationProbability,
+    aiExposure: career.aiExposure,
     automationRisk: career.automationRisk,
     medianSalary: career.medianSalary > 0 ? career.medianSalary : null,
   };
