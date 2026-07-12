@@ -11,6 +11,7 @@ import nextEnv from "@next/env";
 import ExcelJS from "exceljs";
 import { deriveMeta } from "./lib/meta.mjs";
 import { buildSocCrosswalk as buildSocCrosswalkShared } from "./lib/soc-crosswalk.mjs";
+import { validateAISignalsFile } from "./lib/validate.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -86,6 +87,7 @@ function writeJson(filename, value) {
   if (value && typeof value === "object" && !Array.isArray(value) && !value.meta) {
     value.meta = deriveMeta(value);
   }
+  validateAISignalsFile(value, filename);
   writeFileSync(fullPath, `${JSON.stringify(value, null, 2)}\n`);
   console.log(`  wrote data/${filename}`);
 }

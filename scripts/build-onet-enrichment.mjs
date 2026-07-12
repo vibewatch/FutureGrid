@@ -12,6 +12,7 @@ import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
 import occupationSnapshot from "../data/occupation-snapshot.json" with { type: "json" };
 import { deriveMeta } from "./lib/meta.mjs";
+import { validateOnetEnrichment } from "./lib/validate.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -261,6 +262,7 @@ async function main() {
   };
 
   output.meta = deriveMeta(output);
+  validateOnetEnrichment(output);
   writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, 2) + "\n");
   console.log(`✓ Written ${OUTPUT_FILE}`);
 }

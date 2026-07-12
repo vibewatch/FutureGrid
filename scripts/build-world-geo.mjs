@@ -15,6 +15,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { feature as topoFeature } from "topojson-client";
 import { buildMeta } from "./lib/meta.mjs";
+import { validateWorldGeo } from "./lib/validate.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -108,6 +109,7 @@ async function main() {
     }),
     features,
   };
+  validateWorldGeo(out);
   const outJson = JSON.stringify(out);
   writeFileSync(path.join(DATA_DIR, "world-countries.geo.json"), outJson);
   writeFileSync(path.join(PUBLIC_DIR, "world-countries.geo.json"), outJson);

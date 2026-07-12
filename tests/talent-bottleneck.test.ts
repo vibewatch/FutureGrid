@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import {
   getTalentBottleneckData,
@@ -132,6 +132,68 @@ describe("getTalentBottleneckData", () => {
     expect(wording).toMatch(/score is not proof of shortage\/causality/i);
     expect(wording).toMatch(/job postings are proxy\/seed-derived where applicable/i);
     expect(wording).toMatch(/descriptive/i);
+  });
+});
+
+// ── aiExposure semantic-field regression ──────────────────────────────────────
+// This test uses a controlled mock to distinguish career.aiExposure from
+// career.automationProbability. If toSnapshotSignal reverts to using
+// automationProbability, the row's aiExposure will equal 0.99 instead of 0.42.
+
+describe("getTalentBottleneckData aiExposure field regression", () => {
+  it("uses career.aiExposure, not career.automationProbability, for row.aiExposure", async () => {
+    // Build a fixture where aiExposure and automationProbability are distinct.
+    const FIXTURE_SOC = "99-9999";
+    const DISTINCT_AI_EXPOSURE = 0.42;
+    const DISTINCT_AUTOMATION_PROB = 0.99;
+
+    // Mock generateAllCareerInsights to return one controlled career.
+
+    vi.spyOn(
+      await import("@/lib/data"),
+      "generateAllCareerInsights",
+    ).mockReturnValue([
+      {
+        occupationCode: FIXTURE_SOC,
+        occupationName: "Test Occupation",
+        sectorName: "Test Sector",
+        automationRisk: "Medium",
+        aiExposure: DISTINCT_AI_EXPOSURE,
+        automationProbability: DISTINCT_AUTOMATION_PROB,
+        growthRate: null,
+        growthWindow: null,
+        medianSalary: 50000,
+        totalEmployment: 1000,
+        projectedOpenings: null,
+        outlook: "Average",
+        skills: [],
+        employmentHistory: null,
+        wageHistory: null,
+      },
+    ]);
+
+    try {
+      const { rows } = getTalentBottleneckData();
+      const testRow = rows.find((r) => r.socCode === FIXTURE_SOC);
+
+      expect(
+        testRow,
+        "Mocked SOC code must appear in talent bottleneck rows",
+      ).toBeDefined();
+
+      expect(
+        testRow?.aiExposure,
+        `row.aiExposure must equal career.aiExposure (${DISTINCT_AI_EXPOSURE}), ` +
+          `not career.automationProbability (${DISTINCT_AUTOMATION_PROB})`,
+      ).toBeCloseTo(DISTINCT_AI_EXPOSURE, 5);
+
+      expect(
+        testRow?.aiExposure,
+        "row.aiExposure must NOT equal career.automationProbability",
+      ).not.toBeCloseTo(DISTINCT_AUTOMATION_PROB, 5);
+    } finally {
+      vi.restoreAllMocks();
+    }
   });
 });
 

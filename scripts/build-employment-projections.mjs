@@ -113,6 +113,7 @@ async function main() {
       rowsWithProjectedOpenings: rows.filter(
         (row) => typeof row.projectedOpenings === "number"
       ).length,
+      dataQualityNotes: buildDataQualityNotes(rows),
     },
     methodology: {
       provenanceDecision:
@@ -208,6 +209,22 @@ function parseCsv(text) {
     (currentRow) =>
       currentRow.length > 1 || currentRow.some((value) => value.trim().length > 0)
   );
+}
+
+function buildDataQualityNotes(rows) {
+  const nullOpeningsCount = rows.filter(
+    (row) => row.projectedOpenings === null
+  ).length;
+  return {
+    nullProjectedOpenings: {
+      count: nullOpeningsCount,
+      explanation: `The BLS Employment Projections source does not publish annual-openings estimates for all SOC codes. ${nullOpeningsCount} occupations have projectedOpenings = null because no matching BLS-EP openings row exists. These nulls are intentional and represent genuine data unavailability — they must not be imputed or converted to zero.`,
+      affectedField: "projectedOpenings",
+      sentinel: null,
+      handling:
+        'Preserve null; UI surfaces should display "not available" rather than omitting the field or showing 0.',
+    },
+  };
 }
 
 function buildSummary(rows) {

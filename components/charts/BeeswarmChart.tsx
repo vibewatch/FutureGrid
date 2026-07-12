@@ -46,6 +46,7 @@ const EMPTY_ITEM: CareerInsight = {
   occupationCode: "",
   occupationName: "",
   automationRisk: "Low",
+  aiExposure: 0,
   automationProbability: 0,
   growthRate: null,
   medianSalary: 0,

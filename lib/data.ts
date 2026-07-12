@@ -8,6 +8,9 @@ export interface CareerInsight {
   occupationCode: string;
   occupationName: string;
   automationRisk: "Low" | "Medium" | "High" | "Very High";
+  /** Semantic AI exposure score (0–1) from the occupation snapshot. */
+  aiExposure: number;
+  /** Legacy automation-probability score (0–1). Kept for compatibility; do not use as a substitute for aiExposure. */
   automationProbability: number;
   growthRate: number | null;
   /** Window (years) growthRate was derived from when computed from OEWS employment history. */
@@ -55,6 +58,7 @@ export function generateAllCareerInsights(): CareerInsight[] {
         occupationCode: row.socCode,
         occupationName: row.title,
         automationRisk: row.automationRisk,
+        aiExposure: row.aiExposure,
         automationProbability: row.automationProbability,
         growthRate: row.growthRate,
         growthWindow: row.growthWindow ?? null,

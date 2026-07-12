@@ -174,6 +174,8 @@ const NON_MACHINE_READABLE_STATUSES = new Set(["manual-only", "pdf-only", "unava
 const VALID_SOURCE_TYPES = new Set(["api", "csv", "html", "json", "none", "pdf", "xls", "xlsx", "xml"]);
 const MAX_NOTICES_PER_STATE = 2_500;
 const MIN_WARN_NOTICE_DATE = "2010-01-01";
+// Upper bound: current_year + 2 (WARN horizon documented in issue #116)
+const MAX_WARN_EFFECTIVE_DATE = `${new Date().getUTCFullYear() + 2}-12-31`;
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const ISO_MONTH = /^\d{4}-\d{2}$/;
 const TIMESTAMPED_VA_CSV_URL = /virginiaworks\.gov\/warn_notices_\d+\.csv(?:$|[?#])/i;
@@ -277,6 +279,7 @@ function expectParserConfidence(value: unknown, label: string): void {
 function expectPlausibleWarnDate(value: string, label: string): void {
   expect(value, label).toMatch(ISO_DATE);
   expect(value >= MIN_WARN_NOTICE_DATE, `${label} should not predate ${MIN_WARN_NOTICE_DATE}`).toBe(true);
+  expect(value <= MAX_WARN_EFFECTIVE_DATE, `${label} should not exceed ${MAX_WARN_EFFECTIVE_DATE} (current_year + 2 horizon)`).toBe(true);
 }
 
 function expectPositiveInteger(value: number, label: string): void {

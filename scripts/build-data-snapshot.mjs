@@ -13,7 +13,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
 import { feature as topoFeature } from "topojson-client";
-import { validateOccupationSnapshot } from "./lib/validate.mjs";
+import { validateOccupationSnapshot, validateCountryExposure, validateSources, validateWorldGeo } from "./lib/validate.mjs";
 import { buildMeta, deriveMeta } from "./lib/meta.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -574,6 +574,7 @@ async function buildWorldGeo({ DATA_DIR: dataDir, PUBLIC_DIR: publicDir, CACHE_D
     features,
   };
   const outJson = JSON.stringify(out);
+  validateWorldGeo(out);
   writeFileSync(path.join(dataDir, "world-countries.geo.json"), outJson);
   writeFileSync(path.join(publicDir, "world-countries.geo.json"), outJson);
   console.log(`✓ Written world-countries.geo.json (${features.length} features) → data/ + public/`);
@@ -1090,11 +1091,13 @@ async function main() {
     }),
     data: countryExposure,
   };
+  validateCountryExposure(countryDataset);
   writeFileSync(countryOut, JSON.stringify(countryDataset, null, 2));
   console.log(`✓ Written ${countryOut} (${countryExposure.length} countries)`);
 
   const sourcesOut = path.join(DATA_DIR, "sources.json");
   sources.meta = deriveMeta(sources);
+  validateSources(sources);
   writeFileSync(sourcesOut, JSON.stringify(sources, null, 2));
   console.log(`✓ Written ${sourcesOut}`);
 

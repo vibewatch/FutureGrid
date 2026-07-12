@@ -32,6 +32,12 @@ function fmtPct(v: number | null): string {
   return `${v >= 0 ? "+" : ""}${v.toFixed(2)}%`;
 }
 
+/** Gap values are in percentage points (pp), not raw percentages. */
+function fmtGap(v: number | null): string {
+  if (v == null) return "—";
+  return `${v >= 0 ? "+" : ""}${v.toFixed(2)}pp`;
+}
+
 function fmtJobs(v: number): string {
   if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1)}M`;
   if (v >= 1_000) return `${Math.round(v / 1_000).toLocaleString()}K`;
@@ -292,7 +298,7 @@ export default function ExposureOutcomeMatrix({
       .attr(
         "aria-label",
         (p) =>
-          `${p.title} (${p.code}): ${xAxisLabel} ${fmtPct(p.gap)}, ${yAxisLabel} ${fmtPct(metric === "employment" ? p.empGrowth : p.wageGrowth)}`,
+          `${p.title} (${p.code}): ${xAxisLabel} ${fmtGap(p.gap)}, ${yAxisLabel} ${fmtPct(metric === "employment" ? p.empGrowth : p.wageGrowth)}`,
       )
       .style("cursor", "pointer");
 
@@ -431,6 +437,9 @@ export default function ExposureOutcomeMatrix({
         label={t("matrixAria")}
         summary={
           <table>
+            <caption className="sr-only">
+              {t("matrixTableTruncationCaption", { n: String(matrix.points.length) })}
+            </caption>
             <thead>
               <tr>
                 <th scope="col">{t("matrixTableHeaderTitle")}</th>
@@ -445,7 +454,7 @@ export default function ExposureOutcomeMatrix({
                 <tr key={p.code}>
                   <td>{p.title}</td>
                   <td>{p.code}</td>
-                  <td>{fmtPct(p.gap)}</td>
+                  <td>{fmtGap(p.gap)}</td>
                   <td>{fmtPct(p.empGrowth)}</td>
                   <td>{fmtPct(p.wageGrowth)}</td>
                 </tr>
@@ -536,7 +545,7 @@ export default function ExposureOutcomeMatrix({
                 <div className="flex justify-between gap-4">
                   <span className="text-zinc-500">{t("gapLabel")}</span>
                   <span className="font-bold tabular-nums text-amber-600 dark:text-amber-300">
-                    {fmtPct(tooltip.point.gap)}
+                    {fmtGap(tooltip.point.gap)}
                   </span>
                 </div>
               </div>
@@ -737,7 +746,7 @@ export default function ExposureOutcomeMatrix({
                 <span>
                   {t("gapLabel")}:{" "}
                   <span className="font-medium text-zinc-700 dark:text-zinc-300">
-                    {fmtPct(p.gap)}
+                    {fmtGap(p.gap)}
                   </span>
                 </span>
                 <span>

@@ -11,6 +11,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
 import { deriveMeta } from "./lib/meta.mjs";
+import { validateAIUsageProxies } from "./lib/validate.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -702,6 +703,7 @@ async function main() {
       url: "https://github.com/huangyingting/FutureGrid",
     },
   });
+  validateAIUsageProxies(dataset);
   writeFileSync(OUTPUT_FILE, JSON.stringify(dataset, null, 2) + "\n");
   console.log(`✓ Written ${OUTPUT_FILE}`);
   console.log(`  Enterprise sections: ${dataset.enterpriseAdoptionMetrics.length}`);

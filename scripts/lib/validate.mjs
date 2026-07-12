@@ -129,9 +129,20 @@ const REQUIRED_LIVE_WARN_STATES = [
 ];
 
 /**
+ * Maximum plausible WARN effective date: current_year + 2.
+ * WARN Act requires 60-day notice; legitimate near-future layoffs may be filed
+ * months ahead. Beyond current_year + 2 is a data-entry or parsing error.
+ * Horizon documented in issue #116.
+ */
+const MAX_PLAUSIBLE_WARN_EFFECTIVE_YEAR = new Date().getUTCFullYear() + 2;
+const MAX_PLAUSIBLE_WARN_EFFECTIVE_DATE = `${MAX_PLAUSIBLE_WARN_EFFECTIVE_YEAR}-12-31`;
+const MIN_PLAUSIBLE_WARN_DATE = "2010-01-01";
+
+/**
  * Validate data/warn-notices.json.
  * Current committed file: 12,527 notices, 51 coverageStates, 16 live states.
  * Thresholds set at ≈80 % of current values.
+ * Also enforces date plausibility upper bound (current_year + 2).
  * @param {Record<string, unknown>} data
  */
 export function validateWarnNotices(data) {
@@ -147,6 +158,30 @@ export function validateWarnNotices(data) {
     .filter((s) => s.sourceStatus === "live")
     .map((s) => s.state);
   assertLiveStates(liveStates, REQUIRED_LIVE_WARN_STATES, "warn-notices");
+
+  // Upper-bound date plausibility: no effectiveDate may exceed current_year + 2
+  const absurdDates = data.notices.filter(
+    (n) => n.effectiveDate && n.effectiveDate > MAX_PLAUSIBLE_WARN_EFFECTIVE_DATE
+  );
+  if (absurdDates.length > 0) {
+    const examples = absurdDates.slice(0, 3).map(
+      (n) => `${n.company ?? "?"} (${n.effectiveDate})`
+    ).join("; ");
+    throw new Error(
+      `[validate] warn-notices: ${absurdDates.length} notice(s) have effectiveDate beyond ` +
+      `${MAX_PLAUSIBLE_WARN_EFFECTIVE_DATE} (max plausible horizon = current_year + 2): ${examples}`
+    );
+  }
+
+  // Lower-bound date plausibility
+  const ancientDates = data.notices.filter(
+    (n) => n.effectiveDate && n.effectiveDate < MIN_PLAUSIBLE_WARN_DATE
+  );
+  if (ancientDates.length > 0) {
+    throw new Error(
+      `[validate] warn-notices: ${ancientDates.length} notice(s) have effectiveDate before ${MIN_PLAUSIBLE_WARN_DATE}`
+    );
+  }
 }
 
 /**
@@ -1457,6 +1492,378 @@ export function validateProvenance(registry, opts = {}) {
       throw new Error(
         `[validate] provenance: registry is missing dataset(s): ${missing.join(", ")}`
       );
+    }
+  }
+}
+
+// ─── Validators for previously ungated builders (issue #116) ──────────────────
+
+/**
+ * Validate data/ai-frontier.json.
+ * Epoch AI notable models dataset with compute/cost/power trends.
+ * @param {Record<string, unknown>} data
+ */
+export function validateAIFrontier(data) {
+  assertFields(
+    data,
+    ["generatedAt", "source", "counts", "models", "aggregates", "caveats"],
+    "ai-frontier"
+  );
+  assertProvenance(data, "ai-frontier");
+  assertMinRows(data.models, 100, "ai-frontier.models");
+  if (!data.source || typeof data.source !== "object") {
+    throw new Error("[validate] ai-frontier: missing source object");
+  }
+  if (!data.aggregates || typeof data.aggregates !== "object") {
+    throw new Error("[validate] ai-frontier: missing aggregates object");
+  }
+  if (!Array.isArray(data.caveats) || data.caveats.length === 0) {
+    throw new Error("[validate] ai-frontier: caveats must be a non-empty array");
+  }
+  const counts = data.counts;
+  if (!counts || typeof counts.totalRows !== "number" || counts.totalRows < 100) {
+    throw new Error("[validate] ai-frontier: counts.totalRows must be >= 100");
+  }
+}
+
+/**
+ * Validate data/ai-usage-proxies.json.
+ * Supplemental AI usage/adoption proxy metrics.
+ * @param {Record<string, unknown>} data
+ */
+export function validateAIUsageProxies(data) {
+  assertFields(
+    data,
+    ["generatedAt", "scope", "caveat", "enterpriseAdoptionMetrics", "openModelDownloadProxies"],
+    "ai-usage-proxies"
+  );
+  assertProvenance(data, "ai-usage-proxies");
+  if (typeof data.scope !== "string" || data.scope.length === 0) {
+    throw new Error("[validate] ai-usage-proxies: scope must be a non-empty string");
+  }
+  if (typeof data.caveat !== "string" || data.caveat.length === 0) {
+    throw new Error("[validate] ai-usage-proxies: caveat must be a non-empty string");
+  }
+  if (!Array.isArray(data.enterpriseAdoptionMetrics) || data.enterpriseAdoptionMetrics.length === 0) {
+    throw new Error("[validate] ai-usage-proxies: enterpriseAdoptionMetrics must be a non-empty array");
+  }
+  if (!Array.isArray(data.openModelDownloadProxies) || data.openModelDownloadProxies.length === 0) {
+    throw new Error("[validate] ai-usage-proxies: openModelDownloadProxies must be a non-empty array");
+  }
+}
+
+/**
+ * Validate data/global-ai-metrics.json.
+ * Multi-source global AI readiness/diffusion metrics.
+ * @param {Record<string, unknown>} data
+ */
+export function validateGlobalMetrics(data) {
+  assertFields(
+    data,
+    ["generatedAt", "sources", "metrics"],
+    "global-ai-metrics"
+  );
+  assertProvenance(data, "global-ai-metrics");
+  if (!Array.isArray(data.sources) || data.sources.length === 0) {
+    throw new Error("[validate] global-ai-metrics: sources must be a non-empty array");
+  }
+  const metrics = data.metrics;
+  if (!metrics || typeof metrics !== "object" || Array.isArray(metrics)) {
+    throw new Error("[validate] global-ai-metrics: metrics must be a non-null object");
+  }
+  if (!metrics.diffusion || typeof metrics.diffusion !== "object") {
+    throw new Error("[validate] global-ai-metrics: metrics.diffusion must be a non-null object");
+  }
+  if (Object.keys(metrics.diffusion).length < 20) {
+    throw new Error("[validate] global-ai-metrics: metrics.diffusion must have >= 20 countries");
+  }
+}
+
+/**
+ * Validate data/market-ai-signals.json.
+ * Sector ETF market sensitivity analysis.
+ * @param {Record<string, unknown>} data
+ */
+export function validateMarketSignals(data) {
+  assertFields(
+    data,
+    ["generatedAt", "source", "methodology", "benchmark", "sectors", "summary"],
+    "market-ai-signals"
+  );
+  assertProvenance(data, "market-ai-signals");
+  assertMinRows(data.sectors, 8, "market-ai-signals.sectors");
+  if (!data.benchmark || typeof data.benchmark !== "object") {
+    throw new Error("[validate] market-ai-signals: benchmark must be an object");
+  }
+  if (!data.summary || typeof data.summary !== "object") {
+    throw new Error("[validate] market-ai-signals: summary must be an object");
+  }
+  // Sector names must be unique
+  const sectorNames = new Set();
+  for (const sector of data.sectors) {
+    if (!sector.name || typeof sector.name !== "string") {
+      throw new Error("[validate] market-ai-signals: each sector must have a non-empty name");
+    }
+    if (sectorNames.has(sector.name)) {
+      throw new Error(`[validate] market-ai-signals: duplicate sector name: ${sector.name}`);
+    }
+    sectorNames.add(sector.name);
+  }
+}
+
+/**
+ * Validate data/onet-enrichment.json.
+ * O*NET enrichment data for priority occupations.
+ * @param {Record<string, unknown>} data
+ */
+export function validateOnetEnrichment(data) {
+  assertFields(
+    data,
+    ["generatedAt", "source", "coverage", "occupations"],
+    "onet-enrichment"
+  );
+  assertProvenance(data, "onet-enrichment");
+  if (!data.source || typeof data.source !== "object") {
+    throw new Error("[validate] onet-enrichment: missing source object");
+  }
+  if (!data.coverage || typeof data.coverage !== "object") {
+    throw new Error("[validate] onet-enrichment: missing coverage object");
+  }
+  const occupations = data.occupations;
+  if (!occupations || typeof occupations !== "object" || Array.isArray(occupations)) {
+    throw new Error("[validate] onet-enrichment: occupations must be a non-null object");
+  }
+  const enriched = Object.keys(occupations).length;
+  if (enriched < 50) {
+    throw new Error(
+      `[validate] onet-enrichment: too few enriched occupations — got ${enriched}, need at least 50`
+    );
+  }
+}
+
+/**
+ * Validate data/world-countries.geo.json.
+ * Natural Earth 110m country polygons in GeoJSON format.
+ * @param {Record<string, unknown>} data
+ */
+export function validateWorldGeo(data) {
+  if (data.type !== "FeatureCollection") {
+    throw new Error("[validate] world-geo: type must be FeatureCollection");
+  }
+  if (!Array.isArray(data.features) || data.features.length < 170) {
+    throw new Error(
+      `[validate] world-geo: expected >= 170 features, got ${Array.isArray(data.features) ? data.features.length : 0}`
+    );
+  }
+  // ISO3 uniqueness
+  const ids = new Set();
+  for (const f of data.features) {
+    if (!f.id || typeof f.id !== "string" || f.id.length !== 3) {
+      throw new Error(`[validate] world-geo: feature missing valid 3-letter id: ${f.id}`);
+    }
+    if (ids.has(f.id)) {
+      throw new Error(`[validate] world-geo: duplicate ISO3 feature id: ${f.id}`);
+    }
+    ids.add(f.id);
+  }
+  // Required countries
+  const required = ["CHN", "USA", "IND", "BRA"];
+  for (const iso of required) {
+    if (!ids.has(iso)) {
+      throw new Error(`[validate] world-geo: missing required country: ${iso}`);
+    }
+  }
+}
+
+/**
+ * Validate output of build-ai-signals.mjs individual files.
+ * Checks the llm-exposure.json, ai-demand.json, ai-layoffs.json,
+ * aioe-exposure.json, automation-baseline.json shapes.
+ * @param {Record<string, unknown>} data
+ * @param {string} filename
+ */
+export function validateAISignalsFile(data, filename) {
+  const name = `ai-signals:${filename}`;
+  assertProvenance(data, name);
+  if (!data.source || typeof data.source !== "object") {
+    throw new Error(`[validate] ${name}: missing source object`);
+  }
+
+  // File-specific shape validation
+  switch (filename) {
+    case "llm-exposure.json": {
+      if (!data.bySoc || typeof data.bySoc !== "object" || Array.isArray(data.bySoc)) {
+        throw new Error(`[validate] ${name}: bySoc must be a non-null object`);
+      }
+      if (Object.keys(data.bySoc).length < 100) {
+        throw new Error(`[validate] ${name}: bySoc must have >= 100 entries`);
+      }
+      for (const [soc, value] of Object.entries(data.bySoc)) {
+        if (!/^\d{2}-\d{4}$/.test(soc)) {
+          throw new Error(`[validate] ${name}: invalid SOC key "${soc}"`);
+        }
+        if (typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > 1) {
+          throw new Error(`[validate] ${name}: bySoc["${soc}"] must be a number in [0,1]`);
+        }
+      }
+      break;
+    }
+
+    case "aioe-exposure.json": {
+      if (!data.bySoc || typeof data.bySoc !== "object" || Array.isArray(data.bySoc)) {
+        throw new Error(`[validate] ${name}: bySoc must be a non-null object`);
+      }
+      if (Object.keys(data.bySoc).length < 100) {
+        throw new Error(`[validate] ${name}: bySoc must have >= 100 entries`);
+      }
+      for (const [soc, value] of Object.entries(data.bySoc)) {
+        if (!/^\d{2}-\d{4}$/.test(soc)) {
+          throw new Error(`[validate] ${name}: invalid SOC key "${soc}"`);
+        }
+        if (typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > 1) {
+          throw new Error(`[validate] ${name}: bySoc["${soc}"] must be a number in [0,1]`);
+        }
+      }
+      if (typeof data.note !== "string" || data.note.length === 0) {
+        throw new Error(`[validate] ${name}: note must be a non-empty string`);
+      }
+      break;
+    }
+
+    case "automation-baseline.json": {
+      if (!data.bySoc || typeof data.bySoc !== "object" || Array.isArray(data.bySoc)) {
+        throw new Error(`[validate] ${name}: bySoc must be a non-null object`);
+      }
+      if (Object.keys(data.bySoc).length < 100) {
+        throw new Error(`[validate] ${name}: bySoc must have >= 100 entries`);
+      }
+      for (const [soc, value] of Object.entries(data.bySoc)) {
+        if (!/^\d{2}-\d{4}$/.test(soc)) {
+          throw new Error(`[validate] ${name}: invalid SOC key "${soc}"`);
+        }
+        if (typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > 1) {
+          throw new Error(`[validate] ${name}: bySoc["${soc}"] must be a number in [0,1]`);
+        }
+      }
+      if (typeof data.note !== "string" || data.note.length === 0) {
+        throw new Error(`[validate] ${name}: note must be a non-empty string`);
+      }
+      break;
+    }
+
+    case "ai-demand.json": {
+      if (!Array.isArray(data.countries) || data.countries.length < 1) {
+        throw new Error(`[validate] ${name}: countries must be a non-empty array`);
+      }
+      if (!Array.isArray(data.series) || data.series.length < 1) {
+        throw new Error(`[validate] ${name}: series must be a non-empty array`);
+      }
+      for (const entry of data.series) {
+        if (typeof entry.country !== "string" || !entry.country) {
+          throw new Error(`[validate] ${name}: series entry missing country`);
+        }
+        if (!Array.isArray(entry.points) || entry.points.length < 6) {
+          throw new Error(
+            `[validate] ${name}: series entry "${entry.country}" must have >= 6 monthly points`
+          );
+        }
+        for (const point of entry.points) {
+          if (!/^\d{4}-\d{2}$/.test(point.month)) {
+            throw new Error(
+              `[validate] ${name}: series point month must be YYYY-MM, got "${point.month}"`
+            );
+          }
+        }
+      }
+      if (!Array.isArray(data.latest) || data.latest.length < 1) {
+        throw new Error(`[validate] ${name}: latest must be a non-empty array`);
+      }
+      break;
+    }
+
+    case "ai-layoffs.json": {
+      if (!Array.isArray(data.annual) || data.annual.length < 1) {
+        throw new Error(`[validate] ${name}: annual must be a non-empty array`);
+      }
+      for (const entry of data.annual) {
+        if (typeof entry.year !== "number" || !Number.isFinite(entry.year)) {
+          throw new Error(`[validate] ${name}: annual entry missing valid year`);
+        }
+        if (typeof entry.cuts !== "number" || !Number.isFinite(entry.cuts) || entry.cuts < 0) {
+          throw new Error(`[validate] ${name}: annual entry missing valid cuts count`);
+        }
+      }
+      if (!Array.isArray(data.monthly) || data.monthly.length < 1) {
+        throw new Error(`[validate] ${name}: monthly must be a non-empty array`);
+      }
+      for (const entry of data.monthly) {
+        if (!/^\d{4}-\d{2}$/.test(entry.month)) {
+          throw new Error(
+            `[validate] ${name}: monthly entry month must be YYYY-MM, got "${entry.month}"`
+          );
+        }
+        if (typeof entry.cuts !== "number" || !Number.isFinite(entry.cuts) || entry.cuts < 0) {
+          throw new Error(`[validate] ${name}: monthly entry missing valid cuts count`);
+        }
+      }
+      if (typeof data.note !== "string" || data.note.length === 0) {
+        throw new Error(`[validate] ${name}: note must be a non-empty string`);
+      }
+      break;
+    }
+
+    default:
+      throw new Error(
+        `[validate] ${name}: unknown AI signals filename "${filename}"; expected one of: llm-exposure.json, aioe-exposure.json, automation-baseline.json, ai-demand.json, ai-layoffs.json`
+      );
+  }
+}
+
+/**
+ * Validate data/country-exposure.json.
+ * { meta, data } with ~195 country rows keyed by iso3.
+ * Thresholds: >= 150 countries (≈80 % of 195).
+ * @param {Record<string, unknown>} dataset
+ */
+export function validateCountryExposure(dataset) {
+  assertFields(dataset, ["meta", "data"], "country-exposure");
+  assertProvenance(dataset, "country-exposure");
+  assertMinRows(dataset.data, 150, "country-exposure.data");
+  if (dataset.data.length > 0) {
+    assertFields(
+      dataset.data[0],
+      ["iso3", "name"],
+      "country-exposure.data[0]"
+    );
+  }
+}
+
+/**
+ * Validate data/sources.json.
+ * Top-level keys: generatedAt, license, attribution, sources (array), note.
+ * Thresholds: >= 30 sources (≈80 % of 43).
+ * @param {Record<string, unknown>} data
+ */
+export function validateSources(data) {
+  assertFields(
+    data,
+    ["generatedAt", "license", "attribution", "sources", "note"],
+    "sources"
+  );
+  assertProvenance(data, "sources");
+  if (!Array.isArray(data.sources) || data.sources.length < 30) {
+    throw new Error(
+      `[validate] sources: expected >= 30 source entries, got ${Array.isArray(data.sources) ? data.sources.length : 0}`
+    );
+  }
+  // Each source must have name and publisher
+  for (let i = 0; i < data.sources.length; i++) {
+    const s = data.sources[i];
+    if (!s.name || typeof s.name !== "string") {
+      throw new Error(`[validate] sources[${i}]: missing or empty name`);
+    }
+    if (!s.publisher || typeof s.publisher !== "string") {
+      throw new Error(`[validate] sources[${i}]: missing or empty publisher`);
     }
   }
 }

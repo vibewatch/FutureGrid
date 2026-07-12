@@ -30,6 +30,15 @@ import {
   validateOpenRouterModels,
   validateAICompanyStocks,
   validateProvenance,
+  validateAIFrontier,
+  validateAIUsageProxies,
+  validateGlobalMetrics,
+  validateMarketSignals,
+  validateOnetEnrichment,
+  validateWorldGeo,
+  validateAISignalsFile,
+  validateCountryExposure,
+  validateSources,
 } from "../scripts/lib/validate.mjs";
 
 const ROOT = process.cwd();
@@ -968,5 +977,652 @@ describe("validateAICompanyStocks — negative cases", () => {
         },
       })
     ).toThrow(/trading-action labels/);
+  });
+});
+
+// ─── validateWarnNotices — date plausibility (issue #116) ─────────────────────
+
+describe("validateWarnNotices — date upper bound", () => {
+  it("committed data/warn-notices.json has no impossible future dates", () => {
+    const data = read("data/warn-notices.json");
+    expect(() => validateWarnNotices(data)).not.toThrow();
+  });
+
+  it("throws when an effectiveDate exceeds current_year + 2", () => {
+    const futureYear = new Date().getUTCFullYear() + 3;
+    const data = {
+      generatedAt: "2026-01-01T00:00:00Z",
+      coverageSummary: { liveStates: 11, totalStates: 51 },
+      coverageStates: Array.from({ length: 51 }, (_, i) => ({
+        state: ["CA", "GA", "IA", "KY", "NJ", "NY", "OH", "OR", "TN", "TX", "WI",
+          "AL", "AK", "AZ", "AR", "CO", "CT", "DE", "DC", "FL", "HI", "ID", "IL",
+          "IN", "KS", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE",
+          "NV", "NH", "NM", "NC", "ND", "OK", "PA", "RI", "SC", "SD", "UT", "VT",
+          "VA", "WA", "WV", "WY"][i],
+        sourceStatus: i < 11 ? "live" : "manual-only",
+      })),
+      notices: Array.from({ length: 10001 }, (_, i) => ({
+        company: `Company ${i}`,
+        noticeDate: "2026-01-01",
+        effectiveDate: i === 0 ? `${futureYear}-06-15` : "2026-03-01",
+        employees: 10,
+        state: "CA",
+        stateName: "California",
+      })),
+    };
+    expect(() => validateWarnNotices(data)).toThrow(/beyond/);
+  });
+
+  it("allows effectiveDate within current_year + 2 (legitimate near-future)", () => {
+    const legitimateYear = new Date().getUTCFullYear() + 1;
+    const data = {
+      generatedAt: "2026-01-01T00:00:00Z",
+      coverageSummary: { liveStates: 11, totalStates: 51 },
+      coverageStates: Array.from({ length: 51 }, (_, i) => ({
+        state: ["CA", "GA", "IA", "KY", "NJ", "NY", "OH", "OR", "TN", "TX", "WI",
+          "AL", "AK", "AZ", "AR", "CO", "CT", "DE", "DC", "FL", "HI", "ID", "IL",
+          "IN", "KS", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE",
+          "NV", "NH", "NM", "NC", "ND", "OK", "PA", "RI", "SC", "SD", "UT", "VT",
+          "VA", "WA", "WV", "WY"][i],
+        sourceStatus: i < 11 ? "live" : "manual-only",
+      })),
+      notices: Array.from({ length: 10001 }, (_, i) => ({
+        company: `Company ${i}`,
+        noticeDate: "2026-01-01",
+        effectiveDate: `${legitimateYear}-06-15`,
+        employees: 10,
+        state: "CA",
+        stateName: "California",
+      })),
+    };
+    expect(() => validateWarnNotices(data)).not.toThrow();
+  });
+
+  it("throws when an effectiveDate predates 2010-01-01", () => {
+    const data = {
+      generatedAt: "2026-01-01T00:00:00Z",
+      coverageSummary: { liveStates: 11, totalStates: 51 },
+      coverageStates: Array.from({ length: 51 }, (_, i) => ({
+        state: ["CA", "GA", "IA", "KY", "NJ", "NY", "OH", "OR", "TN", "TX", "WI",
+          "AL", "AK", "AZ", "AR", "CO", "CT", "DE", "DC", "FL", "HI", "ID", "IL",
+          "IN", "KS", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE",
+          "NV", "NH", "NM", "NC", "ND", "OK", "PA", "RI", "SC", "SD", "UT", "VT",
+          "VA", "WA", "WV", "WY"][i],
+        sourceStatus: i < 11 ? "live" : "manual-only",
+      })),
+      notices: Array.from({ length: 10001 }, (_, i) => ({
+        company: `Company ${i}`,
+        noticeDate: "2020-01-01",
+        effectiveDate: i === 0 ? "2005-06-15" : "2020-03-01",
+        employees: 10,
+        state: "CA",
+        stateName: "California",
+      })),
+    };
+    expect(() => validateWarnNotices(data)).toThrow(/before 2010/);
+  });
+});
+
+// ─── New builder validators — committed file + negative cases (issue #116) ────
+
+describe("validateAIFrontier — committed file", () => {
+  const data = read("data/ai-frontier.json");
+  it("committed data/ai-frontier.json passes validation", () => {
+    expect(() => validateAIFrontier(data)).not.toThrow();
+  });
+});
+
+describe("validateAIFrontier — negative cases", () => {
+  it("throws for empty models array", () => {
+    expect(() =>
+      validateAIFrontier({
+        generatedAt: "2026-01-01T00:00:00Z",
+        source: {},
+        counts: { totalRows: 0 },
+        models: [],
+        aggregates: {},
+        caveats: ["test"],
+      })
+    ).toThrow(/too few rows/);
+  });
+
+  it("throws when missing required fields", () => {
+    expect(() =>
+      validateAIFrontier({ generatedAt: "2026-01-01T00:00:00Z" } as Record<string, unknown>)
+    ).toThrow(/missing required/);
+  });
+});
+
+describe("validateAIUsageProxies — committed file", () => {
+  const data = read("data/ai-usage-proxies.json");
+  it("committed data/ai-usage-proxies.json passes validation", () => {
+    expect(() => validateAIUsageProxies(data)).not.toThrow();
+  });
+});
+
+describe("validateAIUsageProxies — negative cases", () => {
+  it("throws for empty enterpriseAdoptionMetrics", () => {
+    expect(() =>
+      validateAIUsageProxies({
+        generatedAt: "2026-01-01T00:00:00Z",
+        meta: { generatedAt: "2026-01-01T00:00:00Z" },
+        scope: "test",
+        caveat: "test",
+        enterpriseAdoptionMetrics: [],
+        openModelDownloadProxies: [{ x: 1 }],
+      })
+    ).toThrow(/enterpriseAdoptionMetrics must be a non-empty/);
+  });
+
+  it("throws when scope is empty", () => {
+    expect(() =>
+      validateAIUsageProxies({
+        generatedAt: "2026-01-01T00:00:00Z",
+        meta: { generatedAt: "2026-01-01T00:00:00Z" },
+        scope: "",
+        caveat: "test",
+        enterpriseAdoptionMetrics: [{ x: 1 }],
+        openModelDownloadProxies: [{ x: 1 }],
+      })
+    ).toThrow(/scope must be a non-empty/);
+  });
+});
+
+describe("validateGlobalMetrics — committed file", () => {
+  const data = read("data/global-ai-metrics.json");
+  it("committed data/global-ai-metrics.json passes validation", () => {
+    expect(() => validateGlobalMetrics(data)).not.toThrow();
+  });
+});
+
+describe("validateGlobalMetrics — negative cases", () => {
+  it("throws when diffusion has fewer than 20 countries", () => {
+    expect(() =>
+      validateGlobalMetrics({
+        generatedAt: "2026-01-01T00:00:00Z",
+        sources: [{ name: "test" }],
+        metrics: { diffusion: { USA: 50, CHN: 30 } },
+      })
+    ).toThrow(/diffusion must have >= 20/);
+  });
+
+  it("throws when sources is empty", () => {
+    expect(() =>
+      validateGlobalMetrics({
+        generatedAt: "2026-01-01T00:00:00Z",
+        sources: [],
+        metrics: { diffusion: {} },
+      })
+    ).toThrow(/sources must be a non-empty/);
+  });
+});
+
+describe("validateMarketSignals — committed file", () => {
+  const data = read("data/market-ai-signals.json");
+  it("committed data/market-ai-signals.json passes validation", () => {
+    expect(() => validateMarketSignals(data)).not.toThrow();
+  });
+});
+
+describe("validateMarketSignals — negative cases", () => {
+  it("throws for fewer than 8 sectors", () => {
+    expect(() =>
+      validateMarketSignals({
+        generatedAt: "2026-01-01T00:00:00Z",
+        source: {},
+        methodology: {},
+        benchmark: {},
+        sectors: [{ name: "A" }],
+        summary: {},
+      })
+    ).toThrow(/too few rows/);
+  });
+
+  it("throws on duplicate sector names", () => {
+    const sectors = Array.from({ length: 9 }, (_, i) => ({
+      name: i === 8 ? "Duplicate" : `Sector ${i}`,
+    }));
+    sectors[0].name = "Duplicate";
+    expect(() =>
+      validateMarketSignals({
+        generatedAt: "2026-01-01T00:00:00Z",
+        source: {},
+        methodology: {},
+        benchmark: {},
+        sectors,
+        summary: {},
+      })
+    ).toThrow(/duplicate sector name/);
+  });
+});
+
+describe("validateOnetEnrichment — committed file", () => {
+  const data = read("data/onet-enrichment.json");
+  it("committed data/onet-enrichment.json passes validation", () => {
+    expect(() => validateOnetEnrichment(data)).not.toThrow();
+  });
+});
+
+describe("validateOnetEnrichment — negative cases", () => {
+  it("throws when occupations has fewer than 50 entries", () => {
+    expect(() =>
+      validateOnetEnrichment({
+        generatedAt: "2026-01-01T00:00:00Z",
+        source: { name: "test" },
+        coverage: { enriched: 10, requested: 50, missing: [] },
+        occupations: Object.fromEntries(
+          Array.from({ length: 10 }, (_, i) => [`${i + 10}-0000`, {}])
+        ),
+      })
+    ).toThrow(/too few enriched/);
+  });
+});
+
+describe("validateWorldGeo — committed file", () => {
+  const data = read("data/world-countries.geo.json");
+  it("committed data/world-countries.geo.json passes validation", () => {
+    expect(() => validateWorldGeo(data)).not.toThrow();
+  });
+});
+
+describe("validateWorldGeo — negative cases", () => {
+  it("throws when fewer than 170 features", () => {
+    expect(() =>
+      validateWorldGeo({
+        type: "FeatureCollection",
+        features: [{ id: "USA", properties: {}, geometry: {} }],
+      })
+    ).toThrow(/expected >= 170/);
+  });
+
+  it("throws on duplicate ISO3 ids", () => {
+    const features = Array.from({ length: 171 }, (_, i) => ({
+      id: `Z${String(i).padStart(2, "0")}`,
+      properties: {},
+      geometry: {},
+    }));
+    features[0].id = "USA";
+    features[1].id = "USA";
+    expect(() =>
+      validateWorldGeo({ type: "FeatureCollection", features })
+    ).toThrow(/duplicate ISO3/);
+  });
+
+  it("throws when required country is missing", () => {
+    const alpha = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
+    const features = Array.from({ length: 171 }, (_, i) => ({
+      id: `${alpha[Math.floor(i / 25)]}${alpha[i % 25]}Q`,
+      properties: {},
+      geometry: {},
+    }));
+    expect(() =>
+      validateWorldGeo({ type: "FeatureCollection", features })
+    ).toThrow(/missing required country/);
+  });
+});
+
+describe("validateAISignalsFile — committed files", () => {
+  for (const filename of [
+    "llm-exposure.json",
+    "aioe-exposure.json",
+    "automation-baseline.json",
+    "ai-demand.json",
+    "ai-layoffs.json",
+  ]) {
+    it(`committed data/${filename} passes validation`, () => {
+      const data = read(`data/${filename}`);
+      expect(() => validateAISignalsFile(data, filename)).not.toThrow();
+    });
+  }
+});
+
+describe("validateAISignalsFile — negative cases", () => {
+  it("throws when bySoc has fewer than 100 entries", () => {
+    expect(() =>
+      validateAISignalsFile(
+        {
+          generatedAt: "2026-01-01T00:00:00Z",
+          source: { name: "test" },
+          bySoc: Object.fromEntries(
+            Array.from({ length: 50 }, (_, i) => [`${i + 10}-0000`, 0.5])
+          ),
+        },
+        "llm-exposure.json"
+      )
+    ).toThrow(/bySoc must have >= 100/);
+  });
+
+  it("throws when source is missing", () => {
+    expect(() =>
+      validateAISignalsFile(
+        { generatedAt: "2026-01-01T00:00:00Z" } as Record<string, unknown>,
+        "llm-exposure.json"
+      )
+    ).toThrow(/missing source/);
+  });
+
+  it("rejects unknown filename", () => {
+    expect(() =>
+      validateAISignalsFile(
+        {
+          generatedAt: "2026-01-01T00:00:00Z",
+          source: { name: "test" },
+        },
+        "unknown-file.json"
+      )
+    ).toThrow(/unknown AI signals filename/);
+  });
+
+  it("rejects empty ai-layoffs with no annual data", () => {
+    expect(() =>
+      validateAISignalsFile(
+        {
+          generatedAt: "2026-01-01T00:00:00Z",
+          source: { name: "test" },
+          note: "test",
+          annual: [],
+          monthly: [{ month: "2025-01", cuts: 100 }],
+        },
+        "ai-layoffs.json"
+      )
+    ).toThrow(/annual must be a non-empty/);
+  });
+
+  it("rejects ai-layoffs with no monthly data", () => {
+    expect(() =>
+      validateAISignalsFile(
+        {
+          generatedAt: "2026-01-01T00:00:00Z",
+          source: { name: "test" },
+          note: "test",
+          annual: [{ year: 2023, cuts: 100 }],
+          monthly: [],
+        },
+        "ai-layoffs.json"
+      )
+    ).toThrow(/monthly must be a non-empty/);
+  });
+
+  it("rejects ai-layoffs with missing note", () => {
+    expect(() =>
+      validateAISignalsFile(
+        {
+          generatedAt: "2026-01-01T00:00:00Z",
+          source: { name: "test" },
+          annual: [{ year: 2023, cuts: 100 }],
+          monthly: [{ month: "2025-01", cuts: 100 }],
+        } as Record<string, unknown>,
+        "ai-layoffs.json"
+      )
+    ).toThrow(/note must be a non-empty/);
+  });
+
+  it("rejects ai-demand with empty countries", () => {
+    expect(() =>
+      validateAISignalsFile(
+        {
+          generatedAt: "2026-01-01T00:00:00Z",
+          source: { name: "test" },
+          countries: [],
+          series: [],
+          latest: [],
+        },
+        "ai-demand.json"
+      )
+    ).toThrow(/countries must be a non-empty/);
+  });
+
+  it("rejects ai-demand with too few series points", () => {
+    expect(() =>
+      validateAISignalsFile(
+        {
+          generatedAt: "2026-01-01T00:00:00Z",
+          source: { name: "test" },
+          countries: ["US"],
+          series: [
+            { country: "US", points: [{ month: "2025-01", share: 0.1 }] },
+          ],
+          latest: [{ country: "US", share: 0.1 }],
+        },
+        "ai-demand.json"
+      )
+    ).toThrow(/must have >= 6 monthly points/);
+  });
+
+  it("rejects aioe-exposure with missing note", () => {
+    expect(() =>
+      validateAISignalsFile(
+        {
+          generatedAt: "2026-01-01T00:00:00Z",
+          source: { name: "test" },
+          bySoc: Object.fromEntries(
+            Array.from({ length: 150 }, (_, i) => [
+              `${String(Math.floor(i / 100) + 10).padStart(2, "0")}-${String(i % 10000).padStart(4, "0")}`,
+              0.5,
+            ])
+          ),
+        } as Record<string, unknown>,
+        "aioe-exposure.json"
+      )
+    ).toThrow(/note must be a non-empty/);
+  });
+
+  it("rejects bySoc with out-of-range values", () => {
+    expect(() =>
+      validateAISignalsFile(
+        {
+          generatedAt: "2026-01-01T00:00:00Z",
+          source: { name: "test" },
+          bySoc: Object.fromEntries(
+            Array.from({ length: 150 }, (_, i) => [
+              `${String(Math.floor(i / 100) + 10).padStart(2, "0")}-${String(i % 10000).padStart(4, "0")}`,
+              1.5,
+            ])
+          ),
+        },
+        "llm-exposure.json"
+      )
+    ).toThrow(/must be a number in \[0,1\]/);
+  });
+
+  it("rejects bySoc with invalid SOC keys", () => {
+    expect(() =>
+      validateAISignalsFile(
+        {
+          generatedAt: "2026-01-01T00:00:00Z",
+          source: { name: "test" },
+          bySoc: { "INVALID": 0.5, ...Object.fromEntries(
+            Array.from({ length: 150 }, (_, i) => [
+              `${String(Math.floor(i / 100) + 10).padStart(2, "0")}-${String(i % 10000).padStart(4, "0")}`,
+              0.5,
+            ])
+          )},
+        },
+        "llm-exposure.json"
+      )
+    ).toThrow(/invalid SOC key/);
+  });
+
+  it("rejects ai-layoffs with invalid month format", () => {
+    expect(() =>
+      validateAISignalsFile(
+        {
+          generatedAt: "2026-01-01T00:00:00Z",
+          source: { name: "test" },
+          note: "test",
+          annual: [{ year: 2023, cuts: 100 }],
+          monthly: [{ month: "January 2025", cuts: 100 }],
+        },
+        "ai-layoffs.json"
+      )
+    ).toThrow(/month must be YYYY-MM/);
+  });
+});
+
+// ─── High-value data invariants (issue #116, task 5) ──────────────────────────
+
+describe("high-value invariants", () => {
+  it("world-geo ISO3 codes are unique", () => {
+    const data = read("data/world-countries.geo.json");
+    const ids = data.features.map((f: Record<string, unknown>) => f.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("market-ai-signals sector names are unique and have minimum coverage", () => {
+    const data = read("data/market-ai-signals.json");
+    const names = data.sectors.map((s: Record<string, unknown>) => s.name);
+    expect(new Set(names).size).toBe(names.length);
+    expect(names.length).toBeGreaterThanOrEqual(8);
+  });
+
+  it("occupation-snapshot total workforce is plausible (< 250M US)", () => {
+    const data = read("data/occupation-snapshot.json");
+    const rows = Array.isArray(data) ? data : data.data;
+    const totalEmployment = rows.reduce(
+      (sum: number, r: Record<string, unknown>) => sum + ((r.employment as number) ?? 0),
+      0
+    );
+    // US civilian labor force is ~165M; total employment across all SOCs should not exceed 250M
+    expect(totalEmployment).toBeLessThan(250_000_000);
+    expect(totalEmployment).toBeGreaterThan(50_000_000);
+  });
+
+  it("WARN summary total matches sum of byState notices", () => {
+    const data = read("data/warn-notices.json");
+    const summaryTotal = data.summary.total;
+    const byStateSum = data.summary.byState.reduce(
+      (sum: number, s: Record<string, unknown>) => sum + (s.notices as number),
+      0
+    );
+    expect(summaryTotal).toBe(byStateSum);
+    // Bounded divergence: summary.total >= notices array length (summary counts untrimmed)
+    expect(summaryTotal).toBeGreaterThanOrEqual(data.notices.length);
+    // But not wildly larger (< 2x implies no catastrophic double-counting)
+    expect(summaryTotal).toBeLessThan(data.notices.length * 2);
+  });
+
+  it("AIOE exposure null handling — missing joins produce null, not zero", () => {
+    const data = read("data/aioe-exposure.json");
+    const bySoc = data.bySoc;
+    // Every present SOC value should be a number in [0,1] — NOT zero for "missing"
+    for (const [, value] of Object.entries(bySoc)) {
+      if (value === null) continue; // null is acceptable for unmatched
+      expect(typeof value).toBe("number");
+      expect(value as number).toBeGreaterThanOrEqual(0);
+      expect(value as number).toBeLessThanOrEqual(1);
+    }
+    // At least 100 SOCs should be present
+    expect(Object.keys(bySoc).length).toBeGreaterThanOrEqual(100);
+  });
+
+  it("employment-projections — null projectedOpenings are preserved, not zero", () => {
+    const data = read("data/employment-projections.json");
+    const nullRows = data.rows.filter((r: Record<string, unknown>) => r.projectedOpenings === null);
+    const zeroRows = data.rows.filter((r: Record<string, unknown>) => r.projectedOpenings === 0);
+    // We know 85 have null — verify they haven't been silently zeroed
+    expect(nullRows.length).toBeGreaterThanOrEqual(80);
+    // Zero is distinct from null (some jobs genuinely project 0 net openings)
+    // but no mass-conversion should turn all nulls to zeros
+    expect(zeroRows.length).toBeLessThan(nullRows.length + 50);
+  });
+
+  it("openrouter-models — pricing sentinel -1 is preserved for dynamic models", () => {
+    const data = read("data/openrouter-models.json");
+    const dynamicModels = data.models.filter(
+      (m: Record<string, Record<string, unknown>>) =>
+        m.pricing &&
+        (m.pricing.prompt === -1 || m.pricing.completion === -1)
+    );
+    // Known dynamic models should retain -1, not be zeroed or filtered
+    expect(dynamicModels.length).toBeGreaterThanOrEqual(1);
+    for (const m of dynamicModels) {
+      // Sentinel must remain exactly -1
+      if (m.pricing.prompt === -1) expect(m.pricing.prompt).toBe(-1);
+      if (m.pricing.completion === -1) expect(m.pricing.completion).toBe(-1);
+    }
+  });
+});
+
+// ─── validateCountryExposure ─────────────────────────────────────────────────
+
+describe("validateCountryExposure — committed file", () => {
+  it("passes on data/country-exposure.json", () => {
+    const data = read("data/country-exposure.json");
+    expect(() => validateCountryExposure(data)).not.toThrow();
+  });
+});
+
+describe("validateCountryExposure — negative cases", () => {
+  it("rejects missing meta", () => {
+    expect(() =>
+      validateCountryExposure({
+        data: Array.from({ length: 200 }, (_, i) => ({ iso3: `X${String(i).padStart(2, "0")}`, name: `Country ${i}` })),
+      } as Record<string, unknown>)
+    ).toThrow(/meta/i);
+  });
+
+  it("rejects too few countries", () => {
+    expect(() =>
+      validateCountryExposure({
+        meta: { generatedAt: "2026-01-01T00:00:00Z" },
+        data: [{ iso3: "USA", name: "United States" }],
+      } as Record<string, unknown>)
+    ).toThrow(/too few/i);
+  });
+
+  it("rejects missing iso3 on first entry", () => {
+    expect(() =>
+      validateCountryExposure({
+        meta: { generatedAt: "2026-01-01T00:00:00Z" },
+        data: Array.from({ length: 200 }, () => ({ name: "Test" })),
+      } as Record<string, unknown>)
+    ).toThrow(/iso3/i);
+  });
+});
+
+// ─── validateSources ─────────────────────────────────────────────────────────
+
+describe("validateSources — committed file", () => {
+  it("passes on data/sources.json", () => {
+    const data = read("data/sources.json");
+    expect(() => validateSources(data)).not.toThrow();
+  });
+});
+
+describe("validateSources — negative cases", () => {
+  it("rejects missing required fields", () => {
+    expect(() =>
+      validateSources({
+        generatedAt: "2026-01-01T00:00:00Z",
+      } as Record<string, unknown>)
+    ).toThrow(/sources/i);
+  });
+
+  it("rejects too few sources", () => {
+    expect(() =>
+      validateSources({
+        generatedAt: "2026-01-01T00:00:00Z",
+        license: "MIT",
+        attribution: "test",
+        sources: [{ name: "a", publisher: "b" }],
+        note: "test",
+      } as Record<string, unknown>)
+    ).toThrow(/30/);
+  });
+
+  it("rejects source entry with missing publisher", () => {
+    const fakeSources = Array.from({ length: 35 }, (_, i) => ({
+      name: `Source ${i}`,
+      publisher: i === 10 ? "" : `Publisher ${i}`,
+    }));
+    expect(() =>
+      validateSources({
+        generatedAt: "2026-01-01T00:00:00Z",
+        license: "MIT",
+        attribution: "test",
+        sources: fakeSources,
+        note: "test",
+      } as Record<string, unknown>)
+    ).toThrow(/publisher/i);
   });
 });

@@ -23,6 +23,7 @@ const career: CareerInsight = {
   occupationCode: "15-1252",
   occupationName: "Software Developers",
   automationRisk: "High",
+  aiExposure: 0.72,
   automationProbability: 0.42,
   growthRate: 1.2,
   growthWindow: { fromYear: 2019, toYear: 2025 },
