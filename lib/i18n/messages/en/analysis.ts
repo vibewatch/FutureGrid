@@ -68,6 +68,8 @@ export const analysisEn = {
   aiPressureMarketBreadthDetail: "Count of tracked companies with positive one-year adjusted-close returns.",
   aiPressureOpenMarket: "Jump to market sensitivity",
   aiPressureOpenStocks: "Jump to stock signals",
+  aiPressureFreshnessAsOf: "As of {date}",
+  aiPressureFreshnessSource: "Source: {source}",
   aiPressureGuardrailsTitle: "Read as descriptive, not causal",
   aiPressureGuardrail_openrouterCatalogProxy: "OpenRouter footprint is a provider/model catalog proxy, not usage, traffic, demand, or deployment geography.",
   aiPressureGuardrail_h1bLcaFilings: "H-1B values are certified Labor Condition Application filings, not visa approvals.",

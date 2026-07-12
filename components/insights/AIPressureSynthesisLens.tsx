@@ -109,6 +109,7 @@ export default function AIPressureSynthesisLens({
               title={t("aiPressureGlobalTitle")}
               badge={t("aiPressureGlobalBadge")}
               body={t("aiPressureGlobalBody")}
+              freshness={data.global.freshness}
               href={data.global.href}
               linkLabel={t("aiPressureOpenGlobal")}
               metrics={[
@@ -134,6 +135,7 @@ export default function AIPressureSynthesisLens({
               title={t("aiPressureTalentTitle")}
               badge={t("aiPressureTalentBadge")}
               body={t("aiPressureTalentBody")}
+              freshness={data.talent.freshness}
               href={data.talent.href}
               linkLabel={t("aiPressureOpenTalent")}
               metrics={[
@@ -168,6 +170,7 @@ export default function AIPressureSynthesisLens({
               title={t("aiPressureMarketTitle")}
               badge={t("aiPressureMarketBadge")}
               body={t("aiPressureMarketBody")}
+              freshness={data.market.freshness}
               href={data.market.href}
               linkLabel={t("aiPressureOpenMarket")}
               secondaryHref={data.market.stockHref}
@@ -225,6 +228,7 @@ function LaneCard({
   title,
   badge,
   body,
+  freshness,
   href,
   linkLabel,
   secondaryHref,
@@ -236,6 +240,10 @@ function LaneCard({
   title: string;
   badge: string;
   body: string;
+  freshness: {
+    asOf: string;
+    source: string;
+  };
   href: string;
   linkLabel: string;
   secondaryHref?: string;
@@ -249,6 +257,7 @@ function LaneCard({
   }>;
 }) {
   const toneClasses = TONE_CLASSES[tone];
+  const t = useT("analysis");
 
   return (
     <article className="flex h-full min-w-0 flex-col rounded-2xl border border-zinc-200 bg-white/60 p-4 dark:border-zinc-800 dark:bg-zinc-950/35">
@@ -269,6 +278,15 @@ function LaneCard({
       <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
         {body}
       </p>
+
+      <div className="mt-3 flex flex-wrap gap-2 text-[11px] font-semibold">
+        <span className="rounded-full border border-zinc-300 bg-zinc-100/70 px-2.5 py-1 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-300">
+          {t("aiPressureFreshnessAsOf", { date: freshness.asOf })}
+        </span>
+        <span className="rounded-full border border-zinc-300 bg-zinc-100/70 px-2.5 py-1 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-300">
+          {t("aiPressureFreshnessSource", { source: freshness.source })}
+        </span>
+      </div>
 
       <dl className="mt-4 space-y-3">
         {metrics.map((metric) => (
