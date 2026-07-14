@@ -4,14 +4,25 @@
  * Static contract assertions for scripts/refresh-data.mjs.
  * Verifies manifest structure, dependency ordering, and absence of
  * credential-gated builders — without executing any builders.
+ *
+ * Also validates .github/workflows/refresh-data.yml YAML integrity
+ * (regression: PR #121 introduced unindented block-scalar content that
+ * caused GitHub Actions to reject the workflow file, run 29304395231).
  */
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { MANIFEST } from "../scripts/refresh-data.mjs";
 
 const ROOT = process.cwd();
+
+// js-yaml ships without bundled TypeScript declarations; load via CJS interop
+const _require = createRequire(import.meta.url);
+const jsYaml = _require("js-yaml") as {
+  load: (input: string, opts?: { filename?: string }) => unknown;
+};
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -153,4 +164,77 @@ describe("refresh manifest includes all expected key-free datasets", () => {
       expect(indexOf(id), `"${id}" must be present in the manifest`).toBeGreaterThanOrEqual(0);
     });
   }
+});
+
+// ─── refresh-data.yml GitHub Actions workflow integrity ───────────────────────
+//
+// Regression guard for run 29304395231: unindented non-empty continuation lines
+// inside `run: |` YAML block scalars cause GitHub Actions to reject the entire
+// workflow file (zero jobs, name falls back to file path, conclusion: failure).
+
+describe("refresh-data workflow YAML integrity", () => {
+  const WORKFLOW_PATH = path.join(ROOT, ".github/workflows/refresh-data.yml");
+
+  it("workflow file exists", () => {
+    expect(existsSync(WORKFLOW_PATH), ".github/workflows/refresh-data.yml must exist").toBe(true);
+  });
+
+  it("parses as valid YAML without errors (regression: unindented block-scalar lines break GitHub Actions)", () => {
+    const content = readFileSync(WORKFLOW_PATH, "utf8");
+    expect(
+      () => jsYaml.load(content, { filename: ".github/workflows/refresh-data.yml" }),
+      "refresh-data.yml must parse as valid YAML — unindented non-empty continuation lines inside run: | blocks cause GitHub to reject the workflow before creating any jobs",
+    ).not.toThrow();
+  });
+
+  it("workflow name is a human-readable string, not the file path (parse-failure fallback)", () => {
+    const parsed = jsYaml.load(readFileSync(WORKFLOW_PATH, "utf8")) as Record<string, unknown>;
+    expect(typeof parsed.name).toBe("string");
+    expect(parsed.name as string).not.toMatch(/\.github\/workflows\//);
+  });
+
+  it("triggers include schedule (Monday 06:00 UTC) and workflow_dispatch", () => {
+    const parsed = jsYaml.load(readFileSync(WORKFLOW_PATH, "utf8")) as Record<string, unknown>;
+    const on = parsed.on as Record<string, unknown>;
+    expect(on).toHaveProperty("schedule");
+    expect(on).toHaveProperty("workflow_dispatch");
+    const crons = (on.schedule as Array<{ cron: string }>).map((e) => e.cron);
+    expect(crons, "must include Monday 06:00 UTC cron").toContain("0 6 * * 1");
+  });
+
+  it("has least-privilege permissions: contents: write, pull-requests: write", () => {
+    const parsed = jsYaml.load(readFileSync(WORKFLOW_PATH, "utf8")) as Record<string, unknown>;
+    const perms = parsed.permissions as Record<string, string>;
+    expect(perms.contents).toBe("write");
+    expect(perms["pull-requests"]).toBe("write");
+    expect(Object.keys(perms)).toHaveLength(2);
+  });
+
+  it("concurrency group is set with cancel-in-progress: false (no run cancellation)", () => {
+    const parsed = jsYaml.load(readFileSync(WORKFLOW_PATH, "utf8")) as Record<string, unknown>;
+    const concurrency = parsed.concurrency as Record<string, unknown>;
+    expect(concurrency).toHaveProperty("group");
+    expect(concurrency["cancel-in-progress"]).toBe(false);
+  });
+
+  it("refresh job runs on ubuntu-latest with 60-minute timeout", () => {
+    const parsed = jsYaml.load(readFileSync(WORKFLOW_PATH, "utf8")) as Record<string, unknown>;
+    const jobs = parsed.jobs as Record<string, Record<string, unknown>>;
+    const job = jobs.refresh;
+    expect(job).toBeDefined();
+    expect(job["runs-on"]).toBe("ubuntu-latest");
+    expect(job["timeout-minutes"]).toBe(60);
+  });
+
+  it("runs npm run data:refresh (key-free orchestrator, not direct builder scripts)", () => {
+    const parsed = jsYaml.load(readFileSync(WORKFLOW_PATH, "utf8")) as Record<string, unknown>;
+    const jobs = parsed.jobs as Record<string, Record<string, unknown>>;
+    const steps = jobs.refresh.steps as Array<Record<string, unknown>>;
+    const runs = steps.map((s) => s.run).filter(Boolean) as string[];
+    const refreshStep = runs.find((r) => r.includes("npm run data:refresh"));
+    expect(refreshStep, "must contain a step running npm run data:refresh").toBeDefined();
+    expect(runs.some((r) => r.includes("npm run build:warn") || r.includes("node scripts/build")),
+      "must NOT invoke individual build scripts directly — use the orchestrator",
+    ).toBe(false);
+  });
 });
