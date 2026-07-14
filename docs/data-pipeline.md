@@ -122,11 +122,10 @@ This is the **canonical refresh command** for both local use and CI. It runs `sc
 
 | Step ID | Script | Notes |
 |---|---|---|
-| `warn` | `build-warn.mjs` | 50 states + DC; WI skipped gracefully without `GOOGLE_SHEETS_API_KEY` |
+| `warn` | `build-warn.mjs` | 50 states + DC; WI preserves last-known-good records without `GOOGLE_SHEETS_API_KEY` |
 | `state-labor` | `build-state-labor.mjs` | Depends on `warn` |
 | `state-qcew` | `build-state-qcew.mjs` | Depends on `state-labor` |
 | `ai-usage-proxies` | `build-ai-usage-proxies.mjs` | OECD SDMX (HTTP/1.1), Eurostat, StackOverflow, HuggingFace, GitHub |
-| `occupation-snapshot` | `build-data-snapshot.mjs` | AEI exposure + O*NET; employment requires `BLS_API_KEY` (skipped without it) |
 | `snapshot-slim` | `build-snapshot-slim.mjs` | Derived from occupation-snapshot |
 | `employment-projections` | `build-employment-projections.mjs` | Derived from occupation-snapshot |
 | `job-postings` | `build-job-postings.mjs` | Derived from occupation-snapshot |
@@ -147,6 +146,7 @@ This is the **canonical refresh command** for both local use and CI. It runs `sc
 |---|---|
 | `jolts.json` | Requires `BLS_API_KEY` (hard exit) |
 | `onet-enrichment.json` | Requires `ONET_API_KEY` (hard exit) |
+| `occupation-snapshot.json` | Requires `BLS_API_KEY` for OEWS employment enrichment; without the key the builder writes null employment and would overwrite canonical data, so it is excluded from scheduled key-free refreshes |
 | `h1b-trends.json` | ~2 GB Internet Archive downloads; not safe for weekly CI |
 | `world-countries.geo.json` | Static geography; not time-varying |
 
