@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-07-14T02:19:42.913Z",
+    "generatedAt": "2026-07-14T05:19:38.293Z",
     "asOf": "2026-07-14",
     "source": {
       "name": "OpenRouter public model catalog API",
@@ -10,13 +10,13 @@
     "version": "1.0.0"
   },
   "coverage": {
-    "modelCount": 342,
+    "modelCount": 344,
     "endpointDetails": {
-      "attempted": 342,
-      "fetched": 342,
+      "attempted": 344,
+      "fetched": 344,
       "failed": 0,
-      "modelCountWithEndpoints": 326,
-      "endpointCount": 1006,
+      "modelCountWithEndpoints": 328,
+      "endpointCount": 1008,
       "providerCount": 69,
       "providerNames": [
         "AI21",
@@ -92,7 +92,7 @@
     },
     "createdDateRange": {
       "earliest": "2023-05-28",
-      "latest": "2026-07-09"
+      "latest": "2026-07-10"
     }
   },
   "methodology": {
@@ -9320,7 +9320,7 @@
           },
           "prompt": {
             "min": 9e-8,
-            "max": 1.5e-7
+            "max": 1.4e-7
           }
         },
         "providers": [
@@ -16462,6 +16462,126 @@
       "description": "Inflection 3 Productivity is optimized for following instructions. It is better for tasks requiring JSON output or precise adherence to provided guidelines. It has access to recent news. For emotional..."
     },
     {
+      "id": "kwaipilot/kat-coder-air-v2.5",
+      "name": "Kwaipilot: KAT-Coder-Air V2.5",
+      "canonicalSlug": "kwaipilot/kat-coder-air-v2.5-20260710",
+      "huggingFaceId": null,
+      "provider": {
+        "slug": "kwaipilot",
+        "name": "Kwaipilot"
+      },
+      "family": {
+        "slug": "kat",
+        "name": "Kat",
+        "inferredFrom": "kwaipilot/kat-coder-air-v2.5"
+      },
+      "createdAt": "2026-07-10T20:16:30.000Z",
+      "createdDate": "2026-07-10",
+      "contextLength": 256000,
+      "maxOutputTokens": 80000,
+      "architecture": {
+        "modality": "text->text",
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "tokenizer": "Other",
+        "instructType": null
+      },
+      "pricing": {
+        "completion": 6e-7,
+        "input_cache_read": 3e-8,
+        "prompt": 1.5e-7
+      },
+      "topProvider": {
+        "contextLength": 256000,
+        "maxCompletionTokens": 80000,
+        "isModerated": false
+      },
+      "endpoints": {
+        "detailsUrl": "https://openrouter.ai/api/v1/models/kwaipilot/kat-coder-air-v2.5/endpoints",
+        "detailsModelId": "kwaipilot/kat-coder-air-v2.5",
+        "detailsName": "Kwaipilot: KAT-Coder-Air V2.5",
+        "endpointCount": 1,
+        "providerCount": 1,
+        "maxContextLength": 256000,
+        "maxCompletionTokens": 80000,
+        "supportedParameters": [
+          "frequency_penalty",
+          "logprobs",
+          "max_tokens",
+          "presence_penalty",
+          "response_format",
+          "stop",
+          "structured_outputs",
+          "temperature",
+          "tool_choice",
+          "tools",
+          "top_logprobs",
+          "top_p"
+        ],
+        "pricingRange": {
+          "completion": {
+            "min": 6e-7,
+            "max": 6e-7
+          },
+          "prompt": {
+            "min": 1.5e-7,
+            "max": 1.5e-7
+          }
+        },
+        "providers": [
+          {
+            "name": "StreamLake",
+            "endpointCount": 1,
+            "tags": [
+              "streamlake"
+            ],
+            "quantizations": [
+              "unknown"
+            ],
+            "maxContextLength": 256000,
+            "maxCompletionTokens": 80000,
+            "supportedParameters": [
+              "frequency_penalty",
+              "logprobs",
+              "max_tokens",
+              "presence_penalty",
+              "response_format",
+              "stop",
+              "structured_outputs",
+              "temperature",
+              "tool_choice",
+              "tools",
+              "top_logprobs",
+              "top_p"
+            ]
+          }
+        ]
+      },
+      "supportedParameters": [
+        "frequency_penalty",
+        "logprobs",
+        "max_tokens",
+        "presence_penalty",
+        "response_format",
+        "stop",
+        "structured_outputs",
+        "temperature",
+        "tool_choice",
+        "tools",
+        "top_logprobs",
+        "top_p"
+      ],
+      "defaultParameters": null,
+      "reasoning": null,
+      "knowledgeCutoff": null,
+      "expirationDate": null,
+      "description": null
+    },
+    {
       "id": "kwaipilot/kat-coder-pro-v2",
       "name": "Kwaipilot: KAT-Coder-Pro V2",
       "canonicalSlug": "kwaipilot/kat-coder-pro-v2-20260327",
@@ -16625,6 +16745,126 @@
       "knowledgeCutoff": null,
       "expirationDate": null,
       "description": "KAT-Coder-Pro V2 is the latest high-performance model in KwaiKAT’s KAT-Coder series, designed for complex enterprise-grade software engineering and SaaS integration. It builds on the agentic coding strengths of earlier versions,..."
+    },
+    {
+      "id": "kwaipilot/kat-coder-pro-v2.5",
+      "name": "Kwaipilot: KAT-Coder-Pro V2.5",
+      "canonicalSlug": "kwaipilot/kat-coder-pro-v2.5-20260710",
+      "huggingFaceId": null,
+      "provider": {
+        "slug": "kwaipilot",
+        "name": "Kwaipilot"
+      },
+      "family": {
+        "slug": "kat",
+        "name": "Kat",
+        "inferredFrom": "kwaipilot/kat-coder-pro-v2.5"
+      },
+      "createdAt": "2026-07-10T20:16:29.000Z",
+      "createdDate": "2026-07-10",
+      "contextLength": 256000,
+      "maxOutputTokens": 80000,
+      "architecture": {
+        "modality": "text->text",
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "tokenizer": "Other",
+        "instructType": null
+      },
+      "pricing": {
+        "completion": 0.00000296,
+        "input_cache_read": 1.5e-7,
+        "prompt": 7.4e-7
+      },
+      "topProvider": {
+        "contextLength": 256000,
+        "maxCompletionTokens": 80000,
+        "isModerated": false
+      },
+      "endpoints": {
+        "detailsUrl": "https://openrouter.ai/api/v1/models/kwaipilot/kat-coder-pro-v2.5/endpoints",
+        "detailsModelId": "kwaipilot/kat-coder-pro-v2.5",
+        "detailsName": "Kwaipilot: KAT-Coder-Pro V2.5",
+        "endpointCount": 1,
+        "providerCount": 1,
+        "maxContextLength": 256000,
+        "maxCompletionTokens": 80000,
+        "supportedParameters": [
+          "frequency_penalty",
+          "logprobs",
+          "max_tokens",
+          "presence_penalty",
+          "response_format",
+          "stop",
+          "structured_outputs",
+          "temperature",
+          "tool_choice",
+          "tools",
+          "top_logprobs",
+          "top_p"
+        ],
+        "pricingRange": {
+          "completion": {
+            "min": 0.00000296,
+            "max": 0.00000296
+          },
+          "prompt": {
+            "min": 7.4e-7,
+            "max": 7.4e-7
+          }
+        },
+        "providers": [
+          {
+            "name": "StreamLake",
+            "endpointCount": 1,
+            "tags": [
+              "streamlake"
+            ],
+            "quantizations": [
+              "unknown"
+            ],
+            "maxContextLength": 256000,
+            "maxCompletionTokens": 80000,
+            "supportedParameters": [
+              "frequency_penalty",
+              "logprobs",
+              "max_tokens",
+              "presence_penalty",
+              "response_format",
+              "stop",
+              "structured_outputs",
+              "temperature",
+              "tool_choice",
+              "tools",
+              "top_logprobs",
+              "top_p"
+            ]
+          }
+        ]
+      },
+      "supportedParameters": [
+        "frequency_penalty",
+        "logprobs",
+        "max_tokens",
+        "presence_penalty",
+        "response_format",
+        "stop",
+        "structured_outputs",
+        "temperature",
+        "tool_choice",
+        "tools",
+        "top_logprobs",
+        "top_p"
+      ],
+      "defaultParameters": null,
+      "reasoning": null,
+      "knowledgeCutoff": null,
+      "expirationDate": null,
+      "description": null
     },
     {
       "id": "mancer/weaver",
@@ -56353,7 +56593,7 @@
       "createdAt": "2026-06-16T17:45:30.000Z",
       "createdDate": "2026-06-16",
       "contextLength": 1048576,
-      "maxOutputTokens": 32768,
+      "maxOutputTokens": 128000,
       "architecture": {
         "modality": "text->text",
         "inputModalities": [
@@ -56366,13 +56606,13 @@
         "instructType": null
       },
       "pricing": {
-        "completion": 0.000003,
-        "input_cache_read": 1.8e-7,
-        "prompt": 9.3e-7
+        "completion": 0.0000029216,
+        "input_cache_read": 1.7264e-7,
+        "prompt": 9.296e-7
       },
       "topProvider": {
-        "contextLength": 1048576,
-        "maxCompletionTokens": 32768,
+        "contextLength": 1024000,
+        "maxCompletionTokens": 128000,
         "isModerated": false
       },
       "endpoints": {
@@ -56412,7 +56652,7 @@
             "max": 0.00001025
           },
           "prompt": {
-            "min": 9.3e-7,
+            "min": 9.296e-7,
             "max": 0.000003
           }
         },
