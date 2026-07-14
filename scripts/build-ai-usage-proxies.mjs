@@ -103,7 +103,10 @@ async function fetchText(url, label, options = {}) {
       return response.text();
     } catch (error) {
       if (attempt === attempts) {
-        if (url.startsWith("https://api.census.gov/")) {
+        if (
+          url.startsWith("https://api.census.gov/") ||
+          url.startsWith("https://sdmx.oecd.org/")
+        ) {
           return fetchTextWithHttps(url, label, options);
         }
         throw error;

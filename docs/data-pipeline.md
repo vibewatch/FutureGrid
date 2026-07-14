@@ -13,7 +13,7 @@ Documents the FutureGrid data pipeline end-to-end: all build scripts in `scripts
 ### Non-Goals
 
 - Does not document the UI build (`next build`) — that is the standard Next.js 16 static-export pipeline.
-- Does not document CI/CD workflow configuration.
+- Does not document CI/CD workflow configuration beyond the recurring data refresh (`refresh-data.yml`).
 - Per-dataset schemas and field semantics are in the domain-specific docs:
   - [`docs/occupation-data-model.md`](./occupation-data-model.md)
   - [`docs/labor-market.md`](./labor-market.md)
@@ -108,7 +108,57 @@ flowchart TD
 
 ## npm Build Script Catalog
 
-### Full Data Rebuild
+### Recurring Data Refresh (`data:refresh`)
+
+```bash
+npm run data:refresh
+```
+
+This is the **canonical refresh command** for both local use and CI. It runs `scripts/refresh-data.mjs`, which executes all public, key-free builders in dependency order, validates each output before writing, and updates provenance.
+
+**Cadence:** Weekly via `.github/workflows/refresh-data.yml` (Monday 06:00 UTC). Can be triggered manually with `workflow_dispatch`.
+
+**Included datasets (all key-free, public sources):**
+
+| Step ID | Script | Notes |
+|---|---|---|
+| `warn` | `build-warn.mjs` | 50 states + DC; WI preserves last-known-good records without `GOOGLE_SHEETS_API_KEY` |
+| `state-labor` | `build-state-labor.mjs` | Depends on `warn` |
+| `state-qcew` | `build-state-qcew.mjs` | Depends on `state-labor` |
+| `ai-usage-proxies` | `build-ai-usage-proxies.mjs` | OECD SDMX (HTTP/1.1), Eurostat, StackOverflow, HuggingFace, GitHub |
+| `snapshot-slim` | `build-snapshot-slim.mjs` | Derived from occupation-snapshot |
+| `employment-projections` | `build-employment-projections.mjs` | Derived from occupation-snapshot |
+| `job-postings` | `build-job-postings.mjs` | Derived from occupation-snapshot |
+| `occupational-requirements` | `build-occupational-requirements.mjs` | Derived from occupation-snapshot |
+| `ai-signals` | `build-ai-signals.mjs` | AIOE, Frey-Osborne, LLM exposure, automation-baseline |
+| `market-signals` | `build-market-signals.mjs` | Yahoo Finance ETF sectors |
+| `ai-company-stocks` | `build-ai-company-stocks.mjs` | Yahoo Finance chart bootstrap (unofficial; set `AI_COMPANY_STOCKS_BOOTSTRAP_YAHOO=1`) |
+| `ai-frontier` | `build-ai-frontier.mjs` | Epoch AI Notable AI Models |
+| `openrouter-models` | `build-openrouter-models.mjs` | OpenRouter public API |
+| `global-ai-metrics` | `build-global-metrics.mjs` | Microsoft AI Diffusion + IMF AIPI + Oxford GAIRI |
+| `international-occupation-mix` | `build-international-occupation-mix.mjs` | ILOSTAT 9 countries |
+| `warn-public` | `build-warn-public.mjs` | Privacy-filtered public copy (depends on warn) |
+| `provenance` | `build-provenance.mjs` | Central registry — **always last** |
+
+**Excluded datasets (credential-gated or not safe for weekly CI):**
+
+| Dataset | Reason |
+|---|---|
+| `jolts.json` | Requires `BLS_API_KEY` (hard exit) |
+| `onet-enrichment.json` | Requires `ONET_API_KEY` (hard exit) |
+| `occupation-snapshot.json` | Requires `BLS_API_KEY` for OEWS employment enrichment; without the key the builder writes null employment and would overwrite canonical data, so it is excluded from scheduled key-free refreshes |
+| `h1b-trends.json` | ~2 GB Internet Archive downloads; not safe for weekly CI |
+| `world-countries.geo.json` | Static geography; not time-varying |
+
+**Failure behavior:** Any builder that exits non-zero aborts the refresh immediately with a clear error. The `validate*()` gate in each builder ensures a degenerate fetch (too few rows, missing fields, etc.) throws before `writeFileSync` is called. A failing job is the alert — it indicates a bad upstream fetch, not a code regression.
+
+**No-change behavior:** If no data files changed, the CI job succeeds cleanly without creating an empty commit or PR.
+
+**CI PR target:** `data/scheduled-refresh` branch → PR against `main`. Existing open PRs are updated by force-pushing the branch; a new PR is created only when none is open.
+
+**Manifest test:** `tests/refresh-manifest.test.ts` statically asserts script existence, dependency ordering, excluded credentials, and required dataset coverage without running any builder.
+
+### Full Data Rebuild (`build:data`)
 
 ```bash
 npm run build:data

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-02T08:41:00.816Z",
+  "generatedAt": "2026-07-14T02:22:46.606Z",
   "scope": "Supplemental AI adoption and usage proxies outside Anthropic's Claude.ai country usage index.",
   "caveat": "These metrics use different denominators and collection methods. Do not merge them into the Anthropic usageIndex without explicit normalization and labeling.",
   "enterpriseAdoptionMetrics": [
@@ -845,441 +845,7 @@
       ]
     }
   ],
-  "usCensusBusinessAIMetrics": [
-    {
-      "id": "us-census-abs-ai-total-use-2018",
-      "metric": "employer_firms_using_artificial_intelligence_total_use",
-      "unit": "firms_and_percent_of_employer_firms",
-      "period": "2018",
-      "population": "Employer firms, total for all sectors (NAICS2017=00). TECHUSE=T1E03B99 means Artificial Intelligence: Total use.",
-      "source": {
-        "name": "U.S. Census Annual Business Survey — Technology Characteristics of Businesses",
-        "publisher": "U.S. Census Bureau",
-        "dataset": "2018/abstcb",
-        "url": "https://api.census.gov/data/2018/abstcb.html"
-      },
-      "confidence": "high",
-      "comparability": "U.S. employer-firm technology-use survey metric from 2018; predates the generative-AI wave and is not comparable to 2025 generative-AI usage surveys.",
-      "national": {
-        "geo": {
-          "code": "USA",
-          "name": "United States"
-        },
-        "firms": 141731,
-        "percentOfEmployerFirms": 3
-      },
-      "states": [
-        {
-          "geo": {
-            "code": "01",
-            "name": "Alabama"
-          },
-          "firms": 1858,
-          "percentOfEmployerFirms": 3.2
-        },
-        {
-          "geo": {
-            "code": "02",
-            "name": "Alaska"
-          },
-          "firms": 420,
-          "percentOfEmployerFirms": 3.3
-        },
-        {
-          "geo": {
-            "code": "04",
-            "name": "Arizona"
-          },
-          "firms": 2877,
-          "percentOfEmployerFirms": 3.4
-        },
-        {
-          "geo": {
-            "code": "05",
-            "name": "Arkansas"
-          },
-          "firms": 1231,
-          "percentOfEmployerFirms": 3
-        },
-        {
-          "geo": {
-            "code": "06",
-            "name": "California"
-          },
-          "firms": 21167,
-          "percentOfEmployerFirms": 3.5
-        },
-        {
-          "geo": {
-            "code": "08",
-            "name": "Colorado"
-          },
-          "firms": 4718,
-          "percentOfEmployerFirms": 3.9
-        },
-        {
-          "geo": {
-            "code": "09",
-            "name": "Connecticut"
-          },
-          "firms": 1486,
-          "percentOfEmployerFirms": 2.7
-        },
-        {
-          "geo": {
-            "code": "10",
-            "name": "Delaware"
-          },
-          "firms": 1047,
-          "percentOfEmployerFirms": 6.9
-        },
-        {
-          "geo": {
-            "code": "11",
-            "name": "District of Columbia"
-          },
-          "firms": 802,
-          "percentOfEmployerFirms": 8.4
-        },
-        {
-          "geo": {
-            "code": "12",
-            "name": "Florida"
-          },
-          "firms": 12172,
-          "percentOfEmployerFirms": 3.4
-        },
-        {
-          "geo": {
-            "code": "13",
-            "name": "Georgia"
-          },
-          "firms": 4883,
-          "percentOfEmployerFirms": 3.5
-        },
-        {
-          "geo": {
-            "code": "15",
-            "name": "Hawaii"
-          },
-          "firms": 741,
-          "percentOfEmployerFirms": 3.9
-        },
-        {
-          "geo": {
-            "code": "16",
-            "name": "Idaho"
-          },
-          "firms": 832,
-          "percentOfEmployerFirms": 2.3
-        },
-        {
-          "geo": {
-            "code": "17",
-            "name": "Illinois"
-          },
-          "firms": 6306,
-          "percentOfEmployerFirms": 3
-        },
-        {
-          "geo": {
-            "code": "18",
-            "name": "Indiana"
-          },
-          "firms": 2823,
-          "percentOfEmployerFirms": 3
-        },
-        {
-          "geo": {
-            "code": "19",
-            "name": "Iowa"
-          },
-          "firms": 1847,
-          "percentOfEmployerFirms": 3.3
-        },
-        {
-          "geo": {
-            "code": "20",
-            "name": "Kansas"
-          },
-          "firms": 1645,
-          "percentOfEmployerFirms": 3.3
-        },
-        {
-          "geo": {
-            "code": "21",
-            "name": "Kentucky"
-          },
-          "firms": 1658,
-          "percentOfEmployerFirms": 2.9
-        },
-        {
-          "geo": {
-            "code": "22",
-            "name": "Louisiana"
-          },
-          "firms": 1653,
-          "percentOfEmployerFirms": 2.7
-        },
-        {
-          "geo": {
-            "code": "23",
-            "name": "Maine"
-          },
-          "firms": 826,
-          "percentOfEmployerFirms": 3.2
-        },
-        {
-          "geo": {
-            "code": "24",
-            "name": "Maryland"
-          },
-          "firms": 2930,
-          "percentOfEmployerFirms": 3.4
-        },
-        {
-          "geo": {
-            "code": "25",
-            "name": "Massachusetts"
-          },
-          "firms": 2924,
-          "percentOfEmployerFirms": 2.7
-        },
-        {
-          "geo": {
-            "code": "26",
-            "name": "Michigan"
-          },
-          "firms": 3703,
-          "percentOfEmployerFirms": 2.6
-        },
-        {
-          "geo": {
-            "code": "27",
-            "name": "Minnesota"
-          },
-          "firms": 3413,
-          "percentOfEmployerFirms": 3.3
-        },
-        {
-          "geo": {
-            "code": "28",
-            "name": "Mississippi"
-          },
-          "firms": 1159,
-          "percentOfEmployerFirms": 3.5
-        },
-        {
-          "geo": {
-            "code": "29",
-            "name": "Missouri"
-          },
-          "firms": 2406,
-          "percentOfEmployerFirms": 2.7
-        },
-        {
-          "geo": {
-            "code": "30",
-            "name": "Montana"
-          },
-          "firms": 967,
-          "percentOfEmployerFirms": 3.4
-        },
-        {
-          "geo": {
-            "code": "31",
-            "name": "Nebraska"
-          },
-          "firms": 1087,
-          "percentOfEmployerFirms": 2.6
-        },
-        {
-          "geo": {
-            "code": "32",
-            "name": "Nevada"
-          },
-          "firms": 1417,
-          "percentOfEmployerFirms": 3.6
-        },
-        {
-          "geo": {
-            "code": "33",
-            "name": "New Hampshire"
-          },
-          "firms": 734,
-          "percentOfEmployerFirms": 2.9
-        },
-        {
-          "geo": {
-            "code": "34",
-            "name": "New Jersey"
-          },
-          "firms": 5047,
-          "percentOfEmployerFirms": 3.4
-        },
-        {
-          "geo": {
-            "code": "35",
-            "name": "New Mexico"
-          },
-          "firms": 778,
-          "percentOfEmployerFirms": 3
-        },
-        {
-          "geo": {
-            "code": "36",
-            "name": "New York"
-          },
-          "firms": 9166,
-          "percentOfEmployerFirms": 2.9
-        },
-        {
-          "geo": {
-            "code": "37",
-            "name": "North Carolina"
-          },
-          "firms": 4460,
-          "percentOfEmployerFirms": 2.9
-        },
-        {
-          "geo": {
-            "code": "38",
-            "name": "North Dakota"
-          },
-          "firms": 346,
-          "percentOfEmployerFirms": 1.9
-        },
-        {
-          "geo": {
-            "code": "39",
-            "name": "Ohio"
-          },
-          "firms": 4997,
-          "percentOfEmployerFirms": 3.2
-        },
-        {
-          "geo": {
-            "code": "40",
-            "name": "Oklahoma"
-          },
-          "firms": 1688,
-          "percentOfEmployerFirms": 2.9
-        },
-        {
-          "geo": {
-            "code": "41",
-            "name": "Oregon"
-          },
-          "firms": 2368,
-          "percentOfEmployerFirms": 2.9
-        },
-        {
-          "geo": {
-            "code": "42",
-            "name": "Pennsylvania"
-          },
-          "firms": 5411,
-          "percentOfEmployerFirms": 2.9
-        },
-        {
-          "geo": {
-            "code": "44",
-            "name": "Rhode Island"
-          },
-          "firms": 334,
-          "percentOfEmployerFirms": 1.9
-        },
-        {
-          "geo": {
-            "code": "45",
-            "name": "South Carolina"
-          },
-          "firms": 2201,
-          "percentOfEmployerFirms": 3.3
-        },
-        {
-          "geo": {
-            "code": "46",
-            "name": "South Dakota"
-          },
-          "firms": 613,
-          "percentOfEmployerFirms": 3.1
-        },
-        {
-          "geo": {
-            "code": "47",
-            "name": "Tennessee"
-          },
-          "firms": 2835,
-          "percentOfEmployerFirms": 3.7
-        },
-        {
-          "geo": {
-            "code": "48",
-            "name": "Texas"
-          },
-          "firms": 11447,
-          "percentOfEmployerFirms": 3.5
-        },
-        {
-          "geo": {
-            "code": "49",
-            "name": "Utah"
-          },
-          "firms": 1812,
-          "percentOfEmployerFirms": 3.2
-        },
-        {
-          "geo": {
-            "code": "50",
-            "name": "Vermont"
-          },
-          "firms": 372,
-          "percentOfEmployerFirms": 2.6
-        },
-        {
-          "geo": {
-            "code": "51",
-            "name": "Virginia"
-          },
-          "firms": 4030,
-          "percentOfEmployerFirms": 3.2
-        },
-        {
-          "geo": {
-            "code": "53",
-            "name": "Washington"
-          },
-          "firms": 3521,
-          "percentOfEmployerFirms": 2.8
-        },
-        {
-          "geo": {
-            "code": "54",
-            "name": "West Virginia"
-          },
-          "firms": 628,
-          "percentOfEmployerFirms": 3
-        },
-        {
-          "geo": {
-            "code": "55",
-            "name": "Wisconsin"
-          },
-          "firms": 2976,
-          "percentOfEmployerFirms": 3
-        },
-        {
-          "geo": {
-            "code": "56",
-            "name": "Wyoming"
-          },
-          "firms": 350,
-          "percentOfEmployerFirms": 2.4
-        }
-      ]
-    }
-  ],
+  "usCensusBusinessAIMetrics": [],
   "countrySurveyMetrics": [
     {
       "id": "cn-cnnic-genai-users-2025-06",
@@ -2270,169 +1836,169 @@
   "openModelDownloadProxies": [
     {
       "provider": "Alibaba Qwen",
-      "capturedAt": "2026-07-02T08:41:13.273Z",
+      "capturedAt": "2026-07-14T02:22:58.004Z",
       "source": "https://huggingface.co/api/models?search=Qwen&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
         {
           "modelId": "Qwen/Qwen3-0.6B",
-          "downloads": 28147234,
-          "likes": 1377
+          "downloads": 27322220,
+          "likes": 1408
         },
         {
           "modelId": "Qwen/Qwen3-8B",
-          "downloads": 14829147,
-          "likes": 1172
+          "downloads": 17977492,
+          "likes": 1198
         },
         {
           "modelId": "Qwen/Qwen2.5-7B-Instruct",
-          "downloads": 12878382,
-          "likes": 1393
+          "downloads": 12569634,
+          "likes": 1420
         },
         {
-          "modelId": "Qwen/Qwen3-4B",
-          "downloads": 12016396,
-          "likes": 643
+          "modelId": "trl-internal-testing/tiny-Qwen2ForCausalLM-2.5",
+          "downloads": 12541637,
+          "likes": 13
         },
         {
           "modelId": "Qwen/Qwen2.5-1.5B-Instruct",
-          "downloads": 11447651,
-          "likes": 754
+          "downloads": 12309706,
+          "likes": 768
         }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
     },
     {
       "provider": "DeepSeek",
-      "capturedAt": "2026-07-02T08:41:13.295Z",
+      "capturedAt": "2026-07-14T02:22:58.007Z",
       "source": "https://huggingface.co/api/models?search=DeepSeek&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
         {
           "modelId": "deepseek-ai/DeepSeek-R1",
-          "downloads": 7849894,
-          "likes": 13425
+          "downloads": 8778351,
+          "likes": 13464
         },
         {
           "modelId": "antirez/deepseek-v4-gguf",
-          "downloads": 6424594,
-          "likes": 291
+          "downloads": 4912362,
+          "likes": 321
         },
         {
           "modelId": "deepseek-ai/DeepSeek-OCR-2",
-          "downloads": 3298384,
-          "likes": 1020
+          "downloads": 3404586,
+          "likes": 1033
         },
         {
-          "modelId": "deepseek-ai/DeepSeek-R1-0528",
-          "downloads": 2995175,
-          "likes": 2454
+          "modelId": "deepseek-ai/DeepSeek-V4-Flash",
+          "downloads": 2677065,
+          "likes": 1745
         },
         {
           "modelId": "deepseek-ai/DeepSeek-OCR",
-          "downloads": 2307679,
-          "likes": 3293
+          "downloads": 2642699,
+          "likes": 3307
         }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
     },
     {
       "provider": "Moonshot Kimi",
-      "capturedAt": "2026-07-02T08:41:13.281Z",
+      "capturedAt": "2026-07-14T02:22:57.989Z",
       "source": "https://huggingface.co/api/models?search=Kimi&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
         {
           "modelId": "moonshotai/Kimi-K2.6",
-          "downloads": 2307714,
-          "likes": 1498
-        },
-        {
-          "modelId": "moonshotai/Kimi-K2-Instruct-0905",
-          "downloads": 1523477,
-          "likes": 760
+          "downloads": 1574219,
+          "likes": 1511
         },
         {
           "modelId": "moonshotai/Kimi-K2.5",
-          "downloads": 1471171,
-          "likes": 2826
-        },
-        {
-          "modelId": "nvidia/Kimi-K2.5-NVFP4",
-          "downloads": 1206834,
-          "likes": 86
+          "downloads": 1143878,
+          "likes": 2838
         },
         {
           "modelId": "moonshotai/Kimi-K2.7-Code",
-          "downloads": 782889,
-          "likes": 1029
+          "downloads": 923775,
+          "likes": 1088
+        },
+        {
+          "modelId": "nvidia/Kimi-K2.6-NVFP4",
+          "downloads": 836236,
+          "likes": 42
+        },
+        {
+          "modelId": "nvidia/Kimi-K2.5-NVFP4",
+          "downloads": 671965,
+          "likes": 86
         }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
     },
     {
       "provider": "Zhipu ChatGLM",
-      "capturedAt": "2026-07-02T08:41:13.281Z",
+      "capturedAt": "2026-07-14T02:22:57.994Z",
       "source": "https://huggingface.co/api/models?search=ChatGLM&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
         {
           "modelId": "zai-org/chatglm2-6b",
-          "downloads": 414920,
+          "downloads": 438094,
           "likes": 2057
         },
         {
           "modelId": "zai-org/chatglm3-6b",
-          "downloads": 120290,
-          "likes": 1165
+          "downloads": 107799,
+          "likes": 1166
         },
         {
           "modelId": "thu-coai/ShieldLM-6B-chatglm3",
-          "downloads": 20887,
+          "downloads": 20201,
           "likes": 4
         },
         {
-          "modelId": "optimum-intel-internal-testing/tiny-random-chatglm4",
-          "downloads": 5729,
-          "likes": 0
+          "modelId": "zai-org/chatglm3-6b-base",
+          "downloads": 4925,
+          "likes": 88
         },
         {
-          "modelId": "zai-org/chatglm3-6b-base",
-          "downloads": 4868,
-          "likes": 88
+          "modelId": "optimum-intel-internal-testing/tiny-random-chatglm4",
+          "downloads": 4795,
+          "likes": 0
         }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
     },
     {
       "provider": "Baichuan",
-      "capturedAt": "2026-07-02T08:41:13.278Z",
+      "capturedAt": "2026-07-14T02:22:57.988Z",
       "source": "https://huggingface.co/api/models?search=Baichuan&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
         {
           "modelId": "baichuan-inc/Baichuan2-7B-Chat",
-          "downloads": 62011,
+          "downloads": 46548,
           "likes": 172
         },
         {
           "modelId": "baichuan-inc/Baichuan-7B",
-          "downloads": 53319,
+          "downloads": 39097,
           "likes": 841
         },
         {
           "modelId": "optimum-intel-internal-testing/tiny-random-baichuan2",
-          "downloads": 11903,
+          "downloads": 9988,
           "likes": 0
         },
         {
           "modelId": "optimum-intel-internal-testing/tiny-random-baichuan2-13b",
-          "downloads": 11068,
+          "downloads": 9486,
           "likes": 0
         },
         {
           "modelId": "baichuan-inc/Baichuan2-13B-Chat",
-          "downloads": 9649,
+          "downloads": 7680,
           "likes": 432
         }
       ],
@@ -2444,11 +2010,11 @@
       "id": "github-huggingface-transformers",
       "metric": "github_repository_activity",
       "repository": "huggingface/transformers",
-      "stars": 162109,
-      "forks": 33718,
-      "openIssues": 2464,
-      "repositoryUpdatedAt": "2026-07-02T08:24:01Z",
-      "capturedAt": "2026-07-02T08:41:15.477Z",
+      "stars": 162575,
+      "forks": 33877,
+      "openIssues": 2480,
+      "repositoryUpdatedAt": "2026-07-14T01:48:35Z",
+      "capturedAt": "2026-07-14T02:23:00.162Z",
       "source": "https://api.github.com/repos/huggingface/transformers",
       "confidence": "high",
       "comparability": "Developer ecosystem proxy; no country split and no end-user usage measurement."
@@ -4437,8 +4003,8 @@
     },
     {
       "name": "US Census Annual Business Survey Technology Characteristics",
-      "status": "collected",
-      "reason": "Collected from Census ABS 2018 abstcb with TECHUSE=T1E03B99.",
+      "status": "requires_api_key",
+      "reason": "Set CENSUS_API_KEY to collect US employer-firm AI adoption data from Census ABS 2018 abstcb.",
       "potentialMetrics": [
         "business_ai_use",
         "state_split",
@@ -4490,8 +4056,8 @@
     }
   ],
   "meta": {
-    "generatedAt": "2026-07-02T08:41:00.816Z",
-    "asOf": "2026-07-02",
+    "generatedAt": "2026-07-14T02:22:46.606Z",
+    "asOf": "2026-07-14",
     "source": {
       "name": "Multiple public AI-usage proxy sources",
       "publisher": "FutureGrid (aggregated)",

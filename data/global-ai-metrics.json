@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-30T14:10:06.478Z",
+  "generatedAt": "2026-07-14T02:20:07.833Z",
   "sources": [
     {
       "id": "microsoft-aiei",
@@ -2539,8 +2539,8 @@
     }
   },
   "meta": {
-    "generatedAt": "2026-06-30T14:10:06.478Z",
-    "asOf": "2026-06-30",
+    "generatedAt": "2026-07-14T02:20:07.833Z",
+    "asOf": "2026-07-14",
     "source": {
       "name": "Microsoft AI Diffusion Report (AI Economic Impact & Insights)",
       "publisher": "Microsoft",

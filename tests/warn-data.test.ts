@@ -634,3 +634,69 @@ describe("WARN data snapshot", () => {
     }
   });
 });
+
+// ─── Credential-skipped state preservation ───────────────────────────────────
+
+describe("credential-skipped WARN states preserve last-known-good records", () => {
+  const registry = (() => {
+    for (const key of COVERAGE_REGISTRY_KEYS) {
+      const value = warnData[key as keyof WarnData];
+      if (Array.isArray(value)) return value as WarnCoverageEntry[];
+    }
+    return null;
+  })();
+
+  it("preserved coverage states carry real records and accurate metadata", () => {
+    if (!registry) return;
+    const preservedEntries = registry.filter((e) => (e as Record<string, unknown>).buildStatus === "preserved");
+    for (const entry of preservedEntries) {
+      expect(
+        entry.recordsIncluded,
+        `${entry.state} preserved coverage must include records (not silently drop them)`,
+      ).toBe(true);
+      const noticeCount = warnData.notices.filter((n) => n.state === entry.state).length;
+      expect(
+        noticeCount,
+        `${entry.state} preserved coverage must have real notice rows in the output`,
+      ).toBeGreaterThan(0);
+      const summaryRow = warnData.summary.byState.find((s) => s.state === entry.state);
+      expect(summaryRow, `${entry.state} preserved coverage must appear in summary.byState`).toBeDefined();
+      // Provenance distinguishes retained data from freshly fetched
+      expect(
+        (entry as Record<string, unknown>).dataFreshness,
+        `${entry.state} preserved coverage must declare dataFreshness="preserved"`,
+      ).toBe("preserved");
+      expect(
+        (entry as Record<string, unknown>).preservedGeneratedAt,
+        `${entry.state} preserved coverage must record the seed snapshot timestamp`,
+      ).toBeTruthy();
+    }
+  });
+
+  it("preserved source entries carry dataFreshness metadata", () => {
+    const preservedSources = warnData.sources.filter(
+      (s) => (s as Record<string, unknown>).dataFreshness === "preserved",
+    );
+    for (const src of preservedSources) {
+      expect(
+        (src as Record<string, unknown>).preservedGeneratedAt,
+        `${src.state} preserved source must record seed timestamp`,
+      ).toBeTruthy();
+      // Still exposes valid source identity fields
+      expectTrimmedString(src.state, `preserved ${src.state}.state`);
+      expectAbsoluteUrl(src.url, `preserved ${src.state}.url`);
+    }
+  });
+
+  it("WI notices and summary row are present (whether via fresh fetch or preservation)", () => {
+    const wiNotices = warnData.notices.filter((n) => n.state === "WI");
+    expect(
+      wiNotices.length,
+      "WI notices must be present — preservation must not silently drop 620 records",
+    ).toBeGreaterThan(0);
+    const wiSummary = warnData.summary.byState.find((s) => s.state === "WI");
+    expect(wiSummary, "WI must appear in summary.byState").toBeDefined();
+    const wiSource = warnData.sources.find((s) => s.state === "WI");
+    expect(wiSource, "WI must appear in sources").toBeDefined();
+  });
+});

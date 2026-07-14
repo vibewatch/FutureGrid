@@ -6,7 +6,7 @@
  * Run: node scripts/build-warn.mjs  (or: npm run build:warn)
  */
 
-import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
@@ -1383,6 +1383,9 @@ const STATE_CONFIG = [
       "https://sheets.googleapis.com/v4/spreadsheets/1cyZiHZcepBI7ShB3dMcRprUFRG24lbwEnEDRBMhAqsA/values/Originals",
     ],
     fetch: fetchWI,
+    // When GOOGLE_SHEETS_API_KEY is absent the builder falls back to last-known-good records
+    // from the committed snapshot rather than dropping WI coverage entirely.
+    credentialEnv: "GOOGLE_SHEETS_API_KEY",
   },
   {
     state: "GA", stateName: "Georgia",
@@ -1719,10 +1722,14 @@ function buildCoverageStates(perStateResults) {
       stateName,
       sourceStatus,
       sourceType,
-      recordsIncluded: result?.status === "ok",
+      recordsIncluded: result?.status === "ok" || result?.status === "preserved",
       notices: result?.notices ?? 0,
       dateRange: result?.dateRange ?? null,
       buildStatus: result?.status ?? (cfg ? "not-run" : "metadata-only"),
+      ...(result?.status === "preserved" && {
+        dataFreshness: "preserved",
+        preservedGeneratedAt: result.preservedGeneratedAt ?? null,
+      }),
       adapter: cfg?.fetch?.name ?? null,
       name: cfg?.name ?? manual.name ?? `${stateName} WARN Notices`,
       publisher: cfg?.publisher ?? manual.publisher ?? null,
@@ -1817,6 +1824,36 @@ async function main() {
   console.log("=== Building Multi-State WARN Act data snapshot ===");
   console.log(`States: ${STATE_CONFIG.map((s) => s.state).join(", ")}\n`);
 
+  // ─── Load last-known-good seed from existing committed snapshot ────────────
+  // Used to preserve coverage for credential-gated states when the credential
+  // is absent.  The preservation path keeps real records rather than dropping
+  // an entire state, and stamps metadata so consumers can distinguish retained
+  // records from freshly fetched ones.
+  const existingSnapshotPath = path.join(DATA_DIR, "warn-notices.json");
+  let lastKnownGood = null;
+  if (existsSync(existingSnapshotPath)) {
+    try {
+      const parsed = JSON.parse(readFileSync(existingSnapshotPath, "utf-8"));
+      lastKnownGood = {
+        generatedAt: parsed.generatedAt ?? null,
+        noticesByState: new Map(),
+        sourceByState: new Map(),
+      };
+      for (const notice of (parsed.notices ?? [])) {
+        const arr = lastKnownGood.noticesByState.get(notice.state) ?? [];
+        arr.push(notice);
+        lastKnownGood.noticesByState.set(notice.state, arr);
+      }
+      for (const src of (parsed.sources ?? [])) {
+        lastKnownGood.sourceByState.set(src.state, src);
+      }
+      console.log(`  [seed] Loaded last-known-good snapshot from ${parsed.generatedAt ?? "unknown date"}`);
+    } catch (seedErr) {
+      console.warn(`  [seed] Could not load existing snapshot for preservation fallback: ${seedErr.message}`);
+      lastKnownGood = null;
+    }
+  }
+
   const perStateResults = [];     // for print table
   const includedSources = [];
   const fullRecordsPerState = []; // full (untrimmed) per-state records for summary
@@ -1841,6 +1878,46 @@ async function main() {
     }
 
     if (!records) {
+      // ─── Preservation path for credential-absent states ────────────────────
+      // If this state's adapter requires a credential that isn't set AND we have
+      // last-known-good records, preserve them rather than dropping coverage.
+      const credAbsent = cfg.credentialEnv && !process.env[cfg.credentialEnv];
+      const seedRecords = lastKnownGood?.noticesByState.get(cfg.state) ?? null;
+      const seedSource  = lastKnownGood?.sourceByState.get(cfg.state) ?? null;
+
+      if (credAbsent && seedRecords && seedRecords.length > 0) {
+        console.log(
+          `  [preserve] ${cfg.state}: ${cfg.credentialEnv} absent — preserving ${seedRecords.length} ` +
+          `last-known-good records from ${lastKnownGood.generatedAt ?? "existing snapshot"}`
+        );
+        const dates = seedRecords.map((r) => r.noticeDate).filter(Boolean).sort();
+        perStateResults.push({
+          state: cfg.state,
+          stateName: cfg.stateName,
+          status: "preserved",
+          notices: seedRecords.length,
+          dateRange: { earliest: dates[0] ?? null, latest: dates[dates.length - 1] ?? null },
+          sourceUrls: normalizeSourceUrls([], cfg.sourceUrls ?? [], cfg.url ?? []),
+          preservedGeneratedAt: lastKnownGood.generatedAt,
+        });
+        fullRecordsPerState.push({ cfg, records: seedRecords });
+        includedSources.push({
+          state: cfg.state, stateName: cfg.stateName,
+          name: cfg.name, publisher: cfg.publisher, url: cfg.url,
+          sourceStatus: cfg.sourceStatus,
+          sourceType: cfg.sourceType,
+          sourceUrls: normalizeSourceUrls([], cfg.sourceUrls ?? [], cfg.url ?? []),
+          adapter: cfg.fetch.name,
+          parserConfidence: cfg.parserConfidence ?? null,
+          parserNotes: cfg.parserNotes ?? null,
+          notes: cfg.notes ?? null,
+          license: seedSource?.license ?? "Public Domain (state public record)",
+          dataFreshness: "preserved",
+          preservedGeneratedAt: lastKnownGood.generatedAt,
+        });
+        continue;
+      }
+
       console.warn(`  ⚠️  SKIPPING ${cfg.state}: ${error?.message}`);
       perStateResults.push({
         state: cfg.state,
