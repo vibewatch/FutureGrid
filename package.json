@@ -37,7 +37,8 @@
     "build:openrouter-models": "node scripts/build-openrouter-models.mjs",
     "build:ai-company-stocks": "node scripts/build-ai-company-stocks.mjs",
     "build:ors": "node scripts/build-occupational-requirements.mjs",
-    "build:international-occupation-mix": "node scripts/build-international-occupation-mix.mjs"
+    "build:international-occupation-mix": "node scripts/build-international-occupation-mix.mjs",
+    "data:refresh": "node scripts/refresh-data.mjs"
   },
   "dependencies": {
     "chart.js": "^4.5.1",
