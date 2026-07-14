@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-02T07:02:26.024Z",
+  "generatedAt": "2026-07-14T02:25:20.788Z",
   "source": {
     "name": "BLS Local Area Unemployment Statistics",
     "publisher": "U.S. Bureau of Labor Statistics",
@@ -16,11 +16,11 @@
   },
   "summary": {
     "latestMonth": "2026-05",
-    "rankedStates": 9,
+    "rankedStates": 7,
     "totalJurisdictions": 51,
     "warnWindowStart": "2025-06-01",
     "warnWindowEnd": "2026-05-31",
-    "highestPressureState": "CA"
+    "highestPressureState": "OR"
   },
   "states": [
     {
@@ -2336,10 +2336,10 @@
         "sourceStatus": "live",
         "sourceType": "xlsx",
         "recordsIncluded": true,
-        "notices": 1588,
+        "notices": 9,
         "dateRange": {
-          "earliest": "2025-01-29",
-          "latest": "2026-06-26"
+          "earliest": "2026-06-26",
+          "latest": "2026-07-07"
         },
         "buildStatus": "ok",
         "adapter": "fetchCA",
@@ -2350,19 +2350,19 @@
         "error": null
       },
       "coverageUnavailable": false,
-      "rankEligible": true,
-      "rankStatus": "ranked",
-      "rankIneligibleReason": null,
-      "rank": 1,
-      "pressureScore": 79,
-      "pressureLevel": "High",
+      "rankEligible": false,
+      "rankStatus": "not-ranked",
+      "rankIneligibleReason": "WARN feed has no notices in the current 12-month window",
+      "rank": null,
+      "pressureScore": null,
+      "pressureLevel": "Not ranked",
       "pressurePercentiles": {
-        "warnEmployeesPer10kLaborForce": 100,
-        "unemploymentRateYoYDelta": 28.57
+        "warnEmployeesPer10kLaborForce": null,
+        "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 77058,
-      "warnNotices12m": 1461,
-      "warnEmployeesPer10kLaborForce": 39.18,
+      "warnEmployees12m": 0,
+      "warnNotices12m": 0,
+      "warnEmployeesPer10kLaborForce": 0,
       "series": {
         "unemploymentRate": [
           {
@@ -2823,75 +2823,75 @@
         "warn": [
           {
             "date": "2025-06",
-            "notices": 9,
-            "employees": 922,
-            "employeesPer10kLaborForce": 0.47
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2025-07",
-            "notices": 173,
-            "employees": 7710,
-            "employeesPer10kLaborForce": 3.89
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2025-08",
-            "notices": 114,
-            "employees": 6102,
-            "employeesPer10kLaborForce": 3.07
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2025-09",
-            "notices": 103,
-            "employees": 6442,
-            "employeesPer10kLaborForce": 3.24
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2025-10",
-            "notices": 273,
-            "employees": 13452,
-            "employeesPer10kLaborForce": 6.84
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2025-11",
-            "notices": 85,
-            "employees": 3398,
-            "employeesPer10kLaborForce": 1.71
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2025-12",
-            "notices": 41,
-            "employees": 2262,
-            "employeesPer10kLaborForce": 1.14
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2026-01",
-            "notices": 141,
-            "employees": 10779,
-            "employeesPer10kLaborForce": 5.43
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2026-02",
-            "notices": 124,
-            "employees": 6447,
-            "employeesPer10kLaborForce": 3.25
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2026-03",
-            "notices": 122,
-            "employees": 4375,
-            "employeesPer10kLaborForce": 2.21
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2026-04",
-            "notices": 165,
-            "employees": 5946,
-            "employeesPer10kLaborForce": 3.02
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2026-05",
-            "notices": 111,
-            "employees": 9223,
-            "employeesPer10kLaborForce": 4.69
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -8099,12 +8099,12 @@
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
-      "rank": 8,
-      "pressureScore": 13,
+      "rank": 6,
+      "pressureScore": 18,
       "pressureLevel": "Low",
       "pressurePercentiles": {
-        "warnEmployeesPer10kLaborForce": 12.5,
-        "unemploymentRateYoYDelta": 14.29
+        "warnEmployeesPer10kLaborForce": 16.67,
+        "unemploymentRateYoYDelta": 20
       },
       "warnEmployees12m": 4642,
       "warnNotices12m": 34,
@@ -8659,10 +8659,10 @@
         "sourceStatus": "live",
         "sourceType": "xlsx",
         "recordsIncluded": true,
-        "notices": 554,
+        "notices": 557,
         "dateRange": {
-          "earliest": "2021-07-09",
-          "latest": "2026-06-30"
+          "earliest": "2021-07-12",
+          "latest": "2026-07-10"
         },
         "buildStatus": "ok",
         "adapter": "fetchIA",
@@ -8676,12 +8676,12 @@
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
-      "rank": 6,
-      "pressureScore": 39,
+      "rank": 5,
+      "pressureScore": 41,
       "pressureLevel": "Moderate",
       "pressurePercentiles": {
         "warnEmployeesPer10kLaborForce": 50,
-        "unemploymentRateYoYDelta": 14.29
+        "unemploymentRateYoYDelta": 20
       },
       "warnEmployees12m": 5035,
       "warnNotices12m": 138,
@@ -11535,10 +11535,10 @@
         "sourceStatus": "live",
         "sourceType": "html",
         "recordsIncluded": true,
-        "notices": 1076,
+        "notices": 1082,
         "dateRange": {
           "earliest": "2016-01-05",
-          "latest": "2026-06-29"
+          "latest": "2026-07-07"
         },
         "buildStatus": "ok",
         "adapter": "fetchMD",
@@ -11552,12 +11552,12 @@
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
-      "rank": 3,
-      "pressureScore": 69,
+      "rank": 2,
+      "pressureScore": 71,
       "pressureLevel": "Elevated",
       "pressurePercentiles": {
-        "warnEmployeesPer10kLaborForce": 62.5,
-        "unemploymentRateYoYDelta": 85.71
+        "warnEmployeesPer10kLaborForce": 66.67,
+        "unemploymentRateYoYDelta": 80
       },
       "warnEmployees12m": 9429,
       "warnNotices12m": 154,
@@ -17278,7 +17278,7 @@
         "sourceStatus": "live",
         "sourceType": "xlsx",
         "recordsIncluded": true,
-        "notices": 1017,
+        "notices": 1022,
         "dateRange": {
           "earliest": "2016-01-01",
           "latest": "2026-07-01"
@@ -17295,11 +17295,11 @@
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
-      "rank": 4,
-      "pressureScore": 61,
+      "rank": 3,
+      "pressureScore": 70,
       "pressureLevel": "Elevated",
       "pressurePercentiles": {
-        "warnEmployeesPer10kLaborForce": 87.5,
+        "warnEmployeesPer10kLaborForce": 100,
         "unemploymentRateYoYDelta": 0
       },
       "warnEmployees12m": 16350,
@@ -19006,10 +19006,10 @@
         "sourceStatus": "live",
         "sourceType": "csv",
         "recordsIncluded": true,
-        "notices": 49,
+        "notices": 53,
         "dateRange": {
           "earliest": "2026-01-07",
-          "latest": "2026-06-24"
+          "latest": "2026-07-06"
         },
         "buildStatus": "ok",
         "adapter": "fetchNC",
@@ -19023,12 +19023,12 @@
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
-      "rank": 9,
-      "pressureScore": 13,
+      "rank": 7,
+      "pressureScore": 12,
       "pressureLevel": "Low",
       "pressurePercentiles": {
         "warnEmployeesPer10kLaborForce": 0,
-        "unemploymentRateYoYDelta": 42.86
+        "unemploymentRateYoYDelta": 40
       },
       "warnEmployees12m": 4119,
       "warnNotices12m": 41,
@@ -21325,12 +21325,12 @@
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
-      "rank": 2,
-      "pressureScore": 70,
-      "pressureLevel": "Elevated",
+      "rank": 1,
+      "pressureScore": 76,
+      "pressureLevel": "High",
       "pressurePercentiles": {
-        "warnEmployeesPer10kLaborForce": 75,
-        "unemploymentRateYoYDelta": 57.14
+        "warnEmployeesPer10kLaborForce": 83.33,
+        "unemploymentRateYoYDelta": 60
       },
       "warnEmployees12m": 7037,
       "warnNotices12m": 83,
@@ -26486,10 +26486,10 @@
         "sourceStatus": "live",
         "sourceType": "csv",
         "recordsIncluded": true,
-        "notices": 762,
+        "notices": 767,
         "dateRange": {
           "earliest": "2016-01-04",
-          "latest": "2026-06-15"
+          "latest": "2026-07-09"
         },
         "buildStatus": "ok",
         "adapter": "fetchVA",
@@ -26503,11 +26503,11 @@
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
-      "rank": 5,
-      "pressureScore": 56,
+      "rank": 4,
+      "pressureScore": 53,
       "pressureLevel": "Elevated",
       "pressurePercentiles": {
-        "warnEmployeesPer10kLaborForce": 37.5,
+        "warnEmployeesPer10kLaborForce": 33.33,
         "unemploymentRateYoYDelta": 100
       },
       "warnEmployees12m": 7727,
@@ -28210,34 +28210,31 @@
       "warnCoverage": {
         "sourceStatus": "live",
         "sourceType": "json",
-        "recordsIncluded": true,
-        "notices": 620,
-        "dateRange": {
-          "earliest": "2020-01-02",
-          "latest": "2026-06-29"
-        },
-        "buildStatus": "ok",
+        "recordsIncluded": false,
+        "notices": 0,
+        "dateRange": null,
+        "buildStatus": "skipped",
         "adapter": "fetchWI",
         "name": "Wisconsin WARN Act Notices",
         "publisher": "Wisconsin Department of Workforce Development",
         "url": "https://sheets.googleapis.com/v4/spreadsheets/1cyZiHZcepBI7ShB3dMcRprUFRG24lbwEnEDRBMhAqsA/values/Originals",
         "notes": "Machine-readable public source is fetched by this pipeline.",
-        "error": null
+        "error": "GOOGLE_SHEETS_API_KEY is not set — required to fetch the Wisconsin WARN sheet. Set it as a build/CI secret (do not commit)."
       },
       "coverageUnavailable": false,
-      "rankEligible": true,
-      "rankStatus": "ranked",
-      "rankIneligibleReason": null,
-      "rank": 7,
-      "pressureScore": 39,
-      "pressureLevel": "Moderate",
+      "rankEligible": false,
+      "rankStatus": "not-ranked",
+      "rankIneligibleReason": "WARN feed has no notices in the current 12-month window",
+      "rank": null,
+      "pressureScore": null,
+      "pressureLevel": "Not ranked",
       "pressurePercentiles": {
-        "warnEmployeesPer10kLaborForce": 25,
-        "unemploymentRateYoYDelta": 71.43
+        "warnEmployeesPer10kLaborForce": null,
+        "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 5233,
-      "warnNotices12m": 68,
-      "warnEmployeesPer10kLaborForce": 16.71,
+      "warnEmployees12m": 0,
+      "warnNotices12m": 0,
+      "warnEmployeesPer10kLaborForce": 0,
       "series": {
         "unemploymentRate": [
           {
@@ -28698,75 +28695,75 @@
         "warn": [
           {
             "date": "2025-06",
-            "notices": 8,
-            "employees": 419,
-            "employeesPer10kLaborForce": 1.35
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2025-07",
-            "notices": 4,
-            "employees": 170,
-            "employeesPer10kLaborForce": 0.55
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2025-08",
-            "notices": 3,
-            "employees": 93,
-            "employeesPer10kLaborForce": 0.3
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2025-09",
-            "notices": 8,
-            "employees": 736,
-            "employeesPer10kLaborForce": 2.37
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2025-10",
-            "notices": 3,
-            "employees": 192,
-            "employeesPer10kLaborForce": 0.61
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2025-11",
-            "notices": 6,
-            "employees": 571,
-            "employeesPer10kLaborForce": 1.83
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2025-12",
-            "notices": 1,
-            "employees": 80,
-            "employeesPer10kLaborForce": 0.26
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2026-01",
-            "notices": 7,
-            "employees": 366,
-            "employeesPer10kLaborForce": 1.17
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2026-02",
-            "notices": 5,
-            "employees": 390,
-            "employeesPer10kLaborForce": 1.25
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2026-03",
-            "notices": 7,
-            "employees": 1169,
-            "employeesPer10kLaborForce": 3.74
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2026-04",
-            "notices": 7,
-            "employees": 736,
-            "employeesPer10kLaborForce": 2.35
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           },
           {
             "date": "2026-05",
-            "notices": 9,
-            "employees": 311,
-            "employeesPer10kLaborForce": 0.99
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -29347,8 +29344,8 @@
     }
   ],
   "meta": {
-    "generatedAt": "2026-07-02T07:02:26.024Z",
-    "asOf": "2026-07-02",
+    "generatedAt": "2026-07-14T02:25:20.788Z",
+    "asOf": "2026-07-14",
     "source": {
       "name": "BLS Local Area Unemployment Statistics",
       "publisher": "U.S. Bureau of Labor Statistics",

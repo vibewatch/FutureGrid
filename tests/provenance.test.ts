@@ -116,10 +116,10 @@ describe("selectLatestAsOf", () => {
 // ── Lane resolution with actual registry values ────────────────────────────────
 
 describe("provenance lane resolution (live registry)", () => {
-  it("global lane: selectLatestAsOf resolves to 2026-07-03 (openrouter-models)", () => {
+  it("global lane: selectLatestAsOf resolves to 2026-07-14 (openrouter-models/global-ai-metrics refreshed)", () => {
     const ids = ["openrouter-models", "country-exposure", "global-ai-metrics"] as const;
     const asOfs = ids.map((id) => getDatasetProvenance(id)?.asOf ?? null);
-    expect(selectLatestAsOf(asOfs)).toBe("2026-07-03");
+    expect(selectLatestAsOf(asOfs)).toBe("2026-07-14");
   });
 
   it("talent lane: selectLatestAsOf resolves to 2025 (job-postings Dec 31 beats FY2025 Sep 30)", () => {
@@ -129,18 +129,18 @@ describe("provenance lane resolution (live registry)", () => {
     expect(selectLatestAsOf(asOfs)).toBe("2025");
   });
 
-  it("market lane: selectLatestAsOf resolves to 2026-07-02 (ai-company-stocks)", () => {
+  it("market lane: selectLatestAsOf resolves to 2026-07-14 (market-ai-signals refreshed)", () => {
     const ids = ["ai-company-stocks", "market-ai-signals"] as const;
     const asOfs = ids.map((id) => getDatasetProvenance(id)?.asOf ?? null);
-    expect(selectLatestAsOf(asOfs)).toBe("2026-07-02");
+    expect(selectLatestAsOf(asOfs)).toBe("2026-07-14");
   });
 
   it("getLatestAsOf() returns the chronologically latest asOf across the whole registry", () => {
     const latest = getLatestAsOf();
     // Must not be an FY label — FY2025 (Sep 30, 2025) loses to any 2026-xx-xx date.
     expect(latest).not.toMatch(/^FY/i);
-    // openrouter-models and sources both carry 2026-07-03 at time of writing.
-    expect(latest).toBe("2026-07-03");
+    // Multiple datasets refreshed to 2026-07-14 (openrouter-models, market-ai-signals, etc.)
+    expect(latest).toBe("2026-07-14");
   });
 
   it("employment-projections asOf 2024-2034 does not corrupt getLatestAsOf", () => {

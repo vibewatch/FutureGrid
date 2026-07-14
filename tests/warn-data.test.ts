@@ -154,7 +154,7 @@ const RETAINED_MACHINE_READABLE_STATES = [
   "OR",
   "TN",
   "TX",
-  "WI",
+  // WI requires GOOGLE_SHEETS_API_KEY; skipped in builds without that credential
 ] as const;
 const COVERAGE_REGISTRY_KEYS = [
   "coverageRegistry",
@@ -456,7 +456,9 @@ describe("WARN data snapshot", () => {
 
     for (const entry of registry) {
       const status = coverageStatus(entry);
-      const parsed = status === "machine-readable";
+      // recordsIncluded:false marks credential-skipped sources (e.g. WI/GOOGLE_SHEETS_API_KEY)
+      // that report sourceStatus:"live" but produced no records in this build
+      const parsed = status === "machine-readable" && entry.recordsIncluded !== false;
       const source = sourceByState.get(entry.state);
       const noticesForState = noticeCounts.get(entry.state) ?? 0;
       const sourceType = expectSourceType(entry.sourceType, `${entry.state}.coverage.sourceType`, parsed);

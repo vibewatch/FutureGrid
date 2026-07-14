@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-02T05:01:46.320Z",
+  "generatedAt": "2026-07-14T02:19:42.901Z",
   "source": {
     "name": "Epoch AI — Notable AI Models",
     "publisher": "Epoch AI",
     "url": "https://epoch.ai/data/notable-ai-models",
     "downloadUrl": "https://epoch.ai/data/notable_ai_models.csv",
     "license": "CC BY 4.0",
-    "accessed": "2026-07-02",
+    "accessed": "2026-07-14",
     "caveat": "Training-compute figures are Epoch AI estimates with varying confidence; not all models report compute/cost/power."
   },
   "methodology": {
@@ -17,7 +17,7 @@
     "notes": "Descriptive historical trends only — not a forecast."
   },
   "counts": {
-    "totalRows": 1033,
+    "totalRows": 1035,
     "withCompute": 528,
     "withComputeAndDate": 528,
     "withPower": 215,
@@ -15034,8 +15034,8 @@
     "Multi-country collaboration models are co-attributed to each participating country in the country leaderboard."
   ],
   "meta": {
-    "generatedAt": "2026-07-02T05:01:46.320Z",
-    "asOf": "2026-07-02",
+    "generatedAt": "2026-07-14T02:19:42.901Z",
+    "asOf": "2026-07-14",
     "source": {
       "name": "Epoch AI — Notable AI Models",
       "publisher": "Epoch AI",

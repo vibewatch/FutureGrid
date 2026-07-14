@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-07-03T05:27:12.367Z",
+    "generatedAt": "2026-07-14T02:46:01.548Z",
     "asOf": "2024-2034",
     "source": {
       "name": "BLS Employment Projections occupational data",
@@ -21,7 +21,7 @@
     "dataQualityNotes": {
       "nullProjectedOpenings": {
         "count": 85,
-        "explanation": "The BLS Employment Projections source does not publish annual-openings estimates for all SOC codes. 85 occupations have projectedOpenings = null because no matching BLS-EP openings row exists. These nulls are intentional and represent genuine data unavailability \u2014 they must not be imputed or converted to zero.",
+        "explanation": "The BLS Employment Projections source does not publish annual-openings estimates for all SOC codes. 85 occupations have projectedOpenings = null because no matching BLS-EP openings row exists. These nulls are intentional and represent genuine data unavailability — they must not be imputed or converted to zero.",
         "affectedField": "projectedOpenings",
         "sentinel": null,
         "handling": "Preserve null; UI surfaces should display \"not available\" rather than omitting the field or showing 0."

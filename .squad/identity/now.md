@@ -1,9 +1,9 @@
 ---
-updated_at: 2026-06-30T01:11:10.227Z
-focus_area: Initial setup
+updated_at: 2026-07-14T02:05:10.092+00:00
+focus_area: Refreshing stale datasets
 active_issues: []
 ---
 
 # What We're Focused On
 
-Getting started. Updated by coordinator at session start.
+Refreshing reproducible data snapshots, provenance, and freshness metadata, then validating the generated outputs.

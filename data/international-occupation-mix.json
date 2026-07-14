@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-07-11T02:05:04.306Z",
+    "generatedAt": "2026-07-14T02:19:55.085Z",
     "asOf": "2025",
     "source": {
       "name": "ILOSTAT — Employment by sex and occupation (thousands) — Annual",
@@ -18,7 +18,7 @@
     "licenseUrl": "https://www.ilo.org/global/copyright/lang--en/index.htm",
     "publisher": "International Labour Organization (ILO)",
     "publisherUrl": "https://ilostat.ilo.org/",
-    "accessDate": "2026-07-11T02:05:00.537Z"
+    "accessDate": "2026-07-14T02:19:51.887Z"
   },
   "coverage": {
     "classification": "ISCO-08",
