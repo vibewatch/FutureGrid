@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T02:48:44.493Z",
+  "generatedAt": "2026-07-14T03:28:27.928Z",
   "source": {
     "name": "BLS Quarterly Census of Employment and Wages Annual Area CSVs",
     "publisher": "U.S. Bureau of Labor Statistics",
@@ -66,14 +66,14 @@
     "privateOwnershipStates": 51,
     "allOwnershipFallbackStates": 0,
     "fallbackStates": [],
-    "statesWithBaselineRate": 7,
-    "rankedStates": 7,
+    "statesWithBaselineRate": 8,
+    "rankedStates": 8,
     "highestBaselineState": "NJ",
     "highestBaselineRate": 44.14,
     "warnWindowMonths": 12,
     "warnWindowStart": "2025-06-01",
     "warnWindowEnd": "2026-05-31",
-    "stateLaborGeneratedAt": "2026-07-14T02:25:20.788Z",
+    "stateLaborGeneratedAt": "2026-07-14T03:28:02.912Z",
     "candidateYearAttempts": [
       {
         "year": 2025,
@@ -733,8 +733,8 @@
       "warnNotices12m": 34,
       "warnEmployeesPer10kQcewEmployment": 16.64,
       "lausLaborForce": 3489693,
-      "warnPressureRank": 6,
-      "warnPressureScore": 18,
+      "warnPressureRank": 7,
+      "warnPressureScore": 15,
       "rankEligible": true,
       "dataQualityNotes": [
         "Uses QCEW private ownership (own_code 5), all industries (industry_code 10)."
@@ -778,7 +778,7 @@
       "warnEmployeesPer10kQcewEmployment": 38.49,
       "lausLaborForce": 1732228,
       "warnPressureRank": 5,
-      "warnPressureScore": 41,
+      "warnPressureScore": 45,
       "rankEligible": true,
       "dataQualityNotes": [
         "Uses QCEW private ownership (own_code 5), all industries (industry_code 10)."
@@ -1002,7 +1002,7 @@
       "warnEmployeesPer10kQcewEmployment": 42.28,
       "lausLaborForce": 3207390,
       "warnPressureRank": 2,
-      "warnPressureScore": 71,
+      "warnPressureScore": 75,
       "rankEligible": true,
       "dataQualityNotes": [
         "Uses QCEW private ownership (own_code 5), all industries (industry_code 10)."
@@ -1584,8 +1584,8 @@
       "warnNotices12m": 41,
       "warnEmployeesPer10kQcewEmployment": 9.76,
       "lausLaborForce": 5280593,
-      "warnPressureRank": 7,
-      "warnPressureScore": 12,
+      "warnPressureRank": 8,
+      "warnPressureScore": 10,
       "rankEligible": true,
       "dataQualityNotes": [
         "Uses QCEW private ownership (own_code 5), all industries (industry_code 10)."
@@ -1764,7 +1764,7 @@
       "warnEmployeesPer10kQcewEmployment": 41.64,
       "lausLaborForce": 2203374,
       "warnPressureRank": 1,
-      "warnPressureScore": 76,
+      "warnPressureScore": 75,
       "rankEligible": true,
       "dataQualityNotes": [
         "Uses QCEW private ownership (own_code 5), all industries (industry_code 10)."
@@ -2168,7 +2168,7 @@
       "warnEmployeesPer10kQcewEmployment": 22.7,
       "lausLaborForce": 4490601,
       "warnPressureRank": 4,
-      "warnPressureScore": 53,
+      "warnPressureScore": 60,
       "rankEligible": true,
       "dataQualityNotes": [
         "Uses QCEW private ownership (own_code 5), all industries (industry_code 10)."
@@ -2297,16 +2297,15 @@
       "annualAverageEmployment": 2558904,
       "averageAnnualPay": 66612,
       "averageWeeklyWage": 1281,
-      "warnEmployees12m": null,
-      "warnNotices12m": null,
-      "warnEmployeesPer10kQcewEmployment": null,
+      "warnEmployees12m": 5233,
+      "warnNotices12m": 68,
+      "warnEmployeesPer10kQcewEmployment": 20.45,
       "lausLaborForce": 3131529,
-      "warnPressureRank": null,
-      "warnPressureScore": null,
-      "rankEligible": false,
+      "warnPressureRank": 6,
+      "warnPressureScore": 40,
+      "rankEligible": true,
       "dataQualityNotes": [
-        "Uses QCEW private ownership (own_code 5), all industries (industry_code 10).",
-        "WARN coverage is not rank-eligible; WARN counts/rates are unknown, not zero. Reason: WARN feed has no notices in the current 12-month window"
+        "Uses QCEW private ownership (own_code 5), all industries (industry_code 10)."
       ],
       "sourceRow": {
         "areaFips": "55000",
@@ -2373,7 +2372,7 @@
     }
   ],
   "meta": {
-    "generatedAt": "2026-07-14T02:48:44.493Z",
+    "generatedAt": "2026-07-14T03:28:27.928Z",
     "asOf": "2026-07-14",
     "source": {
       "name": "BLS Quarterly Census of Employment and Wages Annual Area CSVs",

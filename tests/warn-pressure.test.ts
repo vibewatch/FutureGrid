@@ -635,7 +635,7 @@ describe("state-labor WARN Pressure helpers", () => {
       }
       validateParserConfidence(rowCoverage.parserConfidence, `${code} state-labor parserConfidence`);
 
-      if (MACHINE_READABLE_STATUSES.has(metadata.status) && metadata.recordsIncluded !== false) {
+      if (MACHINE_READABLE_STATUSES.has(metadata.status)) {
         expect(metadata.recordsIncluded, `${code} parsed WARN coverage should include records`).toBe(true);
         expect(metadata.notices ?? 0, `${code} parsed WARN coverage should include notices`).toBeGreaterThan(0);
         expect(metadata.sourceType, `${code} parsed WARN coverage should identify sourceType`).toBeTruthy();

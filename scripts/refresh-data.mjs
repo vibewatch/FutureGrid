@@ -15,15 +15,20 @@
  * updates data/scheduled-refresh PR on main when generated files change.
  *
  * CREDENTIAL-GATED builders are EXCLUDED from this manifest:
- *   build-jolts.mjs         — requires BLS_API_KEY (hard exit)
- *   build-onet-enrichment.mjs — requires ONET_API_KEY (hard exit)
- *   build-h1b.mjs           — no credential needed but requires ~2 GB of
- *                             Internet Archive downloads; not safe for weekly CI
- *   build-world-geo.mjs     — static geography; not time-varying
+ *   build-jolts.mjs             — requires BLS_API_KEY (hard exit)
+ *   build-onet-enrichment.mjs   — requires ONET_API_KEY (hard exit)
+ *   build-h1b.mjs               — no credential needed but requires ~2 GB of
+ *                                 Internet Archive downloads; not safe for weekly CI
+ *   build-world-geo.mjs         — static geography; not time-varying
+ *   build-data-snapshot.mjs     — EXCLUDED: requires BLS_API_KEY for OEWS employment
+ *                                 enrichment; without it the builder writes employment: null
+ *                                 for all 756 occupations, silently overwriting the canonical
+ *                                 OEWS data already committed. The committed occupation-snapshot
+ *                                 is the safe read-only seed for all downstream derived builders.
  *
  * Wisconsin WARN data (build-warn.mjs) requires GOOGLE_SHEETS_API_KEY, but
- * the builder catches the missing key and skips WI gracefully; all other 50
- * states/DC are still refreshed. WI is therefore NOT a blocking dependency.
+ * the builder preserves the last-known-good WI records when the key is absent;
+ * all other states are still refreshed and WI records are not dropped.
  *
  * build-ai-company-stocks.mjs uses AI_COMPANY_STOCKS_BOOTSTRAP_YAHOO=1 to
  * fetch from Yahoo Finance (unofficial/undocumented). Without the flag it
@@ -44,9 +49,16 @@ const ROOT = resolve(__dirname, "..");
 // Steps run sequentially; the first non-zero exit aborts the refresh.
 // Dependency ordering is strict:
 //   warn → state-labor → state-qcew
-//   occupation-snapshot → snapshot-slim → employment-projections
-//                       → job-postings → occupational-requirements
+//   snapshot-slim → employment-projections  (reads committed occupation-snapshot)
+//                 → job-postings             (reads committed occupation-snapshot)
+//                 → occupational-requirements(reads committed occupation-snapshot)
 //   all data steps → warn-public → provenance (always last)
+//
+// occupation-snapshot (build-data-snapshot.mjs) is intentionally EXCLUDED:
+// it requires BLS_API_KEY for OEWS employment enrichment; without the key it
+// writes employment: null for all 756 occupations, silently overwriting the
+// canonical OEWS data. The committed snapshot is the stable seed for all
+// downstream builders listed below.
 //
 // Exported so tests can assert manifest contract without running builders.
 
@@ -56,7 +68,7 @@ export const MANIFEST = [
     id: "warn",
     script: "scripts/build-warn.mjs",
     note:
-      "Multi-state WARN Act notices; WI skipped gracefully without GOOGLE_SHEETS_API_KEY",
+      "Multi-state WARN Act notices; WI preserves last-known-good records without GOOGLE_SHEETS_API_KEY",
   },
   {
     id: "state-labor",
@@ -75,31 +87,27 @@ export const MANIFEST = [
     script: "scripts/build-ai-usage-proxies.mjs",
     note: "OECD SDMX, Eurostat, StackOverflow, HuggingFace, GitHub adoption signals",
   },
-  {
-    id: "occupation-snapshot",
-    script: "scripts/build-data-snapshot.mjs",
-    note:
-      "AEI exposure + O*NET skills (key-free); employment/history requires BLS_API_KEY and is skipped",
-  },
+  // occupation-snapshot (build-data-snapshot.mjs) is EXCLUDED — requires BLS_API_KEY;
+  // running without it writes employment: null, overwriting canonical OEWS data.
   {
     id: "snapshot-slim",
     script: "scripts/build-snapshot-slim.mjs",
-    note: "Derived slim view of occupation-snapshot (depends on occupation-snapshot)",
+    note: "Derived slim view of committed occupation-snapshot (reads stable committed snapshot)",
   },
   {
     id: "employment-projections",
     script: "scripts/build-employment-projections.mjs",
-    note: "BLS projections CSV + occupation-snapshot (depends on occupation-snapshot)",
+    note: "BLS projections CSV + committed occupation-snapshot-slim",
   },
   {
     id: "job-postings",
     script: "scripts/build-job-postings.mjs",
-    note: "Derived from occupation-snapshot",
+    note: "Derived from committed occupation-snapshot",
   },
   {
     id: "occupational-requirements",
     script: "scripts/build-occupational-requirements.mjs",
-    note: "BLS ORS seed rows derived from occupation-snapshot",
+    note: "BLS ORS seed rows derived from committed occupation-snapshot",
   },
   {
     id: "ai-signals",

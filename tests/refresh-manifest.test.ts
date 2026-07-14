@@ -81,6 +81,11 @@ describe("refresh manifest excludes credential-gated builders", () => {
       script: "scripts/build-h1b.mjs",
       reason: "not safe for weekly CI (~2 GB of Internet Archive downloads)",
     },
+    {
+      script: "scripts/build-data-snapshot.mjs",
+      reason:
+        "requires BLS_API_KEY for OEWS employment enrichment; without it writes employment: null, overwriting canonical OEWS data",
+    },
   ];
 
   for (const { script, reason } of BLOCKED) {
@@ -102,20 +107,8 @@ describe("refresh manifest preserves dependency order", () => {
     isBefore("state-labor", "state-qcew", "state-labor → state-qcew");
   });
 
-  it("occupation-snapshot appears before snapshot-slim", () => {
-    isBefore("occupation-snapshot", "snapshot-slim", "occupation-snapshot → snapshot-slim");
-  });
-
-  it("occupation-snapshot appears before employment-projections", () => {
-    isBefore("occupation-snapshot", "employment-projections", "occupation-snapshot → employment-projections");
-  });
-
-  it("occupation-snapshot appears before job-postings", () => {
-    isBefore("occupation-snapshot", "job-postings", "occupation-snapshot → job-postings");
-  });
-
-  it("occupation-snapshot appears before occupational-requirements", () => {
-    isBefore("occupation-snapshot", "occupational-requirements", "occupation-snapshot → occupational-requirements");
+  it("snapshot-slim appears before employment-projections (projections reads slim snapshot)", () => {
+    isBefore("snapshot-slim", "employment-projections", "snapshot-slim → employment-projections");
   });
 
   it("warn appears before warn-public (warn-public copies warn output)", () => {
@@ -139,7 +132,7 @@ describe("refresh manifest includes all expected key-free datasets", () => {
     "state-labor",
     "state-qcew",
     "ai-usage-proxies",
-    "occupation-snapshot",
+    // occupation-snapshot excluded: requires BLS_API_KEY; see BLOCKED list above
     "snapshot-slim",
     "employment-projections",
     "job-postings",

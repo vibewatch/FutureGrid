@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T02:48:57.730Z",
+  "generatedAt": "2026-07-14T03:28:39.741Z",
   "datasets": [
     {
       "id": "ai-company-stocks",
@@ -282,7 +282,7 @@
     {
       "id": "state-labor",
       "file": "data/state-labor.json",
-      "generatedAt": "2026-07-14T02:25:20.788Z",
+      "generatedAt": "2026-07-14T03:28:02.912Z",
       "asOf": "2026-07-14",
       "source": {
         "name": "BLS Local Area Unemployment Statistics",
@@ -295,7 +295,7 @@
     {
       "id": "state-qcew",
       "file": "data/state-qcew.json",
-      "generatedAt": "2026-07-14T02:48:44.493Z",
+      "generatedAt": "2026-07-14T03:28:27.928Z",
       "asOf": "2026-07-14",
       "source": {
         "name": "BLS Quarterly Census of Employment and Wages Annual Area CSVs",
@@ -308,7 +308,7 @@
     {
       "id": "warn-notices",
       "file": "data/warn-notices.json",
-      "generatedAt": "2026-07-14T02:24:00.265Z",
+      "generatedAt": "2026-07-14T03:27:44.095Z",
       "asOf": "2026-07-14",
       "source": {
         "name": "California WARN Act Notices",
@@ -316,7 +316,7 @@
         "url": "https://edd.ca.gov/en/jobs_and_training/layoff_services_warn/"
       },
       "version": "1.0.0",
-      "rows": 10351
+      "rows": 10971
     },
     {
       "id": "world-countries.geo",

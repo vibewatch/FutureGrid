@@ -12,8 +12,10 @@ name: Scheduled data refresh
 #   jolts            — requires BLS_API_KEY
 #   onet-enrichment  — requires ONET_API_KEY
 #   h1b-trends       — no credential but ~2 GB Internet Archive downloads
-# Wisconsin WARN requires GOOGLE_SHEETS_API_KEY; the builder skips WI gracefully
-# and still refreshes all other 50 states when the key is absent.
+#   occupation-snapshot — requires BLS_API_KEY for OEWS employment enrichment;
+#                         without it employment: null overwrites canonical data
+# Wisconsin WARN requires GOOGLE_SHEETS_API_KEY; the builder preserves the
+# last-known-good WI records when the key is absent (no records are dropped).
 
 on:
   schedule:
@@ -56,9 +58,11 @@ jobs:
         run: npm ci
 
       - name: Refresh all key-free datasets
-        # GOOGLE_SHEETS_API_KEY is optional; build-warn.mjs skips WI gracefully
-        # when absent. Do NOT add credential-gated builders here; edit
+        # GOOGLE_SHEETS_API_KEY is optional; build-warn.mjs preserves last-known-good
+        # WI records when absent. Do NOT add credential-gated builders here; edit
         # scripts/refresh-data.mjs MANIFEST instead.
+        # build-data-snapshot.mjs is intentionally EXCLUDED from the manifest (requires
+        # BLS_API_KEY; without it writes employment: null, overwriting canonical OEWS data).
         env:
           GOOGLE_SHEETS_API_KEY: ${{ secrets.GOOGLE_SHEETS_API_KEY }}
         run: npm run data:refresh
@@ -128,7 +132,8 @@ ${CHANGED_FILES}
 - \`jolts.json\` — requires \`BLS_API_KEY\`
 - \`onet-enrichment.json\` — requires \`ONET_API_KEY\`
 - \`h1b-trends.json\` — large Internet Archive download (not safe for weekly CI)
-- \`warn-notices.json / WI\` — requires \`GOOGLE_SHEETS_API_KEY\` (all other states refreshed)
+- \`occupation-snapshot.json\` — requires \`BLS_API_KEY\` for OEWS employment enrichment; excluded to prevent employment: null overwrite
+- \`warn-notices.json / WI\` — requires \`GOOGLE_SHEETS_API_KEY\` (last-known-good WI records preserved when key absent)
 
 ---
 *Do not merge — awaiting review.*"
