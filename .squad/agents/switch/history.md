@@ -98,6 +98,7 @@ See orchestration-log/2026-07-10T03-57-05.444+00-00-switch.md and log/2026-07-10
 ## 2026-07-11T00:00:00Z — Wage-Tier Polarization & Major Economy Occupational Mix Batch Closeout
 
 **PRs merged:** #110 (/sectors wage-tier polarization) | #112 (/global occupational mix)
+**PRs merged:** #110 (/sectors wage-tier polarization) | #112 (/global occupational mix)  
 **Batch focus:** Accessibility patterns, a11y compliance, focus-visible semantics
 
 ### Accessibility & A11y Gate Patterns
@@ -182,3 +183,20 @@ See orchestration-log/2026-07-10T03-57-05.444+00-00-switch.md and log/2026-07-10
 - AccessibleChart wrapper (handles figure label + sr-only table scaffolding)
 - CareerTrendChart canvas pattern (applies to any chart component using Bar/Line/Scatter)
 - Accessible table responsive pattern (visible overflow-x + sr-only data structure)
+
+
+
+### Scribe Orchestration — PR #120 Cycle (2026-07-12T14:24:27Z)
+
+**Session:** Provenance Registry & Localized Guardrails — Cycle Complete  
+**Scope:** Per-lane synthesis provenance (Tank backend), localized GuardrailBadge UI (Neo), full suite validation (Mouse), architecture review (Trinity), i18n compliance (Rai), independent revisions (Switch)
+
+**Switch Role Retrospective:**
+- Independent revision phase: addressed Trinity's flagged doc comment (stale reference)
+- i18n corrections: applied Rai's yellow-advisory fixes (ZH exposure wording, FY ordering clarification)
+- Calendar-aware asOf selector: integrated shared date selection logic across provenance UI
+- Country-exposure wording: corrected to use "exposure" not "adoption" in ZH context (proxy framing)
+- Documentation updates: ensured parity with implementation
+- All revisions applied atomically; no blocking issues remained
+
+**Approval & Closure:** PR #120 merged as 78154f20575df26f5b8867b70bb6ce3009c46993; issues #77/#119 closed. All Switch revisions complete and merged.
