@@ -12,6 +12,7 @@ import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
 import { deriveMeta } from "./lib/meta.mjs";
 import { validateAIUsageProxies } from "./lib/validate.mjs";
+import { needsHttpsFallback, processData360Rows } from "./lib/data360.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -103,10 +104,7 @@ async function fetchText(url, label, options = {}) {
       return response.text();
     } catch (error) {
       if (attempt === attempts) {
-        if (
-          url.startsWith("https://api.census.gov/") ||
-          url.startsWith("https://sdmx.oecd.org/")
-        ) {
+        if (needsHttpsFallback(url)) {
           return fetchTextWithHttps(url, label, options);
         }
         throw error;
@@ -372,29 +370,15 @@ async function buildData360AiResearchActivityMetrics() {
 
   for (let skip = pageSize; skip < total; skip += pageSize) {
     const page = await fetchJson(`${apiBase}&skip=${skip}`, `World Bank Data360 OECD_AI page ${Math.floor(skip / pageSize) + 1}`);
-    rows.push(...(page.value ?? []));
+    const pageRows = page.value ?? [];
+    rows.push(...pageRows);
+    // Stop early if the API returned a short page: all available records have been fetched.
+    // Guards against an over-reported count and prevents requesting pages beyond the real last page.
+    if (pageRows.length < pageSize) break;
   }
 
   const countryNames = loadCountryNamesByIso3();
-  const latestByCountry = new Map();
-  for (const row of rows) {
-    if (row.INDICATOR !== "OECD_AI_PUBS_TOT" || !row.REF_AREA || !row.TIME_PERIOD) continue;
-    const existing = latestByCountry.get(row.REF_AREA);
-    if (!existing || Number(row.TIME_PERIOD) > Number(existing.TIME_PERIOD)) {
-      latestByCountry.set(row.REF_AREA, row);
-    }
-  }
-
-  const countries = Array.from(latestByCountry.values())
-    .map((row) => ({
-      geo: { code: row.REF_AREA, name: countryNames.get(row.REF_AREA) ?? row.REF_AREA },
-      period: row.TIME_PERIOD,
-      value: round(Number(row.OBS_VALUE), 3),
-      unit: row.UNIT_MEASURE,
-      status: row.OBS_STATUS,
-    }))
-    .filter((row) => Number.isFinite(row.value))
-    .sort((a, b) => b.value - a.value);
+  const countries = processData360Rows(rows, countryNames);
 
   return [
     {
