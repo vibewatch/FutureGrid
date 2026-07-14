@@ -238,3 +238,67 @@ describe("refresh-data workflow YAML integrity", () => {
     ).toBe(false);
   });
 });
+
+// ─── refresh-data.yml full-gate requirements ──────────────────────────────────
+//
+// PRs created with GITHUB_TOKEN do not trigger PR CI, so the workflow must run
+// the same full gates (lint + test + build) BEFORE the commit step.
+// Regression guard: PR #124 was rejected because the workflow only ran focused
+// data/provenance tests, missing the ai-company-stocks idempotency failure at
+// tests/ai-company-stocks.test.ts:157 on a fresh checkout.
+
+describe("refresh-data workflow runs full gates before commit", () => {
+  const WORKFLOW_PATH = path.join(ROOT, ".github/workflows/refresh-data.yml");
+
+  function getSteps() {
+    const parsed = jsYaml.load(readFileSync(WORKFLOW_PATH, "utf8")) as Record<string, unknown>;
+    const jobs = parsed.jobs as Record<string, Record<string, unknown>>;
+    return jobs.refresh.steps as Array<Record<string, unknown>>;
+  }
+
+  function stepIndex(steps: Array<Record<string, unknown>>, pattern: RegExp): number {
+    return steps.findIndex((s) => typeof s.run === "string" && pattern.test(s.run));
+  }
+
+  it("includes npm run lint before the commit step", () => {
+    const steps = getSteps();
+    const lintIdx = stepIndex(steps, /npm run lint/);
+    const commitIdx = stepIndex(steps, /git commit/);
+    expect(lintIdx, "must have a step running npm run lint").toBeGreaterThanOrEqual(0);
+    expect(commitIdx, "must have a commit step").toBeGreaterThanOrEqual(0);
+    expect(lintIdx, "npm run lint must run before the commit step").toBeLessThan(commitIdx);
+  });
+
+  it("includes npm run test:run before the commit step", () => {
+    const steps = getSteps();
+    const testIdx = stepIndex(steps, /npm run test:run/);
+    const commitIdx = stepIndex(steps, /git commit/);
+    expect(testIdx, "must have a step running npm run test:run").toBeGreaterThanOrEqual(0);
+    expect(commitIdx, "must have a commit step").toBeGreaterThanOrEqual(0);
+    expect(testIdx, "npm run test:run must run before the commit step").toBeLessThan(commitIdx);
+  });
+
+  it("includes npm run build before the commit step", () => {
+    const steps = getSteps();
+    const buildIdx = stepIndex(steps, /npm run build(?!:)/);
+    const commitIdx = stepIndex(steps, /git commit/);
+    expect(buildIdx, "must have a step running npm run build").toBeGreaterThanOrEqual(0);
+    expect(commitIdx, "must have a commit step").toBeGreaterThanOrEqual(0);
+    expect(buildIdx, "npm run build must run before the commit step").toBeLessThan(commitIdx);
+  });
+
+  it("full gates (lint, test:run, build) all run in the same step, before commit", () => {
+    const steps = getSteps();
+    const gateIdx = steps.findIndex(
+      (s) =>
+        typeof s.run === "string" &&
+        /npm run lint/.test(s.run) &&
+        /npm run test:run/.test(s.run) &&
+        /npm run build(?!:)/.test(s.run),
+    );
+    const commitIdx = stepIndex(steps, /git commit/);
+    expect(gateIdx, "must have a single step running lint + test:run + build together").toBeGreaterThanOrEqual(0);
+    expect(commitIdx, "must have a commit step").toBeGreaterThanOrEqual(0);
+    expect(gateIdx, "full-gate step must appear before the commit step").toBeLessThan(commitIdx);
+  });
+});

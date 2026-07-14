@@ -156,7 +156,11 @@ This is the **canonical refresh command** for both local use and CI. It runs `sc
 
 **CI PR target:** `data/scheduled-refresh` branch → PR against `main`. Existing open PRs are updated by force-pushing the branch; a new PR is created only when none is open.
 
-**Manifest test:** `tests/refresh-manifest.test.ts` statically asserts script existence, dependency ordering, excluded credentials, and required dataset coverage without running any builder.
+**Full gates before commit:** Because PRs created with `GITHUB_TOKEN` do not trigger PR CI automatically, the workflow runs `npm run lint`, `npm run test:run`, and `npm run build` on the generated workspace before any commit or push. This ensures idempotency, provenance, and schema invariants are enforced on the first run.
+
+**Repository prerequisite:** The GitHub repository must have **"Allow GitHub Actions to create and approve pull requests"** enabled (Settings → Actions → General → Workflow permissions). The workflow uses `GITHUB_TOKEN` with `pull-requests: write` permission; without the repository setting, the `gh pr create` call will fail. Default workflow permissions should be set to read-only (the workflow explicitly declares the permissions it needs).
+
+**Manifest test:** `tests/refresh-manifest.test.ts` statically asserts script existence, dependency ordering, excluded credentials, required dataset coverage, and that full gates (lint/test/build) appear before the commit step — without running any builder.
 
 ### Full Data Rebuild (`build:data`)
 

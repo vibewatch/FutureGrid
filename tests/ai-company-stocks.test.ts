@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
@@ -155,6 +155,48 @@ describe("build:ai-company-stocks script", () => {
     });
 
     expect(readFileSync(DATA_PATH, "utf8")).toBe(before);
+  });
+
+  it("preserves Yahoo-bootstrap provenance on first offline rebuild (byte-for-byte idempotent)", () => {
+    // Reproduce PR #124 failure scenario: committed fixture carries Yahoo-bootstrap
+    // coverage metadata; the very first offline rebuild must be byte-identical.
+    // This test does NOT use network calls and does not rely on self-healing side effects.
+    const originalContent = readFileSync(DATA_PATH, "utf8");
+
+    // Construct a Yahoo-bootstrap-shaped fixture: same prices/metrics, but with the
+    // coverage provenance fields that `AI_COMPANY_STOCKS_BOOTSTRAP_YAHOO=1` writes.
+    const original = JSON.parse(originalContent) as {
+      coverage: Record<string, unknown>;
+      [key: string]: unknown;
+    };
+    const yahooBootstrapped = {
+      ...original,
+      coverage: {
+        ...original.coverage,
+        fallbackBehavior:
+          "AI_COMPANY_STOCKS_BOOTSTRAP_YAHOO=1 was set; builder refreshed the committed fixture from Yahoo chart JSON. Default CI rebuilds omit this flag and reuse committed observations without network access.",
+        fixtureBootstrapMode: "yahoo-chart-json",
+      },
+    };
+    const yahooContent = `${JSON.stringify(yahooBootstrapped, null, 2)}\n`;
+
+    writeFileSync(DATA_PATH, yahooContent);
+    try {
+      execFileSync(process.execPath, ["scripts/build-ai-company-stocks.mjs"], {
+        cwd: process.cwd(),
+        env: {
+          ...process.env,
+          ALPHA_VANTAGE_API_KEY: "",
+          AI_COMPANY_STOCKS_BOOTSTRAP_YAHOO: "",
+        },
+        stdio: "pipe",
+      });
+
+      // Offline rebuild must be byte-for-byte identical — Yahoo provenance preserved.
+      expect(readFileSync(DATA_PATH, "utf8")).toBe(yahooContent);
+    } finally {
+      writeFileSync(DATA_PATH, originalContent);
+    }
   });
 
   it("uses an on-or-before start observation for sparse monthly 1Y returns", () => {
