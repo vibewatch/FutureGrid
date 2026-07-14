@@ -91,6 +91,7 @@ See orchestration-log/2026-07-10T03-57-05.444+00-00-tank.md and log/2026-07-10T0
 ## 2026-07-11T00:00:00Z — Wage-Tier Polarization & Major Economy Occupational Mix Batch Closeout
 
 **PRs shipped:** #110 (/sectors wage-tier polarization) | #112 (/global occupational mix)
+**PRs shipped:** #110 (/sectors wage-tier polarization) | #112 (/global occupational mix)  
 **Batch focus:** International data governance, compliance closure, server/client boundary enforcement
 
 ### Implementation Learnings (Data Layer)
@@ -169,3 +170,47 @@ See orchestration-log/2026-07-10T03-57-05.444+00-00-tank.md and log/2026-07-10T0
 - Noted Neo's lockout due to duplicate SR naming / test validity rejection by Mouse
 - Confirmed Trinity's revision owners all UI/a11y/docs updates; approved merge clearance
 - No conflict-of-interest revisions required (source evaluation was research-phase decision, not Tank-authored)
+
+
+
+### Scribe Orchestration — PR #120 Cycle (2026-07-12T14:24:27Z)
+
+**Session:** Provenance Registry & Localized Guardrails — Cycle Complete  
+**Scope:** Per-lane synthesis provenance (Tank backend), localized GuardrailBadge UI (Neo), full suite validation (Mouse), architecture review (Trinity), i18n compliance (Rai), independent revisions (Switch)
+
+**Tank Role Retrospective:**
+- Implemented registry-backed per-lane synthesis provenance system
+- Data-layer determinism enforced: server-only helpers (`import "server-only"` guards), tercile calculation deterministic, employment-weighted logic explicit
+- Architecture tests validated no server-only code leaks into client islands
+- PR #120 merged without rejection cycles; strict-lockout phase completed
+- Learnings captured: Server-Only Determinism pattern, ILOSTAT CSV integration, Data Exclusion logic documentation
+
+**Approval & Closure:** PR #120 merged as 78154f20575df26f5b8867b70bb6ce3009c46993; issues #77/#119 closed
+
+
+## 2026-07-14 — Weekly Data Refresh Cycle: Cross-Agent Learnings
+
+### Preserve Last-Known-Good Credential Lanes
+**Incident:** PR #121 initially stripped credential-dependent data paths, causing WI loss and occupation-snapshot degradation. Mouse rejected; redesign preserved credential lanes separately.
+
+**Learning:** Public data builders must isolate credential-dependent data; never degrade credential access in refresh cycles. Subsequent PRs (#122–#125) preserved credential lanes while updating public datasets.
+
+**Application:** Future offline rebuilds check for credential-path preservation before commit. Non-destructive data refresh pattern established.
+
+### Offline Rebuild Durability Requires Committed Metadata
+**Incident:** PR #124 initially had Yahoo-bootstrap metadata that self-healed on second run. Mouse required deterministic fixture-origin preservation (no self-healing).
+
+**Learning:** Regression tests must be deterministic; self-healing masks underlying bugs. Committed fixture-origin metadata prevents second-run recovery of broken states, surfacing bugs on first run.
+
+**Application:** PR #125 added non-self-healing regression test; workflow now lint → tests → build before commit/PR.
+
+### Full In-Job Test Gates for Bot PRs
+**Incident:** Workflow runs 29305255883 (HTTP 417) and 29304395231 (YAML syntax) showed issues were not caught until post-commit.
+
+**Learning:** Bot PRs need full validation gates in workflow before creating PR: lint → tests → build → commit/push → then PR creation. This prevents half-working states from reaching review.
+
+**Application:** PR #125 hardened workflow with full test gates; workflow run 29308171731 passed all 17 refresh steps + lint + 1321 tests + build in 3m58s before PR creation.
+
+### Regression Test Patterns
+**Key pattern:** Offline rebuild regression test validates fixture-origin metadata + non-self-healing behavior. Added to Tank's test suite post-#125.
+

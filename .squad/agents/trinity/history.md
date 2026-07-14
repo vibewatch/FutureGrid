@@ -138,6 +138,7 @@
 ## 2026-07-11T00:00:00Z — Wage-Tier Polarization & Major Economy Occupational Mix Batch Closeout
 
 **PRs merged:** #110 (/sectors wage-tier polarization, 846 tests) | #112 (/global occupational mix, 1,098 tests)
+**PRs merged:** #110 (/sectors wage-tier polarization, 846 tests) | #112 (/global occupational mix, 1,098 tests)  
 **Batch focus:** Data governance decisions, compliance verification, accessibility gates
 
 ### Review & Approval Decisions
@@ -229,3 +230,60 @@
 - Added row header clarity, localized legend, early guardrail caveat block
 - Resolved all 8 Rai yellow-flag items without blocking merge
 - Approved by Mouse, Fact Checker, and Tank; PR #115 merged 2026-07-11T22:41:25Z
+
+
+
+### Scribe Orchestration — PR #120 Cycle (2026-07-12T14:24:27Z)
+
+**Session:** Provenance Registry & Localized Guardrails — Cycle Complete  
+**Scope:** Per-lane synthesis provenance (Tank backend), localized GuardrailBadge UI (Neo), full suite validation (Mouse), architecture review (Trinity), i18n compliance (Rai), independent revisions (Switch)
+
+**Trinity Role Retrospective:**
+- Architecture review: provenance system design approved (registry-backed per-lane structure)
+- Date semantics: data-as-of timestamps validated (occupational-snapshot date + caveat language)
+- Code review findings: 1 stale doc comment identified and corrected by Switch
+- No rejection cycles required (all pre-approval gates satisfied)
+- Reviewer approval: PR #120 clean for merge
+
+**Approval & Closure:** PR #120 merged as 78154f20575df26f5b8867b70bb6ce3009c46993; issues #77/#119 closed
+
+
+## 2026-07-14 — Weekly Cycle: Cross-Agent Learnings & Decision Consolidation
+
+### GitHub Actions PR Creation Prerequisite
+**Incident:** GraphQL `createPullRequest` denied until repository setting enabled Actions-created PRs.
+
+**Learning:** When automating PR creation via GitHub Actions, repository must enable "Allow Github Actions to create and approve pull requests" setting. Default is disabled. This is a prerequisite gate before any Actions workflow can create PRs.
+
+**Application:** Repository setting now enabled (Jul 12, after initial CI failures); subsequent workflow runs (29306549011, 29308171731) succeeded in PR creation.
+
+### Validate Workflow YAML Structure Before Merge
+**Incident:** PR #121 merge produced workflow run 29304395231 with zero jobs. Root cause: invalid block-scalar indentation in `workflows/refresh.yml`.
+
+**Learning:** Invalid YAML block-scalars cause silent zero-job runs (workflow appears to have run; actually executed 0 jobs). Review workflow YAML syntax before approving merges.
+
+**Application:** PR #122 added YAML fix; subsequently merged. Workflow runs post-#122 now validate YAML structure in CI.
+
+### Test Side Effects Can Hide First-Run Failures
+**Incident:** PR #124 self-healing fixture-origin metadata masked underlying byte-idempotency bug until Mouse required deterministic gates.
+
+**Learning:** Self-healing behavior in tests/builders can mask bugs that appear benign on second run but fail first-run. Regression tests must be non-self-healing to surface first-run failures.
+
+**Application:** PR #125 added non-self-healing regression test; full test suite validates deterministic behavior before commit.
+
+### Approval Chain Consolidation Pattern
+**Key pattern:** Reject → Redesign → Re-review → Merge cycles benefit from single consolidated decision entry (vs. separate inbox files). Consolidation pattern:
+- Group all related approval/rejection entries by issue/feature
+- Link redesign and re-review decisions
+- Document final approval chain
+
+**Application:** 40 inbox decision files consolidated into main decisions.md by issue (e.g., #103–#105 grouped, #104 reskilling bridge grouped, etc.). Improves searchability and prevents decision fragmentation.
+
+### GitHub Workflow Permissions & PR Settings
+**Settings applied:**
+- Enable Actions-created PRs: `ON`
+- Default workflow permissions: `read` (preserved)
+- This allows workflow to create PRs without escalating permissions
+
+**Result:** Workflow can now create feature PRs (e.g., PR #124, #125) while retaining minimal permissions footprint.
+

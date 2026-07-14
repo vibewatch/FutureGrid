@@ -2230,6 +2230,9 @@ Tank set the ranked universe to the union of SOC codes from H-1B trends, employm
 **Requested by:** huangyingting
 **Status:** Merged (PR #115 2026-07-11T22:41:25Z, merge commit 7089b05a2881014b693a91df362694a6eb8e7eb0)
 **Issues:** #114 (research) closed | #115 (implementation) merged
+**Requested by:** huangyingting  
+**Status:** Merged (PR #115 2026-07-11T22:41:25Z, merge commit 7089b05a2881014b693a91df362694a6eb8e7eb0)  
+**Issues:** #114 (research) closed | #115 (implementation) merged  
 **Scope:** Data-driven feature for consumer-side GenAI adoption metrics across 147 economies; Q1 2026 snapshot with H1/H2 time-series context.
 
 ### Phase 1: Research & Source Evaluation
@@ -2265,12 +2268,14 @@ Tank set the ranked universe to the union of SOC codes from H-1B trends, employm
 ### Phase 2: Feature Implementation (`/global`)
 
 **Route:** `/global` (public, server-rendered, accessible)
+**Route:** `/global` (public, server-rendered, accessible)  
 **Content:** Deterministic top-10 economies by Q1 2026 consumer GenAI usage share
 
 **Specification:**
 - **Visualization:** SVG bar chart; locked aspect ratio; row headers with economy names; localized legend (EN/ZH)
 - **Timeline:** Three periods (Q1, H1, H2) on single shared y-axis (0–100%) with geometry-verified scale alignment
 - **Accessibility:**
+- **Accessibility:** 
   - Visual layer: `<Bar aria-hidden="true">` (SVG chart)
   - Label layer: `<figure aria-label="...">` (figure semantic)
   - Data layer: sr-only `<figcaption>` with accessible data table (screen reader fallback)
@@ -2349,3 +2354,50 @@ Suggested next features leveraging `/global` infrastructure:
 3. **Exposure-to-Outcome Reality Matrix** — Retrospective wage/employment paired with exposure scores (validation phase)
 
 ---
+
+
+
+---
+
+## Session Log: PR #120 Provenance Registry & Localized Guardrails (2026-07-07 to 2026-07-12)
+
+### Cycle Overview
+- **Objective:** Merge per-lane synthesis provenance system (backend registry + localized UI) with full compliance gates
+- **Participants:** Tank (backend), Neo (frontend), Mouse (QA), Trinity (architecture), Rai (i18n), Switch (revision)
+- **Result:** PR #120 merged as 78154f20575df26f5b8867b70bb6ce3009c46993; issues #77/#119 closed
+
+### Approval Chain (All Green)
+1. Tank: Registry + server-only helpers + data determinism ✓
+2. Neo: UI + i18n + tests ✓  
+3. Mouse: Full validation (1256 tests, a11y gates) ✓
+4. Trinity: Design review + merge approval ✓
+5. Rai: i18n compliance → Yellow → Green (Switch corrected) ✓
+6. Switch: Doc + i18n + selector fixes ✓
+
+### Validation Summary
+| Gate | Result |
+|------|--------|
+| typecheck | ✓ Pass (0 errors) |
+| lint | ✓ Pass (0 violations) |
+| test:run | ✓ Pass (1,256 tests) |
+| bundle | ✓ Pass (394.6 KB) |
+| a11y (standard) | ✓ Pass (0 serious) |
+| a11y (focused) | ✓ Pass (0 violations) |
+
+### Cross-Agent Learnings Captured
+1. **DataAsOfBadge & Provenance Registry Reusability** — Per-lane provenance abstracted as shared component; registry-backed approach enables flexible source metadata assignment across synthesis features
+2. **Calendar-Aware Date Selection** — Mixed-date environments require flexible asOf selector; show per-lane availability, store selection atomically, communicate mismatches in UI
+3. **Exposure vs Adoption Wording in ZH** — Proxy-based metrics require language-specific caveat precision; "exposure" (暴露) for environmental variable; "adoption" (采用) incorrect; route i18n through Rai before implementation
+
+### Decision Inbox Processing
+- 17 inbox items merged to agent histories
+- 6 orchestration entries written (Tank, Neo, Mouse, Trinity, Rai, Switch)
+- 3 cross-agent learnings appended to Scribe history
+- All PR #120–related decisions consolidated
+
+### Post-Merge State
+- **Repository:** vibewatch/FutureGrid (main branch), worktrees cleaned
+- **Team Readiness:** Available for next feature/improvement work
+- **No blocking issues remain**
+
+**Session Closed:** 2026-07-12T14:24:27Z by Scribe

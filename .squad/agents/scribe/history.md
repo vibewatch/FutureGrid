@@ -75,6 +75,7 @@ Scribe merged 1 decision inbox entry into `decisions.md`, cleared the inbox, rec
 ## 2026-07-11T00:00:00Z — Wage-Tier Polarization & International Occupational Mix Batch Closeout
 
 **PRs merged:** #110 (Wage-Tier AI-Exposure Polarization, /sectors) | #112 (Major Economy Occupational Mix, /global)
+**PRs merged:** #110 (Wage-Tier AI-Exposure Polarization, /sectors) | #112 (Major Economy Occupational Mix, /global)  
 **Batch focus:** Data governance, compliance, and accessibility closure for linked features.
 
 ### Key Learnings for Data Implementation
@@ -142,6 +143,10 @@ Scribe merged 1 decision inbox entry into `decisions.md`, cleared the inbox, rec
 **Completed:** 2026-07-11T13:37:33Z (merge commit 4e282d1fb8fd5c18e9f5a2c424075675387873a7)
 **PR:** #113 https://github.com/vibewatch/FutureGrid/pull/113
 **Files:** 19 documentation files / 6,546 lines
+**Session:** Orchestrated multi-agent design documentation effort  
+**Completed:** 2026-07-11T13:37:33Z (merge commit 4e282d1fb8fd5c18e9f5a2c424075675387873a7)  
+**PR:** #113 https://github.com/vibewatch/FutureGrid/pull/113  
+**Files:** 19 documentation files / 6,546 lines  
 
 ### Outcome Summary
 
@@ -186,6 +191,8 @@ Scribe merged 1 decision inbox entry into `decisions.md`, cleared the inbox, rec
 
 **PRs completed:** #115 (Consumer GenAI Diffusion — Top Economies, `/global`)
 **Issue closed:** #114
+**PRs completed:** #115 (Consumer GenAI Diffusion — Top Economies, `/global`)  
+**Issue closed:** #114  
 **Batch focus:** Research-to-release pipeline: public-source evaluation, empirical adjudication, implementation, cross-agent review, validation, and merge.
 
 ### Research Phase: Source Evaluation & Boundary Setting
@@ -297,6 +304,8 @@ Empirically compared Microsoft AI Diffusion vs. Indeed occupational demand proxy
 
 **PRs completed:** #117 (Data Quality & Reasonableness Audit — Multidomain Fixes, `main`)
 **Issues closed:** #116
+**PRs completed:** #117 (Data Quality & Reasonableness Audit — Multidomain Fixes, `main`)  
+**Issues closed:** #116  
 **Batch focus:** Four independent audits spanning dataset families, builders, validators, routes, and scientific claims; schema corrections, UI fixes, semantic field enrichment, visibility caveats, and boundary validation.
 
 ### Audit Scope & Findings
@@ -422,3 +431,163 @@ Empirically compared Microsoft AI Diffusion vs. Indeed occupational demand proxy
 - **Audit 4 lead:** Semantic field mapping; multi-output validator coverage
 - **Reviewers:** Trinity, Switch, Neo (lockout cycle enforced); Mouse (final approval)
 - **Fact Checker:** Caveat accuracy, source attribution, no stale cross-references
+
+
+
+---
+
+## Cross-Agent Learnings from PR #120 Cycle (Provenance & Localized Guardrails)
+
+### DataAsOfBadge & Provenance Registry Patterns
+
+**Reusable Across Synthesis Features:**
+- Per-lane provenance (data-source + last-updated timestamp) can be abstracted as shared component
+- Registry-backed approach (Tank backend) enables flexible assignment of source metadata to each analysis lane
+- Pattern successfully applied to occupational-snapshot + wage-tier lanes; future synthesis features should reuse registry model before adding custom provenance logic
+
+**Application Priority:**
+1. When adding new data helper function (Tank): check if existing provenance registry can absorb new lane metadata
+2. When rendering synthesis feature (Neo): use registry-backed badge component rather than hardcoding source text
+3. When updating provenance (any agent): commit metadata to registry, not to individual component props
+
+### Calendar-Aware Date Selection (asOf Selector)
+
+**Mixed-Date Environments:**
+- Multiple datasets may have different recency (e.g., occupational-snapshot from 2025-Q3, wage-tier from 2025-Q2, international-occupation-mix from 2025-01)
+- Calendar-aware selector should:
+  - Show available dates for each lane (not just "latest")
+  - Highlight date gaps/mismatches in UI
+  - Store user selection atomically (not per-lane)
+  - Communicate uncertainty when lanes have different coverage dates
+- Switch's implementation: shared selector logic + per-lane availability check reduces duplication
+
+**Future Data Integrations:**
+- Pre-design calendar selector before implementation phase
+- Document availability calendar in data-layer constants (not UI-layer assumptions)
+- Test asOf selection across cross-lane combinations (ensure determinism)
+
+### Exposure vs Adoption Wording in ZH Context (Proxy Framing)
+
+**Context Specificity:**
+- "Exposure" (暴露) correctly frames AI as environmental variable affecting job performance/skills
+- "Adoption" (采用) implies intentional workplace strategy/choice (incorrect for proxy measure)
+- Rai's yellow advisory caught this distinction; Switch corrected at merge time
+
+**Pattern for Proxy-Based Metrics:**
+- When using adoption proxy (GenAI diffusion, LLM usage, job postings) to infer exposure, audit i18n copy
+- ZH/EN may have different connotations (exposure is passive; adoption is active)
+- Caveat language must clarify: "based on adoption data" (source) vs "exposure effect" (interpretation)
+- Compliance check: does i18n wording overstate causality or imply agency where none exists?
+
+**Application to Future Features:**
+- Whenever using proxy metric in international context, route i18n through Rai before implementation
+- Include caveat disclaimer (impact of proxy method) in both EN + ZH
+- Accessibility gate: verify tone is consistent across languages (not different risk signaling)
+
+
+## 2026-07-14T02:05:10Z — Decision Inbox Consolidation & Weekly Cycle Closeout
+
+**Session:** Weekly Monday 06:00 UTC automation + rejection cycle recovery  
+**Final state:** main 49f03ab9fe3db1849e3b861cd248d0c64611c5e4  
+**Decisions processed:** 40 inbox files → consolidated into decisions.md  
+**Orchestration logs:** Tank, Trinity, Mouse, Rai cycle documented  
+
+### Inbox Consolidation Completed
+
+**Original:** 40 decision files (248 KB), span dates 2026-07-10 through 2026-07-11  
+**Groups consolidated:**
+1. Issue #103–#105: Evidence Convergence & Exposure-Outcome Matrix (8 files)
+2. Issue #104: Reskilling Bridge & Server/Client Split (8 files)
+3. Issue #109: Wage-Tier AI Exposure Polarization (4 files)
+4. Issue #111: International Occupation Mix (5 files)
+5. Design & Visuals Reviews (6 files)
+6. Workflow & Infrastructure (3 files)
+7. Fact Checker Verifications (2 files)
+8. Post-merge PR Reviews (2 files)
+9. Other coordination (2 files)
+
+**Result:** All 40 inbox entries merged into main decisions.md per consolidation protocol (no loss of detail; improved searchability by issue/agent).
+
+### Key Learnings Captured
+
+**Tank (Data Refresh & Offline Rebuild)**
+- Preserve last-known-good credential data lanes; initial #121 approach failed by stripping credentials
+- Never include credential-degrading builders in public workflows
+- Offline rebuild durability requires committed fixture-origin metadata (vs. self-healing)
+- Regression tests must be deterministic (not self-healing); added per PR #125
+
+**Trinity (Code Review & Workflow Coordination)**
+- GitHub Actions PR creation prerequisite: repository setting must enable Actions-created PRs; GraphQL createPullRequest denied without it
+- Validate workflow YAML structure before merge (invalid block-scalar syntax causes silent zero-job runs)
+- Test side effects can hide first-run failures; non-self-healing gates prevent deployment of half-working states
+- Approval chain coordination: reject → redesign → re-review → merge pattern requires clear decision consolidation
+
+**Mouse (Test Validation & Approval Gates)**
+- Never include credential-degrading data paths in approved PRs
+- Test side effects (self-healing) can hide underlying bugs; deterministic fixture preservation required
+- Full in-job test gates required for bot PRs: lint → tests → build → commit before PR creation
+- Post-merge validation essential: CI, Pages, Squad Release all run post-merge
+
+**Rai (Data Governance & Documentation)**
+- i18n coverage must accompany new data (EN/ZH parity required)
+- Data sourcing requires fact-checker alignment; no assumptions without verification
+- Preserve credential lanes in documentation (initial #121 approach degraded credential docs)
+- Attribution and sourcing must be complete; no regulatory/ethical violations
+
+**Scribe (Orchestration & Documentation)**
+- Decision inbox consolidation improves searchability (40 files → merged entries per issue/agent)
+- Orchestration logs capture cross-agent learnings for future reference
+- Session logs document rejection cycles and approval chains for pattern recognition
+- History summaries enable pattern learning without losing key details
+
+### Verification & Validation
+
+**Decisions.md Status**
+- **Size:** 159 KB (not archived; <7d old, <50KB threshold does not apply)
+- **Structure:** Active decisions + merged inbox entries
+- **Searchability:** Improved via consolidation (issues grouped, agents linked)
+
+**Orchestration Logs Added**
+- `orchestration-log/2026-07-14T02-05-10.092+00-00-tank.md` — Data refresh cycle (PRs #121–#125)
+- `orchestration-log/2026-07-14T02-05-10.092+00-00-trinity.md` — Code review & approvals
+- `orchestration-log/2026-07-14T02-05-10.092+00-00-mouse.md` — Test validation & gates
+- `orchestration-log/2026-07-14T02-05-10.092+00-00-rai.md` — Data governance & docs
+
+**Session Log Added**
+- `log/2026-07-14T02-05-10.092+00-00-session.md` — Complete workflow trace (rejection → approval cycles)
+
+### Cross-Agent Learnings Summary
+
+1. **Preserve credential lanes** — Initial #121 lost credential data; subsequent PRs preserved paths
+2. **Never degrade credential-dependent builders** — Public workflows must isolate credential lanes
+3. **Validate YAML before merge** — Invalid block-scalars cause silent zero-job runs (#122 fixed)
+4. **Deterministic regression tests** — Self-healing masks bugs; #125 added non-self-healing gates
+5. **GitHub Actions PR setting prerequisite** — Actions-created PRs require repository setting + default workflow permissions `read`
+6. **Data360 HTTPS fallback** — HTTP 417 requires source-specific fallback (#123)
+7. **Full in-job gates for bot PRs** — Lint → tests → build → commit before PR creation
+8. **i18n parity required** — All new data fields must have EN/ZH keys
+9. **Fact-checker alignment** — No assumptions; data sourcing requires verification
+10. **Consolidate related decisions** — Reject → redesign → re-review cycles benefit from single consolidated record
+
+### Data & Workflow Final State
+
+**PR Merge History**
+- #121: Rejected (destructive data loss)
+- #122: Merged 0db282bedc2563ab7aadbcd65ce240144fc3d9c0 (YAML fix)
+- #123: Merged 0bc3adee4bd1307531173edaa1db501ff7601a36 (HTTP 417 fix)
+- #124: Merged 49f03ab9fe3db1849e3b861cd248d0c64611c5e4 (offline rebuild)
+- #125: Merged 2389787241a87e94adedd2ce6b7db236b6520bac (workflow hardening)
+
+**Final Data Results**
+- **Models:** 344 OpenRouter / 1,008 endpoints / 69 providers
+- **WI notices:** 620 preserved (vs. initial destructive loss in #121)
+- **Files:** 21 public/credential-free
+- **Warnings:** 10,971 (monitored)
+
+**Validation Summary**
+- Tests: 1321 passed (+ 17 refresh cycle)
+- Lint: 0 violations (140 files)
+- Build: exit 0
+- Smoke: 10/10 routes HTTP 200
+- Post-merge CI: 29308719578 ✓, Pages: 29308719588 ✓, Squad Release ✓
+

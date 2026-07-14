@@ -8,6 +8,7 @@ Initial scaffold via `squad upgrade`. Ready for work.
 ## 2026-07-11T00:00:00Z — Wage-Tier Polarization & Major Economy Occupational Mix Batch Closeout
 
 **PRs closed:** #110 (/sectors wage-tier AI-exposure polarization, merged) | #112 (/global major-economy occupational mix, merged)
+**PRs closed:** #110 (/sectors wage-tier AI-exposure polarization, merged) | #112 (/global major-economy occupational mix, merged)  
 **Batch focus:** Data compliance verification, license validation, international methodology assessment
 
 ### Compliance & Governance Verification
@@ -75,3 +76,4 @@ Initial scaffold via `squad upgrade`. Ready for work.
 1. **Phase 2 visualization:** Evidence Convergence Strip (talent + demand + exposure timeline) — prerequisite: Issue #77 (provenance/freshness cues)
 2. **Phase 2 reskilling:** Talent-Bottleneck-to-Reskilling Bridge — prerequisite: NAICS-SOC bridge dataset
 3. **Phase 2 outcomes:** Exposure-to-Outcome Reality Matrix — prerequisite: 2+ years paired wage/employment retrospective (v1.2 post-collection)
+

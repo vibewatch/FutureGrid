@@ -85,6 +85,7 @@ Regression coverage verified: `tests/components/TalentBottleneckLens.test.tsx` a
 **Issue #104: Reskilling Bridge (PR #107 merged, 3-cycle strict-lockout → shipped)**
 - Built component tests covering canonical join, responsive grid, valid SOC links
 - Validated v1 (650/650 tests, build, a11y)
+- Validated v1 (650/650 tests, build, a11y) 
 - Validated v3 post-lockout (650/650 tests, full a11y 7-routes clean)
 - **Bundle retrospective:** Turbopack check:bundle FAIL (905.1KB > 700KB). Root cause: client page (`app/skills/page.tsx`) imported `getReskillingBridgeData()` → transitively bundled raw h1b/job-postings/projections JSON (1.8MB total) for 41KB output. Neo refactored to server/client split; Tank added server-only guards. Final: 394.1KB (< 700KB).
 - **Guard Assigned:** Bundle-regression guard — prevent raw JSON imports in client components during future work
@@ -132,3 +133,57 @@ Regression coverage verified: `tests/components/TalentBottleneckLens.test.tsx` a
 - Enforced test validity: false shared-scale test prevented merge until geometry proof added
 - Approved Trinity's revised implementation; no further rejections
 - Locked out from revision artifacts (conflict-of-interest isolation protocol)
+
+
+
+### Scribe Orchestration — PR #120 Cycle (2026-07-12T14:24:27Z)
+
+**Session:** Provenance Registry & Localized Guardrails — Cycle Complete  
+**Scope:** Per-lane synthesis provenance (Tank backend), localized GuardrailBadge UI (Neo), full suite validation (Mouse), architecture review (Trinity), i18n compliance (Rai), independent revisions (Switch)
+
+**Mouse Role Retrospective:**
+- QA validation: 1,256 tests passed across full suite
+- 806 pages scanned for a11y compliance
+- Largest bundle chunk 394.6 KB (within budget)
+- Zero serious/critical a11y violations detected
+- Accessibility gate: standard + focused runs all green
+- Approval gates: typecheck, lint, bundle, test, a11y all satisfied
+
+**Approval & Closure:** PR #120 merged as 78154f20575df26f5b8867b70bb6ce3009c46993; issues #77/#119 closed
+
+
+## 2026-07-14 — Weekly Cycle: Test Validation & Deterministic Gates
+
+### Never Include Credential-Degrading Data in Approved PRs
+**Incident:** PR #121 stripped credential-dependent data paths. Mouse validation found WI loss + occupation-snapshot degradation. Rejected.
+
+**Learning:** Test validation must verify that no credential-dependent builders or data access is removed or degraded. Preserve last-known-good credential lanes across all refresh cycles.
+
+**Application:** PR #124 validation confirmed credential lanes preserved. Post-merge CI verified no data loss.
+
+### Test Side Effects (Self-Healing) Can Hide First-Run Failures
+**Incident:** PR #124 Yahoo-bootstrap metadata passed on second run (fixture-origin self-healed). First run failed but not discovered until Mouse reviewed.
+
+**Learning:** When tests self-heal, failures are masked. Require deterministic, non-self-healing fixtures. Regression tests must fail first-run and document the fix, not silently recover.
+
+**Application:** PR #125 added non-self-healing regression test. Test matrix now validates deterministic behavior across:
+- Offline rebuild without fixture recovery
+- Fixture-origin metadata committed and verified
+- No self-healing paths active
+
+### Full In-Job Test Gates for Bot PRs
+**Incident:** Workflow runs 29304395231 (YAML) and 29305255883 (HTTP 417) showed issues post-commit.
+
+**Learning:** Bot PRs must gate all validation in-job before PR creation: lint → tests → build → commit → then PR. Prevents half-working states from reaching reviewer.
+
+**Application:** PR #125 workflow enforces full gates before PR creation. Workflow run 29308171731 validated all 17 refresh steps + lint + 1321 tests + build before commit/push/PR.
+
+### Regression Test Coverage Patterns
+**Test scope expanded:**
+- Offline rebuild durability (fixture-origin preservation)
+- Credential lane preservation (no data loss)
+- Deterministic sorting/ordering (no flaky tests)
+- Boundary/range validation (date fields, nullability)
+
+**Results:** PR #125 added 1 regression test; total 1321 tests pass (including 17 refresh cycle tests).
+

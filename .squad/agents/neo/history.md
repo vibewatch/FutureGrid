@@ -65,3 +65,20 @@
 - Prematurely opened PR with duplicate SR naming and unvalidated shared-scale test
 - Locked out from revision after Mouse rejection and Rai yellow-flag process
 - No re-admission until follow-up unrelated feature (review-isolation protocol)
+
+
+
+### Scribe Orchestration — PR #120 Cycle (2026-07-12T14:24:27Z)
+
+**Session:** Provenance Registry & Localized Guardrails — Cycle Complete  
+**Scope:** Per-lane synthesis provenance (Tank backend), localized GuardrailBadge UI (Neo), full suite validation (Mouse), architecture review (Trinity), i18n compliance (Rai), independent revisions (Switch)
+
+**Neo Role Retrospective:**
+- Rendered lane badges and source evidence UI
+- Localized GuardrailBadge component (EN/ZH parity)
+- Fixed analysis scroll offsets and regression tests
+- i18n documentation completed
+- a11y gates passed with 0 serious violations
+- Learning: DataAsOfBadge and provenance registry patterns are reusable across synthesis features
+
+**Approval & Closure:** PR #120 merged as 78154f20575df26f5b8867b70bb6ce3009c46993; issues #77/#119 closed
