@@ -67,8 +67,15 @@ jobs:
           GOOGLE_SHEETS_API_KEY: ${{ secrets.GOOGLE_SHEETS_API_KEY }}
         run: npm run data:refresh
 
-      - name: Run provenance and data-schema tests
-        run: npm run test:run -- tests/provenance.test.ts tests/data-schema.test.ts tests/refresh-manifest.test.ts
+      - name: Run full gates (lint, test, build) on generated workspace
+        # PRs created with GITHUB_TOKEN do not trigger PR CI, so we must validate the
+        # generated workspace here — before any commit or push — with the same gates a
+        # contributor PR would run. This catches idempotency, provenance, and schema
+        # regressions on the first run, not after merge.
+        run: |
+          npm run lint
+          npm run test:run
+          npm run build
 
       - name: Detect changed data files
         id: diff

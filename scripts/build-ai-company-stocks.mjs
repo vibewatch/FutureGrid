@@ -163,6 +163,8 @@ async function main() {
     observationInterval: sourceInput.observationInterval,
     generatedAt: generatedAt || sourceInput.generatedAt,
     fixtureAsOf: sourceInput.fixtureAsOf,
+    committedFixtureBootstrapMode: sourceInput.committedFixtureBootstrapMode,
+    committedFallbackBehavior: sourceInput.committedFallbackBehavior,
   });
 
   validateAICompanyStocks(output);
@@ -235,6 +237,10 @@ function loadCommittedFixturePrices(symbols) {
     sourceMode: "committed-static-fixture",
     loaderMode: "committed-fixture",
     observationInterval: fixture.coverage?.observationInterval || "1mo",
+    // Preserve committed fixture's origin metadata so offline deterministic rebuilds
+    // are byte-for-byte identical regardless of how the fixture was originally bootstrapped.
+    committedFixtureBootstrapMode: fixture.coverage?.fixtureBootstrapMode ?? null,
+    committedFallbackBehavior: fixture.coverage?.fallbackBehavior ?? null,
   };
 }
 
@@ -328,7 +334,7 @@ async function fetchYahooMonthlyAdjusted(symbol) {
   return normalized;
 }
 
-function buildDataset({ priceByTicker, sourceMode, loaderMode, observationInterval, generatedAt, fixtureAsOf }) {
+function buildDataset({ priceByTicker, sourceMode, loaderMode, observationInterval, generatedAt, fixtureAsOf, committedFixtureBootstrapMode, committedFallbackBehavior }) {
   const benchmarks = BENCHMARKS.map((benchmark) => {
     const prices = priceByTicker.get(benchmark.ticker) || [];
     return {
@@ -430,13 +436,23 @@ function buildDataset({ priceByTicker, sourceMode, loaderMode, observationInterv
       benchmarkCount: benchmarks.length,
       categories: CATEGORIES.map(({ id, label, tickers }) => ({ id, label, tickerCount: tickers.length })),
       alphaVantageKeyRequired: sourceMode === "alpha-vantage-daily-adjusted",
+      // When rebuilding from a committed fixture, preserve the fixture's origin metadata
+      // verbatim so the output is byte-for-byte identical to what was last committed.
+      // Yahoo-bootstrap and Alpha Vantage runs always write their own descriptive values.
       fallbackBehavior:
         loaderMode === "yahoo-chart-bootstrap"
           ? "AI_COMPANY_STOCKS_BOOTSTRAP_YAHOO=1 was set; builder refreshed the committed fixture from Yahoo chart JSON. Default CI rebuilds omit this flag and reuse committed observations without network access."
+          : loaderMode === "committed-fixture" && committedFallbackBehavior != null
+          ? committedFallbackBehavior
           : sourceMode === "committed-static-fixture"
           ? "ALPHA_VANTAGE_API_KEY was absent; builder reused committed source-attributed price observations."
           : "ALPHA_VANTAGE_API_KEY was present; builder fetched documented daily adjusted observations.",
-      fixtureBootstrapMode: loaderMode === "yahoo-chart-bootstrap" ? "yahoo-chart-json" : null,
+      fixtureBootstrapMode:
+        loaderMode === "yahoo-chart-bootstrap"
+          ? "yahoo-chart-json"
+          : loaderMode === "committed-fixture"
+          ? (committedFixtureBootstrapMode ?? null)
+          : null,
     },
     benchmarks,
     companies: companies.sort((a, b) => a.ticker.localeCompare(b.ticker)),
