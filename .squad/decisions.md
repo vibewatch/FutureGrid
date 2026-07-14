@@ -2401,3 +2401,16 @@ Suggested next features leveraging `/global` infrastructure:
 - **No blocking issues remain**
 
 **Session Closed:** 2026-07-12T14:24:27Z by Scribe
+
+
+## Decision Inbox Consolidation (2026-07-14T07:08:11.441+00:00)
+
+**Processed:** 40 entries from decisions/inbox into active decisions.
+
+**Summary:** Tank (ILOSTAT pipeline), Neo (architecture/design), Mouse (QA/tests), Trinity (approvals/design reviews), Switch (revisions/i18n), Rai (RAI reviews), Fact Checker (validation), Scribe (documentation), Squad (team directives) — all consolidated from pending review/approval cycle.
+
+**Scope:** Issues #103 #104 #105 #109 #111 (Phase 2/3 features); PR #107 #113 #115 #116 (forward fixes/documentation); infrastructure approvals for international data integration, wage-tier polarization, evidence convergence, reskilling bridge.
+
+**Outcome:** All reviewers cleared; no blocking rejections remain. Team ready for merge workflow (Trinity to PR into main per Squad directive 2026-07-04).
+
+---
