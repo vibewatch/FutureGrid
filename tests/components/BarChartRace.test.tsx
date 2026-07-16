@@ -67,4 +67,20 @@ describe("BarChartRace", () => {
     // when frames exist. At minimum: Replay + Play/Pause = 2 buttons.
     expect(container.querySelectorAll("button").length).toBeGreaterThanOrEqual(2);
   });
+
+  // D4 / D3 regression: the sr-only accessible table must be wrapped in a
+  // div.sr-only, not tagged directly as table.sr-only.  Tailwind .sr-only uses
+  // overflow:hidden on block elements but NOT on <table> — a table with
+  // class="sr-only" retains its natural width and contributes to document.scrollWidth.
+  it("D4: accessible table is wrapped in a div.sr-only (not tagged directly as table.sr-only)", () => {
+    const { container } = render(<BarChartRace employmentHistories={employmentHistories} />);
+
+    // Post-fix: the div container carries sr-only, and the table inside has no sr-only class.
+    const srOnlyDivs = container.querySelectorAll("div.sr-only");
+    expect(srOnlyDivs.length, "Expected at least one div.sr-only wrapping the accessible table").toBeGreaterThan(0);
+
+    // The table itself must NOT carry sr-only (that was the pre-fix pattern).
+    const srOnlyTables = container.querySelectorAll("table.sr-only");
+    expect(srOnlyTables.length, "table.sr-only must not exist after D4 fix — table is wrapped in div.sr-only instead").toBe(0);
+  });
 });

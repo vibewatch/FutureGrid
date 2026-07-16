@@ -61,6 +61,7 @@ export const careersZh = {
   transPay: "薪酬",
   transRetrainSimilar: "相近培训",
   transRetrainMore: "+{n} 培训级",
+  transRetrainUnknown: "培训级别暂无数据",
   transSkillsToBuild: "需新学技能：",
   loadMore: "加载更多（还剩 {n}）",
   labelAIResiliencyScore: "AI 韧性评分",

@@ -243,18 +243,13 @@ function ReadinessScatter({
                 strokeWidth="1.2"
                 opacity={country.quadrant === "balanced-watchlist" ? 0.55 : 0.86}
               >
-                <title>
-                  {country.name}: {t("readinessGapReadinessLabel")}{" "}
-                  {formatNumber(country.readinessScore, numberLocale, 1)}, {t("readinessGapDiffusionLabel")}{" "}
-                  {formatPercent(country.diffusionPct, numberLocale)}, {t("readinessGapGapLabel")}{" "}
-                  {formatGap(country.gap, numberLocale, gapUnit)}
-                </title>
+                <title>{`${country.name}: ${t("readinessGapReadinessLabel")} ${formatNumber(country.readinessScore, numberLocale, 1)}, ${t("readinessGapDiffusionLabel")} ${formatPercent(country.diffusionPct, numberLocale)}, ${t("readinessGapGapLabel")} ${formatGap(country.gap, numberLocale, gapUnit)}`}</title>
               </circle>
             );
           })}
         </svg>
       </div>
-      <ul className="sr-only">
+      <ul className="sr-only [white-space:normal]">
         {countries.map((country) => (
           <li key={country.iso3}>
             {country.name}: {t("readinessGapReadinessLabel")} {formatNumber(country.readinessScore, numberLocale, 1)},{" "}

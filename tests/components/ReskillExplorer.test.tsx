@@ -171,4 +171,16 @@ describe("ReskillExplorer", () => {
       expect(link.getAttribute("href")).toMatch(/^\/careers\//);
     }
   });
+
+  // D5 regression: when a reskilling path has jobZoneDelta=null (sentinel job-zone),
+  // ReskillExplorer must render the "retrainUnknown" i18n key ("Prep data unavailable")
+  // rather than crashing or showing an incorrect value.
+  // The default occupation (Data Entry Keyers, zone=2) produces a top-6 set that
+  // includes Administrative Services Managers (zone=0, delta=null), so this is
+  // verifiable with real data without mocking.
+  it("D5: renders 'Prep data unavailable' for a target with null jobZoneDelta (sentinel zone)", () => {
+    render(<ReskillExplorer />);
+    // Data Entry Keyers (default) → top-6 includes zone=0 target with null delta
+    expect(screen.getByText("Prep data unavailable")).toBeInTheDocument();
+  });
 });

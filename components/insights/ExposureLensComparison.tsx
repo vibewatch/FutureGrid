@@ -151,7 +151,7 @@ export default function ExposureLensComparison({ comparison, leaders }: { compar
           </div>
           <div ref={containerRef} className="relative w-full overflow-x-auto" tabIndex={0}>
             <svg ref={svgRef} className="h-auto w-full" style={{ minHeight: 330 }} role="img" aria-label={t("exposureScatterAria")} />
-            <ul className="sr-only" aria-label={t("exposureScatterSrList")}>
+            <ul className="sr-only [white-space:normal]" aria-label={t("exposureScatterSrList")}>
               {scatterPoints.map((occupation) => <li key={occupation.code}><Link href={`/careers/${encodeURIComponent(occupation.code)}`}>{occupation.name}</Link></li>)}
             </ul>
             {tooltip.visible && tooltip.point && (

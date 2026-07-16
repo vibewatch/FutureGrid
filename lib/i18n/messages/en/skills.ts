@@ -51,6 +51,7 @@ export const skillsEn = {
   retrainSimilar: "Similar",
   retrainOneLevel: "+1 level",
   retrainMore: "+{n} levels",
+  retrainUnknown: "Prep data unavailable",
   skillsTransfer: "Skills that transfer",
   skillsToBuild: "Skills to build",
   // ── ReskillingBridge ─────────────────────────────────────────────────────

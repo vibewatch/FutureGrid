@@ -251,4 +251,41 @@ describe("ReadinessGapLens", () => {
     expect(accessibleText).toContain(globalZh.readinessGapGapUnit);
     expect(accessibleText).not.toContain(globalEn.readinessGapGapUnit);
   });
+
+  // D1 regression: scatter circle <title> must be a single complete string (not
+  // multiple JSX expression children).  React 19 hoists <title> elements with
+  // multiple expression children, which caused hydration error #418 on /global.
+  it("D1: scatter circle titles are non-empty and contain country name + all three metrics", async () => {
+    setLocale("en");
+    const ReadinessGapLens = await importReadinessGapLens();
+    render(<ReadinessGapLens data={FIXTURE_DATA} />);
+
+    const svgTitles = Array.from(document.querySelectorAll("circle > title, g > title"))
+      .map((el) => el.textContent ?? "");
+    // The scatter chart renders one title per country
+    expect(svgTitles.length).toBeGreaterThan(0);
+    for (const titleText of svgTitles) {
+      // Each title must be a non-empty single string (no fragmented children produce "")
+      expect(titleText.length).toBeGreaterThan(0);
+    }
+    // Verify fixture country name appears in at least one title
+    const asteria = svgTitles.find((t) => t.includes("Asteria"));
+    expect(asteria).toBeDefined();
+    // The full title must contain readiness score, diffusion %, and gap — all three metrics
+    expect(asteria).toMatch(/47/);  // readinessScore=47
+    expect(asteria).toMatch(/18/);  // diffusionPct≈18.4
+    expect(asteria).toMatch(/32/);  // gap≈32.5
+  }, 10000);
+
+  // D3 regression: sr-only list must have [white-space:normal] to prevent
+  // nowrap inline text from contributing to document.scrollWidth on mobile.
+  it("D3: accessible sr-only country list has [white-space:normal] class", async () => {
+    setLocale("en");
+    const ReadinessGapLens = await importReadinessGapLens();
+    render(<ReadinessGapLens data={FIXTURE_DATA} />);
+
+    const srOnlyList = document.querySelector("ul.sr-only");
+    expect(srOnlyList, "Expected a <ul class='sr-only ...'>").toBeDefined();
+    expect(srOnlyList?.classList.contains("[white-space:normal]")).toBe(true);
+  }, 10000);
 });

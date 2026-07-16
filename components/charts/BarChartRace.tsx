@@ -466,26 +466,30 @@ export default function BarChartRace({ employmentHistories }: BarChartRaceProps)
         </span>
       </div>
 
-      {/* Screen-reader accessible table for current year */}
-      <table className="sr-only" aria-label={`${t("raceTitle")} — ${years[yearIdx] ?? ""}`}>
-        <caption>{`${t("raceYear")}: ${years[yearIdx] ?? ""}`}</caption>
-        <thead>
-          <tr>
-            <th scope="col">{t("raceRank")}</th>
-            <th scope="col">{t("raceOccupation")}</th>
-            <th scope="col">{t("raceEmployment")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {frames[yearIdx]?.entries.map((e) => (
-            <tr key={e.occupationCode}>
-              <td>{e.rank + 1}</td>
-              <td>{e.occupationName}</td>
-              <td>{e.employment.toLocaleString()}</td>
+      {/* Screen-reader accessible table for current year — wrapped in sr-only div so
+          the block element's overflow:hidden properly clips the table, preventing it from
+          contributing to document.scrollWidth (HTML table elements ignore width:1px) */}
+      <div className="sr-only">
+        <table aria-label={`${t("raceTitle")} — ${years[yearIdx] ?? ""}`}>
+          <caption>{`${t("raceYear")}: ${years[yearIdx] ?? ""}`}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{t("raceRank")}</th>
+              <th scope="col">{t("raceOccupation")}</th>
+              <th scope="col">{t("raceEmployment")}</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {frames[yearIdx]?.entries.map((e) => (
+              <tr key={e.occupationCode}>
+                <td>{e.rank + 1}</td>
+                <td>{e.occupationName}</td>
+                <td>{e.employment.toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

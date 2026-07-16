@@ -226,7 +226,9 @@ export default function ReskillExplorer() {
             const riskColor    = colorForRisk(path.automationRisk);
             const outlookClass = OUTLOOK_STYLES[path.outlook] ?? "bg-zinc-100 dark:bg-zinc-800/40 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700/40";
             const retrain =
-              path.jobZoneDelta <= 0
+              path.jobZoneDelta == null
+                ? { label: t("retrainUnknown"), tone: "text-zinc-400 dark:text-zinc-500" }
+                : path.jobZoneDelta <= 0
                 ? { label: t("retrainSimilar"), tone: "text-emerald-600 dark:text-emerald-400" }
                 : path.jobZoneDelta === 1
                 ? { label: t("retrainOneLevel"), tone: "text-amber-600 dark:text-amber-400" }

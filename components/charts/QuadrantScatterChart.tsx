@@ -424,7 +424,7 @@ export default function QuadrantScatterChart() {
       </div>
 
       {/* Screen-reader accessible occupation list */}
-      <ul className="sr-only" aria-label={t("a11yOccupationsList")}>
+      <ul className="sr-only [white-space:normal]" aria-label={t("a11yOccupationsList")}>
         {data.map((d) => (
           <li key={d.occupationCode}>
             <a href={`/careers/${encodeURIComponent(d.occupationCode)}`}>

@@ -51,6 +51,7 @@ export const skillsZh = {
   retrainSimilar: "相近",
   retrainOneLevel: "+1 级",
   retrainMore: "+{n} 级",
+  retrainUnknown: "培训级别暂无数据",
   skillsTransfer: "可迁移技能",
   skillsToBuild: "需新学技能",
   // ── ReskillingBridge ─────────────────────────────────────────────────────

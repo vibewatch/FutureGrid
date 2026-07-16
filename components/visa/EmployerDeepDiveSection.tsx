@@ -90,8 +90,10 @@ export default function EmployerDeepDiveSection({
       {/* Bar chart (top 15) */}
       <EmployersChart employers={top15} />
 
-      {/* Accessible table with sparklines and mean wage */}
-      <div className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800" tabIndex={0}>
+      {/* Accessible table with sparklines and mean wage — relative makes this div the
+          containing block for any position:absolute descendants (e.g. sr-only spans),
+          so they are clipped by overflow-x-auto and cannot escape into document scroll area */}
+      <div className="relative overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800" tabIndex={0}>
         <table
           className="w-full text-sm"
           aria-label={t("employerDeepTableName")}
@@ -140,7 +142,7 @@ export default function EmployerDeepDiveSection({
                 <td className="py-2 px-3 flex justify-center items-center">
                   <Sparkline countByYear={emp.countByYear} years={yearStrings} />
                   {/* sr-only trend summary */}
-                  <span className="sr-only">
+                  <span className="sr-only [white-space:normal]">
                     {yearStrings
                       .map((y) => `FY${y}: ${formatNumber(emp.countByYear[y] ?? 0)}`)
                       .join(", ")}

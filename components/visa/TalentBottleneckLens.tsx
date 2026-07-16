@@ -276,21 +276,14 @@ function TalentScatter({
                 strokeWidth="1.3"
                 opacity="0.82"
               >
-                <title>
-                  {row.title}: {t("talentBottleneckScoreLabel")}{" "}
-                  {formatNumber(row.score, 1)}, {t("talentBottleneckAiExposure")}{" "}
-                  {formatExposure(row.aiExposure, formatNumber)}, {t("talentBottleneckOpenings")}{" "}
-                  {formatNullableNumber(row.projectedOpenings, formatNumber)},{" "}
-                  {t("talentBottleneckLatestLcas")}{" "}
-                  {formatNullableNumber(row.latestLcas, formatNumber)}
-                </title>
+                <title>{`${row.title}: ${t("talentBottleneckScoreLabel")} ${formatNumber(row.score, 1)}, ${t("talentBottleneckAiExposure")} ${formatExposure(row.aiExposure, formatNumber)}, ${t("talentBottleneckOpenings")} ${formatNullableNumber(row.projectedOpenings, formatNumber)}, ${t("talentBottleneckLatestLcas")} ${formatNullableNumber(row.latestLcas, formatNumber)}`}</title>
               </circle>
             );
           })}
         </svg>
       </div>
 
-      <ul className="sr-only">
+      <ul className="sr-only [white-space:normal]">
         {chartRows.map((row) => {
           const risk = riskTier(row);
           return (

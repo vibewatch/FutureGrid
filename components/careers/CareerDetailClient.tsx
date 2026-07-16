@@ -193,7 +193,11 @@ export default function CareerDetailClient({
                   ? "text-amber-600 dark:text-amber-400"
                   : "text-zinc-500 dark:text-zinc-400";
               const retrain =
-                p.jobZoneDelta <= 0 ? t("transRetrainSimilar") : t("transRetrainMore", { n: String(p.jobZoneDelta) });
+                p.jobZoneDelta == null
+                  ? t("transRetrainUnknown")
+                  : p.jobZoneDelta <= 0
+                  ? t("transRetrainSimilar")
+                  : t("transRetrainMore", { n: String(p.jobZoneDelta) });
               const payText = `${p.salaryDelta >= 0 ? "+" : "−"}$${Math.abs(Math.round(p.salaryDelta / 1000))}k`;
               return (
                 <Link
