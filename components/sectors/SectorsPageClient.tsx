@@ -87,7 +87,7 @@ export default function SectorsPageClient({
               ({allSectors.length})
             </span>
           </h2>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs text-zinc-500">{t("sortBy")}</span>
             {(
               [

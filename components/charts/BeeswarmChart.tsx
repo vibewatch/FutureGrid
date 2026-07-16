@@ -320,12 +320,12 @@ export default function BeeswarmChart({ data }: BeeswarmChartProps) {
         />
 
         {/* Screen-reader summary */}
-        <p className="sr-only">
+        <p className="sr-only [white-space:normal]">
           {`Beeswarm chart showing ${data.length} occupations by AI exposure. Top exposed: ${top5}.`}
         </p>
 
         {/* SR occupation list for keyboard/AT users */}
-        <ul className="sr-only" aria-label={t("a11yOccupationsList")}>
+        <ul className="sr-only [white-space:normal]" aria-label={t("a11yOccupationsList")}>
           {data.slice(0, 50).map((d) => (
             <li key={d.occupationCode}>
               <a href={`/careers/${encodeURIComponent(d.occupationCode)}`}>

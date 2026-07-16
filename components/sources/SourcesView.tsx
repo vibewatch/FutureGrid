@@ -168,7 +168,7 @@ export default function SourcesView({
                         <span className="italic">{source.usedFor}</span>
                       </p>
                     </div>
-                    <div className="flex items-center gap-3 shrink-0">
+                    <div className="flex flex-wrap items-center gap-2 min-w-0">
                       <GuardrailBadge kind={inferGuardrailBadgeKind(sourceGuardrailText(source))} />
                       <LicenseBadge license={source.license} />
                       <a

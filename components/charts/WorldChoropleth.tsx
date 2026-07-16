@@ -586,12 +586,13 @@ export default function WorldChoropleth({
 
       {/* Controls row: metric toggle + view-mode toggle */}
       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-        {/* Metric toggle — segmented control */}
-        <div
-          role="group"
-          aria-label={t("a11yMapMetricSelector")}
-          className="flex w-fit rounded-xl glass p-0.5 text-xs font-medium"
-        >
+        {/* Metric toggle — segmented control; overflow-x-auto lets it scroll at xs viewport */}
+        <div className="overflow-x-auto rounded-xl -m-0.5 p-0.5">
+          <div
+            role="group"
+            aria-label={t("a11yMapMetricSelector")}
+            className="flex w-max rounded-xl glass p-0.5 text-xs font-medium"
+          >
           {(["claude", "diffusion", "demand", "readiness", "govReadiness"] as Metric[]).map((m) => {
             const active = metric === m;
             return (
@@ -615,6 +616,7 @@ export default function WorldChoropleth({
               </button>
             );
           })}
+        </div>
         </div>
 
         {/* View-mode toggle: Map / Bubbles */}

@@ -208,7 +208,10 @@ function toLaborOpportunityRow(
     projectedEmployment: row.employment2034,
     employmentChange: row.employmentChange,
     employmentPercentChange: row.employmentPercentChange,
-    medianAnnualWage: row.medianAnnualWage ?? (career.medianSalary > 0 ? career.medianSalary : null),
+    // D6: OEWS snapshot wage (career.medianSalary) is canonical — matches career pages.
+    // Projections medianAnnualWage is a different vintage and capped for high earners;
+    // use it only as fallback when the snapshot value is unavailable or non-positive.
+    medianAnnualWage: career.medianSalary > 0 ? career.medianSalary : row.medianAnnualWage,
     latestAnnualPostings: postings?.latestAnnualPostings ?? null,
   };
 }

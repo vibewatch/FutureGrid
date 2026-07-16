@@ -81,8 +81,8 @@ export default function AICompanyStockLens({ data }: AICompanyStockLensProps) {
         <KpiCard label={t("aiCompanyStockBenchmarkBasket")} value={benchmarkBasket || t("aiCompanyStockUnavailable")} />
       </dl>
 
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.05fr)_0.95fr]">
-        <section className="rounded-2xl border border-zinc-200 bg-white/55 p-4 dark:border-zinc-800 dark:bg-zinc-950/35" aria-labelledby={`${chartId}-section`}>
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1.05fr)_0.95fr]">
+        <section className="min-w-0 rounded-2xl border border-zinc-200 bg-white/55 p-4 dark:border-zinc-800 dark:bg-zinc-950/35" aria-labelledby={`${chartId}-section`}>
           <div className="mb-4">
             <p id={`${chartId}-section`} className="text-xs font-semibold uppercase tracking-widest text-zinc-500">
               {t("aiCompanyStockChartTitle")}
@@ -173,7 +173,7 @@ export default function AICompanyStockLens({ data }: AICompanyStockLensProps) {
           </ul>
         </section>
 
-        <section className="rounded-2xl border border-zinc-200 bg-white/55 p-4 dark:border-zinc-800 dark:bg-zinc-950/35">
+        <section className="min-w-0 rounded-2xl border border-zinc-200 bg-white/55 p-4 dark:border-zinc-800 dark:bg-zinc-950/35">
           <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500">{t("aiCompanyStockSourceTitle")}</p>
           <dl className="mt-3 space-y-3 text-sm">
             <SourceMetric label={t("aiCompanyStockSourceName")} value={data.source.name} />

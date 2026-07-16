@@ -61,6 +61,7 @@ export const careersEn = {
   transPay: "pay",
   transRetrainSimilar: "Similar training",
   transRetrainMore: "+{n} training lvl",
+  transRetrainUnknown: "Training lvl unavailable",
   transSkillsToBuild: "Skills to build:",
   loadMore: "Load more ({n} remaining)",
   labelAIResiliencyScore: "AI Resiliency Score",

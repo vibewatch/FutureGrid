@@ -470,7 +470,7 @@ export default function ExposureOutcomeMatrix({
             className="h-auto w-full"
             style={{ minHeight: 320 }}
           />
-          <ul className="sr-only" aria-label={t("matrixSrList")}>
+          <ul className="sr-only [white-space:normal]" aria-label={t("matrixSrList")}>
             {matrix.points.map((p) => (
               <li key={p.code}>
                 <Link href={`/careers/${encodeURIComponent(p.code)}`}>

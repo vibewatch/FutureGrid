@@ -4,7 +4,7 @@ import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import CareerDetailClient from "@/components/careers/CareerDetailClient";
 import type { CareerEvidencePassport } from "@/lib/career-evidence-passport";
-import type { CareerInsight, SectorAggregate } from "@/lib/data";
+import type { CareerInsight, SectorAggregate, ReskillingTarget } from "@/lib/data";
 import type { H1bOccupationSignal } from "@/lib/h1b";
 
 vi.mock("@/lib/i18n/LanguageProvider", () => ({
@@ -142,5 +142,88 @@ describe("CareerDetailClient", () => {
       "href",
       "/careers/15-1299",
     );
+  });
+});
+
+// ─── D5 regression: transRetrainUnknown label when jobZoneDelta === null ───────
+//
+// When a reskilling path has jobZoneDelta=null (sentinel job-zone), CareerDetailClient
+// must render the "transRetrainUnknown" i18n key rather than treating null as 0 (same zone)
+// or crashing with a type error.
+
+function makeTransition(overrides: Partial<ReskillingTarget>): ReskillingTarget {
+  return {
+    occupationCode: "99-9999",
+    occupationName: "Test Occupation",
+    sectorName: "Test Sector",
+    automationRisk: "Low",
+    aiExposure: 0.1,
+    medianSalary: 80000,
+    outlook: "Average",
+    sharedSkills: ["Communication"],
+    sharedCount: 1,
+    overlapScore: 0.2,
+    missingSkills: [],
+    salaryDelta: 5000,
+    exposureDropPts: 10,
+    jobZone: 0,
+    jobZoneDelta: null,
+    growthRate: null,
+    projectedOpenings: null,
+    totalEmployment: null,
+    transitionScore: 60,
+    ...overrides,
+  };
+}
+
+function renderWithTransitions(transitions: ReskillingTarget[]) {
+  return render(
+    <CareerDetailClient
+      code="15-1252"
+      career={career}
+      allInsightCodes={["15-1252", "99-9999"]}
+      onet={null}
+      sectorAgg={sectorAgg}
+      trend={[]}
+      transitions={transitions}
+      exposureLenses={null}
+      h1bSignal={h1bSignal}
+      evidencePassport={evidencePassport}
+      h1bFirst={2024}
+      h1bLatest={2025}
+    />,
+  );
+}
+
+describe("CareerDetailClient — D5 reskilling transition retrain labels", () => {
+  it("renders 'Training lvl unavailable' when jobZoneDelta is null (sentinel zone)", () => {
+    renderWithTransitions([makeTransition({ jobZoneDelta: null })]);
+    expect(screen.getByText("Training lvl unavailable")).toBeInTheDocument();
+  });
+
+  it("renders 'Similar training' when jobZoneDelta is 0 (same zone)", () => {
+    renderWithTransitions([makeTransition({ jobZoneDelta: 0, jobZone: 2 })]);
+    expect(screen.getByText("Similar training")).toBeInTheDocument();
+  });
+
+  it("renders 'Similar training' when jobZoneDelta is negative (easier zone)", () => {
+    renderWithTransitions([makeTransition({ jobZoneDelta: -1, jobZone: 1 })]);
+    expect(screen.getByText("Similar training")).toBeInTheDocument();
+  });
+
+  it("renders '+{n} training lvl' when jobZoneDelta is positive", () => {
+    renderWithTransitions([makeTransition({ jobZoneDelta: 2, jobZone: 4 })]);
+    expect(screen.getByText("+2 training lvl")).toBeInTheDocument();
+  });
+
+  it("all three label variants can coexist in the same rendered list", () => {
+    renderWithTransitions([
+      makeTransition({ occupationCode: "99-0001", occupationName: "Occ A", jobZoneDelta: null }),
+      makeTransition({ occupationCode: "99-0002", occupationName: "Occ B", jobZoneDelta: -1, jobZone: 1 }),
+      makeTransition({ occupationCode: "99-0003", occupationName: "Occ C", jobZoneDelta: 3, jobZone: 5 }),
+    ]);
+    expect(screen.getByText("Training lvl unavailable")).toBeInTheDocument();
+    expect(screen.getByText("Similar training")).toBeInTheDocument();
+    expect(screen.getByText("+3 training lvl")).toBeInTheDocument();
   });
 });

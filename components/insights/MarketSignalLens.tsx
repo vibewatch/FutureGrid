@@ -318,8 +318,8 @@ export default function MarketSignalLens() {
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.25fr)_360px]">
-        <div className="space-y-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.25fr)_360px]">
+        <div className="min-w-0 space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
               {t("marketSignalIntro", { count: sectors.length, benchmark: source.benchmark, start: source.start })}
@@ -389,13 +389,13 @@ export default function MarketSignalLens() {
               })}
               </g>
             </svg>
-            <ul className="sr-only" aria-label={t("marketSignalScatterSrList")}>
+            <ul className="sr-only [white-space:normal]" aria-label={t("marketSignalScatterSrList")}>
               {sectors.map((sector) => <li key={sector.key}>{pointLabel(sector, t, source.benchmark)}</li>)}
             </ul>
           </div>
         </div>
 
-        <aside className="space-y-4">
+        <aside className="min-w-0 space-y-4">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
             <SummaryCard label={t("marketSignalSectorsMapped")} value={sectors.length.toLocaleString()} />
             <SummaryCard label={t("marketSignalBenchmark")} value={source.benchmark} />

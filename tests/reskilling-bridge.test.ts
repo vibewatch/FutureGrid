@@ -194,12 +194,13 @@ describe("getReskillingBridgeData — annualOpenings matches employment-projecti
   });
 
   it("annualOpenings is null for 29-1215 (Family Medicine Physicians) — no projections row", () => {
-    // 29-1215 appears in multiple origins but has no projectedOpenings in the dataset
+    // 29-1215 (Family Medicine Physicians) has projectedOpenings=null in the dataset.
+    // After the D5 fix, the ease scoring for sentinel-zone destinations changed, so the
+    // origin that 29-1215 appears in shifted. Search across all 3 origins to find it.
     const { origins } = getReskillingBridgeData({ originLimit: 3 });
-    const familyMedDest = origins[0].destinations.find(
-      (d) => d.socCode === "29-1215",
-    );
-    expect(familyMedDest).toBeDefined();
+    const allDests = origins.flatMap((o) => o.destinations);
+    const familyMedDest = allDests.find((d) => d.socCode === "29-1215");
+    expect(familyMedDest, "Expected 29-1215 to appear in at least one origin's destinations").toBeDefined();
     expect(familyMedDest!.annualOpenings).toBeNull();
   });
 

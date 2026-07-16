@@ -8,6 +8,7 @@ import {
   searchInsights,
   getSearchIndex,
   getCountryMapData,
+  getReskillingPaths,
 } from "@/lib/data";
 import { isCanonicalSector } from "@/lib/sector-taxonomy";
 
@@ -334,5 +335,101 @@ describe("getCountryMapData", () => {
     expect(usa).toBeDefined();
     expect(usa!.usageIndex).not.toBeNull();
     expect(usa!.usageIndex!).toBeGreaterThan(0);
+  });
+});
+
+// ─── getReskillingPaths — D5 sentinel jobZone regression ─────────────────────
+//
+// D5 fix: when source.jobZone ≤ 0 OR target.jobZone ≤ 0, jobZoneDelta must be
+// null so the ease dimension uses the neutral score (0.5) instead of rewarding
+// sentinel zeros as if they were same-zone transitions (delta=0 → ease=1.0).
+
+describe("getReskillingPaths — D5 sentinel jobZone produces null delta", () => {
+  // 11-2032 Public Relations Managers: jobZone=0, aiExposure=0.2315, has skills.
+  // Any source with sentinel jobZone must yield null delta for ALL paths.
+  const sentinelPaths = getReskillingPaths("11-2032", 20);
+
+  it("returns paths for a sentinel-zone source (jobZone=0)", () => {
+    expect(sentinelPaths.length).toBeGreaterThan(0);
+  });
+
+  it("every path from a sentinel-zone source has jobZoneDelta === null", () => {
+    for (const p of sentinelPaths) {
+      expect(
+        p.jobZoneDelta,
+        `expected null for target ${p.occupationCode} (${p.occupationName}) when source has sentinel zone`,
+      ).toBeNull();
+    }
+  });
+
+  it("transition scores for sentinel-zone source are bounded 0–100", () => {
+    for (const p of sentinelPaths) {
+      expect(p.transitionScore).toBeGreaterThanOrEqual(0);
+      expect(p.transitionScore).toBeLessThanOrEqual(100);
+    }
+  });
+
+  it("paths from valid-zone source (Data Entry Keyers, zone=2) include non-null deltas", () => {
+    // 43-9021 Data Entry Keyers: jobZone=2 — a valid zone that produces real deltas
+    const paths = getReskillingPaths("43-9021", 20);
+    expect(paths.length).toBeGreaterThan(0);
+    const nonNullDeltaPaths = paths.filter((p) => p.jobZoneDelta !== null);
+    // Data Entry Keyers has many targets with valid zones; at least some should have real deltas
+    expect(nonNullDeltaPaths.length).toBeGreaterThan(0);
+    for (const p of nonNullDeltaPaths) {
+      // Valid delta = target.jobZone − 2; must be an integer in range (-4)–(+3)
+      expect(typeof p.jobZoneDelta).toBe("number");
+      expect(p.jobZoneDelta).toBeGreaterThanOrEqual(-4);
+      expect(p.jobZoneDelta).toBeLessThanOrEqual(3);
+    }
+  });
+
+  it("paths from valid-zone source still yield null delta when the TARGET zone is a sentinel", () => {
+    // 43-9021 (zone=2): some target occupations have jobZone=0 or -1 — their delta must be null
+    const paths = getReskillingPaths("43-9021", 50);
+    const nullDeltaPaths = paths.filter((p) => p.jobZoneDelta === null);
+    // The dataset has 143 sentinel-zone targets (zones 0 and -1); some appear in this list
+    expect(nullDeltaPaths.length).toBeGreaterThan(0);
+    // And transition scores are still bounded
+    for (const p of nullDeltaPaths) {
+      expect(p.transitionScore).toBeGreaterThanOrEqual(0);
+      expect(p.transitionScore).toBeLessThanOrEqual(100);
+    }
+  });
+
+  it("exhaustive: every path from any sentinel-zone source has jobZoneDelta === null", () => {
+    // The 756-occupation snapshot has 143 occupations with jobZone ≤ 0 (zones 0 and -1).
+    // We test 4 known sentinel-zone sources spanning both zone=0 and zone=-1.
+    const sentinelSocCodes = [
+      "11-2032", // Public Relations Managers, zone=0, aiExposure=0.23
+      "11-3012", // Administrative Services Managers, zone=0
+      "15-2099", // Mathematical Science Occupations, All Other, zone=-1, aiExposure=0.48
+      "41-3031", // Securities, Commodities, and Financial Services Sales Agents, zone=-1
+    ];
+
+    for (const socCode of sentinelSocCodes) {
+      const paths = getReskillingPaths(socCode, 10);
+      for (const p of paths) {
+        expect(
+          p.jobZoneDelta,
+          `source ${socCode} (sentinel zone) → target ${p.occupationCode}: expected null jobZoneDelta`,
+        ).toBeNull();
+      }
+    }
+  });
+
+  it("valid 1–5 zone transitions produce correct arithmetic delta", () => {
+    // 43-4051 Customer Service Representatives: jobZone=2, high exposure.
+    // 13-1161 Market Research Analysts: jobZone=4.
+    // Expected delta for a path to a zone-4 target: 4 − 2 = +2.
+    const paths = getReskillingPaths("43-4051", 50);
+    const zone4Paths = paths.filter((p) => p.jobZone === 4 && p.jobZoneDelta !== null);
+    for (const p of zone4Paths) {
+      expect(p.jobZoneDelta).toBe(2); // zone=4 − source zone=2
+    }
+    const zone2Paths = paths.filter((p) => p.jobZone === 2 && p.jobZoneDelta !== null);
+    for (const p of zone2Paths) {
+      expect(p.jobZoneDelta).toBe(0); // same zone → ≤ 0, same-or-easier
+    }
   });
 });

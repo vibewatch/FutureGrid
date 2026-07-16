@@ -67,3 +67,33 @@ describe("SourcesView guardrail badges", () => {
     expect(screen.getAllByLabelText(/Descriptive-only: Descriptive context only/i).length).toBeGreaterThan(0);
   });
 });
+
+// D2 regression: the badge/link row must use flex-wrap and must not use shrink-0.
+// Before the fix, shrink-0 prevented the badge + link row from wrapping on mobile
+// (375px viewport), causing visible overflow at /sources.
+describe("SourcesView — D2 mobile badge/link row containment", () => {
+  it("badge/link container uses flex-wrap (not shrink-0) so it wraps on narrow viewports", () => {
+    const { container } = render(
+      <SourcesView
+        generatedAt="2026-07-06T00:00:00.000Z"
+        snapshotDate="Jul 6, 2026"
+        sources={SOURCES}
+        note={null}
+      />,
+    );
+
+    // The badge+link row is a flex div inside each source card.
+    // Post-fix: it must have flex-wrap (via Tailwind class "flex-wrap").
+    const flexWrapRows = container.querySelectorAll("div.flex-wrap");
+    expect(flexWrapRows.length, "Expected at least one div.flex-wrap in the sources list").toBeGreaterThan(0);
+
+    // Post-fix: the badge/link container must NOT use shrink-0.
+    // Check that none of the flex-wrap divs also carry shrink-0 (the pre-fix pattern).
+    for (const row of Array.from(flexWrapRows)) {
+      expect(
+        row.classList.contains("shrink-0"),
+        `A div.flex-wrap has shrink-0 class — this was the pre-fix pattern that caused mobile overflow`,
+      ).toBe(false);
+    }
+  });
+});

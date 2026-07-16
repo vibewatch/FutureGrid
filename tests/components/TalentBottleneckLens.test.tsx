@@ -274,4 +274,36 @@ describe("TalentBottleneckLens", () => {
       expect(pageText, `TalentBottleneckLens should avoid banned wording ${pattern}`).not.toMatch(pattern);
     }
   }, 10000);
+
+  // D1 regression: scatter circle <title> must be a single complete string (not
+  // multiple JSX expression children).  React 19 hoists <title> with multiple
+  // expression children, causing hydration error #418 on /visa.
+  it("D1: scatter circle titles are non-empty and contain occupation name + score + exposure", async () => {
+    setLocale("en");
+    const TalentBottleneckLens = await importTalentBottleneckLens();
+    render(<TalentBottleneckLens data={FIXTURE_DATA} />);
+
+    const svgTitles = Array.from(document.querySelectorAll("circle > title, g > title"))
+      .map((el) => el.textContent ?? "");
+    expect(svgTitles.length).toBeGreaterThan(0);
+    for (const titleText of svgTitles) {
+      expect(titleText.length).toBeGreaterThan(0);
+    }
+    // Fixture row: Software Developers, score=92.4, aiExposure=0.72
+    const swDev = svgTitles.find((t) => t.includes("Software Developers"));
+    expect(swDev).toBeDefined();
+    expect(swDev).toMatch(/92/);  // score≈92.4
+  }, 10000);
+
+  // D3 regression: sr-only list must have [white-space:normal] to prevent
+  // nowrap inline text from contributing to document.scrollWidth on mobile.
+  it("D3: accessible sr-only occupation list has [white-space:normal] class", async () => {
+    setLocale("en");
+    const TalentBottleneckLens = await importTalentBottleneckLens();
+    render(<TalentBottleneckLens data={FIXTURE_DATA} />);
+
+    const srOnlyList = document.querySelector("ul.sr-only");
+    expect(srOnlyList, "Expected a <ul class='sr-only ...'>").toBeDefined();
+    expect(srOnlyList?.classList.contains("[white-space:normal]")).toBe(true);
+  }, 10000);
 });

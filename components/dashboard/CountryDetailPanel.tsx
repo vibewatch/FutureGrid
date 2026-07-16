@@ -587,7 +587,7 @@ export default function CountryDetailPanel({
             id="country-selector"
             onChange={handleSelectorChange}
             defaultValue=""
-            className="flex-1 max-w-xs bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-700/60 rounded-xl px-3 py-2 text-sm text-zinc-900 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-violet-500/60 cursor-pointer"
+            className="min-w-0 flex-1 max-w-xs bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-700/60 rounded-xl px-3 py-2 text-sm text-zinc-900 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-violet-500/60 cursor-pointer"
             aria-label={t("countrySelectorAria")}
           >
             <option value="" disabled>

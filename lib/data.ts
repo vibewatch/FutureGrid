@@ -11,8 +11,17 @@ export interface CareerInsight {
   automationRisk: "Low" | "Medium" | "High" | "Very High";
   /** Semantic AI exposure score (0–1) from the occupation snapshot. */
   aiExposure: number;
-  /** Legacy automation-probability score (0–1). Kept for compatibility; do not use as a substitute for aiExposure. */
+  /**
+   * AEI migration compatibility alias of `aiExposure` — both reflect the same
+   * 0–1 AI-exposure score from the occupation snapshot.
+   * Retained for pre-AEI data consumers; do not interpret as a Frey–Osborne
+   * automation probability (that score lives in `lib/exposure.ts`).
+   */
   automationProbability: number;
+  /**
+   * Annualized employment-change rate in percentage points per year
+   * (e.g., 6.5 means +6.5%/yr). Null when fewer than 2 data points are available.
+   */
   growthRate: number | null;
   /** Window (years) growthRate was derived from when computed from OEWS employment history. */
   growthWindow?: { fromYear: number; toYear: number } | null;
@@ -647,8 +656,13 @@ export interface ReskillingTarget {
   exposureDropPts: number;
   /** Target O*NET Job Zone (1–5: education/experience needed). */
   jobZone: number;
-  /** Target Job Zone − source Job Zone (retraining-effort proxy; ≤0 is easier). */
-  jobZoneDelta: number;
+  /**
+   * Target Job Zone − source Job Zone (retraining-effort proxy; ≤0 means same or easier zone).
+   * null when either the source or target O*NET Job Zone is an invalid sentinel (≤0);
+   * the ease dimension is excluded from scoring (neutral 0.5) so missing data neither
+   * rewards nor penalises the candidate. Valid 1–5 zone behavior is unchanged.
+   */
+  jobZoneDelta: number | null;
   /** Target recent employment growth (annualized %, from OEWS history). */
   growthRate: number | null;
   projectedOpenings: number | null;
@@ -675,14 +689,18 @@ function computeTransitionScore(args: {
   salaryDeltaFrac: number; // (target − source) / source
   outlook: CareerInsight["outlook"];
   growthRate: number | null;
-  jobZoneDelta: number;
+  /** null = invalid O*NET zone sentinel; ease dimension is excluded (neutral 0.5). */
+  jobZoneDelta: number | null;
 }): number {
   const transfer = clamp01(args.overlapScore);
   const safety = clamp01(args.exposureDropFrac);
   const pay = clamp01(0.5 + Math.max(-0.5, Math.min(0.5, args.salaryDeltaFrac)));
   const growthBonus = args.growthRate != null ? clamp01(0.5 + args.growthRate / 20) : 0.5;
   const health = 0.6 * (args.outlook === "Bright" ? 1 : 0.5) + 0.4 * growthBonus;
-  const ease = 1 - clamp01(Math.max(0, args.jobZoneDelta) / 4);
+  // Neutral mid-point when zone data is unavailable; avoids rewarding sentinel zeros with ease=1.
+  const ease = args.jobZoneDelta !== null
+    ? 1 - clamp01(Math.max(0, args.jobZoneDelta) / 4)
+    : 0.5;
   const score = 0.35 * transfer + 0.25 * safety + 0.15 * pay + 0.15 * health + 0.1 * ease;
   return Math.round(score * 100);
 }
@@ -726,7 +744,12 @@ export function getReskillingPaths(
     seenTitles.add(row.title);
 
     const growthRate = row.histGrowthRate != null ? row.histGrowthRate : row.growthRate;
-    const jobZoneDelta = row.jobZone - source.jobZone;
+    // D5: set null when either zone is an invalid sentinel (≤0) so missing data is
+    // scored as neutral (ease=0.5), not as same-zone (delta=0 → ease=1.0 = max reward).
+    const jobZoneDelta =
+      source.jobZone > 0 && row.jobZone > 0
+        ? row.jobZone - source.jobZone
+        : null;
     const overlapScore = sharedSkills.length / fromSkills.length;
 
     candidates.push({
