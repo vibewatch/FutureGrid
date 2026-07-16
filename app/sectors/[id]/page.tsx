@@ -31,7 +31,10 @@ export default function SectorDetailPage() {
     );
   }
 
-  const avgRisk = sectorInsights.reduce((s, i) => s + i.automationProbability, 0) / sectorInsights.length;
+  const sectorTotalEmp = sectorInsights.reduce((s, i) => s + (i.totalEmployment ?? 0), 0);
+  const avgRisk = sectorTotalEmp > 0
+    ? sectorInsights.reduce((s, i) => s + (i.totalEmployment ?? 0) * i.automationProbability, 0) / sectorTotalEmp
+    : sectorInsights.reduce((s, i) => s + i.automationProbability, 0) / sectorInsights.length;
   const brightCount = sectorInsights.filter((i) => i.outlook === "Bright").length;
   const brightShare = sectorInsights.length > 0 ? brightCount / sectorInsights.length : 0;
   const avgSalary = sectorInsights.reduce((s, i) => s + i.medianSalary, 0) / sectorInsights.length;

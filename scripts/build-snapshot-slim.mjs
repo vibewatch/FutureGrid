@@ -18,6 +18,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { validateOccupationSnapshotSlim } from "./lib/validate.mjs";
 import { buildMeta } from "./lib/meta.mjs";
+import { canonicalizeSector } from "./lib/sector-taxonomy.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dataDir = join(__dirname, "..", "data");
@@ -56,7 +57,7 @@ const slim = full.map((row) => {
   return {
     socCode: row.socCode,
     title: row.title,
-    sector: row.sector,
+    sector: canonicalizeSector(row.sector),
     aiExposure: row.aiExposure,
     automationRisk: row.automationRisk,
     automationProbability: row.automationProbability,

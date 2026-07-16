@@ -7,6 +7,7 @@ import { colorForRisk } from "@/lib/utils";
 import { generateAllCareerInsights } from "@/lib/data";
 import { useT } from "@/lib/i18n/useT";
 import AccessibleChart from "./AccessibleChart";
+import { canonicalizeSector } from "@/lib/sector-taxonomy";
 
 interface JobImpactChartProps {
   selectedSector?: string;
@@ -77,8 +78,9 @@ export default function JobImpactChart({ selectedSector }: JobImpactChartProps) 
     const M = { top: 30, right: 40, bottom: 180, left: 60 };
     svg.attr("viewBox", `0 0 ${W} ${H}`);
 
-    const filtered = selectedSector
-      ? data.filter((d) => d.sectorName === selectedSector)
+    const canonicalSector = selectedSector ? canonicalizeSector(selectedSector) : undefined;
+    const filtered = canonicalSector
+      ? data.filter((d) => d.sectorName === canonicalSector)
       : data;
 
     if (filtered.length === 0) {

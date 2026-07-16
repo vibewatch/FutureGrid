@@ -52,24 +52,27 @@ describe("PredictiveChart", () => {
     expect(metricValue("Bright Outlook")).toBe("10");
   });
 
-  it("falls back to projected employment for the 15-1251 sector when annual openings are unavailable", async () => {
+  it("canonicalizes 'Computer & Mathematical' alias and renders openings chart for the Computer sector", async () => {
     const { container } = render(<PredictiveChart selectedSector="Computer & Mathematical" />);
 
     await waitFor(() => {
-      expect(container.querySelectorAll("rect.pc-bar")).toHaveLength(15);
+      // 5 Computer-sector occupations have projectedOpenings; chart uses openings mode
+      expect(container.querySelectorAll("rect.pc-bar")).toHaveLength(5);
     });
 
+    // openings mode — alias is still shown in the title, but data is filtered canonically
     expect(
-      screen.getByLabelText("Horizontal bar chart: top occupations by projected 2034 employment")
+      screen.getByLabelText("Horizontal bar chart: top occupations by projected annual openings")
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Top Occupations by Projected 2034 Employment: Computer & Mathematical")
+      screen.getByText("Top Occupations by Projected Annual Openings: Computer & Mathematical")
     ).toBeInTheDocument();
     expect(screen.queryByText("No projection data available for this sector")).not.toBeInTheDocument();
-    expect(screen.getByText("Computer Programmers")).toBeInTheDocument();
-    expect(screen.getByText("114,000")).toBeInTheDocument();
-    expect(metricValue("Occupations Shown")).toBe("15");
-    expect(metricValue("Avg AI Exposure")).toBe("40.1%");
-    expect(metricValue("Bright Outlook")).toBe("0");
+    // Top occupation by openings in the Computer sector
+    expect(screen.getByText("Operations Research Analysts")).toBeInTheDocument();
+    expect(screen.getByText("10,900")).toBeInTheDocument();
+    expect(metricValue("Occupations Shown")).toBe("5");
+    expect(metricValue("Avg AI Exposure")).toBe("31.9%");
+    expect(metricValue("Bright Outlook")).toBe("4");
   });
 });

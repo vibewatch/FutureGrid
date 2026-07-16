@@ -12,6 +12,8 @@
  * failing today's builds.
  */
 
+import { CANONICAL_SECTORS, isCanonicalSector } from "./sector-taxonomy.mjs";
+
 // ─── Primitive helpers ────────────────────────────────────────────────────────
 
 /**
@@ -273,6 +275,20 @@ export function validateOccupationSnapshot(dataset) {
       "occupation-snapshot[0]"
     );
   }
+  // Assert all sector values are canonical (max 22 BLS SOC major groups)
+  const uniqueSectors = new Set(rows.map(r => r.sector));
+  const nonCanonical = [...uniqueSectors].filter(s => !isCanonicalSector(s));
+  if (nonCanonical.length > 0) {
+    throw new Error(
+      `[validate] occupation-snapshot: non-canonical sector(s) found — ${nonCanonical.join(", ")}\n` +
+      `  Canonical sectors: ${CANONICAL_SECTORS.join(", ")}`
+    );
+  }
+  if (uniqueSectors.size > 22) {
+    throw new Error(
+      `[validate] occupation-snapshot: expected ≤22 sectors, got ${uniqueSectors.size} — ${[...uniqueSectors].join(", ")}`
+    );
+  }
 }
 
 /**
@@ -293,6 +309,20 @@ export function validateOccupationSnapshotSlim(dataset) {
       rows[0],
       ["socCode", "title", "sector", "aiExposure", "automationRisk"],
       "occupation-snapshot-slim[0]"
+    );
+  }
+  // Assert all sector values are canonical (max 22 BLS SOC major groups)
+  const uniqueSectors = new Set(rows.map(r => r.sector));
+  const nonCanonical = [...uniqueSectors].filter(s => !isCanonicalSector(s));
+  if (nonCanonical.length > 0) {
+    throw new Error(
+      `[validate] occupation-snapshot-slim: non-canonical sector(s) found — ${nonCanonical.join(", ")}\n` +
+      `  Canonical sectors: ${CANONICAL_SECTORS.join(", ")}`
+    );
+  }
+  if (uniqueSectors.size > 22) {
+    throw new Error(
+      `[validate] occupation-snapshot-slim: expected ≤22 sectors, got ${uniqueSectors.size} — ${[...uniqueSectors].join(", ")}`
     );
   }
 }
