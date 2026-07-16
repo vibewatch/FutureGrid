@@ -82,3 +82,19 @@
 - Learning: DataAsOfBadge and provenance registry patterns are reusable across synthesis features
 
 **Approval & Closure:** PR #120 merged as 78154f20575df26f5b8867b70bb6ce3009c46993; issues #77/#119 closed
+
+
+### 2026-07-16: Full-site Playwright and data audit cycle — implementation (hydration, accessibility, translation)
+
+Neo implemented UI and accessibility fixes for the full-site Playwright audit cycle. Fixes: React 19 SVG hydration sync, responsive overflow resolution, WCAG accessibility gates (0 critical/serious), Chinese localization for retrainUnknown (培训级别暂无数据). Post-fix Playwright: 1,674/1,674 pass.
+
+**Key responsibilities:**
+- React 19 SVG hydration: Fixed SVG title child shape hydration consistency (D1)
+- Responsive overflow: Fixed SR-only container layout breaking overflow detection (D2)
+- Accessibility remediation: Brought WCAG compliance to AA level (0 violations)
+- Chinese translation: Localized retrainUnknown field for career pages
+
+**Key learnings:**
+- SVG title child elements hydrate differently in React 19 vs. React 18; requires explicit shape sync handling and targeted testing
+- Accessible hidden content (SR-only) can still cause layout overflow if container constraints not enforced; test overflow separately from visibility
+- i18n keys for missing data must be localized before release; placeholder strings create compliance gaps

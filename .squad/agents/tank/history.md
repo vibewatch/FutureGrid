@@ -36,3 +36,19 @@ Implemented 8 major data pipelines and library layers: AI Frontier (1033 models 
 **Next action:** Trinity to open PR and merge revised worktree to main per Squad directive (2026-07-04: use PR merge workflow).
 
 ---
+
+### 2026-07-16: Full-site Playwright and data audit cycle — data audit and implementation (Job Zone, wage sourcing)
+
+Tank conducted data audit identifying Job Zone missing/neutral scores and cross-surface wage sourcing inconsistencies. Implemented fixes: neutral placeholder for careers with no BLS Job Zone, OEWS wage priority across career/sector surfaces. Post-fix Playwright: 1,674/1,674 pass.
+
+**Key responsibilities:**
+- Data audit: Identified Job Zone missing/neutral and wage sourcing defects (root cause analysis)
+- Job Zone implementation: Neutral/unknown placeholder for careers without BLS Job Zone assignment
+- Wage sourcing fix: OEWS salary takes priority over projections; enforced across all surfaces via data contract
+- JSDoc semantics: Corrected documentation for Job Zone and wage fields
+- Test coverage: Added deterministic regression tests for Job Zone and wage logic
+
+**Key learnings:**
+- Missing Job Zones must map to neutral/unknown placeholders, not silently omitted; omission creates data integrity gaps and user confusion
+- Cross-surface wage displays require one canonical source defined at data-contract level; OEWS is priority (established BLS methodology)
+- Data audit scripts must be verified before treating recomputed results as defects; script correctness is prerequisite to interpretation

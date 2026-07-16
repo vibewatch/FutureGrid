@@ -77,3 +77,20 @@ Initial scaffold via `squad upgrade`. Ready for work.
 2. **Phase 2 reskilling:** Talent-Bottleneck-to-Reskilling Bridge — prerequisite: NAICS-SOC bridge dataset
 3. **Phase 2 outcomes:** Exposure-to-Outcome Reality Matrix — prerequisite: 2+ years paired wage/employment retrospective (v1.2 post-collection)
 
+
+
+### 2026-07-16: Full-site Playwright and data audit cycle — verification (Job Zone/wage/market-signals)
+
+Fact Checker conducted independent verification of Tank's data audit findings. Results: Job Zone defects confirmed (8+ hydration failures), wage sourcing mismatches confirmed (OEWS priority), market-signal staleness disproved (false positive; data current). All findings validated; implementation path clear.
+
+**Key responsibilities:**
+- Verification scope: Job Zone + wage + market-signals
+- Job Zone: Confirmed defect with specific route examples; validated neutral placeholder fix
+- Wage sourcing: Verified OEWS vs. projections mismatch; confirmed OEWS priority design
+- Market signals: Confirmed projections data current; disproved staleness false positive
+- Blocker resolution: Verified implementation ready without false alarms
+
+**Key learnings:**
+- Verify audit scripts before treating recomputation as a defect; script errors propagate to false problem claims
+- Cross-source data consistency requires explicit source hierarchy at contract level (OEWS > projections for wages)
+- Market-signal freshness must be validated separately from data consistency; staleness claims require timestamp evidence

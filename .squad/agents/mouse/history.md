@@ -30,3 +30,19 @@ Completed comprehensive test coverage across 12 major features (AI Frontier, Tal
 **Key learning:** Authorship lockout protocol prevents self-revision; conflict resolution delegated appropriately to independent agent.
 
 ---
+
+### 2026-07-16: Full-site Playwright and data audit cycle — baseline audit and fix validation
+
+Mouse conducted comprehensive Playwright baseline and post-fix audits for 791 routes across mobile/desktop/tablet viewports. Baseline: 1,661/1,674 pass, 13 identified failures. Post-fix validation after Neo/Tank implementation: 1,674/1,674 pass (100%).
+
+**Key responsibilities:**
+- Fresh build verification: 791 routes confirmed (756 careers, 22 sectors, 13 static)
+- Baseline Playwright: mobile + desktop + 92 tablet checks; identified failure patterns
+- Test file expansion: Added/updated 9 test files covering hydration, wage, Job Zone, accessibility
+- Post-fix validation: 100% pass rate achieved after Neo/Tank fixes
+
+**Key learnings:**
+- Fresh export route counts always replace stale artifact counts; verify actively generated totals
+- Accessible hidden content (SR-only containers) can still cause layout overflow if container margins not properly constrained
+- Always run full Playwright suite after UI fixes; individual viewport validation can miss cross-viewport patterns
+- Test file coverage gaps are discovered during baseline audit; pre-fix inventory prevents false regression claims
