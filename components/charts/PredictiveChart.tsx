@@ -9,6 +9,7 @@ import {
 } from "@/lib/employment-projections";
 import { colorForRisk } from "@/lib/utils";
 import { useT } from "@/lib/i18n/useT";
+import { canonicalizeSector } from "@/lib/sector-taxonomy";
 
 interface PredictiveChartProps {
   selectedSector?: string;
@@ -44,10 +45,12 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
     visible: false, x: 0, y: 0, cw: 800, name: "", sector: "", metricLabel: "", metricValue: 0, risk: "", prob: 0,
   });
 
+  const canonicalSector = selectedSector ? canonicalizeSector(selectedSector) : undefined;
+
   const { topOccupations, summary, metric } = useMemo(() => {
     const filtered = getEmploymentProjectionRows().filter(
       (row) =>
-        (!selectedSector || row.sector === selectedSector) &&
+        (!canonicalSector || row.sector === canonicalSector) &&
         row.employment2024 != null &&
         row.employment2034 != null &&
         row.employmentChangePct != null,
@@ -79,7 +82,7 @@ export default function PredictiveChart({ selectedSector }: PredictiveChartProps
       ? top.reduce((s, i) => s + i.exposureProbability, 0) / top.length
       : 0;
     return { topOccupations: top, summary: { count: top.length, avgExposure, brightCount }, metric };
-  }, [selectedSector]);
+  }, [canonicalSector]);
 
   const emptyText = t("emptyNoProjectionData");
   const metricLabel =

@@ -9,6 +9,7 @@ import {
   getSearchIndex,
   getCountryMapData,
 } from "@/lib/data";
+import { isCanonicalSector } from "@/lib/sector-taxonomy";
 
 // ─── generateAllCareerInsights ────────────────────────────────────────────────
 
@@ -136,6 +137,25 @@ describe("getSectorAggregatesExtended", () => {
       }
     }
   });
+
+  it("returns exactly 22 sectors (one per BLS SOC major group, no alias duplicates)", () => {
+    expect(sectors).toHaveLength(22);
+  });
+
+  it("all sector names are canonical (no alias strings in aggregates)", () => {
+    for (const s of sectors) {
+      expect(isCanonicalSector(s.sector), `"${s.sector}" is non-canonical`).toBe(true);
+    }
+  });
+
+  it("no duplicate sector names in aggregates", () => {
+    const names = sectors.map(s => s.sector);
+    expect(new Set(names).size).toBe(names.length);
+  });
+
+  it("does not contain isolated alias 'Computer & Mathematical'", () => {
+    expect(sectors.find(s => s.sector === "Computer & Mathematical")).toBeUndefined();
+  });
 });
 
 // ─── getHighlights ────────────────────────────────────────────────────────────
@@ -163,6 +183,48 @@ describe("getHighlights", () => {
     const top = highlights.largestWorkforce[0];
     expect(top.totalEmployment).not.toBeNull();
     expect(top.totalEmployment!).toBeGreaterThanOrEqual(100_000);
+  });
+
+  // ── brightOutlook sort-order invariant ──────────────────────────────────────
+
+  it("brightOutlook[0] is the Bright Outlook occupation with the highest projected openings (Cashiers)", () => {
+    const top = highlights.brightOutlook[0];
+    expect(top.occupationCode).toBe("41-2011");
+    expect(top.occupationName).toBe("Cashiers");
+    expect(top.projectedOpenings).toBeGreaterThan(600_000);
+  });
+
+  it("brightOutlook is sorted by projectedOpenings descending, not by AI exposure", () => {
+    const bo = highlights.brightOutlook;
+    // Projected openings must be non-increasing across the list (where non-null).
+    for (let i = 0; i < bo.length - 1; i++) {
+      const a = bo[i].projectedOpenings ?? 0;
+      const b = bo[i + 1].projectedOpenings ?? 0;
+      expect(a).toBeGreaterThanOrEqual(b);
+    }
+    // The first entry must NOT be the one with the highest automationProbability
+    // among Bright Outlook occupations — that would mean we are (wrongly) sorting
+    // by AI exposure again.
+    const allBright = generateAllCareerInsights().filter((i) => i.outlook === "Bright");
+    const maxAIProbBright = Math.max(...allBright.map((i) => i.automationProbability));
+    expect(bo[0].automationProbability).not.toBeCloseTo(maxAIProbBright, 3);
+  });
+
+  it("every brightOutlook entry has outlook === 'Bright'", () => {
+    for (const entry of highlights.brightOutlook) {
+      expect(entry.outlook).toBe("Bright");
+    }
+  });
+
+  it("Customer Service Representatives (43-4051) is a legitimate dual-signal career: both high AI exposure and Bright Outlook", () => {
+    const allInsights = generateAllCareerInsights();
+    const cs = allInsights.find((i) => i.occupationCode === "43-4051");
+    expect(cs).toBeDefined();
+    expect(cs!.outlook).toBe("Bright");
+    // High AI exposure (Very High band)
+    expect(cs!.automationProbability).toBeGreaterThan(0.5);
+    // Large annual openings — an independent labor demand signal, not the O*NET designation reason
+    expect(cs!.projectedOpenings).toBeGreaterThan(200_000);
   });
 });
 

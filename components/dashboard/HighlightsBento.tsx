@@ -155,7 +155,8 @@ export default function HighlightsBento() {
         })}
       </div>
       <p className="text-[10px] text-zinc-600 mt-4 leading-relaxed">
-        AI-exposure figures reflect observed AI (LLM) usage from the Anthropic Economic Index (2025), mapped to O*NET tasks — a relative exposure measure, not a prediction of job loss.{" "}
+        AI-exposure figures reflect observed AI (LLM) usage from the Anthropic Economic Index (2025), mapped to O*NET tasks — a relative exposure measure, not a prediction of job loss.
+        Bright Outlook is an O*NET designation for occupations with projected rapid growth, large numbers of openings, or new-and-emerging status — an independent labor demand signal that can coexist with high AI task exposure.{" "}
         <Link href="/sources" className="text-zinc-500 hover:text-zinc-400 underline underline-offset-2">
           See Sources
         </Link>

@@ -3,6 +3,7 @@ import countryExposureData from "@/data/country-exposure.json";
 import aiUsageProxiesData from "@/data/ai-usage-proxies.json";
 import sourcesData from "@/data/sources.json";
 import globalAiMetricsData from "@/data/global-ai-metrics.json";
+import { canonicalizeSector } from "@/lib/sector-taxonomy";
 
 export interface CareerInsight {
   occupationCode: string;
@@ -66,7 +67,7 @@ export function generateAllCareerInsights(): CareerInsight[] {
         totalEmployment: row.employment,
         projectedOpenings: row.projectedOpenings ?? null,
         outlook: row.outlook ?? (row.brightOutlook ? "Bright" : "Average"),
-        sectorName: row.sector,
+        sectorName: canonicalizeSector(row.sector),
         skills: row.skills,
         // History is intentionally excluded from client insights (see lib/snapshot.ts).
         employmentHistory: null,
@@ -79,17 +80,22 @@ export function generateAllCareerInsights(): CareerInsight[] {
 
 export function getSectorAggregates(): { sector: string; avgRisk: number; avgGrowth: number | null; occupationCount: number }[] {
   const insights = generateAllCareerInsights();
-  const map = new Map<string, { riskSum: number; growthSum: number; growthCnt: number; count: number }>();
+  const map = new Map<string, { riskSum: number; growthSum: number; growthCnt: number; count: number; empRiskSum: number; empSum: number }>();
   for (const i of insights) {
-    const e = map.get(i.sectorName) ?? { riskSum: 0, growthSum: 0, growthCnt: 0, count: 0 };
+    const e = map.get(i.sectorName) ?? { riskSum: 0, growthSum: 0, growthCnt: 0, count: 0, empRiskSum: 0, empSum: 0 };
     e.riskSum += i.automationProbability;
     if (i.growthRate != null) { e.growthSum += i.growthRate; e.growthCnt++; }
+    const emp = i.totalEmployment ?? 0;
+    if (emp > 0) { e.empRiskSum += emp * i.automationProbability; e.empSum += emp; }
     e.count++;
     map.set(i.sectorName, e);
   }
   return Array.from(map.entries()).map(([sector, d]) => ({
     sector,
-    avgRisk: d.riskSum / d.count,
+    // Employment-weighted mean: Σ(emp × automationProbability) / Σemp.
+    // Falls back to count-weighted only when every occupation in the sector has
+    // null/zero employment — consistent with existing project zero-handling.
+    avgRisk: d.empSum > 0 ? d.empRiskSum / d.empSum : d.riskSum / d.count,
     avgGrowth: d.growthCnt > 0 ? d.growthSum / d.growthCnt : null,
     occupationCount: d.count,
   }));
@@ -111,23 +117,30 @@ export function getSectorAggregatesExtended(): SectorAggregate[] {
   const insights = generateAllCareerInsights();
   const map = new Map<
     string,
-    { riskSum: number; growthSum: number; growthCnt: number; salarySum: number; salaryCnt: number; empSum: number; empCnt: number; brightCnt: number; count: number }
+    { riskSum: number; growthSum: number; growthCnt: number; salarySum: number; salaryCnt: number; empSum: number; empCnt: number; brightCnt: number; count: number; empRiskSum: number }
   >();
   for (const i of insights) {
     const e = map.get(i.sectorName) ?? {
-      riskSum: 0, growthSum: 0, growthCnt: 0, salarySum: 0, salaryCnt: 0, empSum: 0, empCnt: 0, brightCnt: 0, count: 0,
+      riskSum: 0, growthSum: 0, growthCnt: 0, salarySum: 0, salaryCnt: 0, empSum: 0, empCnt: 0, brightCnt: 0, count: 0, empRiskSum: 0,
     };
     e.riskSum += i.automationProbability;
     if (i.growthRate != null) { e.growthSum += i.growthRate; e.growthCnt++; }
     if (i.medianSalary > 0) { e.salarySum += i.medianSalary; e.salaryCnt++; }
-    if (i.totalEmployment != null && i.totalEmployment > 0) { e.empSum += i.totalEmployment; e.empCnt++; }
+    if (i.totalEmployment != null && i.totalEmployment > 0) {
+      e.empSum += i.totalEmployment;
+      e.empCnt++;
+      e.empRiskSum += i.totalEmployment * i.automationProbability;
+    }
     if (i.outlook === "Bright") e.brightCnt++;
     e.count++;
     map.set(i.sectorName, e);
   }
   return Array.from(map.entries()).map(([sector, d]) => ({
     sector,
-    avgRisk: d.riskSum / d.count,
+    // Employment-weighted mean: Σ(emp × automationProbability) / Σemp.
+    // Falls back to count-weighted only when every occupation in the sector has
+    // null/zero employment — consistent with existing project zero-handling.
+    avgRisk: d.empSum > 0 ? d.empRiskSum / d.empSum : d.riskSum / d.count,
     avgGrowth: d.growthCnt > 0 ? d.growthSum / d.growthCnt : null,
     avgSalary: d.salaryCnt > 0 ? d.salarySum / d.salaryCnt : null,
     totalEmployment: d.empCnt > 0 ? d.empSum : null,
@@ -153,7 +166,7 @@ export interface HighlightEntry {
 
 export interface Highlights {
   mostAtRisk: HighlightEntry[];
-  /** Replaces fastestGrowing: top Bright Outlook occupations by AI exposure */
+  /** Top Bright Outlook occupations by projected demand (openings → growth → name) — independent of AI exposure. */
   brightOutlook: HighlightEntry[];
   mostResilient: HighlightEntry[];
   highestPaid: HighlightEntry[];
@@ -184,7 +197,16 @@ export function getHighlights(topN = 5): Highlights {
       .map(toHighlightEntry),
     brightOutlook: [...insights]
       .filter((i) => i.outlook === "Bright")
-      .sort((a, b) => b.automationProbability - a.automationProbability)
+      // Sort by demand signal (openings → growth → name), NOT by AI exposure.
+      // Sorting by automationProbability here created a false impression that
+      // "Bright Outlook" and "Most AI-Exposed" were contradictory lists —
+      // they are independent signals and must be ranked on their own metrics.
+      .sort(
+        (a, b) =>
+          (b.projectedOpenings ?? 0) - (a.projectedOpenings ?? 0) ||
+          (b.growthRate ?? 0) - (a.growthRate ?? 0) ||
+          a.occupationName.localeCompare(b.occupationName),
+      )
       .slice(0, topN)
       .map(toHighlightEntry),
     mostResilient: [...insights]

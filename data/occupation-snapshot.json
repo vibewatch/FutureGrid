@@ -2148,7 +2148,7 @@
     {
       "socCode": "13-2054",
       "title": "Financial Risk Specialists",
-      "sector": "Business & Financial",
+      "sector": "Business and Financial Operations",
       "aiExposure": 0.2649,
       "automationRisk": "High",
       "automationProbability": 0.2649,
@@ -2406,7 +2406,7 @@
     {
       "socCode": "15-1211",
       "title": "Computer Systems Analysts",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.2763,
       "automationRisk": "High",
       "automationProbability": 0.2763,
@@ -2444,7 +2444,7 @@
     {
       "socCode": "15-1212",
       "title": "Information Security Analysts",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.4859,
       "automationRisk": "Very High",
       "automationProbability": 0.4859,
@@ -2482,7 +2482,7 @@
     {
       "socCode": "15-1221",
       "title": "Computer and Information Research Scientists",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.3404,
       "automationRisk": "Very High",
       "automationProbability": 0.3404,
@@ -2520,7 +2520,7 @@
     {
       "socCode": "15-1231",
       "title": "Computer Network Support Specialists",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.2867,
       "automationRisk": "High",
       "automationProbability": 0.2867,
@@ -2558,7 +2558,7 @@
     {
       "socCode": "15-1232",
       "title": "Computer User Support Specialists",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.4685,
       "automationRisk": "Very High",
       "automationProbability": 0.4685,
@@ -2596,7 +2596,7 @@
     {
       "socCode": "15-1241",
       "title": "Computer Network Architects",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.1987,
       "automationRisk": "High",
       "automationProbability": 0.1987,
@@ -2634,7 +2634,7 @@
     {
       "socCode": "15-1242",
       "title": "Database Administrators",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.3315,
       "automationRisk": "Very High",
       "automationProbability": 0.3315,
@@ -2668,7 +2668,7 @@
     {
       "socCode": "15-1243",
       "title": "Database Architects",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.5787,
       "automationRisk": "Very High",
       "automationProbability": 0.5787,
@@ -2702,7 +2702,7 @@
     {
       "socCode": "15-1244",
       "title": "Network and Computer Systems Administrators",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.3373,
       "automationRisk": "Very High",
       "automationProbability": 0.3373,
@@ -2740,7 +2740,7 @@
     {
       "socCode": "15-1251",
       "title": "Computer Programmers",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.7451,
       "automationRisk": "Very High",
       "automationProbability": 0.7451,
@@ -2778,7 +2778,7 @@
     {
       "socCode": "15-1252",
       "title": "Software Developers",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.288,
       "automationRisk": "High",
       "automationProbability": 0.288,
@@ -2812,7 +2812,7 @@
     {
       "socCode": "15-1253",
       "title": "Software Quality Assurance Analysts and Testers",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.5195,
       "automationRisk": "Very High",
       "automationProbability": 0.5195,
@@ -2846,7 +2846,7 @@
     {
       "socCode": "15-1254",
       "title": "Web Developers",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.4802,
       "automationRisk": "Very High",
       "automationProbability": 0.4802,
@@ -2880,7 +2880,7 @@
     {
       "socCode": "15-1255",
       "title": "Web and Digital Interface Designers",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.249,
       "automationRisk": "High",
       "automationProbability": 0.249,
@@ -2914,7 +2914,7 @@
     {
       "socCode": "15-1299",
       "title": "Computer Occupations, All Other",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.3106,
       "automationRisk": "Very High",
       "automationProbability": 0.3106,
@@ -3104,7 +3104,7 @@
     {
       "socCode": "15-2051",
       "title": "Data Scientists",
-      "sector": "Computer & Mathematical",
+      "sector": "Computer and Mathematical",
       "aiExposure": 0.4605,
       "automationRisk": "Very High",
       "automationProbability": 0.4605,
@@ -5334,7 +5334,7 @@
     {
       "socCode": "19-3033",
       "title": "Clinical and Counseling Psychologists",
-      "sector": "Life, Physical & Social Science",
+      "sector": "Life, Physical, and Social Science",
       "aiExposure": 0.0591,
       "automationRisk": "Medium",
       "automationProbability": 0.0591,
@@ -5368,7 +5368,7 @@
     {
       "socCode": "19-3034",
       "title": "School Psychologists",
-      "sector": "Life, Physical & Social Science",
+      "sector": "Life, Physical, and Social Science",
       "aiExposure": 0.0467,
       "automationRisk": "Medium",
       "automationProbability": 0.0467,
@@ -5706,7 +5706,7 @@
     {
       "socCode": "19-4012",
       "title": "Agricultural Technicians",
-      "sector": "Life, Physical & Social Science",
+      "sector": "Life, Physical, and Social Science",
       "aiExposure": 0.0058,
       "automationRisk": "Low",
       "automationProbability": 0.0058,
@@ -5740,7 +5740,7 @@
     {
       "socCode": "19-4013",
       "title": "Food Science Technicians",
-      "sector": "Life, Physical & Social Science",
+      "sector": "Life, Physical, and Social Science",
       "aiExposure": 0.2038,
       "automationRisk": "High",
       "automationProbability": 0.2038,
@@ -5850,7 +5850,7 @@
     {
       "socCode": "19-4042",
       "title": "Environmental Science and Protection Technicians, Including Health",
-      "sector": "Life, Physical & Social Science",
+      "sector": "Life, Physical, and Social Science",
       "aiExposure": 0.1444,
       "automationRisk": "High",
       "automationProbability": 0.1444,
@@ -5888,7 +5888,7 @@
     {
       "socCode": "19-4043",
       "title": "Geological Technicians, Except Hydrologic Technicians",
-      "sector": "Life, Physical & Social Science",
+      "sector": "Life, Physical, and Social Science",
       "aiExposure": 0.229,
       "automationRisk": "High",
       "automationProbability": 0.229,
@@ -5998,7 +5998,7 @@
     {
       "socCode": "19-4071",
       "title": "Forest and Conservation Technicians",
-      "sector": "Life, Physical & Social Science",
+      "sector": "Life, Physical, and Social Science",
       "aiExposure": 0.0221,
       "automationRisk": "Medium",
       "automationProbability": 0.0221,
@@ -6112,7 +6112,7 @@
     {
       "socCode": "19-5011",
       "title": "Occupational Health and Safety Specialists",
-      "sector": "Life, Physical & Social Science",
+      "sector": "Life, Physical, and Social Science",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -6150,7 +6150,7 @@
     {
       "socCode": "19-5012",
       "title": "Occupational Health and Safety Technicians",
-      "sector": "Life, Physical & Social Science",
+      "sector": "Life, Physical, and Social Science",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -8544,7 +8544,7 @@
     {
       "socCode": "25-2057",
       "title": "Special Education Teachers, Middle School",
-      "sector": "Education & Library",
+      "sector": "Education, Training, and Library",
       "aiExposure": 0.134,
       "automationRisk": "Medium",
       "automationProbability": 0.134,
@@ -8582,7 +8582,7 @@
     {
       "socCode": "25-2058",
       "title": "Special Education Teachers, Secondary School",
-      "sector": "Education & Library",
+      "sector": "Education, Training, and Library",
       "aiExposure": 0.0989,
       "automationRisk": "Medium",
       "automationProbability": 0.0989,
@@ -8734,7 +8734,7 @@
     {
       "socCode": "25-3041",
       "title": "Tutors",
-      "sector": "Education & Library",
+      "sector": "Education, Training, and Library",
       "aiExposure": 0.4077,
       "automationRisk": "Very High",
       "automationProbability": 0.4077,
@@ -8882,7 +8882,7 @@
     {
       "socCode": "25-4022",
       "title": "Librarians and Media Collections Specialists",
-      "sector": "Education & Library",
+      "sector": "Education, Training, and Library",
       "aiExposure": 0.2032,
       "automationRisk": "High",
       "automationProbability": 0.2032,
@@ -9034,7 +9034,7 @@
     {
       "socCode": "25-9044",
       "title": "Teaching Assistants, Postsecondary",
-      "sector": "Education & Library",
+      "sector": "Education, Training, and Library",
       "aiExposure": 0.1002,
       "automationRisk": "Medium",
       "automationProbability": 0.1002,
@@ -9846,7 +9846,7 @@
     {
       "socCode": "27-3023",
       "title": "News Analysts, Reporters, and Journalists",
-      "sector": "Arts, Entertainment & Media",
+      "sector": "Arts, Design, Entertainment, Sports, and Media",
       "aiExposure": 0.2098,
       "automationRisk": "High",
       "automationProbability": 0.2098,
@@ -10074,7 +10074,7 @@
     {
       "socCode": "27-3092",
       "title": "Court Reporters and Simultaneous Captioners",
-      "sector": "Arts, Entertainment & Media",
+      "sector": "Arts, Design, Entertainment, Sports, and Media",
       "aiExposure": 0.3431,
       "automationRisk": "Very High",
       "automationProbability": 0.3431,
@@ -11239,7 +11239,7 @@
     {
       "socCode": "29-1211",
       "title": "Anesthesiologists",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -11272,7 +11272,7 @@
     {
       "socCode": "29-1213",
       "title": "Dermatologists",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -11303,7 +11303,7 @@
     {
       "socCode": "29-1215",
       "title": "Family Medicine Physicians",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -11340,7 +11340,7 @@
     {
       "socCode": "29-1216",
       "title": "General Internal Medicine Physicians",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0.084,
       "automationRisk": "Medium",
       "automationProbability": 0.084,
@@ -11376,7 +11376,7 @@
     {
       "socCode": "29-1217",
       "title": "Neurologists",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -11408,7 +11408,7 @@
     {
       "socCode": "29-1218",
       "title": "Obstetricians and Gynecologists",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0.0685,
       "automationRisk": "Medium",
       "automationProbability": 0.0685,
@@ -11441,7 +11441,7 @@
     {
       "socCode": "29-1221",
       "title": "Pediatricians, General",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -11479,7 +11479,7 @@
     {
       "socCode": "29-1222",
       "title": "Physicians, Pathologists",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0.1577,
       "automationRisk": "High",
       "automationProbability": 0.1577,
@@ -11510,7 +11510,7 @@
     {
       "socCode": "29-1223",
       "title": "Psychiatrists",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -11544,7 +11544,7 @@
     {
       "socCode": "29-1224",
       "title": "Radiologists",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0.199,
       "automationRisk": "High",
       "automationProbability": 0.199,
@@ -11575,7 +11575,7 @@
     {
       "socCode": "29-1229",
       "title": "Physicians, All Other",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0.0297,
       "automationRisk": "Medium",
       "automationProbability": 0.0297,
@@ -11608,7 +11608,7 @@
     {
       "socCode": "29-1241",
       "title": "Ophthalmologists, Except Pediatric",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -11640,7 +11640,7 @@
     {
       "socCode": "29-1242",
       "title": "Orthopedic Surgeons, Except Pediatric",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -11671,7 +11671,7 @@
     {
       "socCode": "29-1243",
       "title": "Pediatric Surgeons",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -11702,7 +11702,7 @@
     {
       "socCode": "29-1291",
       "title": "Acupuncturists",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -11736,7 +11736,7 @@
     {
       "socCode": "29-1292",
       "title": "Dental Hygienists",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -11774,7 +11774,7 @@
     {
       "socCode": "29-1299",
       "title": "Healthcare Diagnosing or Treating Practitioners, All Other",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0.0222,
       "automationRisk": "Medium",
       "automationProbability": 0.0222,
@@ -11998,7 +11998,7 @@
     {
       "socCode": "29-2042",
       "title": "Emergency Medical Technicians",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -12032,7 +12032,7 @@
     {
       "socCode": "29-2043",
       "title": "Paramedics",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -12332,7 +12332,7 @@
     {
       "socCode": "29-2072",
       "title": "Medical Records Specialists",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0.6674,
       "automationRisk": "Very High",
       "automationProbability": 0.6674,
@@ -12514,7 +12514,7 @@
     {
       "socCode": "29-9021",
       "title": "Health Information Technologists and Medical Registrars",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0.3063,
       "automationRisk": "High",
       "automationProbability": 0.3063,
@@ -12624,7 +12624,7 @@
     {
       "socCode": "29-9093",
       "title": "Surgical Assistants",
-      "sector": "Healthcare",
+      "sector": "Healthcare Practitioners and Technical",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -14436,7 +14436,7 @@
     {
       "socCode": "35-3023",
       "title": "Fast Food and Counter Workers",
-      "sector": "Food Preparation",
+      "sector": "Food Preparation and Serving Related",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -14968,7 +14968,7 @@
     {
       "socCode": "39-1013",
       "title": "First-Line Supervisors of Gambling Services Workers",
-      "sector": "Personal Care",
+      "sector": "Personal Care and Service",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -15006,7 +15006,7 @@
     {
       "socCode": "39-1014",
       "title": "First-Line Supervisors of Entertainment and Recreation Workers, Except Gambling Services",
-      "sector": "Personal Care",
+      "sector": "Personal Care and Service",
       "aiExposure": 0.0443,
       "automationRisk": "Medium",
       "automationProbability": 0.0443,
@@ -15040,7 +15040,7 @@
     {
       "socCode": "39-1022",
       "title": "First-Line Supervisors of Personal Service Workers",
-      "sector": "Personal Care",
+      "sector": "Personal Care and Service",
       "aiExposure": 0.0407,
       "automationRisk": "Medium",
       "automationProbability": 0.0407,
@@ -20849,7 +20849,7 @@
     {
       "socCode": "47-5022",
       "title": "Excavating and Loading Machine and Dragline Operators, Surface Mining",
-      "sector": "Construction",
+      "sector": "Construction and Extraction",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -20887,7 +20887,7 @@
     {
       "socCode": "47-5023",
       "title": "Earth Drillers, Except Oil and Gas",
-      "sector": "Construction",
+      "sector": "Construction and Extraction",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -20921,7 +20921,7 @@
     {
       "socCode": "47-5032",
       "title": "Explosives Workers, Ordnance Handling Experts, and Blasters",
-      "sector": "Construction",
+      "sector": "Construction and Extraction",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -20993,7 +20993,7 @@
     {
       "socCode": "47-5043",
       "title": "Roof Bolters, Mining",
-      "sector": "Construction",
+      "sector": "Construction and Extraction",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -21031,7 +21031,7 @@
     {
       "socCode": "47-5044",
       "title": "Loading and Moving Machine Operators, Underground Mining",
-      "sector": "Construction",
+      "sector": "Construction and Extraction",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -26807,7 +26807,7 @@
     {
       "socCode": "53-1041",
       "title": "Aircraft Cargo Handling Supervisors",
-      "sector": "Transportation & Logistics",
+      "sector": "Transportation and Material Moving",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -27187,7 +27187,7 @@
     {
       "socCode": "53-3051",
       "title": "Bus Drivers, School",
-      "sector": "Transportation & Logistics",
+      "sector": "Transportation and Material Moving",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -27221,7 +27221,7 @@
     {
       "socCode": "53-3052",
       "title": "Bus Drivers, Transit and Intercity",
-      "sector": "Transportation & Logistics",
+      "sector": "Transportation and Material Moving",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -27259,7 +27259,7 @@
     {
       "socCode": "53-3053",
       "title": "Shuttle Drivers and Chauffeurs",
-      "sector": "Transportation & Logistics",
+      "sector": "Transportation and Material Moving",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -27293,7 +27293,7 @@
     {
       "socCode": "53-3054",
       "title": "Taxi Drivers",
-      "sector": "Transportation & Logistics",
+      "sector": "Transportation and Material Moving",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -27403,7 +27403,7 @@
     {
       "socCode": "53-4022",
       "title": "Railroad Brake, Signal, and Switch Operators and Locomotive Firers",
-      "sector": "Transportation & Logistics",
+      "sector": "Transportation and Material Moving",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,
@@ -28239,7 +28239,7 @@
     {
       "socCode": "53-7065",
       "title": "Stockers and Order Fillers",
-      "sector": "Transportation & Logistics",
+      "sector": "Transportation and Material Moving",
       "aiExposure": 0,
       "automationRisk": "Low",
       "automationProbability": 0,

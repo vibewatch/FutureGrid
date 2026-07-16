@@ -15,6 +15,7 @@ import nextEnv from "@next/env";
 import { feature as topoFeature } from "topojson-client";
 import { validateOccupationSnapshot, validateCountryExposure, validateSources, validateWorldGeo } from "./lib/validate.mjs";
 import { buildMeta, deriveMeta } from "./lib/meta.mjs";
+import { canonicalizeSector, SOC_PREFIX_TO_SECTOR } from "./lib/sector-taxonomy.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -762,19 +763,9 @@ async function main() {
     // growth: no reliable per-occupation % growth source in AEI files — null, not fabricated
     const growthRate = null;
 
-    // sector: from wage_data JobFamily, fallback to SOC major group
-    const majorGroup = soc6.slice(0, 2);
-    const SECTOR_FALLBACK = {
-      "11": "Management", "13": "Business & Financial", "15": "Computer & Mathematical",
-      "17": "Architecture & Engineering", "19": "Life, Physical & Social Science",
-      "21": "Community & Social Service", "23": "Legal", "25": "Education & Library",
-      "27": "Arts, Entertainment & Media", "29": "Healthcare", "31": "Healthcare Support",
-      "33": "Protective Service", "35": "Food Preparation", "37": "Building & Grounds",
-      "39": "Personal Care", "41": "Sales", "43": "Office & Administrative",
-      "45": "Farming & Forestry", "47": "Construction", "49": "Installation & Repair",
-      "51": "Production", "53": "Transportation & Logistics",
-    };
-    const sector = (wage?.sector && wage.sector.trim()) ? wage.sector.trim() : (SECTOR_FALLBACK[majorGroup] ?? "Other");
+    // sector: canonicalize raw JobFamily label from AEI wage_data, with SOC-prefix fallback
+    const rawSector = (wage?.sector && wage.sector.trim()) ? wage.sector.trim() : (SOC_PREFIX_TO_SECTOR[soc6.slice(0, 2)] ?? "Other");
+    const sector = canonicalizeSector(rawSector);
 
     // salary: if < 500, assume hourly and annualise (~2080 hrs)
     let medianSalary = (wage?.salary && wage.salary > 0) ? wage.salary : 0;
