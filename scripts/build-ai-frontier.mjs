@@ -675,15 +675,6 @@ async function main() {
         || a.country.localeCompare(b.country);
     });
 
-  // ── Country → world-map geo coverage ───────────────────────────────────────
-  // Reports how many leaderboard entries carry a plottable iso3 join key.
-  const mappedCount = countryLeaderboard.filter(function (c) { return c.iso3 !== null; }).length;
-  const countryGeoCoverage = {
-    mapped: mappedCount,
-    unmapped: countryLeaderboard.length - mappedCount,
-    total: countryLeaderboard.length,
-  };
-
   // ── Accessibility mix ──────────────────────────────────────────────────────
   // Keep accessibilityMix over compute-known subset for backward compat.
   // fullCatalogAccessibilityMix covers the full dated catalog.
@@ -801,8 +792,6 @@ async function main() {
       powerTrend: powerTrend,
       orgLeaderboard: orgLeaderboard,
       countryLeaderboard: countryLeaderboard,
-      // countryGeoCoverage: how many country entries carry a plottable iso3 join key
-      countryGeoCoverage: countryGeoCoverage,
       // accessibilityMix: compute-known subset (backward-compat; use fullCatalogAccessibilityMix for full coverage)
       accessibilityMix: accessibilityMix,
       // fullCatalogAccessibilityMix: all dated rows (includes non-compute rows)
@@ -862,14 +851,6 @@ async function main() {
   console.log("- cost trend years: " + costTrend.length + ", power trend years: " + powerTrend.length);
   console.log("- org leaderboard entries: " + orgLeaderboard.length);
   console.log("- country leaderboard entries: " + countryLeaderboard.length);
-  const geoPct = countryGeoCoverage.total > 0
-    ? ((countryGeoCoverage.mapped / countryGeoCoverage.total) * 100).toFixed(1)
-    : "0.0";
-  console.log(
-    "- country geo coverage: " + countryGeoCoverage.mapped + " mapped / " +
-    countryGeoCoverage.unmapped + " unmapped / " + countryGeoCoverage.total +
-    " total (" + geoPct + "% mapped)",
-  );
   const unmappedCountries = countryLeaderboard
     .filter(function (c) { return c.iso3 === null; })
     .map(function (c) { return c.countryShort; });

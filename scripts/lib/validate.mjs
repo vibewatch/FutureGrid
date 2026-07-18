@@ -1643,7 +1643,6 @@ export function validateAIFrontier(data) {
     // iso3 geographic join key: must be present on every entry (string | null),
     // and every non-null iso3 MUST resolve to a feature id in the world-map GeoJSON.
     const geoIds = loadWorldGeoIdSet();
-    let mappedCount = 0;
     for (const e of agg.countryLeaderboard) {
       if (!("iso3" in e) || (e.iso3 !== null && typeof e.iso3 !== "string")) {
         throw new Error(
@@ -1658,28 +1657,7 @@ export function validateAIFrontier(data) {
             "' has iso3 '" + e.iso3 + "' not present as a feature id in public/world-countries.geo.json"
           );
         }
-        mappedCount += 1;
       }
-    }
-    // countryGeoCoverage must be present and internally consistent.
-    const cov = agg.countryGeoCoverage;
-    if (!cov || typeof cov !== "object") {
-      throw new Error("[validate] ai-frontier: aggregates.countryGeoCoverage must be present");
-    }
-    if (typeof cov.mapped !== "number" || typeof cov.unmapped !== "number" || typeof cov.total !== "number") {
-      throw new Error("[validate] ai-frontier: countryGeoCoverage must have numeric mapped/unmapped/total");
-    }
-    if (cov.total !== agg.countryLeaderboard.length) {
-      throw new Error(
-        "[validate] ai-frontier: countryGeoCoverage.total (" + cov.total +
-        ") must equal countryLeaderboard length (" + agg.countryLeaderboard.length + ")"
-      );
-    }
-    if (cov.mapped !== mappedCount || cov.mapped + cov.unmapped !== cov.total) {
-      throw new Error(
-        "[validate] ai-frontier: countryGeoCoverage is inconsistent (mapped=" + cov.mapped +
-        ", unmapped=" + cov.unmapped + ", total=" + cov.total + ", actual mapped=" + mappedCount + ")"
-      );
     }
     // Verify sort: first entry must have recentCount >= second entry (sorted desc by recentCount)
     if (agg.countryLeaderboard.length >= 2) {

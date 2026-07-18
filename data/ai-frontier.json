@@ -15226,11 +15226,6 @@
         "orgCount": 1
       }
     ],
-    "countryGeoCoverage": {
-      "mapped": 32,
-      "unmapped": 3,
-      "total": 35
-    },
     "accessibilityMix": {
       "openWeights": 219,
       "closed": 211,

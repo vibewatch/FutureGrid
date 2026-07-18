@@ -27,7 +27,7 @@ Documents all U.S. labor-market datasets used in FutureGrid: BLS employment proj
 | BLS JOLTS | `data/jolts.json` | `lib/jolts.ts` | Monthly; hires, separations, quits |
 | BLS State Labor | `data/state-labor.json` | `lib/state-labor.ts` | State unemployment + employment |
 | QCEW (Quarterly Census of Employment & Wages) | `data/state-qcew.json` | `lib/state-qcew.ts` | Quarterly by state/sector |
-| WARN Act Notices | `data/warn-notices.json` | `lib/warn.ts` / `lib/warn-types.ts` | Layoff notices; CA EDD + others |
+| WARN Act Notices | `data/warn-notices.json` | `lib/warn-client.ts` / `lib/warn-types.ts` | Layoff notices; CA EDD + others (client fetches `public/warn-notices.json`) |
 | Job Postings | `data/job-postings.json` | `lib/job-postings.ts` | Aggregated annuals by SOC |
 | International Occupation Mix | `data/international-occupation-mix.json` | `lib/international-occupation-mix.ts` | ILOSTAT ISCO-08; server-only |
 | Labor Opportunity | Derived | `lib/labor-opportunity.ts` | Derived from multiple sources |
@@ -58,10 +58,10 @@ CA EDD (WARN)
     │
     ▼
 build-warn.mjs ──► data/warn-notices.json (raw)
-build-warn-public.mjs ──► (public subset, privacy-filtered)
+build-warn-public.mjs ──► public/warn-notices.json (public subset, privacy-filtered)
                                     │
                                     ▼
-                            lib/warn.ts / lib/warn-types.ts
+                            lib/warn-client.ts (browser fetch) / lib/warn-types.ts
 
 ILOSTAT (EMP_TEMP_SEX_OCU_NB_A endpoint)
     │
@@ -107,7 +107,7 @@ flowchart TD
     LJOLTS["lib/jolts.ts"]
     LSL["lib/state-labor.ts"]
     LQCEW["lib/state-qcew.ts"]
-    LWARN["lib/warn.ts"]
+    LWARN["lib/warn-client.ts\n(browser fetch)"]
     LJP["lib/job-postings.ts"]
     LIOM["lib/international-occupation-mix.ts\n(server-only)"]
 
@@ -115,7 +115,8 @@ flowchart TD
     BLSJOLTS --> BJOLTS --> DJOLTS --> LJOLTS
     BLSSTATE --> BSL --> DSL --> LSL
     QCEWSRC --> BQCEW --> DQCEW --> LQCEW
-    WARNSRC --> BWARN --> DWARN --> LWARN
+    PWARN["public/warn-notices.json"]
+    WARNSRC --> BWARN --> DWARN --> PWARN --> LWARN
     JOBPOST --> BJP --> DJP --> LJP
     ILOSTAT --> BIOM --> DIOM --> LIOM
 ```
@@ -334,8 +335,7 @@ Builders fail with non-zero exit and a descriptive error before writing anything
 | `lib/employment-projections.ts` | Client-safe | Slim typed wrapper |
 | `lib/job-postings.ts` | Client-safe | — |
 | `lib/jolts.ts` | Client-safe | — |
-| `lib/warn.ts` | Convention server-only (no import guard) | Sole importer of `data/warn-notices.json`; imported at build/pre-render only. Client runtime uses `lib/warn-client.ts` to fetch the privacy-filtered public static file (`public/warn-notices.json`). Static export has no API runtime — there is no API route for WARN data. |
-| `lib/warn-client.ts` | Client-safe | Fetches `public/warn-notices.json` at browser runtime via `fetch()`; memoized promise |
+| `lib/warn-client.ts` | Client-safe | Fetches `public/warn-notices.json` at browser runtime via `fetch()`; memoized promise. This is the sole runtime consumer of WARN data — `data/warn-notices.json` is read only by `build-warn-public.mjs` (fs) to emit the privacy-filtered public copy. Static export has no API runtime — there is no API route for WARN data. |
 | `lib/state-labor.ts` | Client-safe | — |
 | `lib/state-qcew.ts` | Client-safe | — |
 
@@ -401,7 +401,7 @@ Client components receive only the slim `OccupationMixSlim` shape (no raw employ
 | `lib/jolts.ts` | JOLTS loader |
 | `lib/state-labor.ts` | State labor loader |
 | `lib/state-qcew.ts` | QCEW loader |
-| `lib/warn.ts` / `lib/warn-types.ts` | WARN notices loader |
+| `lib/warn-client.ts` / `lib/warn-types.ts` | WARN notices client loader + types |
 | `data/employment-projections.json` | EP committed artifact |
 | `data/international-occupation-mix.json` | ILOSTAT committed artifact |
 | `data/jolts.json` | JOLTS artifact |

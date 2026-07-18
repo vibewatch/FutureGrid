@@ -142,7 +142,7 @@ FutureGrid is divided into 18 subsystems — 16 domain subsystems, 1 infrastruct
 | 7 | **Sectors** | `/sectors`, `/sectors/[id]` | (inline pages) | `lib/data.ts` |
 | 8 | **Skills** | `/skills` | `skills/` | `lib/onet.ts`, `lib/occupational-requirements.ts` |
 | 9 | **Analysis** | `/analysis` | `insights/` | `lib/analysis.ts`, `lib/exposure.ts`, `lib/market-signals.ts` |
-| 10 | **Labor** | `/labor` | `labor/`, `layoffs/`, `pulse/` | `lib/jolts.ts`, `lib/warn.ts`, `lib/state-labor.ts`, `lib/state-qcew.ts` |
+| 10 | **Labor** | `/labor` | `labor/`, `layoffs/`, `pulse/` | `lib/jolts.ts`, `lib/warn-client.ts`, `lib/state-labor.ts`, `lib/state-qcew.ts` |
 | 11 | **Global** | `/global` | `global/` | `lib/global-ai-ecosystem.ts`, `lib/openrouter-country-activity.ts` |
 | 12 | **Frontier** | `/frontier` | `frontier/` | `lib/ai-frontier.ts` |
 | 13 | **Explore** | `/explore` | `explore/` | `lib/data.ts` |
