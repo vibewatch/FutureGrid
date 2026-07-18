@@ -2,7 +2,7 @@
 
 **Status:** Production
 **Owner:** Tank (Backend / Data Dev)
-**Last audited:** 2026-07-11
+**Last audited:** 2026-07-18
 
 ---
 
@@ -201,14 +201,15 @@ interface OccupationMixDissimilarity {
 
 ```typescript
 interface WarnNotice {
-  id: string;
   company: string;
-  location: string;          // city/county
-  state: string;             // two-letter code
-  date: string;              // ISO-8601
-  layoffCount: number | null;
-  type: "layoff" | "plant-closing" | "other";
-  aiRelated: boolean;
+  county: string | null;
+  city: string | null;
+  employees: number;
+  noticeDate: string | null;    // ISO "YYYY-MM-DD"
+  effectiveDate: string | null; // ISO "YYYY-MM-DD"; scrubbed to null when implausible
+  layoffType: string | null;
+  state: string;                // 2-letter code, e.g. "CA"
+  stateName: string;            // e.g. "California"
 }
 ```
 
@@ -239,6 +240,10 @@ Countries are tried newest-year-first; first qualifying year wins. If fewer than
 ### Employment Projections — Join Strategy
 
 BLS EP rows are joined to the occupation snapshot on SOC 2018 code. The SOC 2010→2018 crosswalk (`scripts/lib/soc-crosswalk.mjs`) is applied to any EP row carrying a 2010-vintage code before joining.
+
+### WARN Effective-Date Plausibility (data-quality hardening)
+
+`build-warn.mjs` runs `scrubImplausibleEffectiveDates()` before writing: an `effectiveDate` earlier than `MIN_PLAUSIBLE_WARN_DATE` (`2010-01-01`) or later than `MAX_PLAUSIBLE_WARN_EFFECTIVE_DATE` (current UTC year **+ 2**, Dec 31) is treated as a parsing/data-entry error and scrubbed to `null` rather than dropped. `validateWarnNotices()` then re-checks the committed notices against the same window and throws (build fails) if any out-of-range `effectiveDate` survives.
 
 ### Units
 
@@ -312,8 +317,9 @@ All scripts are Node 20 ESM modules. They fetch live upstream data; run in a net
 
 - `validateInternationalOccupationMix()` — checks `meta.generatedAt`, required top-level keys, ≥ 1 included country, each country has 9 groups with `share` summing to ≈1.0 (within 0.005), dissimilarity pairs are finite 0–1.
 - `validateEmploymentProjections()` — minimum row count, `meta` block present, rows have `socCode` and numeric employment values.
-- `assertLiveStates()` — JOLTS and state-labor builders assert a required set of state codes is present.
-- `assertMinRows()` — generic row-count floor (≈ 80 % of committed count).
+- `validateWarnNotices()` — ≥ 10,000 notices, ≥ 50 coverage states, required live states present, and every `effectiveDate` within the `2010-01-01 .. current-UTC-year + 2` plausibility window (throws otherwise).
+- `assertLiveStates()` — WARN and state-labor builders assert a required set of state codes is present.
+- `assertMinRows()` — a fixed per-dataset row-count floor (each threshold set at roughly 80 % of the committed count).
 - `assertProvenance()` — `generatedAt` present at top-level or in `meta`.
 
 Builders fail with non-zero exit and a descriptive error before writing anything degenerate.

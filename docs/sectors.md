@@ -1,6 +1,7 @@
 # Sectors
 
 **Status:** Live — origin/main
+**Last audited:** 2026-07-18
 **Owner:** Switch (Designer)
 **Routes:** `/sectors` (sector list), `/sectors/[id]` (sector detail)
 
@@ -24,12 +25,17 @@ The presentation is purely **descriptive** — it reports measured AI-exposure s
 ## Boundaries
 
 ```
-app/sectors/layout.tsx              ← RSC shell — static SEO metadata only
-app/sectors/page.tsx                ← "use client" — entire list page
+app/sectors/layout.tsx                    ← RSC shell — static SEO metadata only
+app/sectors/page.tsx                      ← Server Component — computes
+                                             getSectorAggregatesExtended() +
+                                             getWageTierPolarization() at build time; passes
+                                             both as props to SectorsPageClient
+components/sectors/SectorsPageClient.tsx  ← "use client" — interactive list island: sort state,
+                                             sector grid, mounts charts + WageTierPolarizationLens
 
-app/sectors/[id]/layout.tsx         ← RSC shell — dynamicParams=false, generateStaticParams,
-                                       generateMetadata (per-sector canonical/OG)
-app/sectors/[id]/page.tsx           ← "use client" — entire detail page
+app/sectors/[id]/layout.tsx               ← RSC shell — dynamicParams=false, generateStaticParams,
+                                             generateMetadata (per-sector canonical/OG)
+app/sectors/[id]/page.tsx                 ← "use client" — entire detail page
 ```
 
 **Shared chart components (from `components/charts/`):**
@@ -57,12 +63,13 @@ Shared utilities: `lib/utils.ts` (`colorForRisk`, `formatCurrency`), `lib/i18n/u
 | File | Runs where | Responsibility |
 |---|---|---|
 | `app/sectors/layout.tsx` | Build-time RSC | Static `<Metadata>` (title, description, OG, Twitter) |
-| `app/sectors/page.tsx` | Build-time RSC + Browser | Calls `getWageTierPolarization()` server-side; passes result to `WageTierPolarizationLens`; calls `getSectorAggregatesExtended()` and mounts sort UI |
+| `app/sectors/page.tsx` | Build-time RSC | Calls `getSectorAggregatesExtended()` and `getWageTierPolarization()` at build time; passes both as props (`allSectors`, `wageTierData`) to `SectorsPageClient` — no client-side data access of its own |
+| `components/sectors/SectorsPageClient.tsx` | Browser only | Receives `allSectors` + `wageTierData` props; owns the `SortKey` state; renders the sector grid, `CareerTrendChart`, `JobImpactChart`, and `WageTierPolarizationLens` |
 | `app/sectors/[id]/layout.tsx` | Build-time RSC | `generateStaticParams`, `generateMetadata`, `dynamicParams = false` |
 | `app/sectors/[id]/page.tsx` | Browser only | `generateAllCareerInsights()` filtered by sector, stat cards, charts, table |
 | `components/sectors/WageTierPolarizationLens.tsx` | Browser only | Receives `WageTierPolarization` prop; renders tercile bar chart, band breakdown, toggle between employment-weighted and occupation-count views; no server imports |
 
-Both page files carry `"use client"` at the top, so all data access and rendering happens in the browser after hydration. The slim snapshot JSON is bundled into the client chunk.
+Only the `[id]/page.tsx` detail page carries `"use client"` at the top; its data access and rendering happen in the browser after hydration. The list page (`app/sectors/page.tsx`) is a **Server Component** that resolves its data at build time and hands props to the `SectorsPageClient` island. The slim snapshot JSON is still bundled into the client chunk because `CareerTrendChart` and `JobImpactChart` import `lib/data.ts` directly.
 
 ### Data flow — list page
 
@@ -70,8 +77,8 @@ Both page files carry `"use client"` at the top, so all data access and renderin
 flowchart LR
     A[data/occupation-snapshot-slim.json\nstatic import] -->|module load| B[lib/data.ts\ngenerateAllCareerInsights\ncached in module scope]
     B --> C[getSectorAggregatesExtended\ngroups by sectorName]
-    C -->|useMemo| D[app/sectors/page.tsx\nallSectors array]
-    D -->|useMemo + sortBy state| E[sorted SectorAggregate array]
+    C -->|build-time RSC| D[app/sectors/page.tsx → SectorsPageClient\nallSectors prop]
+    D -->|useMemo + sortBy state (client)| E[sorted SectorAggregate array]
     E --> F[Grid of sector cards\n~22 items]
     B --> G[CareerTrendChart\ncalls getSectorAggregates internally]
     B --> H[JobImpactChart\nall-sectors mode]
@@ -117,14 +124,14 @@ Implemented entirely in `lib/data.ts`. For every `CareerInsight` record the func
 
 | Aggregate | How |
 |---|---|
-| `avgRisk` | `sum(automationProbability) / count` |
+| `avgRisk` | Employment-weighted mean: `Σ(totalEmployment × automationProbability) / ΣtotalEmployment`; falls back to the count-weighted mean (`Σ(automationProbability) / count`) only when every occupation in the sector has null/zero employment |
 | `avgGrowth` | `sum(growthRate) / growthCnt` (skips null growth) |
 | `avgSalary` | `sum(medianSalary) / salaryCnt` (skips `medianSalary === 0`) |
 | `totalEmployment` | `sum(totalEmployment)` (null when *all* occupations lack employment data) |
 | `brightShare` | `brightCnt / count` (occupation `outlook === "Bright"`) |
 | `occupationCount` | raw count |
 
-The detail page recomputes the same values inline from `sectorInsights` (no second aggregation function call), which means rounding can differ by one unit from the list page's aggregates when some employment/salary values are zero.
+The detail page recomputes the same values inline from `sectorInsights` (no second aggregation function call) using the **same employment-weighted formula** (with the same count-weighted fallback), so its `avgRisk` matches the list page's aggregate for the sector. Minor rounding can still differ in the derived stat cards where zero-valued employment/salary rows are excluded.
 
 ### Risk-label thresholds
 
@@ -189,7 +196,7 @@ export interface WageTierPolarization {
 }
 ```
 
-### Sort keys (sectors/page.tsx only)
+### Sort keys (SectorsPageClient.tsx only)
 
 ```ts
 type SortKey = "risk" | "brightOutlook" | "size" | "salary" | "employment";
@@ -223,10 +230,10 @@ All user-visible strings are looked up via `useT("sectors")`. See `lib/i18n/mess
 |---|---|
 | `npm run build:data` | `scripts/build-snapshot.mjs` writes `data/occupation-snapshot-slim.json` from upstream sources |
 | `next build` | `[id]/layout.tsx` calls `getSectorAggregatesExtended()` to produce the static-params list; one HTML shell per sector is emitted to `out/sectors/<encoded-sector>/` |
-| Browser hydration | `page.tsx` re-runs `getSectorAggregatesExtended()` / `generateAllCareerInsights()` in the browser; result is memoised for the session |
+| Browser hydration | `SectorsPageClient` hydrates with the server-supplied `allSectors` + `wageTierData` props (it does **not** re-run `getSectorAggregatesExtended()` in the browser); `CareerTrendChart` / `JobImpactChart` call `lib/data.ts` helpers client-side; module-level caches warm on first call |
 | User interaction | Sort-button clicks update React state; `useMemo` re-sorts the in-memory array; no network requests |
 
-Because both pages are `"use client"`, the data call at build time (inside `generateStaticParams` and `generateMetadata`) uses the same `lib/data.ts` functions but runs under Node.js. The browser call runs the same code against the bundled JSON.
+Because the list page is now a Server Component, its aggregate computation runs only at build time under Node.js. The `[id]` route's `generateStaticParams` / `generateMetadata` likewise call `lib/data.ts` under Node.js. The detail page (`[id]/page.tsx`) re-runs `generateAllCareerInsights()` in the browser against the bundled JSON.
 
 ---
 
@@ -304,10 +311,10 @@ Because both pages are `"use client"`, the data call at build time (inside `gene
 
 ## Extension Points
 
-- **Add a new sort key:** Extend `SortKey` in `sectors/page.tsx`, add a branch to the `switch` in the sort `useMemo`, and add the button label to the i18n catalogues.
+- **Add a new sort key:** Extend `SortKey` in `SectorsPageClient.tsx`, add a branch to the `switch` in the sort `useMemo`, and add the button label to the i18n catalogues.
 - **Expose employment-growth sparklines per sector:** `avgGrowth` is already computed; add it to the card layout.
 - **Per-sector downloadable CSV:** `generateAllCareerInsights()` filtered by sector gives the rows; wire to the existing `DataExport` component pattern used in `/careers`.
-- **Server-render the list page:** Move `getSectorAggregatesExtended()` out of the client into an RSC wrapper; mark only the sort control as `"use client"` (reduces initial JS payload).
+- **Reduce the detail page's client payload:** the list page already server-renders its aggregates into `SectorsPageClient`; the `[id]/page.tsx` detail page could be given the same treatment (move `generateAllCareerInsights()` into an RSC wrapper and keep only the interactive controls in a client island).
 
 ---
 
@@ -317,6 +324,7 @@ Because both pages are `"use client"`, the data call at build time (inside `gene
 |---|---|
 | Sector aggregation functions | [`lib/data.ts`](../lib/data.ts) — `getSectorAggregates`, `getSectorAggregatesExtended` |
 | Wage-tier polarization helper | [`lib/wage-tier-polarization.ts`](../lib/wage-tier-polarization.ts) — `getWageTierPolarization` (server-only) |
+| Sectors list client island | [`components/sectors/SectorsPageClient.tsx`](../components/sectors/SectorsPageClient.tsx) — sort state, grid, chart mounts |
 | WageTierPolarizationLens component | [`components/sectors/WageTierPolarizationLens.tsx`](../components/sectors/WageTierPolarizationLens.tsx) |
 | Occupation snapshot schema | [`docs/occupation-data-model.md`](./occupation-data-model.md) |
 | Chart components | [`docs/visualization-system.md`](./visualization-system.md) |

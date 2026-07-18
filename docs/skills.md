@@ -1,6 +1,7 @@
 # Skills
 
 **Status:** Live — origin/main
+**Last audited:** 2026-07-18
 **Owner:** Switch (Designer)
 **Routes:** `/skills` (single page, no sub-routes)
 
@@ -11,7 +12,7 @@
 The Skills section lets users explore which skill groups are associated with high- vs. low-AI-exposure occupations and find realistic reskilling pathways from high-exposure starting roles to lower-exposure alternatives. It has three functional areas on one page:
 
 1. **Skill-group browser** — five curated skill groups (Technical, Cognitive, Interpersonal, Administrative, Management), each mapped to specific O*NET skill names; shows occupations that carry those skills, sortable by AI exposure, salary, or projected openings.
-2. **Visualisations** — `SkillTransitionChart` (butterfly chart comparing skill-group presence in high- vs. low-exposure occupations) and `SkillFlowSankey` (flow diagram from high-exposure roles to resilient career destinations via shared skills).
+2. **Visualisation** — `SkillFlowSankey` (flow diagram from high-exposure roles to resilient career destinations via shared skills).
 3. **Reskilling Pathways Explorer (`ReskillExplorer`)** — interactive picker of a high-exposure "source" occupation; returns up to 6 target occupations scored on transferable skills, safety gain, pay delta, and retraining effort.
 
 All data is purely **descriptive**: the skill overlap and transition scores reflect static O*NET skill profiles and measured AI-exposure figures. They are not labour-market forecasts or career counselling.
@@ -30,19 +31,19 @@ All data is purely **descriptive**: the skill overlap and transition scores refl
 
 ```
 app/skills/layout.tsx               ← RSC shell — static SEO metadata only
-app/skills/page.tsx                 ← Server Component — calls getReskillingBridgeData(),
-                                       passes result to SkillsPageClient
+app/skills/page.tsx                 ← Server Component — calls getReskillingBridgeData()
+                                       and generateAllCareerInsights(); passes both
+                                       (bridgeData + allInsights) to SkillsPageClient
 
 components/skills/SkillsPageClient.tsx  ← "use client" — group browser, sort state,
                                            occupation filtering, grid rendering, mounts charts
 components/skills/ReskillExplorer.tsx   ← "use client" — Reskilling Pathways Explorer sub-component
 components/skills/ReskillingBridge.tsx  ← "use client" — Reskilling Bridge; receives
                                            ReskillingBridgeData prop from the server page
-components/charts/SkillTransitionChart.tsx  ← "use client" — D3 butterfly chart
 components/charts/SkillFlowSankey.tsx       ← "use client" — D3 Sankey diagram
 ```
 
-`app/skills/page.tsx` is a Server Component. It calls `getReskillingBridgeData()` (server-only) and passes the result to `SkillsPageClient`, which mounts `ReskillingBridge`, `ReskillExplorer`, and both charts. No server-heavy imports are allowed in `SkillsPageClient` or its children.
+`app/skills/page.tsx` is a Server Component. It calls `getReskillingBridgeData()` (server-only) and `generateAllCareerInsights()`, then passes both results (`bridgeData` + `allInsights`) to `SkillsPageClient`, which mounts `ReskillingBridge`, `ReskillExplorer`, and the `SkillFlowSankey` chart. No server-heavy imports are allowed in `SkillsPageClient` or its children.
 
 ---
 
@@ -53,11 +54,10 @@ components/charts/SkillFlowSankey.tsx       ← "use client" — D3 Sankey diagr
 | File | Runs where | Responsibility |
 |---|---|---|
 | `app/skills/layout.tsx` | Build-time RSC | Static `<Metadata>` (title, OG, Twitter) |
-| `app/skills/page.tsx` | Build-time RSC | Calls `getReskillingBridgeData()` (server-only); passes `ReskillingBridgeData` prop to `SkillsPageClient` |
-| `components/skills/SkillsPageClient.tsx` | Browser only | Group state, sort state, occupation filtering, grid rendering; mounts charts and `ReskillingBridge` / `ReskillExplorer` |
+| `app/skills/page.tsx` | Build-time RSC | Calls `getReskillingBridgeData()` (server-only) and `generateAllCareerInsights()`; passes `bridgeData` (`ReskillingBridgeData`) + `allInsights` (`CareerInsight[]`) props to `SkillsPageClient` |
+| `components/skills/SkillsPageClient.tsx` | Browser only | Receives `bridgeData` + `allInsights` props; owns the group state, sort state, occupation filtering, grid rendering; hosts the `GROUPS` / `GROUP_SKILLS` taxonomy; mounts charts and `ReskillingBridge` / `ReskillExplorer` |
 | `components/skills/ReskillExplorer.tsx` | Browser only | Occupation picker, path computation via `getReskillingPaths`, transition cards |
 | `components/skills/ReskillingBridge.tsx` | Browser only | Origin list (scored bottleneck roles), destination cards with shared-skill chips, sort controls, H-1B filing caveat, projected-openings caveat |
-| `SkillTransitionChart` | Browser only | D3 butterfly diagram |
 | `SkillFlowSankey` | Browser only | D3 Sankey flow diagram |
 
 No route uses `generateStaticParams`; `/skills` is a single statically-exported page with no dynamic segments.
@@ -66,11 +66,12 @@ No route uses `generateStaticParams`; `/skills` is a single statically-exported 
 
 ```mermaid
 flowchart LR
-    A[data/occupation-snapshot-slim.json\nstatic import] -->|module load| B[lib/data.ts\ngenerateAllCareerInsights\ncached]
-    B -->|useMemo + selectedGroup| C[Filtered occupations\n.skills includes any group skill]
+    A[data/occupation-snapshot-slim.json\nstatic import] -->|build-time, Server Component| B[lib/data.ts\ngenerateAllCareerInsights]
+    B -->|allInsights prop| SC[SkillsPageClient]
+    SC -->|useMemo + selectedGroup| C[Filtered occupations\n.skills includes any group skill]
     C -->|useMemo + sortKey| D[Sorted occupation array]
     D --> E[Occupation grid\n≤N cards]
-    F[GROUP_SKILLS map\nhardcoded in page.tsx] --> C
+    F[GROUP_SKILLS map\nhardcoded in SkillsPageClient.tsx] --> C
 ```
 
 ### Data flow — ReskillExplorer
@@ -111,7 +112,7 @@ flowchart LR
     D --> E[SVG Sankey diagram]
 ```
 
-### Skill-group taxonomy (hardcoded in `page.tsx`)
+### Skill-group taxonomy (hardcoded in `SkillsPageClient.tsx`)
 
 ```ts
 const GROUPS = ["Technical", "Cognitive", "Interpersonal", "Administrative", "Management"];
@@ -174,10 +175,6 @@ Input: fromCode (SOC), limit (default 6), sort (default "score")
 | `safety` | `exposureDropPts` desc | — |
 | `growth` | `growthRate` desc (nulls last) | — |
 
-### `SkillTransitionChart` — visual note
-
-The butterfly chart uses a **deterministic pseudo-random** function (`deterministicInt`, FNV-1a hash) to generate illustration counts for the high- vs. low-exposure side of each skill group. It first filters `generateAllCareerInsights()` into `highRisk` (`automationRisk ∈ {"High","Very High"}`) and `lowRisk` (`automationRisk === "Low"`) and computes a ceiling at 40% of each pool. The chart is a visual schematic, not a precise count of occupations per skill group; it does not claim exact workforce numbers.
-
 ---
 
 ## Contracts / Types / Config
@@ -223,7 +220,7 @@ getHighExposureOccupations(limit = 30):
 
 Returns up to `limit` records sorted by `aiExposure` desc with duplicate titles removed. Default starting occupation is the first of `["Data Entry", "Customer Service", "Telemarket"]` found in the list; falls back to `highExposure[0]`.
 
-### Sort keys (skills/page.tsx)
+### Sort keys (SkillsPageClient.tsx)
 
 ```ts
 type SkillSortKey = "risk-desc" | "risk-asc" | "salary" | "openings";
@@ -256,7 +253,6 @@ All user-visible strings via `useT("skills")`. See `lib/i18n/messages/en/skills.
 | `medianSalary` | BLS OEWS | 2024 | USD annual median. |
 | `growthRate` / `histGrowthRate` | BLS OEWS history | 2022–2024 | Annualised; derived from 2-year employment history when BLS projections are unavailable. |
 | `outlook` | O*NET Bright Outlook | 2024 | Binary; see O*NET methodology for definition of Bright Outlook. |
-| `SkillTransitionChart` counts | Deterministic pseudo-random illustration | — | Counts are illustrative schematic values, **not** measured occupation counts per skill group. |
 
 **Descriptive vs. predictive:** `transitionScore` is a composite heuristic that ranks transitions by how well skills overlap and how much AI exposure would decrease. It is an informational ranking tool, not a labour-market recommendation or guarantee of career success.
 
@@ -277,7 +273,6 @@ All user-visible strings via `useT("skills")`. See `lib/i18n/messages/en/skills.
 - `ReskillExplorer` picker button has `aria-haspopup="listbox"` and `aria-expanded`; the dropdown is a `role="listbox"` with `role="option"` + `aria-selected` per item.
 - Dropdown closes on Escape key and on outside click.
 - `ReskillExplorer` section has `aria-labelledby="reskill-heading"`.
-- `SkillTransitionChart` is wrapped in `AccessibleChart` (via `ChartA11y.test.tsx` verified); provides `<figure aria-label>` + `<figcaption>` with a screen-reader `<table>`.
 - `SkillFlowSankey` SVG nodes have `<title>` text; the chart is keyboard-navigable via Tab to individual node/link groups.
 - Occupation grid cards are `<Link>` elements with `focus:ring-2 focus:ring-violet-500`.
 - The empty-state ("No occupations found") is plain text rendered in the DOM.
@@ -313,29 +308,27 @@ All user-visible strings via `useT("skills")`. See `lib/i18n/messages/en/skills.
 |---|---|
 | `tests/reskilling-bridge.test.ts` | `getReskillingBridgeData`: deterministic origins/destinations; bottleneck scores desc; SOC join with `getReskillingPaths`; openings from `getEmploymentProjectionBySoc`; skills capped at display limit; immutability; methodology caveats cover H-1B, projected-openings, descriptive-only |
 | `tests/skills-page-architecture.test.ts` | `lib/reskilling-bridge.ts` has `import "server-only"`; `SkillsPageClient` does not import server-heavy modules or raw JSON; `app/skills/page.tsx` is a Server Component |
-| `tests/components/ReskillingBridge.test.tsx` | Renders origin list and destinations; selecting origin updates display; keyboard navigation; null `annualOpenings` handled; H-1B and projected-openings caveats surfaced; career links valid; accessible semantics |
-| `tests/components/ReskillExplorer.test.tsx` | 11 tests: heading render, default occupation, `aria-haspopup`/`aria-expanded`, dropdown open/close, search filter, empty search state, default paths rendered, shared-skill chips, occupation selection, Escape key, career-link `href` format |
+| `tests/components/ReskillingBridge.test.tsx` | Renders origin list and destinations; selecting origin updates display; keyboard navigation; null `annualOpenings` handled; H-1B and projected-openings caveats surfaced; career links valid; accessible semantics; guards that the skills page no longer imports or renders `SkillTransitionChart` |
+| `tests/components/ReskillExplorer.test.tsx` | 13 tests: heading render, default occupation, `aria-haspopup`/`aria-expanded`, dropdown open/close, search filter, empty search state, default paths rendered, shared-skill chips, occupation selection, Escape key, career-link `href` format |
 | `tests/components/SkillFlowSankey.test.tsx` | Renders without crash, contains SVG |
-| `tests/components/ChartA11y.test.tsx` | `SkillTransitionChart` — `<figure>`, `aria-label`, `<figcaption>` + SR table present |
 | `tests/data.test.ts` | `getSearchIndex` contains items of type `"skill"` |
 
 **Remaining gaps:**
 - `getReskillingPaths` and `getHighExposureOccupations` have no direct unit tests; they are exercised only indirectly through `ReskillExplorer` render tests.
 - The `transitionScore` formula is not unit-tested independently.
-- `SkillTransitionChart` rendering of actual data values is not asserted (only accessibility structure).
 - `app/skills/page.tsx` skill-group filtering and sort interactions are not integration-tested.
 
 ---
 
 ## Extension Points
 
-- **Add a new skill group:** Add a key to `GROUPS`, `GROUP_SKILLS`, and `GROUP_DESCRIPTIONS` in `skills/page.tsx`; add the label and description to both i18n catalogues.
+- **Add a new skill group:** Add a key to `GROUPS`, `GROUP_SKILLS`, and `GROUP_DESCRIPTIONS` in `SkillsPageClient.tsx`; add the label and description to both i18n catalogues.
 - **Show skill-group match counts:** `GROUP_SKILLS[group]` is available; add a count badge to each tab.
 - **Increase ReskillExplorer pool:** Change the `limit` argument to `getHighExposureOccupations` or `getReskillingPaths`; no other changes needed.
 - **Expose all paths (no limit):** Add a "Show more" button that calls `getReskillingPaths(fromCode, Infinity, sort)`.
 - **Persist selected occupation across navigation:** Move `fromCode` state to URL query params via `useSearchParams`.
 - **Add proficiency-level data:** Requires a schema change to the snapshot's `skills` field from `string[]` to `{ name: string; level: number }[]`.
-- **Server-render the skill-group grid:** Move the initial data call to an RSC and keep only sort/filter state in the client island.
+- **Further reduce the client payload:** `allInsights` is already resolved in the Server Component and passed to `SkillsPageClient` as a prop; the remaining lib helper calls inside `ReskillExplorer` / `SkillFlowSankey` (`getHighExposureOccupations`, `getReskillingPaths`) could likewise be lifted to the RSC boundary and passed down.
 
 ---
 
@@ -351,6 +344,6 @@ All user-visible strings via `useT("skills")`. See `lib/i18n/messages/en/skills.
 | Data sources & provenance | [`docs/transparency.md`](./transparency.md) |
 | i18n namespace | `lib/i18n/messages/en/skills.ts`, `lib/i18n/messages/zh/skills.ts` |
 | ReskillExplorer component | `components/skills/ReskillExplorer.tsx` |
+| Skills page client island | `components/skills/SkillsPageClient.tsx` — group/sort state, taxonomy, chart mounts |
 | Sankey chart | `components/charts/SkillFlowSankey.tsx` |
-| Butterfly chart | `components/charts/SkillTransitionChart.tsx` |
 | Careers detail (occupation rows) | [`docs/careers.md`](./careers.md) |

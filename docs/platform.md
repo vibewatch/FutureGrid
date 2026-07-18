@@ -1,7 +1,7 @@
 # Platform
 
 **Status:** Active · **Owner:** Trinity (Lead)
-**Last updated:** 2026-07-11
+**Last updated:** 2026-07-18
 
 ---
 
@@ -147,13 +147,13 @@ flowchart LR
 
 ### CI (`.github/workflows/ci.yml`)
 
-Triggers: `push` and `pull_request` to `main`.
+Triggers: `push` and `pull_request` to `main`. Runs on `ubuntu-latest` with `actions/setup-node@v4` pinned to **Node 20** (`node-version: 20`, npm cache).
 
 ```
 npm run lint → npm run test:run → npm run build → npm run check:bundle → npm run check:a11y → npm run smoke
 ```
 
-Quality gates run in order; any failure blocks merge.
+Quality gates run in order; any failure blocks merge. Because CI runs Node 20, do not rely on APIs newer than the Node 20 / ES2023 baseline in build or runtime code.
 
 ### Deploy (`.github/workflows/deploy-pages.yml`)
 
@@ -171,29 +171,42 @@ The `prebuild` hook runs `npm run build:downloads` before `next build`, ensuring
 
 ### Data Refresh (`.github/workflows/refresh-data.yml`)
 
-Triggers: weekly Monday 06:00 UTC, `workflow_dispatch`.
+Triggers: weekly Monday 06:00 UTC, `workflow_dispatch`. Runs on `actions/setup-node@v4` (**Node 20**).
+
+The job runs the orchestrator `npm run data:refresh` (`scripts/refresh-data.mjs`), which executes every **key-free, public-source** builder in its `MANIFEST` in dependency order:
 
 ```
-npm run build:warn → build:state-labor → build:state-qcew → build:jolts
-  → build:data → build:snapshot-slim → build:warn-public → build:provenance
-  → create-pull-request (branch: data/scheduled-refresh)
+data:refresh → scripts/refresh-data.mjs MANIFEST:
+  build-warn → build-state-labor → build-state-qcew → build-ai-usage-proxies
+  → build-snapshot-slim → build-employment-projections → build-job-postings
+  → build-occupational-requirements → build-ai-signals → build-market-signals
+  → build-ai-company-stocks → build-ai-frontier → build-openrouter-models
+  → build-global-metrics → build-international-occupation-mix → build-warn-public
+  → build-provenance
 ```
 
-Sanity gates are embedded in each build script; a bad upstream fetch throws and fails the job (the failure is the alert).
+Credential-gated builders are **excluded** from the manifest: `jolts` (needs `BLS_API_KEY`), `onet-enrichment` (needs `ONET_API_KEY`), `h1b-trends` (multi-GB Internet Archive download), and `occupation-snapshot`/`build:data` (needs `BLS_API_KEY`; without it `employment: null` would overwrite canonical OEWS data). Wisconsin WARN needs `GOOGLE_SHEETS_API_KEY`, but the builder preserves last-known-good WI records when the key is absent.
+
+After the refresh, the workflow re-runs the **full contributor gates on the generated workspace** (`npm run lint → npm run test:run → npm run build`) — PRs opened with `GITHUB_TOKEN` do not trigger CI, so these gates catch idempotency/provenance/schema regressions before commit. If `data/` or `public/` changed, it commits to branch `data/scheduled-refresh` and opens (or updates) a PR via `gh pr create`. If nothing changed, the job succeeds without an empty commit.
+
+Sanity gates are also embedded in each builder's own `validate*()` function; a bad upstream fetch throws and fails the job (the failure is the alert).
 
 ```mermaid
 sequenceDiagram
     participant GH as GitHub Actions
-    participant SCRIPTS as build scripts
-    participant DATA as data/*.json
+    participant SCRIPTS as data:refresh (MANIFEST)
+    participant GATES as lint / test:run / build
+    participant DATA as data/ + public/
     participant PR as Pull Request
 
-    GH->>SCRIPTS: trigger refresh
-    SCRIPTS->>DATA: fetch + validate
-    alt validation passes
-        DATA-->>SCRIPTS: write snapshots
-        SCRIPTS->>PR: create/update PR (data/scheduled-refresh)
-    else validation fails
+    GH->>SCRIPTS: trigger refresh (Mon 06:00 UTC)
+    SCRIPTS->>DATA: fetch + per-builder validate*() + write
+    SCRIPTS->>GATES: run full gates on generated workspace
+    alt gates pass AND files changed
+        GATES-->>PR: commit data/scheduled-refresh + gh pr create/update
+    else no changes
+        GATES-->>GH: job succeeds, no commit
+    else validation/gate fails
         SCRIPTS-->>GH: throw → job fails (alert)
     end
 ```

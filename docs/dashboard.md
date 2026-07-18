@@ -3,6 +3,7 @@
 **Status:** Live — origin/main
 **Owner:** Neo (Frontend Dev)
 **Route:** `/` (App Router root segment)
+**Last audited:** 2026-07-18
 
 ---
 
@@ -93,7 +94,7 @@ interface WorkforceExposureData {
 | `highRiskCount` | Count where `automationRisk` ∈ `{"High","Very High"}` | `app/page.tsx` |
 | `lowRiskCount` | Count where `automationRisk === "Low"` | `app/page.tsx` |
 | `highExposureShare` | `(byBand.High + byBand["Very High"]) / totalWorkforce` | `lib/data.ts#getWorkforceExposure` |
-| `avgRisk` (per sector) | `Σ automationProbability / occupationCount` | `lib/data.ts#getSectorAggregatesExtended` |
+| `avgRisk` (per sector) | `Σ(employment × automationProbability) / Σemployment` (count-weighted fallback for zero-employment sectors) | `lib/data.ts#getSectorAggregatesExtended` |
 | `brightShare` | `brightCnt / occupationCount` | `lib/data.ts#getSectorAggregatesExtended` |
 
 > **Descriptive only.** All metrics summarise the static occupation-snapshot dataset. They do not imply forward-looking predictions.
@@ -110,7 +111,7 @@ interface WorkforceExposureData {
 **Caveats:**
 - `aiExposure` / `automationProbability` are modelled usage proxies (Anthropic Economic Index 2025), not observed automation rates.
 - Employment headcounts are OEWS survey figures; Legislators (SOC 11-1031) excluded for null employment.
-- The `DataAsOfBadge` component reads `generatedAt` from `lib/data.ts#getDataSources()` to surface the snapshot date inline.
+- The `DataAsOfBadge` component resolves the dataset `asOf` date from the provenance registry (`lib/provenance.ts` — `getDataAsOf`/`selectLatestAsOf`) via its `datasetId`/`datasetIds` prop; the dashboard hero passes `datasetId="occupation-snapshot"`.
 
 ---
 

@@ -1,7 +1,7 @@
 # Transparency
 
 **Status:** Active · **Owner:** Trinity (Lead)
-**Last updated:** 2026-07-11
+**Last updated:** 2026-07-18
 
 ---
 
@@ -112,7 +112,9 @@ interface DatasetProvenance {
 | `getDatasetProvenance(id)` | Lookup single dataset by id |
 | `getDataAsOf(id)` | `asOf` for a dataset, or `null` |
 | `getDataGeneratedAt(id)` | `generatedAt` for a dataset, or `null` |
-| `getLatestAsOf()` | Lexicographic max `asOf` across all datasets |
+| `asOfToComparableDate(asOf)` | Parse an `asOf` label (`YYYY-MM-DD`, `YYYY-MM`, `YYYY`, `FY YYYY`) to its latest representable UTC calendar date for ordering; returns `null` for projection windows/free-form text so they never falsely rank as "newest" |
+| `selectLatestAsOf(values)` | Chronologically latest label from candidates via `asOfToComparableDate`; preserves the winner's display string verbatim; falls back to first non-null when no label is recognized |
+| `getLatestAsOf()` | Chronologically latest `asOf` across all datasets (by calendar end-date via `selectLatestAsOf`, **not** lexicographic) |
 | `getLatestGeneratedAt()` | Most-recent `generatedAt` across all datasets |
 
 `getLatestGeneratedAt()` feeds the sitemap `lastModified` field.
@@ -257,6 +259,8 @@ The `GuardrailBadge` component visually signals the epistemic status of any disp
 
 `inferGuardrailBadgeKind(text)` applies regex heuristics to infer the badge from source metadata text.
 
+Badge labels and descriptions are **localized** (#120): `GuardrailBadge` reads `useT("common")` and looks up `guardrailLabel_<kind>` / `guardrailDesc_<kind>` (en + zh), falling back to the static `GUARDRAIL_BADGES` label/description when a key is absent. The `aria-label` is `"{label}: {description}"`, so both are exposed to assistive tech in the active locale.
+
 ---
 
 ## Runtime / Build / Deploy Lifecycle
@@ -312,7 +316,9 @@ There are no runtime API calls for provenance or source data — all are bundled
 |---|---|---|
 | Source coverage | `tests/source-coverage.test.ts` | Source catalogue completeness |
 | Data schema | `tests/data-schema.test.ts` | Shape of data files |
-| Provenance | Built in each `build:*` script | Sanity-gates on row counts / required fields |
+| Provenance API | `tests/provenance.test.ts` | `asOfToComparableDate` / `selectLatestAsOf` / `getLatestAsOf` ordering and label-preservation behaviour (#120) |
+| Evidence stack | `tests/evidence-convergence.test.ts` | Source-family / conclusion wiring in `lib/evidence.ts` |
+| Provenance build | Built in each `build:*` script | Sanity-gates on row counts / required fields |
 
 ---
 

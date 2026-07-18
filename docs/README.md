@@ -1,7 +1,7 @@
 # FutureGrid Documentation
 
 > Single index for all FutureGrid design and architecture documentation.
-> **Last updated:** 2026-07-11 · **Maintained by:** Trinity (Lead)
+> **Last updated:** 2026-07-18 · **Maintained by:** Trinity (Lead)
 
 ---
 
@@ -75,6 +75,7 @@ flowchart TD
 | Theme | next-themes |
 | Testing | Vitest 4 + @testing-library/react |
 | Type checking | TypeScript 5 |
+| Runtime | Node 20 (CI + `data:refresh`) · Node 22 (GitHub Pages deploy) |
 | CI/CD | GitHub Actions |
 
 ---
@@ -233,7 +234,7 @@ Diagrams must use **Mermaid** (flowchart or sequenceDiagram). Diagrams must be a
 | `charts/` | `AccessibleChart`, `BarChartRace`, `WorldChoropleth`, 14 others | [visualization-system.md](./visualization-system.md) |
 | `dashboard/` | `DashboardHome`, `Sidebar`, `HeroRiskChecker`, `KeyFindings`, `HighlightsBento` | [dashboard.md](./dashboard.md) |
 | `explore/` | `ExploreView` | [explore.md](./explore.md) |
-| `frontier/` | `AIFrontierView`, `ComputeTimelineChart`, `CostPowerTrends` | [frontier.md](./frontier.md) |
+| `frontier/` | `AIFrontierView`, `ComputeTimelineChart`, `CostPowerTrends`, `FrontierLeadersChart`, `FrontierMixCards`, `FrontierOriginsTreemap` | [frontier.md](./frontier.md) |
 | `global/` | `GlobalView`, `AIAdoptionSignals`, `ReadinessGapLens` | [global.md](./global.md) |
 | `heatmap/` | `HeatmapView` | [explore.md](./explore.md) |
 | `i18n/` | `LanguageSwitcher` | [i18n.md](./i18n.md) |

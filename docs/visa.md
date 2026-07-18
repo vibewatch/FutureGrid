@@ -2,7 +2,7 @@
 
 **Status:** Production
 **Owner:** Tank (Backend / Data Dev)
-**Last audited:** 2026-07-11
+**Last audited:** 2026-07-18
 
 ---
 
@@ -29,6 +29,9 @@ Documents the H-1B Labor Condition Application (LCA) trends dataset: certified L
 | H-1B LCA trends | `data/h1b-trends.json` | `lib/h1b.ts` |
 | Build script | `scripts/build-h1b.mjs` | — |
 | SOC crosswalk | `scripts/lib/soc-crosswalk.mjs` | — |
+| Talent Bottleneck Lens (derived, no dedicated data file) | — (4-source SOC join at build time) | `lib/talent-bottleneck.ts` + `components/visa/TalentBottleneckLens.tsx` |
+
+> **Ownership note:** the Talent Bottleneck Lens is a derived signal rendered on `/visa`; this doc is its authoritative home. `docs/labor-market.md` carries only a one-line boundary reference to `lib/talent-bottleneck.ts`.
 
 ---
 
@@ -198,6 +201,99 @@ where `v_first` is the certified count in the earliest fiscal year and `v_last` 
 
 ---
 
+## Talent Bottleneck Lens
+
+A **descriptive, modeled signal** rendered on `/visa` (below the LCA-trend charts). It is **not a prediction and not proof of a labor shortage or causality** — it is a transparent weighted ranking of joined public signals. The whole lens lives in `lib/talent-bottleneck.ts` (pure, no data file of its own) and is displayed by `components/visa/TalentBottleneckLens.tsx`.
+
+### Selector
+
+```typescript
+// lib/talent-bottleneck.ts
+export function getTalentBottleneckData(
+  options: TalentBottleneckOptions = {}, // { limit?: number } — cap on returned rows
+): TalentBottleneckData;
+
+export interface TalentBottleneckData {
+  datasetBadgeIds: string[];               // ["h1b-trends","employment-projections","job-postings","occupation-snapshot"]
+  methodology: TalentBottleneckMethodology;
+  summary: TalentBottleneckSummary;
+  rows: TalentBottleneckRow[];             // ranked desc by score
+}
+```
+
+### Inputs (4-source SOC join)
+
+The lens builds the **union of all SOC codes** present across four existing loaders and left-joins each per-SOC signal (missing sources are simply absent for that row):
+
+| Signal | Source loader | Fields consumed |
+|---|---|---|
+| H-1B LCAs | `getOccupationsSorted()` (`lib/h1b.ts`) | `countByYear[latestFY]` → `latestLcas`, `totalCount`, `cagr` |
+| Employment projections | `getEmploymentProjectionData()` (`lib/employment-projections.ts`) | `projectedOpenings`, `employmentChangePct`, `medianAnnualWage`, `aiExposure`, `automationRisk` |
+| Job postings | `getJobPostingsData()` (`lib/job-postings.ts`) | `latestAnnualPostings` → `latestPostings`, `sourceStatus` |
+| Occupation snapshot | `generateAllCareerInsights()` (`lib/data.ts`) | `aiExposure`, `automationRisk`, `medianSalary` |
+
+`medianWageAnnual` is chosen by priority H-1B → employment-projections → occupation-snapshot (first positive value wins); `medianWageAnnualSource` records which one was used. `h1bTrend` is derived from `h1bCagr`: `rising` if > 0.005, `falling` if < −0.005, else `flat`.
+
+### Row schema (`TalentBottleneckRow`)
+
+```typescript
+export interface TalentBottleneckRow {
+  rank: number;                  // 1-based, after sort
+  score: number;                 // 0–100 (see scoring)
+  socCode: string;
+  title: string;
+  sector: string | null;
+  latestLcas: number | null;
+  totalLcas: number | null;
+  h1bCagr: number | null;        // decimal fraction; 0.0572 = +5.72%
+  h1bTrend: "rising" | "falling" | "flat" | null;
+  medianWageAnnual: number | null;
+  medianWageAnnualSource: "h1b" | "employment-projections" | "occupation-snapshot" | null;
+  projectedOpenings: number | null;
+  employmentChangePct: number | null;
+  latestPostings: number | null;
+  aiExposure: number | null;     // 0–1
+  automationRisk: "Low" | "Medium" | "High" | "Very High" | null;
+  scoreComponents: TalentBottleneckScoreComponents; // per-signal normalized contribution
+  sourceFlags: TalentBottleneckSourceFlags;         // which sources matched this SOC
+}
+```
+
+`TalentBottleneckSummary` reports aggregate context: `occupationsTracked`, `rowsReturned`, `latestH1bFiscalYear`, `latestJobPostingYear`, `jobPostingsMode`, `projectionWindow`, per-source `matched` counts, `scoreRange`, `scoreWeights`, and `topRows` (top 10).
+
+### Scoring
+
+`score` (rounded to a 0–100 scale) is a **fixed weighted average** of per-signal normalized components:
+
+| Component | Weight | Normalization |
+|---|---|---|
+| `latestLcas` | 0.22 | log vs in-dataset max |
+| `projectedOpenings` | 0.24 | log vs in-dataset max |
+| `totalLcas` | 0.12 | log vs in-dataset max |
+| `latestPostings` | 0.12 | log vs in-dataset max |
+| `h1bCagr` | 0.10 | linear vs positive in-dataset max |
+| `employmentChangePct` | 0.10 | linear vs positive in-dataset max |
+| `aiExposure` | 0.10 | already bounded 0–1 |
+
+Counts are log-normalized against the in-dataset maximum; positive rates are linearly normalized against the positive in-dataset maximum; AI exposure is used directly. **Missing signals contribute zero and are not reweighted.** Ties break by `latestLcas`, `totalLcas`, `projectedOpenings`, `latestPostings`, then title / SOC.
+
+### Component behavior (`TalentBottleneckLens.tsx`)
+
+`app/visa/page.tsx` calls `getTalentBottleneckData()` server-side and passes the result to `VisaTrendsView` (`talentBottleneck` prop), which renders `<TalentBottleneckLens data={…} />`. The lens shows KPI summary cards, a bubble scatter (x = `aiExposure`, y = `projectedOpenings`, bubble radius ∝ `latestLcas`), and a ranked table of the top 12 rows.
+
+### RAI framing / caveats (from `methodology.caveats` — preserve)
+
+- Certified H-1B **LCAs are employer filings, not visa approvals**.
+- The score is **not proof of a shortage or causality** — it is a descriptive ranking of joined signals.
+- Job postings are **proxy/seed-derived** where applicable (`summary.jobPostingsMode` discloses the mode).
+- The lens is intentionally **separate from `/analysis` and infers no causal effects**.
+
+### Runtime boundary
+
+`lib/talent-bottleneck.ts` has **no `import "server-only"` guard** but transitively imports large server-side loaders (H-1B, employment projections, job postings, occupation snapshot). It is invoked once in the `/visa` Server Component at build time and its serializable result is passed as props; do not import it from `"use client"` components.
+
+---
+
 ## Source Provenance / Licensing / Caveats
 
 | Source | License | Caveat |
@@ -238,14 +334,15 @@ H1B_YEARS=2020-2025 npm run build:h1b   # build only specified range
 
 `validateH1bTrends()` from `scripts/lib/validate.mjs` is called before `writeFileSync`:
 
-- `meta.generatedAt` present.
-- `coverage.fiscalYears` non-empty.
-- `byYear` has at least as many rows as fiscal years.
-- `occupations` array minimum row count (≥ 80 % of committed count).
-- Each occupation has `socCode`, `totalCount > 0`, `cagr` is a finite number.
-- `byState` contains at least the required set of 50 US state codes.
+- `meta.generatedAt` + `meta.source` present.
+- `coverage.fiscalYears` must exactly match the fiscal years present in `byYear`, and `byYear` must be sorted ascending by `fiscalYear` (minimum 4 years).
+- Each `byYear` row carries `certifiedLcas ≥ 200,000` (a plausibility floor against a broken/empty parse).
+- `occupations` array minimum row count — a fixed floor of **50 rows** (`assertMinRows(data.occupations, 50)`).
+- `topEmployers` ≥ `minEmployers` (default **50**).
+- `byState` minimum row count — a fixed floor of **20 rows** (`assertMinRows(data.byState, 20)`); each state carries a well-formed `wageByYear` map and a `topOccupations` array.
+- Each occupation SOC code is normalized to the `NN-NNNN` (SOC 2018) form.
 
-`assertLiveStates()` helper checks state coverage.
+(Note: the `assertLiveStates()` helper enforces a *required* set of state codes for the WARN and state-labor datasets, **not** for `h1b-trends` — H-1B state coverage is a plain row-count floor.)
 
 ---
 
@@ -315,6 +412,8 @@ Because `lib/h1b.ts` is client-safe, it can be consumed by client components. Ho
 | File | Role |
 |---|---|
 | `lib/h1b.ts` | Typed loader, AI-exposure join, selectors |
+| `lib/talent-bottleneck.ts` | Talent Bottleneck Lens: 4-source SOC join + weighted score (`getTalentBottleneckData()`) |
+| `components/visa/TalentBottleneckLens.tsx` | Renders the Talent Bottleneck KPIs, scatter, and ranked table on `/visa` |
 | `data/h1b-trends.json` | Committed artifact |
 | `scripts/build-h1b.mjs` | Fetch (Wayback), stream-parse, aggregate, write |
 | `scripts/lib/soc-crosswalk.mjs` | SOC 2010→2018 crosswalk |

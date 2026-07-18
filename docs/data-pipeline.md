@@ -2,13 +2,13 @@
 
 **Status:** Production
 **Owner:** Tank (Backend / Data Dev)
-**Last audited:** 2026-07-11
+**Last audited:** 2026-07-18
 
 ---
 
 ## Purpose
 
-Documents the FutureGrid data pipeline end-to-end: all build scripts in `scripts/`, the shared infrastructure libraries (`scripts/lib/meta.mjs`, `scripts/lib/validate.mjs`, `scripts/lib/soc-crosswalk.mjs`), the npm build-script catalog, the validate-before-write philosophy, the provenance registry, the static-export + Node 20 constraints, and the public-download compliance gate.
+Documents the FutureGrid data pipeline end-to-end: all build scripts in `scripts/`, the shared infrastructure libraries (`scripts/lib/meta.mjs`, `scripts/lib/validate.mjs`, `scripts/lib/soc-crosswalk.mjs`, `scripts/lib/data360.mjs`, `scripts/lib/sector-taxonomy.mjs`, `scripts/lib/country-iso3.mjs`), the npm build-script catalog, the validate-before-write philosophy, the provenance registry, the static-export + Node 20 constraints, and the public-download compliance gate.
 
 ### Non-Goals
 
@@ -179,6 +179,7 @@ Executes (in order):
 8. `npm run build:ai-company-stocks`
 9. `npm run build:international-occupation-mix`
 10. `npm run build:provenance` — provenance registry
+11. `npm run build:downloads` — copy compliance-cleared files to `public/data/`
 
 ### Individual Build Scripts
 
@@ -195,7 +196,7 @@ Executes (in order):
 | `build:state-labor` | `build-state-labor.mjs` | `data/state-labor.json` |
 | `build:state-qcew` | `build-state-qcew.mjs` | `data/state-qcew.json` |
 | `build:global-metrics` | `build-global-metrics.mjs` | `data/global-ai-metrics.json` |
-| `build:og` | `build-og-image.mjs` | `public/og-image.png` |
+| `build:og` | `build-og-image.mjs` | `public/og.png` |
 | `build:ai-signals` | `build-ai-signals.mjs` | `data/market-ai-signals.json` (partial) |
 | `build:market-signals` | `build-market-signals.mjs` | `data/market-ai-signals.json` |
 | `build:ai-frontier` | `build-ai-frontier.mjs` | `data/ai-frontier.json` |
@@ -288,6 +289,18 @@ Downloads `soc_2010_to_2018_crosswalk.xlsx` from the BLS (via Wayback Machine id
 
 Used by `build-h1b.mjs` (FY2016–FY2019 have SOC 2010 codes) and `build-employment-projections.mjs`.
 
+### `scripts/lib/data360.mjs` — HTTP/1.1 Fallback + World Bank Data360
+
+Pure helpers (extracted from `build-ai-usage-proxies.mjs` for focused unit testing without HTTP side-effects). Provides the `node:https` **HTTP/1.1 fallback** used for hosts that reject Node's native HTTP/2 fetch with `417 Expectation Failed` — Census, OECD SDMX, and `data360api.worldbank.org` — plus World Bank Data360 OECD_AI dataset parsing.
+
+### `scripts/lib/sector-taxonomy.mjs` — Canonical Sectors
+
+Build-time mirror of `lib/sector-taxonomy.ts`: exports `CANONICAL_SECTORS` and `canonicalizeSector()` so builders and validators can canonicalize/verify the ≤ 22 BLS SOC major-group sector labels. Kept in sync with the TypeScript source.
+
+### `scripts/lib/country-iso3.mjs` — Country → ISO-3
+
+Small, self-contained, dependency-free country-name → ISO-3166-1 alpha-3 lookup (no network, no keyed API). Used by `build-ai-frontier.mjs` to derive the geographic `iso3` join key for the country leaderboard.
+
 ---
 
 ## Provenance Registry (`data/provenance.json`)
@@ -312,7 +325,7 @@ Built by `scripts/build-provenance.mjs`. Scans every `data/*.json` (except `prov
 }
 ```
 
-Consumed by `lib/provenance.ts` → UI provenance badges.
+Consumed by `lib/provenance.ts` → UI provenance badges. Beyond the whole-registry loader, `lib/provenance.ts` exposes **per-dataset (per-lane) lookups** — `getDatasetProvenance(id)`, `getDataAsOf(id)`, `getDataGeneratedAt(id)` — plus `asOfToComparableDate()` / `selectLatestAsOf()` / `getLatestAsOf()` for surfacing the most recent `asOf` across lanes on composite views.
 
 ---
 
@@ -454,6 +467,9 @@ Update `META_VERSION` in `scripts/lib/meta.mjs`. All subsequent `buildMeta()` ca
 | `scripts/lib/meta.mjs` | `buildMeta`, `deriveMeta`, `normalizeSource`, `countRows` |
 | `scripts/lib/validate.mjs` | All `validate*()` gate functions + primitive helpers |
 | `scripts/lib/soc-crosswalk.mjs` | SOC 2010→2018 crosswalk loader (cached) |
+| `scripts/lib/data360.mjs` | HTTP/1.1 fallback + World Bank Data360 parsing helpers |
+| `scripts/lib/sector-taxonomy.mjs` | Build-time canonical-sector mirror of `lib/sector-taxonomy.ts` |
+| `scripts/lib/country-iso3.mjs` | Offline country-name → ISO-3 lookup for builders |
 | `scripts/build-provenance.mjs` | Central provenance registry |
 | `scripts/build-downloads.mjs` | Compliance-gated public download copies |
 | `package.json` | Full npm script catalog |
