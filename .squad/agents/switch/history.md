@@ -1,202 +1,111 @@
-# Switch — History
-
-**Project:** FutureGrid (Next.js 16, React 19, Tailwind v4). AI career-impact dashboard.
-**Requested by:** huangyingting
-
-## Learnings
-
-- `app/globals.css` is currently near-boilerplate (Arial font, unused light-mode vars) while the app forces a dark `bg-zinc-950` theme — ripe for a real design system.
-- Accent colors in use: purple `#8b5cf6`, blue, plus risk colors green/yellow/red.
-- Fonts wired via `next/font` (Geist Sans/Mono) in `app/layout.tsx`.
-
-
-**2026-06-30:** FutureGrid upgraded — design system (Tailwind v4 @theme, brand palette, utility classes), UI primitives (GridBackground, AnimatedCounter, Reveal), responsive mobile shell (Sidebar SVG drawer), and themed charts. `npm run build` exit 0.
-
-
-**2026-06-30 (Round 2 — Engagement Features):** RiskGauge, CommandPalette, SectorScatterChart + Sidebar wiring delivered. 🔴 REJECT B1 (D3 cleanup) → locked-out; Neo applied fix. N1 (matchMedia anti-pattern) self-fixed. Re-review 🟢 APPROVE. `npm run build` exit 0.
-
-**2026-06-30 (Round 3 — Real-Data Integration):** Relabeled "automation risk" → "AI exposure" across all pages; chart axes rewired to projectedOpenings/brightShare; removed Frey-Osborne from sidebar footer, now cites Anthropic EI + BLS + O*NET. CountryExposureChart added for global view. All reduced-motion/a11y maintained. Commit afe77e9. 🟢 BUILD/LINT PASS.
-
-**2026-06-30 (Round 4 — World Map UI):** Built components/charts/WorldChoropleth.tsx (D3 geoNaturalEarth1 flat choropleth, 173 features, metric toggle Claude usage ↔ GenAI diffusion). China rendering: grey + dashed-amber border on diffusion view. Tooltip, legend auto-update, staggered entrance animation, WCAG AA, reduced-motion safe, keyboard accessible. Commits: 78d2b3f, e976e14. ✅ /global RENDERS, METRICS TOGGLE LIVE.
-
-**2026-06-30 (Issue Backlog Round — Issues #3 & #6):** [#3] IMF AI readiness toggle integration (3rd metric: Claude usage ↔ GenAI diffusion ↔ AI readiness). [#6] Performance: world geometry (412KB) moved from JS bundle → static asset (public/geo/world-countries.geo.json); /global JS reduced ~23%; loading skeleton + basePath-aware fetch. Commits e976e14, 9m8n9op. ✅ CLOSED #3 #6.
-
-
-**2026-06-30 (Batches 3 & 4 — Autonomous Improvement Loop):** Issues #12 (real heatmap 25×7 getCountryMapData), #13 (branded OG image @resvg/resvg-js + build:og), #18 (404 + error boundaries). All closed, validated (build 0, lint clean, tests 103/103). Loop concluded; diminishing returns reached.
-
-**2026-06-30 (Batch 5 — Theme + GAIRI + OccupationTrend):** #21 light-mode (next-themes, .dark CSS vars, charts re-render via useTheme, WCAG AA), #19 Oxford GAIRI 4th map toggle, #22 OccupationTrendChart (dual-axis wage/employment). Commits include "Closes #21" + "Closes #19" + "Closes #22". All 22 issues CLOSED.
-
-**2026-07-01 (AI-Demand Layer Visualization — Switch-30):** Switch-30 edited WorldChoropleth.tsx + GlobalView.tsx for AI job-demand metric integration (Indeed Hiring Lab, 9 economies). Emerald/teal sequential color ramp (#052e2b → #10b981 → #a7f3d0) distinct from brand ramp. Choropleth + bubble modes (proportional circles for 9-economy dataset). No-data countries grey. Legend auto-update, staggered entrance, WCAG AA, reduced-motion safe. i18n: +8 keys charts/global EN/ZH (metric label, legend, source note). Build exit 0. Commit 88dfeec. ✅ Orchestration 2026-07-01T10-43-22Z-switch-30.md
-
-
-## 2026-07-02T00:34:32.844+00:00 — Widescreen layout design and EvidenceStack fix
-
-Switch specified the centered wide-screen layout direction and Evidence Stack matrix redesign. After Trinity rejected Neo's first EvidenceStack grid for horizontal overflow at 1280/1440px, Switch owned the reviewer-protocol fix and changed the grid to shrinkable tracks; Playwright verification confirmed no horizontal overflow across 1280, 1440, 1920, and 2560px.
-
-
-## 2026-07-02 — AI Adoption Signals remediation
-- Fixed Trinity/Rai blockers by splitting China app metrics into MAU and usage panels.
-- Split developer survey data into overall distribution and country-share panels to avoid denominator mixing.
-- Preserved bundle hygiene by keeping raw JSON/server loader imports out of client components.
-
-
-2026-07-03T10:19:02.301+00:00 - Fixed Talent Bottleneck CAGR display by converting decimal CAGR to rendered percent and added regression coverage without changing scoring semantics.
-
-
-2026-07-03T12:48:40.595+00:00 - Fixed the OpenRouter country helper TypeScript narrowing build failure under reviewer lockout, unblocking Mouse's final validation without changing feature scope.
-
-
-2026-07-03T21:27:13.860+00:00 - Proposed visual storytelling concepts for mined datasets: Global AI Signal Atlas, Talent Bottleneck Matrix, and Market-Labor Pressure Radar; reinforced proxy/descriptive guardrails for the website narrative.
-
-### 2026-07-03T22:49:27.110+00:00 — Review cycle and queue handoff
-- Completed 4 of 20 squad review rounds; review output was converted into owner-labeled issues #73-#84.
-- Merged completed items #73/#75/#74 through PRs #85/#86/#87 with targeted validation, lint, and build; remaining open work is #76-#84.
-
-
-### 2026-07-04T12:23:54.134+00:00 — IA taxonomy guidance
-- Shaped the safe first IA refactor around journey-based navigation: Overview, Workforce, Labor Signals, AI Ecosystem, and Data Governance.
-- DashboardHome lens-card discovery and CommandPalette grouping landed with EN/ZH copy updates and validation passing.
-
-
-## 2026-07-10T03:57:05.444+00:00 — Audit Session: Visualization Surfaces & IA Assessment
-
-Switch completed read-only audit of visualization surfaces, information architecture, and accessibility/provenance gaps. All production surfaces pass WCAG AA, reduced-motion compliance, and keyboard-accessible requirements. Information architecture (Overview → Workforce → Labor Signals → AI Ecosystem → Data Governance) is journey-coherent and discovery-ready.
-
-**IA Gaps Identified:**
-- Data Governance page exists; missing live pipeline-status widget
-- Methodology transparency clear; drill-down per-metric provenance deferred to v1.1
-
-**Prioritized Visual Storytelling Concepts (No Action Pending):**
-- Global AI Signal Atlas (convergence of country-level exposure, adoption, readiness)
-- Talent Bottleneck Matrix (SOC severity × projection × reskilling pathway surfacing)
-- Market-Labor Pressure Radar (mined datasets cross-referenced to labor market friction)
-- Narrative guardrails: all metrics positioned as proxy/descriptive, no predictive claims without confidence
-
-See orchestration-log/2026-07-10T03-57-05.444+00-00-switch.md and log/2026-07-10T03-57-05.444+00-00-session-audit.md for full findings.
-
-
-### 2026-07-10T09:40:05Z — Issues #103/#104/#105 design & responsible-AI review
-
-**Issue #103: Evidence Convergence Strip (PR #106 merged)**
-- Design review (approved design direction early)
-- a11y: responsive layout, reduced-motion, WCAG AA maintained
-- Final: shipped to main
-
-**Issue #104: Reskilling Bridge (PR #107 merged, 3-cycle strict-lockout → shipped)**
-- Design guidance: listbox interaction patterns (keyboard/focus/tabindex semantics)
-- v1 lockout: component author (Neo) locked out of fixes. Switch owned reviewer-protocol fix for listbox semantics revision (aria-activedescendant → roving tabindex). Per-artifact swap: Tank component fix + Switch deletion completion (dead i18n keys atomically removed).
-- v2 lockout: Tank (author) locked out. Switch confirmed deletion completeness while Tank fixed aria-required-children blocker.
-- Final: a11y 7-routes clean, shipped to main
-
-**Issue #105: Exposure→Outcome Matrix (PR #108 merged, post-rejection work pending)**
-- Design guidance noted (Trinity captured): hardcoded descriptive text, nested-interactive SVG as non-blocking design notes at proposal time
-- Trinity rejection (committed): when released, hardcoded text + nested-interactive SVG became user-visible blockers under release criteria
-- Switch advises on a11y SVG remediation (Tank executing as locked-out revision owner)
-- Learning: Design notes flagged during proposal are not automatically release blockers, but when user-visible they require explicit EN/ZH + a11y compliance before merge. Always escalate design-noted risks to strict criteria before final approval.
-
-
-## 2026-07-11T00:00:00Z — Wage-Tier Polarization & Major Economy Occupational Mix Batch Closeout
-
-**PRs merged:** #110 (/sectors wage-tier polarization) | #112 (/global occupational mix)
-**PRs merged:** #110 (/sectors wage-tier polarization) | #112 (/global occupational mix)  
-**Batch focus:** Accessibility patterns, a11y compliance, focus-visible semantics
-
-### Accessibility & A11y Gate Patterns
-
-**CareerTrendChart Canvas Accessibility (Reusable Pattern)**
-- **Issue:** Chart canvas `aria-hidden="true"` requires paired accessible alternative
-- **Solution:** AccessibleChart wrapper provides:
-  - Visual: `<Bar aria-hidden="true">` (chart-only, no a11y burden)
-  - Screen reader: `<figure aria-label="[translated]">` + `<figcaption>` with sr-only `<table>` (accessible data summary)
-  - Keyboard: All interactive labels/tooltips wired to `AriaLive` regions (no focus-visible loss)
-- **i18n requirement:** Figure label + accessible table headers MUST have EN/ZH keys (parity check enforced)
-- **Applied:** Both /sectors (wage-tier chart) and /global (occupational distribution chart)
-- **Gate:** axe-core focused route 0 violations; accessibility tree valid for screen readers
-
-**Responsive Accessible Tables**
-- Visible table (responsive with overflow-x-auto): tier/country-keyed rows, band-shares columns
-- Accessible data companion: Same data structure, sr-only table headers, no visual overhead
-- i18n: All visible table headers + cell content route through `t("sectors")`/`t("global")`
-- Pattern: Eliminates need for separate accessible table (visual + sr-only in one component)
-
-**Keyboard Interaction Consistency**
-- Focus-visible on all interactive elements (no hover-only emphasis)
-- Roving tabindex pattern (where applicable): single tab-stop into group, arrow keys navigate
-- Tooltip show/hide: Keyboard open (Enter/Space) + screen-reader announcement via `aria-live="polite"`
-
-### A11y Compliance Gates (All Green)
-
-**Bundle & Test Coverage (1,944 tests combined)**
-- typecheck: 0 errors (no unsafe DOM operations)
-- lint: 0 errors (no a11y rule violations in ESLint)
-- test:run: 846 + 1,098 all pass (including accessibility boundary tests)
-- axe standard (8 routes): 0 critical | 0 serious
-- axe focused (/sectors + /global): 0 violations
-
-**Reduced-Motion & Animation Safety**
-- All chart entrance animations respect `prefers-reduced-motion`
-- Transitions (fade-in, scale-up) have no-motion equivalent (instant render)
-- Tooltip animations disabled for `prefers-reduced-motion: reduce`
-- Pattern: CSS custom property `--safe-transition` (0ms for no-motion, 300ms for full motion)
-
-### Learnings for Accessible Data Visualization
-
-**CareerTrendChart Canvas Best Practice**
-- `role="img"` on canvas is valid for charts IF paired with accessible alternative
-- Never nest interactive elements (buttons, links) inside `role="img"`; breaks screen-reader focus
-- Always provide sr-only data table (not just description text) for complex visualizations
-- Pattern is reusable: apply to any D3/Recharts/Bar component with data-heavy visualization
-
-**i18n + A11y Parity**
-- All chart labels, axes, legends MUST have EN/ZH keys
-- Test case: i18n parity check (no empty values, all keys present in both languages)
-- Dead i18n keys (unused chart components) must be atomically removed (don't orphan translations)
-
-**Accessible Table Patterns**
-- Visible responsive table + sr-only data table can share component (no duplication)
-- Table headers MUST be `<th>` with explicit `scope="col"`/`scope="row"` (not `<td>`)
-- Numeric cells: Use `text-align: right` (visual) + no semantic change (AT reads as normal cell)
-
-### Review Cycle a11y Findings
-
-**PR #110 Cycle-1 Findings (Resolved)**
-- Issue: CareerTrendChart canvas lacked accessible alternative (Trinity flagged)
-- Fix: Switch + Tank applied AccessibleChart wrapper + sr-only data table
-- Result: axe /sectors focused 0 violations; a11y gate satisfied
-
-**PR #112 Pre-Implementation Approval (No Rejection Cycles)**
-- Accessibility pre-approved with scope (no discovery during implementation)
-- Pattern reused from #110 (CareerTrendChart canvas + AccessibleChart wrapper)
-- Result: a11y gate satisfied at merge
-
-### Recommendations for Future Data Features
-
-**Accessible Chart Checklist**
-- ✅ Visual chart (interactive or display): Include sr-only data table alternative
-- ✅ Chart canvas: Always pair `aria-hidden="true"` with `<figure aria-label>` + `<figcaption>`
-- ✅ Focus-visible: Ensure keyboard users see emphasis (no hover-only patterns)
-- ✅ i18n completeness: All user-visible text (labels, legends, descriptions) must have EN/ZH keys
-- ✅ Reduced-motion: Entrance animations respect `prefers-reduced-motion: reduce`
-- ✅ Gate: axe-core standard + focused runs must be 0 critical/serious violations
-
-**Reusable Patterns**
-- AccessibleChart wrapper (handles figure label + sr-only table scaffolding)
-- CareerTrendChart canvas pattern (applies to any chart component using Bar/Line/Scatter)
-- Accessible table responsive pattern (visible overflow-x + sr-only data structure)
-
-
-
-### Scribe Orchestration — PR #120 Cycle (2026-07-12T14:24:27Z)
-
-**Session:** Provenance Registry & Localized Guardrails — Cycle Complete  
-**Scope:** Per-lane synthesis provenance (Tank backend), localized GuardrailBadge UI (Neo), full suite validation (Mouse), architecture review (Trinity), i18n compliance (Rai), independent revisions (Switch)
-
-**Switch Role Retrospective:**
-- Independent revision phase: addressed Trinity's flagged doc comment (stale reference)
-- i18n corrections: applied Rai's yellow-advisory fixes (ZH exposure wording, FY ordering clarification)
-- Calendar-aware asOf selector: integrated shared date selection logic across provenance UI
-- Country-exposure wording: corrected to use "exposure" not "adoption" in ZH context (proxy framing)
-- Documentation updates: ensured parity with implementation
-- All revisions applied atomically; no blocking issues remained
-
-**Approval & Closure:** PR #120 merged as 78154f20575df26f5b8867b70bb6ce3009c46993; issues #77/#119 closed. All Switch revisions complete and merged.
+# Switch — History (summarized)
+
+**Project:** FutureGrid (Next.js, React, Tailwind). Switch owns design direction, visualization copy, i18n parity, and accessibility-sensitive UI guidance.
+**Summarized by Scribe:** 2026-07-18T01:47:09Z because `agents/switch/history.md` exceeded the 15,360-byte hard gate.
+
+## Durable Design Learnings
+
+- FutureGrid uses a dark-first, data-visualization-heavy design language with brand violet `#8b5cf6`, cyan/blue accents, and risk colors green/yellow/red.
+- All user-facing visualization text requires EN/ZH parity and must avoid unsupported impact, leadership, adoption, or capability claims. Prefer exact observable labels and explicit caveats.
+- Complex visualizations need accessible alternatives: decorative or `aria-hidden` charts/SVGs must be paired with real text/table equivalents, figure labels, or sr-only summaries.
+- Avoid nested interactive SVG/`role=img` patterns. If a map or D3 chart has hover-only visuals, keep SVG paths non-focusable and expose the data in a real table or other keyboard-readable structure.
+- Reduced-motion, focus-visible states, responsive overflow control, and WCAG AA contrast are standard release gates for Switch-owned UI guidance.
+- Dead i18n keys should be removed atomically with component changes; all chart labels, legends, captions, and guardrails need EN/ZH keys.
+
+## Major History Summary
+
+### 2026-06-30 — Design system and early engagement features
+- Helped establish the FutureGrid design system: Tailwind theme tokens, brand palette, reusable UI primitives, responsive shell, and themed chart treatments.
+- Round 2 engagement features shipped with RiskGauge, CommandPalette, SectorScatterChart, and Sidebar updates. A D3 cleanup rejection was resolved through independent revision.
+- Round 3 real-data integration relabeled “automation risk” to “AI exposure,” rewired chart axes to projected openings/bright share, and corrected source framing to Anthropic Economic Index + BLS + O*NET.
+
+### 2026-06-30 — Global/world-map visualization patterns
+- Built and refined `WorldChoropleth.tsx` patterns: D3 `geoNaturalEarth1`, metric toggles, tooltips, legends, WCAG AA, reduced-motion, keyboard-safe interaction, and China-specific diffusion rendering.
+- Round 4 and issue #6 moved world geometry out of the JS bundle to a static asset and used basePath-aware runtime fetch.
+- Later AI-demand work added an emerald/teal sequential ramp and choropleth/bubble modes for 9-economy job-demand data.
+
+### 2026-07-02 to 2026-07-04 — Layout, evidence, and IA guidance
+- Specified centered widescreen layout direction and redesigned Evidence Stack matrix behavior after overflow findings.
+- Guided AI Adoption Signals remediation by splitting China MAU vs usage and separating developer survey denominators.
+- Proposed visual storytelling concepts: Global AI Signal Atlas, Talent Bottleneck Matrix, and Market-Labor Pressure Radar, with proxy/descriptive guardrails.
+- Shaped IA around Overview, Workforce, Labor Signals, AI Ecosystem, and Data Governance.
+
+### 2026-07-10 to 2026-07-11 — Accessibility pattern consolidation
+- Supported issues #103/#104/#105. Learned that design-noted risks must be promoted to explicit release criteria when they become user-visible.
+- For PR #104, owned strict-lockout listbox semantics revision using roving tabindex patterns and deletion completeness for dead i18n keys.
+- For PRs #110/#112, consolidated accessible chart patterns: visual canvas/Chart.js output can be `aria-hidden` only when paired with `AccessibleChart`, figure labels, figcaptions, sr-only data tables, keyboard tooltips, and EN/ZH labels.
+- Checklist retained: focus-visible, reduced-motion, responsive tables, `scope="col"/"row"`, i18n completeness, and axe/focused route validation.
+
+### 2026-07-12 — PR #120 provenance registry and guardrails
+- Applied independent revisions for stale documentation comments and Rai yellow-advisory i18n fixes.
+- Corrected ZH exposure wording and FY ordering clarification.
+- Integrated calendar-aware `asOf` selector wording across provenance UI.
+- Outcome: PR #120 merged; issues #77/#119 closed.
+
+## AI Frontier Records
+
+### 2026-07-17T21:23:54Z — AI Frontier Methodology Release (PR #129)
+- Replaced implied impact/leadership copy with exact EN/ZH observable labels for tracked models, frontier records, weights availability, compute-known coverage, licensing, and attribution caveats.
+- Ensured the concrete China compute non-disclosure caveat appears equivalently in EN and ZH.
+- Key learning: disclosure-biased metrics must be labeled as narrow observables. Historical frontier count is not current frontier status, capability, or a country ranking.
+
+### 2026-07-18T00:51Z — AI Frontier UI enhancement i18n/token spec
+- Added 17 new frontier keys in each locale for the Tracked Model Origins map, compute-frontier envelope, and hero sparkline sr hint.
+- Preserved PR #129 semantics: descriptive-only map, no leader/rank/capability/impact framing except inside explicit negations/caveats.
+- Reused existing `dataDisclaimer`, `countryAttributionNote`, and metric labels rather than duplicating caveats.
+- Token spec for Neo:
+  - World map: sequential single-hue violet ramp, neutral no-data regions, no podium/diverging palette.
+  - Compute envelope: amber stroke + gradient as disclosed-compute upper bound.
+  - Hero sparklines: decorative violet stroke; numeric stat remains accessible content.
+- Validation recorded by Switch: lint clean, tests passed, EN/ZH key sets matched.
+
+### 2026-07-18T01:47:09Z — AI Frontier UI enhancement release (PR #130)
+- Added/validated the copy and visual-token contribution for PR #130, merged as 046b32f.
+- The released enhancement includes Tracked Model Origins choropleth, compute-frontier envelope, and decorative hero sparklines.
+- Non-ranking/caveat framing is preserved in both locales.
+
+## Pointers
+
+Detailed pre-summary records are preserved in `decisions.md`, `log/`, and `orchestration-log/`, especially PR #120, PR #129, and PR #130 session logs.
+
+
+### 2026-07-18T02:19Z — FrontierLeadersChart redesign spec + i18n (user "don't like the UI")
+- User disliked the "Tracked Model Activity by Organization and Country" panel (disclaimer wall + flat single-color bar chart + redundant table).
+- Authored a redesign spec for Neo: replace chart+table with ONE semantic `<table>` of "rows-as-bars" (rank + flag/monogram chip + name + animated gradient fill = the encoding + prominent value + inline peak-compute). The table IS both the visualization and the accessible data (no canvas/role=img, no duplicate table). Bars decorative/aria-hidden; values always as text; log-normalized width for largestRun; reduced-motion renders final width instantly.
+- Tamed disclaimers into a "Why these numbers?" `<details>` (coverageNote, orgEntitiesNote moved-optional, getDefinitions + countryDefaultSortDefinition + multiCountryAttributionDefinition) while KEEPING Rai-mandated point-of-use caveats visible: dataDisclaimer (compact info row), countryAttributionNote (countries tab), frontierDefinitionNote (frontierCount selected), metric description (single line under selector).
+- Guardrail hold: NEUTRAL numeric rank only — no podium/medal/gold-silver-bronze/winner language; all 6 metrics retained; no impact/leadership/capability/adoption framing added.
+- i18n: added 3 keys (leadersColRank, leadersTableCaption, leadersWhyDisclosure) to EN+ZH; repurposed a11yFrontierLeadersName/Summary to describe the table (removed "bar chart"/"table below"). EN/ZH identical at 131 keys.
+- Validation: `npm run lint` clean, `npm run test:run` 1594/1594 pass, EN/ZH parity identical. Did not edit the component (Neo) or data layer (Tank).
+
+### 2026-07-18T02:55Z — FrontierLeadersChart redesign shipped
+Switch's rows-as-bars spec and EN/ZH i18n updates shipped in PR #131, merged to main as 43b21ab. Guardrails: neutral rank, no podium framing, visible caveats, semantic table.
+
+
+### 2026-07-18T03:32Z — FrontierOriginsMap → FrontierOriginsTreemap i18n + token spec (share/concentration redesign)
+- Redesign of "Where Tracked Models Are Developed" from world choropleth → country SHARE/CONCENTRATION treemap (Trinity ceremony). Switch owned `lib/i18n/messages/{en,zh}/frontier.ts` ONLY.
+- Grep-audited all 13 `map*` keys repo-wide: consumers were only FrontierOriginsMap.tsx (rebuilt by Neo), AIFrontierView.tsx:321-322 (Neo rewires), and Mouse's tests. Nothing else. Safe to migrate.
+- Disposition: REMOVED 5 (mapLegendLabel/Low/High — no gradient legend; mapCoverageNote — replaced; mapLoading — no runtime geojson fetch). RENAMED/reframed 8 → origins*. ADDED 3 net-new (originsTableColShare, originsTooltipShare, originsSrSummary).
+- Final origins* set = 12 keys (originsSectionTitle [text unchanged], originsSectionSubhead [share/concentration, no map/geographic wording], originsMetricSelectorLabel="Share metric", originsTooltipRecords, originsTooltipShare, originsTableCaption, originsTableColCountry, originsTableColRecords, originsTableColShare, originsCoverageNote [var {countries}], originsEmpty, originsSrSummary). EN/ZH exact parity, 130 keys each, 0 map* remaining.
+- originsCoverageNote frames shares as "of attributed tracked records, not unique models," co-attribution → summed shares can exceed 100% / counts exceed unique totals, and Multinational excluded as non-geographic — complementary to (not duplicating) countryAttributionNote. dataDisclaimer + countryAttributionNote keys kept intact for point-of-use.
+- Guardrails held (PR #129/#130/#131): no leader/#1/top/winner/capability/impact/adoption; "ranking" only inside negations; neutral "sorted from largest to smallest share".
+- Token spec for Neo: UNIFORM brand violet tiles (#8b5cf6 dark ~0.55α / #7c3aed light ~0.85α), per-tile separation via 1px hairline borders + paddingInner(2) gap NOT color/value ramp (avoids intensity=winner misread, per Rai); label hide threshold (~≥56×28px) → rely on tooltip+table; reuse existing frontier glass tooltip (non-focusable, no role=img); hover = +0.12 opacity; reduced-motion instant; decorative SVG aria-hidden paired with originsSrSummary + semantic 3-col table.
+- Validation: lint CLEAN; EN/ZH parity IDENTICAL (130/130); test:run 1612/1616 — 4 EXPECTED failures all in Mouse-owned tests still asserting removed map* keys (ai-frontier.test.ts NEW_FRONTIER_KEYS list + mapCoverageNote token test; FrontierOriginsMap.test.tsx coverage-note render). Did NOT edit tests. The dynamic EN⇔ZH identical-key-set test PASSES. Decision recorded to decisions/inbox/switch-origins-treemap.md.
+
+## 2026-07-18T03:20:59.028+00:00 — Frontier Origins treemap i18n and visual tokens shipped (PR #132)
+
+Switch replaced map language with the 12-key EN/ZH `origins*` set, removed obsolete map-only keys, and specified uniform violet treemap tiles so area remains the only quantitative encoding. PR #132 merged to main as 758b351.
+
+
+### 2026-07-18T04:58Z — All-system design-doc audit (docs-only, no commit)
+Audited the 4 Switch-owned docs against current code and reconciled (strict, not a rewrite).
+- **explore.md** — ACCURATE, no changes (verified Server Component prop flow, 5 ExploreView sections, role="img" on all charts, no next/dynamic). No date bump.
+- **sectors.md** — UPDATED (date→2026-07-18): list page is now a Server Component passing `allSectors`+`wageTierData` props to new `SectorsPageClient` island (was mis-documented as "use client entire page"); `avgRisk` reconciled to employment-weighted mean per 7b92682 (`lib/data.ts:152`; detail page `[id]/page.tsx:34-37` matches).
+- **skills.md** — UPDATED (date→2026-07-18): `page.tsx` now passes `bridgeData`+`allInsights` (two props); `GROUPS`/`GROUP_SKILLS` taxonomy relocated page.tsx→`SkillsPageClient.tsx`; ReskillExplorer test count 11→13. **FLAG held:** SkillTransitionChart is deleted (PR #104/#107, tests assert its absence) but still documented throughout — left intact per the FLAG rule; recommended removal recorded to inbox.
+- **visualization-system.md** — UPDATED (date→2026-07-18): fixed 15-file breakdown (13 charts + AccessibleChart + WorldChoroplethInteractive; no Chart.js setup in charts/); scoped "sole Chart.js chart" to components/charts/ + noted visa/CostPowerTrends; added Frontier chart inventory subsection (xref frontier.md); **added Pattern C a11y contract** (visible semantic table IS the viz, decorative aria-hidden SVG, no role=img with table equivalent, area/length sole encoding, uniform non-ranking fills, reduced-motion) reflecting shipped #131/#132.
+Validation: `git diff --check` clean; edits isolated to the 3 changed owned docs; links resolve; .squad not staged. Decision detail: decisions/inbox/switch-docs-allsystem.md.
+
+### 2026-07-18T05:19Z — SkillTransitionChart DELETE-CANDIDATE actioned (Coordinator approved)
+Coordinator approved my flag; removed all obsolete `SkillTransitionChart` references from docs/skills.md (component deleted PR #104/#107, commit 09c6ca8; tests assert its absence). Reframed Purpose #2 to `SkillFlowSankey` only; removed the boundaries line, the component-table row, the "visual note" architecture subsection, the provenance row, the accessibility bullet, the stale ChartA11y.test.tsx testing row, the gaps bullet, and the "Butterfly chart" key-ref. Augmented the ReskillingBridge.test.tsx row to note the SkillTransitionChart-removal guard. Kept 2026-07-18 date bump + all prior reconciliation. `git diff --check` clean; docs/skills.md only (+19/−26); no commit/branch; .squad not staged. Detail in decisions/inbox/switch-docs-allsystem.md.
+### 2026-07-18T20:30Z — System-wide docs reconciliation shipped (PR #133)
+
+**Team update (Scribe-logged):** PR #133 reconciled the full `docs/` set to current code and squash-merged to main as **7a6a876**. Switch updated docs/sectors.md (Server-Component list page + `SectorsPageClient`, employment-weighted `avgRisk`), docs/skills.md (removed all deleted `SkillTransitionChart` refs → `SkillFlowSankey`; two-prop skills page; taxonomy relocated), docs/visualization-system.md (15-file chart inventory + a11y Pattern C + frontier cross-ref); verified docs/explore.md accurate. Team totals: 15 docs updated, 4 verified accurate.
