@@ -7,9 +7,16 @@ export interface AIFrontierSource {
   publisher: string;
   url: string;
   downloadUrl: string;
+  docsUrl?: string;
   license: string;
   accessed: string;
   caveat: string;
+}
+
+export interface AIFrontierRecentWindow {
+  years: number;
+  start: string; // YYYY-MM-DD
+  end: string;   // YYYY-MM-DD
 }
 
 export interface AIFrontierMethodology {
@@ -18,15 +25,44 @@ export interface AIFrontierMethodology {
   modernEraStart: number;
   costUnit: string;
   notes: string;
+  recentWindow?: AIFrontierRecentWindow;
+}
+
+/**
+ * Methodological definitions and disclosure text for every metric dimension.
+ * Consumers should display these at point-of-use to avoid misinterpretation.
+ */
+export interface AIFrontierDefinitions {
+  /** Discloses what Epoch AI's "Frontier model" flag means and its limitations. */
+  frontierDefinition: string;
+  /** Describes what modelCount, computeKnownCount, recentCount, and openWeightsCount mean for orgs. */
+  orgLeaderboardMetric: string;
+  /** Describes the default country sort key and why it is recentCount. */
+  countryLeaderboardDefaultSort: string;
+  /** Discloses openWeightsCount limitations. */
+  openWeightsMetric: string;
+  /** Explains co-attribution for multi-country models. */
+  multiCountryAttribution: string;
+  /** Explains that Google entities are preserved as distinct source entities. */
+  googleEntitiesNote: string;
+  /** General coverage caveat. */
+  coverageNote: string;
 }
 
 export interface AIFrontierCounts {
   totalRows: number;
+  /** Rows with a valid YYYY-MM-DD publication date (full catalog). */
+  withDate: number;
   withCompute: number;
   withComputeAndDate: number;
   withPower: number;
   withCost: number;
+  /** Rows with "Open model weights?" = Yes (across all rows). */
+  withOpenWeights: number;
   countries: number;
+  recentWindowStart: string;
+  recentWindowEnd: string;
+  recentWindowCount: number;
 }
 
 // ── Per-model entry (lean: no abstracts/authors/notes) ────────────────────────
@@ -100,19 +136,68 @@ export interface OrgLeaderboardEntry {
   organization: string;
   orgCategory: string | null;
   country: string | null;
+  /**
+   * Full-catalog model count — all tracked Epoch AI rows with a valid
+   * publication date, regardless of compute disclosure. Primary sort key.
+   */
   modelCount: number;
+  /**
+   * Compute-known model count — rows with training compute estimates.
+   * This was the old `modelCount` before the full-catalog expansion.
+   */
+  computeKnownCount: number;
+  /**
+   * Frontier-flagged model count (compute-known subset only).
+   * Reflects top-10 training compute at release — not capability or impact.
+   */
   frontierCount: number;
+  /**
+   * Full-catalog models published within the 3-year recent window.
+   * Reflects current tracked-output activity.
+   */
+  recentCount: number;
+  /**
+   * Full-catalog models with confirmed open weights ("Open model weights?" = Yes).
+   * Proxy for tracked open-release activity only.
+   */
+  openWeightsCount: number;
+  /** Peak training compute FLOP (compute-known subset). Zero when no compute estimates exist. */
   maxComputeFlop: number;
   latestDate: string;
-  medianLog10Compute: number;
+  /** Median log10(compute) across compute-known models, or null if none. */
+  medianLog10Compute: number | null;
 }
 
 export interface CountryLeaderboardEntry {
   country: string;
   /** Short display name (e.g. "United States" for "United States of America"). */
   countryShort: string;
+  /**
+   * Full-catalog model count — all dated Epoch AI rows attributed to this country,
+   * regardless of compute disclosure.
+   */
   modelCount: number;
+  /**
+   * Compute-known model count — rows with training compute estimates.
+   * This was the old `modelCount` before the full-catalog expansion.
+   */
+  computeKnownCount: number;
+  /**
+   * Frontier-flagged model count (compute-known subset only).
+   * Provided for historical context; not the default sort key.
+   */
   frontierCount: number;
+  /**
+   * Full-catalog models published within the 3-year recent window.
+   * Default sort key — reflects current tracked-output activity.
+   */
+  recentCount: number;
+  /**
+   * Full-catalog models with confirmed open weights.
+   * Proxy for tracked open-release activity only.
+   */
+  openWeightsCount: number;
+  /** Peak training compute FLOP (compute-known subset). Zero when no compute estimates exist. */
   maxComputeFlop: number;
   orgCount: number;
 }
@@ -134,7 +219,13 @@ export interface AIFrontierAggregates {
   powerTrend: PowerTrendPoint[];
   orgLeaderboard: OrgLeaderboardEntry[];
   countryLeaderboard: CountryLeaderboardEntry[];
+  /**
+   * Open-weights breakdown across compute-known rows only (backward compat).
+   * Use `fullCatalogAccessibilityMix` for full dated-catalog coverage.
+   */
   accessibilityMix: AccessibilityMix;
+  /** Open-weights breakdown across all dated-catalog rows. */
+  fullCatalogAccessibilityMix: AccessibilityMix;
   domainMix: DomainMixEntry[];
 }
 
@@ -142,6 +233,7 @@ export interface AIFrontierData {
   generatedAt: string;
   source: AIFrontierSource;
   methodology: AIFrontierMethodology;
+  definitions: AIFrontierDefinitions;
   counts: AIFrontierCounts;
   models: AIFrontierModel[];
   aggregates: AIFrontierAggregates;
@@ -160,7 +252,7 @@ export function getAIFrontierData(): AIFrontierData {
 
 // ── Helper selectors ──────────────────────────────────────────────────────────
 
-/** All models with compute + date, sorted ascending by date. */
+/** All compute-known models with valid date, sorted ascending by date. */
 export function getComputeModels(): AIFrontierModel[] {
   return data.models;
 }
@@ -180,14 +272,36 @@ export function getComputeTimeline(): FrontierYearPoint[] {
   return data.aggregates.computeTrend.frontierByYear;
 }
 
-/** Top N organizations by model count (default 20, capped at available rows). */
+/**
+ * Top N organizations by full-catalog model count (default 20, capped at available rows).
+ * modelCount reflects all dated Epoch AI rows, not just compute-known rows.
+ */
 export function getOrgLeaderboard(limit = 20): OrgLeaderboardEntry[] {
   return data.aggregates.orgLeaderboard.slice(0, Math.max(1, limit));
 }
 
-/** All countries with at least one compute model, sorted by model count desc. */
+/**
+ * All countries with at least one dated model, sorted by recentCount descending.
+ * recentCount = full-catalog models in the 3-year recent window.
+ */
 export function getCountryLeaderboard(): CountryLeaderboardEntry[] {
   return data.aggregates.countryLeaderboard;
+}
+
+/**
+ * Top N organizations by recent full-catalog activity (recentCount desc).
+ * Useful for showing which orgs are most active in the recent window.
+ */
+export function getRecentlyActiveOrgs(limit = 20): OrgLeaderboardEntry[] {
+  return data.aggregates.orgLeaderboard
+    .slice()
+    .sort(
+      (a, b) =>
+        b.recentCount - a.recentCount ||
+        b.modelCount - a.modelCount ||
+        a.organization.localeCompare(b.organization),
+    )
+    .slice(0, Math.max(1, limit));
 }
 
 /** OLS regression stats for the modern era (year >= 2010). */
@@ -210,14 +324,38 @@ export function getPowerTrend(): PowerTrendPoint[] {
   return data.aggregates.powerTrend;
 }
 
-/** Domain distribution across all compute models, sorted by count desc. */
+/** Domain distribution across compute-known models, sorted by count desc. */
 export function getDomainMix(): DomainMixEntry[] {
   return data.aggregates.domainMix;
 }
 
-/** Open-weights / closed / unknown breakdown across compute models. */
+/**
+ * Open-weights / closed / unknown breakdown across compute-known models.
+ * Use `getFullCatalogAccessibilityMix()` for full dated-catalog coverage.
+ */
 export function getAccessibilityMix(): AccessibilityMix {
   return { ...data.aggregates.accessibilityMix };
+}
+
+/**
+ * Open-weights / closed / unknown breakdown across all dated-catalog rows.
+ * Includes models without compute estimates.
+ */
+export function getFullCatalogAccessibilityMix(): AccessibilityMix {
+  return { ...data.aggregates.fullCatalogAccessibilityMix };
+}
+
+/** Methodological definitions and disclosure text for metric dimensions. */
+export function getDefinitions(): AIFrontierDefinitions {
+  return data.definitions;
+}
+
+/**
+ * Recent window metadata (start/end dates, years back).
+ * Useful for rendering "last N years" labels in the UI.
+ */
+export function getRecentWindow(): AIFrontierRecentWindow | null {
+  return data.methodology.recentWindow ?? null;
 }
 
 /**

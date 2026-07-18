@@ -2,7 +2,45 @@
 /**
  * Fetch and process Epoch AI "Notable AI Models" CSV to build AI Frontier
  * compute/cost/power trend data for the FutureGrid AI Frontier page.
- * Source: https://epoch.ai/data/notable_ai_models.csv (CC BY 4.0)
+ *
+ * Source:       https://epoch.ai/data/ai-models  (landing page)
+ * Download URL: https://epoch.ai/data/notable_ai_models.csv
+ * License:      CC BY 4.0
+ * Docs:         https://epoch.ai/data/ai-models-documentation
+ *
+ * KEY METHODOLOGY DECISIONS (see docs/frontier.md for full rationale):
+ *
+ * 1. Two data tiers:
+ *    • catalogAll  — all rows with a valid YYYY-MM-DD publication date.
+ *      Used for org/country tracked-output leaderboards so labs without
+ *      compute estimates are not silently excluded.
+ *    • computeKnown ("models" array) — catalogAll filtered to rows that
+ *      ALSO have a numeric Training compute (FLOP).  Used for compute /
+ *      cost / power scaling trend views only.
+ *
+ * 2. Epoch AI's "Frontier model" flag marks models in the top 10 by
+ *    estimated training compute at time of release.  It is a historical
+ *    compute-scale indicator, not a general capability or impact signal.
+ *    frontierCount is derived from computeKnown rows only (frontier=True
+ *    requires a compute estimate by definition).
+ *
+ * 3. Leaderboard sort keys:
+ *    • orgLeaderboard  — sorted by full-catalog model count descending.
+ *    • countryLeaderboard — sorted by recentCount (full-catalog models
+ *      published within the 3-year recent window) descending.  This
+ *      reflects current tracked-output activity better than historical
+ *      frontier compute counts.
+ *
+ * 4. Multi-country models are co-attributed to every participating country;
+ *    counts are not deduplicated across countries.
+ *
+ * 5. Google, DeepMind, Google Brain, Google Research, and Google DeepMind
+ *    are preserved as distinct source entities exactly as Epoch AI records
+ *    them.  No editorial merger is applied.
+ *
+ * 6. openWeightsCount derives from Epoch AI's "Open model weights?" column.
+ *    It is a proxy for tracked open-release activity — not downloads,
+ *    adoption, quality, or societal impact.
  */
 
 import { existsSync, mkdirSync, writeFileSync } from "fs";
@@ -18,10 +56,14 @@ if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
 
 const OUTPUT_FILE = path.join(DATA_DIR, "ai-frontier.json");
 const CSV_URL = "https://epoch.ai/data/notable_ai_models.csv";
+const SOURCE_URL = "https://epoch.ai/data/ai-models";
+const SOURCE_DOCS_URL = "https://epoch.ai/data/ai-models-documentation";
 const UA = "FutureGrid/1.0 (+https://github.com) data build";
 const GENERATED_AT = new Date().toISOString();
 const TODAY = GENERATED_AT.slice(0, 10);
 const MODERN_ERA_START = 2010;
+/** Recent-window: calendar years to look back from the latest date in the catalog. */
+const RECENT_WINDOW_YEARS = 3;
 
 // ── CSV parser: RFC-4180 with quoted commas, newlines, and "" escaped quotes ──
 
@@ -267,8 +309,17 @@ async function main() {
   console.log("  parsed " + rows.length + " data rows");
 
   // ── Parse + classify rows ──────────────────────────────────────────────────
-  const parsed = [];
-  let withCompute = 0, withComputeAndDate = 0, withPower = 0, withCost = 0;
+  //
+  // Two output tiers:
+  //   catalogAll — every row with a valid YYYY-MM-DD publication date.
+  //                Used for org/country tracked-output leaderboards.
+  //   parsed     — catalogAll filtered further to rows that also have a
+  //                positive Training compute (FLOP) estimate.
+  //                Used for compute/cost/power scaling trend views.
+  //
+  const catalogAll = [];   // full dated catalog (any compute status)
+  const parsed = [];       // compute-known subset
+  let withCompute = 0, withComputeAndDate = 0, withPower = 0, withCost = 0, withOpenWeights = 0;
   const countrySet = new Set();
 
   for (let ri = 0; ri < rows.length; ri++) {
@@ -283,31 +334,61 @@ async function main() {
     const countries = normalizeCountries(rawCountry);
     const country = countries.length > 0 ? countries.join(", ") : null;
 
+    const openWeightsStr = String(row["Open model weights?"] || "").trim().toLowerCase();
+    const openWeights =
+      openWeightsStr === "yes" ? true : openWeightsStr === "no" ? false : null;
+
     if (computeRaw != null && computeRaw > 0) withCompute += 1;
     if (costRaw != null && costRaw > 0) withCost += 1;
     if (powerRaw != null && powerRaw > 0) withPower += 1;
+    if (openWeights === true) withOpenWeights += 1;
     for (let ci = 0; ci < countries.length; ci++) countrySet.add(countries[ci]);
 
-    // models array: ONLY rows with numeric compute AND valid date
-    if (computeRaw == null || computeRaw <= 0 || !validDate) continue;
-    withComputeAndDate += 1;
+    // catalogAll: rows with a valid publication date (any compute status)
+    if (!validDate) continue;
 
-    const dy = toDecimalYear(dateStr);
     const yr = parseInt(dateStr.slice(0, 4), 10);
+    const dy = toDecimalYear(dateStr);
 
     const domainsRaw = String(row["Domain"] || "").trim();
     const domains = domainsRaw
       ? domainsRaw.split(",").map(function (d) { return d.trim(); }).filter(Boolean)
       : [];
 
-    const paramsRaw = parseNum(row["Parameters"]);
-
-    const openWeightsStr = String(row["Open model weights?"] || "").trim().toLowerCase();
-    const openWeights =
-      openWeightsStr === "yes" ? true : openWeightsStr === "no" ? false : null;
-
     const frontierStr = String(row["Frontier model"] || "").trim().toLowerCase();
     const frontier = frontierStr === "true";
+
+    const paramsRaw = parseNum(row["Parameters"]);
+
+    // Lean catalog entry (used for leaderboard aggregation; no compute fields
+    // unless compute is known so downstream can still read them as numbers).
+    const catalogEntry = {
+      name: String(row["Model"] || "").trim(),
+      organization: String(row["Organization"] || "").trim() || "Unknown",
+      orgCategory: String(row["Organization categorization"] || "").trim() || null,
+      country: country,
+      countries: countries,
+      date: dateStr,
+      year: yr,
+      domains: domains,
+      openWeights: openWeights,
+      accessibility: String(row["Model accessibility"] || "").trim() || null,
+      frontier: frontier,
+      hasCompute: computeRaw != null && computeRaw > 0,
+    };
+    catalogAll.push(catalogEntry);
+
+    // models array: ONLY rows with numeric compute AND valid date
+    if (computeRaw == null || computeRaw <= 0) continue;
+    withComputeAndDate += 1;
+
+    // openWeights/frontier/accessibility already extracted above.
+    // Re-read for clarity in the compute-known record (avoids referencing catalogEntry).
+    const openWeightsStrC = String(row["Open model weights?"] || "").trim().toLowerCase();
+    const openWeightsC =
+      openWeightsStrC === "yes" ? true : openWeightsStrC === "no" ? false : null;
+    const frontierStrC = String(row["Frontier model"] || "").trim().toLowerCase();
+    const frontierC = frontierStrC === "true";
 
     parsed.push({
       name: String(row["Model"] || "").trim(),
@@ -325,8 +406,8 @@ async function main() {
       log10Compute: round(Math.log10(computeRaw), 3),
       trainingCostUsd2023: costRaw != null && costRaw > 0 ? costRaw : null,
       powerDrawW: powerRaw != null && powerRaw > 0 ? powerRaw : null,
-      frontier: frontier,
-      openWeights: openWeights,
+      frontier: frontierC,
+      openWeights: openWeightsC,
       accessibility: String(row["Model accessibility"] || "").trim() || null,
       confidence: String(row["Confidence"] || "").trim() || null,
       link: String(row["Link"] || "").trim() || null,
@@ -335,6 +416,19 @@ async function main() {
 
   // sort ascending by date
   parsed.sort(function (a, b) { return a.date.localeCompare(b.date); });
+  catalogAll.sort(function (a, b) { return a.date.localeCompare(b.date); });
+
+  // ── Recent window: RECENT_WINDOW_YEARS back from the latest date in the full catalog ──
+  const allDates = catalogAll.map(function (m) { return m.date; }).sort();
+  const latestCatalogDate = allDates[allDates.length - 1] || TODAY;
+  const latestYear = parseInt(latestCatalogDate.slice(0, 4), 10);
+  const latestMonth = latestCatalogDate.slice(5, 7);
+  const latestDay = latestCatalogDate.slice(8, 10);
+  const recentWindowStart = (latestYear - RECENT_WINDOW_YEARS) + "-" + latestMonth + "-" + latestDay;
+  const recentWindowEnd = latestCatalogDate;
+
+  console.log("  full catalog (with date): " + catalogAll.length);
+  console.log("  recent window: " + recentWindowStart + " → " + recentWindowEnd);
 
   // ── Compute trend ──────────────────────────────────────────────────────────
   const modernModels = parsed.filter(function (m) { return m.year >= MODERN_ERA_START; });
@@ -412,8 +506,16 @@ async function main() {
       };
     });
 
-  // ── Org leaderboard ────────────────────────────────────────────────────────
-  const orgMap = parsed.reduce(function (map, m) {
+  // ── Org leaderboard — built from catalogAll (full dated catalog) ──────────
+  //
+  // Multi-metric fields per org:
+  //   modelCount        — full catalog count (all rows with valid date)
+  //   computeKnownCount — rows in compute-known subset
+  //   frontierCount     — rows with frontier=True (always a subset of computeKnown)
+  //   recentCount       — full catalog rows within the recent window
+  //   openWeightsCount  — full catalog rows with confirmed open weights
+  //
+  const orgCatalogMap = catalogAll.reduce(function (map, m) {
     const key = m.organization;
     let entry = map.get(key);
     if (!entry) {
@@ -421,75 +523,143 @@ async function main() {
         organization: key,
         orgCategory: null,
         country: null,
-        models: [],
+        allModels: [],
+        computeModels: [], // subset of allModels where hasCompute===true
       };
       map.set(key, entry);
     }
     if (entry.orgCategory === null && m.orgCategory !== null) entry.orgCategory = m.orgCategory;
     if (entry.country === null && m.country !== null) entry.country = m.country;
-    entry.models.push(m);
+    entry.allModels.push(m);
+    if (m.hasCompute) entry.computeModels.push(m);
     return map;
   }, new Map());
 
-  const orgLeaderboard = Array.from(orgMap.values())
+  // For maxComputeFlop and medianLog10Compute we still need the compute-known data
+  const parsedByOrg = parsed.reduce(function (map, m) {
+    const arr = map.get(m.organization) || [];
+    arr.push(m);
+    map.set(m.organization, arr);
+    return map;
+  }, new Map());
+
+  const orgLeaderboard = Array.from(orgCatalogMap.values())
     .filter(function (entry) { return entry.organization && entry.organization !== "Unknown"; })
     .map(function (entry) {
-      const models = entry.models;
-      const frontierCount = models.filter(function (m) { return m.frontier; }).length;
-      const maxComputeFlop = Math.max.apply(null, models.map(function (m) { return m.computeFlop; }));
-      const latestDate = models
+      const allMods = entry.allModels;
+      const computeMods = parsedByOrg.get(entry.organization) || [];
+      const frontierCount = computeMods.filter(function (m) { return m.frontier; }).length;
+      const recentCount = allMods.filter(function (m) { return m.date >= recentWindowStart; }).length;
+      const openWeightsCount = allMods.filter(function (m) { return m.openWeights === true; }).length;
+      const maxComputeFlop = computeMods.length > 0
+        ? Math.max.apply(null, computeMods.map(function (m) { return m.computeFlop; }))
+        : 0;
+      const latestDate = allMods
         .map(function (m) { return m.date; })
         .sort(function (a, b) { return b.localeCompare(a); })[0];
-      const medLog10 = median(models.map(function (m) { return m.log10Compute; }));
+      const medLog10 = computeMods.length > 0
+        ? median(computeMods.map(function (m) { return m.log10Compute; }))
+        : null;
       return {
         organization: entry.organization,
         orgCategory: entry.orgCategory,
         country: entry.country,
-        modelCount: models.length,
+        // modelCount = full catalog count (primary leaderboard metric)
+        modelCount: allMods.length,
+        // computeKnownCount = rows with compute estimates (was old modelCount)
+        computeKnownCount: computeMods.length,
         frontierCount: frontierCount,
+        recentCount: recentCount,
+        openWeightsCount: openWeightsCount,
         maxComputeFlop: maxComputeFlop,
         latestDate: latestDate,
         medianLog10Compute: round(medLog10, 3),
       };
     })
+    // Sort by full-catalog model count descending; ties broken alphabetically
     .sort(function (a, b) {
       return b.modelCount - a.modelCount || a.organization.localeCompare(b.organization);
     })
     .slice(0, 20);
 
-  // ── Country leaderboard (co-attribution over deduped country set) ─────────
-  // Multi-country models are credited to EACH participating country.
-  const countryMap = parsed.reduce(function (map, m) {
+  // ── Country leaderboard — built from catalogAll, sorted by recentCount ─────
+  //
+  // Multi-country models are co-attributed to each participating country.
+  // Sort key: recentCount (full-catalog models in the 3-year recent window)
+  // so the default ordering reflects current tracked-output activity rather
+  // than historical compute-scale frontier counts.
+  //
+  const countryCatalogMap = catalogAll.reduce(function (map, m) {
     for (let ci = 0; ci < m.countries.length; ci++) {
       const cname = m.countries[ci];
       let entry = map.get(cname);
       if (!entry) {
-        entry = { country: cname, models: [], orgs: new Set() };
+        entry = { country: cname, allModels: [], orgs: new Set() };
         map.set(cname, entry);
       }
-      entry.models.push(m);
+      entry.allModels.push(m);
       if (m.organization && m.organization !== "Unknown") entry.orgs.add(m.organization);
     }
     return map;
   }, new Map());
 
-  const countryLeaderboard = Array.from(countryMap.values())
+  // For compute-derived fields we still need the compute-known data keyed by country
+  const parsedByCountryMap = parsed.reduce(function (map, m) {
+    for (let ci = 0; ci < m.countries.length; ci++) {
+      const cname = m.countries[ci];
+      const arr = map.get(cname) || [];
+      arr.push(m);
+      map.set(cname, arr);
+    }
+    return map;
+  }, new Map());
+
+  const countryLeaderboard = Array.from(countryCatalogMap.values())
     .map(function (entry) {
+      const allMods = entry.allModels;
+      const computeMods = parsedByCountryMap.get(entry.country) || [];
+      const frontierCount = computeMods.filter(function (m) { return m.frontier; }).length;
+      const recentCount = allMods.filter(function (m) { return m.date >= recentWindowStart; }).length;
+      const openWeightsCount = allMods.filter(function (m) { return m.openWeights === true; }).length;
+      const maxComputeFlop = computeMods.length > 0
+        ? Math.max.apply(null, computeMods.map(function (m) { return m.computeFlop; }))
+        : 0;
       return {
         country: entry.country,
         countryShort: COUNTRY_SHORT_MAP[entry.country] || entry.country,
-        modelCount: entry.models.length,
-        frontierCount: entry.models.filter(function (m) { return m.frontier; }).length,
-        maxComputeFlop: Math.max.apply(null, entry.models.map(function (m) { return m.computeFlop; })),
+        // modelCount = full catalog count
+        modelCount: allMods.length,
+        // computeKnownCount = rows with compute estimates (was old modelCount)
+        computeKnownCount: computeMods.length,
+        frontierCount: frontierCount,
+        // recentCount is the default sort key — current tracked-output activity
+        recentCount: recentCount,
+        openWeightsCount: openWeightsCount,
+        maxComputeFlop: maxComputeFlop,
         orgCount: entry.orgs.size,
       };
     })
+    // Sort by recent activity (full-catalog recent-window count) descending
     .sort(function (a, b) {
-      return b.modelCount - a.modelCount || a.country.localeCompare(b.country);
+      return b.recentCount - a.recentCount
+        || b.modelCount - a.modelCount
+        || a.country.localeCompare(b.country);
     });
 
   // ── Accessibility mix ──────────────────────────────────────────────────────
+  // Keep accessibilityMix over compute-known subset for backward compat.
+  // fullCatalogAccessibilityMix covers the full dated catalog.
   const accessibilityMix = parsed.reduce(
+    function (acc, m) {
+      if (m.openWeights === true) acc.openWeights += 1;
+      else if (m.openWeights === false) acc.closed += 1;
+      else acc.unknown += 1;
+      return acc;
+    },
+    { openWeights: 0, closed: 0, unknown: 0 },
+  );
+
+  const fullCatalogAccessibilityMix = catalogAll.reduce(
     function (acc, m) {
       if (m.openWeights === true) acc.openWeights += 1;
       else if (m.openWeights === false) acc.closed += 1;
@@ -518,8 +688,9 @@ async function main() {
     source: {
       name: "Epoch AI \u2014 Notable AI Models",
       publisher: "Epoch AI",
-      url: "https://epoch.ai/data/notable-ai-models",
+      url: SOURCE_URL,
       downloadUrl: CSV_URL,
+      docsUrl: SOURCE_DOCS_URL,
       license: "CC BY 4.0",
       accessed: TODAY,
       caveat:
@@ -531,14 +702,55 @@ async function main() {
       modernEraStart: MODERN_ERA_START,
       costUnit: "2023 USD",
       notes: "Descriptive historical trends only \u2014 not a forecast.",
+      recentWindow: {
+        years: RECENT_WINDOW_YEARS,
+        start: recentWindowStart,
+        end: recentWindowEnd,
+      },
+    },
+    definitions: {
+      frontierDefinition:
+        "Epoch AI's 'Frontier model' flag marks models in the top 10 by estimated training " +
+        "compute at the time of release. It reflects compute-disclosure availability and " +
+        "historical compute scale \u2014 not capability, quality, or societal impact. " +
+        "frontierCount is derived from compute-known rows only; models without compute " +
+        "estimates (including many recent and open-source releases) cannot carry this flag.",
+      orgLeaderboardMetric:
+        "modelCount = all tracked Epoch AI rows with a valid publication date, regardless " +
+        "of compute disclosure. computeKnownCount = rows with training compute estimates. " +
+        "frontierCount = compute-known rows flagged as top-10 compute at release. " +
+        "recentCount = full-catalog models published within the " + RECENT_WINDOW_YEARS + "-year recent window.",
+      countryLeaderboardDefaultSort:
+        "Default sort: recentCount (full-catalog models in the recent window) descending. " +
+        "This reflects current tracked-output activity. frontierCount is provided for " +
+        "historical context but must not be used as a general country ranking.",
+      openWeightsMetric:
+        "openWeightsCount derives from Epoch AI's 'Open model weights?' column ('Yes' = " +
+        "confirmed open weights). A proxy for tracked open-release activity only \u2014 not " +
+        "downloads, adoption, quality, or societal impact.",
+      multiCountryAttribution:
+        "Models attributed to multiple countries are counted once per participating country " +
+        "(co-attribution). A single US\u2013UK collaboration increments both country totals.",
+      googleEntitiesNote:
+        "Google, DeepMind, Google Brain, Google Research, and Google DeepMind are preserved " +
+        "as distinct Epoch AI source entities. No editorial merger is applied.",
+      coverageNote:
+        "Coverage is Epoch AI's 'Notable AI Models' curation \u2014 not an exhaustive " +
+        "registry. Labs without compute disclosure and newer open-source releases may be " +
+        "underrepresented in the compute-known subset.",
     },
     counts: {
       totalRows: rows.length,
+      withDate: catalogAll.length,
       withCompute: withCompute,
       withComputeAndDate: withComputeAndDate,
       withPower: withPower,
       withCost: withCost,
+      withOpenWeights: withOpenWeights,
       countries: countrySet.size,
+      recentWindowStart: recentWindowStart,
+      recentWindowEnd: recentWindowEnd,
+      recentWindowCount: catalogAll.filter(function (m) { return m.date >= recentWindowStart; }).length,
     },
     models: parsed,
     aggregates: {
@@ -551,7 +763,10 @@ async function main() {
       powerTrend: powerTrend,
       orgLeaderboard: orgLeaderboard,
       countryLeaderboard: countryLeaderboard,
+      // accessibilityMix: compute-known subset (backward-compat; use fullCatalogAccessibilityMix for full coverage)
       accessibilityMix: accessibilityMix,
+      // fullCatalogAccessibilityMix: all dated rows (includes non-compute rows)
+      fullCatalogAccessibilityMix: fullCatalogAccessibilityMix,
       domainMix: domainMix,
     },
     caveats: [
@@ -560,6 +775,9 @@ async function main() {
       "Future-dated entries reflect the source snapshot and are shown as-is.",
       "Descriptive trends, not predictions.",
       "Multi-country collaboration models are co-attributed to each participating country in the country leaderboard.",
+      "Epoch AI's 'Frontier model' flag reflects top-10 training compute at release time, not capability or impact.",
+      "Org/country model counts use the full dated catalog. Compute-derived metrics (frontierCount, maxComputeFlop) use only the compute-known subset.",
+      "openWeightsCount is a proxy for tracked open-release activity only.",
     ],
   };
 
@@ -569,43 +787,64 @@ async function main() {
   console.log("  wrote data/ai-frontier.json");
 
   // ── Coverage / sanity report ───────────────────────────────────────────────
-  const top3Orgs = orgLeaderboard
-    .slice(0, 3)
-    .map(function (o) { return o.organization + " (" + o.modelCount + ")"; })
+  const top5Orgs = orgLeaderboard
+    .slice(0, 5)
+    .map(function (o) { return o.organization + " (" + o.modelCount + " full/" + o.computeKnownCount + " compute/" + o.recentCount + " recent)"; })
     .join(", ");
-  const top3Countries = countryLeaderboard
-    .slice(0, 3)
-    .map(function (c) { return c.countryShort + " (" + c.modelCount + ")"; })
+  const top5Countries = countryLeaderboard
+    .slice(0, 5)
+    .map(function (c) { return c.countryShort + " (" + c.recentCount + " recent/" + c.modelCount + " full)"; })
     .join(", ");
 
   console.log("\nCOVERAGE + SANITY");
   console.log("- total rows parsed: " + rows.length);
+  console.log("- with valid date (catalogAll): " + catalogAll.length);
   console.log("- with compute (any date): " + withCompute);
   console.log("- with compute + valid date (models array): " + withComputeAndDate);
   console.log("- with cost: " + withCost);
   console.log("- with power draw: " + withPower);
+  console.log("- with open weights: " + withOpenWeights);
   console.log("- unique countries (all rows): " + countrySet.size);
+  console.log("- recent window: " + recentWindowStart + " to " + recentWindowEnd + " (" + output.counts.recentWindowCount + " models)");
   console.log(
     "- overall trend: slope=" + overallTrend?.slopeLog10PerYear +
     " log10/yr, doublingMonths=" + overallTrend?.doublingTimeMonths +
-    ", r²=" + overallTrend?.r2 +
+    ", r\u00B2=" + overallTrend?.r2 +
     ", n=" + overallTrend?.n,
   );
   console.log(
     "- modernEra trend (>=" + MODERN_ERA_START + "): slope=" + modernTrend?.slopeLog10PerYear +
     " log10/yr, doublingMonths=" + modernTrend?.doublingTimeMonths +
-    ", r²=" + modernTrend?.r2 +
+    ", r\u00B2=" + modernTrend?.r2 +
     ", n=" + modernTrend?.n,
   );
-  console.log("- frontier models (flag=True): " + parsed.filter(function (m) { return m.frontier; }).length);
+  console.log("- frontier models (flag=True, compute-known): " + parsed.filter(function (m) { return m.frontier; }).length);
   console.log("- cost trend years: " + costTrend.length + ", power trend years: " + powerTrend.length);
   console.log("- org leaderboard entries: " + orgLeaderboard.length);
   console.log("- country leaderboard entries: " + countryLeaderboard.length);
   console.log("- domain types: " + domainMix.length);
-  console.log("- accessibility mix: " + JSON.stringify(accessibilityMix));
-  console.log("- top 3 orgs: " + top3Orgs);
-  console.log("- top 3 countries: " + top3Countries);
-  console.log("\nDone — data/ai-frontier.json ready.");
+  console.log("- accessibilityMix (compute-known): " + JSON.stringify(accessibilityMix));
+  console.log("- fullCatalogAccessibilityMix: " + JSON.stringify(fullCatalogAccessibilityMix));
+  console.log("- top 5 orgs (full/compute/recent): " + top5Orgs);
+  console.log("- top 5 countries by recentCount: " + top5Countries);
+  console.log("\nSPOT CHECKS:");
+  const spotOrgs = ["Google", "DeepMind", "Google DeepMind", "OpenAI", "Anthropic", "Meta AI", "xAI", "DeepSeek"];
+  for (const orgName of spotOrgs) {
+    const o = orgLeaderboard.find(function (e) { return e.organization === orgName; });
+    if (o) {
+      console.log("  " + orgName + ": modelCount=" + o.modelCount + ", computeKnown=" + o.computeKnownCount + ", frontier=" + o.frontierCount + ", recent=" + o.recentCount + ", ow=" + o.openWeightsCount + ", latest=" + o.latestDate);
+    } else {
+      console.log("  " + orgName + ": not in top-20 leaderboard");
+    }
+  }
+  const spotCountries = ["United States", "China", "United Kingdom", "France", "South Korea"];
+  for (const ctry of spotCountries) {
+    const c = countryLeaderboard.find(function (e) { return e.countryShort === ctry; });
+    if (c) {
+      console.log("  " + ctry + ": modelCount=" + c.modelCount + ", computeKnown=" + c.computeKnownCount + ", frontier=" + c.frontierCount + ", recent=" + c.recentCount + ", ow=" + c.openWeightsCount);
+    }
+  }
+  console.log("\nDone \u2014 data/ai-frontier.json ready.");
 }
 
 main().catch(function (err) {

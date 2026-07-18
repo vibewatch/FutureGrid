@@ -1534,6 +1534,8 @@ export function validateProvenance(registry, opts = {}) {
  * @param {Record<string, unknown>} data
  */
 export function validateAIFrontier(data) {
+  // Check core structural fields first so row-count errors are reported before
+  // schema-extension errors (preserves backward-compat test expectations).
   assertFields(
     data,
     ["generatedAt", "source", "counts", "models", "aggregates", "caveats"],
@@ -1553,6 +1555,79 @@ export function validateAIFrontier(data) {
   const counts = data.counts;
   if (!counts || typeof counts.totalRows !== "number" || counts.totalRows < 100) {
     throw new Error("[validate] ai-frontier: counts.totalRows must be >= 100");
+  }
+  // Extended checks for new schema fields (definitions, recentWindow, multi-metric leaderboards)
+  if (!data.definitions) {
+    throw new Error("[validate] ai-frontier: missing required top-level field: definitions");
+  }
+  if (counts && typeof counts.withDate === "number" && counts.withDate < 100) {
+    throw new Error("[validate] ai-frontier: counts.withDate must be a number >= 100");
+  }
+  if (counts && typeof counts.recentWindowStart === "string" && !/^\d{4}-\d{2}-\d{2}$/.test(counts.recentWindowStart)) {
+    throw new Error("[validate] ai-frontier: counts.recentWindowStart must be YYYY-MM-DD");
+  }
+  // definitions block — must have frontier disclosure and key methodological notes
+  const defs = data.definitions;
+  if (!defs || typeof defs !== "object") {
+    throw new Error("[validate] ai-frontier: definitions must be a non-null object");
+  }
+  if (typeof defs.frontierDefinition !== "string" || defs.frontierDefinition.length < 20) {
+    throw new Error("[validate] ai-frontier: definitions.frontierDefinition must be a non-empty string");
+  }
+  if (typeof defs.orgLeaderboardMetric !== "string" || defs.orgLeaderboardMetric.length < 10) {
+    throw new Error("[validate] ai-frontier: definitions.orgLeaderboardMetric must be a non-empty string");
+  }
+  if (typeof defs.countryLeaderboardDefaultSort !== "string" || defs.countryLeaderboardDefaultSort.length < 10) {
+    throw new Error("[validate] ai-frontier: definitions.countryLeaderboardDefaultSort must be a non-empty string");
+  }
+  // org/country leaderboard entries must have the new multi-metric fields
+  const agg = data.aggregates;
+  if (Array.isArray(agg.orgLeaderboard) && agg.orgLeaderboard.length > 0) {
+    const orgEntry = agg.orgLeaderboard[0];
+    if (typeof orgEntry.computeKnownCount !== "number") {
+      throw new Error("[validate] ai-frontier: orgLeaderboard entries must have computeKnownCount");
+    }
+    if (typeof orgEntry.recentCount !== "number") {
+      throw new Error("[validate] ai-frontier: orgLeaderboard entries must have recentCount");
+    }
+    if (typeof orgEntry.openWeightsCount !== "number") {
+      throw new Error("[validate] ai-frontier: orgLeaderboard entries must have openWeightsCount");
+    }
+    // frontierCount must never exceed computeKnownCount (frontier requires compute estimates)
+    for (const e of agg.orgLeaderboard) {
+      if (e.frontierCount > e.computeKnownCount) {
+        throw new Error(
+          "[validate] ai-frontier: orgLeaderboard entry '" + e.organization +
+          "' has frontierCount (" + e.frontierCount + ") > computeKnownCount (" + e.computeKnownCount + ")"
+        );
+      }
+    }
+  }
+  if (Array.isArray(agg.countryLeaderboard) && agg.countryLeaderboard.length > 0) {
+    const ctryEntry = agg.countryLeaderboard[0];
+    if (typeof ctryEntry.computeKnownCount !== "number") {
+      throw new Error("[validate] ai-frontier: countryLeaderboard entries must have computeKnownCount");
+    }
+    if (typeof ctryEntry.recentCount !== "number") {
+      throw new Error("[validate] ai-frontier: countryLeaderboard entries must have recentCount");
+    }
+    if (typeof ctryEntry.openWeightsCount !== "number") {
+      throw new Error("[validate] ai-frontier: countryLeaderboard entries must have openWeightsCount");
+    }
+    // Verify sort: first entry must have recentCount >= second entry (sorted desc by recentCount)
+    if (agg.countryLeaderboard.length >= 2) {
+      const first = agg.countryLeaderboard[0];
+      const second = agg.countryLeaderboard[1];
+      if (first.recentCount < second.recentCount) {
+        throw new Error(
+          "[validate] ai-frontier: countryLeaderboard must be sorted by recentCount desc; " +
+          "entry[0]=" + first.country + " (" + first.recentCount + ") < entry[1]=" + second.country + " (" + second.recentCount + ")"
+        );
+      }
+    }
+  }
+  if (!agg.fullCatalogAccessibilityMix || typeof agg.fullCatalogAccessibilityMix !== "object") {
+    throw new Error("[validate] ai-frontier: aggregates.fullCatalogAccessibilityMix must be present");
   }
 }
 

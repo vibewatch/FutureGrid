@@ -2,7 +2,7 @@
 
 **Status:** Production
 **Owner:** Tank (Backend / Data Dev)
-**Last audited:** 2026-07-11
+**Last audited:** 2026-07-17
 
 ---
 
@@ -15,6 +15,7 @@ Documents the AI Frontier dataset: the historical record of notable AI models wi
 - Does not cover occupation-level AI exposure — see [`docs/occupation-data-model.md`](./occupation-data-model.md).
 - Does not cover global AI adoption/readiness — see [`docs/global.md`](./global.md).
 - Does not cover AI company stocks — see the `ai-company-stocks` module (undocumented here).
+- Does not rank or measure AI capability, model quality, product adoption, commercial reach, open-source usage, or societal and economic impact of any organization or country.
 
 ---
 
@@ -32,20 +33,24 @@ Documents the AI Frontier dataset: the historical record of notable AI models wi
 ```
 Epoch AI "Notable AI Models" CSV
 https://epoch.ai/data/notable_ai_models.csv  (CC BY 4.0)
+Landing: https://epoch.ai/data/ai-models
+Docs:    https://epoch.ai/data/ai-models-documentation
     │
     ▼
 scripts/build-ai-frontier.mjs
   • Fetch CSV (RFC-4180 parser)
-  • Parse + filter: keep only rows with numeric Training compute (FLOP) AND valid date
+  • Parse TWO tiers:
+      catalogAll  — all rows with a valid YYYY-MM-DD date (org/country leaderboards)
+      computeKnown — catalogAll ∩ Training compute (FLOP) > 0 (compute/cost/power trends)
   • Normalize countries (COMMA_PLACEHOLDER shield for ISO names with embedded commas)
-  • Compute OLS regression: log10(FLOP) ~ decimalYear  (overall + modern era ≥ 2010)
+  • Compute OLS regression: log10(FLOP) ~ decimalYear (overall + modern era ≥ 2010)
   • Compute frontierByYear (highest-compute model per calendar year)
   • Compute cost trend (median / max cost per year)
   • Compute power trend (median / max power draw per year)
-  • Build org leaderboard (by model count + frontierCount)
-  • Build country leaderboard (by model count + frontierCount)
+  • Build org leaderboard from catalogAll (sorted by full-catalog model count)
+  • Build country leaderboard from catalogAll (sorted by recentCount, 3-yr window)
   • deriveMeta() → meta block
-  • Validate → writeFileSync
+  • validateAIFrontier() → writeFileSync
     │
     ▼
 data/ai-frontier.json
@@ -63,7 +68,7 @@ Server Components / Client props
 
 ```mermaid
 flowchart TD
-    EPOCH[Epoch AI\nNotable AI Models CSV\nhttps://epoch.ai/data/notable_ai_models.csv]
+    EPOCH[Epoch AI\nNotable AI Models CSV\nhttps://epoch.ai/data/ai-models]
     BAF["scripts/build-ai-frontier.mjs"]
     DAF["data/ai-frontier.json"]
     LAF["lib/ai-frontier.ts\n(typed loader + selectors)"]
@@ -71,7 +76,7 @@ flowchart TD
     CC[Client Components\n(via serializable props)]
 
     EPOCH --> BAF
-    BAF -->|deriveMeta + validate| DAF
+    BAF -->|deriveMeta + validateAIFrontier| DAF
     DAF --> LAF
     LAF --> SC
     SC -->|slim props| CC
@@ -79,9 +84,67 @@ flowchart TD
 
 ---
 
+## Key Methodological Decisions
+
+### 1. Two data tiers (enforced since 2026-07-17)
+
+| Tier | Contents | Used for |
+|---|---|---|
+| `catalogAll` | All rows with a valid `YYYY-MM-DD` publication date | Org/country tracked-output leaderboards |
+| `computeKnown` (`models` array) | `catalogAll` filtered to rows with numeric Training compute (FLOP) | Compute/cost/power scaling trend views |
+
+**Why:** Organizations that do not publish training compute (notably Anthropic for most models, and many newer Chinese labs) were previously excluded from leaderboard counts. The full catalog corrects this.
+
+### 2. Epoch AI "Frontier model" flag
+
+Epoch AI's `Frontier model` flag marks models in the **top 10 by estimated training compute at time of release**. It is:
+- Derived from the compute-known subset only (a model without a compute estimate cannot carry the flag)
+- Affected by compute disclosure practices — labs that publish estimates tend to score higher
+- A historical compute-scale indicator, **not** a measure of capability, quality, or societal impact
+
+`frontierCount` is provided for historical context and **must always be displayed with this definition**.
+
+### 3. Org leaderboard sort key
+
+Sorted by `modelCount` (full-catalog count) descending. This ensures labs without compute estimates are not penalized.
+
+### 4. Country leaderboard sort key
+
+Sorted by `recentCount` (full-catalog models published within the 3-year recent window, from `recentWindowStart` to `recentWindowEnd`) descending. This reflects **current tracked-output activity** rather than historical compute-scale frontier counts, which are concentrated in the 2010–2021 period and heavily skewed by compute disclosure.
+
+**Why this matters:** Under the old `frontierCount`-influenced ordering, the UK appeared ahead of China despite China having substantially more recent model releases. The `recentCount` sort correctly places China #2 after the US.
+
+### 5. Google entity preservation
+
+Google, DeepMind, Google Brain, Google Research, and Google DeepMind are **preserved as distinct source entities** exactly as Epoch AI records them. No editorial merger is applied. Consumers should annotate these as related entities in the UI if needed.
+
+### 6. Multi-country attribution
+
+Models attributed to multiple countries via a comma-separated `Country (of organization)` field are **co-attributed to each participating country** (each country's count increments by 1). A US–UK collaboration model is counted once for both US and UK.
+
+### 7. Open-weights counts
+
+`openWeightsCount` derives from Epoch AI's `Open model weights?` column (`Yes` = confirmed open weights, which may include restricted-use and non-commercial licenses). It is a proxy for **tracked open-release activity only** — not downloads, adoption, permissive open-source status, model quality, or societal impact. `Yes` does not imply a permissive open-source license. Reported for full-catalog rows.
+
+---
+
 ## Canonical Schemas / Types
 
-### `AIFrontierModel` — per-model record
+### `AIFrontierDefinitions` — methodological disclosure
+
+```typescript
+export interface AIFrontierDefinitions {
+  frontierDefinition: string;       // Epoch AI frontier flag definition + limitations
+  orgLeaderboardMetric: string;     // Describes modelCount, computeKnownCount, recentCount, openWeightsCount
+  countryLeaderboardDefaultSort: string;  // Why recentCount is the default sort
+  openWeightsMetric: string;        // openWeightsCount limitations
+  multiCountryAttribution: string;  // Co-attribution rule
+  googleEntitiesNote: string;       // Entity preservation policy
+  coverageNote: string;             // General coverage caveat
+}
+```
+
+### `AIFrontierModel` — per-model record (compute-known subset)
 
 ```typescript
 export interface AIFrontierModel {
@@ -100,11 +163,45 @@ export interface AIFrontierModel {
   log10Compute: number;           // log10(computeFlop), rounded 3 dp
   trainingCostUsd2023: number | null; // USD 2023
   powerDrawW: number | null;      // Watts
-  frontier: boolean;              // "Frontier model" flag from Epoch AI
+  frontier: boolean;              // Epoch AI "Frontier model" flag (top-10 compute at release)
   openWeights: boolean | null;
-  accessibility: string | null;   // "Open weights", "Closed", etc.
+  accessibility: string | null;   // "Open weights (unrestricted)", "API access", etc.
   confidence: string | null;
   link: string | null;
+}
+```
+
+### `OrgLeaderboardEntry` — multi-metric per org
+
+```typescript
+export interface OrgLeaderboardEntry {
+  organization: string;
+  orgCategory: string | null;
+  country: string | null;
+  modelCount: number;         // Full-catalog count (primary sort key)
+  computeKnownCount: number;  // Was old "modelCount" — rows with compute estimates
+  frontierCount: number;      // Compute-known rows flagged frontier (historical context)
+  recentCount: number;        // Full-catalog models in 3-yr recent window
+  openWeightsCount: number;   // Full-catalog open-weight models (tracked activity proxy)
+  maxComputeFlop: number;     // Peak compute (compute-known; 0 if none)
+  latestDate: string;
+  medianLog10Compute: number | null; // Median log10 compute (compute-known; null if none)
+}
+```
+
+### `CountryLeaderboardEntry` — multi-metric per country
+
+```typescript
+export interface CountryLeaderboardEntry {
+  country: string;
+  countryShort: string;
+  modelCount: number;         // Full-catalog count
+  computeKnownCount: number;  // Was old "modelCount"
+  frontierCount: number;      // Historical context; NOT the default sort key
+  recentCount: number;        // Default sort key — current tracked-output activity
+  openWeightsCount: number;   // Full-catalog open-weight models
+  maxComputeFlop: number;     // Peak compute (0 if none)
+  orgCount: number;
 }
 ```
 
@@ -127,16 +224,17 @@ export interface ComputeRegression {
 ```typescript
 export interface AIFrontierAggregates {
   computeTrend: {
-    overall: ComputeRegression | null;    // all models with compute + date
-    modernEra: ComputeRegression | null;  // models from 2010 onward
+    overall: ComputeRegression | null;    // all compute-known models
+    modernEra: ComputeRegression | null;  // compute-known models from 2010 onward
     frontierByYear: FrontierYearPoint[];  // highest-compute model per year
   };
   costTrend: CostTrendPoint[];   // median/max training cost per year
   powerTrend: PowerTrendPoint[]; // median/max power draw per year
-  orgLeaderboard: OrgLeaderboardEntry[];
-  countryLeaderboard: CountryLeaderboardEntry[];
-  accessibilityMix: { openWeights: number; closed: number; unknown: number };
-  domainMix: DomainMixEntry[];   // domain → count, sorted desc
+  orgLeaderboard: OrgLeaderboardEntry[];      // sorted by modelCount desc (full catalog)
+  countryLeaderboard: CountryLeaderboardEntry[]; // sorted by recentCount desc
+  accessibilityMix: AccessibilityMix;           // compute-known subset (backward compat)
+  fullCatalogAccessibilityMix: AccessibilityMix; // full dated catalog
+  domainMix: DomainMixEntry[];   // domain → count, sorted desc (compute-known)
 }
 ```
 
@@ -145,10 +243,11 @@ export interface AIFrontierAggregates {
 ```typescript
 export interface AIFrontierData {
   generatedAt: string;
-  source: AIFrontierSource;      // Epoch AI metadata
-  methodology: AIFrontierMethodology;
-  counts: AIFrontierCounts;
-  models: AIFrontierModel[];     // sorted ascending by date
+  source: AIFrontierSource;      // Epoch AI metadata (correct URL: epoch.ai/data/ai-models)
+  methodology: AIFrontierMethodology; // includes recentWindow
+  definitions: AIFrontierDefinitions; // NEW — methodological disclosure text
+  counts: AIFrontierCounts;      // includes withDate, withOpenWeights, recentWindowCount
+  models: AIFrontierModel[];     // compute-known rows, sorted ascending by date
   aggregates: AIFrontierAggregates;
   caveats: string[];
 }
@@ -156,26 +255,81 @@ export interface AIFrontierData {
 
 ---
 
+## Selectors (lib/ai-frontier.ts)
+
+| Selector | Returns | Notes |
+|---|---|---|
+| `getAIFrontierData()` | `AIFrontierData` | Full data object |
+| `getComputeModels()` | `AIFrontierModel[]` | Compute-known rows (backward compat) |
+| `getFrontierModels()` | `AIFrontierModel[]` | frontier=True rows (compute-known) |
+| `getModernEraModels()` | `AIFrontierModel[]` | year ≥ 2010, compute-known |
+| `getComputeTimeline()` | `FrontierYearPoint[]` | Highest compute per year |
+| `getOrgLeaderboard(limit)` | `OrgLeaderboardEntry[]` | Top N by full-catalog modelCount |
+| `getRecentlyActiveOrgs(limit)` | `OrgLeaderboardEntry[]` | NEW — top N by recentCount |
+| `getCountryLeaderboard()` | `CountryLeaderboardEntry[]` | Sorted by recentCount desc |
+| `getModernEraRegression()` | `ComputeRegression\|null` | OLS fit ≥ 2010 |
+| `getOverallRegression()` | `ComputeRegression\|null` | OLS fit all years |
+| `getCostTrend()` | `CostTrendPoint[]` | Annual cost trend |
+| `getPowerTrend()` | `PowerTrendPoint[]` | Annual power trend |
+| `getDomainMix()` | `DomainMixEntry[]` | Domain distribution (compute-known) |
+| `getAccessibilityMix()` | `AccessibilityMix` | Open/closed/unknown (compute-known) |
+| `getFullCatalogAccessibilityMix()` | `AccessibilityMix` | NEW — full dated catalog |
+| `getDefinitions()` | `AIFrontierDefinitions` | NEW — methodological disclosure |
+| `getRecentWindow()` | `AIFrontierRecentWindow\|null` | NEW — recent window dates |
+
+---
+
+## Schema Contracts for Neo (UI) and Mouse (i18n)
+
+### Org leaderboard changes (schema-additive)
+
+The `modelCount` field now reflects the **full-catalog count** (all dated Epoch AI rows). Previously it was the compute-known count. The old compute-known count is available as `computeKnownCount`.
+
+UI should label the displayed metric clearly:
+- "N tracked models" = `modelCount` (full catalog)
+- "N with compute" = `computeKnownCount`
+- "N recent" = `recentCount` (3-year window, labeled with dates from `getRecentWindow()`)
+- "N open-weight" = `openWeightsCount`
+
+### Country leaderboard changes
+
+The default sort is now `recentCount` (full-catalog models in 3-year window). This places China #2 (ahead of UK) and South Korea #3. The sort order in the JSON is already correct — UI should consume it in order.
+
+`frontierCount` is available for historical context but must be displayed with the frontier definition disclosure (`getDefinitions().frontierDefinition`).
+
+### accessibilityMix backward compat
+
+`aggregates.accessibilityMix` still covers the compute-known subset (sum = `getComputeModels().length`). New `aggregates.fullCatalogAccessibilityMix` covers all dated rows.
+
+---
+
 ## Joins / Crosswalks / Algorithms
 
-### Row inclusion filter
+### Row inclusion filters
 
-Only rows that have **both** a numeric `Training compute (FLOP) > 0` **and** a valid ISO date string (`YYYY-MM-DD`) enter the `models` array. Rows with missing compute or missing date are counted in `counts.totalRows` but excluded from `models`.
+| Tier | Filter | Output |
+|---|---|---|
+| `catalogAll` | Valid `YYYY-MM-DD` publication date | Used for org/country leaderboards |
+| `computeKnown` | `catalogAll` AND `Training compute (FLOP)` > 0 | `models` array; compute/cost/power trends |
 
 ### Country normalization
 
-Epoch AI stores country as a comma-delimited string including verbose ISO country names (e.g. `"Korea, Republic of"`). The builder shields known ISO names that contain commas using a Unicode `\uFFFE` placeholder before splitting, then normalizes through `COUNTRY_SHORT_MAP`. Result is a de-duplicated, order-preserving `countries[]` array. `country` (singular) is the first element or null.
+Epoch AI stores country as a comma-delimited string including verbose ISO country names (e.g. `"Korea, Republic of"`). The builder shields known ISO names that contain commas using a Unicode `\uFFFE` placeholder before splitting, then normalizes through `COUNTRY_SHORT_MAP`. Result is a de-duplicated, order-preserving `countries[]` array.
+
+### Recent window
+
+`recentWindowStart = latestCatalogDate.year - RECENT_WINDOW_YEARS` (same month/day). `RECENT_WINDOW_YEARS = 3`. Window is deterministic from the latest date in the full catalog — not wall-clock time.
 
 ### OLS regression — compute scaling
 
 - Fit: `log10(computeFlop) = intercept + slope × decimalYear`
-- `decimalYear` = `year + (dayOfYear / daysInYear)` from the ISO date.
-- Run twice: over all `models` and over `modernEra` models (`year >= 2010`).
+- Run twice: over all `computeKnown` models and over `modernEra` models (`year >= 2010`).
 - `doublingTimeMonths = 12 × log10(2) / slope` (null if slope ≤ 0).
+- `decimalYear` = `year + (dayOfYear / daysInYear)` from the ISO date.
 
 ### Frontier-by-year
 
-One entry per calendar year: the model with the highest `computeFlop` in that year. Powers the compute timeline chart.
+One entry per calendar year: the model with the highest `computeFlop` in that year (from compute-known subset).
 
 ### Units
 
@@ -193,18 +347,20 @@ One entry per calendar year: the model with the highest `computeFlop` in that ye
 
 ## Source Provenance / Licensing / Caveats
 
-| Source | License | Caveat |
+| Source | License | Canonical URL |
 |---|---|---|
-| Epoch AI "Notable AI Models" | CC BY 4.0 | Attribution required: "Epoch AI" + URL. Derived aggregate file; changes indicated. |
+| Epoch AI "Notable AI Models" | CC BY 4.0 | https://epoch.ai/data/ai-models |
+| Download URL | — | https://epoch.ai/data/notable_ai_models.csv |
+| Documentation | — | https://epoch.ai/data/ai-models-documentation |
 
-**Caveats embedded in `ai-frontier.json`:**
+**Key caveats:**
 
-- The models array contains only rows with numeric training compute AND a valid publication date. Rows lacking either field are excluded.
-- "Frontier model" flag is from Epoch AI's own curation; it does not represent a universal consensus.
-- Training cost values are inflation-adjusted to 2023 USD by Epoch AI; methodology available at their site.
-- Country attribution reflects the organization's primary country of operation, not model training geography.
-- Power-draw values are sparse and may reflect peak training power, not average or inference power.
-- Open-weights classification is from Epoch AI; it may lag model release announcements.
+- The `models` array contains only rows with numeric training compute AND a valid publication date. Rows lacking either field are excluded from compute trends but counted in the full catalog.
+- Epoch AI's `Frontier model` flag means top-10 training compute at time of release — not capability or impact. It is limited to compute-known models.
+- `modelCount` in org/country leaderboards reflects the full catalog (any dates); `computeKnownCount` reflects the compute-known subset.
+- Country leaderboard sorted by `recentCount` (3-year window, full catalog).
+- Multi-country models are co-attributed to each participating country.
+- Google, DeepMind, Google Brain, Google Research, and Google DeepMind are distinct entities in the source data.
 
 ---
 
@@ -227,14 +383,15 @@ npm run build:data   # includes build:ai-frontier indirectly
 
 ## Validation Invariants
 
-`deriveMeta()` is called to stamp `generatedAt`/`asOf`/`source`/`version` before writing. The builder performs inline validation:
+`deriveMeta()` stamps `generatedAt`/`asOf`/`source`/`version`. `validateAIFrontier()` checks:
 
-- Parses CSV; fails if zero rows are parsed.
-- Checks that `models.length > 0` after compute+date filtering.
-- OLS regression returns `null` (not throws) if fewer than 2 points; `null` values propagate to `aggregates.computeTrend.overall/modernEra`.
-- `caveats[]` array is always present even if empty.
-
-There is no call to a separate `validate.mjs` helper for this builder (it uses inline checks). A future improvement would add a `validateAIFrontier()` gate.
+- Required top-level fields including new `definitions`
+- `counts.totalRows >= 100`, `counts.withDate >= 100`, `counts.recentWindowStart` valid
+- `definitions.frontierDefinition`, `orgLeaderboardMetric`, `countryLeaderboardDefaultSort` non-empty
+- `orgLeaderboard` entries have `computeKnownCount`, `recentCount`, `openWeightsCount`
+- `frontierCount <= computeKnownCount` for each leaderboard entry (frontier requires compute)
+- `countryLeaderboard` sorted by `recentCount` descending
+- `aggregates.fullCatalogAccessibilityMix` present
 
 ---
 
@@ -243,60 +400,26 @@ There is no call to a separate `validate.mjs` helper for this builder (it uses i
 | Module | Boundary | Reason |
 |---|---|---|
 | `lib/ai-frontier.ts` | **Client-safe** (no `import "server-only"`) | Static import; `ai-frontier.json` is bundled at build time |
-| `data/ai-frontier.json` | Bundled at build (static import) | Medium-size; models array may be 500–1000 entries |
+| `data/ai-frontier.json` | Bundled at build (static import) | Medium-size; models array ~528 entries |
 
-Because `lib/ai-frontier.ts` is client-safe, it can be imported by client components. However, passing the full `models[]` array to a client component as a prop is expensive; prefer passing pre-aggregated chart data (e.g. `getComputeTimeline()`, `getOrgLeaderboard()`) rather than the raw model list.
-
----
-
-## Failure / Degradation Behavior
-
-- Fetch failure with existing committed file: builder skips overwrite; previously committed data is used at next Next.js build.
-- `getModernEraRegression()` and `getOverallRegression()` return `null` if the Epoch AI dataset has insufficient data; UI must render a "data unavailable" state.
-- Missing `doublingTimeMonths` (null) occurs when slope ≤ 0; should be displayed as "non-doubling" or hidden.
-- Models without `trainingCostUsd2023` or `powerDrawW` (null) are excluded from the cost/power trend but still appear in the models array and leaderboards.
-
----
-
-## Accessibility Implications
-
-- The compute timeline chart (log₁₀ FLOP vs year) must include accessible axis labels: "Year" and "Training Compute (log₁₀ FLOP)".
-- Tooltips for individual model points must include: model name, organization, date, and compute value (formatted via `formatFlop()`).
-- The organization leaderboard table must have proper `<th scope>` attributes.
-- Color used to distinguish open-weights vs. closed models must not be the sole differentiator.
-
----
-
-## Performance
-
-- `lib/ai-frontier.ts` statically imports `data/ai-frontier.json`; it is parsed once at module load (SSG/server startup).
-- `getComputeTimeline()`, `getOrgLeaderboard()`, `getDomainMix()` etc. are O(1) lookups into already-computed aggregates.
-- `getFrontierModels()` and `getModernEraModels()` filter the full `models` array on each call — callers that need them repeatedly should memoize.
-
----
-
-## Security / Secrets / Privacy
-
-- No personal data. All data is public model/organization records.
-- No API keys required. Epoch AI CSV is publicly downloadable.
-- `ai-frontier.json` is committed to the repository; it contains no sensitive data.
+Because `lib/ai-frontier.ts` is client-safe, it can be imported by client components. However, passing the full `models[]` array to a client component as a prop is expensive; prefer pre-aggregated data (`getComputeTimeline()`, `getOrgLeaderboard()`) rather than the raw model list.
 
 ---
 
 ## Testing
 
-- `npm run test:run` covers helper functions (`formatFlop`, `formatLog10Flop`).
-- Smoke test (`npm run smoke`) verifies `data/ai-frontier.json` exists and is non-empty.
-- OLS regression is tested in isolation against known (year, log10compute) pairs.
+- `npm run test -- tests/ai-frontier.test.ts` covers over 100 individual test cases across 17 describe blocks: data integrity, schema invariants (full-catalog vs compute-known), leaderboard cleanliness, doubling-time sanity, aggregate consistency, selectors (including all new API selectors), copy guardrails for EN and ZH i18n strings, regression-derived stats, FrontierMixCards, FrontierLeadersChart coverage, and whyPoint3 interpolation.
+- Regression test: `frontierCount <= modelCount` (now `frontierCount <= computeKnownCount <= modelCount`).
+- Regression test: `countryLeaderboard[0].recentCount >= countryLeaderboard[1].recentCount`.
 
 ---
 
 ## Extension Points
 
 - **Add a new aggregate:** Add a new aggregate type in `lib/ai-frontier.ts` and populate it in the builder's `aggregates` object.
-- **Change modern era start:** Update `MODERN_ERA_START = 2010` in `scripts/build-ai-frontier.mjs` and `methodology.modernEraStart` in the output.
+- **Change recent window:** Update `RECENT_WINDOW_YEARS` in `scripts/build-ai-frontier.mjs`.
 - **Add new country normalization entries:** Extend `COUNTRY_SHORT_MAP` and `COMMA_ISO_NAMES` in the builder.
-- **Add new data columns from Epoch AI:** Extend the `AIFrontierModel` interface and the per-row `parsed.push(...)` block.
+- **Add new data columns from Epoch AI:** Extend `AIFrontierModel` and the per-row `parsed.push(...)` block; also update `catalogEntry` in the `catalogAll` section if needed.
 
 ---
 
@@ -308,6 +431,7 @@ Because `lib/ai-frontier.ts` is client-safe, it can be imported by client compon
 | `data/ai-frontier.json` | Committed artifact |
 | `scripts/build-ai-frontier.mjs` | Fetch + transform + write |
 | `scripts/lib/meta.mjs` | `deriveMeta()` — provenance stamp |
+| `scripts/lib/validate.mjs` | `validateAIFrontier()` — data gate |
 
 ---
 

@@ -1,12 +1,13 @@
 {
-  "generatedAt": "2026-07-14T05:19:37.812Z",
+  "generatedAt": "2026-07-17T21:58:51.871Z",
   "source": {
     "name": "Epoch AI — Notable AI Models",
     "publisher": "Epoch AI",
-    "url": "https://epoch.ai/data/notable-ai-models",
+    "url": "https://epoch.ai/data/ai-models",
     "downloadUrl": "https://epoch.ai/data/notable_ai_models.csv",
+    "docsUrl": "https://epoch.ai/data/ai-models-documentation",
     "license": "CC BY 4.0",
-    "accessed": "2026-07-14",
+    "accessed": "2026-07-17",
     "caveat": "Training-compute figures are Epoch AI estimates with varying confidence; not all models report compute/cost/power."
   },
   "methodology": {
@@ -14,15 +15,34 @@
     "doublingTimeMethod": "OLS regression of log10(training compute) on decimal year",
     "modernEraStart": 2010,
     "costUnit": "2023 USD",
-    "notes": "Descriptive historical trends only — not a forecast."
+    "notes": "Descriptive historical trends only — not a forecast.",
+    "recentWindow": {
+      "years": 3,
+      "start": "2023-06-09",
+      "end": "2026-06-09"
+    }
+  },
+  "definitions": {
+    "frontierDefinition": "Epoch AI's 'Frontier model' flag marks models in the top 10 by estimated training compute at the time of release. It reflects compute-disclosure availability and historical compute scale — not capability, quality, or societal impact. frontierCount is derived from compute-known rows only; models without compute estimates (including many recent and open-source releases) cannot carry this flag.",
+    "orgLeaderboardMetric": "modelCount = all tracked Epoch AI rows with a valid publication date, regardless of compute disclosure. computeKnownCount = rows with training compute estimates. frontierCount = compute-known rows flagged as top-10 compute at release. recentCount = full-catalog models published within the 3-year recent window.",
+    "countryLeaderboardDefaultSort": "Default sort: recentCount (full-catalog models in the recent window) descending. This reflects current tracked-output activity. frontierCount is provided for historical context but must not be used as a general country ranking.",
+    "openWeightsMetric": "openWeightsCount derives from Epoch AI's 'Open model weights?' column ('Yes' = confirmed open weights). A proxy for tracked open-release activity only — not downloads, adoption, quality, or societal impact.",
+    "multiCountryAttribution": "Models attributed to multiple countries are counted once per participating country (co-attribution). A single US–UK collaboration increments both country totals.",
+    "googleEntitiesNote": "Google, DeepMind, Google Brain, Google Research, and Google DeepMind are preserved as distinct Epoch AI source entities. No editorial merger is applied.",
+    "coverageNote": "Coverage is Epoch AI's 'Notable AI Models' curation — not an exhaustive registry. Labs without compute disclosure and newer open-source releases may be underrepresented in the compute-known subset."
   },
   "counts": {
     "totalRows": 1035,
+    "withDate": 1030,
     "withCompute": 528,
     "withComputeAndDate": 528,
     "withPower": 215,
     "withCost": 179,
-    "countries": 35
+    "withOpenWeights": 318,
+    "countries": 35,
+    "recentWindowStart": "2023-06-09",
+    "recentWindowEnd": "2026-06-09",
+    "recentWindowCount": 317
   },
   "models": [
     {
@@ -14524,372 +14544,550 @@
     ],
     "orgLeaderboard": [
       {
-        "organization": "Google",
-        "orgCategory": "Industry",
-        "country": "United States",
-        "modelCount": 27,
-        "frontierCount": 16,
-        "maxComputeFlop": 7.34e+24,
-        "latestDate": "2023-05-10",
-        "medianLog10Compute": 21.912
-      },
-      {
-        "organization": "DeepMind",
-        "orgCategory": "Industry",
-        "country": "United Kingdom",
-        "modelCount": 22,
-        "frontierCount": 5,
-        "maxComputeFlop": 6.31e+23,
-        "latestDate": "2022-11-03",
-        "medianLog10Compute": 21.066
-      },
-      {
         "organization": "OpenAI",
         "orgCategory": "Industry",
         "country": "United States",
-        "modelCount": 22,
+        "modelCount": 65,
+        "computeKnownCount": 22,
         "frontierCount": 7,
+        "recentCount": 44,
+        "openWeightsCount": 8,
         "maxComputeFlop": 3.8e+26,
-        "latestDate": "2025-08-07",
+        "latestDate": "2026-04-23",
         "medianLog10Compute": 22.846
       },
       {
-        "organization": "Meta AI",
+        "organization": "Google",
         "orgCategory": "Industry",
         "country": "United States",
-        "modelCount": 19,
-        "frontierCount": 2,
-        "maxComputeFlop": 5.18400000000001e+25,
-        "latestDate": "2025-04-05",
-        "medianLog10Compute": 23.74
+        "modelCount": 54,
+        "computeKnownCount": 27,
+        "frontierCount": 16,
+        "recentCount": 2,
+        "openWeightsCount": 7,
+        "maxComputeFlop": 7.34e+24,
+        "latestDate": "2025-08-26",
+        "medianLog10Compute": 21.912
+      },
+      {
+        "organization": "Google DeepMind",
+        "orgCategory": "Industry",
+        "country": "United States",
+        "modelCount": 39,
+        "computeKnownCount": 6,
+        "frontierCount": 1,
+        "recentCount": 31,
+        "openWeightsCount": 4,
+        "maxComputeFlop": 5.0000000001e+25,
+        "latestDate": "2026-04-15",
+        "medianLog10Compute": 22.153
       },
       {
         "organization": "Alibaba",
         "orgCategory": "Industry",
         "country": "China",
-        "modelCount": 16,
+        "modelCount": 32,
+        "computeKnownCount": 16,
         "frontierCount": 0,
+        "recentCount": 29,
+        "openWeightsCount": 22,
         "maxComputeFlop": 1.512e+25,
-        "latestDate": "2025-09-22",
+        "latestDate": "2026-05-19",
         "medianLog10Compute": 24.513
+      },
+      {
+        "organization": "DeepMind",
+        "orgCategory": "Industry",
+        "country": "United Kingdom",
+        "modelCount": 30,
+        "computeKnownCount": 22,
+        "frontierCount": 5,
+        "recentCount": 0,
+        "openWeightsCount": 1,
+        "maxComputeFlop": 6.31e+23,
+        "latestDate": "2022-12-01",
+        "medianLog10Compute": 21.066
+      },
+      {
+        "organization": "Meta AI",
+        "orgCategory": "Industry",
+        "country": "United States",
+        "modelCount": 29,
+        "computeKnownCount": 19,
+        "frontierCount": 2,
+        "recentCount": 13,
+        "openWeightsCount": 21,
+        "maxComputeFlop": 5.18400000000001e+25,
+        "latestDate": "2026-04-08",
+        "medianLog10Compute": 23.74
+      },
+      {
+        "organization": "Microsoft",
+        "orgCategory": "Industry",
+        "country": "United States",
+        "modelCount": 17,
+        "computeKnownCount": 8,
+        "frontierCount": 0,
+        "recentCount": 1,
+        "openWeightsCount": 4,
+        "maxComputeFlop": 4.831e+22,
+        "latestDate": "2026-06-02",
+        "medianLog10Compute": 21.021
+      },
+      {
+        "organization": "Anthropic",
+        "orgCategory": "Industry",
+        "country": "United States",
+        "modelCount": 16,
+        "computeKnownCount": 3,
+        "frontierCount": 2,
+        "recentCount": 15,
+        "openWeightsCount": 0,
+        "maxComputeFlop": 3.35e+25,
+        "latestDate": "2026-06-09",
+        "medianLog10Compute": 25.431
+      },
+      {
+        "organization": "Stanford University",
+        "orgCategory": "Academia",
+        "country": "United States",
+        "modelCount": 16,
+        "computeKnownCount": 4,
+        "frontierCount": 1,
+        "recentCount": 0,
+        "openWeightsCount": 1,
+        "maxComputeFlop": 78328627000000000000,
+        "latestDate": "2021-10-31",
+        "medianLog10Compute": 15.577
       },
       {
         "organization": "NVIDIA",
         "orgCategory": "Industry",
         "country": "United States",
-        "modelCount": 12,
+        "modelCount": 15,
+        "computeKnownCount": 12,
         "frontierCount": 3,
+        "recentCount": 9,
+        "openWeightsCount": 6,
         "maxComputeFlop": 1.8e+25,
         "latestDate": "2026-06-04",
         "medianLog10Compute": 23.468
+      },
+      {
+        "organization": "University of Toronto",
+        "orgCategory": "Academia",
+        "country": "Canada",
+        "modelCount": 15,
+        "computeKnownCount": 5,
+        "frontierCount": 3,
+        "recentCount": 0,
+        "openWeightsCount": 0,
+        "maxComputeFlop": 470000000000000000,
+        "latestDate": "2014-11-10",
+        "medianLog10Compute": 16.565
+      },
+      {
+        "organization": "Google Research",
+        "orgCategory": "Industry",
+        "country": "United States",
+        "modelCount": 13,
+        "computeKnownCount": 8,
+        "frontierCount": 2,
+        "recentCount": 2,
+        "openWeightsCount": 2,
+        "maxComputeFlop": 2.5272e+24,
+        "latestDate": "2023-12-23",
+        "medianLog10Compute": 23.285
+      },
+      {
+        "organization": "Baidu",
+        "orgCategory": "Industry",
+        "country": "China",
+        "modelCount": 12,
+        "computeKnownCount": 4,
+        "frontierCount": 0,
+        "recentCount": 4,
+        "openWeightsCount": 5,
+        "maxComputeFlop": 2.25e+22,
+        "latestDate": "2025-03-16",
+        "medianLog10Compute": 21.149
+      },
+      {
+        "organization": "Google Brain",
+        "orgCategory": "Industry",
+        "country": "United States",
+        "modelCount": 12,
+        "computeKnownCount": 6,
+        "frontierCount": 2,
+        "recentCount": 0,
+        "openWeightsCount": 3,
+        "maxComputeFlop": 1.12e+23,
+        "latestDate": "2022-05-23",
+        "medianLog10Compute": 20.776
+      },
+      {
+        "organization": "Facebook AI Research",
+        "orgCategory": "Industry",
+        "country": "United States, France",
+        "modelCount": 11,
+        "computeKnownCount": 7,
+        "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 5,
+        "maxComputeFlop": 3.366e+22,
+        "latestDate": "2021-11-11",
+        "medianLog10Compute": 20.663
       },
       {
         "organization": "Carnegie Mellon University (CMU)",
         "orgCategory": "Academia",
         "country": "United States",
         "modelCount": 10,
+        "computeKnownCount": 10,
         "frontierCount": 2,
+        "recentCount": 1,
+        "openWeightsCount": 3,
         "maxComputeFlop": 1.1e+21,
         "latestDate": "2023-08-28",
         "medianLog10Compute": 17.138
       },
       {
+        "organization": "University of Oxford",
+        "orgCategory": "Academia",
+        "country": "United Kingdom",
+        "modelCount": 10,
+        "computeKnownCount": 4,
+        "frontierCount": 2,
+        "recentCount": 0,
+        "openWeightsCount": 3,
+        "maxComputeFlop": 29000000000000000000,
+        "latestDate": "2022-12-19",
+        "medianLog10Compute": 19.066
+      },
+      {
+        "organization": "AT&T",
+        "orgCategory": "Industry",
+        "country": "United States",
+        "modelCount": 9,
+        "computeKnownCount": 2,
+        "frontierCount": 2,
+        "recentCount": 0,
+        "openWeightsCount": 0,
+        "maxComputeFlop": 2810937600000,
+        "latestDate": "2009-09-21",
+        "medianLog10Compute": 11.854
+      },
+      {
+        "organization": "ByteDance",
+        "orgCategory": "Industry",
+        "country": "China",
+        "modelCount": 9,
+        "computeKnownCount": 2,
+        "frontierCount": 0,
+        "recentCount": 9,
+        "openWeightsCount": 1,
+        "maxComputeFlop": 2.505e+25,
+        "latestDate": "2026-02-12",
+        "medianLog10Compute": 24.771
+      },
+      {
         "organization": "DeepSeek",
         "orgCategory": "Industry",
         "country": "China",
-        "modelCount": 8,
+        "modelCount": 9,
+        "computeKnownCount": 8,
         "frontierCount": 0,
+        "recentCount": 9,
+        "openWeightsCount": 9,
         "maxComputeFlop": 9.702e+24,
         "latestDate": "2026-04-24",
         "medianLog10Compute": 24.519
-      },
-      {
-        "organization": "Google Research",
-        "orgCategory": "Industry",
-        "country": "United States",
-        "modelCount": 8,
-        "frontierCount": 2,
-        "maxComputeFlop": 2.5272e+24,
-        "latestDate": "2023-12-23",
-        "medianLog10Compute": 23.285
-      },
-      {
-        "organization": "Microsoft",
-        "orgCategory": "Industry",
-        "country": "United States",
-        "modelCount": 8,
-        "frontierCount": 0,
-        "maxComputeFlop": 4.831e+22,
-        "latestDate": "2023-01-05",
-        "medianLog10Compute": 21.021
-      },
-      {
-        "organization": "Facebook AI Research",
-        "orgCategory": "Industry",
-        "country": "United States, France",
-        "modelCount": 7,
-        "frontierCount": 0,
-        "maxComputeFlop": 3.366e+22,
-        "latestDate": "2021-11-11",
-        "medianLog10Compute": 20.663
-      },
-      {
-        "organization": "Google Brain",
-        "orgCategory": "Industry",
-        "country": "United States",
-        "modelCount": 6,
-        "frontierCount": 2,
-        "maxComputeFlop": 1.12e+23,
-        "latestDate": "2022-05-23",
-        "medianLog10Compute": 20.776
-      },
-      {
-        "organization": "Google DeepMind",
-        "orgCategory": "Industry",
-        "country": "United States",
-        "modelCount": 6,
-        "frontierCount": 1,
-        "maxComputeFlop": 5.0000000001e+25,
-        "latestDate": "2025-06-12",
-        "medianLog10Compute": 22.153
-      },
-      {
-        "organization": "IBM",
-        "orgCategory": "Industry",
-        "country": "United States",
-        "modelCount": 6,
-        "frontierCount": 4,
-        "maxComputeFlop": 429004800000000000,
-        "latestDate": "2018-07-10",
-        "medianLog10Compute": 10.947
-      },
-      {
-        "organization": "Amazon",
-        "orgCategory": "Industry",
-        "country": "United States",
-        "modelCount": 5,
-        "frontierCount": 1,
-        "maxComputeFlop": 6.000010000000001e+24,
-        "latestDate": "2024-12-03",
-        "medianLog10Compute": 23.31
-      },
-      {
-        "organization": "LG AI Research",
-        "orgCategory": "Industry",
-        "country": "South Korea",
-        "modelCount": 5,
-        "frontierCount": 0,
-        "maxComputeFlop": 3.85e+24,
-        "latestDate": "2026-04-09",
-        "medianLog10Compute": 24.182
-      },
-      {
-        "organization": "New York University (NYU)",
-        "orgCategory": "Academia",
-        "country": "United States",
-        "modelCount": 5,
-        "frontierCount": 2,
-        "maxComputeFlop": 532000000000000000,
-        "latestDate": "2013-11-12",
-        "medianLog10Compute": 14.872
-      },
-      {
-        "organization": "University of Montreal / Université de Montréal",
-        "orgCategory": "Academia",
-        "country": "Canada",
-        "modelCount": 5,
-        "frontierCount": 3,
-        "maxComputeFlop": 518400000000000000,
-        "latestDate": "2014-06-10",
-        "medianLog10Compute": 15.222
-      },
-      {
-        "organization": "University of Toronto",
-        "orgCategory": "Academia",
-        "country": "Canada",
-        "modelCount": 5,
-        "frontierCount": 3,
-        "maxComputeFlop": 470000000000000000,
-        "latestDate": "2012-09-30",
-        "medianLog10Compute": 16.565
-      },
-      {
-        "organization": "Baidu",
-        "orgCategory": "Industry",
-        "country": "China",
-        "modelCount": 4,
-        "frontierCount": 0,
-        "maxComputeFlop": 2.25e+22,
-        "latestDate": "2021-09-20",
-        "medianLog10Compute": 21.149
       }
     ],
     "countryLeaderboard": [
       {
         "country": "United States",
         "countryShort": "United States",
-        "modelCount": 328,
+        "modelCount": 664,
+        "computeKnownCount": 328,
         "frontierCount": 77,
+        "recentCount": 189,
+        "openWeightsCount": 198,
         "maxComputeFlop": 5.0000000000001e+26,
-        "orgCount": 161
+        "orgCount": 278
       },
       {
         "country": "China",
         "countryShort": "China",
-        "modelCount": 97,
+        "modelCount": 178,
+        "computeKnownCount": 97,
         "frontierCount": 4,
+        "recentCount": 104,
+        "openWeightsCount": 91,
         "maxComputeFlop": 2.505e+25,
-        "orgCount": 59
-      },
-      {
-        "country": "United Kingdom",
-        "countryShort": "United Kingdom",
-        "modelCount": 46,
-        "frontierCount": 9,
-        "maxComputeFlop": 6.31e+23,
-        "orgCount": 20
-      },
-      {
-        "country": "France",
-        "countryShort": "France",
-        "modelCount": 30,
-        "frontierCount": 1,
-        "maxComputeFlop": 2.13e+25,
-        "orgCount": 21
-      },
-      {
-        "country": "Canada",
-        "countryShort": "Canada",
-        "modelCount": 27,
-        "frontierCount": 7,
-        "maxComputeFlop": 4.3e+23,
-        "orgCount": 19
-      },
-      {
-        "country": "Germany",
-        "countryShort": "Germany",
-        "modelCount": 20,
-        "frontierCount": 4,
-        "maxComputeFlop": 8.46e+22,
-        "orgCount": 17
+        "orgCount": 91
       },
       {
         "country": "South Korea",
         "countryShort": "South Korea",
-        "modelCount": 15,
+        "modelCount": 24,
+        "computeKnownCount": 15,
         "frontierCount": 1,
+        "recentCount": 12,
+        "openWeightsCount": 14,
         "maxComputeFlop": 3.85e+24,
-        "orgCount": 10
+        "orgCount": 16
       },
       {
-        "country": "Hong Kong",
-        "countryShort": "Hong Kong",
-        "modelCount": 9,
-        "frontierCount": 0,
-        "maxComputeFlop": 3.036551985824e+24,
-        "orgCount": 8
-      },
-      {
-        "country": "Israel",
-        "countryShort": "Israel",
-        "modelCount": 8,
+        "country": "France",
+        "countryShort": "France",
+        "modelCount": 50,
+        "computeKnownCount": 30,
         "frontierCount": 1,
-        "maxComputeFlop": 3.7e+23,
-        "orgCount": 8
+        "recentCount": 8,
+        "openWeightsCount": 27,
+        "maxComputeFlop": 2.13e+25,
+        "orgCount": 31
+      },
+      {
+        "country": "United Kingdom",
+        "countryShort": "United Kingdom",
+        "modelCount": 89,
+        "computeKnownCount": 46,
+        "frontierCount": 9,
+        "recentCount": 6,
+        "openWeightsCount": 16,
+        "maxComputeFlop": 6.31e+23,
+        "orgCount": 39
       },
       {
         "country": "Singapore",
         "countryShort": "Singapore",
-        "modelCount": 8,
+        "modelCount": 16,
+        "computeKnownCount": 8,
         "frontierCount": 1,
+        "recentCount": 5,
+        "openWeightsCount": 9,
         "maxComputeFlop": 3.036551985824e+24,
-        "orgCount": 8
+        "orgCount": 14
+      },
+      {
+        "country": "Hong Kong",
+        "countryShort": "Hong Kong",
+        "modelCount": 15,
+        "computeKnownCount": 9,
+        "frontierCount": 0,
+        "recentCount": 5,
+        "openWeightsCount": 6,
+        "maxComputeFlop": 3.036551985824e+24,
+        "orgCount": 12
+      },
+      {
+        "country": "Canada",
+        "countryShort": "Canada",
+        "modelCount": 57,
+        "computeKnownCount": 27,
+        "frontierCount": 7,
+        "recentCount": 4,
+        "openWeightsCount": 8,
+        "maxComputeFlop": 4.3e+23,
+        "orgCount": 35
+      },
+      {
+        "country": "Israel",
+        "countryShort": "Israel",
+        "modelCount": 12,
+        "computeKnownCount": 8,
+        "frontierCount": 1,
+        "recentCount": 2,
+        "openWeightsCount": 7,
+        "maxComputeFlop": 3.7e+23,
+        "orgCount": 11
       },
       {
         "country": "Japan",
         "countryShort": "Japan",
-        "modelCount": 7,
+        "modelCount": 11,
+        "computeKnownCount": 7,
         "frontierCount": 1,
+        "recentCount": 2,
+        "openWeightsCount": 5,
         "maxComputeFlop": 2.5562e+23,
-        "orgCount": 7
+        "orgCount": 10
       },
       {
-        "country": "Switzerland",
-        "countryShort": "Switzerland",
-        "modelCount": 6,
-        "frontierCount": 2,
-        "maxComputeFlop": 478000000000000000,
-        "orgCount": 3
-      },
-      {
-        "country": "Netherlands",
-        "countryShort": "Netherlands",
+        "country": "Saudi Arabia",
+        "countryShort": "Saudi Arabia",
         "modelCount": 4,
+        "computeKnownCount": 2,
         "frontierCount": 0,
-        "maxComputeFlop": 8.46e+22,
+        "recentCount": 2,
+        "openWeightsCount": 0,
+        "maxComputeFlop": 1.05e+25,
         "orgCount": 4
-      },
-      {
-        "country": "Australia",
-        "countryShort": "Australia",
-        "modelCount": 3,
-        "frontierCount": 0,
-        "maxComputeFlop": 8.46e+22,
-        "orgCount": 3
       },
       {
         "country": "UAE",
         "countryShort": "UAE",
         "modelCount": 3,
+        "computeKnownCount": 3,
         "frontierCount": 1,
+        "recentCount": 2,
+        "openWeightsCount": 3,
         "maxComputeFlop": 3.76e+24,
         "orgCount": 2
       },
       {
+        "country": "Germany",
+        "countryShort": "Germany",
+        "modelCount": 31,
+        "computeKnownCount": 20,
+        "frontierCount": 4,
+        "recentCount": 1,
+        "openWeightsCount": 14,
+        "maxComputeFlop": 8.46e+22,
+        "orgCount": 26
+      },
+      {
+        "country": "Switzerland",
+        "countryShort": "Switzerland",
+        "modelCount": 12,
+        "computeKnownCount": 6,
+        "frontierCount": 2,
+        "recentCount": 1,
+        "openWeightsCount": 2,
+        "maxComputeFlop": 478000000000000000,
+        "orgCount": 7
+      },
+      {
+        "country": "Australia",
+        "countryShort": "Australia",
+        "modelCount": 6,
+        "computeKnownCount": 3,
+        "frontierCount": 0,
+        "recentCount": 1,
+        "openWeightsCount": 2,
+        "maxComputeFlop": 8.46e+22,
+        "orgCount": 6
+      },
+      {
         "country": "Finland",
         "countryShort": "Finland",
-        "modelCount": 2,
+        "modelCount": 6,
+        "computeKnownCount": 2,
         "frontierCount": 0,
+        "recentCount": 1,
+        "openWeightsCount": 4,
         "maxComputeFlop": 2.42784e+21,
-        "orgCount": 1
+        "orgCount": 4
+      },
+      {
+        "country": "Netherlands",
+        "countryShort": "Netherlands",
+        "modelCount": 5,
+        "computeKnownCount": 4,
+        "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 2,
+        "maxComputeFlop": 8.46e+22,
+        "orgCount": 5
+      },
+      {
+        "country": "Multinational",
+        "countryShort": "Multinational",
+        "modelCount": 4,
+        "computeKnownCount": 0,
+        "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 1,
+        "maxComputeFlop": 0,
+        "orgCount": 2
+      },
+      {
+        "country": "Czechia",
+        "countryShort": "Czechia",
+        "modelCount": 3,
+        "computeKnownCount": 1,
+        "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 0,
+        "maxComputeFlop": 14463360000000000000,
+        "orgCount": 3
+      },
+      {
+        "country": "Italy",
+        "countryShort": "Italy",
+        "modelCount": 3,
+        "computeKnownCount": 2,
+        "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 1,
+        "maxComputeFlop": 4531200000,
+        "orgCount": 3
+      },
+      {
+        "country": "Belgium",
+        "countryShort": "Belgium",
+        "modelCount": 2,
+        "computeKnownCount": 1,
+        "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 0,
+        "maxComputeFlop": 982800000000000,
+        "orgCount": 2
+      },
+      {
+        "country": "Denmark",
+        "countryShort": "Denmark",
+        "modelCount": 2,
+        "computeKnownCount": 1,
+        "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 0,
+        "maxComputeFlop": 578102400000000000,
+        "orgCount": 2
       },
       {
         "country": "India",
         "countryShort": "India",
         "modelCount": 2,
+        "computeKnownCount": 2,
         "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 1,
         "maxComputeFlop": 8.46e+22,
-        "orgCount": 2
-      },
-      {
-        "country": "Italy",
-        "countryShort": "Italy",
-        "modelCount": 2,
-        "frontierCount": 0,
-        "maxComputeFlop": 4531200000,
         "orgCount": 2
       },
       {
         "country": "Poland",
         "countryShort": "Poland",
         "modelCount": 2,
+        "computeKnownCount": 2,
         "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 0,
         "maxComputeFlop": 93939056640000000000,
-        "orgCount": 2
-      },
-      {
-        "country": "Saudi Arabia",
-        "countryShort": "Saudi Arabia",
-        "modelCount": 2,
-        "frontierCount": 0,
-        "maxComputeFlop": 1.05e+25,
         "orgCount": 2
       },
       {
         "country": "Spain",
         "countryShort": "Spain",
         "modelCount": 2,
+        "computeKnownCount": 2,
         "frontierCount": 1,
+        "recentCount": 0,
+        "openWeightsCount": 1,
+        "maxComputeFlop": 8.46e+22,
+        "orgCount": 2
+      },
+      {
+        "country": "Sweden",
+        "countryShort": "Sweden",
+        "modelCount": 2,
+        "computeKnownCount": 1,
+        "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 1,
         "maxComputeFlop": 8.46e+22,
         "orgCount": 2
       },
@@ -14897,56 +15095,99 @@
         "country": "Taiwan",
         "countryShort": "Taiwan",
         "modelCount": 2,
+        "computeKnownCount": 2,
         "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 0,
         "maxComputeFlop": 85800000000000000000,
         "orgCount": 2
       },
       {
-        "country": "Belgium",
-        "countryShort": "Belgium",
+        "country": "Argentina",
+        "countryShort": "Argentina",
         "modelCount": 1,
+        "computeKnownCount": 0,
         "frontierCount": 0,
-        "maxComputeFlop": 982800000000000,
+        "recentCount": 0,
+        "openWeightsCount": 0,
+        "maxComputeFlop": 0,
         "orgCount": 1
       },
       {
-        "country": "Czechia",
-        "countryShort": "Czechia",
+        "country": "Austria",
+        "countryShort": "Austria",
         "modelCount": 1,
+        "computeKnownCount": 0,
         "frontierCount": 0,
-        "maxComputeFlop": 14463360000000000000,
+        "recentCount": 0,
+        "openWeightsCount": 1,
+        "maxComputeFlop": 0,
         "orgCount": 1
       },
       {
-        "country": "Denmark",
-        "countryShort": "Denmark",
+        "country": "Croatia",
+        "countryShort": "Croatia",
         "modelCount": 1,
+        "computeKnownCount": 0,
         "frontierCount": 0,
-        "maxComputeFlop": 578102400000000000,
+        "recentCount": 0,
+        "openWeightsCount": 0,
+        "maxComputeFlop": 0,
+        "orgCount": 1
+      },
+      {
+        "country": "Iran",
+        "countryShort": "Iran",
+        "modelCount": 1,
+        "computeKnownCount": 0,
+        "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 0,
+        "maxComputeFlop": 0,
         "orgCount": 1
       },
       {
         "country": "Ireland",
         "countryShort": "Ireland",
         "modelCount": 1,
+        "computeKnownCount": 1,
         "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 0,
         "maxComputeFlop": 34153451000000000,
+        "orgCount": 1
+      },
+      {
+        "country": "Malaysia",
+        "countryShort": "Malaysia",
+        "modelCount": 1,
+        "computeKnownCount": 0,
+        "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 0,
+        "maxComputeFlop": 0,
+        "orgCount": 1
+      },
+      {
+        "country": "Norway",
+        "countryShort": "Norway",
+        "modelCount": 1,
+        "computeKnownCount": 0,
+        "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 1,
+        "maxComputeFlop": 0,
         "orgCount": 1
       },
       {
         "country": "Russia",
         "countryShort": "Russia",
         "modelCount": 1,
+        "computeKnownCount": 1,
         "frontierCount": 0,
+        "recentCount": 0,
+        "openWeightsCount": 0,
         "maxComputeFlop": 51880000000000000,
-        "orgCount": 1
-      },
-      {
-        "country": "Sweden",
-        "countryShort": "Sweden",
-        "modelCount": 1,
-        "frontierCount": 0,
-        "maxComputeFlop": 8.46e+22,
         "orgCount": 1
       }
     ],
@@ -14954,6 +15195,11 @@
       "openWeights": 219,
       "closed": 211,
       "unknown": 98
+    },
+    "fullCatalogAccessibilityMix": {
+      "openWeights": 318,
+      "closed": 452,
+      "unknown": 260
     },
     "domainMix": [
       {
@@ -15031,15 +15277,18 @@
     "Compute estimates carry uncertainty (see Confidence field).",
     "Future-dated entries reflect the source snapshot and are shown as-is.",
     "Descriptive trends, not predictions.",
-    "Multi-country collaboration models are co-attributed to each participating country in the country leaderboard."
+    "Multi-country collaboration models are co-attributed to each participating country in the country leaderboard.",
+    "Epoch AI's 'Frontier model' flag reflects top-10 training compute at release time, not capability or impact.",
+    "Org/country model counts use the full dated catalog. Compute-derived metrics (frontierCount, maxComputeFlop) use only the compute-known subset.",
+    "openWeightsCount is a proxy for tracked open-release activity only."
   ],
   "meta": {
-    "generatedAt": "2026-07-14T05:19:37.812Z",
-    "asOf": "2026-07-14",
+    "generatedAt": "2026-07-17T21:58:51.871Z",
+    "asOf": "2026-07-17",
     "source": {
       "name": "Epoch AI — Notable AI Models",
       "publisher": "Epoch AI",
-      "url": "https://epoch.ai/data/notable-ai-models"
+      "url": "https://epoch.ai/data/ai-models"
     },
     "version": "1.0.0"
   }
