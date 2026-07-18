@@ -1,7 +1,7 @@
 // ─── WARN mass-layoff notice types ──────────────────────────────────────────
 // Type-only module (no JSON import) so client components can share these types
 // without dragging warn-notices.json into their bundle. The heavy data lives in
-// lib/warn.ts (server) and public/warn-notices.json (fetched at runtime).
+// public/warn-notices.json, fetched at runtime via lib/warn-client.ts.
 
 export interface WarnNotice {
   company: string;
