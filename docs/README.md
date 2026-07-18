@@ -289,7 +289,7 @@ Diagrams must use **Mermaid** (flowchart or sequenceDiagram). Diagrams must be a
 | `lib/talent-bottleneck.ts` | Talent bottleneck analysis | [visa.md](./visa.md) |
 | `lib/utils.ts` | Number/currency/percent formatters | [platform.md](./platform.md) |
 | `lib/wage-tier-polarization.ts` | Employment-weighted wage terciles × AI-exposure band cross-tabulation (server-only, `import "server-only"`) | [sectors.md](./sectors.md) |
-| `lib/warn.ts` / `lib/warn-types.ts` / `lib/warn-client.ts` | WARN notice types and adapters | [labor-market.md](./labor-market.md) |
+| `lib/warn-types.ts` / `lib/warn-client.ts` | WARN notice types and adapters | [labor-market.md](./labor-market.md) |
 
 ### Script / Build Family
 
