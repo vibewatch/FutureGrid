@@ -94,3 +94,22 @@ Fact Checker conducted independent verification of Tank's data audit findings. R
 - Verify audit scripts before treating recomputation as a defect; script errors propagate to false problem claims
 - Cross-source data consistency requires explicit source hierarchy at contract level (OEWS > projections for wages)
 - Market-signal freshness must be validated separately from data consistency; staleness claims require timestamp evidence
+
+
+### 2026-07-17T21-23-54: AI Frontier Methodology Release (PR #129) — Data Verification & Bias Detection
+
+**Cycle:** Live data verification, compute non-disclosure pattern identification, source-row validation
+**Verdicts:** ✅ APPROVE (data verification, bias confirmation)
+
+**Live Data Verification (Fact Checker, sync):**
+- ✅ Fetched live Epoch AI CSV/docs
+- ✅ Confirmed 1,035 source rows, 1,030 dated, 528 compute-known
+- ✅ **Disclosure Bias Confirmed:** Chinese active labs (Alibaba 29, ByteDance 9, DeepSeek 9, Baidu 4) all carry 0 frontierCount (compute non-disclosure). This is the concrete example of structural bias that must be named in UI.
+- ✅ **Default View Correct:** recentCount shows China #2 (104 recent tracked) ahead of UK #5 (6 recent tracked)
+- ✅ **Frontier-Only Inversion Identified:** frontierCount shows UK #2 (9 entries from historical DeepMind/Oxford) > China #4 (4 entries). This inversion is mathematically correct given source data but represents disclosure bias, NOT country capability ranking.
+- ✅ All proxy definitions validated
+- ✅ Live data current; no staleness issues
+
+**Learning:** Data verification must explicitly surface structural bias patterns (e.g., "Chinese entities have 0 frontierCount because they don't publish compute figures"). Naming the concrete pattern allows UI/UX to implement targeted disclosures. Generic disclaimers ("data limitations") fail to prevent metric misinterpretation. When non-disclosure is structural, it must be called out as concrete example at point of use.
+
+**Outcome:** Data verification cleared for release. Bias confirmation provided to Rai and Neo for UI remediation.

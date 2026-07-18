@@ -64,3 +64,68 @@ Trinity conducted comprehensive cycle leadership: design review (exhaustive rout
 - Exclusive file ownership during triage prevents concurrent modification conflicts
 - Design contracts (route count, viewport coverage) must be defined before audit to avoid scope creep
 - Comprehensive gate validation (lint/tests/build/Playwright/a11y/i18n) required for full-site changes
+
+
+### 2026-07-17T21-23-54: AI Frontier Methodology Release (PR #129) — Strict-Lockout Lead
+
+**Cycle:** Full geopolitical/fairness review, compute-filtered methodology consolidation, disclosure-bias remediation
+**Verdicts:** ✅ APPROVE (design review, final review, release execution)
+
+**Role & Learnings:**
+- **Design & Contract:** Defined six-metric selector contract (recentCount default, frontierCount opt-in), establish compute-known subset vs full dated catalog separation, exclusive file ownership across 31 files
+- **Strict-Lockout Lead:** QA found docs trailing whitespace (FAIL) → detected Tank authorship conflict on data layer → reassigned revision to Neo (independent agent) → Neo executed independent docs cleanup → re-verified all gates
+- **Learning:** Authorship-based reassignment on strict-lockout paths accelerates resolution; prevents self-approval cycles. Data-layer revisor (Tank) cannot revise data-dependent frontend without conflict escalation.
+- **Final Review:** All gates green (lint/tests/build/Playwright/a11y/RAI YELLOW→GREEN); verified China context in disclosure, restricted-use caveat in mix card, data definitions rendered in UI
+
+**Release Execution:**
+- ✅ PR #129 merged: commit 6002bcb (branch) → dc587bea4255059315af548fdd6e00999d1d40c2 (main merge)
+- ✅ Remote branch deleted
+- ✅ CI: lint ✅ tests ✅ build ✅
+
+
+## 2026-07-18T01:47:09Z — AI Frontier UI enhancement release
+Led design review for PR #130: selected Tracked Model Origins map, compute-frontier envelope, and hero sparklines within PR #129 guardrails. Final review approved after lint, build, static export, and 1,594 tests passed; PR #130 merged as 046b32f.
+
+
+### 2026-07-18T02:55Z — FrontierLeadersChart redesign approved
+Trinity approved final review for PR #131 after lint, 1,616 tests, build, and diff-check passed. PR merged to main as 43b21ab.
+
+
+### 2026-07-18T04:10Z — Origins Treemap redesign final review — ✅ APPROVE
+Gating review of the "Where Tracked Models Are Developed" world-map → share/concentration treemap redesign (FrontierOriginsMap.tsx → FrontierOriginsTreemap.tsx). Verified against my design decision (Trinity-redesign-where-tracked-models-are-developed-as-a-c.md).
+- **Design conformance (1–5): all green.** d3.treemap/hierarchy from existing d3@^7.9.0 (NO package.json change); pure SVG, no geojson fetch, no canvas. getCountryOriginShares() → 34 origins (Multinational excluded, Singapore+Hong Kong included), fair fields only (recentCount/modelCount/openWeightsCount + country/countryShort/iso3); compute/frontier fields structurally absent (interface + regression test). Uniform violet tiles (area sole encoding, no value ramp/podium); decorative SVG aria-hidden, no role=img, no focusable tiles; semantic 3-col table (Country/Records/Share%); reduced-motion safe. AIFrontierView rewired, ssr:false dropped → section prerenders. EN/ZH parity; obsolete map* keys removed with absence guards; no dangling refs. Deterministic (no Date.now/Object.groupBy).
+- **Gates:** lint ✅ · test:run 1631 passed (88 files) ✅ · build ✅ · out/frontier.html emits treemap section server-side (42 rects, "Share of tracked records (%)" header, coverage note resolved to "34 attributed countries", zero geoNaturalEarth1 / world-countries.geo.json / Map-metric artifacts) ✅ · diff --check clean ✅.
+- **Authors:** Neo (component/wiring), Tank (selector), Switch (i18n), Mouse (tests). No rejection → no lockout required.
+
+
+## 2026-07-18T03:20:59.028+00:00 — Frontier Origins treemap shipped (PR #132)
+
+Trinity selected the share/concentration treemap direction for "Where Tracked Models Are Developed" and later approved the implementation. Final gates were green: lint, 1,631 tests, build/static export, `diff --check`, Rai GREEN, and PR #132 squash-merged to main as 758b351.
+
+
+## 2026-07-18T04:58Z — All-system docs audit (pass 1/2): platform · i18n · transparency
+
+Owned-doc reconciliation against current code (issues #120–#132 + 654a753). Verdicts: all 3 UPDATED-with-changes, all date-bumped to 2026-07-18.
+- **platform.md:** rewrote the stale Data Refresh step list (it falsely enumerated `build:jolts`/`build:data`, which are credential-gated & EXCLUDED) to reflect `npm run data:refresh` → `scripts/refresh-data.mjs` MANIFEST (17 key-free builders), the full lint/test/build gate step on the generated workspace, `data/scheduled-refresh` branch, and `gh pr create`. Added CI Node 20 fact (`setup-node@v4`) + no ES2024-safe claim.
+- **i18n.md:** added `tests/sectors-i18n.test.ts` parity gate. 24-namespace catalogue verified accurate; frontier key churn needed no change (no key-count claims in doc).
+- **transparency.md:** fixed `getLatestAsOf` (chronological, not lexicographic), added `asOfToComparableDate`/`selectLatestAsOf` exports and localized-guardrail note (#120, `useT("common")` guardrailLabel_/guardrailDesc_ keys), added `provenance.test.ts` + `evidence-convergence.test.ts` to tests. Evidence taxonomy (9 families/7 conclusions) + CLEARED(15)/FLAGGED(8) verified accurate.
+- **Flags:** no NEW-doc or OBSOLETE-doc candidates in my scope. README-index refresh notes compiled (Node/runtime row missing in Tech Stack; frontier component list stale post #130–#132) for the deferred final pass — README.md NOT edited.
+- **Validation:** `git diff --check` clean; docs-only; README untouched; sibling-owned dashboard/frontier/testing docs left alone.
+Detail: decisions/inbox/trinity-docs-allsystem.md.
+
+## 2026-07-18T05:27Z — All-system docs audit (pass 2/2): README index refresh
+
+Final pass — refreshed the docs/README.md index I own. No docs created/deleted; all 18 Quick Links rows verified (files exist, owners correct) → structure unchanged. Exact edits:
+1. Header **Last updated** 2026-07-11 → 2026-07-18 (Maintained by: Trinity (Lead) kept).
+2. Technology Stack: ADDED `Runtime` row — Node 20 (CI + `data:refresh`, per ci.yml/refresh-data.yml `setup-node`) · Node 22 (GitHub Pages deploy, deploy-pages.yml). Versions verified against `.github/workflows/*.yml`.
+3. Component inventory `frontier/`: replaced stale `AIFrontierView, ComputeTimelineChart, CostPowerTrends` with the current 6 in `components/frontier/*` — `AIFrontierView, ComputeTimelineChart, CostPowerTrends, FrontierLeadersChart, FrontierMixCards, FrontierOriginsTreemap` (post #130–#132; `FrontierOriginsMap` removed, not reintroduced).
+Re-verified accurate & preserved verbatim: Quick Links (18 docs/owners), Architecture Overview (Next.js 16 static export, React 19), route + system mermaid diagrams, 18-subsystem taxonomy, namespace-catalogue mention, workflow refs, Documentation Gaps.
+Validation: `git --no-pager diff --check` CLEAN; docs/README.md is my only edit this pass; no `.squad/**` staged, no branch/commit. Detail appended to decisions/inbox/trinity-docs-allsystem.md.
+### 2026-07-18T20:30Z — System-wide docs reconciliation shipped (PR #133)
+
+**Team update (Scribe-logged):** PR #133 reconciled the full `docs/` set to current code and squash-merged to main as **7a6a876**. Trinity (Lead) reconciled docs/platform.md (refresh-data.yml 17-builder key-free manifest + CI Node 20/ES2023 baseline), docs/i18n.md (added `tests/sectors-i18n.test.ts` parity gate), docs/transparency.md (getLatestAsOf chronological-latest fix + #120 provenance exports/localized GuardrailBadge), and refreshed the docs/README.md index (date, Node 20/22 runtime row, 6-component frontier inventory). No docs created/deleted; all 18 subsystem docs retained. Team totals: 15 docs updated, 4 verified accurate.
+
+
+### 2026-07-18T06:45Z — Dead-code cleanup review gate (PR #134)
+
+**Team update (Scribe-logged):** Trinity gated PR #134 (Tank's deletion-only cleanup). Independently verified reachability of every removed symbol/file via repo-wide grep (zero live consumers), confirmed `getWarnNotices` in `WarnPressureView.tsx` is a distinct local function (not the deleted `lib/warn.ts` helper), verified data/builder/validator consistency (`tests/data-schema.test.ts` accepts the hand-edited `data/ai-frontier.json`; no regen drift), confirmed no collateral damage to retained items (`iso3`, `country-iso3.mjs`, `world-countries.geo.json`, `getCountryOriginShares()`), and confirmed scope discipline (no `.squad/**` staged). Re-ran gates green: lint clean, 1622 tests / 88 files, build 796 pages. Verdict ✅ **APPROVE** (one non-blocking doc nit — two stale `lib/warn.ts` refs — since fixed by Tank). Squash-merged to main as **b069f96**.

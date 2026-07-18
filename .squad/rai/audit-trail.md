@@ -193,3 +193,86 @@
 |----------|---------|---------------|
 | Medium | R2-F1 — "your job's AI risk" personal framing | Reword placeholder + add one-line occupation-scope qualifier in result panel |
 | Low | R2-F3 — disclaimer not proximate to HighlightsBento | Add one-line methodology sub-caption near "Standout Careers" heading |
+
+---
+
+## 2026-07-18 — AI Frontier UI Enhancement (Origins Map + Compute Envelope + Hero Sparklines)
+
+**Reviewer:** Rai 🛡️
+**Scope:** Uncommitted working-tree change set — `lib/i18n/messages/{en,zh}/frontier.ts`, `components/frontier/FrontierOriginsMap.tsx` (new), `components/frontier/ComputeTimelineChart.tsx`, `components/frontier/AIFrontierView.tsx`, `lib/ai-frontier.ts`, `docs/frontier.md`
+**Change type:** UI/copy-heavy (docs+content check suite; credentials/injection out of scope for this change)
+**Regression guard:** Must not regress the responsible-framing correction shipped GREEN in PR #129 / commit dc587bea (no company/country AI "impact/leadership/capability/adoption" ranking implications).
+
+**Overall Verdict: 🟢 GREEN (ship)**
+
+### Surface 1 — "Tracked Model Origins" world map (FrontierOriginsMap.tsx) — 🟢
+- Title `mapSectionTitle` "Where Tracked Models Are Developed"; subhead explicitly "a descriptive view of catalog coverage, not a ranking of national AI capability, output, or impact." ✅
+- Metric toggle hard-limited to `recentCount` / `modelCount` / `openWeightsCount` (MAP_METRICS constant, line 37); compute/frontier metrics never exposed. ✅
+- Data-layer enforcement: `getCountryLeaderboardGeo()` returns a `CountryGeoEntry` projection that deliberately omits `computeKnownCount`/`frontierCount`/`maxComputeFlop` (lib/ai-frontier.ts) — the map *cannot* be fed a compute/capability ranking. ✅
+- Sequential single-hue VIOLET ramp (non-podium), legend labeled "Fewer records" / "More records" — descriptive, no winner implied. ✅
+- `dataDisclaimer` rendered in amber box at top (point of use, lines 232-236). ✅
+- `countryAttributionNote` (co-attribution inflation caveat + China-as-example-of-any-non-disclosing-developer framing) rendered at bottom (lines 410-412). ✅
+- Coverage note `mapCoverageNote` discloses excluded entities: "{mapped} of {total} … {unmapped} multinational or unmapped entities excluded" (32 mapped / 3 unmapped: Singapore, Hong Kong, Multinational per docs §8). Not silently dropped. ✅
+- Accessibility: real `<button>` toggles with `aria-pressed`; SVG `aria-hidden`; authoritative numeric `<table>` with caption + scope; tooltip hover-only/non-focusable with table fallback. ✅
+
+### Surface 2 — Compute-frontier envelope (ComputeTimelineChart.tsx) — 🟢
+- `envelopeDefinition` caption at point of use: "an upper envelope of disclosed compute, not a measure of capability and not a leaderboard. Developers that do not disclose training compute are absent…" ✅
+- `envelopeSrSummary` sr-only line reinforces "disclosed compute only, not model capability." ✅
+- Disclosure bias (non-reporting developers absent) stated. ✅
+
+### Surface 3 — Hero sparklines (AIFrontierView.tsx) — 🟢
+- Decorative: `aria-hidden="true"`; sr-only `statSparklineSrHint` "The small trendline is decorative; the labeled figure above is the reported value." ✅
+- Backed by real selectors (`computeTrend.frontierByYear.maxLog10Compute`, `costTrend.maxCostUsd2023`) — no fabricated trend; guards against empty/flat series. ✅
+
+### Surface 4 — Chinese (zh) parity — 🟢
+- All 17 new keys present in both EN and ZH (1:1). ✅
+- ZH carries identical non-ranking caveats: mapSectionSubhead "并非对各国 AI 能力、产出或影响的排名"; envelopeDefinition "而非能力衡量指标，也不是排行榜。不披露训练算力的开发者不在其中"; countryAttributionNote retains China-specific example + worldwide non-disclosure framing. Not a weaker gloss. ✅
+
+### Normative-language scan — 🟢
+- No new bare "best/leader/#1/dominance/winner/most advanced/impact/capability" claims. All hits are pre-existing strings already GREEN in PR #129 (in explicit negation/caveat context) or false positives on the `leading-relaxed` CSS class.
+
+### Clean
+- No secrets, no PII, no credential/injection surface in this change set. ✅
+- PR #129 / dc587bea responsible-framing correction preserved and extended to the new surfaces. ✅
+
+**No blocking findings. No advisory findings requiring action.** Optional (non-blocking) enhancement: the map renders `countryAttributionNote` (which conveys co-attribution *inflation*); the more explicit `multiCountryAttributionDefinition` ("summed country counts can exceed the total number of unique models") is rendered in the FrontierLeadersChart `<details>` block but not on the map. Substance of the caveat is present at point of use; adding the explicit line to the map is a nicety, not a requirement.
+
+---
+
+## 2026-07-18T02:49Z — FrontierLeadersChart visual redesign (rows-as-bars) — 🟢 GREEN
+
+**Scope:** components/frontier/FrontierLeadersChart.tsx, lib/i18n/messages/en/frontier.ts, lib/i18n/messages/zh/frontier.ts (uncommitted).
+**Context:** Chart.js bar chart + redundant table replaced by a single semantic "rows-as-bars" leaderboard table (rank number + gradient fill bar + identity chip + value + peak compute). Highest-risk ranking surface; must not regress PR #129 / dc587bea / #130 responsible-framing.
+
+**Verdict: 🟢 GREEN — ship. No blockers, no required advisories.**
+
+### Ranking framing — CLEAN
+- Rank column: plain neutral integer `{i+1}` in muted zinc-400/500, tabular-nums. No gold/silver/bronze, no medal/trophy/podium/crown glyphs, no winner/champion/#1/"leader in"/"best"/dominance language (grepped EN + ZH + component — none).
+- Fill bars: ONE uniform violet gradient for every row; width encodes VALUE share of visible max (log-normalised for largestRun), NOT rank position.
+- Accent chips encode IDENTITY not position: org monogram tint via stable name hash (`hashIndex`); country chip is a flag emoji on neutral zinc bg. Row #1 gets no reward styling.
+- frontierCount amber value pill is a per-value metric badge applied uniformly to any row with frontierCount>0 — not rank-encoding.
+
+### Caveat preservation — CLEAN
+- dataDisclaimer: always-visible amber point-of-use row ABOVE the table (L354-362), prefixed with attributionCaveat. NOT hidden.
+- frontierDefinitionNote: visible amber note when frontierCount selected (L347-351).
+- countryAttributionNote (co-attribution inflation + China-as-example-of-non-disclosure): always visible on Countries tab (L456-458).
+- orgEntitiesNote (Google/DeepMind fragmentation): always visible on Orgs tab (L451-453).
+- coverageNote + orgLeaderboardMetric + openWeightsMetric + countryDefaultSortDefinition + multiCountryAttributionDefinition reachable in "Why these numbers?" <details> (L476-491) — same tier as before; no critical caveat demoted behind the click.
+
+### Representational harm — CLEAN
+- Country flags are aria-hidden decorative glyphs. "Tracked model records by attributed country" framing; multi-country/non-disclosure caveats intact; no national-superiority implication.
+
+### EN/ZH parity — CLEAN
+- 3 new keys identical meaning: leadersColRank (Rank / 位次 — neutral sort order), leadersTableCaption, leadersWhyDisclosure (Why these numbers? / 这些数字意味着什么？).
+- Repurposed a11y strings (a11yFrontierLeadersSummary, a11yFrontierLeadersName) rewritten in both locales; ZH carries same content, no weakening.
+- All critical caveats verified undiluted in ZH (dataDisclaimer, countryAttributionNote, frontierDefinitionNote, countryDefaultSortDefinition, multiCountryAttributionDefinition).
+
+Owners if re-review needed: Switch=lib/i18n/*, Neo=components/frontier/*.
+
+---
+## 2026-07-18T04:04 — Audit: Origins share/concentration treemap RAI review
+- Trigger: Coordinator (req. @huangyingting). Regression check vs PR #129/#130 methodology guardrail.
+- Reviewed: working-tree diff of lib/ai-frontier.ts, en/zh frontier.ts, AIFrontierView.tsx, docs/frontier.md; full FrontierOriginsTreemap.tsx; rendered origins*/countryAttributionNote strings (EN+ZH).
+- Verdict: 🟢 GREEN. Checks 1-5 PASS (language EN+ZH parity; fair-metrics-only structural projection; uniform-fill non-ranking encoding; point-of-use caveats present/honest; attribution honesty).
+- Remediation: none. No lockout / no Reviewer Rejection Protocol.
+- State: read-only on product code; no .squad/** committed or staged.

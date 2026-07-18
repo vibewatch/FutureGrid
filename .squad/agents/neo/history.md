@@ -1,100 +1,58 @@
 # Neo History
 
-## 2026-07-02: AI Frontier Frontend
-- Built app/frontier/page.tsx + 5 components (AIFrontierView, ComputeTimelineChart, FrontierLeadersChart, CostPowerTrends, FrontierMixCards)
-- i18n en/zh parity (frontier namespace)
-- Sidebar nav integration, /sources attribution
-- Fixed "Largest training run" card: data-driven hero stats from frontierByYear snapshot
-- Softened causal copy ("engine underlying workforce disruption")
-- Neutralized geopolitics wording, hyperlinked CC BY attribution
-- Feature shipped as PR #45 (merged to main, 2026-07-02)
+## Summarized through 2026-07-18T03:20:59.028+00:00 by Scribe
 
-2026-07-03: Added /labor Opportunity Lens tab and proposed server-side adapter fallback to normalize projections. (See decisions/decisions.md)
+Neo is FutureGrid's frontend implementation specialist. Durable patterns from prior work:
 
+- Read the repo's Next.js docs before changing Next behavior; this codebase may differ from standard Next conventions.
+- Keep heavy datasets server-side. Client components/pages must not transitively import large raw JSON; compute derived data in Server Components and pass compact props. Use `server-only` guards where appropriate.
+- All user-visible copy, legends, tooltips, aria labels, empty states, and caveats must route through EN/ZH i18n parity; avoid hardcoded strings.
+- For visualizations, prefer decorative `aria-hidden` SVG/canvas paired with semantic text/table equivalents. Avoid nested-interactive `role="img"` patterns and focusable decorative paths.
+- AI Frontier country/company metrics must remain descriptive observables, not capability/impact/adoption/leadership rankings. Point-of-use caveats are mandatory.
+- React 19 SVG hydration can differ from React 18; keep SVG child shapes deterministic and test hydration-sensitive changes.
 
-2026-07-03: Implemented `/global` Readiness Gap Lens UI, server-loaded data wiring through `app/global/page.tsx` and `GlobalView`, EN/ZH i18n keys, localized gap units, and deterministic component tests. (See decisions.md)
+## Chronology
 
+### 2026-07-02 — AI Frontier initial frontend / PR #45
+Built `/frontier` page, `AIFrontierView`, `ComputeTimelineChart`, `FrontierLeadersChart`, `CostPowerTrends`, and `FrontierMixCards`; wired sidebar and `/sources`; fixed data-driven hero stats; softened causal/geopolitical copy; kept CC BY attribution.
 
-2026-07-03T10:19:02.301+00:00 - Built and wired the `/visa` Talent Bottleneck Lens UI with EN/ZH i18n and component tests; fixed reducer typing during validation lockout.
+### 2026-07-03 to 2026-07-04 — Lens and IA expansion
+Implemented `/labor` Opportunity Lens work, `/global` Readiness Gap Lens and OpenRouter activity UI, `/visa` Talent Bottleneck Lens, `/analysis` stock lens and AI Pressure Synthesis, plus the first IA refactor across sidebar taxonomy, dashboard cards, command palette shortcuts/grouping, i18n, and tests.
 
+### 2026-07-10 — Issues #103/#104/#105 and strict-lockout lessons
+- #103 Evidence Convergence Strip shipped cleanly.
+- #104 Reskilling Bridge shipped after strict-lockout cycles. Key fix: split `SkillsPageClient` from the server page so raw H-1B/job-postings/projections data stayed out of the client bundle; bundle stayed under budget.
+- #105 Exposure→Outcome Matrix needed independent remediation after rejection for nested-interactive SVG, focus-visible, hardcoded strings, and stale tests. Learning: deletion artifacts and a11y/i18n defects require atomic cleanup.
 
-2026-07-03T12:48:40.595+00:00 - Built and wired `/global` OpenRouterCountryActivityLens with EN/ZH i18n and component tests; placed the AI Model Ecosystem Footprint section after AI Adoption Signals and before Adoption–Readiness Gap.
+### 2026-07-11 — Consumer GenAI Diffusion / PR #115
+Authored the initial implementation but was locked out from revisions after duplicate SR naming and unvalidated shared-scale testing. Review-isolation protocol applied.
 
+### 2026-07-12 — Provenance Registry and localized GuardrailBadge / PR #120
+Rendered lane badges and source evidence UI, localized GuardrailBadge, fixed analysis scroll offsets and regression tests, and documented reusable provenance UI patterns. PR #120 merged as 78154f2.
 
-2026-07-03T13:23:16.634+00:00 - Built and wired `AICompanyStockLens` into `/analysis` with EN/ZH i18n and component tests; fixed period-return selection to use observations on/before target dates or `null` when sparse coverage is insufficient.
+### 2026-07-16 — Full-site Playwright/data audit fixes
+Implemented React 19 SVG hydration fixes, responsive overflow fixes, WCAG accessibility remediation, and Chinese localization for missing-data copy. Post-fix Playwright passed 1,674/1,674 tasks.
 
+### 2026-07-17 — AI Frontier methodology release / PR #129
+Added six-metric selector, deterministic 3-year recent window, dynamic coverage/cost/power/regression values, and point-of-use disclosures: `frontierDefinitionNote`, `countryAttributionNote`, and exact EN/ZH observable labels. After strict-lockout docs revision, all gates green and Rai Yellow→Green.
 
-2026-07-03T21:27:13.860+00:00 - Implemented `/analysis` AI Pressure Synthesis MVP via `lib/ai-pressure-synthesis.ts`, `AIPressureSynthesisLens`, `InsightsView`/page wiring, i18n, and tests, combining OpenRouter/readiness, H-1B/SOC, and stock-market signals.
+### 2026-07-18T01:47Z — AI Frontier UI enhancement / PR #130
+Implemented `FrontierOriginsMap`, compute-frontier envelope, and hero sparklines in `components/frontier/*`. The map used fair metrics only, decorative aria-hidden SVG, accessible table equivalent, runtime geometry fetch, and no new dependencies. PR #130 merged as 046b32f.
 
-### 2026-07-03T22:49:27.110+00:00 — Review cycle and queue handoff
-- Completed 4 of 20 squad review rounds; planned next feature/improvement/bug work as issues #73-#84.
-- #73, #75, and #74 are merged via PRs #85, #86, and #87; continue remaining open items #76-#84 from main c4d84fa.
+### 2026-07-18T02:55Z — FrontierLeadersChart redesign / PR #131
+Replaced Chart.js/canvas and redundant table with one semantic rows-as-bars table. Preserved all six metrics, point-of-use caveats, neutral rank, identity-only chips, and no podium/winner framing. PR #131 merged as 43b21ab.
 
-
-### 2026-07-04T12:23:54.134+00:00 — IA refactor implementation
-- Implemented the safe first IA refactor across Sidebar taxonomy, DashboardHome Choose your lens cards, CommandPalette shortcuts/grouping, EN/ZH i18n, and tests while preserving URLs.
-- Fixed the build-blocking CommandItem union-risk property access with type-safe rendering; validation later passed.
-
-
-### 2026-07-10T09:40:05Z — Issues #103/#104/#105 shipped, strict-lockout & server/client split retrospective
-
-**Issue #103: Evidence Convergence Strip (PR #106 merged)**
-- Built UI convergence strip with i18n, responsive layout
-- Tests: 587 pass; a11y clean
-- No rejection cycles on first review
-
-**Issue #104: Reskilling Bridge (PR #107 merged, 3-cycle strict-lockout → shipped)**
-- Built canonical SOC join UI with i18n en/zh parity
-- v1 rejection (v2 lockout): synthetic SkillTransitionChart, listbox semantics, dead i18n keys → atomically deleted component + test block + imports + 5 i18n keys
-- v2 rejection (v3 lockout): aria-required-children (listbox owned non-option children) → Tank reassigned (Neo locked out)
-- Bundle retrospective: `/skills` page ("use client") imported `getReskillingBridgeData()` which transitively bundled 1.8MB of raw JSON (h1b+job-postings+projections) for 41KB derived output
-- **Server/Client Split Fix (Neo author, Neo responsible):** Refactored page to Server Component computing bridgeData at build time; new `SkillsPageClient.tsx` receives 41KB prop (interactive body). Heavy datasets stay server-only. Grounded in Next 16 server-and-client-components docs.
-- Final tests: 663 pass, a11y green, bundle 394.1KB (< 700KB)
-- Learning: "use client" pages cannot call getters that transitively import non-derived datasets. Compute derived data server-side; pass only results as props. Heavy lib modules need `import "server-only"` guards (Tank adds these).
-
-**Issue #105: Exposure→Outcome Matrix (PR #108 merged, post-rejection work pending)**
-- Built correlation matrix UI + i18n wiring
-- Trinity rejection (committed): nested-interactive SVG, focus-visible, hardcoded EN/ZH strings
-- Locked out for: a11y SVG remediation (Tank), i18n en/zh rework (Tank), dead test-reference cleanup (Mouse)
-- Tests: 751 pass, bundle 394.1KB maintained
-- Learning: role="img" + focusable children violates WCAG nested-interactive rule; requires non-interactive wrapper or separate visible focus indicator. All user-visible text (including legends, tooltips, aria-labels, empty states) must route through i18n. Test mock/marker cleanup is a deletion artifact responsibility that must be atomic.
+### 2026-07-18T03:20:59.028+00:00 — FrontierOriginsTreemap shipped / PR #132
+Replaced `FrontierOriginsMap` with `FrontierOriginsTreemap`, rewired `AIFrontierView`, dropped `ssr:false`, removed runtime GeoJSON fetches, and paired a decorative aria-hidden `d3.treemap` SVG with a semantic Country/Records/Share % table. The component uses only `getCountryOriginShares()` fair metrics (`recentCount`, `modelCount`, `openWeightsCount`), uniform violet tiles, reduced-motion handling, visible data/country/coverage notes, and no new dependencies. PR #132 merged to main as 758b351.
 
 
-### Neo: Consumer GenAI Diffusion Implementation (Batch 2026-07-11)
-- Authored initial PR #115 implementation based on #114 research decision
-- Prematurely opened PR with duplicate SR naming and unvalidated shared-scale test
-- Locked out from revision after Mouse rejection and Rai yellow-flag process
-- No re-admission until follow-up unrelated feature (review-isolation protocol)
+### 2026-07-18T04:58Z — Docs audit of owned route/page docs (all-system doc reconcile)
+Audited my 4 owned docs against current code (post 7b92682, 654a753, #120). Strict reconcile, no rewrites.
+- **dashboard.md — UPDATED (date-bumped 2026-07-18):** (1) `getSectorAggregatesExtended#avgRisk` formula was stale count-weighted (`Σ automationProbability / occupationCount`) → fixed to employment-weighted `Σ(employment × automationProbability) / Σemployment` with count-weighted fallback (matches lib/data.ts:152 and the doc's own prose). (2) `DataAsOfBadge` caveat claimed it reads `generatedAt` from `lib/data.ts#getDataSources()` — stale; it now resolves `asOf` from the provenance registry (`lib/provenance.ts` getDataAsOf/selectLatestAsOf) via `datasetId`/`datasetIds` (PR #120). Added missing `Last audited` line.
+- **careers.md — UPDATED (date-bumped 2026-07-18):** detail-page data-flow mermaid had 4 stale lib fn names vs `app/careers/[code]/page.tsx`: `getCareerByCode`→`generateAllCareerInsights → find` (getCareerByCode is only used in the layout for metadata), `getOccExposureLenses`→`getOccupationExposureLenses`, `getH1bOccupationSignal`→`getOccupationSignalBySoc (+getCoverage)`, `getTrendPoints`→`getOccupationTrend`, and named the evidence-passport fn `getCareerEvidencePassport`. Verified CareerDetailClientProps, list-page state model (MAX_COMPARE=3, PAGE_SIZE=48, sort risk/openings/salary/employment, filterSig reset), 756-record count — all accurate.
+- **analysis.md — ACCURATE (no change):** verified InsightsView section order, `AIPressureSynthesisData` per-lane `LaneProvenance`/`guardrailIds`, GLOBAL/TALENT/MARKET dataset-ID table, `getExposureOutcomeMatrix` server-only guard, and lib/analysis exports. PR #120 provenance already reflected.
+- **report.md — ACCURATE (no change):** verified BEATS array, 5 chart component names, BeeswarmChartStandalone wrapper, scrollytelling/stacked layout guards (1024px, reduced-motion), IntersectionObserver rootMargin, WorldChoropleth `getCountryMapData`.
+No create/delete-candidate flags. `git diff --check` clean; changes are docs-only among my owned files (other doc/.squad edits in the worktree are concurrent sibling agents, not mine). Did not stage/commit .squad or create a branch.
+### 2026-07-18T20:30Z — System-wide docs reconciliation shipped (PR #133)
 
-
-
-### Scribe Orchestration — PR #120 Cycle (2026-07-12T14:24:27Z)
-
-**Session:** Provenance Registry & Localized Guardrails — Cycle Complete  
-**Scope:** Per-lane synthesis provenance (Tank backend), localized GuardrailBadge UI (Neo), full suite validation (Mouse), architecture review (Trinity), i18n compliance (Rai), independent revisions (Switch)
-
-**Neo Role Retrospective:**
-- Rendered lane badges and source evidence UI
-- Localized GuardrailBadge component (EN/ZH parity)
-- Fixed analysis scroll offsets and regression tests
-- i18n documentation completed
-- a11y gates passed with 0 serious violations
-- Learning: DataAsOfBadge and provenance registry patterns are reusable across synthesis features
-
-**Approval & Closure:** PR #120 merged as 78154f20575df26f5b8867b70bb6ce3009c46993; issues #77/#119 closed
-
-
-### 2026-07-16: Full-site Playwright and data audit cycle — implementation (hydration, accessibility, translation)
-
-Neo implemented UI and accessibility fixes for the full-site Playwright audit cycle. Fixes: React 19 SVG hydration sync, responsive overflow resolution, WCAG accessibility gates (0 critical/serious), Chinese localization for retrainUnknown (培训级别暂无数据). Post-fix Playwright: 1,674/1,674 pass.
-
-**Key responsibilities:**
-- React 19 SVG hydration: Fixed SVG title child shape hydration consistency (D1)
-- Responsive overflow: Fixed SR-only container layout breaking overflow detection (D2)
-- Accessibility remediation: Brought WCAG compliance to AA level (0 violations)
-- Chinese translation: Localized retrainUnknown field for career pages
-
-**Key learnings:**
-- SVG title child elements hydrate differently in React 19 vs. React 18; requires explicit shape sync handling and targeted testing
-- Accessible hidden content (SR-only) can still cause layout overflow if container constraints not enforced; test overflow separately from visibility
-- i18n keys for missing data must be localized before release; placeholder strings create compliance gaps
+**Team update (Scribe-logged):** PR #133 reconciled the full `docs/` set to current code and squash-merged to main as **7a6a876**. Neo updated docs/dashboard.md (employment-weighted `avgRisk`; DataAsOfBadge now resolves `asOf` from the #120 provenance registry, not `getDataSources().generatedAt`) + docs/careers.md (detail data-flow fn names corrected) and verified docs/analysis.md + docs/report.md accurate — no change. Team totals: 15 docs updated, 4 verified accurate.
