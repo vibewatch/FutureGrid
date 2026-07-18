@@ -13,6 +13,9 @@ export const frontierEn = {
   statModelsSub: "Models with reported or estimated training compute",
   statFrontierLabel: "Top country by recent tracked releases",
   statLargestLabel: "Largest reported training run",
+  /** sr-only hint for the decorative hero sparklines; the numeric value stays the accessible content. */
+  statSparklineSrHint:
+    "The small trendline is decorative; the labeled figure above is the reported value.",
 
   // ── Section: Compute Timeline ──────────────────────────────────────────────
   timelineSectionTitle: "Training Compute Over Time",
@@ -37,6 +40,14 @@ export const frontierEn = {
   tooltipFrontierYes: "Yes",
   tooltipFrontierNo: "No",
   tooltipConfidence: "Confidence",
+
+  // ── Compute-frontier envelope ─────────────────────────────────────────────
+  envelopeLabel: "Compute-frontier envelope",
+  envelopeDefinition:
+    "Traces the highest reported training compute recorded in each year — an upper envelope of disclosed compute, not a measure of capability and not a leaderboard. Developers that do not disclose training compute are absent, so the line reflects only compute that has been reported.",
+  /** sr-only summary sentence describing the envelope line. */
+  envelopeSrSummary:
+    "An upper-bound line tracing the highest reported training compute per year across the compute-known subset; it shows disclosed compute only, not model capability.",
 
   // ── Section: Tracked Model Activity ───────────────────────────────────────
   leadersSectionTitle: "Tracked Model Activity by Organization and Country",
@@ -108,6 +119,25 @@ export const frontierEn = {
   // ── Prominent data disclaimer ─────────────────────────────────────────────
   dataDisclaimer:
     "These rankings reflect Epoch AI's tracked records and do not measure AI capability, product adoption, commercial reach, open-source usage, or societal and economic impact.",
+
+  // ── Section: Tracked Model Origins (World Map) ────────────────────────────
+  mapSectionTitle: "Where Tracked Models Are Developed",
+  mapSectionSubhead:
+    "A geographic view of Epoch AI's tracked model records by attributed country. It depicts where tracked records originate — a descriptive view of catalog coverage, not a ranking of national AI capability, output, or impact.",
+  /** Group label for the map's metric toggle. Reuses metricRecentCount / metricModelCount / metricOpenWeightsCount labels. */
+  mapMetricSelectorLabel: "Map metric",
+  mapLegendLabel: "Tracked records (selected metric)",
+  mapLegendLow: "Fewer records",
+  mapLegendHigh: "More records",
+  /** Interpolation vars: {mapped} {total} {unmapped} */
+  mapCoverageNote:
+    "{mapped} of {total} tracked regions shown on map; {unmapped} multinational or unmapped entities excluded.",
+  mapTooltipLabel: "Tracked records",
+  mapTableCaption: "Tracked model records by country for the selected metric",
+  mapTableColRegion: "Country or region",
+  mapTableColCount: "Tracked records",
+  mapEmpty: "No tracked records to map for the selected metric.",
+  mapLoading: "Loading map…",
 
   // ── Section: Cost & Power Trends ───────────────────────────────────────────
   costPowerSectionTitle: "Training Cost & Power Draw",

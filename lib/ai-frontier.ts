@@ -173,6 +173,14 @@ export interface CountryLeaderboardEntry {
   /** Short display name (e.g. "United States" for "United States of America"). */
   countryShort: string;
   /**
+   * ISO-3166-1 alpha-3 code used purely as a geographic join key for the world
+   * map. Derived deterministically at build time from `country` and gated on
+   * presence in public/world-countries.geo.json. It carries NO capability,
+   * impact, or ranking meaning. Null for multinational/aggregate entities and
+   * for countries with no polygon on the map (e.g. city-states).
+   */
+  iso3: string | null;
+  /**
    * Full-catalog model count — all dated Epoch AI rows attributed to this country,
    * regardless of compute disclosure.
    */
@@ -208,6 +216,34 @@ export interface AccessibilityMix {
   unknown: number;
 }
 
+/**
+ * Geographic-safe projection of a CountryLeaderboardEntry for the world-map
+ * choropleth. Exposes only the full-catalog country-fair metrics plus the
+ * `iso3` join key — deliberately omits compute-known/frontier/maxComputeFlop so
+ * the map cannot be read as a compute/capability ranking.
+ */
+export interface CountryGeoEntry {
+  country: string;
+  countryShort: string;
+  /** ISO-3 join key — always non-null on entries returned by getCountryLeaderboardGeo(). */
+  iso3: string;
+  /** Full-catalog model count (all dated rows attributed to this country). */
+  modelCount: number;
+  /** Full-catalog models published within the 3-year recent window. */
+  recentCount: number;
+  /** Full-catalog models with confirmed open weights. */
+  openWeightsCount: number;
+  /** Distinct organizations attributed to this country. */
+  orgCount: number;
+}
+
+/** How many country leaderboard entries carry a plottable `iso3` join key. */
+export interface CountryGeoCoverage {
+  mapped: number;
+  unmapped: number;
+  total: number;
+}
+
 export interface DomainMixEntry {
   domain: string;
   count: number;
@@ -219,6 +255,8 @@ export interface AIFrontierAggregates {
   powerTrend: PowerTrendPoint[];
   orgLeaderboard: OrgLeaderboardEntry[];
   countryLeaderboard: CountryLeaderboardEntry[];
+  /** Country → world-map geo join coverage (mapped/unmapped/total). */
+  countryGeoCoverage: CountryGeoCoverage;
   /**
    * Open-weights breakdown across compute-known rows only (backward compat).
    * Use `fullCatalogAccessibilityMix` for full dated-catalog coverage.
@@ -286,6 +324,38 @@ export function getOrgLeaderboard(limit = 20): OrgLeaderboardEntry[] {
  */
 export function getCountryLeaderboard(): CountryLeaderboardEntry[] {
   return data.aggregates.countryLeaderboard;
+}
+
+/**
+ * Country entries plottable on the world map — only those with a non-null
+ * `iso3` join key — preserving the default recentCount-descending order.
+ *
+ * Returns a geographic-safe projection (CountryGeoEntry) that carries only the
+ * full-catalog country-fair metrics (modelCount, recentCount, openWeightsCount,
+ * orgCount) plus the iso3/country labels. It deliberately omits
+ * compute-known/frontier/maxComputeFlop so the choropleth cannot be misread as a
+ * compute or capability ranking. iso3 is purely a geographic join key.
+ */
+export function getCountryLeaderboardGeo(): CountryGeoEntry[] {
+  return data.aggregates.countryLeaderboard
+    .filter((c): c is CountryLeaderboardEntry & { iso3: string } => c.iso3 !== null)
+    .map((c) => ({
+      country: c.country,
+      countryShort: c.countryShort,
+      iso3: c.iso3,
+      modelCount: c.modelCount,
+      recentCount: c.recentCount,
+      openWeightsCount: c.openWeightsCount,
+      orgCount: c.orgCount,
+    }));
+}
+
+/**
+ * Country → world-map geo join coverage (mapped/unmapped/total).
+ * Lets the UI show a "N of M countries plotted" coverage note.
+ */
+export function getCountryGeoCoverage(): CountryGeoCoverage {
+  return { ...data.aggregates.countryGeoCoverage };
 }
 
 /**

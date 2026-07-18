@@ -126,6 +126,16 @@ Models attributed to multiple countries via a comma-separated `Country (of organ
 
 `openWeightsCount` derives from Epoch AI's `Open model weights?` column (`Yes` = confirmed open weights, which may include restricted-use and non-commercial licenses). It is a proxy for **tracked open-release activity only** — not downloads, adoption, permissive open-source status, model quality, or societal impact. `Yes` does not imply a permissive open-source license. Reported for full-catalog rows.
 
+### 8. Country `iso3` geographic join key + geo selector
+
+Each `CountryLeaderboardEntry` carries `iso3: string | null` — an ISO-3166-1 alpha-3 code used **purely as a geographic join key** for the "Tracked Model Origins" world-map choropleth. It carries **no** capability, impact, leadership, or ranking meaning (per PR #129 / commit `dc587bea`); it exists only to match a country to a polygon.
+
+- **Derivation (deterministic, offline):** `iso3` is derived at build time from the normalised `country` name via a small static lookup in `scripts/lib/country-iso3.mjs` (no npm dependency, no network, no keyed source). The code is then **gated on presence in `public/world-countries.geo.json`** — if the ISO-3 code has no feature id in the map geometry, `iso3` is set to `null`.
+- **Nulls:** aggregate/multinational labels (e.g. `Multinational`) and countries with no polygon on the map (city-states such as `Singapore` and `Hong Kong`) resolve to `null`.
+- **Validation:** `scripts/lib/validate.mjs` loads the GeoJSON, builds a `Set` of feature ids, and **rejects any non-null `iso3` not present** in that set. The builder fails loudly if this gate fails.
+- **Coverage:** `aggregates.countryGeoCoverage = { mapped, unmapped, total }` is emitted so the UI can render a coverage note. It is also printed to stdout during the build (with `%` mapped and the list of unmapped countries). Current snapshot: **32 mapped / 3 unmapped / 35 total (91.4%)**; unmapped = `Singapore`, `Hong Kong`, `Multinational`.
+- **Geo selector:** `getCountryLeaderboardGeo()` returns only entries with a non-null `iso3`, projected to `CountryGeoEntry` — exposing only full-catalog country-fair metrics (`modelCount`, `recentCount`, `openWeightsCount`, `orgCount`) and **omitting** `computeKnownCount`/`frontierCount`/`maxComputeFlop` so the map cannot be read as a compute/capability ranking.
+
 ---
 
 ## Canonical Schemas / Types
@@ -195,6 +205,7 @@ export interface OrgLeaderboardEntry {
 export interface CountryLeaderboardEntry {
   country: string;
   countryShort: string;
+  iso3: string | null;        // Geographic join key ONLY (see §8); null if unmappable
   modelCount: number;         // Full-catalog count
   computeKnownCount: number;  // Was old "modelCount"
   frontierCount: number;      // Historical context; NOT the default sort key
@@ -202,6 +213,32 @@ export interface CountryLeaderboardEntry {
   openWeightsCount: number;   // Full-catalog open-weight models
   maxComputeFlop: number;     // Peak compute (0 if none)
   orgCount: number;
+}
+```
+
+### `CountryGeoEntry` — geographic-safe projection for the world map
+
+```typescript
+export interface CountryGeoEntry {
+  country: string;
+  countryShort: string;
+  iso3: string;             // Always non-null (getCountryLeaderboardGeo filters nulls out)
+  modelCount: number;       // Full-catalog fair metric
+  recentCount: number;      // Full-catalog fair metric
+  openWeightsCount: number; // Full-catalog fair metric
+  orgCount: number;
+}
+```
+
+Deliberately omits `computeKnownCount`, `frontierCount`, and `maxComputeFlop` so the choropleth cannot be misread as a compute/capability ranking.
+
+### `CountryGeoCoverage` — map join coverage
+
+```typescript
+export interface CountryGeoCoverage {
+  mapped: number;   // entries with a non-null, plottable iso3
+  unmapped: number; // aggregate/multinational + countries with no map polygon
+  total: number;    // === countryLeaderboard.length
 }
 ```
 
@@ -232,6 +269,7 @@ export interface AIFrontierAggregates {
   powerTrend: PowerTrendPoint[]; // median/max power draw per year
   orgLeaderboard: OrgLeaderboardEntry[];      // sorted by modelCount desc (full catalog)
   countryLeaderboard: CountryLeaderboardEntry[]; // sorted by recentCount desc
+  countryGeoCoverage: CountryGeoCoverage;       // world-map join coverage (mapped/unmapped/total)
   accessibilityMix: AccessibilityMix;           // compute-known subset (backward compat)
   fullCatalogAccessibilityMix: AccessibilityMix; // full dated catalog
   domainMix: DomainMixEntry[];   // domain → count, sorted desc (compute-known)
@@ -267,6 +305,8 @@ export interface AIFrontierData {
 | `getOrgLeaderboard(limit)` | `OrgLeaderboardEntry[]` | Top N by full-catalog modelCount |
 | `getRecentlyActiveOrgs(limit)` | `OrgLeaderboardEntry[]` | NEW — top N by recentCount |
 | `getCountryLeaderboard()` | `CountryLeaderboardEntry[]` | Sorted by recentCount desc |
+| `getCountryLeaderboardGeo()` | `CountryGeoEntry[]` | NEW — only entries with non-null `iso3`, geographic-safe fields only, recentCount desc |
+| `getCountryGeoCoverage()` | `CountryGeoCoverage` | NEW — mapped/unmapped/total for a map coverage note |
 | `getModernEraRegression()` | `ComputeRegression\|null` | OLS fit ≥ 2010 |
 | `getOverallRegression()` | `ComputeRegression\|null` | OLS fit all years |
 | `getCostTrend()` | `CostTrendPoint[]` | Annual cost trend |
@@ -296,6 +336,8 @@ UI should label the displayed metric clearly:
 The default sort is now `recentCount` (full-catalog models in 3-year window). This places China #2 (ahead of UK) and South Korea #3. The sort order in the JSON is already correct — UI should consume it in order.
 
 `frontierCount` is available for historical context but must be displayed with the frontier definition disclosure (`getDefinitions().frontierDefinition`).
+
+Each entry now also carries `iso3: string | null` — a **geographic join key only** for the world map (see §8). For the choropleth, consume `getCountryLeaderboardGeo()` (non-null `iso3`, geographic-safe fields only) and show a coverage note from `getCountryGeoCoverage()`. Do **not** render `iso3` as any kind of ranking, and do not surface compute-known/frontier metrics on the map surface.
 
 ### accessibilityMix backward compat
 

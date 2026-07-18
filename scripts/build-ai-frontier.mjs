@@ -43,11 +43,12 @@
  *    adoption, quality, or societal impact.
  */
 
-import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { deriveMeta } from "./lib/meta.mjs";
 import { validateAIFrontier } from "./lib/validate.mjs";
+import { countryNameToIso3 } from "./lib/country-iso3.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -55,6 +56,8 @@ const DATA_DIR = path.join(ROOT, "data");
 if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
 
 const OUTPUT_FILE = path.join(DATA_DIR, "ai-frontier.json");
+/** World-map geometry. iso3 is only "mappable" if it exists as a feature id here. */
+const WORLD_GEO_FILE = path.join(ROOT, "public", "world-countries.geo.json");
 const CSV_URL = "https://epoch.ai/data/notable_ai_models.csv";
 const SOURCE_URL = "https://epoch.ai/data/ai-models";
 const SOURCE_DOCS_URL = "https://epoch.ai/data/ai-models-documentation";
@@ -235,7 +238,25 @@ function normalizeCountries(raw) {
   return result;
 }
 
-// ── OLS regression: y = intercept + slope * x ────────────────────────────────
+// ── World-map geometry id loader ──────────────────────────────────────────────
+
+/**
+ * Load the set of ISO-3 feature ids from public/world-countries.geo.json.
+ * A derived `iso3` is only considered "mappable" (non-null) when it exists as a
+ * feature id here — otherwise there is no polygon to join it to (e.g. the map
+ * omits city-states like Singapore / Hong Kong).
+ * @returns {Set<string>}
+ */
+function loadWorldGeoIds() {
+  const geo = JSON.parse(readFileSync(WORLD_GEO_FILE, "utf8"));
+  const ids = new Set();
+  const features = Array.isArray(geo.features) ? geo.features : [];
+  for (let i = 0; i < features.length; i++) {
+    const id = features[i] && features[i].id;
+    if (typeof id === "string" && id.length === 3) ids.add(id);
+  }
+  return ids;
+}
 
 function olsRegression(points) {
   const n = points.length;
@@ -589,6 +610,7 @@ async function main() {
   // so the default ordering reflects current tracked-output activity rather
   // than historical compute-scale frontier counts.
   //
+  const geoIds = loadWorldGeoIds();
   const countryCatalogMap = catalogAll.reduce(function (map, m) {
     for (let ci = 0; ci < m.countries.length; ci++) {
       const cname = m.countries[ci];
@@ -624,9 +646,16 @@ async function main() {
       const maxComputeFlop = computeMods.length > 0
         ? Math.max.apply(null, computeMods.map(function (m) { return m.computeFlop; }))
         : 0;
+      // iso3 is a purely geographic join key (NOT a ranking/capability signal).
+      // Derived deterministically from the normalised country name, then gated on
+      // presence in the world-map geometry: aggregate/multinational names and
+      // countries with no polygon (e.g. city-states) resolve to null.
+      const rawIso3 = countryNameToIso3(entry.country);
+      const iso3 = rawIso3 && geoIds.has(rawIso3) ? rawIso3 : null;
       return {
         country: entry.country,
         countryShort: COUNTRY_SHORT_MAP[entry.country] || entry.country,
+        iso3: iso3,
         // modelCount = full catalog count
         modelCount: allMods.length,
         // computeKnownCount = rows with compute estimates (was old modelCount)
@@ -645,6 +674,15 @@ async function main() {
         || b.modelCount - a.modelCount
         || a.country.localeCompare(b.country);
     });
+
+  // ── Country → world-map geo coverage ───────────────────────────────────────
+  // Reports how many leaderboard entries carry a plottable iso3 join key.
+  const mappedCount = countryLeaderboard.filter(function (c) { return c.iso3 !== null; }).length;
+  const countryGeoCoverage = {
+    mapped: mappedCount,
+    unmapped: countryLeaderboard.length - mappedCount,
+    total: countryLeaderboard.length,
+  };
 
   // ── Accessibility mix ──────────────────────────────────────────────────────
   // Keep accessibilityMix over compute-known subset for backward compat.
@@ -763,6 +801,8 @@ async function main() {
       powerTrend: powerTrend,
       orgLeaderboard: orgLeaderboard,
       countryLeaderboard: countryLeaderboard,
+      // countryGeoCoverage: how many country entries carry a plottable iso3 join key
+      countryGeoCoverage: countryGeoCoverage,
       // accessibilityMix: compute-known subset (backward-compat; use fullCatalogAccessibilityMix for full coverage)
       accessibilityMix: accessibilityMix,
       // fullCatalogAccessibilityMix: all dated rows (includes non-compute rows)
@@ -822,6 +862,18 @@ async function main() {
   console.log("- cost trend years: " + costTrend.length + ", power trend years: " + powerTrend.length);
   console.log("- org leaderboard entries: " + orgLeaderboard.length);
   console.log("- country leaderboard entries: " + countryLeaderboard.length);
+  const geoPct = countryGeoCoverage.total > 0
+    ? ((countryGeoCoverage.mapped / countryGeoCoverage.total) * 100).toFixed(1)
+    : "0.0";
+  console.log(
+    "- country geo coverage: " + countryGeoCoverage.mapped + " mapped / " +
+    countryGeoCoverage.unmapped + " unmapped / " + countryGeoCoverage.total +
+    " total (" + geoPct + "% mapped)",
+  );
+  const unmappedCountries = countryLeaderboard
+    .filter(function (c) { return c.iso3 === null; })
+    .map(function (c) { return c.countryShort; });
+  console.log("- unmapped (iso3=null): " + (unmappedCountries.length > 0 ? unmappedCountries.join(", ") : "none"));
   console.log("- domain types: " + domainMix.length);
   console.log("- accessibilityMix (compute-known): " + JSON.stringify(accessibilityMix));
   console.log("- fullCatalogAccessibilityMix: " + JSON.stringify(fullCatalogAccessibilityMix));
