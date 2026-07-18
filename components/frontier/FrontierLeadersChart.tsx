@@ -1,15 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import {
@@ -21,8 +12,6 @@ import {
   type CountryLeaderboardEntry,
 } from "@/lib/ai-frontier";
 import { useT } from "@/lib/i18n/useT";
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -53,6 +42,27 @@ const METRIC_I18N: Record<MetricKey, { label: string; desc: string }> = {
   largestRun:        { label: "metricLargestRun",        desc: "metricLargestRunDesc" },
 };
 
+// Decorative monogram tints — chosen by a stable hash of the org name (identity
+// colour, NOT rank order). Static class strings so Tailwind's JIT keeps them.
+const MONO_PALETTE: string[] = [
+  "bg-violet-500/10 text-violet-600 dark:text-violet-400",
+  "bg-sky-500/10 text-sky-600 dark:text-sky-400",
+  "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+  "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+  "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+];
+
+// Local alpha-3 → alpha-2 lookup for the tracked countries. Kept in the
+// component so the data layer (lib/ai-frontier.ts) stays untouched. iso3 is a
+// geographic join key only; the flag glyph is decorative (aria-hidden).
+const ALPHA3_TO_ALPHA2: Record<string, string> = {
+  USA: "US", CHN: "CN", KOR: "KR", FRA: "FR", GBR: "GB", CAN: "CA", ISR: "IL",
+  JPN: "JP", SAU: "SA", ARE: "AE", DEU: "DE", CHE: "CH", AUS: "AU", FIN: "FI",
+  NLD: "NL", CZE: "CZ", ITA: "IT", BEL: "BE", DNK: "DK", IND: "IN", POL: "PL",
+  ESP: "ES", SWE: "SE", TWN: "TW", ARG: "AR", AUT: "AT", HRV: "HR", IRN: "IR",
+  IRL: "IE", MYS: "MY", NOR: "NO", RUS: "RU",
+};
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function getOrgValue(org: OrgLeaderboardEntry, metric: MetricKey): number {
@@ -81,6 +91,60 @@ function sortByMetric<T>(
   return arr.slice().sort(
     (a, b) => getValue(b) - getValue(a) || getName(a).localeCompare(getName(b)),
   );
+}
+
+// Fill-bar width (%) for the visible rows.
+//   Count metrics: linear share of the largest visible value.
+//   largestRun:    log10-normalised across visible rows with a 10% floor, so the
+//                  smallest still shows a sliver (mirrors the old log bar).
+function computeWidths(vals: number[], isLog: boolean): number[] {
+  if (isLog) {
+    const logs = vals.map((v) => (v > 0 ? Math.log10(v) : 0));
+    const positives = logs.filter((_, i) => vals[i] > 0);
+    const min = positives.length ? Math.min(...positives) : 0;
+    const max = positives.length ? Math.max(...positives) : 0;
+    return logs.map((l, i) =>
+      vals[i] <= 0 ? 0 : max === min ? 100 : ((l - min) / (max - min)) * 90 + 10,
+    );
+  }
+  const maxV = vals.length ? Math.max(...vals) : 0;
+  return vals.map((v) => (maxV > 0 ? (v / maxV) * 100 : 0));
+}
+
+// Emoji flag from iso3 via alpha-2 → two Regional Indicator code points.
+// Falls back to a neutral globe when iso3 is null or unmapped.
+function flagEmoji(iso3: string | null): string {
+  if (!iso3) return "🌐";
+  const a2 = ALPHA3_TO_ALPHA2[iso3];
+  if (!a2) return "🌐";
+  const cps = [...a2].map((ch) => 0x1f1e6 + (ch.charCodeAt(0) - 65));
+  return String.fromCodePoint(...cps);
+}
+
+// 1–2 letter monogram from the org name.
+function monogram(name: string): string {
+  const words = name.split(/[^A-Za-z0-9]+/).filter(Boolean);
+  if (words.length === 0) return "?";
+  if (words.length === 1) return words[0].slice(0, 1).toUpperCase();
+  return (words[0][0] + words[1][0]).toUpperCase();
+}
+
+// Stable hash → palette index (identity colour, not rank order).
+function hashIndex(name: string, mod: number): number {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+  return h % mod;
+}
+
+interface ViewRow {
+  key: string;
+  name: string;
+  kind: "flag" | "mono";
+  chip: string;
+  tint: string;
+  rawValue: number;
+  maxComputeFlop: number;
+  width: number;
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -118,7 +182,6 @@ export default function FrontierLeadersChart() {
       (o) => getOrgValue(o, metric),
       (o) => o.organization,
     );
-    // For largestRun only show entries with actual compute data
     const filtered =
       metric === "largestRun" ? sorted.filter((o) => o.maxComputeFlop > 0) : sorted;
     return filtered.slice(0, 12);
@@ -135,117 +198,46 @@ export default function FrontierLeadersChart() {
     return filtered.slice(0, 10);
   }, [allCountries, metric]);
 
-  // ── Active chart data ──────────────────────────────────────────────────────
-  const activeLabels = useMemo(
-    () =>
-      activeTab === "orgs"
-        ? orgEntries.map((o) => o.organization)
-        : countryEntries.map((c) => c.countryShort),
-    [activeTab, orgEntries, countryEntries],
-  );
+  // ── Normalised rows (chip + value + bar width) ──────────────────────────────
+  const viewRows: ViewRow[] = useMemo(() => {
+    if (activeTab === "orgs") {
+      const vals = orgEntries.map((o) => getOrgValue(o, metric));
+      const widths = computeWidths(vals, isLogMetric);
+      return orgEntries.map((o, i) => ({
+        key: o.organization,
+        name: o.organization,
+        kind: "mono",
+        chip: monogram(o.organization),
+        tint: MONO_PALETTE[hashIndex(o.organization, MONO_PALETTE.length)],
+        rawValue: vals[i],
+        maxComputeFlop: o.maxComputeFlop,
+        width: widths[i],
+      }));
+    }
+    const vals = countryEntries.map((c) => getCountryValue(c, metric));
+    const widths = computeWidths(vals, isLogMetric);
+    return countryEntries.map((c, i) => ({
+      key: c.country,
+      name: c.countryShort,
+      kind: "flag",
+      chip: flagEmoji(c.iso3),
+      tint: "bg-zinc-100 dark:bg-zinc-800",
+      rawValue: vals[i],
+      maxComputeFlop: c.maxComputeFlop,
+      width: widths[i],
+    }));
+  }, [activeTab, orgEntries, countryEntries, metric, isLogMetric]);
 
-  const activeRawValues = useMemo(
-    () =>
-      activeTab === "orgs"
-        ? orgEntries.map((o) => getOrgValue(o, metric))
-        : countryEntries.map((c) => getCountryValue(c, metric)),
-    [activeTab, orgEntries, countryEntries, metric],
-  );
-
-  // For largestRun: use log10(value) for bar height (linear scale, log-formatted labels)
-  const activeChartValues = useMemo(
-    () =>
-      activeRawValues.map((v) =>
-        isLogMetric ? (v > 0 ? Math.log10(v) : null) : v,
-      ),
-    [activeRawValues, isLogMetric],
-  );
-
-  // ── Color tokens ───────────────────────────────────────────────────────────
-  const axisText = isDark ? "#71717a" : "#52525b";
-  const gridColor = isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)";
-  const borderColor = isDark ? "rgba(255,255,255,0.10)" : "rgba(0,0,0,0.10)";
-  const ttBg = isDark ? "rgba(9,9,11,0.92)" : "rgba(255,255,255,0.95)";
-  const ttTitle = isDark ? "#e4e4e7" : "#18181b";
-  const ttBody = isDark ? "#a1a1aa" : "#52525b";
-  const ttBorder = isDark ? "rgba(139,92,246,0.30)" : "rgba(139,92,246,0.25)";
-  const barBg = isDark ? "rgba(139,92,246,0.55)" : "rgba(124,58,237,0.55)";
-  const barBorder = isDark ? "rgba(139,92,246,0.80)" : "rgba(124,58,237,0.80)";
-
-  // ── Chart options ──────────────────────────────────────────────────────────
-  const chartOptions = useMemo(
-    () => ({
-      indexAxis: "y" as const,
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: { duration: 500, easing: "easeOutQuart" as const },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: ttBg,
-          titleColor: ttTitle,
-          bodyColor: ttBody,
-          borderColor: ttBorder,
-          borderWidth: 1,
-          padding: 10,
-          cornerRadius: 8,
-          callbacks: {
-            label: (ctx: { dataIndex: number }) => {
-              const raw = activeRawValues[ctx.dataIndex] ?? 0;
-              if (isLogMetric) return raw > 0 ? ` ${formatFlop(raw)}` : " —";
-              return ` ${raw.toLocaleString()}`;
-            },
-          },
-        },
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: axisText,
-            font: { size: 10 },
-            ...(isLogMetric
-              ? {
-                  callback: (v: number | string) => {
-                    const n = Number(v);
-                    return isNaN(n) ? "" : `10^${Math.round(n)}`;
-                  },
-                  maxTicksLimit: 6,
-                }
-              : {}),
-          },
-          grid: { color: gridColor },
-          border: { color: borderColor },
-        },
-        y: {
-          ticks: { color: axisText, font: { size: 10 } },
-          grid: { display: false },
-          border: { color: borderColor },
-        },
-      },
-    }),
-    [
-      axisText, gridColor, borderColor,
-      ttBg, ttTitle, ttBody, ttBorder,
-      isLogMetric, activeRawValues,
-    ],
-  );
-
-  const chartData = useMemo(
-    () => ({
-      labels: activeLabels,
-      datasets: [
-        {
-          label: t(METRIC_I18N[metric].label),
-          data: activeChartValues,
-          backgroundColor: barBg,
-          borderColor: barBorder,
-          borderWidth: 1,
-          borderRadius: 4,
-        },
-      ],
-    }),
-    [activeLabels, activeChartValues, barBg, barBorder, metric, t],
-  );
+  // ── Entrance animation ──────────────────────────────────────────────────────
+  // Bars mount at 0 width then animate to their value on the next frame. Tab /
+  // metric changes are handled by the CSS width transition on the same element.
+  // Under prefers-reduced-motion the `motion-reduce:transition-none` utility
+  // makes the width apply instantly (no animation).
+  const [entered, setEntered] = useState(false);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setEntered(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   // ── Derived text ───────────────────────────────────────────────────────────
   const metricLabel = t(METRIC_I18N[metric].label);
@@ -257,12 +249,11 @@ export default function FrontierLeadersChart() {
         })
       : t(METRIC_I18N[metric].desc);
 
-  const chartHeight =
-    activeTab === "orgs"
-      ? Math.max(280, orgEntries.length * 34 + 60)
-      : Math.max(240, countryEntries.length * 34 + 60);
+  const barGradient = isDark
+    ? "linear-gradient(90deg, rgba(139,92,246,0.22) 0%, rgba(167,139,250,0.42) 100%)"
+    : "linear-gradient(90deg, rgba(124,58,237,0.14) 0%, rgba(167,139,250,0.30) 100%)";
 
-  // ── Cell renderer ──────────────────────────────────────────────────────────
+  // ── Value cell renderer (unchanged semantics) ──────────────────────────────
   function renderMetricCell(
     rawValue: number,
     maxComputeFlop: number,
@@ -290,28 +281,11 @@ export default function FrontierLeadersChart() {
     );
   }
 
+  const showComputeCol = metric !== "largestRun";
+
   return (
     <div className="space-y-4">
-      {/* ── Disclaimer ─────────────────────────────────────────────────────── */}
-      <div className="rounded-lg bg-amber-50/80 dark:bg-amber-500/8 border border-amber-200 dark:border-amber-500/20 px-4 py-3">
-        <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
-          <strong className="font-semibold">{t("attributionCaveat")}: </strong>
-          {t("dataDisclaimer")}
-        </p>
-      </div>
-
-      {/* ── Coverage note ───────────────────────────────────────────────────── */}
-      <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-        {t("coverageNote", {
-          totalDated: String(counts.withDate),
-          computeKnown: String(counts.withCompute),
-          coveragePct: String(coveragePct),
-          windowStart: counts.recentWindowStart,
-          windowEnd: counts.recentWindowEnd,
-        })}
-      </p>
-
-      {/* ── Tab bar: Organizations / Countries ─────────────────────────────── */}
+      {/* ── Segmented tab control: Organizations / Countries ───────────────── */}
       <div
         role="tablist"
         aria-label={`${t("leadersTabOrgs")} / ${t("leadersTabCountries")}`}
@@ -326,7 +300,7 @@ export default function FrontierLeadersChart() {
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
               activeTab === tab
-                ? "bg-violet-600 text-white shadow"
+                ? "bg-violet-600 text-white shadow-sm"
                 : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50"
             }`}
           >
@@ -335,105 +309,131 @@ export default function FrontierLeadersChart() {
         ))}
       </div>
 
-      {/* ── Metric selector ─────────────────────────────────────────────────── */}
-      <div className="space-y-2">
-        <div
-          role="group"
-          aria-labelledby="metric-group-label"
-          className="flex flex-wrap gap-1.5"
-        >
-          <span id="metric-group-label" className="sr-only">
-            {t("leadersSectionTitle")}
-          </span>
-          {METRIC_KEYS.map((mk) => (
-            <button
-              key={mk}
-              type="button"
-              aria-pressed={metric === mk}
-              onClick={() => setMetric(mk)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
-                metric === mk
-                  ? "bg-violet-600 text-white shadow"
-                  : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700"
-              }`}
-            >
-              {t(METRIC_I18N[mk].label)}
-            </button>
-          ))}
-        </div>
-
-        {/* Metric description — always visible, never hover-only */}
-        <div className="rounded-lg bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 px-3 py-2.5">
-          <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-            <strong className="font-semibold text-zinc-700 dark:text-zinc-300">
-              {metricLabel}:{" "}
-            </strong>
-            {metricDesc}
-          </p>
-        </div>
-
-        {/* Epoch frontier definition — shown only when frontierCount is selected */}
-        {metric === "frontierCount" && (
-          <div className="rounded-lg bg-amber-50/60 dark:bg-amber-500/8 border border-amber-200 dark:border-amber-500/20 px-3 py-2.5">
-            <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
-              {t("frontierDefinitionNote")}
-            </p>
-          </div>
-        )}
-
-        {/* Org entities note — shown on orgs tab */}
-        {activeTab === "orgs" && (
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-            {t("orgEntitiesNote")}
-          </p>
-        )}
+      {/* ── Segmented metric control (scrolls horizontally on narrow screens) ─ */}
+      <div
+        role="group"
+        aria-labelledby="metric-group-label"
+        className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-1 flex gap-1 overflow-x-auto flex-nowrap"
+      >
+        <span id="metric-group-label" className="sr-only">
+          {t("leadersSectionTitle")}
+        </span>
+        {METRIC_KEYS.map((mk) => (
+          <button
+            key={mk}
+            type="button"
+            aria-pressed={metric === mk}
+            onClick={() => setMetric(mk)}
+            className={`whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
+              metric === mk
+                ? "bg-violet-600 text-white shadow-sm"
+                : "text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50"
+            }`}
+          >
+            {t(METRIC_I18N[mk].label)}
+          </button>
+        ))}
       </div>
 
-      {/* ── Chart ────────────────────────────────────────────────────────────── */}
-      <div style={{ height: chartHeight }}>
-        <Bar
-          options={chartOptions}
-          data={chartData}
-          aria-label={`${t("a11yFrontierLeadersName")}: ${metricLabel}`}
-          role="img"
-        />
-      </div>
+      {/* ── Metric description — one subtle, always-visible line ────────────── */}
+      <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+        <strong className="font-semibold text-zinc-700 dark:text-zinc-300">
+          {metricLabel}:{" "}
+        </strong>
+        {metricDesc}
+      </p>
 
-      {/* ── Supplemental table ───────────────────────────────────────────────── */}
-      {activeTab === "orgs" && (
+      {/* ── Epoch frontier definition — inline amber note (frontierCount only) ─ */}
+      {metric === "frontierCount" && (
+        <p className="text-xs text-amber-700 dark:text-amber-300 leading-relaxed border-l-2 border-amber-400/60 dark:border-amber-500/40 pl-3">
+          {t("frontierDefinitionNote")}
+        </p>
+      )}
+
+      {/* ── Data disclaimer — compact info row (point-of-use, always visible) ── */}
+      <p className="flex items-start gap-2 text-xs text-amber-700 dark:text-amber-300 leading-relaxed border-l-2 border-amber-400/60 dark:border-amber-500/40 pl-3 py-0.5">
+        <span aria-hidden="true" className="mt-px shrink-0 font-semibold">
+          ⓘ
+        </span>
+        <span>
+          <strong className="font-semibold">{t("attributionCaveat")}: </strong>
+          {t("dataDisclaimer")}
+        </span>
+      </p>
+
+      {/* ── The leaderboard: one semantic table of rows-as-bars ──────────────── */}
+      <div role="group" aria-label={t("a11yFrontierLeadersName")} className="space-y-2">
+        <p className="sr-only">{t("a11yFrontierLeadersSummary")}</p>
         <div className="overflow-x-auto">
-          <table className="w-full text-xs text-left border-collapse">
+          <table className="w-full border-collapse">
+            <caption className="sr-only">{t("leadersTableCaption")}</caption>
             <thead>
-              <tr className="border-b border-zinc-200 dark:border-zinc-800">
-                <th className="py-1.5 pr-3 font-semibold text-zinc-500 dark:text-zinc-400">
+              <tr className="text-[10px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 font-medium">
+                <th scope="col" className="pl-3 pr-2 py-1.5 text-right w-10">
+                  {t("leadersColRank")}
+                </th>
+                <th scope="col" className="px-2 py-1.5 text-left">
                   {t("leadersColName")}
                 </th>
-                <th className="py-1.5 pr-3 font-semibold text-zinc-500 dark:text-zinc-400 text-right">
+                <th scope="col" className="px-2 py-1.5 text-right whitespace-nowrap">
                   {metricLabel}
                 </th>
-                {metric !== "largestRun" && (
-                  <th className="py-1.5 font-semibold text-zinc-500 dark:text-zinc-400 text-right">
+                {showComputeCol && (
+                  <th scope="col" className="pl-2 pr-3 py-1.5 text-right whitespace-nowrap">
                     {t("leadersColMaxCompute")}
                   </th>
                 )}
               </tr>
             </thead>
-            <tbody>
-              {orgEntries.map((org) => (
+            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/50">
+              {viewRows.map((row, i) => (
                 <tr
-                  key={org.organization}
-                  className="border-b border-zinc-100 dark:border-zinc-800/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors"
+                  key={row.key}
+                  className="relative isolate transition-transform transition-shadow duration-150 hover:-translate-y-px hover:shadow-sm hover:bg-zinc-50/60 dark:hover:bg-zinc-800/30 motion-reduce:hover:translate-y-0 motion-reduce:transition-none"
                 >
-                  <td className="py-1.5 pr-3 font-medium text-zinc-900 dark:text-zinc-100">
-                    {org.organization}
+                  {/* Rank cell also hosts the decorative row-spanning track + fill */}
+                  <th
+                    scope="row"
+                    className="pl-3 pr-2 py-2.5 text-right align-middle w-10 text-xs font-medium tabular-nums text-zinc-400 dark:text-zinc-500"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-y-1 left-0 right-0 -z-20 rounded-lg bg-zinc-100/70 dark:bg-zinc-800/40"
+                    />
+                    <span
+                      aria-hidden="true"
+                      style={{
+                        width: entered ? `${row.width}%` : "0%",
+                        backgroundImage: barGradient,
+                      }}
+                      className="absolute inset-y-1 left-0 -z-10 rounded-lg border-r border-violet-500/40 transition-[width] duration-700 ease-out motion-reduce:transition-none"
+                    />
+                    {i + 1}
+                  </th>
+                  <td className="px-2 py-2.5 align-middle">
+                    <span className="flex items-center gap-2.5">
+                      <span
+                        aria-hidden="true"
+                        className={`w-6 h-6 rounded-md grid place-items-center leading-none shrink-0 ${
+                          row.kind === "flag"
+                            ? "text-base bg-zinc-100 dark:bg-zinc-800"
+                            : `text-[10px] font-semibold ${row.tint}`
+                        }`}
+                      >
+                        {row.chip}
+                      </span>
+                      <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                        {row.name}
+                      </span>
+                    </span>
                   </td>
-                  <td className="py-1.5 pr-3 text-right text-zinc-600 dark:text-zinc-400">
-                    {renderMetricCell(getOrgValue(org, metric), org.maxComputeFlop)}
+                  <td className="px-2 py-2.5 text-right align-middle text-sm font-semibold tabular-nums text-zinc-900 dark:text-zinc-100">
+                    {renderMetricCell(row.rawValue, row.maxComputeFlop)}
                   </td>
-                  {metric !== "largestRun" && (
-                    <td className="py-1.5 text-right font-mono text-violet-600 dark:text-violet-400 text-[11px]">
-                      {org.maxComputeFlop > 0 ? (
-                        formatFlop(org.maxComputeFlop)
+                  {showComputeCol && (
+                    <td className="pl-2 pr-3 py-2.5 text-right align-middle font-mono text-[11px] text-violet-600 dark:text-violet-400">
+                      {row.maxComputeFlop > 0 ? (
+                        formatFlop(row.maxComputeFlop)
                       ) : (
                         <span className="text-zinc-400">—</span>
                       )}
@@ -444,58 +444,18 @@ export default function FrontierLeadersChart() {
             </tbody>
           </table>
         </div>
-      )}
+      </div>
 
-      {activeTab === "countries" && (
+      {/* ── Context note (tab-specific, always visible) ─────────────────────── */}
+      {activeTab === "orgs" ? (
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+          {t("orgEntitiesNote")}
+        </p>
+      ) : (
         <div className="space-y-3">
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs text-left border-collapse">
-              <thead>
-                <tr className="border-b border-zinc-200 dark:border-zinc-800">
-                  <th className="py-1.5 pr-3 font-semibold text-zinc-500 dark:text-zinc-400">
-                    {t("leadersColName")}
-                  </th>
-                  <th className="py-1.5 pr-3 font-semibold text-zinc-500 dark:text-zinc-400 text-right">
-                    {metricLabel}
-                  </th>
-                  {metric !== "largestRun" && (
-                    <th className="py-1.5 font-semibold text-zinc-500 dark:text-zinc-400 text-right">
-                      {t("leadersColMaxCompute")}
-                    </th>
-                  )}
-                </tr>
-              </thead>
-              <tbody>
-                {countryEntries.map((c) => (
-                  <tr
-                    key={c.country}
-                    className="border-b border-zinc-100 dark:border-zinc-800/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors"
-                  >
-                    <td className="py-1.5 pr-3 font-medium text-zinc-900 dark:text-zinc-100">
-                      {c.countryShort}
-                    </td>
-                    <td className="py-1.5 pr-3 text-right text-zinc-600 dark:text-zinc-400">
-                      {renderMetricCell(getCountryValue(c, metric), c.maxComputeFlop)}
-                    </td>
-                    {metric !== "largestRun" && (
-                      <td className="py-1.5 text-right font-mono text-violet-600 dark:text-violet-400 text-[11px]">
-                        {c.maxComputeFlop > 0 ? (
-                          formatFlop(c.maxComputeFlop)
-                        ) : (
-                          <span className="text-zinc-400">—</span>
-                        )}
-                      </td>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {/* Country attribution note */}
           <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
             {t("countryAttributionNote")}
           </p>
-          {/* Geopolitics link */}
           <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
             {t("leadersGeopoliticsNote")}{" "}
             <Link
@@ -508,12 +468,21 @@ export default function FrontierLeadersChart() {
         </div>
       )}
 
-      {/* ── Definitions reference (always visible, source-anchored) ─────────── */}
+      {/* ── "Why these numbers?" disclosure (lower-priority context) ────────── */}
       <details className="text-xs text-zinc-500 dark:text-zinc-400">
         <summary className="cursor-pointer hover:text-zinc-700 dark:hover:text-zinc-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded">
-          {t("attributionCaveatsTitle")}
+          {t("leadersWhyDisclosure")}
         </summary>
         <div className="mt-2 space-y-1.5 pl-3 border-l border-zinc-200 dark:border-zinc-700">
+          <p className="leading-relaxed">
+            {t("coverageNote", {
+              totalDated: String(counts.withDate),
+              computeKnown: String(counts.withCompute),
+              coveragePct: String(coveragePct),
+              windowStart: counts.recentWindowStart,
+              windowEnd: counts.recentWindowEnd,
+            })}
+          </p>
           <p className="leading-relaxed">{defs.orgLeaderboardMetric}</p>
           <p className="leading-relaxed">{defs.openWeightsMetric}</p>
           <p className="leading-relaxed">{defs.coverageNote}</p>

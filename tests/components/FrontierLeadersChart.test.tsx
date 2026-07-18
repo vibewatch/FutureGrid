@@ -14,14 +14,26 @@
  * - countryAttributionNote shown on countries tab
  * - frontierDefinitionNote shown only when frontierCount metric selected
  * - No unresolved {placeholder} tokens in rendered output
+ *
+ * Redesign coverage (rows-as-bars semantic table; Chart.js removed):
+ * - Semantic <table> with sr-only caption + column headers via role/scope
+ * - Correct row counts (orgs top 12, countries top 10) for recentCount
+ * - REGRESSION GUARDS: no <canvas>, no role="img"; decorative fill bars + chips
+ *   are aria-hidden and not exposed to the a11y tree
+ * - Controls: tab switching + 6-metric selector update rows / aria-state
+ * - Guardrail copy guard: no podium / medal / winner ranking language
+ * - Point-of-use caveats + "Why these numbers?" <details> disclosure
+ * - Flag/monogram decoration + largestRun peak-compute column handling
+ * - Reduced-motion: rows still render their final state
  */
 
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, within, act } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi, beforeEach } from "vitest";
 import { frontierEn } from "@/lib/i18n/messages/en/frontier";
 import { frontierZh } from "@/lib/i18n/messages/zh/frontier";
+import { getAIFrontierData } from "@/lib/ai-frontier";
 
 // ── Paths ─────────────────────────────────────────────────────────────────────
 
@@ -45,22 +57,12 @@ vi.mock("next-themes", () => ({
   useTheme: () => ({ resolvedTheme: "dark" }),
 }));
 
-// Mock react-chartjs-2 to avoid canvas requirement in jsdom
-vi.mock("react-chartjs-2", () => ({
-  Bar: ({ "aria-label": ariaLabel, role }: { "aria-label"?: string; role?: string }) => (
-    <div data-testid="bar-chart" aria-label={ariaLabel} role={role ?? "img"} />
-  ),
-}));
-
-// Mock chart.js registration (no-op in tests)
-vi.mock("chart.js", () => ({
-  Chart: { register: () => {} },
-  CategoryScale: class {},
-  LinearScale: class {},
-  BarElement: class {},
-  Tooltip: class {},
-  Legend: class {},
-}));
+// NOTE: Chart.js / react-chartjs-2 are intentionally NOT mocked here. The
+// redesigned component replaced the Chart.js horizontal bar chart (and the old
+// duplicate data table) with a single semantic rows-as-bars <table>. It no
+// longer imports chart.js or react-chartjs-2, so no canvas stub is required.
+// The "regression guards" describe block below locks in that Chart.js is gone
+// (no <canvas>, no role="img").
 
 // Mock next/link to render as a plain anchor
 vi.mock("next/link", () => ({
@@ -428,5 +430,471 @@ describe("FrontierLeadersChart — rendered: country tab isolation and details b
       unresolved,
       `Unresolved interpolation tokens in full render: ${JSON.stringify(unresolved)}`,
     ).toBeNull();
+  });
+});
+
+// ── Redesign: data-derived expectations (disk truth, not hardcoded) ───────────
+
+// Replicates the component's sort: value desc, tie-break by name.localeCompare.
+function topByRecent<T>(
+  arr: T[],
+  getName: (e: T) => string,
+  getRecent: (e: T) => number,
+  cap: number,
+): string[] {
+  return arr
+    .slice()
+    .sort((a, b) => getRecent(b) - getRecent(a) || getName(a).localeCompare(getName(b)))
+    .slice(0, cap)
+    .map(getName);
+}
+
+const FRONTIER = getAIFrontierData();
+const ALL_ORGS = FRONTIER.aggregates.orgLeaderboard;
+const ALL_COUNTRIES = FRONTIER.aggregates.countryLeaderboard;
+
+// recentCount is the default metric; every entry has a recentCount so no
+// largestRun-style filtering applies. Row caps: orgs 12, countries 10.
+const EXPECTED_ORG_ROWS = Math.min(12, ALL_ORGS.length);
+const EXPECTED_COUNTRY_ROWS = Math.min(10, ALL_COUNTRIES.length);
+const EXPECTED_ORG_NAMES = topByRecent(
+  ALL_ORGS,
+  (o) => o.organization,
+  (o) => o.recentCount,
+  12,
+);
+const EXPECTED_COUNTRY_NAMES = topByRecent(
+  ALL_COUNTRIES,
+  (c) => c.countryShort,
+  (c) => c.recentCount,
+  10,
+);
+
+// A country with a mapped iso3 (→ real flag glyph, NOT the 🌐 fallback) that is
+// present in the default top-10 recentCount country view.
+const MAPPED_COUNTRY = "United States";
+
+const PODIUM_TERMS = [
+  "#1",
+  "winner",
+  "champion",
+  "best ",
+  "gold",
+  "silver",
+  "bronze",
+  "medal",
+  "podium",
+  "leader in",
+  "most advanced",
+  "dominance",
+];
+
+function switchToCountries(container: HTMLElement) {
+  const countriesTab = Array.from(container.querySelectorAll('[role="tab"]')).find(
+    (t) => t.textContent === frontierEn.leadersTabCountries,
+  ) as HTMLElement | undefined;
+  expect(countriesTab, "Countries tab must be present").not.toBeUndefined();
+  fireEvent.click(countriesTab!);
+}
+
+function clickMetric(container: HTMLElement, label: string) {
+  const group = container.querySelector('[role="group"]')!;
+  const btn = Array.from(group.querySelectorAll("button[aria-pressed]")).find(
+    (b) => b.textContent === label,
+  ) as HTMLElement | undefined;
+  expect(btn, `metric button '${label}' must be present`).not.toBeUndefined();
+  fireEvent.click(btn!);
+}
+
+// ── Redesign: semantic table structure ────────────────────────────────────────
+
+describe("FrontierLeadersChart — semantic rows-as-bars table", () => {
+  beforeEach(() => setLocale("en"));
+  afterEach(() => vi.restoreAllMocks());
+
+  it("renders a single <table> carrying the sr-only accessible caption", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    const tables = container.querySelectorAll("table");
+    expect(tables.length, "exactly one leaderboard table").toBe(1);
+    const caption = tables[0].querySelector("caption");
+    expect(caption, "table must have a <caption>").not.toBeNull();
+    expect(caption!.textContent).toBe(frontierEn.leadersTableCaption);
+  });
+
+  it("exposes column headers (Rank, Name, metric, Peak compute) via scope=col", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    const colHeaders = Array.from(
+      container.querySelectorAll('thead th[scope="col"]'),
+    ).map((th) => th.textContent?.trim());
+    expect(colHeaders).toContain(frontierEn.leadersColRank);
+    expect(colHeaders).toContain(frontierEn.leadersColName);
+    // recentCount metric column header uses the active metric label.
+    expect(colHeaders).toContain(frontierEn.metricRecentCount);
+    // Compute column visible for non-largestRun metrics.
+    expect(colHeaders).toContain(frontierEn.leadersColMaxCompute);
+  });
+
+  it("renders top-12 org rows on the default tab; each rank cell is a th scope=row", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    const bodyRows = container.querySelectorAll("tbody tr");
+    expect(bodyRows.length, "orgs tab shows top 12 rows").toBe(EXPECTED_ORG_ROWS);
+    // Each data row's rank cell is a row header carrying the neutral 1-based index.
+    bodyRows.forEach((row, i) => {
+      const rowHeader = row.querySelector('th[scope="row"]');
+      expect(rowHeader, "each row must have a th scope=row rank cell").not.toBeNull();
+      expect(rowHeader!.textContent).toContain(String(i + 1));
+    });
+  });
+
+  it("exposes each org row's name and metric value as text", async () => {
+    const FrontierLeadersChart = await importComponent();
+    render(<FrontierLeadersChart />);
+    const table = screen.getByRole("table");
+    for (const name of EXPECTED_ORG_NAMES) {
+      expect(
+        within(table).getAllByText(name).length,
+        `org name '${name}' must be rendered as text`,
+      ).toBeGreaterThan(0);
+    }
+    // OpenAI's recentCount value is shown as text in its own row.
+    const openai = ALL_ORGS.find((o) => o.organization === "OpenAI")!;
+    const openaiRow = Array.from(table.querySelectorAll("tbody tr")).find((r) =>
+      r.textContent?.includes("OpenAI"),
+    )!;
+    expect(openaiRow.textContent).toContain(openai.recentCount.toLocaleString());
+  });
+
+  it("renders top-10 country rows after switching to the Countries tab", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    switchToCountries(container);
+    const bodyRows = container.querySelectorAll("tbody tr");
+    expect(bodyRows.length, "countries tab shows top 10 rows").toBe(EXPECTED_COUNTRY_ROWS);
+    const table = screen.getByRole("table");
+    for (const name of EXPECTED_COUNTRY_NAMES) {
+      expect(
+        within(table).getAllByText(name).length,
+        `country name '${name}' must be rendered as text`,
+      ).toBeGreaterThan(0);
+    }
+  });
+});
+
+// ── Redesign: REGRESSION GUARDS (Chart.js is gone) ────────────────────────────
+
+describe("FrontierLeadersChart — regression guards: no canvas, no role=img", () => {
+  beforeEach(() => setLocale("en"));
+  afterEach(() => vi.restoreAllMocks());
+
+  it("renders NO <canvas> element (Chart.js removed)", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    expect(container.querySelector("canvas"), "no <canvas> may be rendered").toBeNull();
+  });
+
+  it("renders NO element with role='img' anywhere (no chart image surrogate)", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    expect(
+      container.querySelector('[role="img"]'),
+      "no role=img element may be present",
+    ).toBeNull();
+    expect(
+      screen.queryByRole("img"),
+      "a11y tree must expose no image role",
+    ).toBeNull();
+  });
+
+  it("guards hold on the Countries tab and for every metric", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    const metricLabels = [
+      frontierEn.metricRecentCount,
+      frontierEn.metricModelCount,
+      frontierEn.metricOpenWeightsCount,
+      frontierEn.metricComputeKnownCount,
+      frontierEn.metricFrontierCount,
+      frontierEn.metricLargestRun,
+    ];
+    for (const tabSwitch of [false, true]) {
+      if (tabSwitch) switchToCountries(container);
+      for (const label of metricLabels) {
+        clickMetric(container, label);
+        expect(container.querySelector("canvas"), `no canvas (${label})`).toBeNull();
+        expect(
+          container.querySelector('[role="img"]'),
+          `no role=img (${label})`,
+        ).toBeNull();
+      }
+    }
+  });
+
+  it("decorative fill-bar track + gradient fill are aria-hidden (not in a11y tree)", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    const rows = container.querySelectorAll("tbody tr");
+    expect(rows.length).toBeGreaterThan(0);
+    rows.forEach((row) => {
+      const rankCell = row.querySelector('th[scope="row"]')!;
+      // Both decorative layers (track + fill) live in the rank cell and must be aria-hidden.
+      const decoLayers = rankCell.querySelectorAll('span[aria-hidden="true"]');
+      expect(
+        decoLayers.length,
+        "rank cell hosts 2 aria-hidden decorative layers (track + fill)",
+      ).toBe(2);
+      // The gradient fill carries an inline width — decorative width, not a11y data.
+      const fill = Array.from(decoLayers).find(
+        (el) => (el as HTMLElement).style.width !== "",
+      ) as HTMLElement | undefined;
+      expect(fill, "gradient fill layer with inline width must exist").not.toBeUndefined();
+      expect(fill!.getAttribute("aria-hidden")).toBe("true");
+    });
+  });
+
+  it("decorative accent chip is aria-hidden while the entity NAME stays exposed", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    const rows = container.querySelectorAll("tbody tr");
+    rows.forEach((row) => {
+      const nameCell = row.querySelector("td")!;
+      const chip = nameCell.querySelector('span[aria-hidden="true"]');
+      expect(chip, "each row has an aria-hidden chip (monogram/flag)").not.toBeNull();
+    });
+    // The exposed org name text node is NOT inside an aria-hidden subtree.
+    const nameEl = screen.getAllByText(EXPECTED_ORG_NAMES[0])[0];
+    expect(nameEl.closest('[aria-hidden="true"]')).toBeNull();
+  });
+});
+
+// ── Redesign: controls (tabs + 6-metric selector) ────────────────────────────
+
+describe("FrontierLeadersChart — controls update rows and aria-state", () => {
+  beforeEach(() => setLocale("en"));
+  afterEach(() => vi.restoreAllMocks());
+
+  it("recentCount is the default pressed metric and exactly six metrics exist", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    const buttons = container.querySelectorAll('[role="group"] button[aria-pressed]');
+    expect(buttons.length, "six metric buttons").toBe(6);
+    const pressed = Array.from(buttons).filter(
+      (b) => b.getAttribute("aria-pressed") === "true",
+    );
+    expect(pressed.length).toBe(1);
+    expect(pressed[0].textContent).toBe(frontierEn.metricRecentCount);
+  });
+
+  it("switching Organizations → Countries swaps the rendered entity rows", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    // Default (orgs): OpenAI present, United States absent from rows.
+    expect(screen.getAllByText("OpenAI").length).toBeGreaterThan(0);
+    expect(screen.queryByText(MAPPED_COUNTRY)).toBeNull();
+    switchToCountries(container);
+    // Countries: mapped country present, OpenAI gone from rows.
+    expect(screen.getAllByText(MAPPED_COUNTRY).length).toBeGreaterThan(0);
+    expect(
+      within(screen.getByRole("table")).queryByText("OpenAI"),
+      "org rows must be replaced by country rows",
+    ).toBeNull();
+    // aria-selected moves to the Countries tab.
+    const selected = Array.from(container.querySelectorAll('[role="tab"]')).filter(
+      (t) => t.getAttribute("aria-selected") === "true",
+    );
+    expect(selected.length).toBe(1);
+    expect(selected[0].textContent).toBe(frontierEn.leadersTabCountries);
+  });
+
+  it("selecting a metric updates aria-pressed and the metric column header", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    clickMetric(container, frontierEn.metricModelCount);
+    const pressed = Array.from(
+      container.querySelectorAll('[role="group"] button[aria-pressed="true"]'),
+    );
+    expect(pressed.length).toBe(1);
+    expect(pressed[0].textContent).toBe(frontierEn.metricModelCount);
+    const colHeaders = Array.from(
+      container.querySelectorAll('thead th[scope="col"]'),
+    ).map((th) => th.textContent?.trim());
+    expect(colHeaders).toContain(frontierEn.metricModelCount);
+    expect(colHeaders).not.toContain(frontierEn.metricRecentCount);
+  });
+});
+
+// ── Redesign: guardrail copy guard (defends PR #129) ──────────────────────────
+
+describe("FrontierLeadersChart — no podium / winner ranking language", () => {
+  beforeEach(() => setLocale("en"));
+  afterEach(() => vi.restoreAllMocks());
+
+  function assertNoPodiumCopy(context: string) {
+    const text = (document.body.textContent ?? "").toLowerCase();
+    for (const term of PODIUM_TERMS) {
+      expect(
+        text.includes(term),
+        `podium/winner term '${term.trim()}' must not appear (${context})`,
+      ).toBe(false);
+    }
+  }
+
+  it("contains no podium/winner language across tabs and metrics", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    const metricLabels = [
+      frontierEn.metricRecentCount,
+      frontierEn.metricFrontierCount,
+      frontierEn.metricLargestRun,
+    ];
+    for (const label of metricLabels) {
+      clickMetric(container, label);
+      assertNoPodiumCopy(`orgs / ${label}`);
+    }
+    switchToCountries(container);
+    for (const label of metricLabels) {
+      clickMetric(container, label);
+      assertNoPodiumCopy(`countries / ${label}`);
+    }
+  });
+
+  it("uses the neutral 'Rank' column label (sort order, not a capability rank)", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    // The neutral column label is allowed; the winner-language scan above proves
+    // it isn't reframed as "#1"/"champion"/etc.
+    const rankHeader = Array.from(
+      container.querySelectorAll('thead th[scope="col"]'),
+    ).find((th) => th.textContent?.trim() === frontierEn.leadersColRank);
+    expect(rankHeader, "neutral Rank column header present").not.toBeUndefined();
+  });
+});
+
+// ── Redesign: point-of-use caveats + "Why these numbers?" disclosure ──────────
+
+describe("FrontierLeadersChart — caveats and Why-these-numbers disclosure", () => {
+  beforeEach(() => setLocale("en"));
+  afterEach(() => vi.restoreAllMocks());
+
+  it("dataDisclaimer text is visible at point of use", async () => {
+    const FrontierLeadersChart = await importComponent();
+    render(<FrontierLeadersChart />);
+    expect(
+      screen.getByText(frontierEn.dataDisclaimer, { exact: false }),
+    ).toBeInTheDocument();
+  });
+
+  it("countries tab shows countryAttributionNote and the /global geopolitics link", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    switchToCountries(container);
+    const bodyText = document.body.textContent ?? "";
+    expect(bodyText).toContain("Country attribution follows");
+    const globalLink = container.querySelector('a[href="/global"]');
+    expect(globalLink, "/global geopolitics link must be present").not.toBeNull();
+    expect(globalLink!.textContent).toContain(frontierEn.leadersGeopoliticsLink);
+  });
+
+  it("frontierDefinitionNote appears only when the frontierCount metric is selected", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    const distinct = "top 10 models by reported training compute";
+    expect((document.body.textContent ?? "").toLowerCase()).not.toContain(distinct);
+    clickMetric(container, frontierEn.metricFrontierCount);
+    expect((document.body.textContent ?? "").toLowerCase()).toContain(distinct);
+  });
+
+  it("'Why these numbers?' <details> renders coverage + definition strings", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    const details = container.querySelector("details");
+    expect(details, "<details> disclosure must be present").not.toBeNull();
+    const summary = details!.querySelector("summary");
+    expect(summary!.textContent).toBe(frontierEn.leadersWhyDisclosure);
+    const detailsText = (details!.textContent ?? "").toLowerCase();
+    // coverageNote is interpolated (no raw {tokens}); coverage % phrase present.
+    expect(detailsText).toContain("compute coverage");
+    expect(detailsText).toMatch(/recent tracked releases|sorted by recent/);
+    expect(detailsText).toMatch(/credited once to each|each named country/);
+    expect(detailsText.match(/\{[a-zA-Z]+\}/g)).toBeNull();
+  });
+});
+
+// ── Redesign: flag / monogram + largestRun peak-compute column ────────────────
+
+describe("FrontierLeadersChart — flag/monogram decoration & largestRun", () => {
+  beforeEach(() => setLocale("en"));
+  afterEach(() => vi.restoreAllMocks());
+
+  it("mapped country row exposes its NAME while the flag glyph is decorative", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    switchToCountries(container);
+    const table = screen.getByRole("table");
+    const usRow = Array.from(table.querySelectorAll("tbody tr")).find((r) =>
+      r.textContent?.includes(MAPPED_COUNTRY),
+    );
+    expect(usRow, `${MAPPED_COUNTRY} row must render`).not.toBeUndefined();
+    // Flag chip is aria-hidden decoration; the country NAME is the exposed text.
+    const chip = usRow!.querySelector('td span[aria-hidden="true"]');
+    expect(chip, "flag chip must be aria-hidden").not.toBeNull();
+    // A mapped iso3 must NOT fall back to the 🌐 globe glyph.
+    expect(chip!.textContent).not.toBe("🌐");
+    expect(within(usRow as HTMLElement).getAllByText(MAPPED_COUNTRY).length).toBeGreaterThan(0);
+  });
+
+  it("largestRun hides the peak-compute column and still renders entity rows", async () => {
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    clickMetric(container, frontierEn.metricLargestRun);
+    const colHeaders = Array.from(
+      container.querySelectorAll('thead th[scope="col"]'),
+    ).map((th) => th.textContent?.trim());
+    // Peak-reported-compute column is folded into the metric value cell — no
+    // separate compute column for largestRun.
+    expect(colHeaders).not.toContain(frontierEn.leadersColMaxCompute);
+    expect(colHeaders).toContain(frontierEn.metricLargestRun);
+    const orgsWithCompute = ALL_ORGS.filter((o) => o.maxComputeFlop > 0).length;
+    expect(container.querySelectorAll("tbody tr").length).toBe(Math.min(12, orgsWithCompute));
+    // Value cell renders formatted FLOPs (font-mono) rather than throwing.
+    const firstRow = container.querySelector("tbody tr")!;
+    expect(firstRow.textContent).toBeTruthy();
+  });
+});
+
+// ── Redesign: reduced-motion renders final state ──────────────────────────────
+
+describe("FrontierLeadersChart — reduced-motion final state", () => {
+  beforeEach(() => setLocale("en"));
+  afterEach(() => vi.restoreAllMocks());
+
+  it("rows render their final state under prefers-reduced-motion", async () => {
+    // matchMedia is stubbed matches:false in tests/setup.ts; force reduced-motion.
+    vi.stubGlobal("matchMedia", (query: string) => ({
+      matches: true,
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => false,
+    }));
+    const FrontierLeadersChart = await importComponent();
+    const { container } = render(<FrontierLeadersChart />);
+    // Flush the requestAnimationFrame entrance tick; rows must show final DOM.
+    await act(async () => {
+      await new Promise((r) => requestAnimationFrame(() => r(null)));
+    });
+    const rows = container.querySelectorAll("tbody tr");
+    expect(rows.length).toBe(EXPECTED_ORG_ROWS);
+    for (const name of EXPECTED_ORG_NAMES) {
+      expect(within(screen.getByRole("table")).getAllByText(name).length).toBeGreaterThan(0);
+    }
+    // Regression guards still hold under reduced-motion.
+    expect(container.querySelector("canvas")).toBeNull();
+    expect(container.querySelector('[role="img"]')).toBeNull();
   });
 });

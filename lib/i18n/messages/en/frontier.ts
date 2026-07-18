@@ -68,6 +68,15 @@ export const frontierEn = {
   leadersNoData: "No data available.",
   frontierBadge: "Compute frontier",
 
+  // ── Redesigned leaderboard (rows-as-bars) ─────────────────────────────────
+  /** Neutral sort-order column/label. NOT a capability rank — see dataDisclaimer. */
+  leadersColRank: "Rank",
+  /** sr-only caption for the leaderboard table that doubles as the visualization. */
+  leadersTableCaption:
+    "Tracked model activity leaderboard for the selected view and metric. Each row lists the entity, a fill bar encoding its value for the selected metric, the value shown as text, and its peak reported training compute.",
+  /** Expandable disclosure holding coverage and definition caveats. */
+  leadersWhyDisclosure: "Why these numbers?",
+
   // ── Metric selector labels (for Neo to wire) ──────────────────────────────
   metricRecentCount: "Recent tracked releases",
   metricModelCount: "All dated records",
@@ -212,9 +221,10 @@ export const frontierEn = {
     "showing median and maximum cost lines over time. Right: AI training power draw trends " +
     "in watts showing median and maximum power lines over time. Both charts cover recent AI model history.",
   a11yFrontierLeadersSummary:
-    "Horizontal bar chart showing tracked model activity by organization and country. " +
-    "Organizations tab: top 12 by all dated tracked records and compute-frontier records. " +
-    "Countries tab: top 10 sorted by recent tracked releases (past 3 years). " +
-    "A supplemental data table is visible below the chart.",
-  a11yFrontierLeadersName: "Bar chart: tracked model activity by organization and country",
+    "A leaderboard table of tracked model activity by organization and country. " +
+    "Each row combines an entity name, an animated fill bar encoding its value for the selected metric, " +
+    "and that value shown as text alongside its peak reported training compute. " +
+    "Organizations tab: top 12 entities. Countries tab: top 10, sorted by recent tracked releases (past 3 years) by default. " +
+    "The metric is changed with the controls above; the fill bars and text values are the accessible data — there is no separate chart or duplicate table.",
+  a11yFrontierLeadersName: "Tracked model activity by organization and country",
 };
