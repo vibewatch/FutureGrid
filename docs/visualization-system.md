@@ -1,8 +1,9 @@
 # Visualization System
 
 > **Status:** Active
+> **Last audited:** 2026-07-18
 > **Owner:** Switch (Designer)
-> **Covers:** `components/charts/*`, `components/ui/*` primitives, `app/globals.css` design tokens
+> **Covers:** `components/charts/*`, `components/ui/*` primitives, `app/globals.css` design tokens; plus the cross-cutting chart accessibility contract that also governs `components/frontier/*`
 > **Related doc:** [Explore Page](./explore.md)
 
 ---
@@ -25,7 +26,7 @@ The system is **not** a component library — it does not abstract a generic API
 
 | Layer | Scope |
 |---|---|
-| Charts | `components/charts/` — 15 files (12 chart components + 1 accessibility wrapper + 1 Chart.js setup + 1 thin event bridge) |
+| Charts | `components/charts/` — 15 files (13 chart components + 1 accessibility wrapper `AccessibleChart` + 1 thin event bridge `WorldChoroplethInteractive`). The Chart.js registration module (`chartSetup.ts`) lives in `components/visa/`, not here. |
 | UI primitives | `components/ui/` — non-chart visual components: `AnimatedCounter`, `GridBackground`, `RiskGauge`, `Reveal`, `GuardrailBadge`, `DataAsOfBadge`, `CommandPalette`, `NotFoundUI` |
 | Design tokens | `app/globals.css` — `@theme` block (Tailwind v4), CSS custom properties, keyframes, glass/glow utilities |
 | Theme context | `components/theme/ThemeProvider.tsx` — wraps `next-themes`; all charts read `useTheme().resolvedTheme` |
@@ -70,6 +71,21 @@ The system is **not** a component library — it does not abstract a generic API
 | File | Purpose |
 |---|---|
 | `components/visa/chartSetup.ts` | Registers Chart.js scales, elements, and plugins for H-1B visa chart pages. Separate from CareerTrendChart's inline registration to avoid duplicate plugin registration. |
+
+### Frontier charts (`components/frontier/*`)
+
+The AI Frontier suite lives outside `components/charts/` and is documented in detail in [frontier.md](./frontier.md) (owner: Tank). It is listed here because it is governed by the same cross-cutting accessibility contract — in particular **Pattern C** below. Component inventory as shipped:
+
+| Component | Library | Visual type | A11y pattern |
+|---|---|---|---|
+| `AIFrontierView` | — | View orchestrator (mounts the suite) | n/a |
+| `ComputeTimelineChart` | D3 | Scatter + animated disclosed-compute envelope (amber) | **Pattern B** (`role="img"` + `sr-only` summary/list) |
+| `CostPowerTrends` | **Chart.js** | Cost / power trend lines | **Pattern A** (`AccessibleChart` + Chart.js) |
+| `FrontierLeadersChart` | Semantic HTML `<table>` (rows-as-bars) | Neutral-rank leaderboard; decorative violet fill bars | **Pattern C** (no `role="img"`, no canvas) |
+| `FrontierMixCards` | — | Summary stat cards | text |
+| `FrontierOriginsTreemap` | D3 `d3.treemap` | Country share/concentration treemap; uniform-fill tiles | **Pattern C** (aria-hidden SVG + visible Share % `<table>`) |
+
+> `FrontierLeadersChart` (#131) and `FrontierOriginsTreemap` (#132) replaced earlier Chart.js/canvas and world-map renderings; the previous `FrontierOriginsMap` (world choropleth) no longer exists.
 
 ---
 
@@ -131,10 +147,12 @@ All charts are `"use client"` and render via `useEffect` with a D3 or Chart.js i
 | Technology | When chosen | Examples |
 |---|---|---|
 | **D3 v7** | Custom layout (force sim, treemap, sankey, geo), pixel-precise animation, zoom/pan, complex interactivity | BeeswarmChart, TreemapChart, QuadrantScatterChart, BarChartRace, SkillFlowSankey, WorldChoropleth, HeatmapChart, OccupationTrendChart, SectorScatterChart, CountryExposureChart, JobImpactChart, PredictiveChart |
-| **Chart.js 4 + react-chartjs-2** | Standard bar chart with responsive plugin, legend, and tooltip — no bespoke layout needed | `CareerTrendChart` (sole user) |
+| **Chart.js 4 + react-chartjs-2** | Standard bar chart with responsive plugin, legend, and tooltip — no bespoke layout needed | `CareerTrendChart` (sole Chart.js chart in `components/charts/`) |
 | **Native CSS / canvas** | Not used for data visualization |  |
 
 **Decision rule:** Use Chart.js only when D3's complexity would be overkill (simple bar/line with standard axes, no simulation, no geo projection, no force layout). Use D3 for everything else. Do not mix both inside the same chart component.
+
+> **Chart.js elsewhere:** Beyond `components/charts/`, Chart.js is also used by the H-1B visa suite (`components/visa/*`, sharing `components/visa/chartSetup.ts`) and by `components/frontier/CostPowerTrends.tsx`. `CareerTrendChart` remains the only Chart.js chart inside `components/charts/`.
 
 ---
 
@@ -279,6 +297,35 @@ The choice of table vs. list vs. prose depends on data structure:
 - **Table** — when the data is naturally grid-shaped (BarChartRace current year, HeatmapChart countries × metrics).
 - **List with links** — when the primary action is navigation (BeeswarmChart, QuadrantScatterChart, SectorScatterChart).
 - **Prose** — when a brief summary is sufficient (TreemapChart, PredictiveChart, OccupationTrendChart).
+
+### Pattern C — Visible semantic `<table>` **is** the visualization (decorative SVG/DOM `aria-hidden`, **no** `role="img"`)
+
+Established by the AI Frontier chart suite (`components/frontier/*`). When a chart's numeric truth can live in an on-screen table, that `<table>` *is* both the visualization and the accessible data — there is no separate `sr-only` fallback and the graphic layer carries **no** `role="img"`:
+
+```tsx
+{/* decorative graphic layer — never announced */}
+<svg aria-hidden="true" …>…</svg>          {/* e.g. FrontierOriginsTreemap d3.treemap tiles */}
+{/* or a per-row decorative fill bar */}
+<span aria-hidden="true" style={{ width: `${row.width}%` }} … />  {/* FrontierLeadersChart */}
+
+{/* the real, visible, numeric content */}
+<table>
+  <caption className="sr-only">…</caption>
+  <thead><tr><th scope="col">…</th>…</tr></thead>
+  <tbody>…values as text…</tbody>
+</table>
+```
+
+Used by: `FrontierLeadersChart` (rows-as-bars leaderboard, #131) and `FrontierOriginsTreemap` (country share/concentration treemap with a Share % column, #132). Both dropped Chart.js/`<canvas>`/`role="img"` in favour of this pattern.
+
+**Contract for Pattern C (design guardrails — reflect what ships, do not weaken):**
+- The decorative SVG (or DOM fill) is **always** `aria-hidden="true"` and never focusable; identity glyphs (flags, monograms) are `aria-hidden` too.
+- A real semantic `<table>` carries the numeric truth. Column headers use `scope="col"`; row headers use `scope="row"`. Values are always rendered **as text**, never encoded by graphic alone.
+- Do **not** add `role="img"` to a data-viz SVG that already has a visible `<table>` equivalent — the table is the accessible representation, so a duplicate `role="img"` label would double-announce.
+- **Area or length is the sole quantitative encoding.** Fills are **uniform / non-ranking** (single brand-violet hue), so a viewer cannot misread colour intensity as rank, capability, or impact. No ranking colour ramp is applied to these charts. (Rank, when shown, is a neutral ordinal number — no podium/medal/winner styling.)
+- Reduced motion (see below) renders the final tile/bar state instantly: FrontierLeadersChart uses `motion-reduce:transition-none` utilities on the `width` transition; FrontierOriginsTreemap disables its entrance CSS transition under `prefers-reduced-motion`.
+
+> **Pattern selection:** Prefer **Pattern C** for new ranked/share tabular charts where the values are the point (leaderboards, share tables). Use **Pattern B** when the graphic is genuinely spatial/continuous (force layouts, geo maps, scatter) and a table would only be a fallback. Use **Pattern A** for Chart.js `<canvas>` output.
 
 ---
 

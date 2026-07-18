@@ -2,7 +2,7 @@
 
 **Status:** Production
 **Owner:** Tank (Backend / Data Dev)
-**Last audited:** 2026-07-11
+**Last audited:** 2026-07-18
 
 ---
 
@@ -93,14 +93,13 @@ type SnapshotRow = {
   socCode: string;           // SOC 2018 code, e.g. "15-1252"
   title: string;
   sector: string;
-  aiExposure: number;        // 0–1; AEI task-level composite
+  aiExposure: number;        // 0–1; AEI observed_exposure (Claude AI-usage based)
   automationRisk: "Low" | "Medium" | "High" | "Very High";
-  automationProbability: number;  // 0–1; Frey & Osborne baseline
+  automationProbability: number;  // 0–1; AEI alias of aiExposure (NOT Frey & Osborne — that lives in the exposure "automation" lens)
   medianSalary: number;      // USD annual; BLS OEWS
   employment: number | null; // thousands; BLS OEWS
   projectedOpenings: number | null; // from BLS EP table
-  growthRate: number | null; // decimal fraction; derived from OEWS history or EP
-  growthWindow?: { fromYear: number; toYear: number } | null;
+  growthRate: number | null; // null in the full snapshot (AEI carries no per-SOC growth); resolved to an annualized % in the slim variant
   jobZone: number;           // O*NET Job Zone 1–5
   brightOutlook: boolean;
   outlook: "Bright" | "Average";
@@ -117,8 +116,9 @@ export interface CareerInsight {
   occupationCode: string;
   occupationName: string;
   automationRisk: "Low" | "Medium" | "High" | "Very High";
-  automationProbability: number;
-  growthRate: number | null;
+  aiExposure: number;             // 0–1; AEI exposure score from the snapshot
+  automationProbability: number;  // AEI migration alias of aiExposure (same 0–1 score; not a Frey–Osborne probability)
+  growthRate: number | null;      // annualized % per year (e.g. 6.5 = +6.5%/yr)
   growthWindow?: { fromYear: number; toYear: number } | null;
   medianSalary: number;           // USD annual
   totalEmployment: number | null; // thousands
@@ -126,8 +126,8 @@ export interface CareerInsight {
   outlook: "Bright" | "Average";
   sectorName: string;
   skills: string[];
-  employmentHistory: null;  // always null in client-facing shape
-  wageHistory: null;        // always null in client-facing shape
+  employmentHistory: Record<string, number> | null; // always null in the client-facing shape (history excluded)
+  wageHistory: Record<string, number> | null;       // always null in the client-facing shape (history excluded)
 }
 ```
 
@@ -173,10 +173,10 @@ export interface OccExposureLenses {
 |---|---|
 | **SOC vintage crosswalk** | `scripts/lib/soc-crosswalk.mjs` downloads BLS `soc_2010_to_2018_crosswalk.xlsx` (via Wayback identity mirror) and maps 2010 → 2018 SOC codes before any aggregation. Cache lives in `.cache/soc-crosswalk/`. |
 | **AEI join** | Anthropic Economic Index rows are keyed on 2018 SOC codes and joined left-inner to the O\*NET occupation universe. |
-| **growthRate derivation** | If BLS EP table provides a rate, that wins. Otherwise `growthRate` is derived from OEWS employment history as CAGR over the longest available consecutive window; `growthWindow` records the years used. |
-| **Automation risk buckets** | `automationProbability` (0–1) is bucketed: <25% → Low, 25–50% → Medium, 50–75% → High, ≥75% → Very High. |
+| **growthRate derivation** | The full snapshot carries no per-SOC growth (AEI files provide none), so `growthRate` is `null` there. `build-snapshot-slim.mjs` pre-computes it as an annualized CAGR (%) from OEWS employment history — first vs. last year with positive employment — and records the years in `growthWindow`; a bundled `growthRate` wins if one is ever present. |
+| **Automation risk buckets** | `automationRisk` is **percentile-calibrated from the `aiExposure` distribution** at build time (not fixed cut-points): Very High = above the 92nd percentile (top ~8%), High = above the 80th, Medium = above the 55th, Low = the remainder. |
 | **Consensus exposure** | `consensus = avg(usage, capability, ability)` where each term is in 0–100 %. `gap = capability − usage`. |
-| **Slim derivation** | `build-snapshot-slim.mjs` strips `employmentHistory` and `wageHistory` from every row, halving the JSON payload. |
+| **Slim derivation** | `build-snapshot-slim.mjs` strips `employmentHistory` and `wageHistory` from every row (halving the JSON payload) and pre-computes `growthRate` / `growthWindow` / `histGrowthRate` so no client consumer needs the raw history. |
 
 ### Units
 
@@ -185,7 +185,7 @@ export interface OccExposureLenses {
 | `aiExposure`, `automationProbability` | 0–1 fraction |
 | `medianSalary` | USD annual |
 | `employment` | thousands of workers |
-| `growthRate` | decimal fraction (0.05 = +5%) |
+| `growthRate` | annualized percent per year (6.5 = +6.5%/yr) |
 | `usage`, `capability`, `ability`, `automation`, `consensus` | percentage points (0–100) |
 
 ---
@@ -224,12 +224,12 @@ npm run build:data
 
 ## Validation Invariants
 
-`scripts/lib/validate.mjs` → `validateOccupationSnapshot()` is called by the snapshot builder before `writeFileSync`. It enforces:
+`scripts/lib/validate.mjs` → `validateOccupationSnapshot()` (full) and `validateOccupationSnapshotSlim()` (slim) are called by their respective builders before `writeFileSync`. They enforce:
 
-- Minimum row count (≥ 80 % of current committed count — catches degenerate fetches).
-- `meta.generatedAt` present.
-- Each row has `socCode`, `title`, `aiExposure`.
-- No `aiExposure` outside 0–1.
+- Minimum row count — a fixed floor of **680 rows** (`assertMinRows(rows, 680)`, set at roughly 80 % of the committed count to catch degenerate fetches).
+- `meta` + non-empty provenance present (`meta.generatedAt` + `source`, via `assertProvenance`).
+- The first row carries `socCode`, `title`, `sector`, `aiExposure`, and `automationRisk` (spot-check).
+- Every `sector` value is canonical (one of the ≤ 22 BLS SOC major groups); the build fails on any non-canonical sector or more than 22 distinct sectors.
 
 ---
 

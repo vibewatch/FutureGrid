@@ -2,7 +2,7 @@
 
 **Status:** Living document
 **Owner:** Mouse (Tester) — @huangyingting
-**Last updated:** 2026-07-11
+**Last updated:** 2026-07-18
 **Applies to:** `main` branch and all feature branches that target it
 
 ---
@@ -37,7 +37,9 @@ FutureGrid uses a **four-layer quality pyramid**:
              └──────────────────────────────┘
 ```
 
-All four layers run in CI on every push/PR to `main` (see §9 CI Ordering).
+All four layers run in CI on every push/PR to `main` (see §12 CI Ordering).
+
+The unit + component layer (bottom of the pyramid) is by far the largest: it currently spans **88 test files and 1,600+ Vitest cases**. Run `npm run test:run` for the exact current totals — the suite grows with every feature, so treat any hardcoded figure as a snapshot, not a contract.
 
 > **Key lesson (Batch 7):** jsdom mocks `ResizeObserver` to a no-op, so D3 chart layout code (which executes inside `ResizeObserver` callbacks) never runs in Vitest. A chart that throws in a real browser can pass 100+ Vitest tests cleanly. The headless-Chrome smoke test exists specifically to catch this class of regression.
 
@@ -85,7 +87,14 @@ flowchart TD
 export default defineConfig({
   plugins: [react()],           // @vitejs/plugin-react — JSX transform
   resolve: {
-    alias: { "@": path.resolve(__dirname, ".") },  // mirrors tsconfig paths
+    alias: {
+      "@": path.resolve(__dirname, "."),  // mirrors tsconfig paths
+      // `server-only` is a Next.js compiler marker that throws outside the Next
+      // build pipeline; redirect it to an empty stub so Node-env tests can import
+      // modules that carry the guard. Architecture tests still read the source
+      // text via readFileSync, so the boundary assertion is unaffected.
+      "server-only": path.resolve(__dirname, "tests/__mocks__/server-only.ts"),
+    },
   },
   test: {
     environment: "node",        // default; jsdom overridden per-file (see below)
@@ -106,7 +115,7 @@ Place this comment on **line 1** of any `.test.tsx` file or any `.test.ts` file 
 
 ### Path alias
 `@/` resolves to the repo root. Example: `import RiskGauge from "@/components/ui/RiskGauge"`.
-This matches the `paths` entry in `tsconfig.json`.
+This matches the `paths` entry in `tsconfig.json`. The config also aliases `server-only` to `tests/__mocks__/server-only.ts` so modules carrying the `import "server-only"` guard can be imported under the Node test environment.
 
 ### Setup file: `tests/setup.ts`
 Runs before every test. Provides:
@@ -177,6 +186,14 @@ import MyComponent from "@/components/MyComponent";
 | `next-themes` | `useTheme` returns `undefined` without `ThemeProvider` |
 | Chart.js `<Bar>` / `<Line>` | Canvas API absent in jsdom; mock to `<canvas>` stub if needed |
 | Heavy child components | Stub to `() => <div>stub</div>` to isolate the component under test |
+
+### D3 / SVG chart & map patterns in jsdom
+jsdom implements only a partial SVG surface, so D3-driven chart and map components need targeted shims and guards:
+
+- **Runtime GeoJSON fetch:** map components that fetch `public/world-countries.geo.json` on mount (e.g. `WorldChoropleth`) need a `vi.stubGlobal("fetch", ...)` mock resolving the geometry; assert the fetch target so the contract is locked.
+- **`getTotalLength` polyfill:** jsdom does not implement `SVGPathElement.getTotalLength`, which stroke-draw animations call. Polyfill it on the path prototype (e.g. `() => 100`) in `beforeEach` so the default (non-reduced-motion) animation branch runs without crashing (`ComputeTimelineChart`).
+- **Negative regression guards (design-intent locks):** for components redesigned away from Chart.js/bitmap rendering, assert the *absence* of forbidden structures — no `<canvas>`, no `role="img"`, and a decorative `aria-hidden="true"` SVG paired with a semantic table equivalent (`FrontierLeadersChart`, `FrontierOriginsTreemap`).
+- **No-fetch spy:** for components that must NOT hit the network (e.g. the treemap that replaced the choropleth), install a `fetch` spy and assert it is *never* called — proving the runtime geometry request is gone (`FrontierOriginsTreemap`).
 
 ### Interaction testing
 Use `@testing-library/user-event` for keyboard/pointer interactions:
@@ -270,17 +287,28 @@ Four architecture suites assert the server/client split and prevent server-only 
 
 Component-level spec tests for the corresponding new UI islands live in `tests/components/EvidenceConvergenceStrip.test.tsx`, `tests/components/ExposureOutcomeMatrix.test.tsx`, `tests/components/ReskillingBridge.test.tsx`, and `tests/components/WageTierPolarizationLens.test.tsx`.
 
+### AI Frontier test suite
+
+`tests/ai-frontier.test.ts` is the largest single suite (~24 `describe` blocks, 170+ cases). Beyond the standard data-contract pattern it guards the responsible-framing methodology consolidated across PR #129–#132:
+
+- **Data / selector contracts:** model-array integrity, doubling-time regressions, aggregate consistency, and the full-catalog-vs-compute-known metric split (`getCountryOriginShares()`, the six-metric selectors, and the geo-safe projection).
+- **Copy guardrails (EN + ZH):** point-of-use caveats, Chinese open-weight caution, "weights ≠ permissive open source", and the country-attribution / default-sort definitions must exist with locale parity — asserting the descriptive framing cannot silently drift into ranking/capability claims.
+- **Regression-derived stats:** UI-facing numbers are derived from source rows, not hardcoded, so data changes surface immediately instead of self-healing.
+
+Component coverage for this feature lives in `tests/components/AIFrontierView.test.tsx`, `FrontierLeadersChart.test.tsx`, `FrontierOriginsTreemap.test.tsx`, `ComputeTimelineChart.test.tsx`, and `FrontierMixCards.test.tsx`. These apply the D3/SVG jsdom patterns in §6 (no-canvas / no-`role="img"` guards, the `getTotalLength` polyfill, and the treemap no-fetch spy).
+
 ---
 
 ## 9. Accessibility Checks
 
 ### In-test (unit layer): `tests/components/ChartA11y.test.tsx`
-Asserts the ARIA contract of every chart component:
+Asserts the ARIA contract of the core chart primitives (`AccessibleChart`, `CareerTrendChart`, `JobImpactChart`, `PredictiveChart`):
 - Charts wrapped in `<figure aria-label="...">` with a non-empty label
 - `<figcaption class="sr-only">` containing a prose summary and a data table
 - `<svg aria-hidden="true">` inside figures (visual only; role is on the figure)
 - `PredictiveChart`: `<svg role="img" aria-label="...">` pattern
-- `SkillTransitionChart`: keyboard-focusable scroll region with `tabindex="0"`
+
+Chart/map components outside this primitive set carry their own accessibility guards in their dedicated test files (e.g. the no-canvas / `aria-hidden` SVG guards for `FrontierLeadersChart` and `FrontierOriginsTreemap` described in §6).
 
 ### In-test: `RiskGauge`
 Every risk band (Low / Medium / High / Very High) has a corresponding `aria-label` on the SVG element. Tested with boundary values (0, 5, 35, 55, 75, 100).
@@ -384,7 +412,7 @@ Add `npm run check:a11y && npm run smoke` before any PR that touches chart rende
 - `generateAllCareerInsights()` uses FNV-1a hashing (not `Math.random()`) to assign deterministic employment counts — SSR hydration never mismatches. Tests assert exact counts.
 - `getOccupationTrend()` returns exact employment/wage arrays; `snapshot.test.ts` asserts specific numeric values to catch silent data regressions.
 - Market-signal windows (`check:bundle`, stock data) are anchored to public AI-era milestones — not wall-clock time — to remain stable across re-runs.
-- `SkillTransitionChart` bar widths are explicitly accepted as non-deterministic (pre-existing; illustrative chart).
+- Illustrative D3 charts whose bar/tile geometry depends on `ResizeObserver`-driven layout produce non-deterministic pixel widths under jsdom; tests assert DOM/selector structure and derived data, not layout output.
 
 ### Offline safety
 All Vitest tests run fully offline:

@@ -3,6 +3,7 @@
 **Status:** Live — origin/main
 **Owner:** Neo (Frontend Dev)
 **Routes:** `/careers` (grid list), `/careers/[code]` (detail)
+**Last audited:** 2026-07-18
 
 ---
 
@@ -56,12 +57,12 @@ Because `page.tsx` is `"use client"`, `generateAllCareerInsights()` runs in the 
 
 ```mermaid
 flowchart TD
-    A[app/careers/[code]/page.tsx RSC] --> B[lib/data.ts\ngetCareerByCode]
+    A[app/careers/[code]/page.tsx RSC] --> B[lib/data.ts\ngenerateAllCareerInsights → find]
     A --> C[lib/onet.ts\ngetOnetEnrichment]
-    A --> D[lib/exposure.ts\ngetOccExposureLenses]
-    A --> E[lib/h1b.ts\ngetH1bOccupationSignal]
-    A --> F[lib/career-evidence-passport.ts]
-    A --> G[lib/snapshot.ts\ngetTrendPoints]
+    A --> D[lib/exposure.ts\ngetOccupationExposureLenses]
+    A --> E[lib/h1b.ts\ngetOccupationSignalBySoc + getCoverage]
+    A --> F[lib/career-evidence-passport.ts\ngetCareerEvidencePassport]
+    A --> G[lib/snapshot.ts\ngetOccupationTrend]
     A --> H[lib/data.ts\ngetReskillingPaths]
     A -->|props| I[CareerDetailClient\n'use client']
 ```
