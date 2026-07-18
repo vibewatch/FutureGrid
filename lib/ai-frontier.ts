@@ -237,6 +237,39 @@ export interface CountryGeoEntry {
   orgCount: number;
 }
 
+/**
+ * Origin-set projection of a CountryLeaderboardEntry for the "Where Tracked
+ * Models Are Developed" share/concentration treemap. Includes every country
+ * with a real geographic identity (Singapore and Hong Kong included — they were
+ * only dropped from the world map for lacking polygons) and EXCLUDES the
+ * non-geographic "Multinational" aggregate.
+ *
+ * Exposes ONLY the full-catalog country-fair metrics (recentCount, modelCount,
+ * openWeightsCount) plus country/countryShort (and the geographic `iso3` join
+ * key, which may be null for city-states and is only useful for a flag glyph).
+ * It deliberately OMITS computeKnownCount, frontierCount, and maxComputeFlop so
+ * the treemap is structurally incapable of rendering a compute/capability
+ * ranking (the PR #129/#130 guardrail). Shares are metric-dependent, so the
+ * consuming component computes share = value / sum(values) per selected metric
+ * at render time; this projection returns only the raw fair-metric counts.
+ */
+export interface CountryOriginEntry {
+  country: string;
+  countryShort: string;
+  /**
+   * ISO-3 geographic join key when known, else null (e.g. city-states with no
+   * map polygon such as Singapore/Hong Kong). Carries NO capability, impact, or
+   * ranking meaning — only useful for a flag glyph.
+   */
+  iso3: string | null;
+  /** Full-catalog models published within the 3-year recent window (default metric). */
+  recentCount: number;
+  /** Full-catalog model count (all dated rows attributed to this country). */
+  modelCount: number;
+  /** Full-catalog models with confirmed open weights. */
+  openWeightsCount: number;
+}
+
 /** How many country leaderboard entries carry a plottable `iso3` join key. */
 export interface CountryGeoCoverage {
   mapped: number;
@@ -356,6 +389,51 @@ export function getCountryLeaderboardGeo(): CountryGeoEntry[] {
  */
 export function getCountryGeoCoverage(): CountryGeoCoverage {
   return { ...data.aggregates.countryGeoCoverage };
+}
+
+/**
+ * Non-geographic aggregate labels in the country leaderboard that must be
+ * excluded from any geographic origin set. "Multinational" is a co-attribution
+ * bucket for models spanning multiple countries — not a single place — so it is
+ * not a valid origin for a "where models are developed" distribution.
+ */
+const NON_GEOGRAPHIC_COUNTRY_LABELS: ReadonlySet<string> = new Set(["Multinational"]);
+
+/**
+ * Origin set for the "Where Tracked Models Are Developed" share/concentration
+ * treemap. Projects the full country leaderboard into every country with a real
+ * geographic identity — this INCLUDES Singapore and Hong Kong (dropped from the
+ * world map only for lacking polygons) and EXCLUDES the non-geographic
+ * "Multinational" aggregate.
+ *
+ * Returns a CountryOriginEntry projection carrying ONLY the full-catalog
+ * country-fair metrics (recentCount, modelCount, openWeightsCount) plus
+ * country/countryShort and the geographic iso3 label. It deliberately omits
+ * computeKnownCount/frontierCount/maxComputeFlop so the treemap cannot render a
+ * compute/capability ranking. Shares are metric-dependent, so the consuming
+ * component sums the raw counts and computes share per selected metric at render
+ * time — this selector never precomputes a single "share" number.
+ *
+ * Ordering is deterministic and matches the country leaderboard convention:
+ * recentCount desc, then modelCount desc, then countryShort ascending.
+ */
+export function getCountryOriginShares(): CountryOriginEntry[] {
+  return data.aggregates.countryLeaderboard
+    .filter((c) => !NON_GEOGRAPHIC_COUNTRY_LABELS.has(c.country))
+    .map((c) => ({
+      country: c.country,
+      countryShort: c.countryShort,
+      iso3: c.iso3,
+      recentCount: c.recentCount,
+      modelCount: c.modelCount,
+      openWeightsCount: c.openWeightsCount,
+    }))
+    .sort(
+      (a, b) =>
+        b.recentCount - a.recentCount ||
+        b.modelCount - a.modelCount ||
+        a.countryShort.localeCompare(b.countryShort),
+    );
 }
 
 /**

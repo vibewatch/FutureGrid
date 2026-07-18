@@ -129,24 +129,29 @@ export const frontierEn = {
   dataDisclaimer:
     "These rankings reflect Epoch AI's tracked records and do not measure AI capability, product adoption, commercial reach, open-source usage, or societal and economic impact.",
 
-  // ── Section: Tracked Model Origins (World Map) ────────────────────────────
-  mapSectionTitle: "Where Tracked Models Are Developed",
-  mapSectionSubhead:
-    "A geographic view of Epoch AI's tracked model records by attributed country. It depicts where tracked records originate — a descriptive view of catalog coverage, not a ranking of national AI capability, output, or impact.",
-  /** Group label for the map's metric toggle. Reuses metricRecentCount / metricModelCount / metricOpenWeightsCount labels. */
-  mapMetricSelectorLabel: "Map metric",
-  mapLegendLabel: "Tracked records (selected metric)",
-  mapLegendLow: "Fewer records",
-  mapLegendHigh: "More records",
-  /** Interpolation vars: {mapped} {total} {unmapped} */
-  mapCoverageNote:
-    "{mapped} of {total} tracked regions shown on map; {unmapped} multinational or unmapped entities excluded.",
-  mapTooltipLabel: "Tracked records",
-  mapTableCaption: "Tracked model records by country for the selected metric",
-  mapTableColRegion: "Country or region",
-  mapTableColCount: "Tracked records",
-  mapEmpty: "No tracked records to map for the selected metric.",
-  mapLoading: "Loading map…",
+  // ── Section: Tracked Model Origins (share/concentration treemap) ──────────
+  originsSectionTitle: "Where Tracked Models Are Developed",
+  originsSectionSubhead:
+    "A share-of-records view of Epoch AI's tracked models by attributed country. Each tile's area is that country's share of all tracked records for the selected metric — showing how concentrated tracked development is across the catalog, not a ranking of national AI capability, output, or impact.",
+  /** Group label for the treemap's metric toggle. Reuses metricRecentCount / metricModelCount / metricOpenWeightsCount labels. */
+  originsMetricSelectorLabel: "Share metric",
+  /** Tooltip row label for the raw tracked-record count on a tile. */
+  originsTooltipRecords: "Tracked records",
+  /** Tooltip row label for the tile's share of the whole. */
+  originsTooltipShare: "Share of tracked records",
+  /** sr-only caption for the accessible 3-column equivalent table. */
+  originsTableCaption:
+    "Share of Epoch AI's tracked model records by attributed country for the selected metric, sorted from largest to smallest share.",
+  originsTableColCountry: "Country or region",
+  originsTableColRecords: "Tracked records",
+  originsTableColShare: "Share of tracked records (%)",
+  /** Interpolation vars: {countries} — replaces the former map coverage note; no map/geometry framing. */
+  originsCoverageNote:
+    "Shares are of {countries} attributed countries' tracked records, not unique models. A model affiliated with organizations in more than one country is credited to each of them, so summed shares can exceed 100% and summed counts can exceed the number of unique tracked models. The non-geographic 'Multinational' aggregate is excluded because this view describes where models are developed.",
+  originsEmpty: "No tracked records to display for the selected metric.",
+  /** sr-only summary describing the treemap as a share-of-records distribution, not a ranking. */
+  originsSrSummary:
+    "A treemap of tiled rectangles whose areas show each attributed country's share of Epoch AI's tracked model records for the selected metric. It depicts how concentrated tracked development is across the catalog — a distribution of records, not a ranking of national AI capability, output, or impact. The same values are available in the table below.",
 
   // ── Section: Cost & Power Trends ───────────────────────────────────────────
   costPowerSectionTitle: "Training Cost & Power Draw",

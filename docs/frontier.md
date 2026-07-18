@@ -138,6 +138,17 @@ Each `CountryLeaderboardEntry` carries `iso3: string | null` — an ISO-3166-1 a
 
 ---
 
+### 9. Country origin-shares selector (treemap — no world map)
+
+The "Where Tracked Models Are Developed" section was redesigned from a world-map choropleth into a **share/concentration treemap** (Trinity design review, 2026-07-18). This is a **pure read-time projection over the existing `aggregates.countryLeaderboard`** — no JSON/builder/validator change.
+
+- **Selector:** `getCountryOriginShares()` → `CountryOriginEntry[]`. Projects the full country leaderboard into the geographic origin set.
+- **Inclusion:** every country with a real geographic identity. Because a treemap needs no map polygon, `iso3` is **not** used as a gate — so `Singapore` (5/16/9) and `Hong Kong` (5/15/6), which the map dropped only for lacking polygons, are **included** here.
+- **Exclusion:** the non-geographic aggregate label **`Multinational`** (co-attribution bucket, not a place) is excluded via a `NON_GEOGRAPHIC_COUNTRY_LABELS` set. Net = **34 origins** (35 leaderboard entries − Multinational).
+- **Fair fields only:** each entry exposes `country`, `countryShort`, `iso3` (nullable; flag-glyph only, no ranking meaning), `recentCount`, `modelCount`, `openWeightsCount`. It **omits** `computeKnownCount`/`frontierCount`/`maxComputeFlop` so a capability metric is structurally unselectable (PR #129/#130 guardrail).
+- **Shares are metric-dependent:** the selector returns raw fair-metric counts; the treemap component computes `share = value / sum(values)` for the selected metric at render time. No single precomputed "share" number.
+- **Deterministic order:** recentCount desc, then modelCount desc, then countryShort ascending (matches the country leaderboard convention). No `Date.now`, no network.
+
 ## Canonical Schemas / Types
 
 ### `AIFrontierDefinitions` — methodological disclosure
@@ -306,6 +317,7 @@ export interface AIFrontierData {
 | `getRecentlyActiveOrgs(limit)` | `OrgLeaderboardEntry[]` | NEW — top N by recentCount |
 | `getCountryLeaderboard()` | `CountryLeaderboardEntry[]` | Sorted by recentCount desc |
 | `getCountryLeaderboardGeo()` | `CountryGeoEntry[]` | NEW — only entries with non-null `iso3`, geographic-safe fields only, recentCount desc |
+| `getCountryOriginShares()` | `CountryOriginEntry[]` | NEW — origin set for the share/concentration treemap: all real countries (incl. Singapore + Hong Kong), excludes `Multinational`; fair metrics only (recentCount/modelCount/openWeightsCount), no iso3 gating |
 | `getCountryGeoCoverage()` | `CountryGeoCoverage` | NEW — mapped/unmapped/total for a map coverage note |
 | `getModernEraRegression()` | `ComputeRegression\|null` | OLS fit ≥ 2010 |
 | `getOverallRegression()` | `ComputeRegression\|null` | OLS fit all years |
