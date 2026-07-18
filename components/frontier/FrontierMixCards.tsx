@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { getAccessibilityMix, getDomainMix } from "@/lib/ai-frontier";
+import { getFullCatalogAccessibilityMix, getDomainMix } from "@/lib/ai-frontier";
 import { useT } from "@/lib/i18n/useT";
 
 function MiniBar({
@@ -26,7 +26,7 @@ function MiniBar({
 
 export default function FrontierMixCards() {
   const t = useT("frontier");
-  const access = useMemo(() => getAccessibilityMix(), []);
+  const access = useMemo(() => getFullCatalogAccessibilityMix(), []);
   const domains = useMemo(() => getDomainMix().slice(0, 8), []);
 
   const totalAccess = access.openWeights + access.closed + access.unknown;
@@ -68,9 +68,14 @@ export default function FrontierMixCards() {
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {/* Access mix card */}
       <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 space-y-3">
-        <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">
-          {t("mixAccessTitle")}
-        </h3>
+        <div>
+          <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">
+            {t("mixAccessTitle")}
+          </h3>
+          <p className="text-[11px] text-zinc-500 dark:text-zinc-500 mt-0.5">
+            {t("mixAccessSubhead")}
+          </p>
+        </div>
         <div className="space-y-2.5">
           {accessItems.map(({ label, value, pct, color }) => (
             <div key={label} className="space-y-1">
@@ -90,6 +95,9 @@ export default function FrontierMixCards() {
         </div>
         <p className="text-[10px] text-zinc-500 dark:text-zinc-500 leading-snug pt-1">
           {totalAccess.toLocaleString()} {t("mixCountLabel")}
+        </p>
+        <p className="text-[10px] text-zinc-500 dark:text-zinc-500 leading-snug border-t border-zinc-200 dark:border-zinc-700/60 pt-2">
+          {t("mixAccessCaveat")}
         </p>
       </div>
 

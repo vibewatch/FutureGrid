@@ -8,6 +8,8 @@ import {
   getAIFrontierData,
   getComputeModels,
   getCountryLeaderboard,
+  getCostTrend,
+  getPowerTrend,
   formatFlop,
 } from "@/lib/ai-frontier";
 
@@ -43,6 +45,22 @@ const FrontierMixCards = dynamic(
   () => import("@/components/frontier/FrontierMixCards"),
   { ssr: false, loading: () => <LoadingStub /> },
 );
+
+// ── Cost/power formatters (mirrors CostPowerTrends.tsx) ──────────────────────
+
+function fmtUsd(v: number): string {
+  if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(1)}B`;
+  if (v >= 1_000_000) return `$${(v / 1_000_000).toFixed(1)}M`;
+  if (v >= 1_000) return `$${Math.round(v / 1_000)}K`;
+  return `$${Math.round(v)}`;
+}
+
+function fmtWatt(v: number): string {
+  if (v >= 1_000_000_000) return `${(v / 1_000_000_000).toFixed(1)} GW`;
+  if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1)} MW`;
+  if (v >= 1_000) return `${(v / 1_000).toFixed(1)} kW`;
+  return `${Math.round(v)} W`;
+}
 
 // ── Stat Card ─────────────────────────────────────────────────────────────────
 
@@ -126,6 +144,20 @@ export default function AIFrontierView() {
   const countryLeaderboard = getCountryLeaderboard();
   const top = countryLeaderboard[0] ?? null;
 
+  // ── Peak cost / power for whyPoint3 interpolation ─────────────────────────
+  const costTrend = getCostTrend();
+  const powerTrend = getPowerTrend();
+  const maxCostRaw = costTrend.reduce(
+    (m, d) => (Number.isFinite(d.maxCostUsd2023) && d.maxCostUsd2023 > m ? d.maxCostUsd2023 : m),
+    0,
+  );
+  const maxPowerRaw = powerTrend.reduce(
+    (m, d) => (Number.isFinite(d.maxPowerW) && d.maxPowerW > m ? d.maxPowerW : m),
+    0,
+  );
+  const peakCost = maxCostRaw > 0 ? fmtUsd(maxCostRaw) : "—";
+  const peakPower = maxPowerRaw > 0 ? fmtWatt(maxPowerRaw) : "—";
+
   return (
     <div className="mx-auto w-full max-w-[1400px] space-y-10">
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
@@ -158,7 +190,10 @@ export default function AIFrontierView() {
                 ? `~${regression.doublingTimeMonths.toFixed(1)} months`
                 : "—"
             }
-            sub={t("statDoublingSub")}
+            sub={t("statDoublingSub", {
+              modernEraStart: String(data.methodology.modernEraStart),
+              r2: regression?.r2.toFixed(2) ?? "—",
+            })}
             accent="violet"
           />
           <StatCard
@@ -172,7 +207,7 @@ export default function AIFrontierView() {
             value={top?.countryShort ?? "—"}
             sub={
               top
-                ? `${top.frontierCount} frontier models · ${top.modelCount} total`
+                ? `${top.recentCount} recent tracked · ${top.modelCount} total dated`
                 : "—"
             }
             accent="amber"
@@ -199,7 +234,11 @@ export default function AIFrontierView() {
         <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
           <ComputeTimelineChart />
           <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-500 leading-relaxed">
-            {t("timelineAnnotationFull")}
+            {t("timelineAnnotationFull", {
+              doublingTime: regression?.doublingTimeMonths?.toFixed(1) ?? "—",
+              r2: regression?.r2.toFixed(2) ?? "—",
+              n: String(regression?.n ?? "—"),
+            })}
           </p>
         </div>
       </Section>
@@ -242,7 +281,9 @@ export default function AIFrontierView() {
             {t("whyTitle")}
           </h2>
           <p className="text-sm text-zinc-700 dark:text-zinc-300 max-w-3xl leading-relaxed">
-            {t("whyBody")}
+            {t("whyBody", {
+              doublingTime: regression?.doublingTimeMonths?.toFixed(1) ?? "—",
+            })}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
             {(
@@ -274,7 +315,9 @@ export default function AIFrontierView() {
                   {t(titleKey)}
                 </p>
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                  {t(bodyKey)}
+                  {bodyKey === "whyPoint3"
+                    ? t(bodyKey, { peakCost, peakPower })
+                    : t(bodyKey)}
                 </p>
               </div>
             ))}
