@@ -648,7 +648,7 @@ describe("credential-skipped WARN states preserve last-known-good records", () =
 
   it("preserved coverage states carry real records and accurate metadata", () => {
     if (!registry) return;
-    const preservedEntries = registry.filter((e) => (e as Record<string, unknown>).buildStatus === "preserved");
+    const preservedEntries = registry.filter((e) => (e as unknown as Record<string, unknown>).buildStatus === "preserved");
     for (const entry of preservedEntries) {
       expect(
         entry.recordsIncluded,
@@ -663,11 +663,11 @@ describe("credential-skipped WARN states preserve last-known-good records", () =
       expect(summaryRow, `${entry.state} preserved coverage must appear in summary.byState`).toBeDefined();
       // Provenance distinguishes retained data from freshly fetched
       expect(
-        (entry as Record<string, unknown>).dataFreshness,
+        (entry as unknown as Record<string, unknown>).dataFreshness,
         `${entry.state} preserved coverage must declare dataFreshness="preserved"`,
       ).toBe("preserved");
       expect(
-        (entry as Record<string, unknown>).preservedGeneratedAt,
+        (entry as unknown as Record<string, unknown>).preservedGeneratedAt,
         `${entry.state} preserved coverage must record the seed snapshot timestamp`,
       ).toBeTruthy();
     }
@@ -675,11 +675,11 @@ describe("credential-skipped WARN states preserve last-known-good records", () =
 
   it("preserved source entries carry dataFreshness metadata", () => {
     const preservedSources = warnData.sources.filter(
-      (s) => (s as Record<string, unknown>).dataFreshness === "preserved",
+      (s) => (s as unknown as Record<string, unknown>).dataFreshness === "preserved",
     );
     for (const src of preservedSources) {
       expect(
-        (src as Record<string, unknown>).preservedGeneratedAt,
+        (src as unknown as Record<string, unknown>).preservedGeneratedAt,
         `${src.state} preserved source must record seed timestamp`,
       ).toBeTruthy();
       // Still exposes valid source identity fields
