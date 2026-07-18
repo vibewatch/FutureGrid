@@ -6,6 +6,7 @@ import * as d3 from "d3";
 import {
   getComputeModels,
   getModernEraRegression,
+  getComputeTimeline,
   formatFlop,
 } from "@/lib/ai-frontier";
 import type { AIFrontierModel } from "@/lib/ai-frontier";
@@ -59,6 +60,7 @@ export default function ComputeTimelineChart() {
 
   const allModels = useMemo(() => getComputeModels(), []);
   const regression = useMemo(() => getModernEraRegression(), []);
+  const frontierByYear = useMemo(() => getComputeTimeline(), []);
 
   const labelAxisDate = t("axisDate");
   const labelAxisCompute = t("axisCompute");
@@ -66,6 +68,7 @@ export default function ComputeTimelineChart() {
   const labelLegendAll = t("legendAll");
   const labelLegendFrontier = t("legendFrontier");
   const labelLegendTrend = t("legendTrend");
+  const labelEnvelope = t("envelopeLabel");
 
   useEffect(() => {
     const svgEl = svgRef.current;
@@ -84,6 +87,10 @@ export default function ComputeTimelineChart() {
     const strokeAll = isDark ? "rgba(139,92,246,0.70)" : "rgba(124,58,237,0.75)";
     const colorFrontier = isDark ? "#f59e0b" : "#d97706";
     const colorTrend = isDark ? "rgba(251,191,36,0.85)" : "rgba(217,119,6,0.90)";
+    // Compute-frontier envelope (amber, per token spec)
+    const envelopeStroke = isDark ? "#fbbf24" : "#d97706";
+    const envelopeFillTop = isDark ? "rgba(251,191,36,0.28)" : "rgba(217,119,6,0.20)";
+    const envelopeFillBottom = isDark ? "rgba(251,191,36,0)" : "rgba(217,119,6,0)";
 
     svg.selectAll("*").remove();
 
@@ -123,6 +130,87 @@ export default function ComputeTimelineChart() {
         .attr("stroke", gridColor)
         .attr("stroke-width", 1)
         .attr("stroke-dasharray", "3,3");
+    }
+
+    // ── Compute-frontier envelope (upper bound of disclosed compute/yr) ──────
+    // Traces the highest reported training compute per year using the confirmed
+    // frontierByYear[].maxLog10Compute field. Aligns with the existing xScale
+    // (decimalYear) and yScale (log10 compute). Amber stroke + downward gradient
+    // fill per token spec. This is an envelope of DISCLOSED compute — not a
+    // capability measure and not a leaderboard.
+    const envelopePoints = frontierByYear
+      .filter(
+        (p) =>
+          Number.isFinite(p.maxLog10Compute) &&
+          p.maxLog10Compute >= yMin &&
+          p.maxLog10Compute <= yMax,
+      )
+      .map((p) => [p.year, p.maxLog10Compute] as [number, number])
+      .sort((a, b) => a[0] - b[0]);
+
+    if (envelopePoints.length >= 2) {
+      const gradId = "compute-envelope-gradient";
+      const defs = svg.append("defs");
+      const grad = defs
+        .append("linearGradient")
+        .attr("id", gradId)
+        .attr("x1", "0")
+        .attr("y1", "0")
+        .attr("x2", "0")
+        .attr("y2", "1");
+      grad
+        .append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", envelopeFillTop);
+      grad
+        .append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", envelopeFillBottom);
+
+      const baselineY = yScale(yMin);
+      const envArea = d3
+        .area<[number, number]>()
+        .x((d) => xScale(d[0]))
+        .y0(baselineY)
+        .y1((d) => yScale(d[1]))
+        .curve(d3.curveMonotoneX);
+      const envLine = d3
+        .line<[number, number]>()
+        .x((d) => xScale(d[0]))
+        .y((d) => yScale(d[1]))
+        .curve(d3.curveMonotoneX);
+
+      const envG = svg.append("g").attr("class", "compute-envelope");
+
+      const areaPath = envG
+        .append("path")
+        .datum(envelopePoints)
+        .attr("d", envArea)
+        .attr("fill", `url(#${gradId})`)
+        .attr("stroke", "none");
+
+      const linePath = envG
+        .append("path")
+        .datum(envelopePoints)
+        .attr("d", envLine)
+        .attr("fill", "none")
+        .attr("stroke", envelopeStroke)
+        .attr("stroke-width", 2)
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round");
+
+      if (!reduced) {
+        // Grow the fill and stroke-draw the top line.
+        areaPath.attr("opacity", 0).transition().duration(700).attr("opacity", 1);
+        const totalLen = (linePath.node() as SVGPathElement).getTotalLength();
+        linePath
+          .attr("stroke-dasharray", `${totalLen} ${totalLen}`)
+          .attr("stroke-dashoffset", totalLen)
+          .transition()
+          .duration(900)
+          .ease(d3.easeCubicInOut)
+          .attr("stroke-dashoffset", 0);
+      }
     }
 
     // ── Trend line (modern era only) ─────────────────────────────────────────
@@ -335,6 +423,25 @@ export default function ComputeTimelineChart() {
       .attr("font-size", "11px")
       .text(labelLegendTrend);
 
+    // Compute-frontier envelope legend item (solid amber line)
+    legendG
+      .append("line")
+      .attr("x1", legendX - 6)
+      .attr("x2", legendX + 6)
+      .attr("y1", legendY + 60)
+      .attr("y2", legendY + 60)
+      .attr("stroke", envelopeStroke)
+      .attr("stroke-width", 2)
+      .attr("stroke-linecap", "round");
+    legendG
+      .append("text")
+      .attr("x", legendX + 12)
+      .attr("y", legendY + 60)
+      .attr("dy", "0.35em")
+      .attr("fill", axisText)
+      .attr("font-size", "11px")
+      .text(labelEnvelope);
+
     // ── Interaction overlays ─────────────────────────────────────────────────
 
     function showTooltip(event: MouseEvent, d: AIFrontierModel) {
@@ -378,6 +485,7 @@ export default function ComputeTimelineChart() {
   }, [
     allModels,
     regression,
+    frontierByYear,
     isDark,
     labelAxisDate,
     labelAxisCompute,
@@ -385,6 +493,7 @@ export default function ComputeTimelineChart() {
     labelLegendAll,
     labelLegendFrontier,
     labelLegendTrend,
+    labelEnvelope,
   ]);
 
   const tooltipModel = tooltip.model;
@@ -399,7 +508,8 @@ export default function ComputeTimelineChart() {
         role="img"
       />
 
-      {/* Screen-reader model list */}
+      {/* Screen-reader summary + model list */}
+      <p className="sr-only">{t("envelopeSrSummary")}</p>
       <ul className="sr-only" aria-label={t("timelineSectionTitle")}>
         {allModels
           .filter((m) => m.frontier)
@@ -481,6 +591,16 @@ export default function ComputeTimelineChart() {
           </div>
         </div>
       )}
+
+      {/* Compute-frontier envelope caption — disclosed compute, not a leaderboard */}
+      <p className="mt-2 text-xs leading-relaxed">
+        <span className="font-semibold text-amber-600 dark:text-amber-400">
+          {t("envelopeLabel")}:{" "}
+        </span>
+        <span className="text-zinc-500 dark:text-zinc-400">
+          {t("envelopeDefinition")}
+        </span>
+      </p>
     </div>
   );
 }

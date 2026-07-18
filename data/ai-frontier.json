@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T21:58:51.871Z",
+  "generatedAt": "2026-07-18T00:55:13.689Z",
   "source": {
     "name": "Epoch AI — Notable AI Models",
     "publisher": "Epoch AI",
@@ -7,7 +7,7 @@
     "downloadUrl": "https://epoch.ai/data/notable_ai_models.csv",
     "docsUrl": "https://epoch.ai/data/ai-models-documentation",
     "license": "CC BY 4.0",
-    "accessed": "2026-07-17",
+    "accessed": "2026-07-18",
     "caveat": "Training-compute figures are Epoch AI estimates with varying confidence; not all models report compute/cost/power."
   },
   "methodology": {
@@ -14808,6 +14808,7 @@
       {
         "country": "United States",
         "countryShort": "United States",
+        "iso3": "USA",
         "modelCount": 664,
         "computeKnownCount": 328,
         "frontierCount": 77,
@@ -14819,6 +14820,7 @@
       {
         "country": "China",
         "countryShort": "China",
+        "iso3": "CHN",
         "modelCount": 178,
         "computeKnownCount": 97,
         "frontierCount": 4,
@@ -14830,6 +14832,7 @@
       {
         "country": "South Korea",
         "countryShort": "South Korea",
+        "iso3": "KOR",
         "modelCount": 24,
         "computeKnownCount": 15,
         "frontierCount": 1,
@@ -14841,6 +14844,7 @@
       {
         "country": "France",
         "countryShort": "France",
+        "iso3": "FRA",
         "modelCount": 50,
         "computeKnownCount": 30,
         "frontierCount": 1,
@@ -14852,6 +14856,7 @@
       {
         "country": "United Kingdom",
         "countryShort": "United Kingdom",
+        "iso3": "GBR",
         "modelCount": 89,
         "computeKnownCount": 46,
         "frontierCount": 9,
@@ -14863,6 +14868,7 @@
       {
         "country": "Singapore",
         "countryShort": "Singapore",
+        "iso3": null,
         "modelCount": 16,
         "computeKnownCount": 8,
         "frontierCount": 1,
@@ -14874,6 +14880,7 @@
       {
         "country": "Hong Kong",
         "countryShort": "Hong Kong",
+        "iso3": null,
         "modelCount": 15,
         "computeKnownCount": 9,
         "frontierCount": 0,
@@ -14885,6 +14892,7 @@
       {
         "country": "Canada",
         "countryShort": "Canada",
+        "iso3": "CAN",
         "modelCount": 57,
         "computeKnownCount": 27,
         "frontierCount": 7,
@@ -14896,6 +14904,7 @@
       {
         "country": "Israel",
         "countryShort": "Israel",
+        "iso3": "ISR",
         "modelCount": 12,
         "computeKnownCount": 8,
         "frontierCount": 1,
@@ -14907,6 +14916,7 @@
       {
         "country": "Japan",
         "countryShort": "Japan",
+        "iso3": "JPN",
         "modelCount": 11,
         "computeKnownCount": 7,
         "frontierCount": 1,
@@ -14918,6 +14928,7 @@
       {
         "country": "Saudi Arabia",
         "countryShort": "Saudi Arabia",
+        "iso3": "SAU",
         "modelCount": 4,
         "computeKnownCount": 2,
         "frontierCount": 0,
@@ -14929,6 +14940,7 @@
       {
         "country": "UAE",
         "countryShort": "UAE",
+        "iso3": "ARE",
         "modelCount": 3,
         "computeKnownCount": 3,
         "frontierCount": 1,
@@ -14940,6 +14952,7 @@
       {
         "country": "Germany",
         "countryShort": "Germany",
+        "iso3": "DEU",
         "modelCount": 31,
         "computeKnownCount": 20,
         "frontierCount": 4,
@@ -14951,6 +14964,7 @@
       {
         "country": "Switzerland",
         "countryShort": "Switzerland",
+        "iso3": "CHE",
         "modelCount": 12,
         "computeKnownCount": 6,
         "frontierCount": 2,
@@ -14962,6 +14976,7 @@
       {
         "country": "Australia",
         "countryShort": "Australia",
+        "iso3": "AUS",
         "modelCount": 6,
         "computeKnownCount": 3,
         "frontierCount": 0,
@@ -14973,6 +14988,7 @@
       {
         "country": "Finland",
         "countryShort": "Finland",
+        "iso3": "FIN",
         "modelCount": 6,
         "computeKnownCount": 2,
         "frontierCount": 0,
@@ -14984,6 +15000,7 @@
       {
         "country": "Netherlands",
         "countryShort": "Netherlands",
+        "iso3": "NLD",
         "modelCount": 5,
         "computeKnownCount": 4,
         "frontierCount": 0,
@@ -14995,6 +15012,7 @@
       {
         "country": "Multinational",
         "countryShort": "Multinational",
+        "iso3": null,
         "modelCount": 4,
         "computeKnownCount": 0,
         "frontierCount": 0,
@@ -15006,6 +15024,7 @@
       {
         "country": "Czechia",
         "countryShort": "Czechia",
+        "iso3": "CZE",
         "modelCount": 3,
         "computeKnownCount": 1,
         "frontierCount": 0,
@@ -15017,6 +15036,7 @@
       {
         "country": "Italy",
         "countryShort": "Italy",
+        "iso3": "ITA",
         "modelCount": 3,
         "computeKnownCount": 2,
         "frontierCount": 0,
@@ -15028,6 +15048,7 @@
       {
         "country": "Belgium",
         "countryShort": "Belgium",
+        "iso3": "BEL",
         "modelCount": 2,
         "computeKnownCount": 1,
         "frontierCount": 0,
@@ -15039,6 +15060,7 @@
       {
         "country": "Denmark",
         "countryShort": "Denmark",
+        "iso3": "DNK",
         "modelCount": 2,
         "computeKnownCount": 1,
         "frontierCount": 0,
@@ -15050,6 +15072,7 @@
       {
         "country": "India",
         "countryShort": "India",
+        "iso3": "IND",
         "modelCount": 2,
         "computeKnownCount": 2,
         "frontierCount": 0,
@@ -15061,6 +15084,7 @@
       {
         "country": "Poland",
         "countryShort": "Poland",
+        "iso3": "POL",
         "modelCount": 2,
         "computeKnownCount": 2,
         "frontierCount": 0,
@@ -15072,6 +15096,7 @@
       {
         "country": "Spain",
         "countryShort": "Spain",
+        "iso3": "ESP",
         "modelCount": 2,
         "computeKnownCount": 2,
         "frontierCount": 1,
@@ -15083,6 +15108,7 @@
       {
         "country": "Sweden",
         "countryShort": "Sweden",
+        "iso3": "SWE",
         "modelCount": 2,
         "computeKnownCount": 1,
         "frontierCount": 0,
@@ -15094,6 +15120,7 @@
       {
         "country": "Taiwan",
         "countryShort": "Taiwan",
+        "iso3": "TWN",
         "modelCount": 2,
         "computeKnownCount": 2,
         "frontierCount": 0,
@@ -15105,6 +15132,7 @@
       {
         "country": "Argentina",
         "countryShort": "Argentina",
+        "iso3": "ARG",
         "modelCount": 1,
         "computeKnownCount": 0,
         "frontierCount": 0,
@@ -15116,6 +15144,7 @@
       {
         "country": "Austria",
         "countryShort": "Austria",
+        "iso3": "AUT",
         "modelCount": 1,
         "computeKnownCount": 0,
         "frontierCount": 0,
@@ -15127,6 +15156,7 @@
       {
         "country": "Croatia",
         "countryShort": "Croatia",
+        "iso3": "HRV",
         "modelCount": 1,
         "computeKnownCount": 0,
         "frontierCount": 0,
@@ -15138,6 +15168,7 @@
       {
         "country": "Iran",
         "countryShort": "Iran",
+        "iso3": "IRN",
         "modelCount": 1,
         "computeKnownCount": 0,
         "frontierCount": 0,
@@ -15149,6 +15180,7 @@
       {
         "country": "Ireland",
         "countryShort": "Ireland",
+        "iso3": "IRL",
         "modelCount": 1,
         "computeKnownCount": 1,
         "frontierCount": 0,
@@ -15160,6 +15192,7 @@
       {
         "country": "Malaysia",
         "countryShort": "Malaysia",
+        "iso3": "MYS",
         "modelCount": 1,
         "computeKnownCount": 0,
         "frontierCount": 0,
@@ -15171,6 +15204,7 @@
       {
         "country": "Norway",
         "countryShort": "Norway",
+        "iso3": "NOR",
         "modelCount": 1,
         "computeKnownCount": 0,
         "frontierCount": 0,
@@ -15182,6 +15216,7 @@
       {
         "country": "Russia",
         "countryShort": "Russia",
+        "iso3": "RUS",
         "modelCount": 1,
         "computeKnownCount": 1,
         "frontierCount": 0,
@@ -15191,6 +15226,11 @@
         "orgCount": 1
       }
     ],
+    "countryGeoCoverage": {
+      "mapped": 32,
+      "unmapped": 3,
+      "total": 35
+    },
     "accessibilityMix": {
       "openWeights": 219,
       "closed": 211,
@@ -15283,8 +15323,8 @@
     "openWeightsCount is a proxy for tracked open-release activity only."
   ],
   "meta": {
-    "generatedAt": "2026-07-17T21:58:51.871Z",
-    "asOf": "2026-07-17",
+    "generatedAt": "2026-07-18T00:55:13.689Z",
+    "asOf": "2026-07-18",
     "source": {
       "name": "Epoch AI — Notable AI Models",
       "publisher": "Epoch AI",

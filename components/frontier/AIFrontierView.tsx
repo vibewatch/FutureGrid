@@ -46,6 +46,11 @@ const FrontierMixCards = dynamic(
   { ssr: false, loading: () => <LoadingStub /> },
 );
 
+const FrontierOriginsMap = dynamic(
+  () => import("@/components/frontier/FrontierOriginsMap"),
+  { ssr: false, loading: () => <LoadingStub /> },
+);
+
 // ── Cost/power formatters (mirrors CostPowerTrends.tsx) ──────────────────────
 
 function fmtUsd(v: number): string {
@@ -62,6 +67,47 @@ function fmtWatt(v: number): string {
   return `${Math.round(v)} W`;
 }
 
+// ── Decorative hero sparkline (violet; purely ornamental) ────────────────────
+
+function Sparkline({ series }: { series: number[] }) {
+  // Guard: never render a broken/empty sparkline.
+  if (!series || series.length < 2) return null;
+  const min = Math.min(...series);
+  const max = Math.max(...series);
+  if (!Number.isFinite(min) || !Number.isFinite(max) || max === min) return null;
+
+  const w = 96;
+  const h = 26;
+  const pad = 2;
+  const n = series.length;
+  const points = series.map((v, i) => {
+    const x = (i / (n - 1)) * (w - pad * 2) + pad;
+    const y = h - pad - ((v - min) / (max - min)) * (h - pad * 2);
+    return [x, y] as const;
+  });
+  const line = points.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
+  const area = `${pad},${h - pad} ${line} ${w - pad},${h - pad}`;
+
+  return (
+    <svg
+      viewBox={`0 0 ${w} ${h}`}
+      className="mt-1 w-24 h-6 text-violet-500 dark:text-violet-400"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <polygon points={area} fill="rgba(139,92,246,0.12)" stroke="none" />
+      <polyline
+        points={line}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 // ── Stat Card ─────────────────────────────────────────────────────────────────
 
 function StatCard({
@@ -69,11 +115,15 @@ function StatCard({
   value,
   sub,
   accent,
+  spark,
+  sparkHint,
 }: {
   label: string;
   value: string;
   sub: string;
   accent?: "violet" | "amber" | "green" | "rose";
+  spark?: number[];
+  sparkHint?: string;
 }) {
   const accentClass =
     accent === "amber"
@@ -84,6 +134,8 @@ function StatCard({
           ? "text-rose-600 dark:text-rose-400"
           : "text-violet-600 dark:text-violet-400";
 
+  const hasSpark = Array.isArray(spark) && spark.length >= 2;
+
   return (
     <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 space-y-1.5">
       <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
@@ -93,6 +145,12 @@ function StatCard({
         {value}
       </p>
       <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-snug">{sub}</p>
+      {hasSpark && (
+        <>
+          <Sparkline series={spark as number[]} />
+          {sparkHint && <span className="sr-only">{sparkHint}</span>}
+        </>
+      )}
     </div>
   );
 }
@@ -158,6 +216,17 @@ export default function AIFrontierView() {
   const peakCost = maxCostRaw > 0 ? fmtUsd(maxCostRaw) : "—";
   const peakPower = maxPowerRaw > 0 ? fmtWatt(maxPowerRaw) : "—";
 
+  // ── Decorative sparkline series (real selectors only; no fabrication) ─────
+  // Compute-frontier over time: per-year highest reported training compute.
+  const computeSpark = aggregates.computeTrend.frontierByYear
+    .map((p) => p.maxLog10Compute)
+    .filter((v) => Number.isFinite(v));
+  // Peak training cost over time (2023 USD) for the compute-known subset.
+  const costSpark = costTrend
+    .map((d) => d.maxCostUsd2023)
+    .filter((v) => Number.isFinite(v) && v > 0);
+  const sparkHint = t("statSparklineSrHint");
+
   return (
     <div className="mx-auto w-full max-w-[1400px] space-y-10">
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
@@ -195,6 +264,8 @@ export default function AIFrontierView() {
               r2: regression?.r2.toFixed(2) ?? "—",
             })}
             accent="violet"
+            spark={computeSpark}
+            sparkHint={sparkHint}
           />
           <StatCard
             label={t("statModelsLabel")}
@@ -221,6 +292,8 @@ export default function AIFrontierView() {
                 : "—"
             }
             accent="amber"
+            spark={costSpark}
+            sparkHint={sparkHint}
           />
         </div>
       </Reveal>
@@ -241,6 +314,15 @@ export default function AIFrontierView() {
             })}
           </p>
         </div>
+      </Section>
+
+      {/* ── Tracked Model Origins (world choropleth) ──────────────────────── */}
+      <Section
+        title={t("mapSectionTitle")}
+        subhead={t("mapSectionSubhead")}
+        delay={110}
+      >
+        <FrontierOriginsMap />
       </Section>
 
       {/* ── Frontier Leaders ─────────────────────────────────────────────── */}

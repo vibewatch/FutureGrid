@@ -13,6 +13,8 @@ export const frontierZh = {
   statModelsSub: "具有已报告或估算训练算力的模型",
   statFrontierLabel: "近期追踪发布最多的国家",
   statLargestLabel: "最大已报告训练规模",
+  /** 悬浮英雄区迷你趋势图的屏幕阅读器提示；数值仍为无障碍访问的主要内容。 */
+  statSparklineSrHint: "此小型趋势线仅作装饰；上方标注的数值为已报告数据。",
 
   // ── Section: Compute Timeline ──────────────────────────────────────────────
   timelineSectionTitle: "训练算力随时间的演变",
@@ -37,6 +39,14 @@ export const frontierZh = {
   tooltipFrontierYes: "是",
   tooltipFrontierNo: "否",
   tooltipConfidence: "置信度",
+
+  // ── 算力前沿包络线 ────────────────────────────────────────────────────────
+  envelopeLabel: "算力前沿包络线",
+  envelopeDefinition:
+    "描绘每年已报告的最高训练算力——是已披露算力的上包络线，而非能力衡量指标，也不是排行榜。不披露训练算力的开发者不在其中，因此该曲线仅反映已报告的算力。",
+  /** 描述包络线的屏幕阅读器摘要句。 */
+  envelopeSrSummary:
+    "一条上界折线，追踪已知算力子集中每年已报告的最高训练算力；仅展示已披露的算力，而非模型能力。",
 
   // ── Section: Tracked Model Activity ───────────────────────────────────────
   leadersSectionTitle: "各机构与国家的追踪模型活动",
@@ -107,6 +117,25 @@ export const frontierZh = {
   // ── 数据免责声明（醒目展示）──────────────────────────────────────────────
   dataDisclaimer:
     "这些排名反映 Epoch AI 的追踪记录，不衡量 AI 能力、产品采用率、商业影响力、开源使用量或社会与经济影响。",
+
+  // ── Section: 追踪模型研发地（世界地图）────────────────────────────────────
+  mapSectionTitle: "追踪模型的研发地分布",
+  mapSectionSubhead:
+    "以地理视角呈现 Epoch AI 追踪模型记录按归属国家的分布。此图描绘追踪记录的来源地，仅为对目录覆盖情况的描述性展示，并非对各国 AI 能力、产出或影响的排名。",
+  /** 地图指标切换的分组标签。复用 metricRecentCount / metricModelCount / metricOpenWeightsCount 的标签。 */
+  mapMetricSelectorLabel: "地图指标",
+  mapLegendLabel: "追踪记录（所选指标）",
+  mapLegendLow: "记录较少",
+  mapLegendHigh: "记录较多",
+  /** 插值变量：{mapped} {total} {unmapped} */
+  mapCoverageNote:
+    "地图上显示 {total} 个追踪区域中的 {mapped} 个；已排除 {unmapped} 个跨国或无法定位的实体。",
+  mapTooltipLabel: "追踪记录",
+  mapTableCaption: "所选指标下各国的追踪模型记录",
+  mapTableColRegion: "国家/地区",
+  mapTableColCount: "追踪记录",
+  mapEmpty: "所选指标下暂无可在地图上呈现的追踪记录。",
+  mapLoading: "地图加载中…",
 
   // ── Section: Cost & Power Trends ───────────────────────────────────────────
   costPowerSectionTitle: "训练成本与能耗趋势",

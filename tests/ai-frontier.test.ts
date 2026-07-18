@@ -6,6 +6,8 @@ import {
   getComputeModels,
   getOrgLeaderboard,
   getCountryLeaderboard,
+  getCountryLeaderboardGeo,
+  getCountryGeoCoverage,
   getModernEraRegression,
   getOverallRegression,
   getRecentlyActiveOrgs,
@@ -1602,5 +1604,199 @@ describe("copy guardrails — countryDefaultSortDefinition and multiCountryAttri
 
   it("ZH multiCountryAttributionDefinition has no unresolved {placeholder} tokens", () => {
     expect(frontierZh.multiCountryAttributionDefinition).not.toMatch(/\{[a-zA-Z]+\}/);
+  });
+});
+
+// ── Geo-safe world-map projection selectors ────────────────────────────────────
+//
+// getCountryLeaderboardGeo() / getCountryGeoCoverage() back components/frontier/
+// FrontierOriginsMap.tsx. The projection deliberately exposes ONLY the
+// full-catalog "fair" metrics (modelCount, recentCount, openWeightsCount,
+// orgCount) plus the iso3/country labels — it must NOT leak compute-known,
+// frontier, or largestRun/maxComputeFlop fields, or the choropleth could be
+// misread as a compute/capability ranking.
+
+describe("selectors — geo-safe world-map projection", () => {
+  const GEO_JSON_PATH = path.join(
+    process.cwd(),
+    "public/world-countries.geo.json",
+  );
+
+  function readGeoFeatureIds(): Set<string> {
+    expect(
+      existsSync(GEO_JSON_PATH),
+      "public/world-countries.geo.json must exist",
+    ).toBe(true);
+    const geo = JSON.parse(readFileSync(GEO_JSON_PATH, "utf8")) as {
+      features: { id: string }[];
+    };
+    return new Set(geo.features.map((f) => f.id));
+  }
+
+  it("getCountryLeaderboardGeo() returns only entries with a non-null iso3", () => {
+    const entries = getCountryLeaderboardGeo();
+    expect(entries.length, "must return at least one plottable country").toBeGreaterThan(0);
+    for (const e of entries) {
+      expect(e.iso3, `iso3 must be non-null for ${e.country}`).not.toBeNull();
+      expect(typeof e.iso3, `iso3 must be a string for ${e.country}`).toBe("string");
+      expect((e.iso3 as string).length, `iso3 must be a 3-letter code for ${e.country}`).toBe(3);
+    }
+  });
+
+  it("every returned iso3 is a valid feature id present in world-countries.geo.json", () => {
+    const featureIds = readGeoFeatureIds();
+    const entries = getCountryLeaderboardGeo();
+    for (const e of entries) {
+      expect(
+        featureIds.has(e.iso3),
+        `iso3 '${e.iso3}' (${e.country}) must be a feature id in world-countries.geo.json`,
+      ).toBe(true);
+    }
+  });
+
+  it("geo projection exposes ONLY the fair-metric set (no compute/frontier/largestRun leakage)", () => {
+    const entries = getCountryLeaderboardGeo();
+    const allowedKeys = [
+      "country",
+      "countryShort",
+      "iso3",
+      "modelCount",
+      "recentCount",
+      "openWeightsCount",
+      "orgCount",
+    ].sort();
+    const forbiddenKeys = [
+      "computeKnownCount",
+      "frontierCount",
+      "maxComputeFlop",
+    ];
+    for (const e of entries) {
+      expect(
+        Object.keys(e).sort(),
+        `geo entry for ${e.country} must expose exactly the fair-metric key set`,
+      ).toEqual(allowedKeys);
+      for (const forbidden of forbiddenKeys) {
+        expect(
+          Object.prototype.hasOwnProperty.call(e, forbidden),
+          `geo entry must NOT expose the compute/ranking field '${forbidden}'`,
+        ).toBe(false);
+      }
+    }
+  });
+
+  it("getCountryLeaderboardGeo() preserves recentCount-descending order", () => {
+    const entries = getCountryLeaderboardGeo();
+    for (let i = 1; i < entries.length; i++) {
+      expect(
+        entries[i - 1].recentCount,
+        "geo entries must remain sorted by recentCount descending",
+      ).toBeGreaterThanOrEqual(entries[i].recentCount);
+    }
+  });
+
+  it("getCountryLeaderboardGeo() is deterministic — two calls return equal ordering", () => {
+    const a = getCountryLeaderboardGeo();
+    const b = getCountryLeaderboardGeo();
+    expect(a.map((e) => e.iso3)).toEqual(b.map((e) => e.iso3));
+    expect(a).toEqual(b);
+  });
+
+  it("getCountryGeoCoverage() satisfies mapped + unmapped === total", () => {
+    const cov = getCountryGeoCoverage();
+    expect(cov.mapped + cov.unmapped, "mapped + unmapped must equal total").toBe(cov.total);
+  });
+
+  it("getCountryGeoCoverage().mapped equals the number of geo entries", () => {
+    const cov = getCountryGeoCoverage();
+    const entries = getCountryLeaderboardGeo();
+    expect(cov.mapped, "coverage.mapped must equal getCountryLeaderboardGeo().length").toBe(
+      entries.length,
+    );
+  });
+
+  it("getCountryGeoCoverage().total equals the full country leaderboard length", () => {
+    const cov = getCountryGeoCoverage();
+    expect(cov.total, "coverage.total must equal the full country leaderboard length").toBe(
+      getCountryLeaderboard().length,
+    );
+  });
+
+  it("getCountryGeoCoverage() is deterministic — two calls are equal", () => {
+    expect(getCountryGeoCoverage()).toEqual(getCountryGeoCoverage());
+  });
+});
+
+// ── i18n parity — new AI-Frontier map / envelope / sparkline keys ───────────────
+
+describe("i18n parity — frontier map/envelope/sparkline keys (EN ⇔ ZH)", () => {
+  const NEW_FRONTIER_KEYS = [
+    "mapSectionTitle",
+    "mapSectionSubhead",
+    "mapMetricSelectorLabel",
+    "mapLegendLabel",
+    "mapLegendLow",
+    "mapLegendHigh",
+    "mapCoverageNote",
+    "mapTooltipLabel",
+    "mapTableCaption",
+    "mapTableColRegion",
+    "mapTableColCount",
+    "mapEmpty",
+    "mapLoading",
+    "envelopeLabel",
+    "envelopeDefinition",
+    "envelopeSrSummary",
+    "statSparklineSrHint",
+  ] as const;
+
+  it("all 17 new keys are present in the EN frontier namespace", () => {
+    for (const key of NEW_FRONTIER_KEYS) {
+      expect(
+        Object.prototype.hasOwnProperty.call(frontierEn, key),
+        `EN frontier must define '${key}'`,
+      ).toBe(true);
+    }
+  });
+
+  it("all 17 new keys are present in the ZH frontier namespace", () => {
+    for (const key of NEW_FRONTIER_KEYS) {
+      expect(
+        Object.prototype.hasOwnProperty.call(frontierZh, key),
+        `ZH frontier must define '${key}'`,
+      ).toBe(true);
+    }
+  });
+
+  it("EN and ZH have IDENTICAL key sets (full namespace parity)", () => {
+    const enKeys = Object.keys(frontierEn).sort();
+    const zhKeys = Object.keys(frontierZh).sort();
+    expect(zhKeys).toEqual(enKeys);
+  });
+
+  it("no EN frontier value is empty or whitespace-only", () => {
+    for (const [key, value] of Object.entries(frontierEn)) {
+      expect(typeof value, `EN '${key}' must be a string`).toBe("string");
+      expect(
+        (value as string).trim().length,
+        `EN '${key}' must be non-empty`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("no ZH frontier value is empty or whitespace-only", () => {
+    for (const [key, value] of Object.entries(frontierZh)) {
+      expect(typeof value, `ZH '${key}' must be a string`).toBe("string");
+      expect(
+        (value as string).trim().length,
+        `ZH '${key}' must be non-empty`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("mapCoverageNote (EN & ZH) carries the {mapped} {total} {unmapped} interpolation tokens", () => {
+    for (const token of ["{mapped}", "{total}", "{unmapped}"]) {
+      expect(frontierEn.mapCoverageNote, `EN mapCoverageNote must contain ${token}`).toContain(token);
+      expect(frontierZh.mapCoverageNote, `ZH mapCoverageNote must contain ${token}`).toContain(token);
+    }
   });
 });
