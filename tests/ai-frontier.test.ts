@@ -8,6 +8,7 @@ import {
   getCountryLeaderboard,
   getCountryLeaderboardGeo,
   getCountryGeoCoverage,
+  getCountryOriginShares,
   getModernEraRegression,
   getOverallRegression,
   getRecentlyActiveOrgs,
@@ -1726,30 +1727,138 @@ describe("selectors — geo-safe world-map projection", () => {
   });
 });
 
-// ── i18n parity — new AI-Frontier map / envelope / sparkline keys ───────────────
+// ── getCountryOriginShares() — treemap origin-set projection ────────────────────
+//
+// getCountryOriginShares() backs components/frontier/FrontierOriginsTreemap.tsx
+// ("Where Tracked Models Are Developed" share/concentration treemap). It projects
+// aggregates.countryLeaderboard into every country with a real geographic identity
+// (Singapore + Hong Kong INCLUDED — they were only dropped from the world map for
+// lacking polygons) and EXCLUDES the non-geographic "Multinational" aggregate. It
+// exposes ONLY the fair full-catalog metrics (recentCount, modelCount,
+// openWeightsCount); compute/frontier fields are structurally absent so a
+// compute/capability ranking is unrenderable (PR #129 / #130 guardrail).
 
-describe("i18n parity — frontier map/envelope/sparkline keys (EN ⇔ ZH)", () => {
+describe("getCountryOriginShares() — treemap origin projection", () => {
+  it("returns 34 origins (35-country leaderboard minus the Multinational aggregate)", () => {
+    const origins = getCountryOriginShares();
+    expect(
+      origins.length,
+      "origin set must be full leaderboard minus the one non-geographic aggregate",
+    ).toBe(getCountryLeaderboard().length - 1);
+    expect(origins.length, "confirmed 34 attributed origin countries").toBe(34);
+  });
+
+  it("EXCLUDES the non-geographic 'Multinational' aggregate label", () => {
+    const origins = getCountryOriginShares();
+    expect(
+      origins.some((e) => e.country === "Multinational"),
+      "Multinational must NOT appear as a treemap tile",
+    ).toBe(false);
+    expect(origins.some((e) => e.countryShort === "Multinational")).toBe(false);
+  });
+
+  it("INCLUDES Singapore and Hong Kong (map-excluded before; a treemap needs no polygon)", () => {
+    const origins = getCountryOriginShares();
+    const present = (needle: string) =>
+      origins.some(
+        (e) => e.country.includes(needle) || e.countryShort.includes(needle),
+      );
+    expect(present("Singapore"), "Singapore must be present in the origin set").toBe(true);
+    expect(present("Hong Kong"), "Hong Kong must be present in the origin set").toBe(true);
+  });
+
+  it("REGRESSION GUARD: every entry exposes ONLY the fair field set (no compute/frontier leakage)", () => {
+    const FAIR_KEYS = [
+      "country",
+      "countryShort",
+      "iso3",
+      "recentCount",
+      "modelCount",
+      "openWeightsCount",
+    ].sort();
+    // Fields that must NEVER appear — they would enable a compute/capability
+    // ranking the redesign deliberately makes structurally unrenderable.
+    const FORBIDDEN_KEYS = [
+      "computeKnownCount",
+      "frontierCount",
+      "maxComputeFlop",
+    ];
+    const origins = getCountryOriginShares();
+    expect(origins.length).toBeGreaterThan(0);
+    for (const entry of origins) {
+      expect(
+        Object.keys(entry).sort(),
+        `entry '${entry.country}' must expose EXACTLY the fair key set`,
+      ).toEqual(FAIR_KEYS);
+      for (const forbidden of FORBIDDEN_KEYS) {
+        expect(
+          Object.prototype.hasOwnProperty.call(entry, forbidden),
+          `entry '${entry.country}' must NOT leak compute/frontier field '${forbidden}'`,
+        ).toBe(false);
+      }
+    }
+  });
+
+  it("exposes the three fair metrics as finite non-negative numbers", () => {
+    for (const entry of getCountryOriginShares()) {
+      for (const key of ["recentCount", "modelCount", "openWeightsCount"] as const) {
+        expect(Number.isFinite(entry[key]), `${entry.country}.${key} finite`).toBe(true);
+        expect(entry[key], `${entry.country}.${key} non-negative`).toBeGreaterThanOrEqual(0);
+      }
+    }
+  });
+
+  it("is ordered deterministically: recentCount desc → modelCount desc → countryShort asc", () => {
+    const origins = getCountryOriginShares();
+    for (let i = 1; i < origins.length; i++) {
+      const prev = origins[i - 1];
+      const cur = origins[i];
+      const inOrder =
+        prev.recentCount > cur.recentCount ||
+        (prev.recentCount === cur.recentCount &&
+          (prev.modelCount > cur.modelCount ||
+            (prev.modelCount === cur.modelCount &&
+              prev.countryShort.localeCompare(cur.countryShort) <= 0)));
+      expect(
+        inOrder,
+        `origins must be sorted recentCount↓ modelCount↓ countryShort↑ at index ${i} (${prev.countryShort} → ${cur.countryShort})`,
+      ).toBe(true);
+    }
+  });
+
+  it("is deterministic — two calls return equal projections", () => {
+    expect(getCountryOriginShares()).toEqual(getCountryOriginShares());
+  });
+});
+
+// ── i18n parity — new AI-Frontier origins / envelope / sparkline keys ───────────
+
+describe("i18n parity — frontier origins/envelope/sparkline keys (EN ⇔ ZH)", () => {
+  // The map* choropleth keys were removed/renamed when "Where Tracked Models Are
+  // Developed" was redesigned from a world map into a share/concentration treemap
+  // (5 map* keys removed, 8 renamed → origins*, 3 new origins* with no map*
+  // predecessor). This list is the treemap's 12 origins* keys plus the unchanged
+  // compute-envelope + hero-sparkline keys.
   const NEW_FRONTIER_KEYS = [
-    "mapSectionTitle",
-    "mapSectionSubhead",
-    "mapMetricSelectorLabel",
-    "mapLegendLabel",
-    "mapLegendLow",
-    "mapLegendHigh",
-    "mapCoverageNote",
-    "mapTooltipLabel",
-    "mapTableCaption",
-    "mapTableColRegion",
-    "mapTableColCount",
-    "mapEmpty",
-    "mapLoading",
+    "originsSectionTitle",
+    "originsSectionSubhead",
+    "originsMetricSelectorLabel",
+    "originsTooltipRecords",
+    "originsTooltipShare",
+    "originsTableCaption",
+    "originsTableColCountry",
+    "originsTableColRecords",
+    "originsTableColShare",
+    "originsCoverageNote",
+    "originsEmpty",
+    "originsSrSummary",
     "envelopeLabel",
     "envelopeDefinition",
     "envelopeSrSummary",
     "statSparklineSrHint",
   ] as const;
 
-  it("all 17 new keys are present in the EN frontier namespace", () => {
+  it("all 16 new keys are present in the EN frontier namespace", () => {
     for (const key of NEW_FRONTIER_KEYS) {
       expect(
         Object.prototype.hasOwnProperty.call(frontierEn, key),
@@ -1758,7 +1867,7 @@ describe("i18n parity — frontier map/envelope/sparkline keys (EN ⇔ ZH)", () 
     }
   });
 
-  it("all 17 new keys are present in the ZH frontier namespace", () => {
+  it("all 16 new keys are present in the ZH frontier namespace", () => {
     for (const key of NEW_FRONTIER_KEYS) {
       expect(
         Object.prototype.hasOwnProperty.call(frontierZh, key),
@@ -1793,10 +1902,58 @@ describe("i18n parity — frontier map/envelope/sparkline keys (EN ⇔ ZH)", () 
     }
   });
 
-  it("mapCoverageNote (EN & ZH) carries the {mapped} {total} {unmapped} interpolation tokens", () => {
+  it("originsCoverageNote (EN & ZH) carries the {countries} interpolation token", () => {
+    expect(
+      frontierEn.originsCoverageNote,
+      "EN originsCoverageNote must contain {countries}",
+    ).toContain("{countries}");
+    expect(
+      frontierZh.originsCoverageNote,
+      "ZH originsCoverageNote must contain {countries}",
+    ).toContain("{countries}");
+  });
+
+  it("originsCoverageNote does NOT carry the removed map* {mapped}/{total}/{unmapped} tokens", () => {
     for (const token of ["{mapped}", "{total}", "{unmapped}"]) {
-      expect(frontierEn.mapCoverageNote, `EN mapCoverageNote must contain ${token}`).toContain(token);
-      expect(frontierZh.mapCoverageNote, `ZH mapCoverageNote must contain ${token}`).toContain(token);
+      expect(
+        frontierEn.originsCoverageNote,
+        `EN originsCoverageNote must NOT contain the removed ${token} token`,
+      ).not.toContain(token);
+      expect(
+        frontierZh.originsCoverageNote,
+        `ZH originsCoverageNote must NOT contain the removed ${token} token`,
+      ).not.toContain(token);
+    }
+  });
+
+  it("all 5 removed map* keys are gone from EN and ZH (choropleth → treemap migration)", () => {
+    const REMOVED_MAP_KEYS = [
+      "mapLegendLabel",
+      "mapLegendLow",
+      "mapLegendHigh",
+      "mapCoverageNote",
+      "mapLoading",
+    ];
+    // The 8 renamed keys must also no longer exist under their old map* names.
+    const RENAMED_AWAY_MAP_KEYS = [
+      "mapSectionTitle",
+      "mapSectionSubhead",
+      "mapMetricSelectorLabel",
+      "mapTooltipLabel",
+      "mapTableCaption",
+      "mapTableColRegion",
+      "mapTableColCount",
+      "mapEmpty",
+    ];
+    for (const key of [...REMOVED_MAP_KEYS, ...RENAMED_AWAY_MAP_KEYS]) {
+      expect(
+        Object.prototype.hasOwnProperty.call(frontierEn, key),
+        `EN frontier must no longer define removed map* key '${key}'`,
+      ).toBe(false);
+      expect(
+        Object.prototype.hasOwnProperty.call(frontierZh, key),
+        `ZH frontier must no longer define removed map* key '${key}'`,
+      ).toBe(false);
     }
   });
 });

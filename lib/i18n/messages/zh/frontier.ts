@@ -127,24 +127,29 @@ export const frontierZh = {
   dataDisclaimer:
     "这些排名反映 Epoch AI 的追踪记录，不衡量 AI 能力、产品采用率、商业影响力、开源使用量或社会与经济影响。",
 
-  // ── Section: 追踪模型研发地（世界地图）────────────────────────────────────
-  mapSectionTitle: "追踪模型的研发地分布",
-  mapSectionSubhead:
-    "以地理视角呈现 Epoch AI 追踪模型记录按归属国家的分布。此图描绘追踪记录的来源地，仅为对目录覆盖情况的描述性展示，并非对各国 AI 能力、产出或影响的排名。",
-  /** 地图指标切换的分组标签。复用 metricRecentCount / metricModelCount / metricOpenWeightsCount 的标签。 */
-  mapMetricSelectorLabel: "地图指标",
-  mapLegendLabel: "追踪记录（所选指标）",
-  mapLegendLow: "记录较少",
-  mapLegendHigh: "记录较多",
-  /** 插值变量：{mapped} {total} {unmapped} */
-  mapCoverageNote:
-    "地图上显示 {total} 个追踪区域中的 {mapped} 个；已排除 {unmapped} 个跨国或无法定位的实体。",
-  mapTooltipLabel: "追踪记录",
-  mapTableCaption: "所选指标下各国的追踪模型记录",
-  mapTableColRegion: "国家/地区",
-  mapTableColCount: "追踪记录",
-  mapEmpty: "所选指标下暂无可在地图上呈现的追踪记录。",
-  mapLoading: "地图加载中…",
+  // ── Section: 追踪模型研发地（份额/集中度树状图）──────────────────────────────
+  originsSectionTitle: "追踪模型的研发地分布",
+  originsSectionSubhead:
+    "按归属国家呈现 Epoch AI 追踪模型的记录占比。每个色块的面积代表该国在所选指标下占全部追踪记录的份额——展现追踪研发在目录中的集中程度，而非对各国 AI 能力、产出或影响的排名。",
+  /** 树状图指标切换的分组标签。复用 metricRecentCount / metricModelCount / metricOpenWeightsCount 的标签。 */
+  originsMetricSelectorLabel: "份额指标",
+  /** 色块上原始追踪记录计数的工具提示行标签。 */
+  originsTooltipRecords: "追踪记录",
+  /** 色块占整体份额的工具提示行标签。 */
+  originsTooltipShare: "追踪记录占比",
+  /** 无障碍三列等价表格的屏幕阅读器标题。 */
+  originsTableCaption:
+    "所选指标下 Epoch AI 追踪模型记录按归属国家的份额，按份额从高到低排序。",
+  originsTableColCountry: "国家/地区",
+  originsTableColRecords: "追踪记录",
+  originsTableColShare: "追踪记录占比 (%)",
+  /** 插值变量：{countries}——取代原地图覆盖率说明；不含地图/几何相关表述。 */
+  originsCoverageNote:
+    "份额基于 {countries} 个归属国家的追踪记录，而非唯一模型数。附属于多个国家机构的模型会分别计入每个所属国家，因此各国份额之和可能超过 100%，计数之和也可能超过唯一追踪模型的总数。非地理性的「跨国」聚合项已排除，因为本视图描述的是模型的研发地。",
+  originsEmpty: "所选指标下暂无可展示的追踪记录。",
+  /** 将树状图描述为记录份额分布（而非排名）的屏幕阅读器摘要。 */
+  originsSrSummary:
+    "一幅由色块拼成的树状图，各色块面积表示所选指标下每个归属国家占 Epoch AI 追踪模型记录的份额。它展现追踪研发在目录中的集中程度——是记录的分布，而非对各国 AI 能力、产出或影响的排名。相同数值可在下方表格中查看。",
 
   // ── Section: Cost & Power Trends ───────────────────────────────────────────
   costPowerSectionTitle: "训练成本与能耗趋势",

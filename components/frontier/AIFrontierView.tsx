@@ -46,9 +46,9 @@ const FrontierMixCards = dynamic(
   { ssr: false, loading: () => <LoadingStub /> },
 );
 
-const FrontierOriginsMap = dynamic(
-  () => import("@/components/frontier/FrontierOriginsMap"),
-  { ssr: false, loading: () => <LoadingStub /> },
+const FrontierOriginsTreemap = dynamic(
+  () => import("@/components/frontier/FrontierOriginsTreemap"),
+  { loading: () => <LoadingStub /> },
 );
 
 // ── Cost/power formatters (mirrors CostPowerTrends.tsx) ──────────────────────
@@ -316,13 +316,13 @@ export default function AIFrontierView() {
         </div>
       </Section>
 
-      {/* ── Tracked Model Origins (world choropleth) ──────────────────────── */}
+      {/* ── Where Tracked Models Are Developed (share/concentration treemap) ─ */}
       <Section
-        title={t("mapSectionTitle")}
-        subhead={t("mapSectionSubhead")}
+        title={t("originsSectionTitle")}
+        subhead={t("originsSectionSubhead")}
         delay={110}
       >
-        <FrontierOriginsMap />
+        <FrontierOriginsTreemap />
       </Section>
 
       {/* ── Frontier Leaders ─────────────────────────────────────────────── */}
