@@ -187,6 +187,23 @@ export function validateWarnNotices(data) {
     .map((s) => s.state);
   assertLiveStates(liveStates, REQUIRED_LIVE_WARN_STATES, "warn-notices");
 
+  const coverageByState = new Map(data.coverageStates.map((state) => [state.state, state]));
+  const noticeStates = new Set(data.notices.map((notice) => notice.state));
+  const missingRecordStates = REQUIRED_LIVE_WARN_STATES.filter((state) => {
+    const coverage = coverageByState.get(state);
+    return (
+      coverage?.recordsIncluded !== true ||
+      !Number.isInteger(coverage?.notices) ||
+      coverage.notices <= 0 ||
+      !noticeStates.has(state)
+    );
+  });
+  if (missingRecordStates.length > 0) {
+    throw new Error(
+      `[validate] warn-notices: required live state(s) lack included notice records: ${missingRecordStates.join(", ")}`
+    );
+  }
+
   // Upper-bound date plausibility: no effectiveDate may exceed current_year + 2
   const absurdDates = data.notices.filter(
     (n) => n.effectiveDate && n.effectiveDate > MAX_PLAUSIBLE_WARN_EFFECTIVE_DATE
@@ -229,6 +246,42 @@ export function validateStateLabor(data) {
     .filter((s) => s.warnCoverageStatus === "live")
     .map((s) => s.state);
   assertLiveStates(liveStates, REQUIRED_LIVE_WARN_STATES, "state-labor");
+
+  const incompleteLausStates = data.states
+    .filter((state) => {
+      const latest = state.lausLatest;
+      return (
+        !latest ||
+        typeof latest.date !== "string" ||
+        !Number.isFinite(latest.unemploymentRate) ||
+        !Number.isFinite(latest.unemployed) ||
+        !Number.isFinite(latest.employment) ||
+        !Number.isFinite(latest.laborForce)
+      );
+    })
+    .map((state) => state.state);
+  if (incompleteLausStates.length > 0) {
+    throw new Error(
+      `[validate] state-labor: incomplete latest LAUS measures for state(s): ${incompleteLausStates.join(", ")}`
+    );
+  }
+  const truncatedLausStates = data.states
+    .filter((state) => {
+      const latestDate = state.lausLatest?.date;
+      const series = state.series;
+      return ["unemploymentRate", "unemployed", "employment", "laborForce"].some(
+        (measure) =>
+          !Array.isArray(series?.[measure]) ||
+          series[measure].length < 13 ||
+          series[measure].at(-1)?.date !== latestDate,
+      );
+    })
+    .map((state) => state.state);
+  if (truncatedLausStates.length > 0) {
+    throw new Error(
+      `[validate] state-labor: truncated or misaligned LAUS history for state(s): ${truncatedLausStates.join(", ")}`
+    );
+  }
 }
 
 /**
@@ -988,7 +1041,6 @@ export function validateEmploymentProjections(data) {
  */
 export function validateOpenRouterModels(data, opts = {}) {
   const minModels = opts.minModels ?? 200;
-  const minEndpointDetailRatio = opts.minEndpointDetailRatio ?? 0.75;
 
   assertFields(
     data,
@@ -1006,6 +1058,17 @@ export function validateOpenRouterModels(data, opts = {}) {
       "[validate] openrouter-models: coverage.modelCount must equal models.length"
     );
   }
+  const catalog = data.coverage?.catalog;
+  if (
+    catalog &&
+    Number.isInteger(catalog.previousModelCount) &&
+    catalog.previousModelCount >= 200 &&
+    (typeof catalog.retentionRatio !== "number" || catalog.retentionRatio < 0.8)
+  ) {
+    throw new Error(
+      "[validate] openrouter-models: catalog retention fell below the 80% safety threshold"
+    );
+  }
 
   const details = data.coverage?.endpointDetails;
   if (!details || typeof details !== "object" || Array.isArray(details)) {
@@ -1018,12 +1081,14 @@ export function validateOpenRouterModels(data, opts = {}) {
       "[validate] openrouter-models: endpointDetails.attempted must equal models.length"
     );
   }
+  const preserved = Number.isInteger(details.preserved) ? details.preserved : 0;
   if (
     typeof details.fetched !== "number" ||
-    details.fetched < data.models.length * minEndpointDetailRatio
+    details.fetched + preserved !== data.models.length ||
+    details.failed !== 0
   ) {
     throw new Error(
-      "[validate] openrouter-models: too few public endpoint detail responses fetched"
+      "[validate] openrouter-models: endpoint details must be fetched or preserved for every model"
     );
   }
   if (
@@ -1700,6 +1765,30 @@ export function validateAIUsageProxies(data) {
   if (!Array.isArray(data.openModelDownloadProxies) || data.openModelDownloadProxies.length === 0) {
     throw new Error("[validate] ai-usage-proxies: openModelDownloadProxies must be a non-empty array");
   }
+  const censusMetrics = data.usCensusBusinessAIMetrics;
+  if (censusMetrics != null && !Array.isArray(censusMetrics)) {
+    throw new Error("[validate] ai-usage-proxies: usCensusBusinessAIMetrics must be an array");
+  }
+  if (Array.isArray(censusMetrics) && censusMetrics.length > 0) {
+    const metric = censusMetrics[0];
+    const national = metric?.national;
+    const states = metric?.states;
+    const stateCodes = new Set(
+      Array.isArray(states) ? states.map((state) => state?.geo?.code).filter(Boolean) : [],
+    );
+    if (
+      !national ||
+      !Number.isFinite(national.firms) ||
+      !Number.isFinite(national.percentOfEmployerFirms) ||
+      !Array.isArray(states) ||
+      states.length < 50 ||
+      stateCodes.size !== states.length
+    ) {
+      throw new Error(
+        "[validate] ai-usage-proxies: Census business AI metrics require a national row and >= 50 unique state rows"
+      );
+    }
+  }
 }
 
 /**
@@ -1727,6 +1816,36 @@ export function validateGlobalMetrics(data) {
   if (Object.keys(metrics.diffusion).length < 20) {
     throw new Error("[validate] global-ai-metrics: metrics.diffusion must have >= 20 countries");
   }
+  for (const field of ["readiness", "readinessSubIndices", "governmentReadiness"]) {
+    const section = metrics[field];
+    if (
+      section != null &&
+      (typeof section !== "object" ||
+        Array.isArray(section) ||
+        Object.keys(section).length < 100)
+    ) {
+      throw new Error(
+        `[validate] global-ai-metrics: metrics.${field} must have >= 100 countries when present`
+      );
+    }
+  }
+  if (metrics.readinessSubIndices) {
+    for (const field of [
+      "digitalInfrastructure",
+      "humanCapital",
+      "innovation",
+      "regulationEthics",
+    ]) {
+      const finiteCount = Object.values(metrics.readinessSubIndices).filter(
+        (entry) => Number.isFinite(entry?.[field]),
+      ).length;
+      if (finiteCount < 100) {
+        throw new Error(
+          `[validate] global-ai-metrics: readinessSubIndices.${field} must have >= 100 finite country values`
+        );
+      }
+    }
+  }
 }
 
 /**
@@ -1748,6 +1867,25 @@ export function validateMarketSignals(data) {
   if (!data.summary || typeof data.summary !== "object") {
     throw new Error("[validate] market-ai-signals: summary must be an object");
   }
+  if (
+    !Number.isInteger(data.summary.requestedSectorCount) ||
+    data.summary.requestedSectorCount !== data.sectors.length ||
+    data.summary.sectorCount !== data.sectors.length ||
+    (Array.isArray(data.summary.omittedTickers) && data.summary.omittedTickers.length > 0)
+  ) {
+    throw new Error(
+      "[validate] market-ai-signals: every requested sector ETF must be present"
+    );
+  }
+  const benchmarkPrices = data.benchmark.prices;
+  if (!Array.isArray(benchmarkPrices) || benchmarkPrices.length < 24) {
+    throw new Error(
+      "[validate] market-ai-signals: benchmark must retain at least 24 monthly price observations"
+    );
+  }
+  const benchmarkFirst = benchmarkPrices[0]?.date;
+  const benchmarkLatest = benchmarkPrices.at(-1)?.date;
+  const minimumSectorPrices = Math.ceil(benchmarkPrices.length * 0.9);
   // Sector names must be unique
   const sectorNames = new Set();
   for (const sector of data.sectors) {
@@ -1756,6 +1894,16 @@ export function validateMarketSignals(data) {
     }
     if (sectorNames.has(sector.name)) {
       throw new Error(`[validate] market-ai-signals: duplicate sector name: ${sector.name}`);
+    }
+    if (
+      !Array.isArray(sector.prices) ||
+      sector.prices.length < minimumSectorPrices ||
+      sector.prices[0]?.date !== benchmarkFirst ||
+      sector.prices.at(-1)?.date !== benchmarkLatest
+    ) {
+      throw new Error(
+        `[validate] market-ai-signals: ${sector.name} price history must align with benchmark coverage`
+      );
     }
     sectorNames.add(sector.name);
   }

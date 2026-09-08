@@ -74,6 +74,8 @@ interface WarnCoverageMetadata {
   sourceType?: string;
   recordsIncluded?: boolean;
   adapter?: string;
+  buildStatus?: string;
+  dataFreshness?: string;
   notices?: number;
   dateRange?: unknown;
   parserConfidence?: unknown;
@@ -474,6 +476,14 @@ function warnCoverageRegistry(): Map<string, WarnCoverageMetadata> {
       recordsIncluded:
         typeof entry.recordsIncluded === "boolean" ? entry.recordsIncluded : undefined,
       adapter: typeof entry.adapter === "string" && entry.adapter.trim() ? entry.adapter.trim() : undefined,
+      buildStatus:
+        typeof entry.buildStatus === "string" && entry.buildStatus.trim()
+          ? entry.buildStatus.trim()
+          : undefined,
+      dataFreshness:
+        typeof entry.dataFreshness === "string" && entry.dataFreshness.trim()
+          ? entry.dataFreshness.trim()
+          : undefined,
       notices: typeof entry.notices === "number" ? entry.notices : undefined,
       dateRange: entry.dateRange,
       parserConfidence: entry.parserConfidence,
@@ -682,6 +692,7 @@ describe("state-labor WARN Pressure helpers", () => {
     const warnWindowEnd = stringFrom([summary], ["warnWindowEnd"], "summary WARN window end");
     const noticeCounts = warnNoticeCountsInWindow(warnWindowStart, warnWindowEnd);
     const staleLiveStates = staleLiveWarnFeeds(warnWindowStart, warnWindowEnd, noticeCounts);
+    const coverage = warnCoverageRegistry();
     const states = statesFrom(stateLaborModule.getWarnPressureStates(), "getWarnPressureStates()");
     const ranked = rankedStates(states);
     const currentLiveStates = new Set<string>();
@@ -692,16 +703,22 @@ describe("state-labor WARN Pressure helpers", () => {
       if (!status || !MACHINE_READABLE_STATUSES.has(status)) continue;
 
       const hasCurrentWindowCoverage = hasWarnWindowCoverage(row, warnWindowStart, warnWindowEnd, noticeCounts);
-      if (hasCurrentWindowCoverage) {
+      const metadata = coverage.get(code);
+      const freshBuild = metadata?.buildStatus === "ok";
+      if (hasCurrentWindowCoverage && freshBuild) {
         currentLiveStates.add(code);
         expect(rankEligibleOf(row), `${code} live WARN feed with current-window records should be rank eligible`).toBe(true);
         expect(rankOf(row), `${code} current live WARN feed should have a rank`).not.toBeUndefined();
         expect(scoreOf(row), `${code} current live WARN feed should have a score`).not.toBeUndefined();
       } else {
-        expect(rankEligibleOf(row), `${code} live WARN feed without current-window records should not be rank eligible`).toBe(false);
-        expect(rankOf(row), `${code} stale live WARN feed should not have a rank`).toBeUndefined();
-        expect(scoreOf(row), `${code} stale live WARN feed should not have a score`).toBeUndefined();
-        if (hasOnlyEffectiveDates(code)) {
+        expect(rankEligibleOf(row), `${code} non-current live WARN feed should not be rank eligible`).toBe(false);
+        expect(rankOf(row), `${code} non-current live WARN feed should not have a rank`).toBeUndefined();
+        expect(scoreOf(row), `${code} non-current live WARN feed should not have a score`).toBeUndefined();
+        if (!freshBuild) {
+          expect(rankIneligibleReasonOf(row), `${code} preserved feed should explain why it is unranked`).toMatch(
+            /preserved.*not eligible/i,
+          );
+        } else if (hasOnlyEffectiveDates(code)) {
           expectMissingNoticeDateReason(row, code);
         } else {
           expect(rankIneligibleReasonOf(row), `${code} stale live WARN feed should explain why it is unranked`).toMatch(
@@ -796,9 +813,17 @@ describe("state-labor WARN Pressure helpers", () => {
         expect(row.warnEmployees12m, `${code} non-machine-readable state warnEmployees12m should be null, not 0`).toBeNull();
         expect(row.warnEmployeesPer10kLaborForce, `${code} non-machine-readable state warnEmployeesPer10kLaborForce should be null, not 0`).toBeNull();
       } else if (status && MACHINE_READABLE_STATUSES.has(status)) {
-        expect(row.coverageUnavailable, `${code} machine-readable state should have coverageUnavailable=false`).toBe(false);
-        expect(typeof row.warnNotices12m, `${code} machine-readable state warnNotices12m should be a number`).toBe("number");
-        expect(typeof row.warnEmployees12m, `${code} machine-readable state warnEmployees12m should be a number`).toBe("number");
+        const freshCoverage = metadata?.buildStatus === "ok";
+        const rankableCoverage = freshCoverage && rankEligibleOf(row);
+        expect(row.coverageUnavailable, `${code} freshness should drive coverageUnavailable`).toBe(!freshCoverage);
+        if (rankableCoverage) {
+          expect(typeof row.warnNotices12m, `${code} rankable WARN notices should be a number`).toBe("number");
+          expect(typeof row.warnEmployees12m, `${code} rankable WARN employees should be a number`).toBe("number");
+        } else {
+          expect(row.warnNotices12m, `${code} unrankable WARN notices should be null`).toBeNull();
+          expect(row.warnEmployees12m, `${code} unrankable WARN employees should be null`).toBeNull();
+          expect(row.warnEmployeesPer10kLaborForce, `${code} unrankable WARN rate should be null`).toBeNull();
+        }
       }
     }
   });

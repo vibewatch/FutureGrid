@@ -533,6 +533,7 @@ async function main() {
 
   const output = {
     generatedAt: new Date().toISOString(),
+    asOf: String(selectedCandidate.year),
     source: {
       name: "BLS Quarterly Census of Employment and Wages Annual Area CSVs",
       publisher: "U.S. Bureau of Labor Statistics",

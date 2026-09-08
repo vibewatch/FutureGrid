@@ -31,9 +31,11 @@ describe("OpenRouter model catalog data", () => {
     const data = readDataset();
     expect(data.meta.source.url).toBe("https://openrouter.ai/api/v1/models");
     expect(data.models.length).toBeGreaterThanOrEqual(200);
-    expect(data.coverage.endpointDetails.fetched).toBeGreaterThanOrEqual(
-      Math.floor(data.models.length * 0.75)
-    );
+    expect(
+      data.coverage.endpointDetails.fetched +
+        (data.coverage.endpointDetails.preserved ?? 0),
+    ).toBe(data.models.length);
+    expect(data.coverage.endpointDetails.failed).toBe(0);
 
     const gpt55 = data.models.find((model: { id: string }) => model.id === "openai/gpt-5.5");
     expect(gpt55, "openai/gpt-5.5 should be present in the committed snapshot").toBeTruthy();

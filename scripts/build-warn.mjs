@@ -12,7 +12,7 @@ import { fileURLToPath } from "url";
 import nextEnv from "@next/env";
 import ExcelJS from "exceljs";
 import { validateWarnNotices } from "./lib/validate.mjs";
-import { deriveMeta } from "./lib/meta.mjs";
+import { buildMeta } from "./lib/meta.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -23,6 +23,7 @@ if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
 
 const UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
 const MAX_NOTICES_PER_STATE = 2500;
+const MIN_SEED_RETENTION_RATIO = 0.5;
 // Keep only the latest 10 years of notices (drop older historical rows).
 const MIN_NOTICE_YEAR = new Date().getUTCFullYear() - 10;
 const MIN_NOTICE_DATE = `${MIN_NOTICE_YEAR}-01-01`;
@@ -1825,11 +1826,12 @@ async function main() {
   console.log(`States: ${STATE_CONFIG.map((s) => s.state).join(", ")}\n`);
 
   // ─── Load last-known-good seed from existing committed snapshot ────────────
-  // Used to preserve coverage for credential-gated states when the credential
-  // is absent.  The preservation path keeps real records rather than dropping
-  // an entire state, and stamps metadata so consumers can distinguish retained
-  // records from freshly fetched ones.
-  const existingSnapshotPath = path.join(DATA_DIR, "warn-notices.json");
+  // Used to preserve coverage when a live source is temporarily unavailable.
+  // WARN_SEED_PATH supports deterministic recovery/testing without replacing
+  // the working snapshot before the builder runs.
+  const existingSnapshotPath = process.env.WARN_SEED_PATH
+    ? path.resolve(process.env.WARN_SEED_PATH)
+    : path.join(DATA_DIR, "warn-notices.json");
   let lastKnownGood = null;
   if (existsSync(existingSnapshotPath)) {
     try {
@@ -1866,8 +1868,25 @@ async function main() {
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
         records = await cfg.fetch();
+        if (!Array.isArray(records) || records.length === 0) {
+          throw new Error(`${cfg.state}: source returned no valid records`);
+        }
+        const seedRecords = lastKnownGood?.noticesByState.get(cfg.state) ?? [];
+        if (seedRecords.length >= 20) {
+          const retainedRecords = records.filter(
+            (record) => !record.noticeDate || record.noticeDate >= MIN_NOTICE_DATE,
+          );
+          const minimumExpected = Math.ceil(seedRecords.length * MIN_SEED_RETENTION_RATIO);
+          if (retainedRecords.length < minimumExpected) {
+            throw new Error(
+              `${cfg.state}: source coverage regressed to ${retainedRecords.length} records; ` +
+              `expected at least ${minimumExpected} from ${seedRecords.length} last-known-good records`,
+            );
+          }
+        }
         break;
       } catch (err) {
+        records = null;
         error = err;
         if (attempt < 3) {
           const delay = attempt * 3000;
@@ -1878,16 +1897,16 @@ async function main() {
     }
 
     if (!records) {
-      // ─── Preservation path for credential-absent states ────────────────────
-      // If this state's adapter requires a credential that isn't set AND we have
-      // last-known-good records, preserve them rather than dropping coverage.
       const credAbsent = cfg.credentialEnv && !process.env[cfg.credentialEnv];
       const seedRecords = lastKnownGood?.noticesByState.get(cfg.state) ?? null;
       const seedSource  = lastKnownGood?.sourceByState.get(cfg.state) ?? null;
 
-      if (credAbsent && seedRecords && seedRecords.length > 0) {
+      if (seedRecords && seedRecords.length > 0) {
+        const preservationReason = credAbsent
+          ? `${cfg.credentialEnv} absent`
+          : `live fetch failed after retries: ${error?.message ?? "unknown error"}`;
         console.log(
-          `  [preserve] ${cfg.state}: ${cfg.credentialEnv} absent — preserving ${seedRecords.length} ` +
+          `  [preserve] ${cfg.state}: ${preservationReason} — preserving ${seedRecords.length} ` +
           `last-known-good records from ${lastKnownGood.generatedAt ?? "existing snapshot"}`
         );
         const dates = seedRecords.map((r) => r.noticeDate).filter(Boolean).sort();
@@ -1897,23 +1916,38 @@ async function main() {
           status: "preserved",
           notices: seedRecords.length,
           dateRange: { earliest: dates[0] ?? null, latest: dates[dates.length - 1] ?? null },
-          sourceUrls: normalizeSourceUrls([], cfg.sourceUrls ?? [], cfg.url ?? []),
+          sourceUrls: normalizeSourceUrls(
+            seedSource?.sourceUrls ?? [],
+            seedSource?.url ?? [],
+            cfg.sourceUrls ?? [],
+            cfg.url ?? [],
+          ),
           preservedGeneratedAt: lastKnownGood.generatedAt,
+          preservationReason,
+          error: error?.message ?? null,
         });
         fullRecordsPerState.push({ cfg, records: seedRecords });
         includedSources.push({
           state: cfg.state, stateName: cfg.stateName,
-          name: cfg.name, publisher: cfg.publisher, url: cfg.url,
-          sourceStatus: cfg.sourceStatus,
-          sourceType: cfg.sourceType,
-          sourceUrls: normalizeSourceUrls([], cfg.sourceUrls ?? [], cfg.url ?? []),
-          adapter: cfg.fetch.name,
-          parserConfidence: cfg.parserConfidence ?? null,
-          parserNotes: cfg.parserNotes ?? null,
-          notes: cfg.notes ?? null,
+          name: seedSource?.name ?? cfg.name,
+          publisher: seedSource?.publisher ?? cfg.publisher,
+          url: seedSource?.url ?? cfg.url,
+          sourceStatus: seedSource?.sourceStatus ?? cfg.sourceStatus,
+          sourceType: seedSource?.sourceType ?? cfg.sourceType,
+          sourceUrls: normalizeSourceUrls(
+            seedSource?.sourceUrls ?? [],
+            seedSource?.url ?? [],
+            cfg.sourceUrls ?? [],
+            cfg.url ?? [],
+          ),
+          adapter: seedSource?.adapter ?? cfg.fetch.name,
+          parserConfidence: seedSource?.parserConfidence ?? cfg.parserConfidence ?? null,
+          parserNotes: seedSource?.parserNotes ?? cfg.parserNotes ?? null,
+          notes: seedSource?.notes ?? cfg.notes ?? null,
           license: seedSource?.license ?? "Public Domain (state public record)",
           dataFreshness: "preserved",
           preservedGeneratedAt: lastKnownGood.generatedAt,
+          preservationReason,
         });
         continue;
       }
@@ -2011,7 +2045,15 @@ async function main() {
     summary,
   };
 
-  output.meta = deriveMeta(output);
+  output.meta = buildMeta({
+    generatedAt: output.generatedAt,
+    asOf: summary.dateRange.latest ?? undefined,
+    source: {
+      name: "Multi-state WARN Act notice registry",
+      publisher: "U.S. state workforce agencies (aggregated by FutureGrid)",
+      url: "https://github.com/vibewatch/FutureGrid",
+    },
+  });
   const jsonStr = JSON.stringify(output, null, 2) + "\n";
   const outPath = path.join(DATA_DIR, "warn-notices.json");
   validateWarnNotices(output);

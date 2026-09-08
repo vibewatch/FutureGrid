@@ -116,10 +116,35 @@ describe("selectLatestAsOf", () => {
 // ── Lane resolution with actual registry values ────────────────────────────────
 
 describe("provenance lane resolution (live registry)", () => {
-  it("global lane: selectLatestAsOf resolves to 2026-07-14 (openrouter-models/global-ai-metrics refreshed)", () => {
+  it("uses source periods instead of build timestamps for semantic datasets", () => {
+    expect(getDatasetProvenance("state-qcew")?.asOf).toBe("2025");
+    expect(getDatasetProvenance("state-labor")?.asOf).toMatch(/^\d{4}-\d{2}$/);
+    expect(getDatasetProvenance("global-ai-metrics")?.asOf).toBe("2026-03-31");
+    expect(getDatasetProvenance("market-ai-signals")?.asOf).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+  });
+
+  it("uses aggregate source descriptors for multi-source datasets", () => {
+    const warnSource = getDatasetProvenance("warn-notices")?.source;
+    const globalSource = getDatasetProvenance("global-ai-metrics")?.source;
+    expect(warnSource).toMatchObject({
+      name: "Multi-state WARN Act notice registry",
+    });
+    expect(globalSource).toMatchObject({
+      name: "Global AI diffusion and readiness metrics",
+    });
+  });
+
+  it("global lane resolves to the chronologically latest live registry value", () => {
     const ids = ["openrouter-models", "country-exposure", "global-ai-metrics"] as const;
     const asOfs = ids.map((id) => getDatasetProvenance(id)?.asOf ?? null);
-    expect(selectLatestAsOf(asOfs)).toBe("2026-07-14");
+    const latest = selectLatestAsOf(asOfs);
+    expect(latest).not.toBeNull();
+    const latestDate = asOfToComparableDate(latest!);
+    expect(latestDate).not.toBeNull();
+    for (const asOf of asOfs) {
+      const date = asOf ? asOfToComparableDate(asOf) : null;
+      if (date) expect(latestDate!.getTime()).toBeGreaterThanOrEqual(date.getTime());
+    }
   });
 
   it("talent lane: selectLatestAsOf resolves to 2025 (job-postings Dec 31 beats FY2025 Sep 30)", () => {
@@ -129,18 +154,30 @@ describe("provenance lane resolution (live registry)", () => {
     expect(selectLatestAsOf(asOfs)).toBe("2025");
   });
 
-  it("market lane: selectLatestAsOf resolves to 2026-07-14 (market-ai-signals refreshed)", () => {
+  it("market lane resolves to the chronologically latest live registry value", () => {
     const ids = ["ai-company-stocks", "market-ai-signals"] as const;
     const asOfs = ids.map((id) => getDatasetProvenance(id)?.asOf ?? null);
-    expect(selectLatestAsOf(asOfs)).toBe("2026-07-14");
+    const latest = selectLatestAsOf(asOfs);
+    expect(latest).not.toBeNull();
+    const latestDate = asOfToComparableDate(latest!);
+    expect(latestDate).not.toBeNull();
+    for (const asOf of asOfs) {
+      const date = asOf ? asOfToComparableDate(asOf) : null;
+      if (date) expect(latestDate!.getTime()).toBeGreaterThanOrEqual(date.getTime());
+    }
   });
 
   it("getLatestAsOf() returns the chronologically latest asOf across the whole registry", () => {
     const latest = getLatestAsOf();
-    // Must not be an FY label — FY2025 (Sep 30, 2025) loses to any 2026-xx-xx date.
+    expect(latest).not.toBeNull();
     expect(latest).not.toMatch(/^FY/i);
-    // Multiple datasets refreshed to 2026-07-14 (openrouter-models, market-ai-signals, etc.)
-    expect(latest).toBe("2026-07-14");
+    const latestDate = asOfToComparableDate(latest!);
+    expect(latestDate).not.toBeNull();
+    for (const id of ["openrouter-models", "market-ai-signals", "ai-frontier"]) {
+      const asOf = getDatasetProvenance(id)?.asOf;
+      const date = asOf ? asOfToComparableDate(asOf) : null;
+      if (date) expect(latestDate!.getTime()).toBeGreaterThanOrEqual(date.getTime());
+    }
   });
 
   it("employment-projections asOf 2024-2034 does not corrupt getLatestAsOf", () => {

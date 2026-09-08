@@ -197,6 +197,37 @@ describe("validateWarnNotices — negative cases", () => {
     ).toThrow(/warn-notices.*missing.*required live state/);
   });
 
+  it("throws when a required live state loses its notice records", () => {
+    const requiredStates = ["CA", "GA", "IA", "KY", "NJ", "NY", "OH", "OR", "TN", "TX", "WI"];
+    const coverageStates = [
+      ...requiredStates.map((state) => ({
+        state,
+        sourceStatus: "live",
+        recordsIncluded: state !== "OR",
+        notices: state === "OR" ? 0 : 1,
+      })),
+      ...Array.from({ length: 40 }, (_, i) => ({
+        state: `S${String(i).padStart(2, "0")}`,
+        sourceStatus: "manual-only",
+        recordsIncluded: false,
+        notices: 0,
+      })),
+    ];
+    const notices = [
+      ...requiredStates.filter((state) => state !== "OR").map((state) => ({ state })),
+      ...Array(10000).fill({ state: "CA" }),
+    ];
+
+    expect(() =>
+      validateWarnNotices({
+        generatedAt: "2026-01-01T00:00:00Z",
+        coverageSummary: {},
+        coverageStates,
+        notices,
+      })
+    ).toThrow(/required live state.*lack included notice records.*OR/);
+  });
+
   it("throws when generatedAt is absent", () => {
     expect(() =>
       validateWarnNotices({
@@ -245,6 +276,68 @@ describe("validateStateLabor — negative cases", () => {
         states: minStates,
       })
     ).toThrow(/state-labor.*missing.*required live state/);
+  });
+
+  it("throws when a state is missing a latest LAUS measure", () => {
+    const requiredStates = ["CA", "GA", "IA", "KY", "NJ", "NY", "OH", "OR", "TN", "TX", "WI"];
+    const states = [
+      ...requiredStates,
+      ...Array.from({ length: 40 }, (_, i) => `S${String(i).padStart(2, "0")}`),
+    ].map((state, index) => ({
+      state,
+      warnCoverageStatus: requiredStates.includes(state) ? "live" : "manual-only",
+      lausLatest: {
+        date: "2026-07",
+        unemploymentRate: 4,
+        unemployed: 100,
+        employment: index === 0 ? null : 2_000,
+        laborForce: 2_100,
+      },
+    }));
+
+    expect(() =>
+      validateStateLabor({
+        generatedAt: "2026-01-01T00:00:00Z",
+        source: {},
+        methodology: {},
+        summary: {},
+        states,
+      })
+    ).toThrow(/incomplete latest LAUS measures.*CA/);
+  });
+
+  it("throws when all LAUS measures are present but history is truncated", () => {
+    const requiredStates = ["CA", "GA", "IA", "KY", "NJ", "NY", "OH", "OR", "TN", "TX", "WI"];
+    const states = [
+      ...requiredStates,
+      ...Array.from({ length: 40 }, (_, i) => `S${String(i).padStart(2, "0")}`),
+    ].map((state) => ({
+      state,
+      warnCoverageStatus: requiredStates.includes(state) ? "live" : "manual-only",
+      lausLatest: {
+        date: "2026-07",
+        unemploymentRate: 4,
+        unemployed: 100,
+        employment: 2_000,
+        laborForce: 2_100,
+      },
+      series: {
+        unemploymentRate: [{ date: "2026-07", value: 4 }],
+        unemployed: [{ date: "2026-07", value: 100 }],
+        employment: [{ date: "2026-07", value: 2_000 }],
+        laborForce: [{ date: "2026-07", value: 2_100 }],
+      },
+    }));
+
+    expect(() =>
+      validateStateLabor({
+        generatedAt: "2026-01-01T00:00:00Z",
+        source: {},
+        methodology: {},
+        summary: {},
+        states,
+      })
+    ).toThrow(/truncated or misaligned LAUS history/);
   });
 });
 
@@ -792,9 +885,15 @@ describe("validateOpenRouterModels — negative cases", () => {
     },
     coverage: {
       modelCount: 1,
+      catalog: {
+        previousModelCount: 1,
+        fetchedModelCount: 1,
+        retentionRatio: 1,
+      },
       endpointDetails: {
         attempted: 1,
         fetched: 1,
+        preserved: 0,
         failed: 0,
         modelCountWithEndpoints: 1,
         endpointCount: 1,
@@ -837,9 +936,19 @@ describe("validateOpenRouterModels — negative cases", () => {
   it("throws when endpoint detail coverage is too low", () => {
     const data = base();
     data.coverage.endpointDetails.fetched = 0;
+    data.coverage.endpointDetails.failed = 1;
     expect(() =>
       validateOpenRouterModels(data, { minModels: 1, minEndpointDetailRatio: 0.5 })
-    ).toThrow(/openrouter-models: too few public endpoint detail responses/);
+    ).toThrow(/endpoint details must be fetched or preserved for every model/);
+  });
+
+  it("throws when the public model catalog is materially truncated", () => {
+    const data = base();
+    data.coverage.catalog.previousModelCount = 428;
+    data.coverage.catalog.retentionRatio = 0.5;
+    expect(() =>
+      validateOpenRouterModels(data, { minModels: 1 })
+    ).toThrow(/catalog retention fell below the 80% safety threshold/);
   });
 
   it("throws when a model is missing architecture modalities", () => {
@@ -1000,13 +1109,15 @@ describe("validateWarnNotices — date upper bound", () => {
           "NV", "NH", "NM", "NC", "ND", "OK", "PA", "RI", "SC", "SD", "UT", "VT",
           "VA", "WA", "WV", "WY"][i],
         sourceStatus: i < 11 ? "live" : "manual-only",
+        recordsIncluded: i < 11,
+        notices: i < 11 ? 1 : 0,
       })),
       notices: Array.from({ length: 10001 }, (_, i) => ({
         company: `Company ${i}`,
         noticeDate: "2026-01-01",
         effectiveDate: i === 0 ? `${futureYear}-06-15` : "2026-03-01",
         employees: 10,
-        state: "CA",
+        state: ["CA", "GA", "IA", "KY", "NJ", "NY", "OH", "OR", "TN", "TX", "WI"][i % 11],
         stateName: "California",
       })),
     };
@@ -1025,13 +1136,15 @@ describe("validateWarnNotices — date upper bound", () => {
           "NV", "NH", "NM", "NC", "ND", "OK", "PA", "RI", "SC", "SD", "UT", "VT",
           "VA", "WA", "WV", "WY"][i],
         sourceStatus: i < 11 ? "live" : "manual-only",
+        recordsIncluded: i < 11,
+        notices: i < 11 ? 1 : 0,
       })),
       notices: Array.from({ length: 10001 }, (_, i) => ({
         company: `Company ${i}`,
         noticeDate: "2026-01-01",
         effectiveDate: `${legitimateYear}-06-15`,
         employees: 10,
-        state: "CA",
+        state: ["CA", "GA", "IA", "KY", "NJ", "NY", "OH", "OR", "TN", "TX", "WI"][i % 11],
         stateName: "California",
       })),
     };
@@ -1049,13 +1162,15 @@ describe("validateWarnNotices — date upper bound", () => {
           "NV", "NH", "NM", "NC", "ND", "OK", "PA", "RI", "SC", "SD", "UT", "VT",
           "VA", "WA", "WV", "WY"][i],
         sourceStatus: i < 11 ? "live" : "manual-only",
+        recordsIncluded: i < 11,
+        notices: i < 11 ? 1 : 0,
       })),
       notices: Array.from({ length: 10001 }, (_, i) => ({
         company: `Company ${i}`,
         noticeDate: "2020-01-01",
         effectiveDate: i === 0 ? "2005-06-15" : "2020-03-01",
         employees: 10,
-        state: "CA",
+        state: ["CA", "GA", "IA", "KY", "NJ", "NY", "OH", "OR", "TN", "TX", "WI"][i % 11],
         stateName: "California",
       })),
     };
@@ -1126,6 +1241,27 @@ describe("validateAIUsageProxies — negative cases", () => {
       })
     ).toThrow(/scope must be a non-empty/);
   });
+
+  it("throws when Census returns a partial state response", () => {
+    expect(() =>
+      validateAIUsageProxies({
+        generatedAt: "2026-01-01T00:00:00Z",
+        meta: { generatedAt: "2026-01-01T00:00:00Z" },
+        scope: "test",
+        caveat: "test",
+        enterpriseAdoptionMetrics: [{ x: 1 }],
+        openModelDownloadProxies: [{ x: 1 }],
+        usCensusBusinessAIMetrics: [{
+          national: { firms: 100, percentOfEmployerFirms: 3 },
+          states: Array.from({ length: 10 }, (_, i) => ({
+            geo: { code: String(i).padStart(2, "0") },
+            firms: 10,
+            percentOfEmployerFirms: 3,
+          })),
+        }],
+      })
+    ).toThrow(/Census business AI metrics require a national row and >= 50 unique state rows/);
+  });
 });
 
 describe("validateGlobalMetrics — committed file", () => {
@@ -1155,6 +1291,49 @@ describe("validateGlobalMetrics — negative cases", () => {
       })
     ).toThrow(/sources must be a non-empty/);
   });
+
+  it("throws when an optional global section is materially partial", () => {
+    expect(() =>
+      validateGlobalMetrics({
+        generatedAt: "2026-01-01T00:00:00Z",
+        sources: [{ name: "test" }],
+        metrics: {
+          diffusion: Object.fromEntries(
+            Array.from({ length: 20 }, (_, i) => [`C${i}`, i]),
+          ),
+          readiness: Object.fromEntries(
+            Array.from({ length: 50 }, (_, i) => [`C${i}`, i / 100]),
+          ),
+        },
+      })
+    ).toThrow(/metrics\.readiness must have >= 100 countries/);
+  });
+
+  it("throws when one IMF readiness pillar is partial despite a complete country union", () => {
+    const readinessSubIndices = Object.fromEntries(
+      Array.from({ length: 120 }, (_, i) => [
+        `C${i}`,
+        {
+          digitalInfrastructure: 0.5,
+          humanCapital: 0.5,
+          innovation: i < 10 ? 0.5 : null,
+          regulationEthics: 0.5,
+        },
+      ]),
+    );
+    expect(() =>
+      validateGlobalMetrics({
+        generatedAt: "2026-01-01T00:00:00Z",
+        sources: [{ name: "test" }],
+        metrics: {
+          diffusion: Object.fromEntries(
+            Array.from({ length: 20 }, (_, i) => [`C${i}`, i]),
+          ),
+          readinessSubIndices,
+        },
+      })
+    ).toThrow(/readinessSubIndices\.innovation must have >= 100 finite country values/);
+  });
 });
 
 describe("validateMarketSignals — committed file", () => {
@@ -1165,6 +1344,11 @@ describe("validateMarketSignals — committed file", () => {
 });
 
 describe("validateMarketSignals — negative cases", () => {
+  const prices = Array.from({ length: 24 }, (_, i) => ({
+    date: `${2024 + Math.floor(i / 12)}-${String((i % 12) + 1).padStart(2, "0")}-01`,
+    close: 100 + i,
+  }));
+
   it("throws for fewer than 8 sectors", () => {
     expect(() =>
       validateMarketSignals({
@@ -1181,6 +1365,7 @@ describe("validateMarketSignals — negative cases", () => {
   it("throws on duplicate sector names", () => {
     const sectors = Array.from({ length: 9 }, (_, i) => ({
       name: i === 8 ? "Duplicate" : `Sector ${i}`,
+      prices,
     }));
     sectors[0].name = "Duplicate";
     expect(() =>
@@ -1188,11 +1373,56 @@ describe("validateMarketSignals — negative cases", () => {
         generatedAt: "2026-01-01T00:00:00Z",
         source: {},
         methodology: {},
-        benchmark: {},
+        benchmark: { prices },
         sectors,
-        summary: {},
+        summary: {
+          requestedSectorCount: sectors.length,
+          sectorCount: sectors.length,
+          omittedTickers: [],
+        },
       })
     ).toThrow(/duplicate sector name/);
+  });
+
+  it("throws when any requested sector ETF is omitted", () => {
+    const sectors = Array.from({ length: 10 }, (_, i) => ({
+      name: `Sector ${i}`,
+    }));
+    expect(() =>
+      validateMarketSignals({
+        generatedAt: "2026-01-01T00:00:00Z",
+        source: {},
+        methodology: {},
+        benchmark: {},
+        sectors,
+        summary: {
+          requestedSectorCount: 11,
+          sectorCount: sectors.length,
+          omittedTickers: ["XLRE omitted: timeout"],
+        },
+      })
+    ).toThrow(/every requested sector ETF must be present/);
+  });
+
+  it("throws when a sector has a truncated price history", () => {
+    const sectors = Array.from({ length: 9 }, (_, i) => ({
+      name: `Sector ${i}`,
+      prices: i === 0 ? prices.slice(-2) : prices,
+    }));
+    expect(() =>
+      validateMarketSignals({
+        generatedAt: "2026-01-01T00:00:00Z",
+        source: {},
+        methodology: {},
+        benchmark: { prices },
+        sectors,
+        summary: {
+          requestedSectorCount: sectors.length,
+          sectorCount: sectors.length,
+          omittedTickers: [],
+        },
+      })
+    ).toThrow(/price history must align with benchmark coverage/);
   });
 });
 

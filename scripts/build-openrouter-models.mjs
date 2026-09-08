@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildMeta } from "./lib/meta.mjs";
@@ -17,6 +17,7 @@ const MODELS_URL = `${API_ORIGIN}/api/v1/models`;
 const USER_AGENT = "FutureGrid/1.0 OpenRouter model data build (+https://github.com)";
 const DETAILS_CONCURRENCY = Number(process.env.OPENROUTER_DETAILS_CONCURRENCY || 4);
 const REQUEST_TIMEOUT_MS = Number(process.env.OPENROUTER_REQUEST_TIMEOUT_MS || 30000);
+const MIN_CATALOG_RETENTION_RATIO = 0.8;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -316,9 +317,12 @@ function normalizeModel(model, endpointResult) {
   };
 }
 
-function summarizeCoverage(models, endpointResults) {
+function summarizeCoverage(models, endpointResults, previousModelCount) {
   const fetched = endpointResults.filter((result) => result?.fetched).length;
   const endpointSummaries = models.map((model) => model.endpoints).filter(Boolean);
+  const preserved = endpointSummaries.filter(
+    (summary) => summary.dataFreshness === "preserved",
+  ).length;
   const providerNames = new Set();
   let endpointCount = 0;
   for (const summary of endpointSummaries) {
@@ -328,10 +332,19 @@ function summarizeCoverage(models, endpointResults) {
   const createdDates = models.map((model) => model.createdDate).filter(Boolean).sort();
   return {
     modelCount: models.length,
+    catalog: {
+      previousModelCount,
+      fetchedModelCount: models.length,
+      retentionRatio:
+        previousModelCount > 0
+          ? Math.round((models.length / previousModelCount) * 10000) / 10000
+          : null,
+    },
     endpointDetails: {
       attempted: endpointResults.length,
       fetched,
-      failed: endpointResults.length - fetched,
+      preserved,
+      failed: endpointResults.length - fetched - preserved,
       modelCountWithEndpoints: endpointSummaries.filter((summary) => summary.endpointCount > 0).length,
       endpointCount,
       providerCount: providerNames.size,
@@ -370,10 +383,33 @@ function buildDataQualityNotes(models) {
 async function main() {
   console.log("=== Building OpenRouter model catalog data ===");
   const generatedAt = new Date().toISOString();
+  let existing = null;
+  if (existsSync(OUTPUT_FILE)) {
+    try {
+      existing = JSON.parse(readFileSync(OUTPUT_FILE, "utf8"));
+    } catch (error) {
+      console.warn(`[build-openrouter-models] existing snapshot unavailable: ${error.message}`);
+    }
+  }
+  const existingGeneratedAt = existing?.meta?.generatedAt ?? null;
+  const existingModels = new Map(
+    (Array.isArray(existing?.models) ? existing.models : []).map((model) => [model.id, model]),
+  );
   const modelsJson = await fetchJson(MODELS_URL);
   const sourceModels = Array.isArray(modelsJson.data) ? modelsJson.data : [];
   if (sourceModels.length === 0) {
     throw new Error("[build-openrouter-models] OpenRouter /models returned no data rows");
+  }
+  if (
+    existingModels.size >= 200 &&
+    sourceModels.length < Math.ceil(existingModels.size * MIN_CATALOG_RETENTION_RATIO)
+  ) {
+    validateOpenRouterModels(existing);
+    console.warn(
+      `[build-openrouter-models] catalog coverage regressed to ${sourceModels.length}/` +
+      `${existingModels.size} models; preserving the complete existing snapshot`,
+    );
+    return;
   }
 
   console.log(`[build-openrouter-models] fetched ${sourceModels.length} model rows`);
@@ -385,9 +421,34 @@ async function main() {
     );
   }
 
+  const unresolvedDetails = [];
   const models = sourceModels
-    .map((model, index) => normalizeModel(model, endpointResults[index]))
+    .map((model, index) => {
+      const endpointResult = endpointResults[index];
+      const normalized = normalizeModel(model, endpointResult);
+      if (!endpointResult?.fetched) {
+        const previousEndpoints = asObject(existingModels.get(model.id)?.endpoints);
+        if (previousEndpoints) {
+          normalized.endpoints = {
+            ...previousEndpoints,
+            dataFreshness: "preserved",
+            preservedGeneratedAt: existingGeneratedAt,
+            preservationReason: endpointResult?.error ?? "Endpoint detail refresh failed",
+          };
+        } else {
+          unresolvedDetails.push(model.id);
+        }
+      }
+      return normalized;
+    })
     .sort((a, b) => a.id.localeCompare(b.id));
+
+  if (unresolvedDetails.length > 0) {
+    throw new Error(
+      `[build-openrouter-models] endpoint details unavailable with no last-known-good fallback for ` +
+      `${unresolvedDetails.length} model(s): ${unresolvedDetails.slice(0, 10).join(", ")}`,
+    );
+  }
 
   const output = {
     meta: buildMeta({
@@ -399,7 +460,7 @@ async function main() {
         url: MODELS_URL,
       },
     }),
-    coverage: summarizeCoverage(models, endpointResults),
+    coverage: summarizeCoverage(models, endpointResults, existingModels.size),
     methodology: {
       source:
         "Official OpenRouter public APIs only: /api/v1/models plus /api/v1/models/{modelId}/endpoints.",

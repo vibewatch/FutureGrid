@@ -3,7 +3,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { deriveMeta } from "./lib/meta.mjs";
+import { buildMeta } from "./lib/meta.mjs";
 import { validateMarketSignals } from "./lib/validate.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -21,6 +21,9 @@ const OCCUPATION_SNAPSHOT = Array.isArray(OCCUPATION_SNAPSHOT_RAW)
 const USER_AGENT = "FutureGrid/1.0 market signals data build (+https://github.com)";
 const PRIMARY_WINDOW_START = "2022-11-30";
 const DAY_MS = 86_400_000;
+const MIN_MARKET_OBSERVATIONS = 252;
+const MIN_MARKET_RETENTION_RATIO = 0.9;
+const MAX_MARKET_DATE_LAG_DAYS = 14;
 const YAHOO_ENDPOINT_TEMPLATE =
   "https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?period1={unixStart}&period2={unixEnd}&interval=1d&events=history&includeAdjustedClose=true";
 
@@ -129,12 +132,55 @@ const OCCUPATION_SECTOR_MAP = {
   ],
 };
 
+function assertHistoryCoverage(ticker, points, benchmarkPoints = null) {
+  if (!Array.isArray(points) || points.length < MIN_MARKET_OBSERVATIONS) {
+    throw new Error(
+      `${ticker} returned ${points?.length ?? 0} observations; expected at least ${MIN_MARKET_OBSERVATIONS}`,
+    );
+  }
+  const firstDate = points[0]?.date;
+  const latestDate = points.at(-1)?.date;
+  if (!firstDate || !latestDate) throw new Error(`${ticker} returned invalid date coverage`);
+
+  if (!benchmarkPoints) {
+    const latestAllowedStart = new Date(`${PRIMARY_WINDOW_START}T00:00:00Z`);
+    latestAllowedStart.setUTCDate(latestAllowedStart.getUTCDate() + MAX_MARKET_DATE_LAG_DAYS);
+    const recentCutoff = new Date(Date.now() - MAX_MARKET_DATE_LAG_DAYS * DAY_MS)
+      .toISOString()
+      .slice(0, 10);
+    if (firstDate > latestAllowedStart.toISOString().slice(0, 10) || latestDate < recentCutoff) {
+      throw new Error(
+        `${ticker} history does not span the configured window (${firstDate} to ${latestDate})`,
+      );
+    }
+    return;
+  }
+
+  const minimumObservations = Math.ceil(
+    benchmarkPoints.length * MIN_MARKET_RETENTION_RATIO,
+  );
+  const benchmarkFirst = benchmarkPoints[0].date;
+  const benchmarkLatest = benchmarkPoints.at(-1).date;
+  const latestAllowedStart = new Date(`${benchmarkFirst}T00:00:00Z`);
+  latestAllowedStart.setUTCDate(latestAllowedStart.getUTCDate() + MAX_MARKET_DATE_LAG_DAYS);
+  const earliestAllowedEnd = new Date(`${benchmarkLatest}T00:00:00Z`);
+  earliestAllowedEnd.setUTCDate(earliestAllowedEnd.getUTCDate() - MAX_MARKET_DATE_LAG_DAYS);
+  if (
+    points.length < minimumObservations ||
+    firstDate > latestAllowedStart.toISOString().slice(0, 10) ||
+    latestDate < earliestAllowedEnd.toISOString().slice(0, 10)
+  ) {
+    throw new Error(
+      `${ticker} history coverage regressed (${points.length}/${benchmarkPoints.length} observations, ` +
+      `${firstDate} to ${latestDate})`,
+    );
+  }
+}
+
 async function main() {
   console.log("=== Building market-implied AI sensitivity data ===");
   const benchmarkPoints = await fetchChart(BENCHMARK.ticker);
-  if (benchmarkPoints.length < 2) {
-    throw new Error("SPY benchmark returned fewer than two usable observations.");
-  }
+  assertHistoryCoverage(BENCHMARK.ticker, benchmarkPoints);
 
   const benchmarkMetrics = computeMetrics(benchmarkPoints);
   const sectors = [];
@@ -143,7 +189,7 @@ async function main() {
   for (const sector of SECTOR_ETFS) {
     try {
       const points = await fetchChart(sector.ticker);
-      if (points.length < 2) throw new Error("fewer than two usable observations");
+      assertHistoryCoverage(sector.ticker, points, benchmarkPoints);
       const metrics = computeMetrics(points, benchmarkMetrics.totalReturn);
       const exposure = computeExposureStats(OCCUPATION_SECTOR_MAP[sector.id] ?? []);
       sectors.push({
@@ -170,7 +216,11 @@ async function main() {
     }
   }
 
-  if (sectors.length === 0) throw new Error("No sector ETF returned usable observations.");
+  if (warnings.length > 0) {
+    throw new Error(
+      `Incomplete sector ETF refresh (${sectors.length}/${SECTOR_ETFS.length}): ${warnings.join("; ")}`,
+    );
+  }
 
   applySensitivityScores(sectors);
 
@@ -179,8 +229,9 @@ async function main() {
   );
   const mappingCoverage = computeMappingCoverage();
 
+  const generatedAt = new Date().toISOString();
   const output = {
-    generatedAt: new Date().toISOString(),
+    generatedAt,
     source: {
       name: "Yahoo Finance chart JSON endpoint",
       endpointTemplate: YAHOO_ENDPOINT_TEMPLATE,
@@ -232,7 +283,11 @@ async function main() {
     },
   };
 
-  output.meta = deriveMeta(output);
+  output.meta = buildMeta({
+    generatedAt,
+    asOf: output.summary.latestDate,
+    source: output.source,
+  });
   validateMarketSignals(output);
   writeFileSync(OUTPUT_FILE, `${JSON.stringify(output, null, 2)}\n`);
   console.log(`wrote data/market-ai-signals.json`);

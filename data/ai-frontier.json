@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-18T00:55:13.689Z",
+  "generatedAt": "2026-09-08T01:01:40.298Z",
   "source": {
     "name": "Epoch AI — Notable AI Models",
     "publisher": "Epoch AI",
@@ -7,7 +7,7 @@
     "downloadUrl": "https://epoch.ai/data/notable_ai_models.csv",
     "docsUrl": "https://epoch.ai/data/ai-models-documentation",
     "license": "CC BY 4.0",
-    "accessed": "2026-07-18",
+    "accessed": "2026-09-08",
     "caveat": "Training-compute figures are Epoch AI estimates with varying confidence; not all models report compute/cost/power."
   },
   "methodology": {
@@ -18,8 +18,8 @@
     "notes": "Descriptive historical trends only — not a forecast.",
     "recentWindow": {
       "years": 3,
-      "start": "2023-06-09",
-      "end": "2026-06-09"
+      "start": "2023-09-03",
+      "end": "2026-09-03"
     }
   },
   "definitions": {
@@ -32,17 +32,17 @@
     "coverageNote": "Coverage is Epoch AI's 'Notable AI Models' curation — not an exhaustive registry. Labs without compute disclosure and newer open-source releases may be underrepresented in the compute-known subset."
   },
   "counts": {
-    "totalRows": 1035,
-    "withDate": 1030,
-    "withCompute": 528,
-    "withComputeAndDate": 528,
-    "withPower": 215,
-    "withCost": 179,
-    "withOpenWeights": 318,
+    "totalRows": 1058,
+    "withDate": 1058,
+    "withCompute": 537,
+    "withComputeAndDate": 537,
+    "withPower": 218,
+    "withCost": 180,
+    "withOpenWeights": 338,
     "countries": 35,
-    "recentWindowStart": "2023-06-09",
-    "recentWindowEnd": "2026-06-09",
-    "recentWindowCount": 317
+    "recentWindowStart": "2023-09-03",
+    "recentWindowEnd": "2026-09-03",
+    "recentWindowCount": 326
   },
   "models": [
     {
@@ -11525,32 +11525,6 @@
       "link": "https://arxiv.org/abs/2402.15627"
     },
     {
-      "name": "Mistral Large",
-      "organization": "Mistral AI",
-      "orgCategory": "Industry",
-      "country": "France",
-      "countries": [
-        "France"
-      ],
-      "date": "2024-02-26",
-      "year": 2024,
-      "decimalYear": 2024.153005,
-      "domains": [
-        "Language"
-      ],
-      "task": "Chat",
-      "parameters": null,
-      "computeFlop": 1.12e+25,
-      "log10Compute": 25.049,
-      "trainingCostUsd2023": 14110111.93,
-      "powerDrawW": null,
-      "frontier": false,
-      "openWeights": false,
-      "accessibility": "API access",
-      "confidence": "Likely",
-      "link": "https://mistral.ai/news/mistral-large/"
-    },
-    {
       "name": "Aramco Metabrain AI",
       "organization": "Saudi Aramco",
       "orgCategory": "Industry,Government",
@@ -11900,32 +11874,6 @@
       "link": "https://qwenlm.github.io/blog/qwen2/ \nhttps://arxiv.org/abs/2407.10671"
     },
     {
-      "name": "Llama-3.1-Nemotron-70B-Instruct",
-      "organization": "NVIDIA,Meta AI",
-      "orgCategory": "Industry,Industry",
-      "country": "United States",
-      "countries": [
-        "United States"
-      ],
-      "date": "2024-06-12",
-      "year": 2024,
-      "decimalYear": 2024.445355,
-      "domains": [
-        "Language"
-      ],
-      "task": "Language modeling",
-      "parameters": null,
-      "computeFlop": 7.929e+24,
-      "log10Compute": 24.899,
-      "trainingCostUsd2023": null,
-      "powerDrawW": null,
-      "frontier": false,
-      "openWeights": true,
-      "accessibility": "Open weights (restricted use)",
-      "confidence": "Confident",
-      "link": "https://catalog.ngc.nvidia.com/orgs/nim/teams/nvidia/containers/llama-3.1-nemotron-70b-instruct"
-    },
-    {
       "name": "OpenVLA",
       "organization": "Stanford University,University of California (UC) Berkeley,Toyota Research Institute,Google DeepMind,Massachusetts Institute of Technology (MIT),Physical Intelligence",
       "orgCategory": "Academia,Academia,Industry,Industry,Academia,Industry",
@@ -12084,32 +12032,6 @@
       "accessibility": "Open weights (restricted use)",
       "confidence": "Confident",
       "link": "https://ai.meta.com/research/publications/the-llama-3-herd-of-models/"
-    },
-    {
-      "name": "Mistral Large 2",
-      "organization": "Mistral AI",
-      "orgCategory": "Industry",
-      "country": "France",
-      "countries": [
-        "France"
-      ],
-      "date": "2024-07-24",
-      "year": 2024,
-      "decimalYear": 2024.560109,
-      "domains": [
-        "Language"
-      ],
-      "task": "Language modeling/generation,Translation,Code generation",
-      "parameters": 123000000000,
-      "computeFlop": 2.13e+25,
-      "log10Compute": 25.328,
-      "trainingCostUsd2023": null,
-      "powerDrawW": null,
-      "frontier": false,
-      "openWeights": true,
-      "accessibility": "Open weights (non-commercial)",
-      "confidence": "Likely",
-      "link": "https://mistral.ai/news/mistral-large-2407/"
     },
     {
       "name": "AFM-server",
@@ -12434,6 +12356,32 @@
       "link": "https://arxiv.org/abs/2410.07864"
     },
     {
+      "name": "Llama-3.1-Nemotron-70B-Instruct",
+      "organization": "NVIDIA,Meta AI",
+      "orgCategory": "Industry,Industry",
+      "country": "United States",
+      "countries": [
+        "United States"
+      ],
+      "date": "2024-10-12",
+      "year": 2024,
+      "decimalYear": 2024.778689,
+      "domains": [
+        "Language"
+      ],
+      "task": "Language modeling",
+      "parameters": null,
+      "computeFlop": 7.929e+24,
+      "log10Compute": 24.899,
+      "trainingCostUsd2023": null,
+      "powerDrawW": null,
+      "frontier": false,
+      "openWeights": true,
+      "accessibility": "Open weights (restricted use)",
+      "confidence": "Confident",
+      "link": "https://catalog.ngc.nvidia.com/orgs/nim/teams/nvidia/containers/llama-3.1-nemotron-70b-instruct"
+    },
+    {
       "name": "CHAI-1",
       "organization": "Chai discovery",
       "orgCategory": "Industry",
@@ -12467,9 +12415,9 @@
       "countries": [
         "China"
       ],
-      "date": "2024-10-18",
+      "date": "2024-10-16",
       "year": 2024,
-      "decimalYear": 2024.795082,
+      "decimalYear": 2024.789617,
       "domains": [
         "Language"
       ],
@@ -12478,7 +12426,7 @@
       "computeFlop": 1.5e+24,
       "log10Compute": 24.176,
       "trainingCostUsd2023": null,
-      "powerDrawW": 2756194.445567179,
+      "powerDrawW": 2756317.205735781,
       "frontier": false,
       "openWeights": false,
       "accessibility": "API access",
@@ -12724,6 +12672,34 @@
       "accessibility": "Open weights (restricted use)",
       "confidence": "Confident",
       "link": "https://arxiv.org/abs/2412.19437"
+    },
+    {
+      "name": "Eurus-2-7B-PRIME",
+      "organization": "Tsinghua University,University of Illinois Urbana-Champaign (UIUC),Shanghai AI Lab,Peking University,Shanghai Jiao Tong University,CUHK Shenzhen Research Institute",
+      "orgCategory": "Academia,Academia,Academia,Academia,Academia",
+      "country": "China, United States",
+      "countries": [
+        "China",
+        "United States"
+      ],
+      "date": "2025-01-02",
+      "year": 2025,
+      "decimalYear": 2025.00274,
+      "domains": [
+        "Mathematics",
+        "Language"
+      ],
+      "task": "Mathematical reasoning,Code generation",
+      "parameters": 7000000000,
+      "computeFlop": 401915904000000000000,
+      "log10Compute": 20.604,
+      "trainingCostUsd2023": null,
+      "powerDrawW": null,
+      "frontier": false,
+      "openWeights": true,
+      "accessibility": "Open weights (unrestricted)",
+      "confidence": "Speculative",
+      "link": "https://arxiv.org/abs/2502.01456"
     },
     {
       "name": "Eagle 2",
@@ -13345,6 +13321,32 @@
       "link": "https://qwenlm.github.io/blog/qwen3/"
     },
     {
+      "name": "GLM-4.5",
+      "organization": "Z.ai (Zhipu AI),Tsinghua University",
+      "orgCategory": "Industry,Academia",
+      "country": "China",
+      "countries": [
+        "China"
+      ],
+      "date": "2025-07-28",
+      "year": 2025,
+      "decimalYear": 2025.569863,
+      "domains": [
+        "Language"
+      ],
+      "task": "Language modeling/generation,Question answering,Code generation,Quantitative reasoning",
+      "parameters": 355000000000,
+      "computeFlop": 4.42e+24,
+      "log10Compute": 24.645,
+      "trainingCostUsd2023": null,
+      "powerDrawW": null,
+      "frontier": false,
+      "openWeights": true,
+      "accessibility": "Open weights (unrestricted)",
+      "confidence": "Confident",
+      "link": "https://arxiv.org/abs/2508.06471"
+    },
+    {
       "name": "gpt-oss-120b",
       "organization": "OpenAI",
       "orgCategory": "Industry",
@@ -13395,32 +13397,6 @@
       "accessibility": "Open weights (unrestricted)",
       "confidence": "Confident",
       "link": "https://cdn.openai.com/pdf/419b6906-9da6-406c-a19d-1bb078ac7637/oai_gpt-oss_model_card.pdf"
-    },
-    {
-      "name": "GLM-4.5",
-      "organization": "Z.ai (Zhipu AI),Tsinghua University",
-      "orgCategory": "Industry,Academia",
-      "country": "China",
-      "countries": [
-        "China"
-      ],
-      "date": "2025-08-05",
-      "year": 2025,
-      "decimalYear": 2025.591781,
-      "domains": [
-        "Language"
-      ],
-      "task": "Language modeling/generation,Question answering,Code generation,Quantitative reasoning",
-      "parameters": 355000000000,
-      "computeFlop": 4.42e+24,
-      "log10Compute": 24.645,
-      "trainingCostUsd2023": null,
-      "powerDrawW": null,
-      "frontier": false,
-      "openWeights": true,
-      "accessibility": "Open weights (unrestricted)",
-      "confidence": "Confident",
-      "link": "https://arxiv.org/abs/2508.06471"
     },
     {
       "name": "GPT-5",
@@ -13715,6 +13691,32 @@
       "link": "https://z.ai/blog/glm-4.7"
     },
     {
+      "name": "Solar Open 100B",
+      "organization": "Upstage",
+      "orgCategory": "Industry",
+      "country": "South Korea",
+      "countries": [
+        "South Korea"
+      ],
+      "date": "2025-12-31",
+      "year": 2025,
+      "decimalYear": 2025.99726,
+      "domains": [
+        "Language"
+      ],
+      "task": "Language modeling/generation,Chat",
+      "parameters": 102000000000,
+      "computeFlop": 1.4e+24,
+      "log10Compute": 24.146,
+      "trainingCostUsd2023": null,
+      "powerDrawW": null,
+      "frontier": false,
+      "openWeights": true,
+      "accessibility": "Open weights (restricted use)",
+      "confidence": "Confident",
+      "link": "https://huggingface.co/upstage/Solar-Open-100B"
+    },
+    {
       "name": "K-EXAONE",
       "organization": "LG AI Research",
       "orgCategory": "Industry",
@@ -13735,8 +13737,8 @@
       "trainingCostUsd2023": null,
       "powerDrawW": null,
       "frontier": false,
-      "openWeights": false,
-      "accessibility": "API access",
+      "openWeights": true,
+      "accessibility": "Open weights (restricted use)",
       "confidence": "Confident",
       "link": "https://huggingface.co/LGAI-EXAONE"
     },
@@ -13774,13 +13776,13 @@
       "countries": [
         "China"
       ],
-      "date": "2026-02-17",
+      "date": "2026-02-12",
       "year": 2026,
-      "decimalYear": 2026.128767,
+      "decimalYear": 2026.115068,
       "domains": [
         "Language"
       ],
-      "task": "Language modeling/generation",
+      "task": "Language modeling/generation,Code generation",
       "parameters": 744000000000,
       "computeFlop": 6.84e+24,
       "log10Compute": 24.835,
@@ -13790,7 +13792,7 @@
       "openWeights": true,
       "accessibility": "Open weights (unrestricted)",
       "confidence": "Likely",
-      "link": "https://arxiv.org/pdf/2602.15763"
+      "link": "https://arxiv.org/pdf/2602.15763 \n\nhttps://z.ai/blog/glm-5"
     },
     {
       "name": "Composer 2",
@@ -13817,6 +13819,35 @@
       "accessibility": "API access",
       "confidence": "Confident",
       "link": "https://arxiv.org/abs/2603.24477"
+    },
+    {
+      "name": "MolmoAct 2",
+      "organization": "Allen Institute for AI,University of Washington,National University of Singapore,University of Pennsylvania,Johns Hopkins University,Amazon,Cortex AI",
+      "orgCategory": "Research collective,Academia,Academia,Academia,Academia,Industry,Industry",
+      "country": "United States, Singapore",
+      "countries": [
+        "United States",
+        "Singapore"
+      ],
+      "date": "2026-04-05",
+      "year": 2026,
+      "decimalYear": 2026.257534,
+      "domains": [
+        "Vision",
+        "Language",
+        "Robotics"
+      ],
+      "task": "Robotic manipulation",
+      "parameters": 5485309424,
+      "computeFlop": 1.1e+22,
+      "log10Compute": 22.041,
+      "trainingCostUsd2023": null,
+      "powerDrawW": 87155.59440596371,
+      "frontier": false,
+      "openWeights": true,
+      "accessibility": "Open weights (unrestricted)",
+      "confidence": "Likely",
+      "link": "https://arxiv.org/abs/2605.02881"
     },
     {
       "name": "EXAONE 4.5",
@@ -13944,8 +13975,8 @@
       "trainingCostUsd2023": null,
       "powerDrawW": null,
       "frontier": false,
-      "openWeights": null,
-      "accessibility": null,
+      "openWeights": false,
+      "accessibility": "API access",
       "confidence": "Likely",
       "link": "https://cursor.com/blog/composer-2-5"
     },
@@ -13974,27 +14005,243 @@
       "accessibility": "Open weights (unrestricted)",
       "confidence": "Likely",
       "link": "https://arxiv.org/abs/2512.20856\nhttps://research.nvidia.com/labs/nemotron/files/NVIDIA-Nemotron-3-Ultra-Technical-Report.pdf"
+    },
+    {
+      "name": "Solar Open2 250B",
+      "organization": "Upstage",
+      "orgCategory": "Industry",
+      "country": "South Korea",
+      "countries": [
+        "South Korea"
+      ],
+      "date": "2026-06-28",
+      "year": 2026,
+      "decimalYear": 2026.487671,
+      "domains": [
+        "Language"
+      ],
+      "task": "Language modeling,Reasoning,Tool use,Translation,Question answering",
+      "parameters": 250300000000,
+      "computeFlop": 1.05e+24,
+      "log10Compute": 24.021,
+      "trainingCostUsd2023": null,
+      "powerDrawW": 3215623.4309682944,
+      "frontier": false,
+      "openWeights": true,
+      "accessibility": "Open weights (unrestricted)",
+      "confidence": "Likely",
+      "link": "https://huggingface.co/upstage/Solar-Open2-250B"
+    },
+    {
+      "name": "LongCat-2.0",
+      "organization": "Meituan Inc",
+      "orgCategory": "Industry",
+      "country": "China",
+      "countries": [
+        "China"
+      ],
+      "date": "2026-06-29",
+      "year": 2026,
+      "decimalYear": 2026.490411,
+      "domains": [
+        "Language"
+      ],
+      "task": "Question answering,Language modeling/generation",
+      "parameters": 1600000000000,
+      "computeFlop": 1.008e+25,
+      "log10Compute": 25.003,
+      "trainingCostUsd2023": null,
+      "powerDrawW": null,
+      "frontier": false,
+      "openWeights": true,
+      "accessibility": "Open weights (unrestricted)",
+      "confidence": "Likely",
+      "link": "https://longcat.chat/blog/longcat-2.0/"
+    },
+    {
+      "name": "Inkling",
+      "organization": "Thinking Machines",
+      "orgCategory": "Industry",
+      "country": "United States",
+      "countries": [
+        "United States"
+      ],
+      "date": "2026-07-15",
+      "year": 2026,
+      "decimalYear": 2026.534247,
+      "domains": [
+        "Language",
+        "Multimodal",
+        "Audio",
+        "Video",
+        "Vision"
+      ],
+      "task": "Language modeling/generation,Chat",
+      "parameters": 975000000000,
+      "computeFlop": 1.845e+24,
+      "log10Compute": 24.266,
+      "trainingCostUsd2023": null,
+      "powerDrawW": null,
+      "frontier": false,
+      "openWeights": true,
+      "accessibility": "Open weights (unrestricted)",
+      "confidence": "Likely",
+      "link": "https://thinkingmachines.ai/news/introducing-inkling/"
+    },
+    {
+      "name": "Kimi K3",
+      "organization": "Moonshot",
+      "orgCategory": "Industry",
+      "country": "China",
+      "countries": [
+        "China"
+      ],
+      "date": "2026-07-16",
+      "year": 2026,
+      "decimalYear": 2026.536986,
+      "domains": [
+        "Language",
+        "Multimodal",
+        "Vision"
+      ],
+      "task": "Language modeling/generation",
+      "parameters": 2800000000000,
+      "computeFlop": 2.0001e+25,
+      "log10Compute": 25.301,
+      "trainingCostUsd2023": null,
+      "powerDrawW": null,
+      "frontier": false,
+      "openWeights": true,
+      "accessibility": "Open weights (non-commercial)",
+      "confidence": "Speculative",
+      "link": "https://huggingface.co/moonshotai/Kimi-K3"
+    },
+    {
+      "name": "A.X K2",
+      "organization": "SK Telecom",
+      "orgCategory": "Industry",
+      "country": "South Korea",
+      "countries": [
+        "South Korea"
+      ],
+      "date": "2026-07-29",
+      "year": 2026,
+      "decimalYear": 2026.572603,
+      "domains": [
+        "Language"
+      ],
+      "task": "Code generation,Language modeling/generation,Translation,Instruction interpretation,Mathematical reasoning,Chat,Language modeling,Language generation,Text autocompletion",
+      "parameters": 688000000000,
+      "computeFlop": 1.8e+24,
+      "log10Compute": 24.255,
+      "trainingCostUsd2023": 12400000,
+      "powerDrawW": null,
+      "frontier": false,
+      "openWeights": true,
+      "accessibility": "Open weights (unrestricted)",
+      "confidence": "Confident",
+      "link": "https://huggingface.co/skt/A.X-K2\nhttps://github.com/SKT-AI/A.X-K2/blob/main/A_X_K2_Tech_Report.pdf"
+    },
+    {
+      "name": "K-EXAONE 2.0",
+      "organization": "LG AI Research",
+      "orgCategory": "Industry",
+      "country": "South Korea",
+      "countries": [
+        "South Korea"
+      ],
+      "date": "2026-07-31",
+      "year": 2026,
+      "decimalYear": 2026.578082,
+      "domains": [
+        "Language"
+      ],
+      "task": "Language modeling/generation,Chat,Question answering,Code generation,Mathematical reasoning,Instruction interpretation",
+      "parameters": 750000000000,
+      "computeFlop": 3.55e+24,
+      "log10Compute": 24.55,
+      "trainingCostUsd2023": null,
+      "powerDrawW": null,
+      "frontier": false,
+      "openWeights": true,
+      "accessibility": "Open weights (unrestricted)",
+      "confidence": "Confident",
+      "link": "https://huggingface.co/LGAI-EXAONE/K-EXAONE-2.0-750B-A37B\nhttps://github.com/LG-AI-EXAONE/K-EXAONE-2.0\nhttps://huggingface.co/LGAI-EXAONE/K-EXAONE-2.0-750B-A37B/blob/main/assets/K-EXAONE-2.0-Technical-Report.pdf"
+    },
+    {
+      "name": "Motif-3",
+      "organization": "Motif Technologies",
+      "orgCategory": "Industry",
+      "country": "South Korea",
+      "countries": [
+        "South Korea"
+      ],
+      "date": "2026-08-07",
+      "year": 2026,
+      "decimalYear": 2026.59726,
+      "domains": [
+        "Language"
+      ],
+      "task": "Language modeling/generation,Chat,Question answering,Code generation,Mathematical reasoning,Instruction interpretation",
+      "parameters": 314000000000,
+      "computeFlop": 1.1e+24,
+      "log10Compute": 24.041,
+      "trainingCostUsd2023": null,
+      "powerDrawW": 1489975.7958831799,
+      "frontier": false,
+      "openWeights": true,
+      "accessibility": "Open weights (unrestricted)",
+      "confidence": "Confident",
+      "link": "https://huggingface.co/Motif-Technologies/Motif-3\nhttps://huggingface.co/Motif-Technologies/Motif-3/blob/main/motif_3_technical_report.pdf\nhttps://github.com/MotifTechnologies/motif3-training-example"
+    },
+    {
+      "name": "GLM-5.3-Flash",
+      "organization": "Z.ai (Zhipu AI)",
+      "orgCategory": "Industry",
+      "country": "China",
+      "countries": [
+        "China"
+      ],
+      "date": "2026-08-20",
+      "year": 2026,
+      "decimalYear": 2026.632877,
+      "domains": [
+        "Language",
+        "Vision",
+        "Multimodal"
+      ],
+      "task": "Language modeling/generation,Question answering",
+      "parameters": 320000000000,
+      "computeFlop": 3.24e+24,
+      "log10Compute": 24.511,
+      "trainingCostUsd2023": null,
+      "powerDrawW": null,
+      "frontier": false,
+      "openWeights": true,
+      "accessibility": "Open weights (unrestricted)",
+      "confidence": "Likely",
+      "link": "https://z.ai/blog/glm-5.3-flash"
     }
   ],
   "aggregates": {
     "computeTrend": {
       "overall": {
-        "slopeLog10PerYear": 0.3275,
-        "intercept": -640.6015,
-        "r2": 0.7592,
+        "slopeLog10PerYear": 0.3282,
+        "intercept": -642.1944,
+        "r2": 0.7614,
         "doublingTimeMonths": 11,
         "startYear": 1950,
         "endYear": 2026,
-        "n": 528
+        "n": 537
       },
       "modernEra": {
-        "slopeLog10PerYear": 0.639,
-        "intercept": -1270.1435,
-        "r2": 0.6515,
+        "slopeLog10PerYear": 0.6311,
+        "intercept": -1254.2244,
+        "r2": 0.6547,
         "doublingTimeMonths": 5.7,
         "startYear": 2010,
         "endYear": 2026,
-        "n": 466
+        "n": 475
       },
       "frontierByYear": [
         {
@@ -14443,8 +14690,8 @@
       },
       {
         "year": 2024,
-        "n": 8,
-        "medianCostUsd2023": 17690564.946113274,
+        "n": 7,
+        "medianCostUsd2023": 21271017.96222655,
         "maxCostUsd2023": 52885433.95402246,
         "topModel": "Llama 3.1-405B"
       },
@@ -14454,6 +14701,13 @@
         "medianCostUsd2023": 44588963.624007165,
         "maxCostUsd2023": 387842678.08636147,
         "topModel": "Grok 4"
+      },
+      {
+        "year": 2026,
+        "n": 1,
+        "medianCostUsd2023": 12400000,
+        "maxCostUsd2023": 12400000,
+        "topModel": "A.X K2"
       }
     ],
     "powerTrend": [
@@ -14540,6 +14794,12 @@
         "n": 8,
         "medianPowerW": 2105605.9601618517,
         "maxPowerW": 109948656.20196915
+      },
+      {
+        "year": 2026,
+        "n": 3,
+        "medianPowerW": 1489975.7958831799,
+        "maxPowerW": 3215623.4309682944
       }
     ],
     "orgLeaderboard": [
@@ -14547,13 +14807,13 @@
         "organization": "OpenAI",
         "orgCategory": "Industry",
         "country": "United States",
-        "modelCount": 65,
+        "modelCount": 69,
         "computeKnownCount": 22,
         "frontierCount": 7,
-        "recentCount": 44,
+        "recentCount": 46,
         "openWeightsCount": 8,
         "maxComputeFlop": 3.8e+26,
-        "latestDate": "2026-04-23",
+        "latestDate": "2026-09-03",
         "medianLog10Compute": 22.846
       },
       {
@@ -14573,27 +14833,40 @@
         "organization": "Google DeepMind",
         "orgCategory": "Industry",
         "country": "United States",
-        "modelCount": 39,
+        "modelCount": 41,
         "computeKnownCount": 6,
         "frontierCount": 1,
-        "recentCount": 31,
+        "recentCount": 32,
         "openWeightsCount": 4,
         "maxComputeFlop": 5.0000000001e+25,
-        "latestDate": "2026-04-15",
+        "latestDate": "2026-09-02",
         "medianLog10Compute": 22.153
       },
       {
         "organization": "Alibaba",
         "orgCategory": "Industry",
         "country": "China",
-        "modelCount": 32,
+        "modelCount": 33,
         "computeKnownCount": 16,
         "frontierCount": 0,
         "recentCount": 29,
-        "openWeightsCount": 22,
+        "openWeightsCount": 23,
         "maxComputeFlop": 1.512e+25,
-        "latestDate": "2026-05-19",
+        "latestDate": "2026-08-08",
         "medianLog10Compute": 24.513
+      },
+      {
+        "organization": "Meta AI",
+        "orgCategory": "Industry",
+        "country": "United States",
+        "modelCount": 31,
+        "computeKnownCount": 19,
+        "frontierCount": 2,
+        "recentCount": 13,
+        "openWeightsCount": 21,
+        "maxComputeFlop": 5.18400000000001e+25,
+        "latestDate": "2026-09-02",
+        "medianLog10Compute": 23.74
       },
       {
         "organization": "DeepMind",
@@ -14609,43 +14882,30 @@
         "medianLog10Compute": 21.066
       },
       {
-        "organization": "Meta AI",
+        "organization": "Anthropic",
         "orgCategory": "Industry",
         "country": "United States",
-        "modelCount": 29,
-        "computeKnownCount": 19,
+        "modelCount": 18,
+        "computeKnownCount": 3,
         "frontierCount": 2,
-        "recentCount": 13,
-        "openWeightsCount": 21,
-        "maxComputeFlop": 5.18400000000001e+25,
-        "latestDate": "2026-04-08",
-        "medianLog10Compute": 23.74
+        "recentCount": 16,
+        "openWeightsCount": 0,
+        "maxComputeFlop": 3.35e+25,
+        "latestDate": "2026-07-24",
+        "medianLog10Compute": 25.431
       },
       {
         "organization": "Microsoft",
         "orgCategory": "Industry",
         "country": "United States",
-        "modelCount": 17,
+        "modelCount": 18,
         "computeKnownCount": 8,
         "frontierCount": 0,
-        "recentCount": 1,
+        "recentCount": 2,
         "openWeightsCount": 4,
         "maxComputeFlop": 4.831e+22,
         "latestDate": "2026-06-02",
         "medianLog10Compute": 21.021
-      },
-      {
-        "organization": "Anthropic",
-        "orgCategory": "Industry",
-        "country": "United States",
-        "modelCount": 16,
-        "computeKnownCount": 3,
-        "frontierCount": 2,
-        "recentCount": 15,
-        "openWeightsCount": 0,
-        "maxComputeFlop": 3.35e+25,
-        "latestDate": "2026-06-09",
-        "medianLog10Compute": 25.431
       },
       {
         "organization": "Stanford University",
@@ -14668,7 +14928,7 @@
         "computeKnownCount": 12,
         "frontierCount": 3,
         "recentCount": 9,
-        "openWeightsCount": 6,
+        "openWeightsCount": 7,
         "maxComputeFlop": 1.8e+25,
         "latestDate": "2026-06-04",
         "medianLog10Compute": 23.468
@@ -14693,7 +14953,7 @@
         "modelCount": 13,
         "computeKnownCount": 8,
         "frontierCount": 2,
-        "recentCount": 2,
+        "recentCount": 1,
         "openWeightsCount": 2,
         "maxComputeFlop": 2.5272e+24,
         "latestDate": "2023-12-23",
@@ -14706,7 +14966,7 @@
         "modelCount": 12,
         "computeKnownCount": 4,
         "frontierCount": 0,
-        "recentCount": 4,
+        "recentCount": 3,
         "openWeightsCount": 5,
         "maxComputeFlop": 2.25e+22,
         "latestDate": "2025-03-16",
@@ -14745,7 +15005,7 @@
         "modelCount": 10,
         "computeKnownCount": 10,
         "frontierCount": 2,
-        "recentCount": 1,
+        "recentCount": 0,
         "openWeightsCount": 3,
         "maxComputeFlop": 1.1e+21,
         "latestDate": "2023-08-28",
@@ -14809,23 +15069,23 @@
         "country": "United States",
         "countryShort": "United States",
         "iso3": "USA",
-        "modelCount": 664,
-        "computeKnownCount": 328,
+        "modelCount": 680,
+        "computeKnownCount": 331,
         "frontierCount": 77,
-        "recentCount": 189,
-        "openWeightsCount": 198,
+        "recentCount": 192,
+        "openWeightsCount": 202,
         "maxComputeFlop": 5.0000000000001e+26,
-        "orgCount": 278
+        "orgCount": 280
       },
       {
         "country": "China",
         "countryShort": "China",
         "iso3": "CHN",
-        "modelCount": 178,
-        "computeKnownCount": 97,
+        "modelCount": 185,
+        "computeKnownCount": 101,
         "frontierCount": 4,
-        "recentCount": 104,
-        "openWeightsCount": 91,
+        "recentCount": 105,
+        "openWeightsCount": 99,
         "maxComputeFlop": 2.505e+25,
         "orgCount": 91
       },
@@ -14833,25 +15093,37 @@
         "country": "South Korea",
         "countryShort": "South Korea",
         "iso3": "KOR",
-        "modelCount": 24,
-        "computeKnownCount": 15,
+        "modelCount": 28,
+        "computeKnownCount": 20,
         "frontierCount": 1,
-        "recentCount": 12,
-        "openWeightsCount": 14,
+        "recentCount": 16,
+        "openWeightsCount": 22,
         "maxComputeFlop": 3.85e+24,
-        "orgCount": 16
+        "orgCount": 17
       },
       {
         "country": "France",
         "countryShort": "France",
         "iso3": "FRA",
         "modelCount": 50,
-        "computeKnownCount": 30,
+        "computeKnownCount": 28,
         "frontierCount": 1,
         "recentCount": 8,
         "openWeightsCount": 27,
-        "maxComputeFlop": 2.13e+25,
+        "maxComputeFlop": 7.74e+23,
         "orgCount": 31
+      },
+      {
+        "country": "Singapore",
+        "countryShort": "Singapore",
+        "iso3": null,
+        "modelCount": 17,
+        "computeKnownCount": 9,
+        "frontierCount": 1,
+        "recentCount": 6,
+        "openWeightsCount": 10,
+        "maxComputeFlop": 3.036551985824e+24,
+        "orgCount": 15
       },
       {
         "country": "United Kingdom",
@@ -14860,22 +15132,10 @@
         "modelCount": 89,
         "computeKnownCount": 46,
         "frontierCount": 9,
-        "recentCount": 6,
+        "recentCount": 5,
         "openWeightsCount": 16,
         "maxComputeFlop": 6.31e+23,
         "orgCount": 39
-      },
-      {
-        "country": "Singapore",
-        "countryShort": "Singapore",
-        "iso3": null,
-        "modelCount": 16,
-        "computeKnownCount": 8,
-        "frontierCount": 1,
-        "recentCount": 5,
-        "openWeightsCount": 9,
-        "maxComputeFlop": 3.036551985824e+24,
-        "orgCount": 14
       },
       {
         "country": "Hong Kong",
@@ -14884,7 +15144,7 @@
         "modelCount": 15,
         "computeKnownCount": 9,
         "frontierCount": 0,
-        "recentCount": 5,
+        "recentCount": 4,
         "openWeightsCount": 6,
         "maxComputeFlop": 3.036551985824e+24,
         "orgCount": 12
@@ -14896,7 +15156,7 @@
         "modelCount": 57,
         "computeKnownCount": 27,
         "frontierCount": 7,
-        "recentCount": 4,
+        "recentCount": 3,
         "openWeightsCount": 8,
         "maxComputeFlop": 4.3e+23,
         "orgCount": 35
@@ -14936,18 +15196,6 @@
         "openWeightsCount": 0,
         "maxComputeFlop": 1.05e+25,
         "orgCount": 4
-      },
-      {
-        "country": "UAE",
-        "countryShort": "UAE",
-        "iso3": "ARE",
-        "modelCount": 3,
-        "computeKnownCount": 3,
-        "frontierCount": 1,
-        "recentCount": 2,
-        "openWeightsCount": 3,
-        "maxComputeFlop": 3.76e+24,
-        "orgCount": 2
       },
       {
         "country": "Germany",
@@ -14996,6 +15244,18 @@
         "openWeightsCount": 4,
         "maxComputeFlop": 2.42784e+21,
         "orgCount": 4
+      },
+      {
+        "country": "UAE",
+        "countryShort": "UAE",
+        "iso3": "ARE",
+        "modelCount": 3,
+        "computeKnownCount": 3,
+        "frontierCount": 1,
+        "recentCount": 1,
+        "openWeightsCount": 3,
+        "maxComputeFlop": 3.76e+24,
+        "orgCount": 2
       },
       {
         "country": "Netherlands",
@@ -15227,27 +15487,27 @@
       }
     ],
     "accessibilityMix": {
-      "openWeights": 219,
-      "closed": 211,
-      "unknown": 98
+      "openWeights": 230,
+      "closed": 210,
+      "unknown": 97
     },
     "fullCatalogAccessibilityMix": {
-      "openWeights": 318,
-      "closed": 452,
-      "unknown": 260
+      "openWeights": 338,
+      "closed": 469,
+      "unknown": 251
     },
     "domainMix": [
       {
         "domain": "Language",
-        "count": 299
+        "count": 308
       },
       {
         "domain": "Vision",
-        "count": 147
+        "count": 151
       },
       {
         "domain": "Multimodal",
-        "count": 41
+        "count": 44
       },
       {
         "domain": "Biology",
@@ -15267,11 +15527,11 @@
       },
       {
         "domain": "Video",
-        "count": 13
+        "count": 14
       },
       {
         "domain": "Robotics",
-        "count": 10
+        "count": 11
       },
       {
         "domain": "Earth science",
@@ -15283,11 +15543,11 @@
       },
       {
         "domain": "Audio",
-        "count": 5
+        "count": 6
       },
       {
         "domain": "Mathematics",
-        "count": 4
+        "count": 5
       },
       {
         "domain": "Medicine",
@@ -15318,8 +15578,8 @@
     "openWeightsCount is a proxy for tracked open-release activity only."
   ],
   "meta": {
-    "generatedAt": "2026-07-18T00:55:13.689Z",
-    "asOf": "2026-07-18",
+    "generatedAt": "2026-09-08T01:01:40.298Z",
+    "asOf": "2026-09-08",
     "source": {
       "name": "Epoch AI — Notable AI Models",
       "publisher": "Epoch AI",

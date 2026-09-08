@@ -12,7 +12,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import https from "https";
 import http from "http";
-import { deriveMeta } from "./lib/meta.mjs";
+import { buildMeta } from "./lib/meta.mjs";
 import { validateGlobalMetrics } from "./lib/validate.mjs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -46,6 +46,35 @@ const IMF_AIPI_SUBINDICES = [
 // Hosted on openAFRICA (open data mirror of the official Oxford Insights release)
 const OXFORD_GAIRI_URL =
   "https://open.africa/dataset/e6551895-bded-4f5a-aca1-b3ed0937efd0/resource/f3f84fa7-6974-42f4-9a12-f637ff8ba6b6/download/2023-ai-readiness-index-public-dataset-global-rankings.csv";
+const MIN_OPTIONAL_SECTION_COUNTRIES = 100;
+const MIN_OPTIONAL_SECTION_RETENTION_RATIO = 0.8;
+
+function loadExistingGlobalMetrics() {
+  const outPath = path.join(DATA_DIR, "global-ai-metrics.json");
+  if (!existsSync(outPath)) return null;
+  try {
+    return JSON.parse(readFileSync(outPath, "utf8"));
+  } catch (error) {
+    console.warn(`  [preserve] Could not load existing global metrics: ${error.message}`);
+    return null;
+  }
+}
+
+function minimumSectionCount(existingSection) {
+  const previousCount =
+    existingSection && typeof existingSection === "object"
+      ? Object.keys(existingSection).length
+      : 0;
+  return Math.max(
+    MIN_OPTIONAL_SECTION_COUNTRIES,
+    Math.ceil(previousCount * MIN_OPTIONAL_SECTION_RETENTION_RATIO),
+  );
+}
+
+function finiteFieldCount(section, field) {
+  if (!section || typeof section !== "object") return 0;
+  return Object.values(section).filter((entry) => Number.isFinite(entry?.[field])).length;
+}
 
 // ─── HTTP helpers ──────────────────────────────────────────────────────────────
 
@@ -287,6 +316,7 @@ function parsePct(str) {
 
 async function main() {
   console.log("\n[GLOBAL-METRICS] Building data/global-ai-metrics.json …");
+  const existing = loadExistingGlobalMetrics();
 
   // 1. Fetch ISO crosswalk (cached)
   const isoText = await fetchText(
@@ -414,10 +444,11 @@ async function main() {
       }
       const cnt = Object.keys(readiness).length;
       console.log(`  IMF AIPI: ${cnt} countries mapped`);
-      if (cnt > 0) {
+      const minimumCount = minimumSectionCount(existing?.metrics?.readiness);
+      if (cnt >= minimumCount) {
         imfIncluded = true;
       } else {
-        imfSkipReason = "IMF AIPI returned 0 parseable values";
+        imfSkipReason = `IMF AIPI mapped only ${cnt} countries (expected ≥${minimumCount})`;
         readiness = null;
         console.warn(`  [IMF] Skipped: ${imfSkipReason}`);
       }
@@ -433,6 +464,7 @@ async function main() {
   // 4. Best-effort IMF AIPI sub-indices
   let readinessSubIndices = null;
   let subIndicesIncluded = false;
+  let subIndicesSkipReason = "";
 
   try {
     // Fetch all four sub-indices in sequence (respect rate limits)
@@ -475,17 +507,38 @@ async function main() {
       }
       const cnt = Object.keys(readinessSubIndices).length;
       console.log(`  IMF AIPI sub-indices: ${cnt} countries`);
-      if (cnt > 0) {
+      const incompleteFields = fields
+        .map((field) => {
+          const count = finiteFieldCount(readinessSubIndices, field);
+          const previousCount = finiteFieldCount(
+            existing?.metrics?.readinessSubIndices,
+            field,
+          );
+          const minimumCount = Math.max(
+            MIN_OPTIONAL_SECTION_COUNTRIES,
+            Math.ceil(previousCount * MIN_OPTIONAL_SECTION_RETENTION_RATIO),
+          );
+          return { field, count, minimumCount };
+        })
+        .filter(({ count, minimumCount }) => count < minimumCount);
+      if (incompleteFields.length === 0) {
         subIndicesIncluded = true;
       } else {
+        subIndicesSkipReason =
+          `IMF AIPI sub-index coverage was incomplete: ` +
+          incompleteFields
+            .map(({ field, count, minimumCount }) => `${field}=${count}/${minimumCount}`)
+            .join(", ");
         readinessSubIndices = null;
-        console.warn("  [IMF sub-indices] Skipped: 0 parseable entries");
+        console.warn(`  [IMF sub-indices] Skipped: ${subIndicesSkipReason}`);
       }
     } else {
-      console.warn("  [IMF sub-indices] Skipped: one or more sub-index fetches returned no data");
+      subIndicesSkipReason = "One or more IMF sub-index fetches returned no data";
+      console.warn(`  [IMF sub-indices] Skipped: ${subIndicesSkipReason}`);
     }
   } catch (err) {
-    console.warn(`  [IMF sub-indices] Skipped: ${err.message}`);
+    subIndicesSkipReason = `Fetch/parse error: ${err.message}`;
+    console.warn(`  [IMF sub-indices] Skipped: ${subIndicesSkipReason}`);
   }
 
   // 5. Best-effort Oxford Insights Government AI Readiness Index 2023
@@ -521,10 +574,11 @@ async function main() {
       if (oxfordUnmatched.length > 0) {
         console.warn(`  Oxford unmatched (${oxfordUnmatched.length}): ${oxfordUnmatched.join(", ")}`);
       }
-      if (cnt >= 100) {
+      const minimumCount = minimumSectionCount(existing?.metrics?.governmentReadiness);
+      if (cnt >= minimumCount) {
         oxfordIncluded = true;
       } else {
-        oxfordSkipReason = `Oxford GAIRI mapped only ${cnt} countries (expected ≥100)`;
+        oxfordSkipReason = `Oxford GAIRI mapped only ${cnt} countries (expected ≥${minimumCount})`;
         governmentReadiness = null;
         console.warn(`  [Oxford] Skipped: ${oxfordSkipReason}`);
       }
@@ -535,6 +589,35 @@ async function main() {
   } catch (err) {
     oxfordSkipReason = `Fetch/parse error: ${err.message}`;
     console.warn(`  [Oxford] Skipped: ${oxfordSkipReason}`);
+  }
+
+  const sectionFreshness = {};
+  if (!imfIncluded && existing?.metrics?.readiness) {
+    readiness = existing.metrics.readiness;
+    imfIncluded = true;
+    sectionFreshness.readiness = {
+      status: "preserved",
+      reason: imfSkipReason || "Live IMF AIPI refresh was unavailable",
+      preservedGeneratedAt: existing.generatedAt ?? existing.meta?.generatedAt ?? null,
+    };
+  }
+  if (!subIndicesIncluded && existing?.metrics?.readinessSubIndices) {
+    readinessSubIndices = existing.metrics.readinessSubIndices;
+    subIndicesIncluded = true;
+    sectionFreshness.readinessSubIndices = {
+      status: "preserved",
+      reason: subIndicesSkipReason || "One or more live IMF sub-index refreshes were unavailable",
+      preservedGeneratedAt: existing.generatedAt ?? existing.meta?.generatedAt ?? null,
+    };
+  }
+  if (!oxfordIncluded && existing?.metrics?.governmentReadiness) {
+    governmentReadiness = existing.metrics.governmentReadiness;
+    oxfordIncluded = true;
+    sectionFreshness.governmentReadiness = {
+      status: "preserved",
+      reason: oxfordSkipReason || "Live Oxford GAIRI refresh was unavailable",
+      preservedGeneratedAt: existing.generatedAt ?? existing.meta?.generatedAt ?? null,
+    };
   }
 
   // 6. Write output
@@ -630,10 +713,12 @@ async function main() {
   };
   sources.push(oxfordMeta);
 
+  const generatedAt = new Date().toISOString();
   const output = {
-    generatedAt: new Date().toISOString(),
+    generatedAt,
     sources,
     unmatchedEconomies: unmatched,
+    sectionFreshness,
     metrics: {
       diffusion: diffusion,
       diffusionTrend: diffusionTrend,
@@ -644,7 +729,15 @@ async function main() {
   };
 
   const outPath = path.join(DATA_DIR, "global-ai-metrics.json");
-  output.meta = deriveMeta(output);
+  output.meta = buildMeta({
+    generatedAt,
+    asOf: "2026-03-31",
+    source: {
+      name: "Global AI diffusion and readiness metrics",
+      publisher: "Microsoft, IMF, and Oxford Insights",
+      url: "https://github.com/vibewatch/FutureGrid",
+    },
+  });
   validateGlobalMetrics(output);
   writeFileSync(outPath, JSON.stringify(output, null, 2) + "\n");
   console.log(`\n  ✓ Wrote ${path.relative(ROOT, outPath)}`);

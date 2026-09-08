@@ -21,6 +21,21 @@ nextEnv.loadEnvConfig(ROOT);
 const DATA_DIR = path.join(ROOT, "data");
 const OUTPUT_FILE = path.join(DATA_DIR, "ai-usage-proxies.json");
 const UA = "FutureGrid-data-bot/1.0 (https://github.com/huangyingting/FutureGrid)";
+const MIN_CENSUS_STATE_COUNT = 50;
+const MIN_CENSUS_RETENTION_RATIO = 0.8;
+
+function loadExistingCensusMetrics() {
+  if (!existsSync(OUTPUT_FILE)) return [];
+  try {
+    const existing = JSON.parse(readFileSync(OUTPUT_FILE, "utf8"));
+    return Array.isArray(existing.usCensusBusinessAIMetrics)
+      ? existing.usCensusBusinessAIMetrics
+      : [];
+  } catch (error) {
+    console.warn(`  ⚠ Could not load existing Census metrics for preservation: ${error.message}`);
+    return [];
+  }
+}
 
 function loadCountryNamesByIso3() {
   const file = path.join(DATA_DIR, "country-exposure.json");
@@ -268,11 +283,14 @@ const buildOecdIndividualGenAIUse = buildOecdCsvMetric({
   comparability: "Individual generative-AI usage survey metric; comparable across listed OECD/partner reporting countries, not comparable to enterprise adoption or product MAU.",
 });
 
-async function buildUsCensusBusinessAIMetrics() {
+async function buildUsCensusBusinessAIMetrics(existingMetrics) {
   const key = process.env.CENSUS_API_KEY;
   if (!key) {
     console.log("  [skip] Census ABS AI adoption (CENSUS_API_KEY not set)");
-    return [];
+    return {
+      metrics: null,
+      reason: "CENSUS_API_KEY not set",
+    };
   }
 
   let nationalRows;
@@ -284,7 +302,10 @@ async function buildUsCensusBusinessAIMetrics() {
     stateRows = censusRowsToObjects(await fetchJson(`${baseUrl}?${common}&for=state:*&key=${encodeURIComponent(key)}`, "Census ABS AI adoption 2018 (states)", { timeoutMs: 45_000 }));
   } catch (error) {
     console.warn(`  ⚠ Census ABS AI adoption skipped: ${error.message}`);
-    return [];
+    return {
+      metrics: null,
+      reason: `Census fetch failed: ${error.message}`,
+    };
   }
 
   const national = nationalRows[0]
@@ -304,25 +325,49 @@ async function buildUsCensusBusinessAIMetrics() {
     .filter((row) => Number.isFinite(row.firms) && Number.isFinite(row.percentOfEmployerFirms))
     .sort((a, b) => a.geo.code.localeCompare(b.geo.code));
 
-  return [
-    {
-      id: "us-census-abs-ai-total-use-2018",
-      metric: "employer_firms_using_artificial_intelligence_total_use",
-      unit: "firms_and_percent_of_employer_firms",
-      period: "2018",
-      population: "Employer firms, total for all sectors (NAICS2017=00). TECHUSE=T1E03B99 means Artificial Intelligence: Total use.",
-      source: {
-        name: "U.S. Census Annual Business Survey — Technology Characteristics of Businesses",
-        publisher: "U.S. Census Bureau",
-        dataset: "2018/abstcb",
-        url: "https://api.census.gov/data/2018/abstcb.html",
+  const existingStateCount = Array.isArray(existingMetrics?.[0]?.states)
+    ? existingMetrics[0].states.length
+    : 0;
+  const minimumStateCount = Math.max(
+    MIN_CENSUS_STATE_COUNT,
+    Math.ceil(existingStateCount * MIN_CENSUS_RETENTION_RATIO),
+  );
+  if (
+    !national ||
+    !Number.isFinite(national.firms) ||
+    !Number.isFinite(national.percentOfEmployerFirms) ||
+    states.length < minimumStateCount
+  ) {
+    return {
+      metrics: null,
+      reason:
+        `Census response coverage was incomplete ` +
+        `(national=${national ? "present" : "missing"}, states=${states.length}/${minimumStateCount} minimum)`,
+    };
+  }
+
+  return {
+    metrics: [
+      {
+        id: "us-census-abs-ai-total-use-2018",
+        metric: "employer_firms_using_artificial_intelligence_total_use",
+        unit: "firms_and_percent_of_employer_firms",
+        period: "2018",
+        population: "Employer firms, total for all sectors (NAICS2017=00). TECHUSE=T1E03B99 means Artificial Intelligence: Total use.",
+        source: {
+          name: "U.S. Census Annual Business Survey — Technology Characteristics of Businesses",
+          publisher: "U.S. Census Bureau",
+          dataset: "2018/abstcb",
+          url: "https://api.census.gov/data/2018/abstcb.html",
+        },
+        confidence: "high",
+        comparability: "U.S. employer-firm technology-use survey metric from 2018; predates the generative-AI wave and is not comparable to 2025 generative-AI usage surveys.",
+        national,
+        states,
       },
-      confidence: "high",
-      comparability: "U.S. employer-firm technology-use survey metric from 2018; predates the generative-AI wave and is not comparable to 2025 generative-AI usage surveys.",
-      national,
-      states,
-    },
-  ];
+    ],
+    reason: null,
+  };
 }
 
 async function fetchHuggingFaceModels(provider, search) {
@@ -654,7 +699,24 @@ async function main() {
   const eurostatEnterprise = await buildEurostatEnterpriseAdoption();
   const oecdBusiness = await buildOecdBusinessAIAdoption();
   const oecdIndividuals = await buildOecdIndividualGenAIUse();
-  const usCensusBusinessAIMetrics = await buildUsCensusBusinessAIMetrics();
+  const existingCensusMetrics = loadExistingCensusMetrics();
+  const censusResult = await buildUsCensusBusinessAIMetrics(existingCensusMetrics);
+  const preservedCensusMetrics =
+    censusResult.metrics == null ? existingCensusMetrics : [];
+  const usCensusBusinessAIMetrics =
+    censusResult.metrics ?? preservedCensusMetrics;
+  const censusFreshness =
+    censusResult.metrics != null
+      ? { status: "fresh", reason: null }
+      : preservedCensusMetrics.length > 0
+        ? { status: "preserved", reason: censusResult.reason }
+        : { status: "unavailable", reason: censusResult.reason };
+  if (censusFreshness.status === "preserved") {
+    console.warn(
+      `  [preserve] Census ABS AI adoption: ${censusFreshness.reason}; ` +
+      `keeping ${preservedCensusMetrics.length} last-known-good section(s)`,
+    );
+  }
   const openModelDownloadProxies = await Promise.all([
     fetchHuggingFaceModels("Alibaba Qwen", "Qwen"),
     fetchHuggingFaceModels("DeepSeek", "DeepSeek"),
@@ -680,6 +742,9 @@ async function main() {
     openModelDownloadProxies,
     developerEcosystemProxies,
     aiResearchActivityMetrics,
+    sectionFreshness: {
+      usCensusBusinessAIMetrics: censusFreshness,
+    },
     sourceCatalogForFutureCollection: buildSourceCatalog(usCensusBusinessAIMetrics.length > 0),
   };
 

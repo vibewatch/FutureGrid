@@ -9,6 +9,19 @@ vi.mock("@/lib/i18n/LanguageProvider", () => ({
 }));
 
 import DataAsOfBadge from "@/components/ui/DataAsOfBadge";
+import { getDataAsOf, selectLatestAsOf } from "@/lib/provenance";
+
+function expectedDateLabel(asOf: string): string {
+  if (/^\d{4}-(0[1-9]|1[0-2])(-\d{2})?$/.test(asOf)) {
+    const [year, month] = asOf.split("-");
+    return new Date(Date.UTC(Number(year), Number(month) - 1, 1)).toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+      timeZone: "UTC",
+    });
+  }
+  return asOf;
+}
 
 describe("DataAsOfBadge", () => {
   it("renders 'Data as of 2025' for occupation-snapshot (asOf=2025)", () => {
@@ -17,10 +30,11 @@ describe("DataAsOfBadge", () => {
     expect(screen.getByText(/Data as of 2025/i)).toBeInTheDocument();
   });
 
-  it("renders month+year for ai-frontier (asOf=2026-07-02)", () => {
+  it("renders month+year for the current ai-frontier asOf date", () => {
+    const asOf = getDataAsOf("ai-frontier");
+    expect(asOf).not.toBeNull();
     render(<DataAsOfBadge datasetId="ai-frontier" />);
-    // "2026-07-02" formats to "Jul 2026"
-    expect(screen.getByText(/Data as of Jul 2026/i)).toBeInTheDocument();
+    expect(screen.getByText(`Data as of ${expectedDateLabel(asOf!)}`)).toBeInTheDocument();
   });
 
   it("renders nothing for an unknown dataset id", () => {
@@ -38,12 +52,15 @@ describe("DataAsOfBadge", () => {
   });
 
   it("uses the chronologically latest asOf when datasetIds contains multiple ids", () => {
-    // country-exposure → asOf "2025" (Dec 31, 2025); ai-frontier → asOf "2026-07-02"
+    const asOf = selectLatestAsOf([
+      getDataAsOf("country-exposure"),
+      getDataAsOf("ai-frontier"),
+    ]);
+    expect(asOf).not.toBeNull();
     render(
       <DataAsOfBadge datasetIds={["country-exposure", "ai-frontier"]} />,
     );
-    // Jul 2, 2026 is later than Dec 31, 2025, so "2026-07-02" wins → "Jul 2026"
-    expect(screen.getByText(/Data as of Jul 2026/i)).toBeInTheDocument();
+    expect(screen.getByText(`Data as of ${expectedDateLabel(asOf!)}`)).toBeInTheDocument();
   });
 
   it("FY2025 (Sep 30) does not win over plain 2025 (Dec 31) — calendar-aware ordering", () => {
@@ -56,8 +73,8 @@ describe("DataAsOfBadge", () => {
 
   it("has an accessible aria-label matching visible text", () => {
     render(<DataAsOfBadge datasetId="ai-frontier" />);
-    const badge = screen.getByText(/Data as of Jul 2026/i);
-    expect(badge).toHaveAttribute("aria-label", expect.stringContaining("Jul 2026"));
+    const badge = screen.getByText(/^Data as of /i);
+    expect(badge).toHaveAttribute("aria-label", badge.textContent);
   });
 
   it("renders ZH label when locale is zh", () => {

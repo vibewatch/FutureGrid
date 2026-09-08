@@ -122,20 +122,20 @@ This is the **canonical refresh command** for both local use and CI. It runs `sc
 
 | Step ID | Script | Notes |
 |---|---|---|
-| `warn` | `build-warn.mjs` | 50 states + DC; WI preserves last-known-good records without `GOOGLE_SHEETS_API_KEY` |
-| `state-labor` | `build-state-labor.mjs` | Depends on `warn` |
+| `warn` | `build-warn.mjs` | 50 states + DC; failed or severely truncated live sources preserve last-known-good records and remain unranked until a fresh fetch succeeds |
+| `state-labor` | `build-state-labor.mjs` | Depends on `warn`; incomplete or temporally truncated LAUS responses fall back to the complete committed series |
 | `state-qcew` | `build-state-qcew.mjs` | Depends on `state-labor` |
-| `ai-usage-proxies` | `build-ai-usage-proxies.mjs` | OECD SDMX (HTTP/1.1), Eurostat, StackOverflow, HuggingFace, GitHub |
+| `ai-usage-proxies` | `build-ai-usage-proxies.mjs` | OECD SDMX (HTTP/1.1), Eurostat, StackOverflow, HuggingFace, GitHub; Census sections are preserved when the optional key or complete response is unavailable |
 | `snapshot-slim` | `build-snapshot-slim.mjs` | Derived from occupation-snapshot |
 | `employment-projections` | `build-employment-projections.mjs` | Derived from occupation-snapshot |
 | `job-postings` | `build-job-postings.mjs` | Derived from occupation-snapshot |
 | `occupational-requirements` | `build-occupational-requirements.mjs` | Derived from occupation-snapshot |
 | `ai-signals` | `build-ai-signals.mjs` | AIOE, Frey-Osborne, LLM exposure, automation-baseline |
-| `market-signals` | `build-market-signals.mjs` | Yahoo Finance ETF sectors |
+| `market-signals` | `build-market-signals.mjs` | Yahoo Finance ETF sectors; requires every ETF to retain aligned multi-year price coverage |
 | `ai-company-stocks` | `build-ai-company-stocks.mjs` | Yahoo Finance chart bootstrap (unofficial; set `AI_COMPANY_STOCKS_BOOTSTRAP_YAHOO=1`) |
 | `ai-frontier` | `build-ai-frontier.mjs` | Epoch AI Notable AI Models |
-| `openrouter-models` | `build-openrouter-models.mjs` | OpenRouter public API |
-| `global-ai-metrics` | `build-global-metrics.mjs` | Microsoft AI Diffusion + IMF AIPI + Oxford GAIRI |
+| `openrouter-models` | `build-openrouter-models.mjs` | OpenRouter public API; preserves endpoint details per model and rejects materially truncated catalogs |
+| `global-ai-metrics` | `build-global-metrics.mjs` | Microsoft AI Diffusion + IMF AIPI + Oxford GAIRI; partial optional sections preserve last-known-good coverage |
 | `international-occupation-mix` | `build-international-occupation-mix.mjs` | ILOSTAT 9 countries |
 | `warn-public` | `build-warn-public.mjs` | Privacy-filtered public copy (depends on warn) |
 | `provenance` | `build-provenance.mjs` | Central registry — **always last** |

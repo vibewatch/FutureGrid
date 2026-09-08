@@ -27,6 +27,8 @@ const BLS_API_KEY = process.env.BLS_API_KEY?.trim();
 const END_YEAR = Number(process.env.STATE_LABOR_END_YEAR ?? new Date().getUTCFullYear());
 const START_YEAR = Number(process.env.STATE_LABOR_START_YEAR ?? END_YEAR - 2);
 const WARN_WINDOW_MONTHS = 12;
+const MIN_LAUS_SERIES_POINTS = 13;
+const MIN_LAUS_RETENTION_RATIO = 0.8;
 
 const MEASURES = {
   unemploymentRate: "3",
@@ -300,8 +302,17 @@ function coverageDateRangeHasDates(dateRange) {
   );
 }
 
-function rankIneligibleReason(coverageStatus, latestLaborForce, hasWarnWindowOverlap, lacksNoticeDates) {
+function rankIneligibleReason(
+  coverageStatus,
+  buildStatus,
+  latestLaborForce,
+  hasWarnWindowOverlap,
+  lacksNoticeDates,
+) {
   if (!isCurrentMachineReadableWarnCoverage(coverageStatus)) return "WARN source is not currently machine-readable";
+  if (buildStatus !== "ok") {
+    return "WARN source refresh was preserved from last-known-good data and is not eligible for current pressure ranking";
+  }
   if (!latestLaborForce) return "Latest LAUS labor force is unavailable";
   if (lacksNoticeDates) {
     return "WARN feed lacks notice dates for current-window pressure ranking; no notices in the current 12-month window can be verified from notice dates";
@@ -386,6 +397,30 @@ function hasAnySeriesData(seriesById) {
   return Object.values(seriesById).some((series) => Array.isArray(series) && series.length > 0);
 }
 
+function hasCompleteSeriesData(seriesById, seriesIds, baselineSeriesById = null) {
+  const latestDates = new Set();
+  for (const id of seriesIds) {
+    const series = seriesById[id];
+    if (!Array.isArray(series) || series.length < MIN_LAUS_SERIES_POINTS) return false;
+    const latestDate = latestPoint(series)?.date;
+    if (!latestDate) return false;
+    latestDates.add(latestDate);
+
+    const baseline = baselineSeriesById?.[id];
+    if (Array.isArray(baseline) && baseline.length > 0) {
+      const minimumLength = Math.ceil(baseline.length * MIN_LAUS_RETENTION_RATIO);
+      const baselineLatestDate = latestPoint(baseline)?.date;
+      if (
+        series.length < minimumLength ||
+        (baselineLatestDate && latestDate < baselineLatestDate)
+      ) {
+        return false;
+      }
+    }
+  }
+  return latestDates.size === 1;
+}
+
 function normalizeCachedLausSeries(series) {
   if (!Array.isArray(series)) return [];
   return series
@@ -435,15 +470,26 @@ function loadCachedLausData(seriesIds) {
 }
 
 async function fetchLausData(seriesIds) {
+  const cached = loadCachedLausData(seriesIds);
   try {
     const seriesById = await fetchAll(seriesIds, START_YEAR, END_YEAR);
-    if (hasAnySeriesData(seriesById)) return { seriesById, startYear: START_YEAR, endYear: END_YEAR };
-    const cached = loadCachedLausData(seriesIds);
-    if (cached) {
-      console.warn("  BLS returned no LAUS observations; using cached LAUS series from data/state-labor.json.");
+    if (hasCompleteSeriesData(seriesById, seriesIds, cached?.seriesById)) {
+      return { seriesById, startYear: START_YEAR, endYear: END_YEAR };
+    }
+    if (cached && hasCompleteSeriesData(cached.seriesById, seriesIds)) {
+      const received = Object.values(seriesById).filter(
+        (series) => Array.isArray(series) && series.length > 0,
+      ).length;
+      console.warn(
+        `  BLS returned only ${received}/${seriesIds.length} complete LAUS series; ` +
+        "using cached LAUS series from data/state-labor.json.",
+      );
       return cached;
     }
-    return { seriesById, startYear: START_YEAR, endYear: END_YEAR };
+    throw new Error(
+      `BLS returned incomplete LAUS coverage and no complete cache was available ` +
+      `(${Object.values(seriesById).filter((series) => Array.isArray(series) && series.length > 0).length}/${seriesIds.length} series)`,
+    );
   } catch (err) {
     if (END_YEAR > START_YEAR && /year/i.test(err.message)) {
       const fallbackEndYear = END_YEAR - 1;
@@ -452,26 +498,20 @@ async function fetchLausData(seriesIds) {
         `  BLS rejected ${START_YEAR}–${END_YEAR} (${err.message}); retrying ${fallbackStartYear}–${fallbackEndYear}`,
       );
       const seriesById = await fetchAll(seriesIds, fallbackStartYear, fallbackEndYear);
-      if (hasAnySeriesData(seriesById)) {
+      if (hasCompleteSeriesData(seriesById, seriesIds, cached?.seriesById)) {
         return {
           seriesById,
           startYear: fallbackStartYear,
           endYear: fallbackEndYear,
         };
       }
-      const cached = loadCachedLausData(seriesIds);
-      if (cached) {
-        console.warn("  BLS fallback returned no LAUS observations; using cached LAUS series from data/state-labor.json.");
+      if (cached && hasCompleteSeriesData(cached.seriesById, seriesIds)) {
+        console.warn("  BLS fallback returned incomplete LAUS coverage; using cached LAUS series from data/state-labor.json.");
         return cached;
       }
-      return {
-        seriesById,
-        startYear: fallbackStartYear,
-        endYear: fallbackEndYear,
-      };
+      throw new Error("BLS fallback returned incomplete LAUS coverage and no complete cache was available.");
     }
-    const cached = loadCachedLausData(seriesIds);
-    if (cached) {
+    if (cached && hasCompleteSeriesData(cached.seriesById, seriesIds)) {
       console.warn(`  BLS LAUS fetch failed (${err.message}); using cached LAUS series from data/state-labor.json.`);
       return cached;
     }
@@ -542,9 +582,17 @@ async function main() {
       Boolean(coverage.recordsIncluded) &&
       Number(coverage.notices ?? 0) > 0 &&
       !coverageDateRangeHasDates(coverage.dateRange);
+    const freshWarnCoverage =
+      isCurrentMachineReadableWarnCoverage(coverageStatus) && coverage.buildStatus === "ok";
     const rankEligible =
-      isCurrentMachineReadableWarnCoverage(coverageStatus) && Boolean(laborForce && laborForce > 0) && hasWarnWindowOverlap;
-    const ineligibleReason = rankIneligibleReason(coverageStatus, laborForce, hasWarnWindowOverlap, lacksNoticeDates);
+      freshWarnCoverage && Boolean(laborForce && laborForce > 0) && hasWarnWindowOverlap;
+    const ineligibleReason = rankIneligibleReason(
+      coverageStatus,
+      coverage.buildStatus,
+      laborForce,
+      hasWarnWindowOverlap,
+      lacksNoticeDates,
+    );
 
     return {
       state: stateInfo.state,
@@ -571,6 +619,9 @@ async function main() {
         notices: coverage.notices ?? 0,
         dateRange: coverage.dateRange ?? null,
         buildStatus: coverage.buildStatus ?? null,
+        dataFreshness: coverage.dataFreshness ?? null,
+        preservedGeneratedAt: coverage.preservedGeneratedAt ?? null,
+        preservationReason: coverage.preservationReason ?? null,
         adapter: coverage.adapter ?? null,
         name: coverage.name ?? null,
         publisher: coverage.publisher ?? null,
@@ -578,7 +629,7 @@ async function main() {
         notes: coverage.notes ?? null,
         error: coverage.error ?? null,
       },
-      coverageUnavailable: !isCurrentMachineReadableWarnCoverage(coverageStatus),
+      coverageUnavailable: !freshWarnCoverage,
       rankEligible,
       rankStatus: rankEligible ? "ranked" : "not-ranked",
       rankIneligibleReason: ineligibleReason,
@@ -589,9 +640,9 @@ async function main() {
         warnEmployeesPer10kLaborForce: null,
         unemploymentRateYoYDelta: null,
       },
-      warnEmployees12m: isCurrentMachineReadableWarnCoverage(coverageStatus) ? totals.employees : null,
-      warnNotices12m: isCurrentMachineReadableWarnCoverage(coverageStatus) ? totals.notices : null,
-      warnEmployeesPer10kLaborForce: isCurrentMachineReadableWarnCoverage(coverageStatus) ? round(warnRateRaw, 2) : null,
+      warnEmployees12m: rankEligible ? totals.employees : null,
+      warnNotices12m: rankEligible ? totals.notices : null,
+      warnEmployeesPer10kLaborForce: rankEligible ? round(warnRateRaw, 2) : null,
       series: {
         ...stateSeries,
         warn: buildWarnMonthlySeries(
@@ -613,12 +664,15 @@ async function main() {
   );
 
   for (const state of eligible) {
-    const warnPct = warnPercentile(state._warnRateRaw);
-    const yoyPct = state.unemploymentRateYoYDelta == null ? 0 : yoyPercentile(state.unemploymentRateYoYDelta);
+    const warnPct = round(warnPercentile(state._warnRateRaw), 2);
+    const yoyPct =
+      state.unemploymentRateYoYDelta == null
+        ? 0
+        : round(yoyPercentile(state.unemploymentRateYoYDelta), 2);
     const score = Math.round(0.7 * warnPct + 0.3 * yoyPct);
     state.pressurePercentiles = {
-      warnEmployeesPer10kLaborForce: round(warnPct, 2),
-      unemploymentRateYoYDelta: state.unemploymentRateYoYDelta == null ? null : round(yoyPct, 2),
+      warnEmployeesPer10kLaborForce: warnPct,
+      unemploymentRateYoYDelta: state.unemploymentRateYoYDelta == null ? null : yoyPct,
     };
     state.pressureScore = score;
     state.pressureLevel = pressureLevel(score);
@@ -646,6 +700,7 @@ async function main() {
 
   const output = {
     generatedAt: new Date().toISOString(),
+    asOf: latestMonth,
     source: {
       name: "BLS Local Area Unemployment Statistics",
       publisher: "U.S. Bureau of Labor Statistics",

@@ -26,9 +26,9 @@
  *                                 OEWS data already committed. The committed occupation-snapshot
  *                                 is the safe read-only seed for all downstream derived builders.
  *
- * Wisconsin WARN data (build-warn.mjs) requires GOOGLE_SHEETS_API_KEY, but
- * the builder preserves the last-known-good WI records when the key is absent;
- * all other states are still refreshed and WI records are not dropped.
+ * WARN builders preserve last-known-good records when a live state source is
+ * temporarily unavailable. Wisconsin also uses this path when
+ * GOOGLE_SHEETS_API_KEY is absent.
  *
  * build-ai-company-stocks.mjs uses AI_COMPANY_STOCKS_BOOTSTRAP_YAHOO=1 to
  * fetch from Yahoo Finance (unofficial/undocumented). Without the flag it
@@ -68,7 +68,7 @@ export const MANIFEST = [
     id: "warn",
     script: "scripts/build-warn.mjs",
     note:
-      "Multi-state WARN Act notices; WI preserves last-known-good records without GOOGLE_SHEETS_API_KEY",
+      "Multi-state WARN Act notices; failed live sources preserve last-known-good records",
   },
   {
     id: "state-labor",
