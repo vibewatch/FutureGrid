@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T01:01:40.298Z",
+  "generatedAt": "2026-09-14T06:10:41.265Z",
   "source": {
     "name": "Epoch AI — Notable AI Models",
     "publisher": "Epoch AI",
@@ -7,7 +7,7 @@
     "downloadUrl": "https://epoch.ai/data/notable_ai_models.csv",
     "docsUrl": "https://epoch.ai/data/ai-models-documentation",
     "license": "CC BY 4.0",
-    "accessed": "2026-09-08",
+    "accessed": "2026-09-14",
     "caveat": "Training-compute figures are Epoch AI estimates with varying confidence; not all models report compute/cost/power."
   },
   "methodology": {
@@ -18,8 +18,8 @@
     "notes": "Descriptive historical trends only — not a forecast.",
     "recentWindow": {
       "years": 3,
-      "start": "2023-09-03",
-      "end": "2026-09-03"
+      "start": "2023-09-08",
+      "end": "2026-09-08"
     }
   },
   "definitions": {
@@ -32,17 +32,17 @@
     "coverageNote": "Coverage is Epoch AI's 'Notable AI Models' curation — not an exhaustive registry. Labs without compute disclosure and newer open-source releases may be underrepresented in the compute-known subset."
   },
   "counts": {
-    "totalRows": 1058,
-    "withDate": 1058,
+    "totalRows": 1065,
+    "withDate": 1065,
     "withCompute": 537,
     "withComputeAndDate": 537,
     "withPower": 218,
     "withCost": 180,
     "withOpenWeights": 338,
     "countries": 35,
-    "recentWindowStart": "2023-09-03",
-    "recentWindowEnd": "2026-09-03",
-    "recentWindowCount": 326
+    "recentWindowStart": "2023-09-08",
+    "recentWindowEnd": "2026-09-08",
+    "recentWindowCount": 332
   },
   "models": [
     {
@@ -14807,13 +14807,13 @@
         "organization": "OpenAI",
         "orgCategory": "Industry",
         "country": "United States",
-        "modelCount": 69,
+        "modelCount": 73,
         "computeKnownCount": 22,
         "frontierCount": 7,
-        "recentCount": 46,
+        "recentCount": 50,
         "openWeightsCount": 8,
         "maxComputeFlop": 3.8e+26,
-        "latestDate": "2026-09-03",
+        "latestDate": "2026-09-08",
         "medianLog10Compute": 22.846
       },
       {
@@ -14846,10 +14846,10 @@
         "organization": "Alibaba",
         "orgCategory": "Industry",
         "country": "China",
-        "modelCount": 33,
+        "modelCount": 34,
         "computeKnownCount": 16,
         "frontierCount": 0,
-        "recentCount": 29,
+        "recentCount": 30,
         "openWeightsCount": 23,
         "maxComputeFlop": 1.512e+25,
         "latestDate": "2026-08-08",
@@ -14885,10 +14885,10 @@
         "organization": "Anthropic",
         "orgCategory": "Industry",
         "country": "United States",
-        "modelCount": 18,
+        "modelCount": 19,
         "computeKnownCount": 3,
         "frontierCount": 2,
-        "recentCount": 16,
+        "recentCount": 17,
         "openWeightsCount": 0,
         "maxComputeFlop": 3.35e+25,
         "latestDate": "2026-07-24",
@@ -15069,22 +15069,22 @@
         "country": "United States",
         "countryShort": "United States",
         "iso3": "USA",
-        "modelCount": 680,
+        "modelCount": 686,
         "computeKnownCount": 331,
         "frontierCount": 77,
-        "recentCount": 192,
+        "recentCount": 198,
         "openWeightsCount": 202,
         "maxComputeFlop": 5.0000000000001e+26,
-        "orgCount": 280
+        "orgCount": 281
       },
       {
         "country": "China",
         "countryShort": "China",
         "iso3": "CHN",
-        "modelCount": 185,
+        "modelCount": 186,
         "computeKnownCount": 101,
         "frontierCount": 4,
-        "recentCount": 105,
+        "recentCount": 106,
         "openWeightsCount": 99,
         "maxComputeFlop": 2.505e+25,
         "orgCount": 91
@@ -15246,18 +15246,6 @@
         "orgCount": 4
       },
       {
-        "country": "UAE",
-        "countryShort": "UAE",
-        "iso3": "ARE",
-        "modelCount": 3,
-        "computeKnownCount": 3,
-        "frontierCount": 1,
-        "recentCount": 1,
-        "openWeightsCount": 3,
-        "maxComputeFlop": 3.76e+24,
-        "orgCount": 2
-      },
-      {
         "country": "Netherlands",
         "countryShort": "Netherlands",
         "iso3": "NLD",
@@ -15304,6 +15292,18 @@
         "openWeightsCount": 1,
         "maxComputeFlop": 4531200000,
         "orgCount": 3
+      },
+      {
+        "country": "UAE",
+        "countryShort": "UAE",
+        "iso3": "ARE",
+        "modelCount": 3,
+        "computeKnownCount": 3,
+        "frontierCount": 1,
+        "recentCount": 0,
+        "openWeightsCount": 3,
+        "maxComputeFlop": 3.76e+24,
+        "orgCount": 2
       },
       {
         "country": "Belgium",
@@ -15493,7 +15493,7 @@
     },
     "fullCatalogAccessibilityMix": {
       "openWeights": 338,
-      "closed": 469,
+      "closed": 476,
       "unknown": 251
     },
     "domainMix": [
@@ -15578,8 +15578,8 @@
     "openWeightsCount is a proxy for tracked open-release activity only."
   ],
   "meta": {
-    "generatedAt": "2026-09-08T01:01:40.298Z",
-    "asOf": "2026-09-08",
+    "generatedAt": "2026-09-14T06:10:41.265Z",
+    "asOf": "2026-09-14",
     "source": {
       "name": "Epoch AI — Notable AI Models",
       "publisher": "Epoch AI",

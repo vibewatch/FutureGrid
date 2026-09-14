@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T01:14:40.365Z",
+  "generatedAt": "2026-09-14T06:10:25.091Z",
   "source": {
     "name": "Yahoo Finance chart JSON endpoint",
     "endpointTemplate": "https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?period1={unixStart}&period2={unixEnd}&interval=1d&events=history&includeAdjustedClose=true",
@@ -206,22 +206,22 @@
         "close": 767.05
       },
       {
-        "date": "2026-09-04",
-        "close": 770.19
+        "date": "2026-09-11",
+        "close": 764.29
       }
     ],
     "metrics": {
       "startDate": "2022-11-30",
-      "latestDate": "2026-09-04",
-      "totalReturn": 0.984846,
+      "latestDate": "2026-09-11",
+      "totalReturn": 0.969641,
       "benchmarkReturn": null,
       "excessReturn": null,
-      "annualizedVolatility": 0.150295,
+      "annualizedVolatility": 0.150131,
       "maxDrawdown": -0.187552,
-      "latestClose": 770.19,
-      "observationCount": 944,
-      "ytdReturn": 0.133368,
-      "oneYearReturn": 0.199661
+      "latestClose": 764.29,
+      "observationCount": 948,
+      "ytdReturn": 0.124686,
+      "oneYearReturn": 0.175066
     },
     "dataQualityNotes": [
       "Yahoo SPY chart observations use adjusted close when available.",
@@ -427,22 +427,22 @@
           "close": 111.46
         },
         {
-          "date": "2026-09-04",
-          "close": 112.03
+          "date": "2026-09-11",
+          "close": 112.6
         }
       ],
       "metrics": {
         "startDate": "2022-11-30",
-        "latestDate": "2026-09-04",
-        "totalReturn": 1.265045,
-        "benchmarkReturn": 0.984846,
-        "excessReturn": 0.280199,
-        "annualizedVolatility": 0.178786,
+        "latestDate": "2026-09-11",
+        "totalReturn": 1.276569,
+        "benchmarkReturn": 0.969641,
+        "excessReturn": 0.306928,
+        "annualizedVolatility": 0.178546,
         "maxDrawdown": -0.179708,
-        "latestClose": 112.03,
-        "observationCount": 944,
-        "ytdReturn": -0.0361,
-        "oneYearReturn": -0.00562
+        "latestClose": 112.6,
+        "observationCount": 948,
+        "ytdReturn": -0.031196,
+        "oneYearReturn": -0.020312
       },
       "marketAiSensitivityScore": 99.5,
       "classification": "High descriptive sensitivity",
@@ -454,7 +454,7 @@
       },
       "dataQualityNotes": [
         "Yahoo XLC chart observations use adjusted close when available.",
-        "Metrics use 944 daily observations; prices are monthly downsampled for UI size.",
+        "Metrics use 948 daily observations; prices are monthly downsampled for UI size.",
         "Occupation mapping covers 54 occupations across 3 FutureGrid sector label(s).",
         "Sparse/coarse occupation mapping; interpret exposure alignment with extra caution."
       ]
@@ -659,22 +659,22 @@
           "close": 186.5
         },
         {
-          "date": "2026-09-04",
-          "close": 187.28
+          "date": "2026-09-11",
+          "close": 187.67
         }
       ],
       "metrics": {
         "startDate": "2022-11-30",
-        "latestDate": "2026-09-04",
-        "totalReturn": 1.830272,
-        "benchmarkReturn": 0.984846,
-        "excessReturn": 0.845426,
-        "annualizedVolatility": 0.241921,
+        "latestDate": "2026-09-11",
+        "totalReturn": 1.836165,
+        "benchmarkReturn": 0.969641,
+        "excessReturn": 0.866524,
+        "annualizedVolatility": 0.241621,
         "maxDrawdown": -0.256563,
-        "latestClose": 187.28,
-        "observationCount": 944,
-        "ytdReturn": 0.301015,
-        "oneYearReturn": 0.433619
+        "latestClose": 187.67,
+        "observationCount": 948,
+        "ytdReturn": 0.303724,
+        "oneYearReturn": 0.391979
       },
       "marketAiSensitivityScore": 94.6,
       "classification": "High descriptive sensitivity",
@@ -686,7 +686,7 @@
       },
       "dataQualityNotes": [
         "Yahoo XLK chart observations use adjusted close when available.",
-        "Metrics use 944 daily observations; prices are monthly downsampled for UI size.",
+        "Metrics use 948 daily observations; prices are monthly downsampled for UI size.",
         "Occupation mapping covers 101 occupations across 5 FutureGrid sector label(s)."
       ]
     },
@@ -890,22 +890,22 @@
           "close": 57.71
         },
         {
-          "date": "2026-09-04",
-          "close": 58.1
+          "date": "2026-09-11",
+          "close": 57.25
         }
       ],
       "metrics": {
         "startDate": "2022-11-30",
-        "latestDate": "2026-09-04",
-        "totalReturn": 0.704346,
-        "benchmarkReturn": 0.984846,
-        "excessReturn": -0.2805,
-        "annualizedVolatility": 0.16356,
+        "latestDate": "2026-09-11",
+        "totalReturn": 0.679412,
+        "benchmarkReturn": 0.969641,
+        "excessReturn": -0.290229,
+        "annualizedVolatility": 0.163445,
         "maxDrawdown": -0.162703,
-        "latestClose": 58.1,
-        "observationCount": 944,
-        "ytdReturn": 0.066871,
-        "oneYearReturn": 0.09141
+        "latestClose": 57.25,
+        "observationCount": 948,
+        "ytdReturn": 0.051263,
+        "oneYearReturn": 0.07604
       },
       "marketAiSensitivityScore": 35,
       "classification": "Low descriptive sensitivity",
@@ -917,7 +917,7 @@
       },
       "dataQualityNotes": [
         "Yahoo XLF chart observations use adjusted close when available.",
-        "Metrics use 944 daily observations; prices are monthly downsampled for UI size.",
+        "Metrics use 948 daily observations; prices are monthly downsampled for UI size.",
         "Occupation mapping covers 121 occupations across 5 FutureGrid sector label(s)."
       ]
     },
@@ -1122,22 +1122,22 @@
           "close": 44.11
         },
         {
-          "date": "2026-09-04",
-          "close": 43.93
+          "date": "2026-09-11",
+          "close": 43.42
         }
       ],
       "metrics": {
         "startDate": "2022-11-30",
-        "latestDate": "2026-09-04",
-        "totalReturn": 0.275364,
-        "benchmarkReturn": 0.984846,
-        "excessReturn": -0.709482,
-        "annualizedVolatility": 0.173921,
+        "latestDate": "2026-09-11",
+        "totalReturn": 0.260558,
+        "benchmarkReturn": 0.969641,
+        "excessReturn": -0.709083,
+        "annualizedVolatility": 0.173763,
         "maxDrawdown": -0.211289,
-        "latestClose": 43.93,
-        "observationCount": 944,
-        "ytdReturn": 0.104824,
-        "oneYearReturn": 0.088233
+        "latestClose": 43.42,
+        "observationCount": 948,
+        "ytdReturn": 0.091998,
+        "oneYearReturn": 0.055877
       },
       "marketAiSensitivityScore": 27.1,
       "classification": "Low descriptive sensitivity",
@@ -1149,7 +1149,7 @@
       },
       "dataQualityNotes": [
         "Yahoo XLRE chart observations use adjusted close when available.",
-        "Metrics use 944 daily observations; prices are monthly downsampled for UI size.",
+        "Metrics use 948 daily observations; prices are monthly downsampled for UI size.",
         "Occupation mapping covers 169 occupations across 6 FutureGrid sector label(s)."
       ]
     },
@@ -1355,22 +1355,22 @@
           "close": 116.59
         },
         {
-          "date": "2026-09-04",
-          "close": 114.91
+          "date": "2026-09-11",
+          "close": 112.96
         }
       ],
       "metrics": {
         "startDate": "2022-11-30",
-        "latestDate": "2026-09-04",
-        "totalReturn": 0.62381,
-        "benchmarkReturn": 0.984846,
-        "excessReturn": -0.361036,
-        "annualizedVolatility": 0.209306,
+        "latestDate": "2026-09-11",
+        "totalReturn": 0.596254,
+        "benchmarkReturn": 0.969641,
+        "excessReturn": -0.373387,
+        "annualizedVolatility": 0.209095,
         "maxDrawdown": -0.260074,
-        "latestClose": 114.91,
-        "observationCount": 944,
-        "ytdReturn": -0.025177,
-        "oneYearReturn": -0.015115
+        "latestClose": 112.96,
+        "observationCount": 948,
+        "ytdReturn": -0.04172,
+        "oneYearReturn": -0.040963
       },
       "marketAiSensitivityScore": 15.9,
       "classification": "Low descriptive sensitivity",
@@ -1382,8 +1382,239 @@
       },
       "dataQualityNotes": [
         "Yahoo XLY chart observations use adjusted close when available.",
-        "Metrics use 944 daily observations; prices are monthly downsampled for UI size.",
+        "Metrics use 948 daily observations; prices are monthly downsampled for UI size.",
         "Occupation mapping covers 119 occupations across 7 FutureGrid sector label(s)."
+      ]
+    },
+    {
+      "id": "xlp",
+      "name": "Consumer Staples",
+      "ticker": "XLP",
+      "mappedOccupationSectors": [
+        "Farming, Fishing, and Forestry",
+        "Food Preparation",
+        "Food Preparation and Serving Related",
+        "Production",
+        "Sales and Related"
+      ],
+      "mappedOccupationCount": 144,
+      "mappedEmployment": 32643020,
+      "employmentWeightedAIExposure": 0.10645,
+      "prices": [
+        {
+          "date": "2022-11-30",
+          "close": 69.81
+        },
+        {
+          "date": "2022-12-30",
+          "close": 67.9
+        },
+        {
+          "date": "2023-01-31",
+          "close": 67.17
+        },
+        {
+          "date": "2023-02-28",
+          "close": 65.61
+        },
+        {
+          "date": "2023-03-31",
+          "close": 68.38
+        },
+        {
+          "date": "2023-04-28",
+          "close": 70.88
+        },
+        {
+          "date": "2023-05-31",
+          "close": 66.51
+        },
+        {
+          "date": "2023-06-30",
+          "close": 68.36
+        },
+        {
+          "date": "2023-07-31",
+          "close": 69.82
+        },
+        {
+          "date": "2023-08-31",
+          "close": 67.07
+        },
+        {
+          "date": "2023-09-29",
+          "close": 63.85
+        },
+        {
+          "date": "2023-10-31",
+          "close": 62.97
+        },
+        {
+          "date": "2023-11-30",
+          "close": 65.57
+        },
+        {
+          "date": "2023-12-29",
+          "close": 67.35
+        },
+        {
+          "date": "2024-01-31",
+          "close": 68.18
+        },
+        {
+          "date": "2024-02-29",
+          "close": 69.61
+        },
+        {
+          "date": "2024-03-28",
+          "close": 71.92
+        },
+        {
+          "date": "2024-04-30",
+          "close": 71.11
+        },
+        {
+          "date": "2024-05-31",
+          "close": 72.85
+        },
+        {
+          "date": "2024-06-28",
+          "close": 72.68
+        },
+        {
+          "date": "2024-07-31",
+          "close": 73.88
+        },
+        {
+          "date": "2024-08-30",
+          "close": 78.3
+        },
+        {
+          "date": "2024-09-30",
+          "close": 79.19
+        },
+        {
+          "date": "2024-10-31",
+          "close": 76.44
+        },
+        {
+          "date": "2024-11-29",
+          "close": 79.4
+        },
+        {
+          "date": "2024-12-31",
+          "close": 75.57
+        },
+        {
+          "date": "2025-01-31",
+          "close": 75.92
+        },
+        {
+          "date": "2025-02-28",
+          "close": 79.86
+        },
+        {
+          "date": "2025-03-31",
+          "close": 78.92
+        },
+        {
+          "date": "2025-04-30",
+          "close": 79.08
+        },
+        {
+          "date": "2025-05-30",
+          "close": 80.05
+        },
+        {
+          "date": "2025-06-30",
+          "close": 78.78
+        },
+        {
+          "date": "2025-07-31",
+          "close": 77.63
+        },
+        {
+          "date": "2025-08-29",
+          "close": 78.6
+        },
+        {
+          "date": "2025-09-30",
+          "close": 76.78
+        },
+        {
+          "date": "2025-10-31",
+          "close": 74.73
+        },
+        {
+          "date": "2025-11-28",
+          "close": 77.76
+        },
+        {
+          "date": "2025-12-31",
+          "close": 76.71
+        },
+        {
+          "date": "2026-01-30",
+          "close": 82.47
+        },
+        {
+          "date": "2026-02-27",
+          "close": 88.89
+        },
+        {
+          "date": "2026-03-31",
+          "close": 81.42
+        },
+        {
+          "date": "2026-04-30",
+          "close": 83.73
+        },
+        {
+          "date": "2026-05-29",
+          "close": 82.34
+        },
+        {
+          "date": "2026-06-30",
+          "close": 83.07
+        },
+        {
+          "date": "2026-07-31",
+          "close": 85.05
+        },
+        {
+          "date": "2026-08-31",
+          "close": 84.98
+        },
+        {
+          "date": "2026-09-11",
+          "close": 83.38
+        }
+      ],
+      "metrics": {
+        "startDate": "2022-11-30",
+        "latestDate": "2026-09-11",
+        "totalReturn": 0.194404,
+        "benchmarkReturn": 0.969641,
+        "excessReturn": -0.775237,
+        "annualizedVolatility": 0.125636,
+        "maxDrawdown": -0.133655,
+        "latestClose": 83.38,
+        "observationCount": 948,
+        "ytdReturn": 0.086769,
+        "oneYearReturn": 0.063314
+      },
+      "marketAiSensitivityScore": 12.2,
+      "classification": "Low descriptive sensitivity",
+      "scoreComponents": {
+        "normalizedExcessReturn": 0,
+        "normalizedAIExposure": 0.3487,
+        "excessReturnWeight": 0.65,
+        "aiExposureWeight": 0.35
+      },
+      "dataQualityNotes": [
+        "Yahoo XLP chart observations use adjusted close when available.",
+        "Metrics use 948 daily observations; prices are monthly downsampled for UI size.",
+        "Occupation mapping covers 144 occupations across 5 FutureGrid sector label(s)."
       ]
     },
     {
@@ -1590,266 +1821,35 @@
           "close": 175.13
         },
         {
-          "date": "2026-09-04",
-          "close": 175.27
+          "date": "2026-09-11",
+          "close": 172.37
         }
       ],
       "metrics": {
         "startDate": "2022-11-30",
-        "latestDate": "2026-09-04",
-        "totalReturn": 0.82241,
-        "benchmarkReturn": 0.984846,
-        "excessReturn": -0.162436,
-        "annualizedVolatility": 0.164564,
+        "latestDate": "2026-09-11",
+        "totalReturn": 0.792256,
+        "benchmarkReturn": 0.969641,
+        "excessReturn": -0.177385,
+        "annualizedVolatility": 0.164573,
         "maxDrawdown": -0.184907,
-        "latestClose": 175.27,
-        "observationCount": 944,
-        "ytdReturn": 0.115299,
-        "oneYearReturn": 0.171885
+        "latestClose": 172.37,
+        "observationCount": 948,
+        "ytdReturn": 0.096845,
+        "oneYearReturn": 0.142614
       },
-      "marketAiSensitivityScore": 13.8,
+      "marketAiSensitivityScore": 11.8,
       "classification": "Low descriptive sensitivity",
       "scoreComponents": {
-        "normalizedExcessReturn": 0.1751,
+        "normalizedExcessReturn": 0.1452,
         "normalizedAIExposure": 0.0689,
         "excessReturnWeight": 0.65,
         "aiExposureWeight": 0.35
       },
       "dataQualityNotes": [
         "Yahoo XLI chart observations use adjusted close when available.",
-        "Metrics use 944 daily observations; prices are monthly downsampled for UI size.",
+        "Metrics use 948 daily observations; prices are monthly downsampled for UI size.",
         "Occupation mapping covers 338 occupations across 9 FutureGrid sector label(s)."
-      ]
-    },
-    {
-      "id": "xlp",
-      "name": "Consumer Staples",
-      "ticker": "XLP",
-      "mappedOccupationSectors": [
-        "Farming, Fishing, and Forestry",
-        "Food Preparation",
-        "Food Preparation and Serving Related",
-        "Production",
-        "Sales and Related"
-      ],
-      "mappedOccupationCount": 144,
-      "mappedEmployment": 32643020,
-      "employmentWeightedAIExposure": 0.10645,
-      "prices": [
-        {
-          "date": "2022-11-30",
-          "close": 69.81
-        },
-        {
-          "date": "2022-12-30",
-          "close": 67.9
-        },
-        {
-          "date": "2023-01-31",
-          "close": 67.17
-        },
-        {
-          "date": "2023-02-28",
-          "close": 65.61
-        },
-        {
-          "date": "2023-03-31",
-          "close": 68.38
-        },
-        {
-          "date": "2023-04-28",
-          "close": 70.88
-        },
-        {
-          "date": "2023-05-31",
-          "close": 66.51
-        },
-        {
-          "date": "2023-06-30",
-          "close": 68.36
-        },
-        {
-          "date": "2023-07-31",
-          "close": 69.82
-        },
-        {
-          "date": "2023-08-31",
-          "close": 67.07
-        },
-        {
-          "date": "2023-09-29",
-          "close": 63.85
-        },
-        {
-          "date": "2023-10-31",
-          "close": 62.97
-        },
-        {
-          "date": "2023-11-30",
-          "close": 65.57
-        },
-        {
-          "date": "2023-12-29",
-          "close": 67.35
-        },
-        {
-          "date": "2024-01-31",
-          "close": 68.18
-        },
-        {
-          "date": "2024-02-29",
-          "close": 69.61
-        },
-        {
-          "date": "2024-03-28",
-          "close": 71.92
-        },
-        {
-          "date": "2024-04-30",
-          "close": 71.11
-        },
-        {
-          "date": "2024-05-31",
-          "close": 72.85
-        },
-        {
-          "date": "2024-06-28",
-          "close": 72.68
-        },
-        {
-          "date": "2024-07-31",
-          "close": 73.88
-        },
-        {
-          "date": "2024-08-30",
-          "close": 78.3
-        },
-        {
-          "date": "2024-09-30",
-          "close": 79.19
-        },
-        {
-          "date": "2024-10-31",
-          "close": 76.44
-        },
-        {
-          "date": "2024-11-29",
-          "close": 79.4
-        },
-        {
-          "date": "2024-12-31",
-          "close": 75.57
-        },
-        {
-          "date": "2025-01-31",
-          "close": 75.92
-        },
-        {
-          "date": "2025-02-28",
-          "close": 79.86
-        },
-        {
-          "date": "2025-03-31",
-          "close": 78.92
-        },
-        {
-          "date": "2025-04-30",
-          "close": 79.08
-        },
-        {
-          "date": "2025-05-30",
-          "close": 80.05
-        },
-        {
-          "date": "2025-06-30",
-          "close": 78.78
-        },
-        {
-          "date": "2025-07-31",
-          "close": 77.63
-        },
-        {
-          "date": "2025-08-29",
-          "close": 78.6
-        },
-        {
-          "date": "2025-09-30",
-          "close": 76.78
-        },
-        {
-          "date": "2025-10-31",
-          "close": 74.73
-        },
-        {
-          "date": "2025-11-28",
-          "close": 77.76
-        },
-        {
-          "date": "2025-12-31",
-          "close": 76.71
-        },
-        {
-          "date": "2026-01-30",
-          "close": 82.47
-        },
-        {
-          "date": "2026-02-27",
-          "close": 88.89
-        },
-        {
-          "date": "2026-03-31",
-          "close": 81.42
-        },
-        {
-          "date": "2026-04-30",
-          "close": 83.73
-        },
-        {
-          "date": "2026-05-29",
-          "close": 82.34
-        },
-        {
-          "date": "2026-06-30",
-          "close": 83.07
-        },
-        {
-          "date": "2026-07-31",
-          "close": 85.05
-        },
-        {
-          "date": "2026-08-31",
-          "close": 84.98
-        },
-        {
-          "date": "2026-09-04",
-          "close": 84.58
-        }
-      ],
-      "metrics": {
-        "startDate": "2022-11-30",
-        "latestDate": "2026-09-04",
-        "totalReturn": 0.211594,
-        "benchmarkReturn": 0.984846,
-        "excessReturn": -0.773252,
-        "annualizedVolatility": 0.125693,
-        "maxDrawdown": -0.133655,
-        "latestClose": 84.58,
-        "observationCount": 944,
-        "ytdReturn": 0.10241,
-        "oneYearReturn": 0.077949
-      },
-      "marketAiSensitivityScore": 12.2,
-      "classification": "Low descriptive sensitivity",
-      "scoreComponents": {
-        "normalizedExcessReturn": 0,
-        "normalizedAIExposure": 0.3487,
-        "excessReturnWeight": 0.65,
-        "aiExposureWeight": 0.35
-      },
-      "dataQualityNotes": [
-        "Yahoo XLP chart observations use adjusted close when available.",
-        "Metrics use 944 daily observations; prices are monthly downsampled for UI size.",
-        "Occupation mapping covers 144 occupations across 5 FutureGrid sector label(s)."
       ]
     },
     {
@@ -2051,22 +2051,22 @@
           "close": 170.54
         },
         {
-          "date": "2026-09-04",
-          "close": 171.45
+          "date": "2026-09-11",
+          "close": 165.36
         }
       ],
       "metrics": {
         "startDate": "2022-11-30",
-        "latestDate": "2026-09-04",
-        "totalReturn": 0.31264,
-        "benchmarkReturn": 0.984846,
-        "excessReturn": -0.672206,
-        "annualizedVolatility": 0.141843,
+        "latestDate": "2026-09-11",
+        "totalReturn": 0.266015,
+        "benchmarkReturn": 0.969641,
+        "excessReturn": -0.703626,
+        "annualizedVolatility": 0.142215,
         "maxDrawdown": -0.17109,
-        "latestClose": 171.45,
-        "observationCount": 944,
-        "ytdReturn": 0.111916,
-        "oneYearReturn": 0.269334
+        "latestClose": 165.36,
+        "observationCount": 948,
+        "ytdReturn": 0.07242,
+        "oneYearReturn": 0.204181
       },
       "marketAiSensitivityScore": 3.2,
       "classification": "Low descriptive sensitivity",
@@ -2078,7 +2078,7 @@
       },
       "dataQualityNotes": [
         "Yahoo XLV chart observations use adjusted close when available.",
-        "Metrics use 944 daily observations; prices are monthly downsampled for UI size.",
+        "Metrics use 948 daily observations; prices are monthly downsampled for UI size.",
         "Occupation mapping covers 93 occupations across 4 FutureGrid sector label(s)."
       ]
     },
@@ -2282,22 +2282,22 @@
           "close": 63.96
         },
         {
-          "date": "2026-09-04",
-          "close": 64.06
+          "date": "2026-09-11",
+          "close": 65.14
         }
       ],
       "metrics": {
         "startDate": "2022-11-30",
-        "latestDate": "2026-09-04",
-        "totalReturn": 0.59353,
-        "benchmarkReturn": 0.984846,
-        "excessReturn": -0.391316,
-        "annualizedVolatility": 0.224631,
+        "latestDate": "2026-09-11",
+        "totalReturn": 0.620396,
+        "benchmarkReturn": 0.969641,
+        "excessReturn": -0.349245,
+        "annualizedVolatility": 0.224285,
         "maxDrawdown": -0.201373,
-        "latestClose": 64.06,
-        "observationCount": 944,
-        "ytdReturn": 0.422641,
-        "oneYearReturn": 0.483073
+        "latestClose": 65.14,
+        "observationCount": 948,
+        "ytdReturn": 0.446625,
+        "oneYearReturn": 0.507231
       },
       "marketAiSensitivityScore": 0.6,
       "classification": "Low descriptive sensitivity",
@@ -2309,7 +2309,7 @@
       },
       "dataQualityNotes": [
         "Yahoo XLE chart observations use adjusted close when available.",
-        "Metrics use 944 daily observations; prices are monthly downsampled for UI size.",
+        "Metrics use 948 daily observations; prices are monthly downsampled for UI size.",
         "Occupation mapping covers 186 occupations across 5 FutureGrid sector label(s)."
       ]
     },
@@ -2513,22 +2513,22 @@
           "close": 42.23
         },
         {
-          "date": "2026-09-04",
-          "close": 43.08
+          "date": "2026-09-11",
+          "close": 42.39
         }
       ],
       "metrics": {
         "startDate": "2022-11-30",
-        "latestDate": "2026-09-04",
-        "totalReturn": 0.351477,
-        "benchmarkReturn": 0.984846,
-        "excessReturn": -0.633369,
-        "annualizedVolatility": 0.163606,
+        "latestDate": "2026-09-11",
+        "totalReturn": 0.329831,
+        "benchmarkReturn": 0.969641,
+        "excessReturn": -0.63981,
+        "annualizedVolatility": 0.163528,
         "maxDrawdown": -0.201975,
-        "latestClose": 43.08,
-        "observationCount": 944,
-        "ytdReturn": 0.011075,
-        "oneYearReturn": 0.057718
+        "latestClose": 42.39,
+        "observationCount": 948,
+        "ytdReturn": -0.005119,
+        "oneYearReturn": 0.024383
       },
       "marketAiSensitivityScore": 0.6,
       "classification": "Low descriptive sensitivity",
@@ -2540,7 +2540,7 @@
       },
       "dataQualityNotes": [
         "Yahoo XLU chart observations use adjusted close when available.",
-        "Metrics use 944 daily observations; prices are monthly downsampled for UI size.",
+        "Metrics use 948 daily observations; prices are monthly downsampled for UI size.",
         "Occupation mapping covers 186 occupations across 5 FutureGrid sector label(s)."
       ]
     },
@@ -2745,22 +2745,22 @@
           "close": 52.69
         },
         {
-          "date": "2026-09-04",
-          "close": 52.44
+          "date": "2026-09-11",
+          "close": 50.95
         }
       ],
       "metrics": {
         "startDate": "2022-11-30",
-        "latestDate": "2026-09-04",
-        "totalReturn": 0.363885,
-        "benchmarkReturn": 0.984846,
-        "excessReturn": -0.620961,
-        "annualizedVolatility": 0.174282,
+        "latestDate": "2026-09-11",
+        "totalReturn": 0.325133,
+        "benchmarkReturn": 0.969641,
+        "excessReturn": -0.644508,
+        "annualizedVolatility": 0.174211,
         "maxDrawdown": -0.231658,
-        "latestClose": 52.44,
-        "observationCount": 944,
-        "ytdReturn": 0.146361,
-        "oneYearReturn": 0.16941
+        "latestClose": 50.95,
+        "observationCount": 948,
+        "ytdReturn": 0.113789,
+        "oneYearReturn": 0.120357
       },
       "marketAiSensitivityScore": 0,
       "classification": "Low descriptive sensitivity",
@@ -2772,7 +2772,7 @@
       },
       "dataQualityNotes": [
         "Yahoo XLB chart observations use adjusted close when available.",
-        "Metrics use 944 daily observations; prices are monthly downsampled for UI size.",
+        "Metrics use 948 daily observations; prices are monthly downsampled for UI size.",
         "Occupation mapping covers 245 occupations across 6 FutureGrid sector label(s)."
       ]
     }
@@ -2781,7 +2781,7 @@
     "sectorCount": 11,
     "requestedSectorCount": 11,
     "omittedTickers": [],
-    "latestDate": "2026-09-04",
+    "latestDate": "2026-09-11",
     "windowStart": "2022-11-30",
     "topSectors": [
       {
@@ -2789,7 +2789,7 @@
         "name": "Communication Services",
         "ticker": "XLC",
         "marketAiSensitivityScore": 99.5,
-        "excessReturn": 0.280199,
+        "excessReturn": 0.306928,
         "employmentWeightedAIExposure": 0.261199
       },
       {
@@ -2797,7 +2797,7 @@
         "name": "Technology",
         "ticker": "XLK",
         "marketAiSensitivityScore": 94.6,
-        "excessReturn": 0.845426,
+        "excessReturn": 0.866524,
         "employmentWeightedAIExposure": 0.2272
       },
       {
@@ -2805,7 +2805,7 @@
         "name": "Financials",
         "ticker": "XLF",
         "marketAiSensitivityScore": 35,
-        "excessReturn": -0.2805,
+        "excessReturn": -0.290229,
         "employmentWeightedAIExposure": 0.264338
       },
       {
@@ -2813,7 +2813,7 @@
         "name": "Real Estate",
         "ticker": "XLRE",
         "marketAiSensitivityScore": 27.1,
-        "excessReturn": -0.709482,
+        "excessReturn": -0.709083,
         "employmentWeightedAIExposure": 0.209519
       },
       {
@@ -2821,7 +2821,7 @@
         "name": "Consumer Discretionary",
         "ticker": "XLY",
         "marketAiSensitivityScore": 15.9,
-        "excessReturn": -0.361036,
+        "excessReturn": -0.373387,
         "employmentWeightedAIExposure": 0.131974
       }
     ],
@@ -2838,8 +2838,8 @@
     ]
   },
   "meta": {
-    "generatedAt": "2026-09-08T01:14:40.365Z",
-    "asOf": "2026-09-04",
+    "generatedAt": "2026-09-14T06:10:25.091Z",
+    "asOf": "2026-09-11",
     "source": {
       "name": "Yahoo Finance chart JSON endpoint"
     },

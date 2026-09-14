@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T01:01:23.109Z",
+  "generatedAt": "2026-09-14T06:10:20.772Z",
   "source": {
     "name": "AIOE (Felten/Raj/Seamans)",
     "url": "https://raw.githubusercontent.com/AIOE-Data/AIOE/main/AIOE_DataAppendix.xlsx",
@@ -759,8 +759,8 @@
     "53-7121": 0.305425
   },
   "meta": {
-    "generatedAt": "2026-09-08T01:01:23.109Z",
-    "asOf": "2026-09-08",
+    "generatedAt": "2026-09-14T06:10:20.772Z",
+    "asOf": "2026-09-14",
     "source": {
       "name": "AIOE (Felten/Raj/Seamans)",
       "url": "https://raw.githubusercontent.com/AIOE-Data/AIOE/main/AIOE_DataAppendix.xlsx"

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T01:13:58.749Z",
+  "generatedAt": "2026-09-14T06:10:02.026Z",
   "asOf": "2025",
   "source": {
     "name": "BLS Quarterly Census of Employment and Wages Annual Area CSVs",
@@ -74,7 +74,7 @@
     "warnWindowMonths": 12,
     "warnWindowStart": "2025-08-01",
     "warnWindowEnd": "2026-07-31",
-    "stateLaborGeneratedAt": "2026-09-08T01:13:52.948Z",
+    "stateLaborGeneratedAt": "2026-09-14T06:09:59.082Z",
     "candidateYearAttempts": [
       {
         "year": 2025,
@@ -2374,7 +2374,7 @@
     }
   ],
   "meta": {
-    "generatedAt": "2026-09-08T01:13:58.749Z",
+    "generatedAt": "2026-09-14T06:10:02.026Z",
     "asOf": "2025",
     "source": {
       "name": "BLS Quarterly Census of Employment and Wages Annual Area CSVs",

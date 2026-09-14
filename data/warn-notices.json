@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T01:00:31.843Z",
+  "generatedAt": "2026-09-14T06:09:55.816Z",
   "coverage": "16 live WARN adapters (CA, GA, IN, IA, KY, MD, NJ, NY, NC, OH, OR, PA, TN, TX, VA, WI) plus all-state coverage metadata for 51 jurisdictions; notices are normalized to the latest 10 years where available.",
   "coverageSummary": {
     "totalStates": 51,
@@ -93,10 +93,10 @@
       "sourceStatus": "live",
       "sourceType": "xlsx",
       "recordsIncluded": true,
-      "notices": 192,
+      "notices": 216,
       "dateRange": {
         "earliest": "2026-06-26",
-        "latest": "2026-09-02"
+        "latest": "2026-09-09"
       },
       "buildStatus": "ok",
       "adapter": "fetchCA",
@@ -650,7 +650,7 @@
       "sourceStatus": "live",
       "sourceType": "xlsx",
       "recordsIncluded": true,
-      "notices": 1038,
+      "notices": 1040,
       "dateRange": {
         "earliest": "2016-01-01",
         "latest": "2026-09-01"
@@ -811,7 +811,7 @@
       },
       "buildStatus": "preserved",
       "dataFreshness": "preserved",
-      "preservedGeneratedAt": "2026-09-08T00:44:05.074Z",
+      "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
       "adapter": "fetchOR",
       "name": "Oregon WARN Act Notices",
       "publisher": "Oregon Employment Department",
@@ -831,7 +831,7 @@
       "sourceStatus": "live",
       "sourceType": "html",
       "recordsIncluded": true,
-      "notices": 258,
+      "notices": 259,
       "dateRange": {
         "earliest": null,
         "latest": null
@@ -1000,10 +1000,10 @@
       "sourceStatus": "live",
       "sourceType": "csv",
       "recordsIncluded": true,
-      "notices": 771,
+      "notices": 772,
       "dateRange": {
         "earliest": "2016-01-04",
-        "latest": "2026-08-28"
+        "latest": "2026-09-10"
       },
       "buildStatus": "ok",
       "adapter": "fetchVA",
@@ -1071,7 +1071,7 @@
       },
       "buildStatus": "preserved",
       "dataFreshness": "preserved",
-      "preservedGeneratedAt": "2026-09-08T00:44:05.074Z",
+      "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
       "adapter": "fetchWI",
       "name": "Wisconsin WARN Act Notices",
       "publisher": "Wisconsin Department of Workforce Development",
@@ -1208,7 +1208,7 @@
       "notes": null,
       "license": "Public Domain (state public record)",
       "dataFreshness": "preserved",
-      "preservedGeneratedAt": "2026-09-08T00:44:05.074Z",
+      "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
       "preservationReason": "GOOGLE_SHEETS_API_KEY absent"
     },
     {
@@ -1280,7 +1280,7 @@
       "notes": null,
       "license": "Public Domain (state public record)",
       "dataFreshness": "preserved",
-      "preservedGeneratedAt": "2026-09-08T00:44:05.074Z",
+      "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
       "preservationReason": "live fetch failed after retries: HTTP 403 Forbidden"
     },
     {
@@ -1401,12 +1401,265 @@
   ],
   "notices": [
     {
+      "company": "United Air Temp Air Conditioning and Heating LLC",
+      "county": null,
+      "city": "Lorton",
+      "employees": 93,
+      "noticeDate": "2026-09-10",
+      "effectiveDate": "2026-11-10",
+      "layoffType": "Closure",
+      "state": "VA",
+      "stateName": "Virginia"
+    },
+    {
+      "company": "Shell Catalyst & Technologies",
+      "county": "Contra Costa County",
+      "city": null,
+      "employees": 64,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-30",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (1042 Downey Way)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 7,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (1149 S. Hill Street)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (1150 S. Olive Street)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (12015 E Waterfront Dr.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 8,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (3649 McClintock Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 21,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (3740 McClintock Ave)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (4676 Admiralty Way)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 15,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (746 W Adams Blvd.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (854 Downey Way)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (941 Bloom Walk)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 4,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Sapporo U.S.A. (1999 Citracado Parkway)",
+      "county": "San Diego County",
+      "city": null,
+      "employees": 200,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-13",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Sapporo U.S.A. (2865 Executive Place)",
+      "county": "San Diego County",
+      "city": null,
+      "employees": 6,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-13",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Sapporo U.S.A. (2005 Harmony Grove Rd)",
+      "county": "San Diego County",
+      "city": null,
+      "employees": 6,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-13",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "SonTek (Xylem, Inc.)",
+      "county": "San Diego County",
+      "city": null,
+      "employees": 36,
+      "noticeDate": "2026-09-04",
+      "effectiveDate": "2026-11-06",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Eggo Company dba Kellanova",
+      "county": "Santa Clara County",
+      "city": null,
+      "employees": 112,
+      "noticeDate": "2026-09-04",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Closure Temporary",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Ruiz Food Products, Inc.",
+      "county": "Tulare County",
+      "city": null,
+      "employees": 176,
+      "noticeDate": "2026-09-04",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "OVG Hospitality",
+      "county": "Ventura County",
+      "city": null,
+      "employees": 128,
+      "noticeDate": "2026-09-03",
+      "effectiveDate": "2026-11-15",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
       "company": "Foundation for California Community Colleges",
       "county": "Sacramento County",
       "city": "Suite 4800  Sacramento",
       "employees": 178,
       "noticeDate": "2026-09-02",
       "effectiveDate": "2026-10-30",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Ventana Grill",
+      "county": "San Luis Obispo County",
+      "city": null,
+      "employees": 82,
+      "noticeDate": "2026-09-02",
+      "effectiveDate": "2026-09-18",
+      "layoffType": "Closure Temporary",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Homeless Health Care Los Angeles - Crocker Street",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 117,
+      "noticeDate": "2026-09-02",
+      "effectiveDate": "2026-11-03",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Homeless Health Care Los Angeles - Maple Ave.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 16,
+      "noticeDate": "2026-09-02",
+      "effectiveDate": "2026-11-03",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Homeless Health Care Los Angeles - 2nd Street",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-02",
+      "effectiveDate": "2026-11-03",
       "layoffType": "Layoff Permanent",
       "state": "CA",
       "stateName": "California"
@@ -1456,12 +1709,45 @@
       "stateName": "California"
     },
     {
+      "company": "Grain Craft, LLC",
+      "county": "San Bernardino County",
+      "city": null,
+      "employees": 3,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-10-30",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
       "company": "UBS",
       "county": null,
       "city": "Weehawken",
       "employees": 41,
       "noticeDate": "2026-09-01",
       "effectiveDate": "2026-11-25",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Merck & Co",
+      "county": null,
+      "city": "Rahway",
+      "employees": 54,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-12-11",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Educational Testing Service",
+      "county": null,
+      "city": "Princeton",
+      "employees": 62,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-11-09",
       "layoffType": null,
       "state": "NJ",
       "stateName": "New Jersey"
@@ -1885,6 +2171,17 @@
       "stateName": "California"
     },
     {
+      "company": "Trailer Park, Inc.",
+      "county": "Los Angeles County",
+      "city": "10th Floor  Los Angeles",
+      "employees": 119,
+      "noticeDate": "2026-08-27",
+      "effectiveDate": "2026-07-07",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
       "company": "RTX",
       "county": "Los Angeles County",
       "city": null,
@@ -2144,7 +2441,7 @@
       "employees": 73,
       "noticeDate": "2026-08-19",
       "effectiveDate": "2026-11-02",
-      "layoffType": "Relocation Permanent",
+      "layoffType": "Layoff Permanent",
       "state": "CA",
       "stateName": "California"
     },
@@ -5652,7 +5949,7 @@
       "city": "Ringgold",
       "employees": 133,
       "noticeDate": "2026-04-29",
-      "effectiveDate": "2026-09-08",
+      "effectiveDate": "2026-09-14",
       "layoffType": "Closure",
       "state": "VA",
       "stateName": "Virginia"
@@ -122038,6 +122335,17 @@
       "stateName": "Maryland"
     },
     {
+      "company": "Kenco Logistic Services, LLC",
+      "county": "Northampton",
+      "city": "Northampton",
+      "employees": 52,
+      "noticeDate": null,
+      "effectiveDate": null,
+      "layoffType": "Closure",
+      "state": "PA",
+      "stateName": "Pennsylvania"
+    },
+    {
       "company": "Jerith Manufacturing, LLC",
       "county": "Philadelphia",
       "city": "Philadelphia",
@@ -124877,11 +125185,11 @@
     }
   ],
   "summary": {
-    "total": 12477,
-    "totalEmployees": 1364173,
+    "total": 12505,
+    "totalEmployees": 1365565,
     "dateRange": {
       "earliest": "2016-01-01",
-      "latest": "2026-09-02"
+      "latest": "2026-09-10"
     },
     "byState": [
       {
@@ -124897,8 +125205,8 @@
       {
         "state": "NJ",
         "stateName": "New Jersey",
-        "notices": 1038,
-        "employees": 185199,
+        "notices": 1040,
+        "employees": 185315,
         "dateRange": {
           "earliest": "2016-01-01",
           "latest": "2026-09-01"
@@ -124927,11 +125235,11 @@
       {
         "state": "VA",
         "stateName": "Virginia",
-        "notices": 771,
-        "employees": 90220,
+        "notices": 772,
+        "employees": 90313,
         "dateRange": {
           "earliest": "2016-01-04",
-          "latest": "2026-08-28"
+          "latest": "2026-09-10"
         }
       },
       {
@@ -124987,8 +125295,8 @@
       {
         "state": "PA",
         "stateName": "Pennsylvania",
-        "notices": 258,
-        "employees": 50531,
+        "notices": 259,
+        "employees": 50583,
         "dateRange": {
           "earliest": null,
           "latest": null
@@ -125017,11 +125325,11 @@
       {
         "state": "CA",
         "stateName": "California",
-        "notices": 192,
-        "employees": 10304,
+        "notices": 216,
+        "employees": 11435,
         "dateRange": {
           "earliest": "2026-06-26",
-          "latest": "2026-09-02"
+          "latest": "2026-09-09"
         }
       },
       {
@@ -125683,25 +125991,25 @@
       },
       {
         "month": "2026-08",
-        "notices": 137,
-        "employees": 7948
+        "notices": 138,
+        "employees": 8067
       },
       {
         "month": "2026-09",
-        "notices": 7,
-        "employees": 658
+        "notices": 33,
+        "employees": 1879
       }
     ],
     "byType": [
       {
         "type": "Unknown",
-        "notices": 4004,
-        "employees": 519499
+        "notices": 4006,
+        "employees": 519615
       },
       {
         "type": "Closure",
-        "notices": 1460,
-        "employees": 160859
+        "notices": 1468,
+        "employees": 161319
       },
       {
         "type": "Layoff",
@@ -125735,8 +126043,8 @@
       },
       {
         "type": "Layoff Permanent",
-        "notices": 195,
-        "employees": 14951
+        "notices": 212,
+        "employees": 15646
       },
       {
         "type": "Contract Cancellation",
@@ -126084,6 +126392,11 @@
         "employees": 844
       },
       {
+        "type": "Closure Temporary",
+        "notices": 5,
+        "employees": 838
+      },
+      {
         "type": "Amendment",
         "notices": 60,
         "employees": 808
@@ -126167,11 +126480,6 @@
         "type": "Eye Care",
         "notices": 10,
         "employees": 648
-      },
-      {
-        "type": "Closure Temporary",
-        "notices": 3,
-        "employees": 644
       },
       {
         "type": "Health Centers",
@@ -129207,11 +129515,6 @@
         "type": "Rental Car",
         "notices": 1,
         "employees": 74
-      },
-      {
-        "type": "Relocation Permanent",
-        "notices": 1,
-        "employees": 73
       },
       {
         "type": "Social services organization",
@@ -132493,8 +132796,8 @@
     ]
   },
   "meta": {
-    "generatedAt": "2026-09-08T01:00:31.843Z",
-    "asOf": "2026-09-02",
+    "generatedAt": "2026-09-14T06:09:55.816Z",
+    "asOf": "2026-09-10",
     "source": {
       "name": "Multi-state WARN Act notice registry",
       "publisher": "U.S. state workforce agencies (aggregated by FutureGrid)",
