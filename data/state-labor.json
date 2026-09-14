@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T01:13:52.948Z",
+  "generatedAt": "2026-09-14T06:09:59.082Z",
   "asOf": "2026-07",
   "source": {
     "name": "BLS Local Area Unemployment Statistics",
@@ -2477,10 +2477,10 @@
         "sourceStatus": "live",
         "sourceType": "xlsx",
         "recordsIncluded": true,
-        "notices": 192,
+        "notices": 216,
         "dateRange": {
           "earliest": "2026-06-26",
-          "latest": "2026-09-02"
+          "latest": "2026-09-09"
         },
         "buildStatus": "ok",
         "dataFreshness": null,
@@ -18329,7 +18329,7 @@
         "sourceStatus": "live",
         "sourceType": "xlsx",
         "recordsIncluded": true,
-        "notices": 1038,
+        "notices": 1040,
         "dateRange": {
           "earliest": "2016-01-01",
           "latest": "2026-09-01"
@@ -22611,7 +22611,7 @@
         },
         "buildStatus": "preserved",
         "dataFreshness": "preserved",
-        "preservedGeneratedAt": "2026-09-08T00:44:05.074Z",
+        "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
         "preservationReason": null,
         "adapter": "fetchOR",
         "name": "Oregon WARN Act Notices",
@@ -23216,7 +23216,7 @@
         "sourceStatus": "live",
         "sourceType": "html",
         "recordsIncluded": true,
-        "notices": 258,
+        "notices": 259,
         "dateRange": {
           "earliest": null,
           "latest": null
@@ -28097,10 +28097,10 @@
         "sourceStatus": "live",
         "sourceType": "csv",
         "recordsIncluded": true,
-        "notices": 771,
+        "notices": 772,
         "dateRange": {
           "earliest": "2016-01-04",
-          "latest": "2026-08-28"
+          "latest": "2026-09-10"
         },
         "buildStatus": "ok",
         "dataFreshness": null,
@@ -29934,7 +29934,7 @@
         },
         "buildStatus": "preserved",
         "dataFreshness": "preserved",
-        "preservedGeneratedAt": "2026-09-08T00:44:05.074Z",
+        "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
         "preservationReason": null,
         "adapter": "fetchWI",
         "name": "Wisconsin WARN Act Notices",
@@ -31133,7 +31133,7 @@
     }
   ],
   "meta": {
-    "generatedAt": "2026-09-08T01:13:52.948Z",
+    "generatedAt": "2026-09-14T06:09:59.082Z",
     "asOf": "2026-07",
     "source": {
       "name": "BLS Local Area Unemployment Statistics",
