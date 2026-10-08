@@ -35,6 +35,7 @@ const destDir = join(root, "public", "data");
 // ─── Compliance-cleared files to copy ─────────────────────────────────────────
 // Sorted by id for readability.
 const CLEARED_FILES = [
+  "ai-adoption-tracker.json",
   "ai-demand.json",
   "ai-frontier.json",
   "country-exposure.json",

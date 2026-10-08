@@ -18,7 +18,7 @@ import {
 function LoadingStub() {
   const t = useT("frontier");
   return (
-    <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-10 flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm">
+    <div className="glass rounded-xl p-10 flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm">
       {t("loading")}
     </div>
   );
@@ -137,7 +137,7 @@ function StatCard({
   const hasSpark = Array.isArray(spark) && spark.length >= 2;
 
   return (
-    <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 space-y-1.5">
+    <div className="glass rounded-xl p-5 space-y-1.5">
       <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
         {label}
       </p>
@@ -237,7 +237,7 @@ export default function AIFrontierView() {
               {t("pageBadge")}
             </span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-gradient">
+          <h1 className="text-[26px] font-semibold leading-tight tracking-tight text-zinc-900 sm:text-3xl dark:text-white">
             {t("pageTitle")}
           </h1>
           <p className="text-zinc-600 dark:text-zinc-400 mt-1.5 max-w-2xl leading-relaxed">
@@ -304,7 +304,7 @@ export default function AIFrontierView() {
         subhead={t("timelineSectionSubhead")}
         delay={100}
       >
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
+        <div className="glass rounded-xl p-4">
           <ComputeTimelineChart />
           <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-500 leading-relaxed">
             {t("timelineAnnotationFull", {
@@ -331,7 +331,7 @@ export default function AIFrontierView() {
         subhead={t("leadersSectionSubhead")}
         delay={120}
       >
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
+        <div className="glass rounded-xl p-4">
           <FrontierLeadersChart />
         </div>
       </Section>
@@ -410,7 +410,7 @@ export default function AIFrontierView() {
       {/* ── Data Attribution ──────────────────────────────────────────────── */}
       <Reveal delay={200}>
         <section
-          className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 space-y-4"
+          className="glass rounded-xl p-6 space-y-4"
           aria-labelledby="attribution-heading"
         >
           <h2

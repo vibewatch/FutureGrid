@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { useT } from "@/lib/i18n/useT";
+import type { DiffusionTrend } from "@/lib/data";
 
 export interface EnrichedCountry {
   iso3: string;
@@ -13,9 +14,9 @@ export interface EnrichedCountry {
   hasClaudeData: boolean;
   proxyNote: string | null;
   diffusionPct: number | null;
-  /** All three AIEI survey periods; null when incomplete. */
-  diffusionTrend: { h1_2025: number; h2_2025: number; q1_2026: number } | null;
-  /** pp gain H1 2025 → Q1 2026; null when incomplete. */
+  /** All AIEI survey periods; null when incomplete. */
+  diffusionTrend: DiffusionTrend | null;
+  /** pp gain H1 2025 → Q2 2026; null when incomplete. */
   diffusionDelta: number | null;
   aiReadiness: number | null;
   /** IMF AIPI sub-index scores (0–1). null if data unavailable. */
@@ -28,6 +29,15 @@ export interface EnrichedCountry {
   /** Oxford Insights Government AI Readiness Index 2023, composite 0–100. */
   governmentReadiness: number | null;
   gdpPerWorkingAgeCapita: number | null;
+  /** Anthropic Economic Index (latest release) — month the usage metrics describe. */
+  usagePeriod?: string | null;
+  /** Claude.ai use-case mix (percent of conversations). */
+  useCaseWorkPct?: number | null;
+  useCasePersonalPct?: number | null;
+  useCaseCourseworkPct?: number | null;
+  /** Collaboration mode split (percent). */
+  automationPct?: number | null;
+  augmentationPct?: number | null;
 }
 
 // ISO 3166-1 alpha-3 → alpha-2 mapping (all 195 countries in dataset)
@@ -76,31 +86,54 @@ function flagEmoji(iso3: string): string {
   );
 }
 
-// ─── Tiny 3-point sparkline (pure SVG, no animation, reduced-motion safe) ─────
+// ─── Tiny multi-point sparkline (pure SVG, no animation, reduced-motion safe) ─
 
-function Sparkline3({ h1, h2, q1 }: { h1: number; h2: number; q1: number }) {
-  const W = 52, H = 22;
-  const vals = [h1, h2, q1];
-  const minV = Math.min(...vals);
-  const maxV = Math.max(...vals);
+function Sparkline({ values }: { values: number[] }) {
+  const W = 60, H = 22;
+  const minV = Math.min(...values);
+  const maxV = Math.max(...values);
   const span = maxV - minV || 0.1;
-  const px = (i: number) => (((i / 2) * (W - 8)) + 4).toFixed(1);
+  const last = values.length - 1;
+  const px = (i: number) => (((i / Math.max(last, 1)) * (W - 8)) + 4).toFixed(1);
   const py = (v: number) => (H - 4 - ((v - minV) / span) * (H - 8)).toFixed(1);
-  const pts = `${px(0)},${py(vals[0])} ${px(1)},${py(vals[1])} ${px(2)},${py(vals[2])}`;
+  const pts = values.map((v, i) => `${px(i)},${py(v)}`).join(" ");
   return (
-    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} aria-hidden="true" className="shrink-0">
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} aria-hidden="true" className="shrink-0 text-blue-600 dark:text-blue-400">
       <polyline
         points={pts}
         fill="none"
-        stroke="rgb(139,92,246)"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinejoin="round"
         strokeLinecap="round"
       />
-      <circle cx={px(0)} cy={py(vals[0])} r="2" fill="rgb(139,92,246)" opacity="0.5" />
-      <circle cx={px(1)} cy={py(vals[1])} r="2" fill="rgb(139,92,246)" opacity="0.5" />
-      <circle cx={px(2)} cy={py(vals[2])} r="2.5" fill="rgb(139,92,246)" />
+      <circle cx={px(last)} cy={py(values[last])} r="2.5" fill="currentColor" />
     </svg>
+  );
+}
+
+// ─── Two/three-part share bar (AEI use-case mix, collaboration mode) ─────────
+
+const SHARE_FILLS = ["#2a78d6", "#eb6834", "#1baf7a"];
+
+function ShareBar({ parts, ariaLabel }: { parts: { label: string; value: number }[]; ariaLabel: string }) {
+  const total = parts.reduce((s, p) => s + p.value, 0) || 1;
+  return (
+    <div>
+      <div className="flex h-2 w-full gap-[2px] overflow-hidden rounded-full" role="img" aria-label={ariaLabel}>
+        {parts.map((p, i) => (
+          <div key={p.label} style={{ width: `${(p.value / total) * 100}%`, backgroundColor: SHARE_FILLS[i] }} />
+        ))}
+      </div>
+      <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-zinc-600 dark:text-zinc-400">
+        {parts.map((p, i) => (
+          <span key={p.label} className="inline-flex items-center gap-1">
+            <span className="inline-block h-2 w-2 rounded-sm" style={{ backgroundColor: SHARE_FILLS[i] }} aria-hidden="true" />
+            {p.label} <span className="font-semibold tabular-nums text-zinc-800 dark:text-zinc-200">{p.value.toFixed(0)}%</span>
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -269,13 +302,13 @@ function CountryModal({
             </p>
             {country.hasClaudeData ? (
               <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="text-2xl font-extrabold text-gradient tabular-nums">
+                <span className="text-2xl font-semibold text-gradient tabular-nums">
                   {(country.usageIndex ?? 0).toFixed(3)}
                 </span>
                 <span className="text-sm text-zinc-600 dark:text-zinc-400">{t("countryUsageIndexLabel")}</span>
                 <span className="ml-auto text-sm font-medium text-zinc-700 dark:text-zinc-300 tabular-nums">
                   {country.usagePct !== null
-                    ? `${(country.usagePct * 100).toFixed(2)}% ${t("countryGlobalShareLabel")}`
+                    ? `${country.usagePct.toFixed(2)}% ${t("countryGlobalShareLabel")}`
                     : "—"}
                 </span>
               </div>
@@ -293,6 +326,39 @@ function CountryModal({
             )}
           </div>
 
+          {/* How the country uses Claude — AEI use-case mix + collaboration mode */}
+          {country.useCaseWorkPct != null && country.useCasePersonalPct != null && country.useCaseCourseworkPct != null && (
+            <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-700/40 px-4 py-3 space-y-3">
+              <p className="text-[10px] text-zinc-500 uppercase tracking-widest">
+                {t("countryUseMixHeading")}
+                {country.usagePeriod ? ` · ${country.usagePeriod}` : ""}
+              </p>
+              <ShareBar
+                ariaLabel={t("countryUseMixHeading")}
+                parts={[
+                  { label: t("countryUseWork"), value: country.useCaseWorkPct },
+                  { label: t("countryUsePersonal"), value: country.useCasePersonalPct },
+                  { label: t("countryUseCoursework"), value: country.useCaseCourseworkPct },
+                ]}
+              />
+              {country.automationPct != null && country.augmentationPct != null && (
+                <>
+                  <p className="text-[10px] text-zinc-500 uppercase tracking-widest pt-1">
+                    {t("countryCollabHeading")}
+                  </p>
+                  <ShareBar
+                    ariaLabel={t("countryCollabHeading")}
+                    parts={[
+                      { label: t("countryCollabAutomation"), value: country.automationPct },
+                      { label: t("countryCollabAugmentation"), value: country.augmentationPct },
+                    ]}
+                  />
+                </>
+              )}
+              <p className="text-[10px] text-zinc-500 leading-relaxed">{t("countryUseMixNote")}</p>
+            </div>
+          )}
+
           {/* Stats grid */}
           <div className="grid grid-cols-2 gap-3">
             {/* GenAI diffusion */}
@@ -305,10 +371,8 @@ function CountryModal({
                   <p className="text-sm font-semibold text-zinc-700 dark:text-zinc-200 tabular-nums leading-snug">
                     {country.diffusionTrend.h1_2025.toFixed(1)}%{" "}
                     <span className="text-zinc-500">→</span>{" "}
-                    {country.diffusionTrend.h2_2025.toFixed(1)}%{" "}
-                    <span className="text-zinc-500">→</span>{" "}
-                    <span className="text-violet-300 font-bold">
-                      {country.diffusionTrend.q1_2026.toFixed(1)}%
+                    <span className="text-blue-700 dark:text-blue-300 font-bold">
+                      {country.diffusionTrend.q2_2026.toFixed(1)}%
                     </span>
                   </p>
                   {country.diffusionDelta !== null && (
@@ -324,10 +388,13 @@ function CountryModal({
                     </span>
                   )}
                   <div className="mt-2">
-                    <Sparkline3
-                      h1={country.diffusionTrend.h1_2025}
-                      h2={country.diffusionTrend.h2_2025}
-                      q1={country.diffusionTrend.q1_2026}
+                    <Sparkline
+                      values={[
+                        country.diffusionTrend.h1_2025,
+                        country.diffusionTrend.h2_2025,
+                        country.diffusionTrend.q1_2026,
+                        country.diffusionTrend.q2_2026,
+                      ]}
                     />
                   </div>
                 </>
@@ -339,7 +406,7 @@ function CountryModal({
                 </p>
               )}
               <p className="text-[10px] text-zinc-500 mt-1">
-                Microsoft AIEI · H1&nbsp;2025→Q1&nbsp;2026 ·{" "}
+                Microsoft AIEI · H1&nbsp;2025→Q2&nbsp;2026 ·{" "}
                 <Link
                   href="/sources"
                   className="text-violet-400 hover:text-violet-300 underline underline-offset-2 transition-colors"
@@ -564,7 +631,7 @@ export default function CountryDetailPanel({
   return (
     <>
       <div>
-        <h2 className="text-xl font-bold text-gradient mb-2">
+        <h2 className="text-lg font-semibold text-gradient mb-2 tracking-tight">
           {t("countryTopHeading")}
         </h2>
         <p className="text-xs text-zinc-500 mb-4">
@@ -612,7 +679,7 @@ export default function CountryDetailPanel({
               ((country.usageIndex ?? 0) / safeMax) * 100;
             const pct =
               country.usagePct !== null
-                ? `${(country.usagePct * 100).toFixed(2)}%`
+                ? `${country.usagePct.toFixed(2)}%`
                 : "—";
 
             return (

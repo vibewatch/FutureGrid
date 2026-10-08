@@ -29,4 +29,12 @@ export const navEn = {
   dataAttribution: "Data: Anthropic Economic Index · BLS · O*NET",
   viewSources: "View sources",
   dataAsOf: "Data as of {date}",
+  tagline: "AI workforce intelligence",
+  detail: "Detail",
+  footerAbout: "An open research platform tracking how AI is reshaping work, built entirely on attributed public data.",
+  footerExplore: "Explore",
+  footerData: "Data & methods",
+  footerBuiltBy: "Built by {name}",
+  footerLicense: "Code MIT · Data per source license",
+  footerDisclaimer: "Exposure and adoption measures describe where AI is used — not forecasts of job loss.",
 };

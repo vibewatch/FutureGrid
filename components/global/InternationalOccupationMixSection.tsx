@@ -71,12 +71,12 @@ export default function InternationalOccupationMixSection({
       {/* ─── Section header ──────────────────────────────────────────────── */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-violet-600 dark:text-violet-300">
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
             {t("workforceEyebrow")}
           </p>
           <h2
             id="workforce-structure-heading"
-            className="mt-1 text-2xl sm:text-3xl font-extrabold tracking-tight text-gradient"
+            className="mt-1 text-lg font-semibold tracking-tight text-gradient"
           >
             {t("workforceTitle")}
           </h2>

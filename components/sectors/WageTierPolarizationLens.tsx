@@ -46,7 +46,7 @@ export default function WageTierPolarizationLens({ data }: WageTierPolarizationL
 
   if (!data || data.tiers.length === 0) {
     return (
-      <section className="glass rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/50 p-6">
+      <section className="glass rounded-2xl p-6">
         <p className="text-sm text-zinc-500">{t("wageTierEmptyState")}</p>
       </section>
     );
@@ -110,7 +110,7 @@ export default function WageTierPolarizationLens({ data }: WageTierPolarizationL
   return (
     <section
       aria-labelledby="wage-tier-lens-heading"
-      className="glass rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/50 p-6 space-y-5"
+      className="glass rounded-2xl p-6 space-y-5"
     >
       {/* Header row */}
       <div className="flex flex-wrap items-start justify-between gap-3">

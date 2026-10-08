@@ -311,8 +311,9 @@ describe("getSearchIndex", () => {
 describe("getCountryMapData", () => {
   const mapData = getCountryMapData();
 
-  it("returns 195 entries", () => {
-    expect(mapData).toHaveLength(195);
+  it("returns one entry per country in the exposure snapshot (≥ 195)", () => {
+    expect(mapData.length).toBeGreaterThanOrEqual(195);
+    expect(new Set(mapData.map((c) => c.iso3)).size).toBe(mapData.length);
   });
 
   it("China (CHN) has hasClaudeData=false and non-null proxyNote", () => {
@@ -323,11 +324,11 @@ describe("getCountryMapData", () => {
     expect(typeof chn!.proxyNote).toBe("string");
   });
 
-  it("China (CHN) has diffusionPct approximately 16.4 (within 1%)", () => {
+  it("China (CHN) has Microsoft AIEI Q2 2026 diffusionPct ≈ 17.5", () => {
     const chn = mapData.find((c) => c.iso3 === "CHN");
     expect(chn!.diffusionPct).not.toBeNull();
-    expect(chn!.diffusionPct!).toBeGreaterThan(15.5);
-    expect(chn!.diffusionPct!).toBeLessThan(17.5);
+    expect(chn!.diffusionPct!).toBeGreaterThan(16.5);
+    expect(chn!.diffusionPct!).toBeLessThan(18.5);
   });
 
   it("USA has usageIndex > 0", () => {

@@ -1,17 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import SummaryCard from "@/components/dashboard/SummaryCard";
 import JobImpactChart from "@/components/charts/JobImpactChart";
 import PredictiveChart from "@/components/charts/PredictiveChart";
-import AnimatedCounter from "@/components/ui/AnimatedCounter";
-import Reveal from "@/components/ui/Reveal";
 import HeroRiskChecker from "@/components/dashboard/HeroRiskChecker";
 import HighlightsBento from "@/components/dashboard/HighlightsBento";
 import SectorScatterChart from "@/components/charts/SectorScatterChart";
-import KeyFindings from "@/components/dashboard/KeyFindings";
-import { useT } from "@/lib/i18n/useT";
+import AdoptionPulse from "@/components/dashboard/AdoptionPulse";
+import StatTile from "@/components/ui/StatTile";
 import DataAsOfBadge from "@/components/ui/DataAsOfBadge";
+import { PageHeader, SectionHeader, buttonPrimary, buttonSecondary } from "@/components/ui/PageHeader";
+import { useT } from "@/lib/i18n/useT";
+import type { AdoptionPulseData } from "@/lib/ai-adoption-tracker";
 
 interface SectorSummary {
   sector: string;
@@ -34,378 +34,219 @@ export interface DashboardHomeProps {
   lowRiskCount: number;
   avgRiskAll: number;
   workforceExposure: WorkforceExposureData;
+  /** Measured adoption (St. Louis Fed RPS + Census BTOS); section hidden when absent. */
+  adoption?: AdoptionPulseData;
 }
+
+const fmtM = (n: number) => (n / 1_000_000).toFixed(1);
+const fmtDay = (iso: string) =>
+  new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 
 export default function DashboardHome({
   insightsLength,
   totalWorkforce,
   sectors,
-  highRiskCount,
-  lowRiskCount,
   avgRiskAll,
   workforceExposure,
+  adoption,
 }: DashboardHomeProps) {
   const t = useT("dashboard");
+  const ta = useT("adoption");
   const tc = useT("common");
+  const h = adoption?.headlines;
+
   const lensCards = [
-    {
-      href: "/global",
-      eyebrow: t("lensGlobalEyebrow"),
-      title: t("lensGlobalTitle"),
-      description: t("lensGlobalDesc"),
-    },
-    {
-      href: "/careers",
-      eyebrow: t("lensWorkforceEyebrow"),
-      title: t("lensWorkforceTitle"),
-      description: t("lensWorkforceDesc"),
-    },
-    {
-      href: "/labor",
-      eyebrow: t("lensLaborEyebrow"),
-      title: t("lensLaborTitle"),
-      description: t("lensLaborDesc"),
-    },
-    {
-      href: "/analysis",
-      eyebrow: t("lensAnalysisEyebrow"),
-      title: t("lensAnalysisTitle"),
-      description: t("lensAnalysisDesc"),
-    },
-    {
-      href: "/sources",
-      eyebrow: t("lensGovernanceEyebrow"),
-      title: t("lensGovernanceTitle"),
-      description: t("lensGovernanceDesc"),
-    },
+    { href: "/global", eyebrow: t("lensGlobalEyebrow"), title: t("lensGlobalTitle"), description: t("lensGlobalDesc") },
+    { href: "/careers", eyebrow: t("lensWorkforceEyebrow"), title: t("lensWorkforceTitle"), description: t("lensWorkforceDesc") },
+    { href: "/labor", eyebrow: t("lensLaborEyebrow"), title: t("lensLaborTitle"), description: t("lensLaborDesc") },
+    { href: "/analysis", eyebrow: t("lensAnalysisEyebrow"), title: t("lensAnalysisTitle"), description: t("lensAnalysisDesc") },
+    { href: "/sources", eyebrow: t("lensGovernanceEyebrow"), title: t("lensGovernanceTitle"), description: t("lensGovernanceDesc") },
   ];
 
+  const sectorMax = Math.max(...sectors.map((s) => s.avgRisk), 0.01);
+
   return (
-    <div className="mx-auto w-full max-w-[1400px] space-y-12">
+    <div className="space-y-10">
+      <PageHeader
+        eyebrow={t("pageEyebrow")}
+        title={t("pageTitle")}
+        description={t("heroSubhead", { count: insightsLength })}
+        meta={<DataAsOfBadge datasetIds={["occupation-snapshot", "ai-adoption-tracker", "jolts"]} />}
+        actions={
+          <>
+            <Link href="/report" className={buttonSecondary}>{t("readReport")}</Link>
+            <Link href="/careers" className={buttonPrimary}>
+              {t("exploreAllCareers")} <span aria-hidden="true">→</span>
+            </Link>
+          </>
+        }
+      />
 
-      {/* ─── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="pt-4 pb-6">
-        <Reveal>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]">
-            <span className="text-gradient">{t("heroHeadline1")}</span>
-            <br />
-            <span className="text-zinc-900 dark:text-white">{t("heroHeadline2")}</span>
-          </h1>
-          <p className="mt-4 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
-            {t("heroSubhead", { count: insightsLength })}
-          </p>
-          <div className="mt-3">
-            <DataAsOfBadge datasetId="occupation-snapshot" />
-          </div>
-        </Reveal>
-
-        <Reveal delay={160} className="mt-8">
-          <div className="flex flex-wrap items-center gap-x-10 gap-y-6">
-            <div>
-              <AnimatedCounter
-                value={insightsLength}
-                suffix="+"
-                durationMs={1400}
-                className="text-4xl sm:text-5xl font-extrabold text-gradient tabular-nums"
-              />
-              <p className="text-xs text-zinc-500 mt-1 uppercase tracking-widest">
-                {t("statOccupationsLabel")}
-              </p>
-            </div>
-            <div className="hidden sm:block w-px h-10 bg-zinc-200 dark:bg-zinc-800" aria-hidden="true" />
-            <div>
-              <AnimatedCounter
-                value={avgRiskAll * 100}
-                decimals={1}
-                suffix="%"
-                durationMs={1400}
-                className="text-4xl sm:text-5xl font-extrabold text-gradient tabular-nums"
-              />
-              <p className="text-xs text-zinc-500 mt-1 uppercase tracking-widest">
-                {t("statAvgExposureLabel")}
-              </p>
-            </div>
-            <div className="hidden sm:block w-px h-10 bg-zinc-200 dark:bg-zinc-800" aria-hidden="true" />
-            <div>
-              <AnimatedCounter
-                value={highRiskCount}
-                durationMs={1400}
-                className="text-4xl sm:text-5xl font-extrabold text-gradient tabular-nums"
-              />
-              <p className="text-xs text-zinc-500 mt-1 uppercase tracking-widest">
-                {t("statHighExposureLabel")}
-              </p>
-            </div>
-            <div className="hidden sm:block w-px h-10 bg-zinc-200 dark:bg-zinc-800" aria-hidden="true" />
-            <div>
-              <AnimatedCounter
-                value={totalWorkforce / 1_000_000}
-                decimals={1}
-                suffix="M"
-                durationMs={1600}
-                className="text-4xl sm:text-5xl font-extrabold text-gradient tabular-nums"
-              />
-              <p className="text-xs text-zinc-500 mt-1 uppercase tracking-widest">
-                {t("statWorkforceLabel")}
-              </p>
-            </div>
-          </div>
-        </Reveal>
-
-        <Reveal delay={220} className="mt-6">
-          <div
-            className="glass flex gap-2.5 items-start px-4 py-3 rounded-xl text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl"
-            role="note"
-            aria-label="About this data"
-          >
-            <span aria-hidden="true" className="text-zinc-500 shrink-0 mt-px select-none">ℹ</span>
-            <p>
-              {t("aboutDataNotePre")}{" "}
-              <span className="text-zinc-700 dark:text-zinc-300">Anthropic Economic Index (2025)</span>
-              {t("aboutDataNotePost")}{" "}
-              <Link href="/sources" className="text-zinc-500 underline underline-offset-2 hover:text-zinc-400">
-                {tc("seeSources")}
-              </Link>
-              .
-            </p>
-          </div>
-        </Reveal>
-
-        <Reveal delay={320} className="mt-8">
-          <HeroRiskChecker />
-        </Reveal>
-
-        <Reveal delay={400} className="mt-6">
-          <Link
-            href="/careers"
-            className="brand-grad inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white shadow-lg hover:opacity-90 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
-          >
-            {t("exploreAllCareers")}
-            <span aria-hidden="true">→</span>
-          </Link>
-        </Reveal>
-      </section>
-
-      <hr className="divider-glow" />
-
-      <Reveal delay={0}>
-        <section aria-labelledby="choose-lens-heading" className="space-y-5">
-          <div className="max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-600 dark:text-violet-400">
-              {t("chooseLensKicker")}
-            </p>
-            <h2 id="choose-lens-heading" className="mt-2 text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white">
-              {t("chooseLensHeading")}
-            </h2>
-            <p className="mt-2 text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              {t("chooseLensSubhead")}
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
-            {lensCards.map((card) => (
-              <Link
-                key={card.href}
-                href={card.href}
-                className="glass glass-hover group flex min-h-48 flex-col rounded-2xl p-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
-              >
-                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                  {card.eyebrow}
-                </span>
-                <h3 className="mt-3 text-lg font-bold text-zinc-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-300 transition-colors">
-                  {card.title}
-                </h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-                  {card.description}
-                </p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-violet-600 dark:text-violet-400">
-                  {t("chooseLensCta")} <span aria-hidden="true">→</span>
-                </span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      </Reveal>
-
-      <hr className="divider-glow" />
-
-      <Reveal delay={20}><KeyFindings /></Reveal>
-
-      <hr className="divider-glow" />
-
-      {/* ─── SUMMARY CARDS ─────────────────────────────────────────────────── */}
-      <Reveal delay={0}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <SummaryCard
-            title={t("summaryOccupationsTracked")}
-            value={insightsLength.toString()}
-            numericValue={insightsLength}
-            subtitle={t("summaryAcross22Sectors")}
-            color="#8b5cf6"
-            href="/careers"
-          />
-          <SummaryCard
-            title={t("summaryAvgAIExposure")}
-            value={`${(avgRiskAll * 100).toFixed(1)}%`}
-            numericValue={avgRiskAll * 100}
-            numericDecimals={1}
-            numericSuffix="%"
-            subtitle={t("summaryAIUsage")}
-            trend={avgRiskAll > 0.5 ? t("summaryAbove50") : t("summaryBelow50")}
-            trendUp={avgRiskAll > 0.5}
-            color="#f59e0b"
-            href="/sectors"
-          />
-          <SummaryCard
-            title={t("summaryHighRoles")}
-            value={highRiskCount.toString()}
-            numericValue={highRiskCount}
-            subtitle={t("summaryHighOrVeryHigh")}
-            color="#ef4444"
+      {/* ─── KPI ROW ───────────────────────────────────────────────────────── */}
+      <section aria-label={t("pageEyebrow")} className="space-y-3">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+          <StatTile
+            label={t("kpiHighExposure")}
+            value={`${(workforceExposure.highExposureShare * 100).toFixed(1)}%`}
+            detail={t("kpiHighExposureDetail", { high: fmtM(workforceExposure.highExposureWorkforce), total: fmtM(workforceExposure.totalWorkforce) })}
+            source={t("kpiSourceExposure")}
             href="/careers?risk=high"
           />
-          <SummaryCard
-            title={t("summaryResilientCareers")}
-            value={lowRiskCount.toString()}
-            numericValue={lowRiskCount}
-            subtitle={t("summaryLowExposure")}
-            color="#22c55e"
-            href="/careers?risk=low"
+          <StatTile
+            label={t("statAvgExposureLabel")}
+            value={`${(avgRiskAll * 100).toFixed(1)}%`}
+            detail={t("kpiAvgExposureDetail", { count: insightsLength })}
+            source={t("kpiSourceExposure")}
+            href="/sectors"
           />
-        </div>
-      </Reveal>
-
-      <hr className="divider-glow" />
-
-      {/* ─── WORKFORCE EXPOSURE HEADLINE ───────────────────────────────────── */}
-      <Reveal delay={40}>
-        <div className="glass rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-          <div className="shrink-0">
-            <AnimatedCounter
-              value={workforceExposure.highExposureShare * 100}
-              decimals={1}
-              suffix="%"
-              durationMs={1600}
-              className="text-5xl sm:text-6xl font-extrabold text-gradient tabular-nums"
+          <StatTile
+            label={t("statOccupationsLabel")}
+            value={insightsLength.toLocaleString("en-US")}
+            detail={t("kpiOccupationsDetail", { workers: fmtM(totalWorkforce) })}
+            source={t("kpiSourceOccupations")}
+            href="/careers"
+          />
+          {h?.workerAdoptionWork && (
+            <StatTile
+              label={ta("kpiWorkers")}
+              value={`${h.workerAdoptionWork.value.toFixed(1)}%`}
+              delta={h.workerAdoptionWork.yoyPp != null ? { value: h.workerAdoptionWork.yoyPp, suffix: "pp", label: ta("kpiYoy") } : null}
+              source="St. Louis Fed RPS"
+              href="/analysis#measured-adoption"
             />
-            <p className="text-xs text-zinc-500 mt-1 uppercase tracking-widest">
-              {t("workforceLabel")}
-            </p>
-          </div>
-          <div className="hidden sm:block w-px h-16 bg-zinc-200 dark:bg-zinc-800 shrink-0" aria-hidden="true" />
-          <div>
-            <p className="text-base sm:text-lg font-semibold text-zinc-900 dark:text-white leading-snug">
-              {t("workforceInHigh")}{" "}
-              <span className="text-gradient">{t("workforceHighAI")}</span>{" "}
-              {t("workforceInHighPost")}
-            </p>
-            <p className="mt-1.5 text-sm text-zinc-600 dark:text-zinc-400 max-w-xl leading-relaxed">
-              {t("workforceDetail", {
-                high: (workforceExposure.highExposureWorkforce / 1_000_000).toFixed(1),
-                total: (workforceExposure.totalWorkforce / 1_000_000).toFixed(1),
-              })}{" "}
-              <Link href="/sources" className="text-zinc-500 underline underline-offset-2 hover:text-zinc-400">
-                {tc("sources")}
-              </Link>
-              .
-            </p>
-          </div>
+          )}
+          {h?.businessAiUse && (
+            <StatTile
+              label={ta("kpiFirms")}
+              value={`${h.businessAiUse.value.toFixed(1)}%`}
+              detail={h.businessAiUse.refEnd ? ta("kpiFirmsDetail", { date: fmtDay(h.businessAiUse.refEnd) }) : undefined}
+              source="Census BTOS"
+              href="/analysis#measured-adoption"
+            />
+          )}
+          {h?.workerTimeSavings && (
+            <StatTile
+              label={ta("kpiTimeSavings")}
+              value={`${h.workerTimeSavings.value.toFixed(1)}%`}
+              delta={h.workerTimeSavings.yoyPp != null ? { value: h.workerTimeSavings.yoyPp, suffix: "pp", label: ta("kpiYoy") } : null}
+              source="St. Louis Fed RPS"
+              href="/analysis#measured-adoption"
+            />
+          )}
         </div>
-      </Reveal>
+        <p className="max-w-4xl text-xs leading-relaxed text-zinc-500 dark:text-zinc-400" role="note">
+          {t("aboutDataNotePre")}{" "}
+          <span className="font-medium text-zinc-700 dark:text-zinc-300">Anthropic Economic Index</span>
+          {t("aboutDataNotePost")}{" "}
+          <Link href="/sources" className="text-[var(--accent)] underline underline-offset-2">{tc("seeSources")}</Link>.
+        </p>
+      </section>
 
-      <hr className="divider-glow" />
-
-      {/* ─── STANDOUT CAREERS ──────────────────────────────────────────────── */}
-      <Reveal delay={80}>
+      {/* ─── CHECKER + SECTOR TABLE ────────────────────────────────────────── */}
+      <section className="grid gap-4 xl:grid-cols-2">
         <div>
-          <h2 className="text-xl font-bold text-gradient mb-1">{t("standoutCareers")}</h2>
-          <p className="text-[10px] text-zinc-600 mb-2">
-            {t("standoutSubhead")}{" "}
-            <Link href="/sources" className="text-zinc-500 underline underline-offset-2 hover:text-zinc-400">
-              {tc("sources")}
-            </Link>.
-          </p>
-          <hr className="divider-glow mb-6" />
-          <HighlightsBento />
+          <SectionHeader title={t("checkerHeading")} description={t("checkerDesc", { count: insightsLength })} />
+          <HeroRiskChecker />
         </div>
-      </Reveal>
-
-      <hr className="divider-glow" />
-
-      {/* ─── SECTOR LANDSCAPE ──────────────────────────────────────────────── */}
-      <Reveal delay={120}>
         <div>
-          <h2 className="text-xl font-bold text-gradient mb-2">{t("sectorLandscape")}</h2>
-          <hr className="divider-glow mb-6" />
-          <div className="glass p-6">
-            <p className="text-xs text-zinc-500 mb-4 uppercase tracking-widest">
-              {t("sectorScatterDesc")}
-            </p>
-            <SectorScatterChart />
+          <SectionHeader
+            title={t("sectorTableTitle")}
+            description={t("sectorTableDesc")}
+            actions={<Link href="/sectors" className="text-sm font-medium text-[var(--accent)] hover:underline underline-offset-2">{t("viewAllSectors")} →</Link>}
+          />
+          <div className="glass overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[var(--border)] bg-[var(--bg-subtle)] text-left text-[11px] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                  <th scope="col" className="px-4 py-2.5">{t("colSector")}</th>
+                  <th scope="col" className="px-4 py-2.5">{t("colExposure")}</th>
+                  <th scope="col" className="hidden px-4 py-2.5 text-right sm:table-cell">{t("colOccupations")}</th>
+                  <th scope="col" className="px-4 py-2.5 text-right">{t("colBright")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sectors.map((s) => (
+                  <tr key={s.sector} className="border-b border-[var(--border)] last:border-0 hover:bg-[var(--bg-subtle)]">
+                    <th scope="row" className="px-4 py-2.5 text-left font-medium">
+                      <Link href={`/sectors/${encodeURIComponent(s.sector)}`} className="text-zinc-900 hover:text-[var(--accent)] dark:text-zinc-100">
+                        {s.sector}
+                      </Link>
+                    </th>
+                    <td className="px-4 py-2.5">
+                      <div className="flex items-center gap-2">
+                        <span className="h-1.5 w-20 overflow-hidden rounded-full bg-zinc-100 dark:bg-white/5" aria-hidden="true">
+                          <span className="block h-full rounded-full bg-[#2a78d6] dark:bg-[#3987e5]" style={{ width: `${(s.avgRisk / sectorMax) * 100}%` }} />
+                        </span>
+                        <span className="tabular-nums text-zinc-700 dark:text-zinc-300">{(s.avgRisk * 100).toFixed(1)}%</span>
+                      </div>
+                    </td>
+                    <td className="hidden px-4 py-2.5 text-right tabular-nums text-zinc-600 sm:table-cell dark:text-zinc-400">{s.occupationCount}</td>
+                    <td className="px-4 py-2.5 text-right tabular-nums text-zinc-600 dark:text-zinc-400">{(s.brightShare * 100).toFixed(0)}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
-      </Reveal>
+      </section>
 
-      <hr className="divider-glow" />
+      {adoption && <AdoptionPulse data={adoption} />}
 
-      {/* ─── CHARTS ────────────────────────────────────────────────────────── */}
-      <Reveal delay={160}>
-        <div>
-          <h2 className="text-xl font-bold text-gradient mb-2">{t("marketIntelligence")}</h2>
-          <hr className="divider-glow mb-6" />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="glass p-6">
-              <h3 className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 mb-4 uppercase tracking-wider">
-                {t("chartTop20")}
-              </h3>
-              <JobImpactChart />
-            </div>
-            <div className="glass p-6">
-              <h3 className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 mb-4 uppercase tracking-wider">
-                {t("chartProjections")}
-              </h3>
-              <PredictiveChart />
-            </div>
+      {/* ─── MARKET INTELLIGENCE ───────────────────────────────────────────── */}
+      <section>
+        <SectionHeader title={t("marketIntelligence")} />
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <div className="glass p-5">
+            <h3 className="mb-4 text-sm font-semibold text-zinc-900 dark:text-white">{t("chartTop20")}</h3>
+            <JobImpactChart />
+          </div>
+          <div className="glass p-5">
+            <h3 className="mb-4 text-sm font-semibold text-zinc-900 dark:text-white">{t("chartProjections")}</h3>
+            <PredictiveChart />
           </div>
         </div>
-      </Reveal>
+      </section>
 
-      {/* ─── SECTOR GRID ───────────────────────────────────────────────────── */}
-      <Reveal delay={240}>
-        <div>
-          <h2 className="text-xl font-bold text-gradient mb-2">{t("sectorSnapshot")}</h2>
-          <hr className="divider-glow mb-6" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {sectors.map((s) => (
-              <div key={s.sector} className="glass glass-hover p-5">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-semibold text-zinc-900 dark:text-white text-sm">{s.sector}</h3>
-                  <span
-                    className={`text-xs px-2 py-0.5 rounded-full border ${
-                      s.avgRisk < 0.3
-                        ? "bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400 border-green-200 dark:border-green-500/20"
-                        : s.avgRisk < 0.6
-                        ? "bg-yellow-100 dark:bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-500/20"
-                        : "bg-red-100 dark:bg-red-500/10 text-red-700 dark:text-red-400 border-red-200 dark:border-red-500/20"
-                    }`}
-                  >
-                    {t("exposurePct", { pct: (s.avgRisk * 100).toFixed(0) })}
-                  </span>
-                </div>
-                <div className="text-sm text-zinc-600 dark:text-zinc-400 space-y-0.5">
-                  <div>{t("occupationCount", { n: s.occupationCount })}</div>
-                  <div>
-                    <span className="text-green-700 dark:text-green-400">
-                      {(s.brightShare * 100).toFixed(0)}%
-                    </span>{" "}
-                    {t("brightOutlook")}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+      <section>
+        <SectionHeader title={t("sectorLandscape")} description={t("sectorScatterDesc")} />
+        <div className="glass p-5">
+          <SectorScatterChart />
         </div>
-      </Reveal>
+      </section>
 
+      <section>
+        <SectionHeader
+          title={t("standoutCareers")}
+          description={
+            <>
+              {t("standoutSubhead")}{" "}
+              <Link href="/sources" className="text-[var(--accent)] underline underline-offset-2">{tc("sources")}</Link>.
+            </>
+          }
+        />
+        <HighlightsBento />
+      </section>
+
+      {/* ─── EXPLORE ───────────────────────────────────────────────────────── */}
+      <section aria-labelledby="choose-lens-heading">
+        <SectionHeader id="choose-lens-heading" eyebrow={t("chooseLensKicker")} title={t("chooseLensHeading")} description={t("chooseLensSubhead")} />
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5">
+          {lensCards.map((card) => (
+            <Link
+              key={card.href}
+              href={card.href}
+              className="glass glass-hover group flex flex-col p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-ring)]"
+            >
+              <span className="eyebrow">{card.eyebrow}</span>
+              <h3 className="mt-2 text-[15px] font-semibold text-zinc-900 group-hover:text-[var(--accent)] dark:text-white">{card.title}</h3>
+              <p className="mt-1.5 flex-1 text-[13px] leading-relaxed text-zinc-600 dark:text-zinc-400">{card.description}</p>
+              <span className="mt-3 text-[13px] font-medium text-[var(--accent)]">
+                {t("chooseLensCta")} <span aria-hidden="true">→</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

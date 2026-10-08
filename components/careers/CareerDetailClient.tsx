@@ -72,10 +72,10 @@ export default function CareerDetailClient({
       {/* Hero */}
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 animate-fade-up">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gradient">
+          <h1 className="text-[26px] font-semibold leading-tight tracking-tight text-zinc-900 sm:text-3xl dark:text-white">
             {career.occupationName}
           </h1>
-          <p className="text-zinc-600 dark:text-zinc-400 mt-1">
+          <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
             {career.sectorName} &middot; SOC {career.occupationCode}
           </p>
         </div>
@@ -145,7 +145,7 @@ export default function CareerDetailClient({
         ].map(({ value, label, className, suffix }) => (
           <div
             key={label}
-            className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center"
+            className="glass rounded-xl p-4 text-center"
           >
             <div className={`text-2xl font-bold ${className}`}>
               {value}
@@ -173,7 +173,7 @@ export default function CareerDetailClient({
       {transitions.length > 0 && (
         <section aria-labelledby="best-transitions-heading">
           <div className="flex items-end justify-between gap-3 mb-1">
-            <h2 id="best-transitions-heading" className="text-lg font-semibold text-gradient">
+            <h2 id="best-transitions-heading" className="text-lg font-semibold text-gradient tracking-tight">
               {t("bestTransitionsTitle")}
             </h2>
             <Link
@@ -203,7 +203,7 @@ export default function CareerDetailClient({
                 <Link
                   key={p.occupationCode}
                   href={`/careers/${p.occupationCode}`}
-                  className="block glass glass-hover bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 group transition-all focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  className="block glass glass-hover rounded-xl p-4 group transition-all focus:outline-none focus:ring-2 focus:ring-violet-500"
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <h3 className="text-sm font-semibold text-zinc-900 dark:text-white leading-snug group-hover:text-cyan-300 transition-colors">
@@ -253,7 +253,7 @@ export default function CareerDetailClient({
 
       {/* Risk analysis + skills */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+        <div className="glass rounded-xl p-6">
           <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">{t("sectionAIExposureAnalysis")}</h2>
           <div className="space-y-5">
             <div>
@@ -283,7 +283,7 @@ export default function CareerDetailClient({
                   className="h-full rounded-full"
                   style={{
                     width: `${resiliency}%`,
-                    background: "linear-gradient(90deg, #8b5cf6, #22d3ee)",
+                    background: "var(--accent)",
                   }}
                 />
               </div>
@@ -306,7 +306,7 @@ export default function CareerDetailClient({
         </div>
 
         {exposureLenses && (
-          <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+          <div className="glass rounded-xl p-6">
             <div className="flex items-start justify-between gap-4 mb-4">
               <div>
                 <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">{t("sectionExposureLenses")}</h2>
@@ -368,7 +368,7 @@ export default function CareerDetailClient({
           </div>
         )}
 
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+        <div className="glass rounded-xl p-6">
           <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">{t("sectionTopSkills")}</h2>
           <div className="space-y-2.5">
             {career.skills.map((skill, idx) => (
@@ -390,10 +390,10 @@ export default function CareerDetailClient({
       {/* H-1B Visa Sponsorship Demand */}
       <section
         aria-labelledby="h1b-section-heading"
-        className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6"
+        className="glass rounded-xl p-6"
       >
         <div className="flex items-start justify-between gap-4 mb-1">
-          <h2 id="h1b-section-heading" className="text-lg font-semibold text-gradient">
+          <h2 id="h1b-section-heading" className="text-lg font-semibold text-gradient tracking-tight">
             {t("h1bSectionTitle")}
           </h2>
           <Link
@@ -409,7 +409,7 @@ export default function CareerDetailClient({
               {t("h1bSectionSubtitle", { first: h1bSignal.firstYear, latest: h1bSignal.latestYear })}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
-              <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
+              <div className="glass rounded-xl p-4 text-center">
                 <div className="text-2xl font-bold tabular-nums text-zinc-900 dark:text-white">
                   {formatNumber(h1bSignal.totalCount)}
                 </div>
@@ -417,7 +417,7 @@ export default function CareerDetailClient({
                   {t("h1bStatDecadeTotal")}
                 </div>
               </div>
-              <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
+              <div className="glass rounded-xl p-4 text-center">
                 <div className="text-2xl font-bold tabular-nums text-zinc-900 dark:text-white">
                   {formatNumber(h1bSignal.latestYearCount)}
                 </div>
@@ -431,7 +431,7 @@ export default function CareerDetailClient({
                   })}
                 </div>
               </div>
-              <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
+              <div className="glass rounded-xl p-4 text-center">
                 <div className="text-2xl font-bold tabular-nums text-zinc-900 dark:text-white">
                   {formatCurrency(h1bSignal.medianWageAnnualLatest)}
                 </div>
@@ -439,7 +439,7 @@ export default function CareerDetailClient({
                   {t("h1bStatMedianWage")}
                 </div>
               </div>
-              <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
+              <div className="glass rounded-xl p-4 text-center">
                 <div className="text-xl font-bold tabular-nums text-zinc-900 dark:text-white">
                   {t("h1bRankValue", {
                     rank: h1bSignal.rankByTotal,
@@ -461,7 +461,7 @@ export default function CareerDetailClient({
       </section>
 
       {onet && (
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 space-y-6">
+        <div className="glass rounded-xl p-6 space-y-6">
           <div>
             <p className="text-xs text-zinc-500 uppercase tracking-widest mb-2">
               {t("onetProfileLabel")}
@@ -549,7 +549,7 @@ export default function CareerDetailClient({
       )}
 
       {/* Predictive chart */}
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+      <div className="glass rounded-xl p-6">
         <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
           {t("sectionEmploymentProjections")}
         </h2>
@@ -557,8 +557,8 @@ export default function CareerDetailClient({
       </div>
 
       {/* Employment & wage trend */}
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
-        <h2 className="text-lg font-semibold text-gradient mb-1">
+      <div className="glass rounded-xl p-6">
+        <h2 className="text-lg font-semibold text-gradient mb-1 tracking-tight">
           {t("sectionEmploymentWageTrend")}
         </h2>
         <p className="text-xs text-zinc-500 uppercase tracking-widest mb-3">
@@ -582,7 +582,7 @@ export default function CareerDetailClient({
       </div>
 
       {/* Sector comparison table */}
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+      <div className="glass rounded-xl p-6">
         <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">{t("sectionSectorComparison")}</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -654,14 +654,14 @@ function CareerEvidencePassportPanel({
   return (
     <section
       aria-labelledby="career-evidence-passport-title"
-      className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6"
+      className="glass rounded-xl p-6"
     >
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-600 dark:text-cyan-300">
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
             {t("passportEyebrow")}
           </p>
-          <h2 id="career-evidence-passport-title" className="mt-1 text-xl font-bold text-gradient">
+          <h2 id="career-evidence-passport-title" className="mt-1 text-lg font-semibold text-gradient tracking-tight">
             {t("passportTitle")}
           </h2>
           <p className="mt-2 max-w-3xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">

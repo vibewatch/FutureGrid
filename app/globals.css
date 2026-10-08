@@ -5,14 +5,32 @@
 
 /* ─── Design tokens ─────────────────────────────────────────────────────────── */
 @theme {
-  --color-brand-violet: #8b5cf6;
-  --color-brand-cyan: #22d3ee;
-  --color-brand-blue: #3b82f6;
+  --color-brand-violet: #4f46e5;
+  --color-brand-cyan: #0e7490;
+  --color-brand-blue: #2563eb;
   --color-risk-low: #22c55e;
   --color-risk-medium: #eab308;
   --color-risk-high: #f97316;
   --color-risk-very-high: #ef4444;
-  --color-surface: #07080d;
+  --color-surface: #0b0d12;
+
+  /*
+   * Brand accent ramp. The UI historically used Tailwind's neon `violet-*`
+   * utilities for accents; remapping that ramp to a sober indigo gives every
+   * page one consistent, professional accent without touching hundreds of
+   * call sites. Data-viz colours are set explicitly in chart code, not here.
+   */
+  --color-violet-50: oklch(96.2% 0.018 272.314);
+  --color-violet-100: oklch(93% 0.034 272.788);
+  --color-violet-200: oklch(87% 0.065 274.039);
+  --color-violet-300: oklch(78.5% 0.115 274.713);
+  --color-violet-400: oklch(67.3% 0.182 276.935);
+  --color-violet-500: oklch(58.5% 0.233 277.117);
+  --color-violet-600: oklch(51.1% 0.262 276.966);
+  --color-violet-700: oklch(45.7% 0.24 277.023);
+  --color-violet-800: oklch(39.8% 0.195 277.366);
+  --color-violet-900: oklch(35.9% 0.144 278.697);
+  --color-violet-950: oklch(25.7% 0.09 281.288);
 }
 
 /* next/font CSS vars are resolved at runtime — keep as inline references */
@@ -21,91 +39,96 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* ─── Brand vars (consumed by custom utilities below) ────────────────────────── */
+/* ─── Semantic tokens ───────────────────────────────────────────────────────── */
 :root {
-  --brand-violet: #8b5cf6;
-  --brand-cyan:   #22d3ee;
-  --brand-blue:   #3b82f6;
+  --brand-violet: #4f46e5;
+  --brand-cyan:   #0e7490;
+  --brand-blue:   #2563eb;
+
+  --accent:          #4f46e5;
+  --accent-hover:    #4338ca;
+  --accent-soft:     rgba(79, 70, 229, 0.08);
+  --accent-ring:     rgba(79, 70, 229, 0.35);
+  --accent-contrast: #ffffff;
 
   /* ── Light-mode surface/text tokens ── */
-  --bg:              #f8f9fc;
+  --bg:              #f6f7f9;
   --bg-elevated:     #ffffff;
-  --bg-panel:        rgba(255,255,255,0.85);
-  --text:            #18181b;   /* zinc-900 */
-  --text-subtle:     #3f3f46;   /* zinc-700 */
-  --text-muted:      #71717a;   /* zinc-500 */
-  --border:          rgba(0,0,0,0.09);
-  --border-strong:   rgba(0,0,0,0.14);
+  --bg-subtle:       #f1f3f6;
+  --bg-panel:        #ffffff;
+  --text:            #0f172a;
+  --text-subtle:     #334155;
+  --text-muted:      #64748b;
+  --border:          #e3e7ed;
+  --border-strong:   #cdd4de;
 
-  /* Glass tokens — light */
-  --glass-bg:        rgba(255,255,255,0.65);
-  --glass-border:    rgba(0,0,0,0.08);
+  --shadow-card:     0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 1px rgba(15, 23, 42, 0.02);
+  --shadow-card-hover: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
 
-  /* Scrollbar — light */
-  --scrollbar-track: #f1f1f5;
-  --scrollbar-thumb: #8b5cf6;
-  --scrollbar-thumb-hover: #a78bfa;
+  /* Legacy glass tokens now resolve to solid surfaces */
+  --glass-bg:        var(--bg-elevated);
+  --glass-border:    var(--border);
 
-  /* Grid background opacity — lighter in light mode */
-  --grid-bg-opacity: 0.0;
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: #cbd2dc;
+  --scrollbar-thumb-hover: #a8b1bf;
+
+  --grid-bg-opacity: 0;
 }
 
 .dark {
-  /* ── Dark-mode surface/text tokens (matches original) ── */
-  --bg:              #07080d;
-  --bg-elevated:     #0f1117;
-  --bg-panel:        rgba(15,17,23,0.85);
-  --text:            #e4e4e7;   /* zinc-200 */
-  --text-subtle:     #d4d4d8;   /* zinc-300 */
-  --text-muted:      #71717a;   /* zinc-500 */
-  --border:          rgba(255,255,255,0.10);
-  --border-strong:   rgba(255,255,255,0.15);
+  --accent:          #818cf8;
+  --accent-hover:    #a5b4fc;
+  --accent-soft:     rgba(129, 140, 248, 0.12);
+  --accent-ring:     rgba(129, 140, 248, 0.45);
+  --accent-contrast: #0b0d12;
 
-  /* Glass tokens — dark */
-  --glass-bg:        rgba(255,255,255,0.04);
-  --glass-border:    rgba(255,255,255,0.08);
+  --bg:              #0b0d12;
+  --bg-elevated:     #12151c;
+  --bg-subtle:       #171b23;
+  --bg-panel:        #12151c;
+  --text:            #e7e9ee;
+  --text-subtle:     #c4c9d4;
+  --text-muted:      #8b93a3;
+  --border:          #232834;
+  --border-strong:   #313847;
 
-  /* Scrollbar — dark */
-  --scrollbar-track: #07080d;
-  --scrollbar-thumb: #8b5cf6;
-  --scrollbar-thumb-hover: #a78bfa;
+  --shadow-card:     0 1px 0 rgba(255, 255, 255, 0.02) inset;
+  --shadow-card-hover: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 6px 20px rgba(0, 0, 0, 0.35);
 
-  --grid-bg-opacity: 1.0;
+  --scrollbar-thumb: #2c3240;
+  --scrollbar-thumb-hover: #3b4354;
 }
 
 /* ─── Base ──────────────────────────────────────────────────────────────────── */
-html {
-  color-scheme: dark;
-}
-
-html.dark {
-  color-scheme: dark;
-}
-
-html:not(.dark) {
-  color-scheme: light;
-}
+html { color-scheme: dark; }
+html.dark { color-scheme: dark; }
+html:not(.dark) { color-scheme: light; }
 
 body {
   background-color: var(--bg);
   color: var(--text);
+  font-feature-settings: "cv11", "ss01";
+  text-rendering: optimizeLegibility;
 }
 
+h1, h2, h3 { letter-spacing: -0.015em; }
+
 /* ─── Custom scrollbar ───────────────────────────────────────────────────────── */
-::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar        { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track  { background: var(--scrollbar-track); }
-::-webkit-scrollbar-thumb  { background: var(--scrollbar-thumb); border-radius: 3px; }
+::-webkit-scrollbar-thumb  { background: var(--scrollbar-thumb); border-radius: 8px; border: 2px solid var(--bg); }
 ::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
 
 /* ─── Selection ──────────────────────────────────────────────────────────────── */
 ::selection {
-  background: rgba(139, 92, 246, 0.3);
-  color: #c4b5fd;
+  background: var(--accent-ring);
+  color: inherit;
 }
 
 /* ─── Keyframes ──────────────────────────────────────────────────────────────── */
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0);    }
 }
 
@@ -114,100 +137,85 @@ body {
   to   { opacity: 1; }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0);   }
-  50%       { transform: translateY(-8px); }
-}
-
 @keyframes shimmer {
   from { background-position: -200% center; }
   to   { background-position:  200% center; }
 }
 
-@keyframes card-glow-pulse {
-  0%, 100% { opacity: 0.4; }
-  50%       { opacity: 0.8; }
-}
-
-/* ─── Utility classes (consumed by all agents) ───────────────────────────────── */
+/* ─── Utility classes ────────────────────────────────────────────────────────── */
 @layer utilities {
-  /* Gradient text – violet → cyan (reads fine on both themes) */
+  /*
+   * Historically a violet→cyan gradient. Headings now use solid ink for a
+   * restrained, report-style look; the class name is kept so existing markup
+   * keeps working.
+   */
   .text-gradient {
-    background: linear-gradient(90deg, #8b5cf6, #22d3ee);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--text);
+    -webkit-text-fill-color: currentColor;
+    background: none;
   }
 
-  /* Glassmorphism panel — uses theme vars so it adapts automatically */
+  /* Card surface (formerly glassmorphism) — solid, hairline border, soft shadow */
   .glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: var(--shadow-card);
   }
 
-  /* Glass lift + brand glow on hover/focus */
+  /* Interactive card: border + shadow emphasis, no lift */
   .glass-hover {
-    transition: box-shadow 0.25s ease, transform 0.25s ease;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
     &:hover,
     &:focus-within {
-      box-shadow:
-        0 0 0 1px rgba(139, 92, 246, 0.35),
-        0 8px 32px rgba(139, 92, 246, 0.18);
-      transform: translateY(-2px);
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-card-hover);
     }
   }
 
-  /* Animated gradient glow ring around a card */
+  /* Retired glow ring — now a plain card emphasis */
   .card-glow {
-    box-shadow:
-      0 0 0 1px rgba(139, 92, 246, 0.18),
-      0 4px 24px rgba(139, 92, 246, 0.10),
-      0 8px 48px rgba(34, 211, 238, 0.05);
-    animation: card-glow-pulse 3s ease-in-out infinite;
+    box-shadow: var(--shadow-card);
   }
 
-  /* Brand gradient background – violet → cyan */
+  /* Solid brand accent fill (formerly a gradient) */
   .brand-grad {
-    background: linear-gradient(135deg, #8b5cf6, #22d3ee);
+    background: var(--accent);
   }
 
-  /* Thin gradient hairline separator */
+  /* Hairline separator (formerly a glowing gradient) */
   .divider-glow {
     height: 1px;
     border: none;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      #8b5cf6 30%,
-      #22d3ee 70%,
-      transparent 100%
-    );
+    background: var(--border);
   }
 
-  /* Animation utility classes */
+  /* Small uppercase label used above headings and in stat tiles */
+  .eyebrow {
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
   .animate-fade-up {
-    animation: fade-up 0.5s ease-out forwards;
+    animation: fade-up 0.25s ease-out both;
   }
 
   .animate-fade-in {
-    animation: fade-in 0.4s ease-out forwards;
+    animation: fade-in 0.2s ease-out both;
   }
 
+  /* Retired decorative float — kept as a no-op for existing markup */
   .animate-float {
-    animation: float 4s ease-in-out infinite;
+    animation: none;
   }
 
   .animate-shimmer {
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(139, 92, 246, 0.2) 50%,
-      transparent 100%
-    );
+    background: linear-gradient(90deg, transparent 0%, var(--accent-soft) 50%, transparent 100%);
     background-size: 200% 100%;
     animation: shimmer 2s linear infinite;
   }
@@ -215,16 +223,21 @@ body {
 
 /* ─── Choropleth map entrance animation ──────────────────────────────────────── */
 .choropleth-svg {
-  transition: opacity 0.65s ease, transform 0.65s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* ─── Print: clean report output ─────────────────────────────────────────────── */
+@media print {
+  [data-app-chrome] { display: none !important; }
+  main { margin: 0 !important; padding: 0 !important; }
+  .glass { box-shadow: none; }
 }
 
 /* ─── Reduced-motion: disable all animations ──────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up,
   .animate-fade-in,
-  .animate-float,
-  .animate-shimmer,
-  .card-glow {
+  .animate-shimmer {
     animation: none !important;
     opacity: 1;
     transform: none;
@@ -240,4 +253,3 @@ body {
     transform: none !important;
   }
 }
-

@@ -280,7 +280,7 @@ function StatCard({
   sub?: string;
 }) {
   return (
-    <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+    <div className="glass rounded-xl p-5">
       <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1">
         {label}
       </p>
@@ -809,13 +809,13 @@ export default function WarnPressureView() {
             {t("pressureBadge")}
           </span>
         </div>
-        <h1 className="text-3xl font-bold tracking-tight text-gradient">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight text-zinc-900 sm:text-3xl dark:text-white">
           {t("pressureHeroTitle")}
         </h1>
         <p className="text-zinc-600 dark:text-zinc-400 mt-1.5 max-w-3xl">
           {t("pressureHeroSubhead")}
         </p>
-        <div className="mt-4 glass bg-white/60 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 max-w-4xl">
+        <div className="mt-4 glass rounded-xl p-4 max-w-4xl">
           <p className="text-sm font-semibold text-zinc-900 dark:text-white">
             {t("pressureFormulaTitle")}
           </p>
@@ -892,7 +892,7 @@ export default function WarnPressureView() {
           </p>
         </div>
 
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+        <div className="glass rounded-xl overflow-hidden">
           {rankedStates.length === 0 ? (
             <div className="py-12 px-4 text-center text-zinc-500 text-sm">
               {t("pressureNoRankedStates")}
@@ -1008,7 +1008,7 @@ export default function WarnPressureView() {
           </p>
         </div>
 
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+        <div className="glass rounded-xl overflow-hidden">
           {qcewBaselineStates.length === 0 ? (
             <div className="py-12 px-4 text-center text-zinc-500 text-sm">
               {t("pressureQcewNoStates")}
@@ -1184,7 +1184,7 @@ export default function WarnPressureView() {
               {t("pressureCoverageDesc")}
             </p>
           </div>
-          <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+          <div className="glass rounded-xl p-5">
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {coverageCounts.map(({ group, count }) => (
                 <div
@@ -1206,7 +1206,7 @@ export default function WarnPressureView() {
           </div>
         </div>
 
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+        <div className="glass rounded-xl p-5">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-500 mb-3">
             {t("pressureNotRankedHeading")}
           </h3>
@@ -1246,7 +1246,7 @@ export default function WarnPressureView() {
       </section>
 
       <section aria-labelledby="pressure-method-heading">
-        <div className="glass bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 space-y-4">
+        <div className="glass rounded-xl p-6 space-y-4">
           <h2
             id="pressure-method-heading"
             className="text-base font-semibold text-zinc-900 dark:text-white"

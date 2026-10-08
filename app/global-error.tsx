@@ -102,8 +102,8 @@ export default function GlobalError({
               justifyContent: "center",
               width: 48,
               height: 48,
-              borderRadius: 12,
-              background: "linear-gradient(135deg, #8b5cf6, #22d3ee)",
+              borderRadius: 8,
+              background: "#4f46e5",
               color: "#fff",
               fontWeight: 900,
               fontSize: 14,
@@ -114,17 +114,13 @@ export default function GlobalError({
             FG
           </div>
 
-          {/* Gradient headline */}
+          {/* Headline */}
           <h1
             style={{
               margin: "0 0 0.75rem",
               fontSize: "clamp(1.5rem, 5vw, 2rem)",
-              fontWeight: 800,
+              fontWeight: 600,
               lineHeight: 1.2,
-              background: "linear-gradient(90deg, #8b5cf6, #22d3ee)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
             }}
           >
             {d.heading}
@@ -161,8 +157,7 @@ export default function GlobalError({
             style={{
               height: 1,
               border: "none",
-              background:
-                "linear-gradient(90deg, transparent 0%, #8b5cf6 30%, #22d3ee 70%, transparent 100%)",
+              background: "#2a2f3a",
               margin: "1.5rem auto",
               maxWidth: 192,
             }}
@@ -185,10 +180,10 @@ export default function GlobalError({
                   alignItems: "center",
                   gap: "0.375rem",
                   padding: "0.625rem 1.25rem",
-                  borderRadius: 9999,
+                  borderRadius: 6,
                   border: "none",
                   cursor: "pointer",
-                  background: "linear-gradient(135deg, #8b5cf6, #22d3ee)",
+                  background: "#4f46e5",
                   color: "#fff",
                   fontSize: "0.875rem",
                   fontWeight: 600,

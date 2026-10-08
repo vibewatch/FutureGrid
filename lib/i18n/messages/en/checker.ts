@@ -12,4 +12,5 @@ export const checkerEn = {
   projectedAnnualOpenings: "Projected annual openings:",
   forecastNote: "Estimated automation exposure for this occupation — not a personal forecast.",
   viewFullProfile: "View full profile",
+  gaugeSublabel: "AI exposure",
 };

@@ -2165,3 +2165,40 @@ export function validateSources(data) {
     }
   }
 }
+
+/**
+ * Validate data/ai-adoption-tracker.json (St. Louis Fed RPS + Census BTOS).
+ * Percent values must sit in [0, 100]; occupation coverage must span most SOC
+ * major groups so the sector join on the UI stays meaningful.
+ * @param {Record<string, unknown>} data
+ */
+export function validateAIAdoptionTracker(data) {
+  const name = "ai-adoption-tracker";
+  assertFields(data, ["meta", "sources", "workers", "businesses"], name);
+  assertProvenance(data, name);
+
+  const { workers, businesses } = data;
+  assertFields(workers, ["asOf", "headline", "byOccupationGroup", "byIndustry"], `${name}.workers`);
+  assertMinRows(workers.headline.adoptionWork, 6, `${name}.workers.headline.adoptionWork`);
+  assertMinRows(workers.headline.adoptionOverall, 6, `${name}.workers.headline.adoptionOverall`);
+  assertMinRows(workers.byOccupationGroup, 18, `${name}.workers.byOccupationGroup`);
+  assertMinRows(workers.byIndustry, 15, `${name}.workers.byIndustry`);
+
+  assertFields(businesses, ["asOf", "national", "bySector", "byState"], `${name}.businesses`);
+  assertMinRows(businesses.national, 20, `${name}.businesses.national`);
+  assertMinRows(businesses.bySector, 12, `${name}.businesses.bySector`);
+  assertMinRows(businesses.byState, 45, `${name}.businesses.byState`);
+
+  const pcts = [
+    ...workers.headline.adoptionWork.map((p) => p.value),
+    ...workers.byOccupationGroup.map((g) => g.adoptionWorkPct),
+    ...workers.byIndustry.map((g) => g.adoptionWorkPct),
+    ...businesses.national.map((p) => p.aiUsePct),
+    ...businesses.bySector.map((s) => s.aiUsePct),
+    ...businesses.byState.map((s) => s.aiUsePct),
+  ];
+  const bad = pcts.filter((v) => typeof v !== "number" || !Number.isFinite(v) || v < 0 || v > 100);
+  if (bad.length > 0) {
+    throw new Error(`[validate] ${name}: ${bad.length} percent value(s) outside [0, 100], e.g. ${bad[0]}`);
+  }
+}

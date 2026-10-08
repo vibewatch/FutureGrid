@@ -11,20 +11,23 @@ import type { Locale } from "@/lib/i18n/types";
 
 const CHART_W = 680;
 const MARGIN = { top: 36, right: 44, bottom: 44, left: 152 };
-// ROW_H must accommodate 3 bars + gaps per country group
-const ROW_H = 28;
-const BAR_H = 7;
-const BAR_GAP = 1.5;
-// Shared x-axis max — covers the dataset maximum of ~70.1%; round up to 75
-const SCALE_MAX = 75;
+// ROW_H must accommodate one bar per period + gaps per country group
+const ROW_H = 34;
+const BAR_H = 6;
+const BAR_GAP = 2;
+const X_TICKS = [0, 25, 50, 75, 100];
 
-// Non-color encoding: three violet/cyan shades with distinct luminance levels.
-// Opacity differences allow grayscale differentiation.
-const PERIOD_FILL: Record<"h1" | "h2" | "q1", { fill: string; opacity: number }> = {
-  h1: { fill: "#8b5cf6", opacity: 0.35 }, // violet — lightest
-  h2: { fill: "#8b5cf6", opacity: 0.68 }, // violet — medium
-  q1: { fill: "#06b6d4", opacity: 1.0 },  // cyan   — full opacity, distinct hue
-};
+type PeriodKey = "h1_2025" | "h2_2025" | "q1_2026" | "q2_2026";
+
+// Ordered survey waves → single-hue ordinal ramp (light → dark), validated for
+// both light and dark surfaces. Lightness alone separates periods in grayscale.
+const PERIODS: { key: PeriodKey; fill: string; labelKey: string; colKey: string }[] = [
+  { key: "h1_2025", fill: "#86b6ef", labelKey: "diffusionGrowthH1Label", colKey: "diffusionGrowthColH1" },
+  { key: "h2_2025", fill: "#5598e7", labelKey: "diffusionGrowthH2Label", colKey: "diffusionGrowthColH2" },
+  { key: "q1_2026", fill: "#2a78d6", labelKey: "diffusionGrowthQ1Label", colKey: "diffusionGrowthColQ1" },
+  { key: "q2_2026", fill: "#1c5cab", labelKey: "diffusionGrowthQ2Label", colKey: "diffusionGrowthColQ2" },
+];
+const LATEST = PERIODS[PERIODS.length - 1];
 
 const NUMBER_LOCALES: Record<Locale, string> = { en: "en-US", zh: "zh-CN" };
 
@@ -47,27 +50,25 @@ function fmtDelta(value: number, locale: string): string {
 
 function BarChart({
   rows,
-  h1Label,
-  h2Label,
-  q1Label,
+  labels,
   axisLabel,
 }: {
   rows: DiffusionComparisonRow[];
-  h1Label: string;
-  h2Label: string;
-  q1Label: string;
+  labels: Record<PeriodKey, string>;
   axisLabel: string;
 }) {
   const n = rows.length;
   const plotW = CHART_W - MARGIN.left - MARGIN.right;
   const plotH = n * ROW_H;
   const totalH = MARGIN.top + plotH + MARGIN.bottom;
+  // Shared x-axis max rounded up to the next 25pp so the leader never clips
+  const maxValue = Math.max(...rows.flatMap((r) => PERIODS.map((p) => r[p.key])), 25);
+  const scaleMax = Math.ceil(maxValue / 25) * 25;
+  const xTicks = X_TICKS.filter((tick) => tick <= scaleMax);
 
   function scaleX(v: number) {
-    return (v / SCALE_MAX) * plotW;
+    return (v / scaleMax) * plotW;
   }
-
-  const xTicks = [0, 25, 50, SCALE_MAX];
 
   return (
     <svg
@@ -89,7 +90,7 @@ function BarChart({
             <text
               x={x} y={MARGIN.top - 10}
               textAnchor="middle" fontSize="10"
-              fill="currentColor" fillOpacity="0.45"
+              fill="currentColor" fillOpacity="0.55"
             >
               {tick}%
             </text>
@@ -100,21 +101,17 @@ function BarChart({
       {/* ─── Country rows ─────────────────────────── */}
       {rows.map((row, ri) => {
         const rowY = MARGIN.top + ri * ROW_H;
-        // Vertically center the 3-bar group within the row
-        const groupH = 3 * BAR_H + 2 * BAR_GAP;
+        // Vertically center the bar group within the row
+        const groupH = PERIODS.length * BAR_H + (PERIODS.length - 1) * BAR_GAP;
         const groupY = rowY + (ROW_H - groupH) / 2;
-
-        const h1Y = groupY;
-        const h2Y = groupY + BAR_H + BAR_GAP;
-        const q1Y = groupY + 2 * (BAR_H + BAR_GAP);
-
-        const barX = MARGIN.left;
-        const h1W = Math.max(scaleX(row.h1_2025), 2);
-        const h2W = Math.max(scaleX(row.h2_2025), 2);
-        const q1W = Math.max(scaleX(row.q1_2026), 2);
+        const latestW = Math.max(scaleX(row[LATEST.key]), 2);
+        const latestY = groupY + (PERIODS.length - 1) * (BAR_H + BAR_GAP);
 
         return (
           <g key={row.iso3}>
+            <title>
+              {`${row.name}: ${PERIODS.map((p) => `${labels[p.key]} ${row[p.key].toFixed(1)}%`).join(", ")}`}
+            </title>
             {/* Country name label */}
             <text
               x={MARGIN.left - 8}
@@ -122,39 +119,30 @@ function BarChart({
               textAnchor="end"
               fontSize="11"
               fill="currentColor"
-              fillOpacity="0.8"
+              fillOpacity="0.85"
             >
               {row.name}
             </text>
 
-            {/* H1 bar */}
-            <rect
-              x={barX} y={h1Y} width={h1W} height={BAR_H}
-              fill={PERIOD_FILL.h1.fill} opacity={PERIOD_FILL.h1.opacity}
-              rx="1"
-            />
+            {PERIODS.map((p, pi) => (
+              <rect
+                key={p.key}
+                x={MARGIN.left}
+                y={groupY + pi * (BAR_H + BAR_GAP)}
+                width={Math.max(scaleX(row[p.key]), 2)}
+                height={BAR_H}
+                fill={p.fill}
+                rx="1.5"
+              />
+            ))}
 
-            {/* H2 bar */}
-            <rect
-              x={barX} y={h2Y} width={h2W} height={BAR_H}
-              fill={PERIOD_FILL.h2.fill} opacity={PERIOD_FILL.h2.opacity}
-              rx="1"
-            />
-
-            {/* Q1 bar */}
-            <rect
-              x={barX} y={q1Y} width={q1W} height={BAR_H}
-              fill={PERIOD_FILL.q1.fill} opacity={PERIOD_FILL.q1.opacity}
-              rx="1"
-            />
-
-            {/* Q1 value label (shown at bar end for readability) */}
+            {/* Latest value label (selective direct label at the bar end) */}
             <text
-              x={barX + q1W + 4}
-              y={q1Y + BAR_H - 0.5}
-              fontSize="9" fill="currentColor" fillOpacity="0.6"
+              x={MARGIN.left + latestW + 4}
+              y={latestY + BAR_H - 0.5}
+              fontSize="9" fill="currentColor" fillOpacity="0.7"
             >
-              {row.q1_2026.toFixed(1)}%
+              {row[LATEST.key].toFixed(1)}%
             </text>
 
             {/* Thin row separator */}
@@ -181,37 +169,10 @@ function BarChart({
         x={MARGIN.left + plotW / 2}
         y={MARGIN.top + plotH + 28}
         textAnchor="middle" fontSize="10"
-        fill="currentColor" fillOpacity="0.4"
+        fill="currentColor" fillOpacity="0.5"
       >
         {axisLabel}
       </text>
-
-      {/* ─── Legend ────────────────────────────────── */}
-      {[
-        { key: "h1" as const, label: h1Label },
-        { key: "h2" as const, label: h2Label },
-        { key: "q1" as const, label: q1Label },
-      ].map(({ key, label }, i) => {
-        const lx = MARGIN.left + i * 110;
-        const ly = MARGIN.top + plotH + 42;
-        return (
-          <g key={key}>
-            <rect
-              x={lx} y={ly - 7}
-              width={10} height={7}
-              fill={PERIOD_FILL[key].fill}
-              opacity={PERIOD_FILL[key].opacity}
-              rx="1"
-            />
-            <text
-              x={lx + 13} y={ly - 0.5}
-              fontSize="10" fill="currentColor" fillOpacity="0.55"
-            >
-              {label}
-            </text>
-          </g>
-        );
-      })}
     </svg>
   );
 }
@@ -229,6 +190,7 @@ export default function DiffusionGrowthComparison({
   const headingId = useId();
 
   if (data.length === 0) return null;
+  const periodLabels = Object.fromEntries(PERIODS.map((p) => [p.key, t(p.labelKey)])) as Record<PeriodKey, string>;
 
   return (
     <section
@@ -239,12 +201,12 @@ export default function DiffusionGrowthComparison({
       {/* ─── Section header ─── */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-600 dark:text-cyan-300">
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
             {t("diffusionGrowthEyebrow")}
           </p>
           <h2
             id={headingId}
-            className="mt-1 text-2xl sm:text-3xl font-extrabold tracking-tight text-gradient"
+            className="mt-1 text-lg font-semibold tracking-tight text-gradient"
           >
             {t("diffusionGrowthTitle")}
           </h2>
@@ -269,27 +231,18 @@ export default function DiffusionGrowthComparison({
         aria-label={t("diffusionGrowthLegendLabel")}
         className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5"
       >
-        {(
-          [
-            { key: "h1" as const, label: t("diffusionGrowthH1Label") },
-            { key: "h2" as const, label: t("diffusionGrowthH2Label") },
-            { key: "q1" as const, label: t("diffusionGrowthQ1Label") },
-          ] as const
-        ).map(({ key, label }) => (
+        {PERIODS.map((p) => (
           <div
-            key={key}
+            key={p.key}
             role="listitem"
             className="flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-400"
           >
             <span
               className="inline-block h-3 w-3 rounded-sm"
-              style={{
-                backgroundColor: PERIOD_FILL[key].fill,
-                opacity: PERIOD_FILL[key].opacity,
-              }}
+              style={{ backgroundColor: p.fill }}
               aria-hidden="true"
             />
-            {label}
+            {t(p.labelKey)}
           </div>
         ))}
       </div>
@@ -299,9 +252,7 @@ export default function DiffusionGrowthComparison({
         <figure aria-label={t("diffusionGrowthFigureAria")}>
           <BarChart
             rows={data}
-            h1Label={t("diffusionGrowthH1Label")}
-            h2Label={t("diffusionGrowthH2Label")}
-            q1Label={t("diffusionGrowthQ1Label")}
+            labels={periodLabels}
             axisLabel={t("diffusionGrowthAxisLabel")}
           />
           {/* Screen-reader summary list — all values readable without color */}
@@ -309,12 +260,8 @@ export default function DiffusionGrowthComparison({
             <ul>
               {data.map((row) => (
                 <li key={row.iso3}>
-                  {row.name}: {t("diffusionGrowthH1Label")}{" "}
-                  {fmtPct(row.h1_2025, numberLocale)},{" "}
-                  {t("diffusionGrowthH2Label")}{" "}
-                  {fmtPct(row.h2_2025, numberLocale)},{" "}
-                  {t("diffusionGrowthQ1Label")}{" "}
-                  {fmtPct(row.q1_2026, numberLocale)}
+                  {row.name}:{" "}
+                  {PERIODS.map((p) => `${periodLabels[p.key]} ${fmtPct(row[p.key], numberLocale)}`).join(", ")}
                 </li>
               ))}
             </ul>
@@ -331,15 +278,11 @@ export default function DiffusionGrowthComparison({
               <th scope="col" className="px-4 py-3">
                 {t("diffusionGrowthColCountry")}
               </th>
-              <th scope="col" className="px-4 py-3 text-right">
-                {t("diffusionGrowthColH1")}
-              </th>
-              <th scope="col" className="px-4 py-3 text-right">
-                {t("diffusionGrowthColH2")}
-              </th>
-              <th scope="col" className="px-4 py-3 text-right">
-                {t("diffusionGrowthColQ1")}
-              </th>
+              {PERIODS.map((p) => (
+                <th key={p.key} scope="col" className="px-4 py-3 text-right">
+                  {t(p.colKey)}
+                </th>
+              ))}
               <th scope="col" className="px-4 py-3 text-right">
                 {t("diffusionGrowthColChange")}
               </th>
@@ -347,7 +290,7 @@ export default function DiffusionGrowthComparison({
           </thead>
           <tbody>
             {data.map((row) => {
-              const delta = Math.round((row.q1_2026 - row.h1_2025) * 10) / 10;
+              const delta = Math.round((row[LATEST.key] - row.h1_2025) * 10) / 10;
               return (
                 <tr
                   key={row.iso3}
@@ -357,15 +300,11 @@ export default function DiffusionGrowthComparison({
                     {row.name}
                     <span className="ml-2 text-xs font-normal text-zinc-500">{row.iso3}</span>
                   </th>
-                  <td className="px-4 py-3 text-right tabular-nums">
-                    {fmtPct(row.h1_2025, numberLocale)}
-                  </td>
-                  <td className="px-4 py-3 text-right tabular-nums">
-                    {fmtPct(row.h2_2025, numberLocale)}
-                  </td>
-                  <td className="px-4 py-3 text-right tabular-nums">
-                    {fmtPct(row.q1_2026, numberLocale)}
-                  </td>
+                  {PERIODS.map((p) => (
+                    <td key={p.key} className="px-4 py-3 text-right tabular-nums">
+                      {fmtPct(row[p.key], numberLocale)}
+                    </td>
+                  ))}
                   <td
                     className={`px-4 py-3 text-right tabular-nums font-semibold ${
                       delta >= 0

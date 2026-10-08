@@ -47,7 +47,7 @@ const CLEARED: ClearedDownload[] = [
     filename: "onet-enrichment.json",
     label: "O*NET Enrichment",
     license: "CC BY 4.0",
-    attribution: "O*NET 28.3, National Center for O*NET Development.",
+    attribution: "O*NET 31.0, National Center for O*NET Development.",
     sizeNote: "~4.1 MB",
   },
   {

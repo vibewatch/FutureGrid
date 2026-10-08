@@ -29,4 +29,12 @@ export const navZh = {
   dataAttribution: "数据来源：Anthropic Economic Index · BLS · O*NET",
   viewSources: "查看数据来源",
   dataAsOf: "数据截至 {date}",
+  tagline: "AI 劳动力洞察",
+  detail: "详情",
+  footerAbout: "一个开放的研究平台，基于可溯源的公开数据，追踪 AI 如何重塑工作。",
+  footerExplore: "浏览",
+  footerData: "数据与方法",
+  footerBuiltBy: "作者 {name}",
+  footerLicense: "代码 MIT · 数据遵循各来源许可",
+  footerDisclaimer: "暴露度与采用率衡量 AI 的使用领域——并非失业预测。",
 };

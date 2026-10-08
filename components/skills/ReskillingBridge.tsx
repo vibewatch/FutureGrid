@@ -102,12 +102,12 @@ export default function ReskillingBridge({ data }: { data: ReskillingBridgeData 
       {/* ── Header ──────────────────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500 dark:text-violet-300">
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
             {t("bridgeEyebrow")}
           </p>
           <h2
             id={headingId}
-            className="mt-1 text-xl font-bold tracking-tight text-gradient"
+            className="mt-1 text-lg font-semibold tracking-tight text-gradient"
           >
             {t("bridgeTitle")}
           </h2>
@@ -184,7 +184,7 @@ export default function ReskillingBridge({ data }: { data: ReskillingBridgeData 
       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4 items-start">
         {/* ── LEFT: Origins listbox ─────────────────────────────────────── */}
         <div
-          className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden"
+          className="glass rounded-xl overflow-hidden"
         >
           <div className="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30">
             <p className="text-[11px] font-semibold uppercase tracking-widest text-violet-500 dark:text-violet-300">
@@ -308,7 +308,7 @@ export default function ReskillingBridge({ data }: { data: ReskillingBridgeData 
           )}
 
           {sortedDestinations.length === 0 && (
-            <div className="glass bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 rounded-xl py-10 flex items-center justify-center">
+            <div className="glass rounded-xl py-10 flex items-center justify-center">
               <p className="text-zinc-500 text-sm">{t("bridgeNoDestinations")}</p>
             </div>
           )}
@@ -338,7 +338,7 @@ export default function ReskillingBridge({ data }: { data: ReskillingBridgeData 
             return (
               <article
                 key={dest.socCode}
-                className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 space-y-3"
+                className="glass rounded-xl p-4 space-y-3"
               >
                 {/* Card header */}
                 <div className="flex items-start justify-between gap-3">

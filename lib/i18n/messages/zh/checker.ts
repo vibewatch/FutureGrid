@@ -12,4 +12,5 @@ export const checkerZh = {
   projectedAnnualOpenings: "预计年度招聘量：",
   forecastNote: "该职业的自动化暴露估算——并非个人预测。",
   viewFullProfile: "查看完整职业档案",
+  gaugeSublabel: "AI 暴露度",
 };

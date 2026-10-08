@@ -18,7 +18,7 @@ export const pulseEn: Record<string, string> = {
   // ── Trend chart section ───────────────────────────────────────────────────
   sectionTrend: "National Layoffs & Discharges Trend",
   sectionTrendDesc:
-    "Monthly U.S. layoffs and discharges 2016–2025 with NBER recession shading. Toggle hires overlay to compare.",
+    "Monthly U.S. layoffs and discharges since 2016 with NBER recession shading. Toggle hires overlay to compare.",
 
   chartToggleHires: "Overlay Hires",
   legendLayoffs: "Layoffs & Discharges",
@@ -32,7 +32,7 @@ export const pulseEn: Record<string, string> = {
   tooltipHires: "Hires",
 
   srTrendSummary:
-    "Area chart showing U.S. monthly layoffs and discharges from 2016 to 2025. Recession bands are shaded. A large spike occurred during the COVID-19 pandemic in early 2020.",
+    "Area chart showing U.S. monthly layoffs and discharges since 2016. Recession bands are shaded. A large spike occurred during the COVID-19 pandemic in early 2020.",
 
   // ── Industry chart section ────────────────────────────────────────────────
   sectionIndustry: "Layoffs by Industry",

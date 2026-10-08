@@ -86,7 +86,7 @@ export default function ReskillExplorer() {
     <section className="space-y-6" aria-labelledby="reskill-heading">
       {/* Section header */}
       <div>
-        <h2 id="reskill-heading" className="text-2xl font-bold tracking-tight text-gradient">
+        <h2 id="reskill-heading" className="text-xl font-semibold tracking-tight text-gradient">
           {t("reskillingPathways")}
         </h2>
         <p className="text-zinc-600 dark:text-zinc-400 mt-1 text-sm max-w-2xl">
@@ -121,7 +121,7 @@ export default function ReskillExplorer() {
             aria-haspopup="listbox"
             aria-expanded={open}
             aria-controls="reskill-listbox"
-            className="w-full flex items-center justify-between gap-2 glass bg-white/70 dark:bg-zinc-900/60 border border-zinc-300 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm text-zinc-900 dark:text-white hover:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-colors"
+            className="w-full flex items-center justify-between gap-2 glass rounded-xl px-4 py-3 text-sm text-zinc-900 dark:text-white hover:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-colors"
           >
             <span className="truncate">
               {selected ? selected.occupationName : t("selectOccupation")}
@@ -237,7 +237,7 @@ export default function ReskillExplorer() {
               <Reveal key={path.occupationCode} delay={i * 60}>
                 <Link
                   href={`/careers/${path.occupationCode}`}
-                  className="block glass glass-hover bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 group focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all h-full"
+                  className="block glass glass-hover rounded-xl p-5 group focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all h-full"
                 >
                   {/* Header */}
                   <div className="flex items-start justify-between mb-2">
@@ -356,7 +356,7 @@ export default function ReskillExplorer() {
           })}
         </div>
       ) : fromCode ? (
-        <div className="glass bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 rounded-xl py-10 flex items-center justify-center">
+        <div className="glass rounded-xl py-10 flex items-center justify-center">
           <p className="text-zinc-500 text-sm">{t("noReskillingPaths")}</p>
         </div>
       ) : null}

@@ -153,11 +153,14 @@ async function main() {
   console.log("=== Building JOLTS data snapshot ===");
 
   const ELEMENTS = ["JO", "HI", "QU", "LD", "TS"];
+  const START_YEAR = 2016;
+  const END_YEAR = new Date().getUTCFullYear();
+  const range = `${START_YEAR}–${END_YEAR}`;
 
-  // ── 1. National (000000): all 5 data elements × level + rate = 10 series, 2016–2025 ──
+  // ── 1. National (000000): all 5 data elements × level + rate = 10 series ──
   const natIds = ELEMENTS.flatMap((el) => ["L", "R"].map((rl) => sid("000000", el, rl)));
-  console.log(`\nFetching national series (${natIds.length} series, 2016–2025)...`);
-  const natData = await fetchAll(natIds, 2016, 2025);
+  console.log(`\nFetching national series (${natIds.length} series, ${range})...`);
+  const natData = await fetchAll(natIds, START_YEAR, END_YEAR);
 
   const nationalSeries = {};
   for (const el of ELEMENTS) {
@@ -166,24 +169,24 @@ async function main() {
     }
   }
 
-  // ── 2. Industries (all except 000000): LDL + LDR history 2016–2025 ──
+  // ── 2. Industries (all except 000000): LDL + LDR history ──
   const industryCodes = Object.keys(INDUSTRIES).filter((c) => c !== "000000");
   const indLdIds = industryCodes.flatMap((c) => [sid(c, "LD", "L"), sid(c, "LD", "R")]);
   console.log(
-    `\nFetching industry LDL+LDR history (${indLdIds.length} series, 2016–2025)...`
+    `\nFetching industry LDL+LDR history (${indLdIds.length} series, ${range})...`
   );
-  const indLdData = await fetchAll(indLdIds, 2016, 2025);
+  const indLdData = await fetchAll(indLdIds, START_YEAR, END_YEAR);
 
-  // ── 3. Industries: JOL + QUL + HIL snapshot (2024–2025 is enough for latest value) ──
+  // ── 3. Industries: JOL + QUL + HIL snapshot (last two years is enough for latest value) ──
   const indSnapIds = industryCodes.flatMap((c) => [
     sid(c, "JO", "L"),
     sid(c, "QU", "L"),
     sid(c, "HI", "L"),
   ]);
   console.log(
-    `\nFetching industry snapshot (JOL/QUL/HIL, ${indSnapIds.length} series, 2024–2025)...`
+    `\nFetching industry snapshot (JOL/QUL/HIL, ${indSnapIds.length} series, ${END_YEAR - 1}–${END_YEAR})...`
   );
-  const indSnapData = await fetchAll(indSnapIds, 2024, 2025);
+  const indSnapData = await fetchAll(indSnapIds, END_YEAR - 1, END_YEAR);
 
   // ── Assemble industries array ──
   const industries = industryCodes.map((code) => {
@@ -219,13 +222,14 @@ async function main() {
   // ── Build output object ──
   const output = {
     generatedAt: new Date().toISOString(),
+    asOf: nationalSeries.LDL.at(-1)?.date ?? null,
     source: {
       name: "BLS Job Openings and Labor Turnover Survey (JOLTS)",
       publisher: "U.S. Bureau of Labor Statistics",
       survey: "JOLTS",
       url: "https://www.bls.gov/jlt/",
       license: "Public Domain",
-      note: "Monthly data 2016–2025. Levels are in thousands of jobs. Series IDs: JTS{industry-6}000000000{element-2}{L|R}. Elements: JO=job openings, HI=hires, QU=quits, LD=layoffs & discharges, TS=total separations.",
+      note: `Monthly data ${range}. Levels are in thousands of jobs. Series IDs: JTS{industry-6}000000000{element-2}{L|R}. Elements: JO=job openings, HI=hires, QU=quits, LD=layoffs & discharges, TS=total separations.`,
     },
     national: { series: nationalSeries },
     industries,

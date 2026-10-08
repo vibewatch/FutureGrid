@@ -61,11 +61,11 @@ export default function ExploreView({
   return (
     <div className="mx-auto w-full max-w-[1600px] space-y-10">
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
-      <div className="animate-fade-up">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient">
+      <div className="border-b border-[var(--border)] pb-6">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight text-zinc-900 sm:text-3xl dark:text-white">
           {t("pageHeading")}
         </h1>
-        <p className="text-zinc-600 dark:text-zinc-400 mt-1.5 max-w-2xl">
+        <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
           {t("pageSubhead", { n: String(allInsights.length) })}
         </p>
       </div>
@@ -149,7 +149,7 @@ export default function ExploreView({
           })}
         </p>
 
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+        <div className="glass rounded-xl p-5">
           <BeeswarmChart data={filtered} />
         </div>
       </section>
@@ -167,7 +167,7 @@ export default function ExploreView({
             {t("sectionTreemapDesc")}
           </p>
         </div>
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+        <div className="glass rounded-xl p-5">
           <TreemapChart />
         </div>
       </section>
@@ -185,7 +185,7 @@ export default function ExploreView({
             {t("sectionQuadrantDesc")}
           </p>
         </div>
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+        <div className="glass rounded-xl p-5">
           <QuadrantScatterChart />
         </div>
       </section>
@@ -203,7 +203,7 @@ export default function ExploreView({
             {t("raceSubhead")}
           </p>
         </div>
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+        <div className="glass rounded-xl p-5">
           <BarChartRace employmentHistories={employmentHistories} />
         </div>
       </section>

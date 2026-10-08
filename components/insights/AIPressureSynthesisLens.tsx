@@ -93,13 +93,13 @@ export default function AIPressureSynthesisLens({
   return (
     <Reveal>
       <section className="space-y-5" aria-labelledby="ai-pressure-synthesis-title">
-        <div className="glass rounded-2xl border border-zinc-200 bg-white/70 p-5 dark:border-zinc-800 dark:bg-zinc-900/50 sm:p-6 xl:p-8">
+        <div className="glass rounded-2xl p-5 sm:p-6 xl:p-8">
           <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
             <div className="max-w-4xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500 dark:text-violet-300">
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
                 {t("aiPressureEyebrow")}
               </p>
-              <h2 id="ai-pressure-synthesis-title" className="mt-1 text-2xl font-extrabold tracking-tight text-gradient sm:text-3xl">
+              <h2 id="ai-pressure-synthesis-title" className="mt-1 text-xl font-semibold tracking-tight text-gradient">
                 {t("aiPressureTitle")}
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
@@ -297,7 +297,7 @@ function LaneCard({
               {metric.label}
             </dt>
             <dd
-              className="mt-1 whitespace-normal break-words text-xl font-extrabold text-gradient tabular-nums [overflow-wrap:anywhere]"
+              className="mt-1 whitespace-normal break-words text-xl font-semibold text-gradient tabular-nums [overflow-wrap:anywhere]"
               title={metric.value}
               aria-label={`${metric.label}: ${metric.value}`}
             >

@@ -29,7 +29,30 @@ const CACHE_DIR = path.join(ROOT, ".data-cache");
 
 const UA = "FutureGrid-data-bot/1.0 (https://github.com/huangyingting/FutureGrid)";
 const AEI_BASE = "https://huggingface.co/datasets/Anthropic/EconomicIndex/resolve/main/";
-const ONET_ZIP_URL = "https://www.onetcenter.org/dl_files/database/db_28_3_text.zip";
+const ONET_VERSION = "31.0";
+const ONET_SLUG = ONET_VERSION.replace(".", "_");
+const ONET_ZIP_URL = `https://www.onetcenter.org/dl_files/database/db_${ONET_SLUG}_text.zip`;
+
+/**
+ * Latest AEI release with per-country Claude.ai metrics. Newer releases use a
+ * long schema (geo_level / category_name / metric_id) distinct from the
+ * 2025-09 release, which is still read for gdp_per_working_age_capita and the
+ * base country list.
+ */
+const AEI_LATEST_RELEASE = "release_2026_06_26";
+const AEI_LATEST_CLAUDE_AI_FILE = "aei_claude_ai_2026-06-26.csv";
+
+/** metric_id → country-exposure field for the latest AEI release. */
+const AEI_LATEST_COUNTRY_METRICS = {
+  usage_per_capita_index: "usageIndex",
+  usage_pct: "usagePct",
+  use_case_work_pct: "useCaseWorkPct",
+  use_case_personal_pct: "useCasePersonalPct",
+  use_case_coursework_pct: "useCaseCourseworkPct",
+  collaboration_bucket_automation_pct: "automationPct",
+  collaboration_bucket_augmentation_pct: "augmentationPct",
+  ai_autonomy_mean: "aiAutonomyMean",
+};
 
 const SUPPLEMENTAL_COUNTRY_EXPOSURE = [
   {
@@ -39,6 +62,13 @@ const SUPPLEMENTAL_COUNTRY_EXPOSURE = [
     usagePct: null,
     usageCount: null,
     gdpPerWorkingAgeCapita: 19189.00821390334,
+    usagePeriod: null,
+    useCaseWorkPct: null,
+    useCasePersonalPct: null,
+    useCaseCourseworkPct: null,
+    automationPct: null,
+    augmentationPct: null,
+    aiAutonomyMean: null,
   },
 ];
 
@@ -152,14 +182,14 @@ function fetchText(url, cacheFile, opts = {}) {
   });
 }
 
-function fetchBinary(url, cacheFile) {
+function fetchBinary(url, cacheFile, userAgent = UA) {
   if (existsSync(cacheFile)) {
     console.log(`  [cache] ${cacheFile}`);
     return Promise.resolve(readFileSync(cacheFile));
   }
   console.log(`  [fetch] ${url}`);
   return new Promise((resolve, reject) => {
-    const options = { headers: { "User-Agent": UA } };
+    const options = { headers: { "User-Agent": userAgent } };
     function doRequest(u) {
       const p2 = u.startsWith("https") ? https : http;
       p2.get(u, options, (res) => {
@@ -173,6 +203,51 @@ function fetchBinary(url, cacheFile) {
           const buf = Buffer.concat(chunks);
           writeFileSync(cacheFile, buf);
           resolve(buf);
+        });
+        res.on("error", reject);
+      }).on("error", reject);
+    }
+    doRequest(url);
+  });
+}
+
+/**
+ * Stream a large CSV and cache only the header plus lines accepted by `keepLine`.
+ * Used for the multi-hundred-MB AEI releases where we only need country rows.
+ */
+function fetchFilteredCsv(url, cacheFile, keepLine) {
+  if (existsSync(cacheFile)) {
+    console.log(`  [cache] ${cacheFile}`);
+    return Promise.resolve(readFileSync(cacheFile, "utf8"));
+  }
+  console.log(`  [fetch+filter] ${url}`);
+  return new Promise((resolve, reject) => {
+    const options = { headers: { "User-Agent": UA } };
+    function doRequest(u) {
+      const proto = u.startsWith("https") ? https : http;
+      proto.get(u, options, (res) => {
+        if ([301, 302, 307, 308].includes(res.statusCode)) {
+          res.resume();
+          return doRequest(resolveUrl(u, res.headers.location));
+        }
+        if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode} for ${u}`)); return; }
+        res.setEncoding("utf8");
+        const kept = [];
+        let pending = "";
+        let header = null;
+        res.on("data", (chunk) => {
+          const lines = (pending + chunk).split("\n");
+          pending = lines.pop();
+          for (const line of lines) {
+            if (header === null) { header = line; kept.push(line); continue; }
+            if (keepLine(line)) kept.push(line);
+          }
+        });
+        res.on("end", () => {
+          if (pending && header !== null && keepLine(pending)) kept.push(pending);
+          const text = kept.join("\n") + "\n";
+          writeFileSync(cacheFile, text);
+          resolve(text);
         });
         res.on("error", reject);
       }).on("error", reject);
@@ -198,8 +273,9 @@ const BLS_HISTORY_END   = "2025";
  * OEWS historical flat-file metadata.
  * BLS OEWS `OEUN` API series only stores the current-year snapshot; multi-year
  * history requires downloading the per-year national Excel files.  We fetch
- * archived copies from the Wayback Machine (web.archive.org) for 2019–2023;
- * 2024 was not yet captured and 2025 comes from the live API above.
+ * them directly from bls.gov (which requires a User-Agent carrying contact
+ * details) and fall back to archived Wayback Machine copies when BLS refuses.
+ * Years already populated by the live API are never overwritten.
  */
 const OEWS_HISTORY_YEARS = [
   { year: "2016", yr: "16", ts: "20260613002610" },
@@ -210,7 +286,12 @@ const OEWS_HISTORY_YEARS = [
   { year: "2021", yr: "21", ts: "20220601000000" },
   { year: "2022", yr: "22", ts: "20230622235111" },
   { year: "2023", yr: "23", ts: "20240819155659" },
+  { year: "2024", yr: "24", ts: null },
+  { year: "2025", yr: "25", ts: null },
 ];
+
+/** bls.gov returns 403 to generic bots; it accepts a UA that includes contact info. */
+const BLS_FILE_UA = "FutureGrid data pipeline contact@futuregrid.genisisiq.com";
 
 /** Python helper that parses an OEWS national xlsx → {OCC_CODE: {emp,wage}} JSON.
  *  Handles both post-2019 format (has naics/own_code/o_group columns) and
@@ -419,7 +500,7 @@ async function enrichWithBLS(occupations) {
 
 /**
  * Supplement occupations[] with OEWS historical employment + wage data from
- * per-year national flat files (2019–2023).  The BLS OEWS `OEUN` API series
+ * per-year national flat files (2016–2025, bls.gov with Wayback fallback).  The BLS OEWS `OEUN` API series
  * stores only the current-vintage snapshot; historical years are obtained by
  * fetching archived copies of the annual national Excel files from the Wayback
  * Machine and parsing them with Python/openpyxl.
@@ -431,9 +512,9 @@ async function enrichWithOEWSHistory(occupations, cacheDir) {
   const HISTORY_DIR = path.join(cacheDir, "oews_history");
   if (!existsSync(HISTORY_DIR)) mkdirSync(HISTORY_DIR, { recursive: true });
 
-  // Write Python parser helper (idempotent)
+  // Write Python parser helper (always rewritten so parser changes are never shadowed by a stale cache)
   const parserPath = path.join(HISTORY_DIR, "parse_oews.py");
-  if (!existsSync(parserPath)) writeFileSync(parserPath, PARSE_OEWS_PY);
+  writeFileSync(parserPath, PARSE_OEWS_PY);
 
   let totalEmp = 0, totalWage = 0;
 
@@ -448,24 +529,31 @@ async function enrichWithOEWSHistory(occupations, cacheDir) {
       }
     }
 
-    // Download if not cached
+    // Download if not cached: direct from BLS first, Wayback Machine fallback
     if (!existsSync(zipPath)) {
-      const wbUrl = `https://web.archive.org/web/${ts}/https://www.bls.gov/oes/special.requests/oesm${yr}nat.zip`;
-      process.stdout.write(`  [OEWS ${year}] Downloading from Wayback Machine … `);
-      try {
-        await fetchBinary(wbUrl, zipPath);
-        // Validate after download
-        const ft2 = execSync(`file "${zipPath}"`).toString();
-        if (!ft2.includes("Zip archive")) {
-          process.stdout.write("not a ZIP (unavailable), skipping\n");
-          execSync(`rm -f "${zipPath}"`);
-          continue;
+      const candidates = [
+        { label: "bls.gov", url: `https://www.bls.gov/oes/special-requests/oesm${yr}nat.zip`, ua: BLS_FILE_UA },
+        ...(ts ? [{ label: "Wayback Machine", url: `https://web.archive.org/web/${ts}/https://www.bls.gov/oes/special.requests/oesm${yr}nat.zip`, ua: UA }] : []),
+      ];
+      let ok = false;
+      for (const { label, url, ua } of candidates) {
+        process.stdout.write(`  [OEWS ${year}] Downloading from ${label} … `);
+        try {
+          await fetchBinary(url, zipPath, ua);
+          const ft2 = execSync(`file "${zipPath}"`).toString();
+          if (!ft2.includes("Zip archive")) {
+            process.stdout.write("not a ZIP (unavailable)\n");
+            execSync(`rm -f "${zipPath}"`);
+            continue;
+          }
+          process.stdout.write("ok\n");
+          ok = true;
+          break;
+        } catch (e) {
+          process.stdout.write(`FAILED: ${e.message.split("\n")[0]}\n`);
         }
-        process.stdout.write("ok\n");
-      } catch (e) {
-        process.stdout.write(`FAILED: ${e.message.split("\n")[0]}\n`);
-        continue;
       }
+      if (!ok) continue;
     }
 
     // Extract
@@ -646,31 +734,41 @@ async function main() {
   const countryRows = parseCSV(countryText);
   console.log(`  → ${countryRows.length} rows (long format)`);
 
+  console.log(`  Fetching latest AEI country release (${AEI_LATEST_RELEASE}) …`);
+  const latestCountryText = await fetchFilteredCsv(
+    AEI_BASE + `${AEI_LATEST_RELEASE}/data/${AEI_LATEST_CLAUDE_AI_FILE}`,
+    path.join(CACHE_DIR, `aei_country_${AEI_LATEST_RELEASE}.csv`),
+    (line) => line.includes(",country,overall,"),
+  );
+  const latestCountryRows = parseCSV(latestCountryText);
+  console.log(`  → ${latestCountryRows.length} country/overall rows`);
+
   // 5. O*NET skills (best-effort)
   let skillsMap = new Map(); // soc6 → string[]
   let onetSkillsFailed = false;
   try {
     console.log("\n[5/5] Fetching O*NET zip …");
-    const zipCache = path.join(CACHE_DIR, "db_28_3_text.zip");
+    const zipCache = path.join(CACHE_DIR, `db_${ONET_SLUG}_text.zip`);
     await fetchBinary(ONET_ZIP_URL, zipCache);
 
-    const unzipDir = path.join(CACHE_DIR, "onet_unzipped");
+    const unzipDir = path.join(CACHE_DIR, `onet_unzipped_${ONET_SLUG}`);
     if (!existsSync(unzipDir)) {
       mkdirSync(unzipDir, { recursive: true });
       console.log("  Unzipping O*NET archive …");
       execSync(`unzip -q "${zipCache}" -d "${unzipDir}"`, { stdio: "inherit" });
     }
 
-    // Find Skills.txt (may be inside a subdirectory)
-    let skillsFile = path.join(unzipDir, "Skills.txt");
-    if (!existsSync(skillsFile)) {
-      const found = execSync(`find "${unzipDir}" -name "Skills.txt" 2>/dev/null`).toString().trim().split("\n")[0];
-      if (found) skillsFile = found;
+    // O*NET ≤ 30 ships a single Skills.txt; O*NET 31 splits the same element
+    // set (identical schema) into "Essential Skills.txt" + "Transferable Skills.txt".
+    const findFile = (name) =>
+      execSync(`find "${unzipDir}" -name "${name}" 2>/dev/null`).toString().trim().split("\n").filter(Boolean)[0];
+    const skillsFiles = [findFile("Skills.txt")].filter(Boolean);
+    if (!skillsFiles.length) {
+      skillsFiles.push(...["Essential Skills.txt", "Transferable Skills.txt"].map(findFile).filter(Boolean));
     }
-    if (!existsSync(skillsFile)) throw new Error("Skills.txt not found in O*NET zip");
+    if (!skillsFiles.length) throw new Error("No Skills.txt / Essential + Transferable Skills.txt in O*NET zip");
 
-    const skillsText = readFileSync(skillsFile, "utf8");
-    const skillsRows = parseTSV(skillsText);
+    const skillsRows = skillsFiles.flatMap((f) => parseTSV(readFileSync(f, "utf8")));
     console.log(`  → ${skillsRows.length} skill rows`);
 
     // Take IM (Importance) scale, top 5 skills per SOC
@@ -798,8 +896,8 @@ async function main() {
   const { enriched: blsEnriched, empUpdated: blsEmpUpdated, wageUpdated: blsWageUpdated, empHistUpdated: blsEmpHistUpdated } =
     await enrichWithBLS(snapshot);
 
-  // ─── BLS OEWS historical flat-file enrichment (2019–2023) ──────────────────
-  console.log("\n[BLS] Enriching with OEWS historical flat files (2019–2023) …");
+  // ─── BLS OEWS historical flat-file enrichment (2016–2025) ──────────────────
+  console.log("\n[BLS] Enriching with OEWS historical flat files (2016–2025) …");
   await enrichWithOEWSHistory(snapshot, CACHE_DIR);
 
   // ─── Country exposure ──────────────────────────────────────────────────────
@@ -811,7 +909,7 @@ async function main() {
     const name = (r["geo_name"] || "").trim();
     const variable = (r["variable"] || "").trim();
     const value = parseFloat(r["value"] || "0") || 0;
-    if (!iso3) continue;
+    if (!/^[A-Z]{3}$/.test(iso3)) continue;
     if (!countryPivot.has(iso3)) {
       countryPivot.set(iso3, { iso3, name, usageIndex: null, usagePct: null, usageCount: null, gdpPerWorkingAgeCapita: null });
     }
@@ -822,7 +920,47 @@ async function main() {
     else if (variable === "gdp_per_working_age_capita") entry.gdpPerWorkingAgeCapita = value;
   }
 
-  const countryExposure = Array.from(countryPivot.values()).filter((c) => c.usageIndex !== null);
+  // Overlay the latest AEI release: usage metrics come only from the most recent
+  // month each country is reported in, so periods are never mixed within a row.
+  // Countries present in 2025 but below the latest release's reporting threshold
+  // keep their name/GDP but carry null usage (rendered as "no data").
+  const latestByCountry = new Map(); // iso3 → { period, metrics }
+  for (const r of latestCountryRows) {
+    if ((r["geo_level"] || "").trim() !== "country" || (r["category_name"] || "").trim() !== "overall") continue;
+    const field = AEI_LATEST_COUNTRY_METRICS[(r["metric_id"] || "").trim()];
+    if (!field) continue;
+    const iso3 = (r["geo_id"] || "").trim();
+    const period = (r["date_start"] || "").trim().slice(0, 7);
+    const value = parseFloat(r["value"]);
+    if (!/^[A-Z]{3}$/.test(iso3) || !period || !Number.isFinite(value)) continue;
+    const cur = latestByCountry.get(iso3);
+    if (!cur || period > cur.period) latestByCountry.set(iso3, { period, metrics: { [field]: value } });
+    else if (period === cur.period) cur.metrics[field] = value;
+  }
+  if (latestByCountry.size < 80) {
+    throw new Error(`[country-exposure] latest AEI release yielded only ${latestByCountry.size} countries — refusing to overwrite`);
+  }
+  for (const entry of countryPivot.values()) {
+    const latest = latestByCountry.get(entry.iso3);
+    Object.assign(entry, {
+      usageIndex: null, usagePct: null, usageCount: null, usagePeriod: null,
+      useCaseWorkPct: null, useCasePersonalPct: null, useCaseCourseworkPct: null,
+      automationPct: null, augmentationPct: null, aiAutonomyMean: null,
+    });
+    if (latest) Object.assign(entry, latest.metrics, { usagePeriod: latest.period });
+  }
+  for (const [iso3, latest] of latestByCountry) {
+    if (countryPivot.has(iso3)) continue;
+    countryPivot.set(iso3, {
+      iso3, name: iso3, usageCount: null, gdpPerWorkingAgeCapita: null,
+      useCaseWorkPct: null, useCasePersonalPct: null, useCaseCourseworkPct: null,
+      automationPct: null, augmentationPct: null, aiAutonomyMean: null,
+      ...latest.metrics, usagePeriod: latest.period,
+    });
+  }
+  console.log(`  Latest AEI release: ${latestByCountry.size} countries with usage metrics`);
+
+  const countryExposure = Array.from(countryPivot.values());
   for (const supplemental of SUPPLEMENTAL_COUNTRY_EXPOSURE) {
     if (!countryExposure.some((country) => country.iso3 === supplemental.iso3)) {
       countryExposure.push(supplemental);
@@ -835,7 +973,7 @@ async function main() {
   const sources = {
     generatedAt: new Date().toISOString(),
     license: "CC-BY 4.0 (Anthropic Economic Index); CC BY 4.0 (O*NET, USDOL/ETA); Public Domain (BLS)",
-    attribution: "Anthropic Economic Index (Anthropic, 2025); O*NET 28.3 (U.S. Department of Labor/ETA); BLS Employment Statistics (U.S. Bureau of Labor Statistics, 2023)",
+    attribution: `Anthropic Economic Index (Anthropic, 2025–2026); O*NET ${ONET_VERSION} (U.S. Department of Labor/ETA); BLS OEWS Employment and Wage Statistics (U.S. Bureau of Labor Statistics, 2016–2025)`,
     sources: [
       {
         name: "Anthropic Economic Index — Job Exposure",
@@ -878,12 +1016,20 @@ async function main() {
         usedFor: "Employment totals by occupation (legacy fallback — superseded by OEWS API when key is set)",
       },
       {
-        name: "Anthropic Economic Index — Country AI Adoption (Aug 2025)",
+        name: "Anthropic Economic Index — Country AI Adoption (Apr–May 2026 release)",
+        publisher: "Anthropic",
+        year: 2026,
+        url: "https://huggingface.co/datasets/Anthropic/EconomicIndex/tree/main/release_2026_06_26",
+        license: "CC-BY 4.0",
+        usedFor: "Per-country Claude.ai usage per-capita index and usage share (latest reported month per country), plus work / personal / coursework use-case mix, automation vs augmentation collaboration share, and mean AI autonomy",
+      },
+      {
+        name: "Anthropic Economic Index — Country AI Adoption (Aug 2025 release)",
         publisher: "Anthropic",
         year: 2025,
-        url: "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+        url: "https://huggingface.co/datasets/Anthropic/EconomicIndex/tree/main/release_2025_09_15",
         license: "CC-BY 4.0",
-        usedFor: "Per-country AI usage index, usage %, usage count, GDP per working-age capita",
+        usedFor: "Base country list and GDP per working-age capita (usage metrics superseded by the 2026 release)",
       },
       {
         name: "World Bank Open Data — China GDP and Working-Age Population",
@@ -974,9 +1120,9 @@ async function main() {
         usedFor: "Supplemental country-level AI research activity proxy from AI publication totals",
       },
       {
-        name: "O*NET 28.3 Skills Database",
+        name: `O*NET ${ONET_VERSION} Skills Database`,
         publisher: "U.S. Department of Labor / Employment and Training Administration",
-        year: 2024,
+        year: 2026,
         url: "https://www.onetcenter.org/database.html",
         license: "CC BY 4.0",
         usedFor: "Top skills (by importance) per SOC occupation",
@@ -1062,12 +1208,28 @@ async function main() {
         usedFor: "Historical automation probability per SOC (702 occupations) as a context/comparison baseline; automation-baseline.json — ⚠️ LICENSE RISK: no open license; see data/COMPLIANCE.md",
       },
       {
+        name: "Real-Time Population Survey: Generative AI Adoption Tracker (FRED release 6)",
+        publisher: "Federal Reserve Bank of St. Louis (Bick, Blandin & Deming)",
+        year: 2026,
+        url: "https://fred.stlouisfed.org/release?rid=6",
+        license: "Public data via FRED; cite Bick, Blandin & Deming (2026), \"The Rapid Adoption of Generative AI\"",
+        usedFor: "Quarterly share of U.S. adults and employed adults using generative AI (overall, for work, daily), work-hour time savings, and work adoption by SOC major occupation group and NAICS industry; ai-adoption-tracker.json",
+      },
+      {
+        name: "Census Business Trends and Outlook Survey (BTOS) — AI use",
+        publisher: "U.S. Census Bureau",
+        year: 2026,
+        url: "https://www.census.gov/hfp/btos/data",
+        license: "Public Domain (U.S. Government work)",
+        usedFor: "Biweekly share of U.S. employer businesses using AI in any business function (and expecting to within six months), national series plus latest NAICS-sector and state cuts; ai-adoption-tracker.json. Supersedes the 2018 ABS technology module for current business adoption.",
+      },
+      {
         name: "Microsoft AI Diffusion Report (AI Economic Impact & Insights)",
         publisher: "Microsoft AI Economy Institute",
         year: 2026,
         url: "https://github.com/microsoft/ai-diffusion-report",
         license: "MIT",
-        usedFor: "GenAI diffusion % of working-age population across three periods (H1 2025 / H2 2025 / Q1 2026) for 147 economies; global-ai-metrics.json",
+        usedFor: "GenAI diffusion % of working-age population across four periods (H1 2025 / H2 2025 / Q1 2026 / Q2 2026) for 147 economies; global-ai-metrics.json",
       },
       {
         name: "IMF AI Preparedness Index (AIPI) — composite and sub-indices",
@@ -1184,7 +1346,7 @@ async function main() {
         usedFor: "International occupation-mix shares by ISCO-08 major group (1-9) for included countries in international-occupation-mix.json",
       },
     ],
-    note: `automationRisk bands are percentile-calibrated from the aiExposure distribution (${en} occupations): Very High = top ~8% (aiExposure > ${VH_THRESHOLD.toFixed(4)}), High = next ~12% (> ${HIGH_THRESHOLD.toFixed(4)}), Medium = next ~25% (> ${MED_THRESHOLD.toFixed(4)}), Low = remainder (≤ ${MED_THRESHOLD.toFixed(4)}). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: ${blsEnriched ? `real OEWS 2025 figures (${blsEmpUpdated} occupations updated via BLS Public Data API)` : "null — BLS_API_KEY not set; set it and re-run npm run build:data"}. medianSalary: ${blsEnriched ? `OEWS 2025 where available (${blsWageUpdated} updated), AEI-bundled wage otherwise` : "AEI-bundled (BLS_API_KEY not set)"}. employmentHistory/wageHistory: OEWS multi-year annual series 2019–2025 — 2025 via BLS Public Data API (${blsEnriched ? blsEmpHistUpdated : 0} occ); 2019–2023 via archived national Excel flat files (Wayback Machine); note that BLS OEWS OEUN API series stores only the current-vintage snapshot so older years require flat-file download. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: ` + (onetSkillsFailed ? "FAILED — default skills used" : "successfully loaded"),
+    note: `automationRisk bands are percentile-calibrated from the aiExposure distribution (${en} occupations): Very High = top ~8% (aiExposure > ${VH_THRESHOLD.toFixed(4)}), High = next ~12% (> ${HIGH_THRESHOLD.toFixed(4)}), Medium = next ~25% (> ${MED_THRESHOLD.toFixed(4)}), Low = remainder (≤ ${MED_THRESHOLD.toFixed(4)}). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: ${blsEnriched ? `real OEWS 2025 figures (${blsEmpUpdated} occupations updated via BLS Public Data API)` : "null — BLS_API_KEY not set; set it and re-run npm run build:data"}. medianSalary: ${blsEnriched ? `OEWS 2025 where available (${blsWageUpdated} updated), AEI-bundled wage otherwise` : "AEI-bundled (BLS_API_KEY not set)"}. employmentHistory/wageHistory: OEWS multi-year annual series 2016–2025 — 2025 via BLS Public Data API (${blsEnriched ? blsEmpHistUpdated : 0} occ); earlier years via national Excel flat files (bls.gov, Wayback Machine fallback); note that BLS OEWS OEUN API series stores only the current-vintage snapshot so older years require flat-file download. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. Country usage metrics come from the AEI ${AEI_LATEST_RELEASE} release (latest reported month per country, recorded in usagePeriod); countries below that release's reporting threshold carry null usage. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: ` + (onetSkillsFailed ? "FAILED — default skills used" : "successfully loaded"),
   };
 
   // ─── Write JSON files ──────────────────────────────────────────────────────
@@ -1211,7 +1373,7 @@ async function main() {
   const countryDataset = {
     meta: buildMeta({
       generatedAt: nowIso,
-      asOf: "2025",
+      asOf: [...latestByCountry.values()].map((v) => v.period).sort().at(-1),
       source: {
         name: "Anthropic Economic Index — Country Usage",
         publisher: "Anthropic",

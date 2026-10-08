@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T01:01:40.298Z",
+  "generatedAt": "2026-10-07T13:33:53.355Z",
   "source": {
     "name": "Epoch AI — Notable AI Models",
     "publisher": "Epoch AI",
@@ -7,7 +7,7 @@
     "downloadUrl": "https://epoch.ai/data/notable_ai_models.csv",
     "docsUrl": "https://epoch.ai/data/ai-models-documentation",
     "license": "CC BY 4.0",
-    "accessed": "2026-09-08",
+    "accessed": "2026-10-07",
     "caveat": "Training-compute figures are Epoch AI estimates with varying confidence; not all models report compute/cost/power."
   },
   "methodology": {
@@ -18,8 +18,8 @@
     "notes": "Descriptive historical trends only — not a forecast.",
     "recentWindow": {
       "years": 3,
-      "start": "2023-09-03",
-      "end": "2026-09-03"
+      "start": "2023-09-30",
+      "end": "2026-09-30"
     }
   },
   "definitions": {
@@ -32,17 +32,17 @@
     "coverageNote": "Coverage is Epoch AI's 'Notable AI Models' curation — not an exhaustive registry. Labs without compute disclosure and newer open-source releases may be underrepresented in the compute-known subset."
   },
   "counts": {
-    "totalRows": 1058,
-    "withDate": 1058,
-    "withCompute": 537,
-    "withComputeAndDate": 537,
-    "withPower": 218,
+    "totalRows": 1078,
+    "withDate": 1078,
+    "withCompute": 540,
+    "withComputeAndDate": 540,
+    "withPower": 219,
     "withCost": 180,
-    "withOpenWeights": 338,
+    "withOpenWeights": 340,
     "countries": 35,
-    "recentWindowStart": "2023-09-03",
-    "recentWindowEnd": "2026-09-03",
-    "recentWindowCount": 326
+    "recentWindowStart": "2023-09-30",
+    "recentWindowEnd": "2026-09-30",
+    "recentWindowCount": 339
   },
   "models": [
     {
@@ -4559,7 +4559,7 @@
     },
     {
       "name": "StyleGAN",
-      "organization": "NVIDIA",
+      "organization": "Nvidia",
       "orgCategory": "Industry",
       "country": "United States",
       "countries": [
@@ -5057,7 +5057,7 @@
     },
     {
       "name": "Megatron-LM (8.3B)",
-      "organization": "NVIDIA",
+      "organization": "Nvidia",
       "orgCategory": "Industry",
       "country": "United States",
       "countries": [
@@ -5083,7 +5083,7 @@
     },
     {
       "name": "Megatron-LM (1.2B)",
-      "organization": "NVIDIA",
+      "organization": "Nvidia",
       "orgCategory": "Industry",
       "country": "United States",
       "countries": [
@@ -5109,7 +5109,7 @@
     },
     {
       "name": "Megatron-BERT",
-      "organization": "NVIDIA",
+      "organization": "Nvidia",
       "orgCategory": "Industry",
       "country": "United States",
       "countries": [
@@ -6747,7 +6747,7 @@
     },
     {
       "name": "ProtT5-XL-U50",
-      "organization": "Technical University of Munich,Med AI Technology,NVIDIA,Oak Ridge National Laboratory,Google,Seoul National University",
+      "organization": "Technical University of Munich,Med AI Technology,Nvidia,Oak Ridge National Laboratory,Google,Seoul National University",
       "orgCategory": "Academia,Industry,Government,Industry,Academia",
       "country": "Germany, China, United States, South Korea",
       "countries": [
@@ -6776,7 +6776,7 @@
     },
     {
       "name": "ProtBERT-BFD",
-      "organization": "Technical University of Munich,NVIDIA,Seoul National University,Google,Oak Ridge National Laboratory,Med AI Technology",
+      "organization": "Technical University of Munich,Nvidia,Seoul National University,Google,Oak Ridge National Laboratory,Med AI Technology",
       "orgCategory": "Academia,Industry,Academia,Industry,Government",
       "country": "Germany, United States, South Korea, China",
       "countries": [
@@ -7095,7 +7095,7 @@
     },
     {
       "name": "StyleGAN3-T",
-      "organization": "NVIDIA,Aalto University",
+      "organization": "Nvidia,Aalto University",
       "orgCategory": "Industry,Academia",
       "country": "United States, Finland",
       "countries": [
@@ -7122,7 +7122,7 @@
     },
     {
       "name": "StyleGAN3-R",
-      "organization": "NVIDIA,Aalto University",
+      "organization": "Nvidia,Aalto University",
       "orgCategory": "Industry,Academia",
       "country": "United States, Finland",
       "countries": [
@@ -7651,7 +7651,7 @@
     },
     {
       "name": "Megatron-Turing NLG 530B",
-      "organization": "Microsoft,NVIDIA",
+      "organization": "Microsoft,Nvidia",
       "orgCategory": "Industry,Industry",
       "country": "United States",
       "countries": [
@@ -8314,7 +8314,7 @@
     },
     {
       "name": "FourCastNet",
-      "organization": "NVIDIA,NERSC, Lawrence Berkeley National Laboratory,University of Michigan,Rice University,California Institute of Technology,Purdue University",
+      "organization": "Nvidia,NERSC, Lawrence Berkeley National Laboratory,University of Michigan,Rice University,California Institute of Technology,Purdue University",
       "orgCategory": "Industry,Government,Academia,Academia,Academia,Academia",
       "country": "United States",
       "countries": [
@@ -9325,7 +9325,7 @@
     },
     {
       "name": "GenSLM",
-      "organization": "University of Chicago,NVIDIA,Harvard University,Cerebras Systems,Technical University of Munich,California Institute of Technology",
+      "organization": "University of Chicago,Nvidia,Harvard University,Cerebras Systems,Technical University of Munich,California Institute of Technology",
       "orgCategory": "Academia,Industry,Academia,Industry,Academia,Academia",
       "country": "United States, Germany",
       "countries": [
@@ -9404,7 +9404,7 @@
     },
     {
       "name": "eDiff-I",
-      "organization": "NVIDIA",
+      "organization": "Nvidia",
       "orgCategory": "Industry",
       "country": "United States",
       "countries": [
@@ -9750,7 +9750,7 @@
     },
     {
       "name": "Nucleotide Transformer",
-      "organization": "NVIDIA,Technical University of Munich,InstaDeep",
+      "organization": "Nvidia,Technical University of Munich,InstaDeep",
       "orgCategory": "Industry,Academia,Industry",
       "country": "United States, Germany, United Kingdom",
       "countries": [
@@ -11156,7 +11156,7 @@
     },
     {
       "name": "Nemotron-3-8B",
-      "organization": "NVIDIA",
+      "organization": "Nvidia",
       "orgCategory": "Industry",
       "country": "United States",
       "countries": [
@@ -11314,7 +11314,7 @@
     },
     {
       "name": "VILA-13B",
-      "organization": "NVIDIA,Massachusetts Institute of Technology (MIT)",
+      "organization": "Nvidia,Massachusetts Institute of Technology (MIT)",
       "orgCategory": "Industry,Academia",
       "country": "United States",
       "countries": [
@@ -11714,7 +11714,7 @@
     },
     {
       "name": "VILA1.5-13B",
-      "organization": "NVIDIA,Massachusetts Institute of Technology (MIT)",
+      "organization": "Nvidia,Massachusetts Institute of Technology (MIT)",
       "orgCategory": "Industry,Academia",
       "country": "United States",
       "countries": [
@@ -11903,7 +11903,7 @@
     },
     {
       "name": "Nemotron-4 340B",
-      "organization": "NVIDIA",
+      "organization": "Nvidia",
       "orgCategory": "Industry",
       "country": "United States",
       "countries": [
@@ -12357,7 +12357,7 @@
     },
     {
       "name": "Llama-3.1-Nemotron-70B-Instruct",
-      "organization": "NVIDIA,Meta AI",
+      "organization": "Nvidia,Meta AI",
       "orgCategory": "Industry,Industry",
       "country": "United States",
       "countries": [
@@ -12435,7 +12435,7 @@
     },
     {
       "name": "NVLM-X 72B",
-      "organization": "NVIDIA",
+      "organization": "Nvidia",
       "orgCategory": "Industry",
       "country": "United States",
       "countries": [
@@ -12462,7 +12462,7 @@
     },
     {
       "name": "NVLM-H 72B",
-      "organization": "NVIDIA",
+      "organization": "Nvidia",
       "orgCategory": "Industry",
       "country": "United States",
       "countries": [
@@ -12489,7 +12489,7 @@
     },
     {
       "name": "NVLM-D 72B",
-      "organization": "NVIDIA",
+      "organization": "Nvidia",
       "orgCategory": "Industry",
       "country": "United States",
       "countries": [
@@ -12703,7 +12703,7 @@
     },
     {
       "name": "Eagle 2",
-      "organization": "NVIDIA,Nanjing University,Tsinghua University,Hong Kong Polytechnic University,Johns Hopkins University,New York University (NYU)",
+      "organization": "Nvidia,Nanjing University,Tsinghua University,Hong Kong Polytechnic University,Johns Hopkins University,New York University (NYU)",
       "orgCategory": "Industry,Academia,Academia,Academia,Academia,Academia",
       "country": "United States, China, Hong Kong",
       "countries": [
@@ -13640,7 +13640,7 @@
     },
     {
       "name": "Nemotron 3-Nano-30B-A3B",
-      "organization": "NVIDIA",
+      "organization": "Nvidia",
       "orgCategory": "Industry",
       "country": "United States",
       "countries": [
@@ -13982,7 +13982,7 @@
     },
     {
       "name": "Nemotron 3 Ultra",
-      "organization": "NVIDIA",
+      "organization": "Nvidia",
       "orgCategory": "Industry",
       "country": "United States",
       "countries": [
@@ -14221,27 +14221,109 @@
       "accessibility": "Open weights (unrestricted)",
       "confidence": "Likely",
       "link": "https://z.ai/blog/glm-5.3-flash"
+    },
+    {
+      "name": "WeatherNext 3",
+      "organization": "Google DeepMind,Google Research",
+      "orgCategory": "Industry,Industry",
+      "country": "United States",
+      "countries": [
+        "United States"
+      ],
+      "date": "2026-09-03",
+      "year": 2026,
+      "decimalYear": 2026.671233,
+      "domains": [
+        "Earth science"
+      ],
+      "task": "Weather forecasting",
+      "parameters": null,
+      "computeFlop": 2.0725198384e+23,
+      "log10Compute": 23.316,
+      "trainingCostUsd2023": null,
+      "powerDrawW": null,
+      "frontier": false,
+      "openWeights": false,
+      "accessibility": "Hosted access (no API)",
+      "confidence": "Speculative",
+      "link": "https://arxiv.org/abs/2609.03582 \n\nhttps://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-weathernext-3/"
+    },
+    {
+      "name": "GPT-6 Astra",
+      "organization": "OpenAI",
+      "orgCategory": "Industry",
+      "country": "United States",
+      "countries": [
+        "United States"
+      ],
+      "date": "2026-09-03",
+      "year": 2026,
+      "decimalYear": 2026.671233,
+      "domains": [
+        "Multimodal",
+        "Language",
+        "Vision"
+      ],
+      "task": "Language modeling/generation,Question answering",
+      "parameters": null,
+      "computeFlop": 1.0001e+27,
+      "log10Compute": 27,
+      "trainingCostUsd2023": null,
+      "powerDrawW": 232668778.57984325,
+      "frontier": true,
+      "openWeights": false,
+      "accessibility": "API access",
+      "confidence": "Likely",
+      "link": null
+    },
+    {
+      "name": "DeepSeek V4.1 Flash",
+      "organization": "DeepSeek",
+      "orgCategory": "Industry",
+      "country": "China",
+      "countries": [
+        "China"
+      ],
+      "date": "2026-09-09",
+      "year": 2026,
+      "decimalYear": 2026.687671,
+      "domains": [
+        "Language",
+        "Vision",
+        "Multimodal"
+      ],
+      "task": "Question answering,Language modeling/generation",
+      "parameters": 748000000000,
+      "computeFlop": 4.32e+24,
+      "log10Compute": 24.635,
+      "trainingCostUsd2023": null,
+      "powerDrawW": null,
+      "frontier": false,
+      "openWeights": true,
+      "accessibility": "Open weights (unrestricted)",
+      "confidence": "Likely",
+      "link": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf \n\nhttps://www.deepseek.com/en/news/deepseek-v4-1-flash/"
     }
   ],
   "aggregates": {
     "computeTrend": {
       "overall": {
-        "slopeLog10PerYear": 0.3282,
-        "intercept": -642.1944,
-        "r2": 0.7614,
+        "slopeLog10PerYear": 0.329,
+        "intercept": -643.638,
+        "r2": 0.7615,
         "doublingTimeMonths": 11,
         "startYear": 1950,
         "endYear": 2026,
-        "n": 537
+        "n": 540
       },
       "modernEra": {
-        "slopeLog10PerYear": 0.6311,
-        "intercept": -1254.2244,
-        "r2": 0.6547,
+        "slopeLog10PerYear": 0.6317,
+        "intercept": -1255.4276,
+        "r2": 0.6571,
         "doublingTimeMonths": 5.7,
         "startYear": 2010,
         "endYear": 2026,
-        "n": 475
+        "n": 478
       },
       "frontierByYear": [
         {
@@ -14596,10 +14678,10 @@
         },
         {
           "year": 2026,
-          "maxLog10Compute": 25.588,
-          "computeFlop": 3.87e+25,
-          "model": "Composer 2.5",
-          "organization": "Cursor"
+          "maxLog10Compute": 27,
+          "computeFlop": 1.0001e+27,
+          "model": "GPT-6 Astra",
+          "organization": "OpenAI"
         }
       ]
     },
@@ -14797,9 +14879,9 @@
       },
       {
         "year": 2026,
-        "n": 3,
-        "medianPowerW": 1489975.7958831799,
-        "maxPowerW": 3215623.4309682944
+        "n": 4,
+        "medianPowerW": 2352799.6134257372,
+        "maxPowerW": 232668778.57984325
       }
     ],
     "orgLeaderboard": [
@@ -14807,14 +14889,14 @@
         "organization": "OpenAI",
         "orgCategory": "Industry",
         "country": "United States",
-        "modelCount": 69,
-        "computeKnownCount": 22,
-        "frontierCount": 7,
-        "recentCount": 46,
+        "modelCount": 77,
+        "computeKnownCount": 23,
+        "frontierCount": 8,
+        "recentCount": 52,
         "openWeightsCount": 8,
-        "maxComputeFlop": 3.8e+26,
-        "latestDate": "2026-09-03",
-        "medianLog10Compute": 22.846
+        "maxComputeFlop": 1.0001e+27,
+        "latestDate": "2026-09-29",
+        "medianLog10Compute": 22.866
       },
       {
         "organization": "Google",
@@ -14833,23 +14915,23 @@
         "organization": "Google DeepMind",
         "orgCategory": "Industry",
         "country": "United States",
-        "modelCount": 41,
+        "modelCount": 42,
         "computeKnownCount": 6,
         "frontierCount": 1,
         "recentCount": 32,
         "openWeightsCount": 4,
         "maxComputeFlop": 5.0000000001e+25,
-        "latestDate": "2026-09-02",
+        "latestDate": "2026-09-30",
         "medianLog10Compute": 22.153
       },
       {
         "organization": "Alibaba",
         "orgCategory": "Industry",
         "country": "China",
-        "modelCount": 33,
+        "modelCount": 34,
         "computeKnownCount": 16,
         "frontierCount": 0,
-        "recentCount": 29,
+        "recentCount": 30,
         "openWeightsCount": 23,
         "maxComputeFlop": 1.512e+25,
         "latestDate": "2026-08-08",
@@ -14885,13 +14967,13 @@
         "organization": "Anthropic",
         "orgCategory": "Industry",
         "country": "United States",
-        "modelCount": 18,
+        "modelCount": 22,
         "computeKnownCount": 3,
         "frontierCount": 2,
-        "recentCount": 16,
+        "recentCount": 20,
         "openWeightsCount": 0,
         "maxComputeFlop": 3.35e+25,
-        "latestDate": "2026-07-24",
+        "latestDate": "2026-09-28",
         "medianLog10Compute": 25.431
       },
       {
@@ -14921,7 +15003,7 @@
         "medianLog10Compute": 15.577
       },
       {
-        "organization": "NVIDIA",
+        "organization": "Nvidia",
         "orgCategory": "Industry",
         "country": "United States",
         "modelCount": 15,
@@ -15012,6 +15094,19 @@
         "medianLog10Compute": 17.138
       },
       {
+        "organization": "DeepSeek",
+        "orgCategory": "Industry",
+        "country": "China",
+        "modelCount": 10,
+        "computeKnownCount": 9,
+        "frontierCount": 0,
+        "recentCount": 10,
+        "openWeightsCount": 10,
+        "maxComputeFlop": 9.702e+24,
+        "latestDate": "2026-09-09",
+        "medianLog10Compute": 24.519
+      },
+      {
         "organization": "University of Oxford",
         "orgCategory": "Academia",
         "country": "United Kingdom",
@@ -15049,19 +15144,6 @@
         "maxComputeFlop": 2.505e+25,
         "latestDate": "2026-02-12",
         "medianLog10Compute": 24.771
-      },
-      {
-        "organization": "DeepSeek",
-        "orgCategory": "Industry",
-        "country": "China",
-        "modelCount": 9,
-        "computeKnownCount": 8,
-        "frontierCount": 0,
-        "recentCount": 9,
-        "openWeightsCount": 9,
-        "maxComputeFlop": 9.702e+24,
-        "latestDate": "2026-04-24",
-        "medianLog10Compute": 24.519
       }
     ],
     "countryLeaderboard": [
@@ -15069,25 +15151,25 @@
         "country": "United States",
         "countryShort": "United States",
         "iso3": "USA",
-        "modelCount": 680,
-        "computeKnownCount": 331,
-        "frontierCount": 77,
-        "recentCount": 192,
+        "modelCount": 696,
+        "computeKnownCount": 333,
+        "frontierCount": 78,
+        "recentCount": 203,
         "openWeightsCount": 202,
-        "maxComputeFlop": 5.0000000000001e+26,
-        "orgCount": 280
+        "maxComputeFlop": 1.0001e+27,
+        "orgCount": 282
       },
       {
         "country": "China",
         "countryShort": "China",
         "iso3": "CHN",
-        "modelCount": 185,
-        "computeKnownCount": 101,
+        "modelCount": 189,
+        "computeKnownCount": 102,
         "frontierCount": 4,
-        "recentCount": 105,
-        "openWeightsCount": 99,
+        "recentCount": 108,
+        "openWeightsCount": 101,
         "maxComputeFlop": 2.505e+25,
-        "orgCount": 91
+        "orgCount": 92
       },
       {
         "country": "South Korea",
@@ -15114,18 +15196,6 @@
         "orgCount": 31
       },
       {
-        "country": "Singapore",
-        "countryShort": "Singapore",
-        "iso3": null,
-        "modelCount": 17,
-        "computeKnownCount": 9,
-        "frontierCount": 1,
-        "recentCount": 6,
-        "openWeightsCount": 10,
-        "maxComputeFlop": 3.036551985824e+24,
-        "orgCount": 15
-      },
-      {
         "country": "United Kingdom",
         "countryShort": "United Kingdom",
         "iso3": "GBR",
@@ -15136,6 +15206,18 @@
         "openWeightsCount": 16,
         "maxComputeFlop": 6.31e+23,
         "orgCount": 39
+      },
+      {
+        "country": "Singapore",
+        "countryShort": "Singapore",
+        "iso3": null,
+        "modelCount": 17,
+        "computeKnownCount": 9,
+        "frontierCount": 1,
+        "recentCount": 5,
+        "openWeightsCount": 10,
+        "maxComputeFlop": 3.036551985824e+24,
+        "orgCount": 15
       },
       {
         "country": "Hong Kong",
@@ -15246,18 +15328,6 @@
         "orgCount": 4
       },
       {
-        "country": "UAE",
-        "countryShort": "UAE",
-        "iso3": "ARE",
-        "modelCount": 3,
-        "computeKnownCount": 3,
-        "frontierCount": 1,
-        "recentCount": 1,
-        "openWeightsCount": 3,
-        "maxComputeFlop": 3.76e+24,
-        "orgCount": 2
-      },
-      {
         "country": "Netherlands",
         "countryShort": "Netherlands",
         "iso3": "NLD",
@@ -15304,6 +15374,18 @@
         "openWeightsCount": 1,
         "maxComputeFlop": 4531200000,
         "orgCount": 3
+      },
+      {
+        "country": "UAE",
+        "countryShort": "UAE",
+        "iso3": "ARE",
+        "modelCount": 3,
+        "computeKnownCount": 3,
+        "frontierCount": 1,
+        "recentCount": 0,
+        "openWeightsCount": 3,
+        "maxComputeFlop": 3.76e+24,
+        "orgCount": 2
       },
       {
         "country": "Belgium",
@@ -15487,27 +15569,27 @@
       }
     ],
     "accessibilityMix": {
-      "openWeights": 230,
-      "closed": 210,
+      "openWeights": 231,
+      "closed": 212,
       "unknown": 97
     },
     "fullCatalogAccessibilityMix": {
-      "openWeights": 338,
-      "closed": 469,
-      "unknown": 251
+      "openWeights": 340,
+      "closed": 484,
+      "unknown": 254
     },
     "domainMix": [
       {
         "domain": "Language",
-        "count": 308
+        "count": 310
       },
       {
         "domain": "Vision",
-        "count": 151
+        "count": 153
       },
       {
         "domain": "Multimodal",
-        "count": 44
+        "count": 46
       },
       {
         "domain": "Biology",
@@ -15535,7 +15617,7 @@
       },
       {
         "domain": "Earth science",
-        "count": 7
+        "count": 8
       },
       {
         "domain": "Other",
@@ -15578,8 +15660,8 @@
     "openWeightsCount is a proxy for tracked open-release activity only."
   ],
   "meta": {
-    "generatedAt": "2026-09-08T01:01:40.298Z",
-    "asOf": "2026-09-08",
+    "generatedAt": "2026-10-07T13:33:53.355Z",
+    "asOf": "2026-10-07",
     "source": {
       "name": "Epoch AI — Notable AI Models",
       "publisher": "Epoch AI",

@@ -65,9 +65,9 @@ export default function CareersPage() {
   return (
     <div className="mx-auto w-full max-w-[1400px] space-y-6 pb-28">
       {/* Header */}
-      <div className="animate-fade-up">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient">{t("pageTitle")}</h1>
-        <p className="text-zinc-600 dark:text-zinc-400 mt-1">
+      <div className="border-b border-[var(--border)] pb-6">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight text-zinc-900 sm:text-3xl dark:text-white">{t("pageTitle")}</h1>
+        <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
           {t("pageSubhead", { n: allInsights.length })}
         </p>
       </div>
@@ -250,7 +250,7 @@ export default function CareersPage() {
           <div className="flex justify-center mt-6">
             <button
               onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-              className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-full px-6 py-2.5 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:border-violet-500 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="glass rounded-full px-6 py-2.5 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:border-violet-500 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500"
             >
               {t("loadMore", { n: String(filtered.length - visibleCount) })}
             </button>
@@ -258,7 +258,7 @@ export default function CareersPage() {
         )}
         </>
       ) : (
-        <div className="glass bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 rounded-xl py-16 flex flex-col items-center gap-3 animate-fade-up">
+        <div className="glass rounded-xl py-16 flex flex-col items-center gap-3 animate-fade-up">
           <span className="text-4xl opacity-30" aria-hidden="true">
             &#128269;
           </span>

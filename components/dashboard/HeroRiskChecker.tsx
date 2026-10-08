@@ -82,11 +82,8 @@ export default function HeroRiskChecker() {
   const resiliency = selected ? computeResiliencyScore(selected.automationProbability) : 0;
   const riskColor = selected ? colorForRisk(selected.automationRisk) : "#6b7280";
 
-  const truncateName = (name: string, max = 22) =>
-    name.length > max ? name.slice(0, max) + "…" : name;
-
   return (
-    <div className="glass rounded-2xl p-6 sm:p-8 max-w-3xl">
+    <div className="glass p-5 sm:p-6">
       <p className="text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-3">
         {t("title")}
       </p>
@@ -183,12 +180,8 @@ export default function HeroRiskChecker() {
       {selected && (
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-6 items-start animate-fade-in">
           <div className="flex justify-center sm:justify-start">
-            <RiskGauge
-              value={riskValue}
-              size={160}
-              label={truncateName(selected.occupationName)}
-              sublabel={selected.sectorName}
-            />
+            {/* Name and sector are shown beside the gauge; keep the dial uncluttered. */}
+            <RiskGauge value={riskValue} size={140} sublabel={t("gaugeSublabel")} />
           </div>
 
           <div className="space-y-3">

@@ -59,39 +59,39 @@ export default function SectorDetailPage() {
         >
           &larr; Back to Sectors
         </Link>
-        <h1 className="text-3xl font-bold tracking-tight text-gradient">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight text-zinc-900 sm:text-3xl dark:text-white">
           {sectorName}
         </h1>
-        <p className="text-zinc-600 dark:text-zinc-400 mt-1">
+        <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
           {sectorInsights.length} occupations analyzed
         </p>
       </div>
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
+        <div className="glass rounded-xl p-4 text-center">
           <div className="text-2xl font-bold" style={{ color: riskColor }}>
             {(avgRisk * 100).toFixed(1)}%
           </div>
           <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Avg AI Exposure</div>
         </div>
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
+        <div className="glass rounded-xl p-4 text-center">
           <div className="text-2xl font-bold text-green-700 dark:text-green-400">
             {(brightShare * 100).toFixed(0)}%
           </div>
           <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Bright Outlook</div>
         </div>
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
+        <div className="glass rounded-xl p-4 text-center">
           <div className="text-2xl font-bold text-cyan-700 dark:text-cyan-400">
             {formatCurrency(avgSalary)}
           </div>
           <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Avg Median Salary</div>
         </div>
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
+        <div className="glass rounded-xl p-4 text-center">
           <div className="text-2xl font-bold text-zinc-900 dark:text-white">{sectorInsights.length}</div>
           <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Occupations Analyzed</div>
         </div>
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
+        <div className="glass rounded-xl p-4 text-center">
           <div className="text-2xl font-bold text-blue-700 dark:text-blue-400">
             {sectorEmployment != null ? sectorEmployment.toLocaleString() : "—"}
           </div>
@@ -107,7 +107,7 @@ export default function SectorDetailPage() {
       </p>
 
       {/* Risk overview bar */}
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+      <div className="glass rounded-xl p-5">
         <div className="flex items-center justify-between mb-2 text-sm">
           <span className="text-zinc-600 dark:text-zinc-400">Sector Avg AI Exposure</span>
           <span className="font-bold" style={{ color: riskColor }}>
@@ -124,18 +124,18 @@ export default function SectorDetailPage() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+        <div className="glass rounded-xl p-6">
           <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">{t("occupationRiskLevels")}</h2>
           <JobImpactChart selectedSector={sectorName} />
         </div>
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+        <div className="glass rounded-xl p-6">
           <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">{t("employmentProjections")}</h2>
           <PredictiveChart selectedSector={sectorName} />
         </div>
       </div>
 
       {/* Occupations table */}
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+      <div className="glass rounded-xl p-6">
         <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
           {t("occupationsIn", { sector: sectorName })}
         </h2>

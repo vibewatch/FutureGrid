@@ -106,8 +106,8 @@ export default function EvidenceStack() {
       <div className="glass p-5 sm:p-6">
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500">{t("evidenceEyebrow")}</p>
-            <h2 id={headingId} className="mt-1 text-2xl font-bold text-gradient">
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400">{t("evidenceEyebrow")}</p>
+            <h2 id={headingId} className="mt-1 text-xl font-semibold text-gradient tracking-tight">
               {t("evidenceTitle")}
             </h2>
             <p className="mt-2 max-w-3xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
@@ -129,7 +129,7 @@ export default function EvidenceStack() {
       <div className="glass p-5 sm:p-6">
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h3 className="text-lg font-bold text-gradient">{t("evidenceSourceFamilyStripTitle")}</h3>
+            <h3 className="text-lg font-semibold text-gradient tracking-tight">{t("evidenceSourceFamilyStripTitle")}</h3>
             <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{t("evidenceSourceFamilyStripExplainer")}</p>
           </div>
           <Link href="/sources" className="text-sm font-semibold text-violet-600 underline-offset-4 hover:underline dark:text-violet-300">
@@ -164,7 +164,7 @@ export default function EvidenceStack() {
         <div className="glass p-5 sm:p-6">
           <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <h3 className="text-lg font-bold text-gradient">{t("evidenceMatrixTitle")}</h3>
+              <h3 className="text-lg font-semibold text-gradient tracking-tight">{t("evidenceMatrixTitle")}</h3>
               <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{t("evidenceMatrixExplainer")}</p>
             </div>
             <StatusLegend t={t} />
@@ -256,8 +256,8 @@ export default function EvidenceStack() {
 
         {selected && (
           <aside className="glass h-fit p-5 sm:p-6 xl:sticky xl:top-8" aria-labelledby={`${headingId}-selected`}>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500">{t("evidenceSelectedTitle")}</p>
-            <h3 id={`${headingId}-selected`} className="mt-2 text-xl font-bold text-gradient">{selected.title}</h3>
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400">{t("evidenceSelectedTitle")}</p>
+            <h3 id={`${headingId}-selected`} className="mt-2 text-lg font-semibold text-gradient tracking-tight">{selected.title}</h3>
             <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{selected.finding}</p>
 
             <div className="mt-4 rounded-2xl border border-zinc-200 bg-white/55 p-4 dark:border-zinc-800 dark:bg-zinc-950/35">
@@ -303,7 +303,7 @@ function SummaryMetric({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-2xl border border-zinc-200 bg-white/55 p-4 dark:border-zinc-800 dark:bg-zinc-950/35">
       <dt className="text-xs font-semibold uppercase tracking-widest text-zinc-500">{label}</dt>
-      <dd className="mt-1 text-2xl font-extrabold text-gradient">{value}</dd>
+      <dd className="mt-1 text-xl font-semibold text-gradient tracking-tight">{value}</dd>
     </div>
   );
 }

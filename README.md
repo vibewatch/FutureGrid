@@ -12,7 +12,8 @@ FutureGrid maps AI's real impact on careers, sectors, and countries using observ
 
 | Page | What you get |
 |------|-------------|
-| **Dashboard** | Workforce-weighted AI-exposure score, headline stats, and top-impacted occupation highlights |
+| **Dashboard** | Executive overview: KPI tiles (exposure + measured adoption), occupation checker, most-exposed sectors, worker/business AI-adoption trends, and market charts |
+| **Insights Lab** | Cross-signal synthesis, **measured adoption (workers vs businesses by industry, occupation group and state)**, exposure lenses, market signals, and forecasts |
 | **Careers** | Search, filter, sort, and compare 750+ SOC occupations by AI exposure, employment, wages, and growth outlook; click any occupation for a full detail page |
 | **Sectors** | Sector-level breakdowns of AI exposure and employment concentration; drill into individual sectors |
 | **Skills** | Top skills by occupation and AI-exposure band; reskilling pathway suggestions |
@@ -29,11 +30,13 @@ All snapshots are committed to the repository — the app build is fully **offli
 
 | Dataset | Publisher | License | Used for |
 |---------|-----------|---------|---------|
-| [Anthropic Economic Index](https://huggingface.co/datasets/Anthropic/EconomicIndex) | Anthropic (2025) | CC-BY 4.0 | Primary AI-exposure metric (`observed_exposure`) per SOC occupation; replaces Frey-Osborne 2013. Also provides salary fallback, job forecast, job zone, Bright Outlook, and sector. |
-| [BLS OEWS via BLS Public Data API](https://www.bls.gov/oes/) | U.S. Bureau of Labor Statistics (2025) | Public Domain | Per-occupation employment totals and median wages (authoritative; overrides AEI bundle when `BLS_API_KEY` is set) |
-| [O*NET 28.3 Skills Database](https://www.onetcenter.org/database.html) | USDOL/ETA (2024) | CC BY 4.0 | Top skills by importance per SOC occupation |
-| [Microsoft AI Diffusion Report — AIEI Q1 2026](https://github.com/microsoft/ai-diffusion-report) | Microsoft (2026) | MIT | GenAI diffusion % of working-age population, three-period trend (H1 2025 / H2 2025 / Q1 2026), 147 economies including China |
+| [Anthropic Economic Index](https://huggingface.co/datasets/Anthropic/EconomicIndex) | Anthropic (2025–2026) | CC-BY 4.0 | Primary AI-exposure metric (`observed_exposure`) per SOC occupation; replaces Frey-Osborne 2013. Country usage, use-case mix (work / personal / coursework) and automation vs augmentation from the June 2026 release (Apr–May 2026 data). |
+| [BLS OEWS via BLS Public Data API](https://www.bls.gov/oes/) | U.S. Bureau of Labor Statistics (May 2025) | Public Domain | Per-occupation employment totals and median wages (authoritative; overrides AEI bundle when `BLS_API_KEY` is set), plus 2016–2025 history from the national flat files |
+| [O*NET 31.0 Skills Database](https://www.onetcenter.org/database.html) | USDOL/ETA (2026) | CC BY 4.0 | Top skills by importance per SOC occupation |
+| [Microsoft AI Diffusion Report — AIEI Q2 2026](https://github.com/microsoft/ai-diffusion-report) | Microsoft (2026) | MIT | GenAI diffusion % of working-age population, four-period trend (H1 2025 / H2 2025 / Q1 2026 / Q2 2026), 147 economies including China |
 | [IMF AI Preparedness Index (AIPI)](https://www.imf.org/external/datamapper/AI_PI@AIPI/ADVEC/EME/LIC) | IMF (2023) | [IMF terms](https://www.imf.org/external/terms.htm) | Overall AI readiness composite (0–1, 178 countries) and four sub-indices: Digital Infrastructure (DI), Human Capital & Labour Market Policies (HCLMP), Innovation & Economic Integration (IEI), Regulation & Ethics (RE) |
+| [St. Louis Fed Real-Time Population Survey — GenAI Adoption Tracker](https://fred.stlouisfed.org/release?rid=6) | Federal Reserve Bank of St. Louis (Bick, Blandin & Deming, 2026) | Public data via FRED (cite source) | Quarterly share of U.S. adults / workers using generative AI, work-hour time savings, and work adoption by SOC major group and NAICS industry |
+| [Census Business Trends and Outlook Survey (BTOS)](https://www.census.gov/hfp/btos/data) | U.S. Census Bureau (2026) | Public Domain | Biweekly share of U.S. employer firms using AI (and expecting to within six months), national + sector + state |
 | [Natural Earth / world-atlas@2](https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json) | Natural Earth / Mike Bostock | Public Domain / ISC | 110 m country polygons (TopoJSON) for the world map choropleth |
 
 > **Comparability note:** `usageIndex` (Anthropic Claude API sessions), `diffusionPct` (Microsoft behavior-based survey), and `aiReadiness` (IMF infrastructure score) measure different things and must **not** be merged or averaged. The Global Map keeps them on separate layers with clear labelling.
@@ -95,6 +98,14 @@ Runs `build:proxies` (supplemental usage proxies) then rebuilds the main occupat
 | Variable | Used for |
 |----------|---------|
 | `CENSUS_API_KEY` | Supplemental U.S. employer-firm AI adoption data from Census ABS (silently skipped if not set) |
+
+### Measured AI adoption (workers + businesses)
+
+```bash
+npm run build:ai-adoption-tracker
+```
+
+Key-free. Pulls the St. Louis Fed RPS GenAI Adoption Tracker series from FRED and the Census BTOS National/Sector/State workbooks into `data/ai-adoption-tracker.json`. Included in the weekly `data:refresh`.
 
 ### Global AI metrics (country-level)
 

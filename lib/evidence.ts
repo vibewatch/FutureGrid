@@ -137,7 +137,7 @@ const SOURCE_FAMILIES: EvidenceSourceFamily[] = [
     label: "Skills and reskilling pathways",
     description: "O*NET skill overlap, related occupations, and Bright Outlook context for exploration.",
     coverage: "Skill-overlap pathways are action-planning context, not placement outcomes.",
-    freshness: "O*NET 28.3 and enrichment metadata are cataloged.",
+    freshness: "O*NET 31.0 and enrichment metadata are cataloged.",
     href: "/skills",
   },
   {

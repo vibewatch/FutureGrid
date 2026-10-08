@@ -383,7 +383,7 @@ export function searchInsights(query: string, limit = 8): CareerInsight[] {
   return results.slice(0, limit).map((r) => r.insight);
 }
 
-// ─── Country exposure (Anthropic Economic Index, Aug 2025) ───────────────────
+// ─── Country exposure (Anthropic Economic Index, latest release) ───────────────────
 
 export interface CountryExposure {
   iso3: string;
@@ -392,6 +392,17 @@ export interface CountryExposure {
   usagePct: number | null;
   usageCount: number | null;
   gdpPerWorkingAgeCapita: number | null;
+  /** YYYY-MM month the usage metrics describe (latest AEI release); null when not reported. */
+  usagePeriod?: string | null;
+  /** Share of Claude.ai conversations by use case (percent, sums to ~100). */
+  useCaseWorkPct?: number | null;
+  useCasePersonalPct?: number | null;
+  useCaseCourseworkPct?: number | null;
+  /** Collaboration mode split (percent): automation = directive/feedback-loop; augmentation = iteration/learning/validation. */
+  automationPct?: number | null;
+  augmentationPct?: number | null;
+  /** Mean AI autonomy rating (1–5 scale) across the country's conversations. */
+  aiAutonomyMean?: number | null;
 }
 
 export function getCountryExposure(): CountryExposure[] {
@@ -432,14 +443,14 @@ export interface CountryMapDatum {
   usagePct: number | null;
   hasClaudeData: boolean;
   proxyNote: string | null;
-  /** Microsoft AIEI Q1 2026: % of working-age population using generative AI.
+  /** Microsoft AIEI Q2 2026: % of working-age population using generative AI.
    *  Comparable across ~147 economies including China. NOT the same scale as
    *  usageIndex — do not average or merge. */
   diffusionPct: number | null;
-  /** All three AIEI periods for momentum/trend analysis.
-   *  null if the country was not present in all three survey waves. */
-  diffusionTrend: { h1_2025: number; h2_2025: number; q1_2026: number } | null;
-  /** Percentage-point change from H1 2025 → Q1 2026 (q1_2026 − h1_2025).
+  /** All four AIEI periods for momentum/trend analysis.
+   *  null if the country was not present in every survey wave. */
+  diffusionTrend: DiffusionTrend | null;
+  /** Percentage-point change from H1 2025 → Q2 2026 (q2_2026 − h1_2025).
    *  null if either end-point is missing. */
   diffusionDelta: number | null;
   /** IMF AI Preparedness Index (capacity metric, not user-behavior %).
@@ -461,6 +472,20 @@ export interface CountryMapDatum {
    *  COMPARABILITY CAVEAT: government-readiness capacity score — do NOT merge with
    *  diffusionPct (user behaviour %), usageIndex (API sessions), or aiReadiness (IMF 0–1). */
   governmentReadiness: number | null;
+  /** Anthropic Economic Index (latest release) work-use and collaboration-mode detail. */
+  usagePeriod: string | null;
+  useCaseWorkPct: number | null;
+  useCasePersonalPct: number | null;
+  useCaseCourseworkPct: number | null;
+  automationPct: number | null;
+  augmentationPct: number | null;
+}
+
+export interface DiffusionTrend {
+  h1_2025: number;
+  h2_2025: number;
+  q1_2026: number;
+  q2_2026: number;
 }
 
 export function getCountryMapData(): CountryMapDatum[] {
@@ -480,15 +505,17 @@ export function getCountryMapData(): CountryMapDatum[] {
   const qmVal = questEntry
     ? `${Math.round(Number((questEntry as { value?: unknown }).value) / 1e6)}M`
     : "680M";
+  const chinaDiffusion =
+    (globalAiMetricsData as { metrics?: { diffusion?: Record<string, number> } }).metrics?.diffusion?.CHN ?? null;
   const chinaNote =
     `Claude.ai unavailable; CNNIC reports ${cnnicVal} generative-AI users, QuestMobile ${qmVal} mobile-AI MAU. ` +
-    `Microsoft estimates 16.4% GenAI diffusion (Western telemetry undercounts domestic apps; CNNIC reports ~43%).`;
+    `Microsoft estimates ${chinaDiffusion != null ? `${chinaDiffusion}%` : "low"} GenAI diffusion (Western telemetry undercounts domestic apps; CNNIC reports ~43%).`;
 
   // Join global AI metrics (diffusion + readiness)
   const metrics = globalAiMetricsData as {
     metrics: {
       diffusion: Record<string, number>;
-      diffusionTrend?: Record<string, { h1_2025: number | null; h2_2025: number | null; q1_2026: number | null }>;
+      diffusionTrend?: Record<string, { [K in keyof DiffusionTrend]: number | null }>;
       readiness?: Record<string, number>;
       readinessSubIndices?: Record<string, {
         digitalInfrastructure: number | null;
@@ -516,12 +543,13 @@ export function getCountryMapData(): CountryMapDatum[] {
       rawTrend &&
       rawTrend.h1_2025 !== null &&
       rawTrend.h2_2025 !== null &&
-      rawTrend.q1_2026 !== null
-        ? { h1_2025: rawTrend.h1_2025, h2_2025: rawTrend.h2_2025, q1_2026: rawTrend.q1_2026 }
+      rawTrend.q1_2026 !== null &&
+      rawTrend.q2_2026 != null
+        ? { h1_2025: rawTrend.h1_2025, h2_2025: rawTrend.h2_2025, q1_2026: rawTrend.q1_2026, q2_2026: rawTrend.q2_2026 }
         : null;
     const diffusionDelta =
-      rawTrend && rawTrend.h1_2025 !== null && rawTrend.q1_2026 !== null
-        ? Math.round((rawTrend.q1_2026 - rawTrend.h1_2025) * 100) / 100
+      rawTrend && rawTrend.h1_2025 !== null && rawTrend.q2_2026 != null
+        ? Math.round((rawTrend.q2_2026 - rawTrend.h1_2025) * 100) / 100
         : null;
     return {
       iso3: c.iso3,
@@ -543,6 +571,12 @@ export function getCountryMapData(): CountryMapDatum[] {
           }
         : null,
       governmentReadiness: governmentReadinessMap[c.iso3] ?? null,
+      usagePeriod: c.usagePeriod ?? null,
+      useCaseWorkPct: c.useCaseWorkPct ?? null,
+      useCasePersonalPct: c.useCasePersonalPct ?? null,
+      useCaseCourseworkPct: c.useCaseCourseworkPct ?? null,
+      automationPct: c.automationPct ?? null,
+      augmentationPct: c.augmentationPct ?? null,
     };
   });
 }
@@ -557,8 +591,8 @@ export interface DiffusionRiser {
   delta: number;
 }
 
-/** Returns countries sorted by largest positive diffusionDelta (H1 2025 → Q1 2026).
- *  Requires all three AIEI periods to be present. */
+/** Returns countries sorted by largest positive diffusionDelta (H1 2025 → Q2 2026).
+ *  Requires every AIEI period to be present. */
 export function getDiffusionRisers(limit = 5): DiffusionRiser[] {
   return getCountryMapData()
     .filter(
@@ -571,26 +605,23 @@ export function getDiffusionRisers(limit = 5): DiffusionRiser[] {
       iso3: c.iso3,
       name: c.name,
       from: c.diffusionTrend.h1_2025,
-      to: c.diffusionTrend.q1_2026,
+      to: c.diffusionTrend.q2_2026,
       delta: c.diffusionDelta,
     }));
 }
 
 /** Compact DTO for Consumer GenAI Diffusion Growth comparison.
- *  Carries only the three AIEI survey periods — no composite metrics.
+ *  Carries only the AIEI survey periods — no composite metrics.
  *  Source: Microsoft AI Diffusion Report (MIT). */
-export interface DiffusionComparisonRow {
+export interface DiffusionComparisonRow extends DiffusionTrend {
   iso3: string;
   name: string;
-  h1_2025: number;
-  h2_2025: number;
-  q1_2026: number;
 }
 
 /**
- * Returns the top N economies by Q1 2026 Consumer GenAI diffusion share.
- * Only includes rows where ALL THREE periods (H1 2025, H2 2025, Q1 2026) are
- * non-null. Sorted descending by q1_2026. Rows with any missing period are
+ * Returns the top N economies by Q2 2026 Consumer GenAI diffusion share.
+ * Only includes rows where ALL periods (H1 2025, H2 2025, Q1 2026, Q2 2026) are
+ * non-null. Sorted descending by q2_2026. Rows with any missing period are
  * excluded. Source: Microsoft AIEI (MIT). NOT merged with any other metric.
  */
 export function getTopDiffusionComparison(limit = 10): DiffusionComparisonRow[] {
@@ -599,7 +630,7 @@ export function getTopDiffusionComparison(limit = 10): DiffusionComparisonRow[] 
       (c): c is typeof c & { diffusionTrend: NonNullable<typeof c.diffusionTrend> } =>
         c.diffusionTrend !== null,
     )
-    .sort((a, b) => b.diffusionTrend.q1_2026 - a.diffusionTrend.q1_2026)
+    .sort((a, b) => b.diffusionTrend.q2_2026 - a.diffusionTrend.q2_2026)
     .slice(0, limit)
     .map((c) => ({
       iso3: c.iso3,
@@ -607,6 +638,7 @@ export function getTopDiffusionComparison(limit = 10): DiffusionComparisonRow[] 
       h1_2025: c.diffusionTrend.h1_2025,
       h2_2025: c.diffusionTrend.h2_2025,
       q1_2026: c.diffusionTrend.q1_2026,
+      q2_2026: c.diffusionTrend.q2_2026,
     }));
 }
 

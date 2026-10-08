@@ -3,9 +3,6 @@ import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 
-vi.mock("@/components/dashboard/SummaryCard", () => ({
-  default: ({ title, href }: { title: string; href: string }) => <a href={href}>{title}</a>,
-}));
 vi.mock("@/components/charts/JobImpactChart", () => ({ default: () => <div>Job impact chart</div> }));
 vi.mock("@/components/charts/PredictiveChart", () => ({ default: () => <div>Predictive chart</div> }));
 vi.mock("@/components/ui/AnimatedCounter", () => ({
@@ -17,7 +14,6 @@ vi.mock("@/components/ui/Reveal", () => ({
 vi.mock("@/components/dashboard/HeroRiskChecker", () => ({ default: () => <div>Risk checker</div> }));
 vi.mock("@/components/dashboard/HighlightsBento", () => ({ default: () => <div>Highlights</div> }));
 vi.mock("@/components/charts/SectorScatterChart", () => ({ default: () => <div>Sector scatter</div> }));
-vi.mock("@/components/dashboard/KeyFindings", () => ({ default: () => <div>Key findings</div> }));
 vi.mock("@/components/ui/DataAsOfBadge", () => ({ default: () => <div>Data badge</div> }));
 
 import DashboardHome from "@/components/dashboard/DashboardHome";

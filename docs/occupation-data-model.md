@@ -196,7 +196,7 @@ export interface OccExposureLenses {
 |---|---|---|
 | Anthropic Economic Index | Research access; usage-restricted | Not for redistribution; primary AI-exposure metric |
 | BLS OEWS (wages, employment) | Public Domain (US Government) | Annual vintage; ~6–12 month lag |
-| O\*NET Database | CC BY 4.0 | Snapshot from O\*NET 28.3 |
+| O\*NET Database | CC BY 4.0 | Snapshot from O\*NET 31.0 |
 | Frey & Osborne (2013) | No explicit license (academic) | Secondary comparison baseline only; do **not** include in public bulk-download |
 | AIOE (Felten et al. 2021) | No explicit open license | Citation required; do not bulk-redistribute |
 | LLM capability scores | Internal computation | Derived; not a redistributable raw dataset |

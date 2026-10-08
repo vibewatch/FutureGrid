@@ -56,7 +56,7 @@ function StatCard({
   accent?: string;
 }) {
   return (
-    <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+    <div className="glass rounded-xl p-5">
       <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1">{label}</p>
       <p
         className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white"
@@ -121,7 +121,7 @@ export default function LayoffsView() {
   if (loadError) {
     return (
       <div className="mx-auto w-full max-w-[1400px]">
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-10 text-center text-sm text-zinc-500 dark:text-zinc-400">
+        <div className="glass rounded-xl p-10 text-center text-sm text-zinc-500 dark:text-zinc-400">
           {t("loadError")}
         </div>
       </div>
@@ -130,7 +130,7 @@ export default function LayoffsView() {
   if (!warn) {
     return (
       <div className="mx-auto w-full max-w-[1400px]">
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-10 flex items-center justify-center text-sm text-zinc-500 dark:text-zinc-400">
+        <div className="glass rounded-xl p-10 flex items-center justify-center text-sm text-zinc-500 dark:text-zinc-400">
           {t("loading")}
         </div>
       </div>
@@ -167,10 +167,10 @@ export default function LayoffsView() {
             {t("coverageBadge")}
           </span>
         </div>
-        <h1 className="text-3xl font-bold tracking-tight text-gradient">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight text-zinc-900 sm:text-3xl dark:text-white">
           {t("heroTitle")}
         </h1>
-        <p className="text-zinc-600 dark:text-zinc-400 mt-1.5 max-w-2xl">
+        <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
           {t("heroSubhead")}
         </p>
         <p className="text-xs text-zinc-500 mt-2">
@@ -238,7 +238,7 @@ export default function LayoffsView() {
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">{t("byStateDesc")}</p>
         </div>
         <div
-          className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 space-y-5"
+          className="glass rounded-xl p-5 space-y-5"
           role="img"
           aria-label={t("srByStateLabel")}
         >
@@ -307,7 +307,7 @@ export default function LayoffsView() {
           </h2>
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">{t("sectionTrendDesc")}</p>
         </div>
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+        <div className="glass rounded-xl p-5">
           <WarnTrendChart byMonth={summary.byMonth} />
         </div>
       </section>
@@ -329,7 +329,7 @@ export default function LayoffsView() {
             </p>
           </div>
           <div
-            className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 space-y-3.5"
+            className="glass rounded-xl p-5 space-y-3.5"
             role="img"
             aria-label={t("srTopEmployersLabel")}
           >
@@ -392,7 +392,7 @@ export default function LayoffsView() {
             </p>
           </div>
           <div
-            className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 space-y-4"
+            className="glass rounded-xl p-5 space-y-4"
             role="img"
             aria-label={t("srByTypeLabel")}
           >
@@ -502,7 +502,7 @@ export default function LayoffsView() {
         </p>
 
         {/* Table */}
-        <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+        <div className="glass rounded-xl overflow-hidden">
           {filtered.length === 0 ? (
             <div className="py-12 text-center text-zinc-500 text-sm">
               {t("noResults")}
@@ -618,7 +618,7 @@ export default function LayoffsView() {
 
       {/* ── Sources / WARN Act footnote ───────────────────────────────────────── */}
       <section aria-labelledby="wtc-source-heading">
-        <div className="glass bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 space-y-4">
+        <div className="glass rounded-xl p-6 space-y-4">
           <h2
             id="wtc-source-heading"
             className="text-base font-semibold text-zinc-900 dark:text-white"

@@ -67,7 +67,7 @@ export default function FrontierMixCards() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {/* Access mix card */}
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 space-y-3">
+      <div className="glass rounded-xl p-4 space-y-3">
         <div>
           <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">
             {t("mixAccessTitle")}
@@ -102,7 +102,7 @@ export default function FrontierMixCards() {
       </div>
 
       {/* Domain mix card */}
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 space-y-3">
+      <div className="glass rounded-xl p-4 space-y-3">
         <div>
           <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">
             {t("mixDomainsTitle")}

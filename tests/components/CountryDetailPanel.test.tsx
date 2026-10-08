@@ -28,12 +28,12 @@ const usaCountry: EnrichedCountry = {
   iso3: "USA",
   name: "United States",
   usageIndex: 3.624,
-  usagePct: 0.2158,
+  usagePct: 21.58, // percent, as stored in country-exposure.json
   usageCount: 208200,
   hasClaudeData: true,
   proxyNote: null,
   diffusionPct: 32.5,
-  diffusionTrend: { h1_2025: 28.0, h2_2025: 30.0, q1_2026: 32.5 },
+  diffusionTrend: { h1_2025: 28.0, h2_2025: 30.0, q1_2026: 32.5, q2_2026: 33.8 },
   diffusionDelta: 4.5,
   aiReadiness: 0.78,
   readinessSubIndices: {
@@ -55,7 +55,7 @@ const chnCountry: EnrichedCountry = {
   hasClaudeData: false,
   proxyNote: "Claude.ai unavailable; proxy data only.",
   diffusionPct: 16.4,
-  diffusionTrend: { h1_2025: 10.0, h2_2025: 13.0, q1_2026: 16.4 },
+  diffusionTrend: { h1_2025: 10.0, h2_2025: 13.0, q1_2026: 16.4, q2_2026: 17.5 },
   diffusionDelta: 6.4,
   aiReadiness: 0.60,
   readinessSubIndices: {

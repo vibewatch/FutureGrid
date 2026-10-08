@@ -31,7 +31,7 @@ export default function HeatmapView({ sectors }: HeatmapViewProps) {
     <div className="mx-auto w-full max-w-[1400px] space-y-8">
       {/* Header */}
       <div className="animate-fade-up">
-        <h2 className="text-2xl font-bold tracking-tight text-gradient">
+        <h2 className="text-xl font-semibold tracking-tight text-gradient">
           {t("pageHeading")}
         </h2>        <p className="text-zinc-600 dark:text-zinc-400 mt-1">
           {t("pageIntro")}{" "}
@@ -45,7 +45,7 @@ export default function HeatmapView({ sectors }: HeatmapViewProps) {
       </div>
 
       {/* Legend */}
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl px-5 py-4">
+      <div className="glass rounded-xl px-5 py-4">
         <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">
           {t("legendHeading")}
         </h2>
@@ -66,12 +66,12 @@ export default function HeatmapView({ sectors }: HeatmapViewProps) {
       </div>
 
       {/* Heatmap chart */}
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+      <div className="glass rounded-xl p-6">
         <HeatmapChart />
       </div>
 
       {/* Sector detail cards */}
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+      <div className="glass rounded-xl p-6">
         <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-5">
           {t("sectorDetailsHeading")}
         </h2>
@@ -83,7 +83,7 @@ export default function HeatmapView({ sectors }: HeatmapViewProps) {
               <Link
                 key={s.sector}
                 href={`/sectors/${encodeURIComponent(s.sector)}`}
-                className="relative group block glass glass-hover bg-zinc-100 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-700/40 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all overflow-hidden"
+                className="relative group block glass glass-hover bg-zinc-100 dark:bg-zinc-800/40 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all overflow-hidden"
               >
                 {/* Accent stripe */}
                 <div

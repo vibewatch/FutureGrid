@@ -27,7 +27,7 @@ const CACHE_DIR = path.join(ROOT, ".data-cache");
 const UA = "FutureGrid-data-bot/1.0 (https://github.com/huangyingting/FutureGrid)";
 
 const MS_DIFFUSION_URL =
-  "https://raw.githubusercontent.com/microsoft/ai-diffusion-report/main/data/AI_Diffusion_Q12026_Update.csv";
+  "https://raw.githubusercontent.com/microsoft/ai-diffusion-report/main/data/AI_Diffusion_Q22026_Update.csv";
 const ISO_CROSSWALK_URL =
   "https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.json";
 // Correct indicator endpoint: AIPI dataset, AI_PI indicator (overall composite score)
@@ -331,23 +331,25 @@ async function main() {
   // 2. Fetch Microsoft AI Diffusion CSV
   const msCsvText = await fetchText(
     MS_DIFFUSION_URL,
-    path.join(CACHE_DIR, "microsoft-ai-diffusion-q12026.csv"),
+    path.join(CACHE_DIR, "microsoft-ai-diffusion-q22026.csv"),
   );
   const msRows = parseCSV(msCsvText);
   console.log(`  Microsoft AIEI CSV: ${msRows.length} rows`);
 
-  // Detect all three diffusion columns
+  // Detect all diffusion period columns
   const sampleRow = msRows[0] || {};
   const colKeys = Object.keys(sampleRow);
   const h1Col = colKeys.find((k) => /h1 2025/i.test(k));
   const h2Col = colKeys.find((k) => /h2 2025/i.test(k));
   const q1Col = colKeys.find((k) => /q1 2026/i.test(k));
+  const q2Col = colKeys.find((k) => /q2 2026/i.test(k));
+  if (!q2Col) throw new Error(`[global-metrics] Microsoft CSV is missing the Q2 2026 column (got: ${colKeys.join(", ")})`);
   // Latest column for back-compat diffusion metric
-  const diffCol = q1Col || h2Col || colKeys.find((k) => /diffusion/i.test(k));
-  console.log(`  Diffusion columns — H1 2025: "${h1Col}", H2 2025: "${h2Col}", Q1 2026: "${q1Col}"`);
+  const diffCol = q2Col || q1Col || h2Col || colKeys.find((k) => /diffusion/i.test(k));
+  console.log(`  Diffusion columns — H1 2025: "${h1Col}", H2 2025: "${h2Col}", Q1 2026: "${q1Col}", Q2 2026: "${q2Col}"`);
   console.log(`  Using latest diffusion column: "${diffCol}"`);
 
-  // Map Economy → ISO-3 and parse all three diffusion periods
+  // Map Economy → ISO-3 and parse every diffusion period
   const diffusion = {};
   const diffusionTrend = {};
   const unmatched = [];
@@ -373,23 +375,25 @@ async function main() {
       diffusion[iso3] = pct;
     }
 
-    // All-three-period trend
+    // Full multi-period trend
     const h1 = h1Col ? parsePct(row[h1Col]) : null;
     const h2 = h2Col ? parsePct(row[h2Col]) : null;
     const q1 = q1Col ? parsePct(row[q1Col]) : null;
-    if (h1 !== null || h2 !== null || q1 !== null) {
+    const q2 = q2Col ? parsePct(row[q2Col]) : null;
+    if (h1 !== null || h2 !== null || q1 !== null || q2 !== null) {
       diffusionTrend[iso3] = {
         h1_2025: h1 ?? null,
         h2_2025: h2 ?? null,
         q1_2026: q1 ?? null,
+        q2_2026: q2 ?? null,
       };
     }
   }
 
   const fullTrendCount = Object.values(diffusionTrend).filter(
-    (t) => t.h1_2025 !== null && t.h2_2025 !== null && t.q1_2026 !== null,
+    (t) => t.h1_2025 !== null && t.h2_2025 !== null && t.q1_2026 !== null && t.q2_2026 !== null,
   ).length;
-  console.log(`  diffusionTrend entries: ${Object.keys(diffusionTrend).length} (${fullTrendCount} with all 3 periods)`);
+  console.log(`  diffusionTrend entries: ${Object.keys(diffusionTrend).length} (${fullTrendCount} with all 4 periods)`);
 
   console.log(`  Mapped diffusion: ${Object.keys(diffusion).length} countries (latest), ${Object.keys(diffusionTrend).length} trend entries`);
   if (unmatched.length > 0) {
@@ -630,16 +634,16 @@ async function main() {
       url: "https://github.com/microsoft/ai-diffusion-report",
       license: "MIT",
       column: diffCol,
-      periods: ["H1 2025 AI Diffusion", "H2 2025 AI Diffusion", "Q1 2026 AI Diffusion"],
+      periods: ["H1 2025 AI Diffusion", "H2 2025 AI Diffusion", "Q1 2026 AI Diffusion", "Q2 2026 AI Diffusion"],
       metric: "diffusionPct",
       description:
-        "% of working-age population using generative AI across three periods: H1 2025, H2 2025, Q1 2026. " +
-        "147 economies including China. diffusion keeps Q1 2026 (latest) for back-compat; " +
-        "diffusionTrend retains all three periods for momentum/fastest-rising analysis. " +
+        "% of working-age population using generative AI across four periods: H1 2025, H2 2025, Q1 2026, Q2 2026. " +
+        "147 economies including China. diffusion keeps Q2 2026 (latest) for back-compat; " +
+        "diffusionTrend retains all four periods for momentum/fastest-rising analysis. " +
         "COMPARABILITY CAVEAT: this is a behavior-based survey %; " +
         "do NOT merge with Claude.ai usageIndex (observed API sessions, different denominator). " +
         "Western telemetry may undercount domestic apps (e.g. Doubao, Kimi) in China — " +
-        "CNNIC reports ~43% genAI penetration vs Microsoft's 16.4%.",
+        `CNNIC reports ~43% genAI penetration vs Microsoft's ${diffusion.CHN ?? "n/a"}% (Q2 2026).`,
     },
   ];
 
@@ -731,7 +735,7 @@ async function main() {
   const outPath = path.join(DATA_DIR, "global-ai-metrics.json");
   output.meta = buildMeta({
     generatedAt,
-    asOf: "2026-03-31",
+    asOf: "2026-06-30",
     source: {
       name: "Global AI diffusion and readiness metrics",
       publisher: "Microsoft, IMF, and Oxford Insights",
@@ -742,7 +746,7 @@ async function main() {
   writeFileSync(outPath, JSON.stringify(output, null, 2) + "\n");
   console.log(`\n  ✓ Wrote ${path.relative(ROOT, outPath)}`);
   console.log(`    diffusion countries: ${Object.keys(diffusion).length}`);
-  console.log(`    diffusionTrend countries: ${Object.keys(diffusionTrend).length} (${fullTrendCount} with all 3 periods)`);
+  console.log(`    diffusionTrend countries: ${Object.keys(diffusionTrend).length} (${fullTrendCount} with all 4 periods)`);
   console.log(`    China (CHN): diffusion=${diffusion["CHN"] ?? "NOT FOUND"}%, trend=${JSON.stringify(diffusionTrend["CHN"] ?? "NOT FOUND")}`);
   console.log(`    United States (USA): diffusion=${diffusion["USA"] ?? "NOT FOUND"}%`);
   console.log(`    India (IND): diffusion=${diffusion["IND"] ?? "NOT FOUND"}%`);

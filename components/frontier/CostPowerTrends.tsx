@@ -250,7 +250,7 @@ export default function CostPowerTrends() {
       <AccessibleChart
         label={t("costChartTitle")}
         summary={t("a11yCostPowerSummary")}
-        className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 space-y-2"
+        className="glass rounded-xl p-4 space-y-2"
       >
         <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">
           {t("costChartTitle")}
@@ -264,7 +264,7 @@ export default function CostPowerTrends() {
       <AccessibleChart
         label={t("powerChartTitle")}
         summary={t("a11yCostPowerSummary")}
-        className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 space-y-2"
+        className="glass rounded-xl p-4 space-y-2"
       >
         <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">
           {t("powerChartTitle")}

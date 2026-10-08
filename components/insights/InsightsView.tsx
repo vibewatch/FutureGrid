@@ -11,6 +11,8 @@ import AICompanyStockLens from "@/components/insights/AICompanyStockLens";
 import EmploymentForecastChart from "@/components/insights/EmploymentForecastChart";
 import AIForcesTimeline from "@/components/insights/AIForcesTimeline";
 import DisruptionLeaderboard from "@/components/insights/DisruptionLeaderboard";
+import AdoptionTrackerLens, { type AdoptionTrackerLensProps } from "@/components/insights/AdoptionTrackerLens";
+import { PageHeader, SectionHeader } from "@/components/ui/PageHeader";
 import { useT } from "@/lib/i18n/useT";
 import type { AnalysisPageData } from "@/lib/analysis";
 import type { AIPressureSynthesisData } from "@/lib/ai-pressure-synthesis";
@@ -19,40 +21,37 @@ import type { ExposureOutcomeMatrix as ExposureOutcomeMatrixData } from "@/lib/e
 
 function Section({ id, eyebrow, title, explainer, children }: { id?: string; eyebrow: string; title: string; explainer: string; children: React.ReactNode }) {
   return (
-    <Reveal>
-      <section id={id} className={`space-y-5${id ? " scroll-mt-24" : ""}`}>
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500">{eyebrow}</p>
-          <h2 className="mt-1 text-2xl font-bold text-gradient">{title}</h2>
-          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{explainer}</p>
-        </div>
-        <div className="glass p-5 sm:p-6 xl:p-8">{children}</div>
-      </section>
-    </Reveal>
+    <section id={id} className={id ? "scroll-mt-24" : undefined}>
+      <SectionHeader eyebrow={eyebrow} title={title} description={explainer} />
+      <div className="glass p-5 sm:p-6">{children}</div>
+    </section>
   );
 }
 
-export default function InsightsView({ data, aiCompanyStocks, aiPressureSynthesis, exposureOutcomeMatrix }: { data: AnalysisPageData; aiCompanyStocks: AICompanyStocksData; aiPressureSynthesis: AIPressureSynthesisData; exposureOutcomeMatrix?: ExposureOutcomeMatrixData }) {
+export default function InsightsView({ data, aiCompanyStocks, aiPressureSynthesis, exposureOutcomeMatrix, adoption }: { data: AnalysisPageData; aiCompanyStocks: AICompanyStocksData; aiPressureSynthesis: AIPressureSynthesisData; exposureOutcomeMatrix?: ExposureOutcomeMatrixData; adoption?: AdoptionTrackerLensProps }) {
   const t = useT("analysis");
+  const ta = useT("adoption");
   return (
-    <div className="mx-auto w-full max-w-[1680px] space-y-14 xl:space-y-16">
-      <section className="pt-4 pb-2">
-        <Reveal>
-          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-            <span className="text-gradient">{t("pageTitle")}</span>
-          </h1>
-          <p className="mt-4 max-w-3xl text-base leading-relaxed text-zinc-600 dark:text-zinc-400 sm:text-lg">{t("pageSubhead")}</p>
-        </Reveal>
-        <Reveal delay={120} className="mt-6">
-          <div className="glass flex max-w-5xl gap-2.5 rounded-xl px-4 py-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400" role="note">
-            <span aria-hidden="true" className="mt-px shrink-0 text-zinc-500">ℹ</span>
-            <p>{t("framingNote")}</p>
-          </div>
-        </Reveal>
-      </section>
-
-      <hr className="divider-glow" />
+    <div className="space-y-12">
+      <PageHeader
+        title={t("pageTitle")}
+        description={t("pageSubhead")}
+        meta={
+          <p className="flex max-w-4xl gap-2 rounded-md border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2 text-[13px] leading-relaxed text-zinc-600 dark:text-zinc-400" role="note">
+            <span aria-hidden="true" className="mt-px shrink-0 text-zinc-400">ℹ</span>
+            {t("framingNote")}
+          </p>
+        }
+      />
       <AIPressureSynthesisLens data={aiPressureSynthesis} />
+      {adoption && (
+        <>
+          <hr className="divider-glow" />
+          <Section id="measured-adoption" eyebrow={ta("kicker")} title={ta("lensTitle")} explainer={ta("lensExplainer")}>
+            <AdoptionTrackerLens {...adoption} />
+          </Section>
+        </>
+      )}
       <hr className="divider-glow" />
       <Reveal>
         <EvidenceConvergenceStrip />

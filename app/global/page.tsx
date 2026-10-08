@@ -62,14 +62,14 @@ export default function GlobalPage() {
     .filter((c) => c.usageIndex !== null && c.usageIndex > 0)
     .sort((a, b) => (b.usageIndex ?? 0) - (a.usageIndex ?? 0));
 
-  // Fastest-rising GenAI diffusion adopters (H1 2025 -> Q1 2026)
+  // Fastest-rising GenAI diffusion adopters (H1 2025 -> Q2 2026)
   const rawRisers = getDiffusionRisers(5);
   const diffusionRisers = rawRisers.map((r) => {
     const trend = mapData.find((c) => c.iso3 === r.iso3)?.diffusionTrend ?? null;
     return { ...r, h2: trend?.h2_2025 ?? null };
   });
 
-  // Top 10 by Q1 2026 for Consumer GenAI Diffusion Growth comparison
+  // Top 10 by Q2 2026 for Consumer GenAI Diffusion Growth comparison
   const diffusionComparison = getTopDiffusionComparison(10);
 
   const top12 = rankedEnriched.slice(0, 12);

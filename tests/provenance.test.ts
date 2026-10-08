@@ -119,7 +119,7 @@ describe("provenance lane resolution (live registry)", () => {
   it("uses source periods instead of build timestamps for semantic datasets", () => {
     expect(getDatasetProvenance("state-qcew")?.asOf).toBe("2025");
     expect(getDatasetProvenance("state-labor")?.asOf).toMatch(/^\d{4}-\d{2}$/);
-    expect(getDatasetProvenance("global-ai-metrics")?.asOf).toBe("2026-03-31");
+    expect(getDatasetProvenance("global-ai-metrics")?.asOf).toBe("2026-06-30");
     expect(getDatasetProvenance("market-ai-signals")?.asOf).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 

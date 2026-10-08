@@ -26,18 +26,19 @@ const BUBBLE_MAX_R      = 30;        // max bubble radius (viewBox units)
 // Inlined at build time from next.config.ts env block; empty string on localhost.
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
-// ── Brand ramp: dark-indigo → violet → cyan ────────────────────────────────────
+// ── Sequential ramps (single hue, light→dark on light surfaces) ───────────────
+// Magnitude uses one hue: low values recede toward the surface, high values
+// carry the most contrast. Dark mode gets its own selected steps (low = near
+// the dark surface, high = light) rather than an automatic inversion.
 
-function brandRamp(t: number): string {
-  const clamped = Math.max(0, Math.min(1, t));
-  if (clamped < 0.5) return d3.interpolateRgb("#1a0a2e", "#8b5cf6")(clamped * 2);
-  return d3.interpolateRgb("#8b5cf6", "#22d3ee")((clamped - 0.5) * 2);
-}
+type RampStops = { light: [string, string]; dark: [string, string] };
+const SEQ_BLUE: RampStops = { light: ["#cde2fb", "#0d366b"], dark: ["#16345c", "#b7d3f6"] };
+const SEQ_GREEN: RampStops = { light: ["#d3f3e3", "#0b5e3e"], dark: ["#0f3d2c", "#a7f3d0"] };
 
-function demandRamp(t: number): string {
-  const clamped = Math.max(0, Math.min(1, t));
-  if (clamped < 0.5) return d3.interpolateRgb("#052e2b", "#10b981")(clamped * 2);
-  return d3.interpolateRgb("#10b981", "#a7f3d0")((clamped - 0.5) * 2);
+function makeRamp(stops: RampStops, isDark: boolean): (t: number) => string {
+  const [lo, hi] = isDark ? stops.dark : stops.light;
+  const interp = d3.interpolateLab(lo, hi);
+  return (t: number) => interp(Math.max(0, Math.min(1, t)));
 }
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -172,7 +173,7 @@ function TooltipContent({
           <p className="text-zinc-600 dark:text-zinc-400 text-xs">
             {t("tooltipGlobalShareLabel")}{" "}
             <span className="text-violet-600 dark:text-violet-300 font-mono font-semibold">
-              {(datum.usagePct * 100).toFixed(2)}%
+              {datum.usagePct.toFixed(2)}%
             </span>
           </p>
         )}
@@ -225,6 +226,8 @@ export default function WorldChoropleth({
   const noDataFill     = isDark ? NO_DATA_FILL_DARK  : NO_DATA_FILL_LIGHT;
   const hoverStroke    = isDark ? "#ffffff"          : "#18181b";
   const bubbleLandFill = isDark ? BUBBLE_LAND_DARK   : BUBBLE_LAND_LIGHT;
+  const brandRamp = useMemo(() => makeRamp(SEQ_BLUE, isDark), [isDark]);
+  const demandRamp = useMemo(() => makeRamp(SEQ_GREEN, isDark), [isDark]);
 
   const [metric,         setMetric]         = useState<Metric>("claude");
   const [hovered,        setHovered]        = useState<string | null>(null);
@@ -288,7 +291,7 @@ export default function WorldChoropleth({
 
   const claudeColorScale = useMemo(
     () => d3.scaleSequential([0, maxIndex], brandRamp),
-    [maxIndex],
+    [maxIndex, brandRamp],
   );
 
   // Diffusion color scale
@@ -302,7 +305,7 @@ export default function WorldChoropleth({
 
   const diffusionColorScale = useMemo(
     () => d3.scaleSequential([0, maxDiffusion], brandRamp),
-    [maxDiffusion],
+    [maxDiffusion, brandRamp],
   );
 
   // AI job demand color scale — Indeed Hiring Lab share domain ~0→7%
@@ -316,19 +319,19 @@ export default function WorldChoropleth({
 
   const demandColorScale = useMemo(
     () => d3.scaleSequential([0, maxDemand], demandRamp),
-    [maxDemand],
+    [maxDemand, demandRamp],
   );
 
   // Readiness color scale — IMF AIPI domain ~0.18→0.80
   const readinessColorScale = useMemo(
     () => d3.scaleSequential([0.18, 0.80], brandRamp),
-    [],
+    [brandRamp],
   );
 
   // Gov. readiness color scale — Oxford GAIRI domain 0→100
   const govReadinessColorScale = useMemo(
     () => d3.scaleSequential([0, 100], brandRamp),
-    [],
+    [brandRamp],
   );
 
   // ── Geo ───────────────────────────────────────────────────────────────────
@@ -572,7 +575,7 @@ export default function WorldChoropleth({
   const svgAriaLabel = metric === "claude"
     ? `World ${mapOrBubble} map showing AI (Claude.ai) usage index by country. Colour intensity indicates per-capita usage; ${viewMode === "bubble" ? "bubble size is proportional to usage index; " : ""}grey countries have no Claude.ai data${viewMode === "map" ? "; China is shown with a dashed amber border indicating proxy data only" : ""}.`
     : metric === "diffusion"
-    ? `World ${mapOrBubble} map showing GenAI diffusion by country, as percentage of working-age population using generative AI (Microsoft AIEI Q1 2026, ~147 economies). Grey countries have no data. China is included with real data at 16.4%.`
+    ? `World ${mapOrBubble} map showing GenAI diffusion by country, as percentage of working-age population using generative AI (Microsoft AIEI Q2 2026, ~147 economies). Grey countries have no data. China is included with real data at 16.4%.`
     : metric === "demand"
     ? `World ${mapOrBubble} map showing AI job-posting demand by country, as the share of job postings mentioning AI in the latest Indeed Hiring Lab month across 9 economies. Grey countries have no data.`
     : metric === "govReadiness"
@@ -605,9 +608,8 @@ export default function WorldChoropleth({
                 style={
                   active
                     ? {
-                        background: "linear-gradient(135deg, #7c3aed 0%, #0891b2 100%)",
-                        color: "#fff",
-                        boxShadow: "0 2px 8px rgba(124,58,237,0.35)",
+                        background: "var(--accent)",
+                        color: "var(--accent-contrast)",
                       }
                     : { background: "transparent", color: "#71717a" }
                 }
@@ -637,9 +639,8 @@ export default function WorldChoropleth({
                 style={
                   active
                     ? {
-                        background: "linear-gradient(135deg, #7c3aed 0%, #0891b2 100%)",
-                        color: "#fff",
-                        boxShadow: "0 2px 8px rgba(124,58,237,0.35)",
+                        background: "var(--accent)",
+                        color: "var(--accent-contrast)",
                       }
                     : { background: "transparent", color: "#71717a" }
                 }
@@ -689,7 +690,7 @@ export default function WorldChoropleth({
                   ? `${d.name}: AI readiness ${d.aiReadiness?.toFixed(2)}`
                   : metric === "govReadiness"
                   ? `${d.name}: Gov. readiness ${d.governmentReadiness?.toFixed(1)}`
-                  : `${d.name}: usage index ${d.usageIndex?.toFixed(2)}${d.usagePct != null ? `, global share ${(d.usagePct * 100).toFixed(2)}%` : ""}`
+                  : `${d.name}: usage index ${d.usageIndex?.toFixed(2)}${d.usagePct != null ? `, global share ${d.usagePct.toFixed(2)}%` : ""}`
                 }
               </li>
             ))}
@@ -824,7 +825,7 @@ export default function WorldChoropleth({
           {/* HTML Tooltip */}
           {tooltip.visible && tooltip.datum && (
             <div
-              className="glass pointer-events-none absolute z-50 rounded-xl px-3 py-2.5 text-sm shadow-2xl border border-zinc-200 dark:border-zinc-700/60"
+              className="glass pointer-events-none absolute z-50 rounded-xl px-3 py-2.5 text-sm shadow-2xl"
               style={{
                 left:     Math.min(tooltip.x, containerWidth - 260),
                 top:      Math.max(tooltip.y - 64, 4),

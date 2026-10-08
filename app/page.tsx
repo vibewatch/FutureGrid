@@ -1,9 +1,10 @@
 import DashboardHome from "@/components/dashboard/DashboardHome";
 import { generateAllCareerInsights, getSectorAggregatesExtended, getTotalWorkforce, getWorkforceExposure } from "@/lib/data";
+import { getAdoptionPulseData } from "@/lib/ai-adoption-tracker";
 
 export default function HomePage() {
   const insights = generateAllCareerInsights();
-  const sectors = getSectorAggregatesExtended();
+  const sectors = [...getSectorAggregatesExtended()].sort((a, b) => b.avgRisk - a.avgRisk);
   const totalWorkforce = getTotalWorkforce();
   const workforceExposure = getWorkforceExposure();
   const highRiskCount = insights.filter(
@@ -19,7 +20,7 @@ export default function HomePage() {
     <DashboardHome
       insightsLength={insights.length}
       totalWorkforce={totalWorkforce}
-      sectors={sectors.slice(0, 6).map((s) => ({
+      sectors={sectors.slice(0, 8).map((s) => ({
         sector: s.sector,
         avgRisk: s.avgRisk,
         occupationCount: s.occupationCount,
@@ -33,6 +34,7 @@ export default function HomePage() {
         highExposureWorkforce: workforceExposure.highExposureWorkforce,
         totalWorkforce: workforceExposure.totalWorkforce,
       }}
+      adoption={getAdoptionPulseData()}
     />
   );
 }

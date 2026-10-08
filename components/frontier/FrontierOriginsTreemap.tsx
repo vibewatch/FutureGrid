@@ -206,7 +206,7 @@ export default function FrontierOriginsTreemap() {
   const metricLabel = t(SHARE_METRIC_I18N[metric]);
 
   return (
-    <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 space-y-4">
+    <div className="glass rounded-xl p-4 space-y-4">
       {/* ── Disclaimer (point of use) ──────────────────────────────────────── */}
       <div className="rounded-lg bg-amber-50/80 dark:bg-amber-500/8 border border-amber-200 dark:border-amber-500/20 px-4 py-3">
         <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">

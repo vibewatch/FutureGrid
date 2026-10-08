@@ -207,7 +207,7 @@ export default function CountryExposureChart() {
         .text(d =>
           metric === "usageIndex"
             ? val(d).toFixed(2)
-            : `${(val(d) * 100).toFixed(2)}%`,
+            : `${val(d).toFixed(2)}%`,
         );
 
       if (!reduced) {
@@ -503,7 +503,7 @@ export default function CountryExposureChart() {
         {barData.map(d => (
           <li key={d.iso3}>
             {d.name}: {t("srTextUsageIndex")} {d.usageIndex != null ? d.usageIndex.toFixed(2) : "N/A"},{" "}
-            {t("srTextGlobalShare")} {d.usagePct != null ? `${(d.usagePct * 100).toFixed(2)}%` : "N/A"}
+            {t("srTextGlobalShare")} {d.usagePct != null ? `${d.usagePct.toFixed(2)}%` : "N/A"}
           </li>
         ))}
       </ul>
@@ -538,7 +538,7 @@ export default function CountryExposureChart() {
             <div className="flex justify-between gap-4">
               <span className="text-zinc-500">{t("labelGlobalShare")}</span>
               <span className="font-semibold text-cyan-300">
-                {item.usagePct != null ? `${(item.usagePct * 100).toFixed(2)}%` : "—"}
+                {item.usagePct != null ? `${item.usagePct.toFixed(2)}%` : "—"}
               </span>
             </div>
             {item.usageCount != null && item.usageCount > 0 && (

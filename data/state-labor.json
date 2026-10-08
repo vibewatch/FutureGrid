@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-08T01:13:52.948Z",
-  "asOf": "2026-07",
+  "generatedAt": "2026-10-07T13:32:58.672Z",
+  "asOf": "2026-08",
   "source": {
     "name": "BLS Local Area Unemployment Statistics",
     "publisher": "U.S. Bureau of Labor Statistics",
@@ -13,14 +13,14 @@
     "scoreFormula": "round(0.70 * WARN employees per 10k labor force percentile + 0.30 * unemployment YoY delta percentile)",
     "rankingNote": "Ranks only states whose WARN coverage sourceStatus is live/current machine-readable, whose latest LAUS labor force is available, and whose WARN notice/provenance dates overlap the current 12-month WARN window. Effective dates are not used as notice-date provenance. Manual-only, unavailable, undated, and stale historical WARN feeds remain in metadata but are not ranked. Higher WARN rates and higher unemployment-rate YoY deltas increase pressure score; null YoY deltas score as 0 for that component. This is a descriptive pressure/association ranking; it does not establish causality between WARN notices and broader labor-market indicators.",
     "warnWindowEndBasis": "laus-latest-month",
-    "warnWindowNote": "The 12-month WARN window ends at the latest LAUS month end (2026-07-31); later WARN notices, if any, are excluded until LAUS context catches up."
+    "warnWindowNote": "The 12-month WARN window ends at the latest LAUS month end (2026-08-31); later WARN notices, if any, are excluded until LAUS context catches up."
   },
   "summary": {
-    "latestMonth": "2026-07",
+    "latestMonth": "2026-08",
     "rankedStates": 7,
     "totalJurisdictions": 51,
-    "warnWindowStart": "2025-08-01",
-    "warnWindowEnd": "2026-07-31",
+    "warnWindowStart": "2025-09-01",
+    "warnWindowEnd": "2026-08-31",
     "highestPressureState": "MD"
   },
   "states": [
@@ -29,11 +29,11 @@
       "stateName": "Alabama",
       "fips": "01",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 3.4,
-        "unemployed": 79345,
-        "employment": 2286389,
-        "laborForce": 2365734
+        "unemployed": 80567,
+        "employment": 2282055,
+        "laborForce": 2362622
       },
       "unemploymentRateYoYDelta": 0.6,
       "warnCoverageStatus": "manual-only",
@@ -189,6 +189,10 @@
           {
             "date": "2026-07",
             "value": 3.4
+          },
+          {
+            "date": "2026-08",
+            "value": 3.4
           }
         ],
         "unemployed": [
@@ -310,7 +314,11 @@
           },
           {
             "date": "2026-07",
-            "value": 79345
+            "value": 79322
+          },
+          {
+            "date": "2026-08",
+            "value": 80567
           }
         ],
         "employment": [
@@ -432,7 +440,11 @@
           },
           {
             "date": "2026-07",
-            "value": 2286389
+            "value": 2286441
+          },
+          {
+            "date": "2026-08",
+            "value": 2282055
           }
         ],
         "laborForce": [
@@ -554,16 +566,14 @@
           },
           {
             "date": "2026-07",
-            "value": 2365734
+            "value": 2365763
+          },
+          {
+            "date": "2026-08",
+            "value": 2362622
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -629,6 +639,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -638,11 +654,11 @@
       "stateName": "Alaska",
       "fips": "02",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 4.3,
-        "unemployed": 15894,
-        "employment": 351322,
-        "laborForce": 367216
+        "unemployed": 15695,
+        "employment": 350564,
+        "laborForce": 366259
       },
       "unemploymentRateYoYDelta": -0.3,
       "warnCoverageStatus": "unavailable",
@@ -798,6 +814,10 @@
           {
             "date": "2026-07",
             "value": 4.3
+          },
+          {
+            "date": "2026-08",
+            "value": 4.3
           }
         ],
         "unemployed": [
@@ -919,7 +939,11 @@
           },
           {
             "date": "2026-07",
-            "value": 15894
+            "value": 15876
+          },
+          {
+            "date": "2026-08",
+            "value": 15695
           }
         ],
         "employment": [
@@ -1041,7 +1065,11 @@
           },
           {
             "date": "2026-07",
-            "value": 351322
+            "value": 351387
+          },
+          {
+            "date": "2026-08",
+            "value": 350564
           }
         ],
         "laborForce": [
@@ -1163,16 +1191,14 @@
           },
           {
             "date": "2026-07",
-            "value": 367216
+            "value": 367263
+          },
+          {
+            "date": "2026-08",
+            "value": 366259
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -1238,6 +1264,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -1247,13 +1279,13 @@
       "stateName": "Arizona",
       "fips": "04",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 4.9,
-        "unemployed": 181297,
-        "employment": 3528703,
-        "laborForce": 3710000
+        "unemployed": 182254,
+        "employment": 3519568,
+        "laborForce": 3701822
       },
-      "unemploymentRateYoYDelta": 0.6,
+      "unemploymentRateYoYDelta": 0.5,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -1407,6 +1439,10 @@
           {
             "date": "2026-07",
             "value": 4.9
+          },
+          {
+            "date": "2026-08",
+            "value": 4.9
           }
         ],
         "unemployed": [
@@ -1528,7 +1564,11 @@
           },
           {
             "date": "2026-07",
-            "value": 181297
+            "value": 181302
+          },
+          {
+            "date": "2026-08",
+            "value": 182254
           }
         ],
         "employment": [
@@ -1650,7 +1690,11 @@
           },
           {
             "date": "2026-07",
-            "value": 3528703
+            "value": 3528596
+          },
+          {
+            "date": "2026-08",
+            "value": 3519568
           }
         ],
         "laborForce": [
@@ -1772,16 +1816,14 @@
           },
           {
             "date": "2026-07",
-            "value": 3710000
+            "value": 3709898
+          },
+          {
+            "date": "2026-08",
+            "value": 3701822
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -1847,6 +1889,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -1856,13 +1904,13 @@
       "stateName": "Arkansas",
       "fips": "05",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4,
-        "unemployed": 58697,
-        "employment": 1399144,
-        "laborForce": 1457841
+        "date": "2026-08",
+        "unemploymentRate": 3.9,
+        "unemployed": 56924,
+        "employment": 1401154,
+        "laborForce": 1458078
       },
-      "unemploymentRateYoYDelta": -0.1,
+      "unemploymentRateYoYDelta": -0.3,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -2016,6 +2064,10 @@
           {
             "date": "2026-07",
             "value": 4
+          },
+          {
+            "date": "2026-08",
+            "value": 3.9
           }
         ],
         "unemployed": [
@@ -2137,7 +2189,11 @@
           },
           {
             "date": "2026-07",
-            "value": 58697
+            "value": 58704
+          },
+          {
+            "date": "2026-08",
+            "value": 56924
           }
         ],
         "employment": [
@@ -2259,7 +2315,11 @@
           },
           {
             "date": "2026-07",
-            "value": 1399144
+            "value": 1399182
+          },
+          {
+            "date": "2026-08",
+            "value": 1401154
           }
         ],
         "laborForce": [
@@ -2381,16 +2441,14 @@
           },
           {
             "date": "2026-07",
-            "value": 1457841
+            "value": 1457886
+          },
+          {
+            "date": "2026-08",
+            "value": 1458078
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -2456,6 +2514,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -2465,11 +2529,11 @@
       "stateName": "California",
       "fips": "06",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 5.1,
-        "unemployed": 1006462,
-        "employment": 18543581,
-        "laborForce": 19550043
+        "unemployed": 992773,
+        "employment": 18506343,
+        "laborForce": 19499116
       },
       "unemploymentRateYoYDelta": -0.4,
       "warnCoverageStatus": "live",
@@ -2477,10 +2541,10 @@
         "sourceStatus": "live",
         "sourceType": "xlsx",
         "recordsIncluded": true,
-        "notices": 192,
+        "notices": 352,
         "dateRange": {
           "earliest": "2026-06-26",
-          "latest": "2026-09-02"
+          "latest": "2026-10-05"
         },
         "buildStatus": "ok",
         "dataFreshness": null,
@@ -2504,9 +2568,9 @@
         "warnEmployeesPer10kLaborForce": 0,
         "unemploymentRateYoYDelta": 25
       },
-      "warnEmployees12m": 4861,
-      "warnNotices12m": 88,
-      "warnEmployeesPer10kLaborForce": 2.49,
+      "warnEmployees12m": 10029,
+      "warnNotices12m": 218,
+      "warnEmployeesPer10kLaborForce": 5.14,
       "series": {
         "unemploymentRate": [
           {
@@ -2627,6 +2691,10 @@
           },
           {
             "date": "2026-07",
+            "value": 5.1
+          },
+          {
+            "date": "2026-08",
             "value": 5.1
           }
         ],
@@ -2749,7 +2817,11 @@
           },
           {
             "date": "2026-07",
-            "value": 1006462
+            "value": 1006757
+          },
+          {
+            "date": "2026-08",
+            "value": 992773
           }
         ],
         "employment": [
@@ -2871,7 +2943,11 @@
           },
           {
             "date": "2026-07",
-            "value": 18543581
+            "value": 18542859
+          },
+          {
+            "date": "2026-08",
+            "value": 18506343
           }
         ],
         "laborForce": [
@@ -2993,16 +3069,14 @@
           },
           {
             "date": "2026-07",
-            "value": 19550043
+            "value": 19549616
+          },
+          {
+            "date": "2026-08",
+            "value": 19499116
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -3068,6 +3142,12 @@
             "notices": 84,
             "employees": 4670,
             "employeesPer10kLaborForce": 2.39
+          },
+          {
+            "date": "2026-08",
+            "notices": 130,
+            "employees": 5168,
+            "employeesPer10kLaborForce": 2.65
           }
         ]
       }
@@ -3077,13 +3157,13 @@
       "stateName": "Colorado",
       "fips": "08",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 3.9,
-        "unemployed": 124967,
-        "employment": 3064042,
-        "laborForce": 3189009
+        "date": "2026-08",
+        "unemploymentRate": 4,
+        "unemployed": 128175,
+        "employment": 3054175,
+        "laborForce": 3182350
       },
-      "unemploymentRateYoYDelta": 0,
+      "unemploymentRateYoYDelta": 0.1,
       "warnCoverageStatus": "manual-only",
       "warnCoverage": {
         "sourceStatus": "manual-only",
@@ -3237,6 +3317,10 @@
           {
             "date": "2026-07",
             "value": 3.9
+          },
+          {
+            "date": "2026-08",
+            "value": 4
           }
         ],
         "unemployed": [
@@ -3358,7 +3442,11 @@
           },
           {
             "date": "2026-07",
-            "value": 124967
+            "value": 124961
+          },
+          {
+            "date": "2026-08",
+            "value": 128175
           }
         ],
         "employment": [
@@ -3480,7 +3568,11 @@
           },
           {
             "date": "2026-07",
-            "value": 3064042
+            "value": 3063937
+          },
+          {
+            "date": "2026-08",
+            "value": 3054175
           }
         ],
         "laborForce": [
@@ -3602,16 +3694,14 @@
           },
           {
             "date": "2026-07",
-            "value": 3189009
+            "value": 3188898
+          },
+          {
+            "date": "2026-08",
+            "value": 3182350
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -3677,6 +3767,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -3686,13 +3782,13 @@
       "stateName": "Connecticut",
       "fips": "09",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 5.2,
-        "unemployed": 98418,
-        "employment": 1784522,
-        "laborForce": 1882940
+        "date": "2026-08",
+        "unemploymentRate": 5.1,
+        "unemployed": 96369,
+        "employment": 1782456,
+        "laborForce": 1878825
       },
-      "unemploymentRateYoYDelta": 1.3,
+      "unemploymentRateYoYDelta": 1,
       "warnCoverageStatus": "manual-only",
       "warnCoverage": {
         "sourceStatus": "manual-only",
@@ -3846,6 +3942,10 @@
           {
             "date": "2026-07",
             "value": 5.2
+          },
+          {
+            "date": "2026-08",
+            "value": 5.1
           }
         ],
         "unemployed": [
@@ -3967,7 +4067,11 @@
           },
           {
             "date": "2026-07",
-            "value": 98418
+            "value": 98402
+          },
+          {
+            "date": "2026-08",
+            "value": 96369
           }
         ],
         "employment": [
@@ -4089,7 +4193,11 @@
           },
           {
             "date": "2026-07",
-            "value": 1784522
+            "value": 1784496
+          },
+          {
+            "date": "2026-08",
+            "value": 1782456
           }
         ],
         "laborForce": [
@@ -4211,16 +4319,14 @@
           },
           {
             "date": "2026-07",
-            "value": 1882940
+            "value": 1882898
+          },
+          {
+            "date": "2026-08",
+            "value": 1878825
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -4286,6 +4392,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -4295,13 +4407,13 @@
       "stateName": "Delaware",
       "fips": "10",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4.8,
-        "unemployed": 24272,
-        "employment": 482389,
-        "laborForce": 506661
+        "date": "2026-08",
+        "unemploymentRate": 4.7,
+        "unemployed": 23593,
+        "employment": 481714,
+        "laborForce": 505307
       },
-      "unemploymentRateYoYDelta": 0,
+      "unemploymentRateYoYDelta": -0.3,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -4455,6 +4567,10 @@
           {
             "date": "2026-07",
             "value": 4.8
+          },
+          {
+            "date": "2026-08",
+            "value": 4.7
           }
         ],
         "unemployed": [
@@ -4576,7 +4692,11 @@
           },
           {
             "date": "2026-07",
-            "value": 24272
+            "value": 24275
+          },
+          {
+            "date": "2026-08",
+            "value": 23593
           }
         ],
         "employment": [
@@ -4698,7 +4818,11 @@
           },
           {
             "date": "2026-07",
-            "value": 482389
+            "value": 482419
+          },
+          {
+            "date": "2026-08",
+            "value": 481714
           }
         ],
         "laborForce": [
@@ -4820,16 +4944,14 @@
           },
           {
             "date": "2026-07",
-            "value": 506661
+            "value": 506694
+          },
+          {
+            "date": "2026-08",
+            "value": 505307
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -4895,6 +5017,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -4904,13 +5032,13 @@
       "stateName": "District of Columbia",
       "fips": "11",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 5.9,
-        "unemployed": 23795,
-        "employment": 378128,
-        "laborForce": 401923
+        "date": "2026-08",
+        "unemploymentRate": 5.7,
+        "unemployed": 23109,
+        "employment": 379289,
+        "laborForce": 402398
       },
-      "unemploymentRateYoYDelta": -0.4,
+      "unemploymentRateYoYDelta": -0.8,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -5064,6 +5192,10 @@
           {
             "date": "2026-07",
             "value": 5.9
+          },
+          {
+            "date": "2026-08",
+            "value": 5.7
           }
         ],
         "unemployed": [
@@ -5186,6 +5318,10 @@
           {
             "date": "2026-07",
             "value": 23795
+          },
+          {
+            "date": "2026-08",
+            "value": 23109
           }
         ],
         "employment": [
@@ -5307,7 +5443,11 @@
           },
           {
             "date": "2026-07",
-            "value": 378128
+            "value": 378090
+          },
+          {
+            "date": "2026-08",
+            "value": 379289
           }
         ],
         "laborForce": [
@@ -5429,16 +5569,14 @@
           },
           {
             "date": "2026-07",
-            "value": 401923
+            "value": 401885
+          },
+          {
+            "date": "2026-08",
+            "value": 402398
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -5504,6 +5642,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -5513,13 +5657,13 @@
       "stateName": "Florida",
       "fips": "12",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4.6,
-        "unemployed": 514526,
-        "employment": 10606687,
-        "laborForce": 11121213
+        "date": "2026-08",
+        "unemploymentRate": 4.5,
+        "unemployed": 502411,
+        "employment": 10612619,
+        "laborForce": 11115030
       },
-      "unemploymentRateYoYDelta": 0.7,
+      "unemploymentRateYoYDelta": 0.5,
       "warnCoverageStatus": "manual-only",
       "warnCoverage": {
         "sourceStatus": "manual-only",
@@ -5673,6 +5817,10 @@
           {
             "date": "2026-07",
             "value": 4.6
+          },
+          {
+            "date": "2026-08",
+            "value": 4.5
           }
         ],
         "unemployed": [
@@ -5794,7 +5942,11 @@
           },
           {
             "date": "2026-07",
-            "value": 514526
+            "value": 514468
+          },
+          {
+            "date": "2026-08",
+            "value": 502411
           }
         ],
         "employment": [
@@ -5916,7 +6068,11 @@
           },
           {
             "date": "2026-07",
-            "value": 10606687
+            "value": 10606247
+          },
+          {
+            "date": "2026-08",
+            "value": 10612619
           }
         ],
         "laborForce": [
@@ -6038,16 +6194,14 @@
           },
           {
             "date": "2026-07",
-            "value": 11121213
+            "value": 11120715
+          },
+          {
+            "date": "2026-08",
+            "value": 11115030
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -6113,6 +6267,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -6122,13 +6282,13 @@
       "stateName": "Georgia",
       "fips": "13",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 3.3,
-        "unemployed": 179016,
-        "employment": 5301774,
-        "laborForce": 5480790
+        "date": "2026-08",
+        "unemploymentRate": 3.2,
+        "unemployed": 175497,
+        "employment": 5314822,
+        "laborForce": 5490319
       },
-      "unemploymentRateYoYDelta": 0,
+      "unemploymentRateYoYDelta": -0.2,
       "warnCoverageStatus": "live",
       "warnCoverage": {
         "sourceStatus": "live",
@@ -6285,6 +6445,10 @@
           {
             "date": "2026-07",
             "value": 3.3
+          },
+          {
+            "date": "2026-08",
+            "value": 3.2
           }
         ],
         "unemployed": [
@@ -6406,7 +6570,11 @@
           },
           {
             "date": "2026-07",
-            "value": 179016
+            "value": 179012
+          },
+          {
+            "date": "2026-08",
+            "value": 175497
           }
         ],
         "employment": [
@@ -6528,7 +6696,11 @@
           },
           {
             "date": "2026-07",
-            "value": 5301774
+            "value": 5301809
+          },
+          {
+            "date": "2026-08",
+            "value": 5314822
           }
         ],
         "laborForce": [
@@ -6650,16 +6822,14 @@
           },
           {
             "date": "2026-07",
-            "value": 5480790
+            "value": 5480821
+          },
+          {
+            "date": "2026-08",
+            "value": 5490319
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -6725,6 +6895,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -6734,13 +6910,13 @@
       "stateName": "Hawaii",
       "fips": "15",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 2.7,
-        "unemployed": 18374,
-        "employment": 672506,
-        "laborForce": 690880
+        "unemployed": 18799,
+        "employment": 673939,
+        "laborForce": 692738
       },
-      "unemploymentRateYoYDelta": 0.5,
+      "unemploymentRateYoYDelta": 0.6,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -6894,6 +7070,10 @@
           {
             "date": "2026-07",
             "value": 2.7
+          },
+          {
+            "date": "2026-08",
+            "value": 2.7
           }
         ],
         "unemployed": [
@@ -7015,7 +7195,11 @@
           },
           {
             "date": "2026-07",
-            "value": 18374
+            "value": 18349
+          },
+          {
+            "date": "2026-08",
+            "value": 18799
           }
         ],
         "employment": [
@@ -7137,7 +7321,11 @@
           },
           {
             "date": "2026-07",
-            "value": 672506
+            "value": 672524
+          },
+          {
+            "date": "2026-08",
+            "value": 673939
           }
         ],
         "laborForce": [
@@ -7259,16 +7447,14 @@
           },
           {
             "date": "2026-07",
-            "value": 690880
+            "value": 690873
+          },
+          {
+            "date": "2026-08",
+            "value": 692738
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -7334,6 +7520,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -7343,11 +7535,11 @@
       "stateName": "Idaho",
       "fips": "16",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 3.6,
-        "unemployed": 36244,
-        "employment": 962626,
-        "laborForce": 998870
+        "unemployed": 36164,
+        "employment": 962214,
+        "laborForce": 998378
       },
       "unemploymentRateYoYDelta": 0,
       "warnCoverageStatus": "unavailable",
@@ -7503,6 +7695,10 @@
           {
             "date": "2026-07",
             "value": 3.6
+          },
+          {
+            "date": "2026-08",
+            "value": 3.6
           }
         ],
         "unemployed": [
@@ -7624,7 +7820,11 @@
           },
           {
             "date": "2026-07",
-            "value": 36244
+            "value": 36240
+          },
+          {
+            "date": "2026-08",
+            "value": 36164
           }
         ],
         "employment": [
@@ -7746,7 +7946,11 @@
           },
           {
             "date": "2026-07",
-            "value": 962626
+            "value": 962624
+          },
+          {
+            "date": "2026-08",
+            "value": 962214
           }
         ],
         "laborForce": [
@@ -7868,16 +8072,14 @@
           },
           {
             "date": "2026-07",
-            "value": 998870
+            "value": 998864
+          },
+          {
+            "date": "2026-08",
+            "value": 998378
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -7943,6 +8145,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -7952,13 +8160,13 @@
       "stateName": "Illinois",
       "fips": "17",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4.9,
-        "unemployed": 315690,
-        "employment": 6183897,
-        "laborForce": 6499587
+        "date": "2026-08",
+        "unemploymentRate": 4.7,
+        "unemployed": 306781,
+        "employment": 6170228,
+        "laborForce": 6477009
       },
-      "unemploymentRateYoYDelta": 0.6,
+      "unemploymentRateYoYDelta": 0.4,
       "warnCoverageStatus": "manual-only",
       "warnCoverage": {
         "sourceStatus": "manual-only",
@@ -8112,6 +8320,10 @@
           {
             "date": "2026-07",
             "value": 4.9
+          },
+          {
+            "date": "2026-08",
+            "value": 4.7
           }
         ],
         "unemployed": [
@@ -8233,7 +8445,11 @@
           },
           {
             "date": "2026-07",
-            "value": 315690
+            "value": 315683
+          },
+          {
+            "date": "2026-08",
+            "value": 306781
           }
         ],
         "employment": [
@@ -8355,7 +8571,11 @@
           },
           {
             "date": "2026-07",
-            "value": 6183897
+            "value": 6183912
+          },
+          {
+            "date": "2026-08",
+            "value": 6170228
           }
         ],
         "laborForce": [
@@ -8477,16 +8697,14 @@
           },
           {
             "date": "2026-07",
-            "value": 6499587
+            "value": 6499595
+          },
+          {
+            "date": "2026-08",
+            "value": 6477009
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -8552,6 +8770,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -8561,11 +8785,11 @@
       "stateName": "Indiana",
       "fips": "18",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 3.3,
-        "unemployed": 114009,
-        "employment": 3375460,
-        "laborForce": 3489469
+        "unemployed": 114475,
+        "employment": 3373544,
+        "laborForce": 3488019
       },
       "unemploymentRateYoYDelta": -0.4,
       "warnCoverageStatus": "live",
@@ -8573,10 +8797,10 @@
         "sourceStatus": "live",
         "sourceType": "html",
         "recordsIncluded": true,
-        "notices": 534,
+        "notices": 535,
         "dateRange": {
           "earliest": "2016-01-19",
-          "latest": "2026-09-02"
+          "latest": "2026-09-30"
         },
         "buildStatus": "ok",
         "dataFreshness": null,
@@ -8594,15 +8818,15 @@
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
       "rank": 5,
-      "pressureScore": 43,
+      "pressureScore": 31,
       "pressureLevel": "Moderate",
       "pressurePercentiles": {
-        "warnEmployeesPer10kLaborForce": 50,
+        "warnEmployeesPer10kLaborForce": 33.33,
         "unemploymentRateYoYDelta": 25
       },
-      "warnEmployees12m": 6406,
-      "warnNotices12m": 41,
-      "warnEmployeesPer10kLaborForce": 18.36,
+      "warnEmployees12m": 5699,
+      "warnNotices12m": 36,
+      "warnEmployeesPer10kLaborForce": 16.34,
       "series": {
         "unemploymentRate": [
           {
@@ -8723,6 +8947,10 @@
           },
           {
             "date": "2026-07",
+            "value": 3.3
+          },
+          {
+            "date": "2026-08",
             "value": 3.3
           }
         ],
@@ -8845,7 +9073,11 @@
           },
           {
             "date": "2026-07",
-            "value": 114009
+            "value": 114017
+          },
+          {
+            "date": "2026-08",
+            "value": 114475
           }
         ],
         "employment": [
@@ -8967,7 +9199,11 @@
           },
           {
             "date": "2026-07",
-            "value": 3375460
+            "value": 3375556
+          },
+          {
+            "date": "2026-08",
+            "value": 3373544
           }
         ],
         "laborForce": [
@@ -9089,16 +9325,14 @@
           },
           {
             "date": "2026-07",
-            "value": 3489469
+            "value": 3489573
+          },
+          {
+            "date": "2026-08",
+            "value": 3488019
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 7,
-            "employees": 930,
-            "employeesPer10kLaborForce": 2.65
-          },
           {
             "date": "2025-09",
             "notices": 3,
@@ -9164,6 +9398,12 @@
             "notices": 2,
             "employees": 235,
             "employeesPer10kLaborForce": 0.67
+          },
+          {
+            "date": "2026-08",
+            "notices": 2,
+            "employees": 223,
+            "employeesPer10kLaborForce": 0.64
           }
         ]
       }
@@ -9173,11 +9413,11 @@
       "stateName": "Iowa",
       "fips": "19",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 3.2,
-        "unemployed": 54701,
-        "employment": 1672196,
-        "laborForce": 1726897
+        "unemployed": 54663,
+        "employment": 1669600,
+        "laborForce": 1724263
       },
       "unemploymentRateYoYDelta": -0.3,
       "warnCoverageStatus": "live",
@@ -9185,10 +9425,10 @@
         "sourceStatus": "live",
         "sourceType": "xlsx",
         "recordsIncluded": true,
-        "notices": 569,
+        "notices": 571,
         "dateRange": {
-          "earliest": "2021-09-09",
-          "latest": "2026-09-01"
+          "earliest": "2021-10-06",
+          "latest": "2026-09-30"
         },
         "buildStatus": "ok",
         "dataFreshness": null,
@@ -9205,16 +9445,16 @@
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
-      "rank": 3,
+      "rank": 4,
       "pressureScore": 62,
       "pressureLevel": "Elevated",
       "pressurePercentiles": {
         "warnEmployeesPer10kLaborForce": 66.67,
         "unemploymentRateYoYDelta": 50
       },
-      "warnEmployees12m": 4653,
+      "warnEmployees12m": 4415,
       "warnNotices12m": 130,
-      "warnEmployeesPer10kLaborForce": 26.94,
+      "warnEmployeesPer10kLaborForce": 25.61,
       "series": {
         "unemploymentRate": [
           {
@@ -9335,6 +9575,10 @@
           },
           {
             "date": "2026-07",
+            "value": 3.2
+          },
+          {
+            "date": "2026-08",
             "value": 3.2
           }
         ],
@@ -9457,7 +9701,11 @@
           },
           {
             "date": "2026-07",
-            "value": 54701
+            "value": 54700
+          },
+          {
+            "date": "2026-08",
+            "value": 54663
           }
         ],
         "employment": [
@@ -9579,7 +9827,11 @@
           },
           {
             "date": "2026-07",
-            "value": 1672196
+            "value": 1672222
+          },
+          {
+            "date": "2026-08",
+            "value": 1669600
           }
         ],
         "laborForce": [
@@ -9701,16 +9953,14 @@
           },
           {
             "date": "2026-07",
-            "value": 1726897
+            "value": 1726922
+          },
+          {
+            "date": "2026-08",
+            "value": 1724263
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 10,
-            "employees": 413,
-            "employeesPer10kLaborForce": 2.38
-          },
           {
             "date": "2025-09",
             "notices": 12,
@@ -9721,7 +9971,7 @@
             "date": "2025-10",
             "notices": 9,
             "employees": 415,
-            "employeesPer10kLaborForce": 2.4
+            "employeesPer10kLaborForce": 2.41
           },
           {
             "date": "2025-11",
@@ -9776,6 +10026,12 @@
             "notices": 8,
             "employees": 385,
             "employeesPer10kLaborForce": 2.23
+          },
+          {
+            "date": "2026-08",
+            "notices": 10,
+            "employees": 175,
+            "employeesPer10kLaborForce": 1.01
           }
         ]
       }
@@ -9785,11 +10041,11 @@
       "stateName": "Kansas",
       "fips": "20",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 3.8,
-        "unemployed": 58711,
-        "employment": 1497278,
-        "laborForce": 1555989
+        "unemployed": 58912,
+        "employment": 1494369,
+        "laborForce": 1553281
       },
       "unemploymentRateYoYDelta": 0.1,
       "warnCoverageStatus": "manual-only",
@@ -9945,6 +10201,10 @@
           {
             "date": "2026-07",
             "value": 3.8
+          },
+          {
+            "date": "2026-08",
+            "value": 3.8
           }
         ],
         "unemployed": [
@@ -10066,7 +10326,11 @@
           },
           {
             "date": "2026-07",
-            "value": 58711
+            "value": 58698
+          },
+          {
+            "date": "2026-08",
+            "value": 58912
           }
         ],
         "employment": [
@@ -10188,7 +10452,11 @@
           },
           {
             "date": "2026-07",
-            "value": 1497278
+            "value": 1497247
+          },
+          {
+            "date": "2026-08",
+            "value": 1494369
           }
         ],
         "laborForce": [
@@ -10310,16 +10578,14 @@
           },
           {
             "date": "2026-07",
-            "value": 1555989
+            "value": 1555945
+          },
+          {
+            "date": "2026-08",
+            "value": 1553281
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -10385,6 +10651,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -10394,13 +10666,13 @@
       "stateName": "Kentucky",
       "fips": "21",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 4.7,
-        "unemployed": 99606,
-        "employment": 2004231,
-        "laborForce": 2103837
+        "unemployed": 99255,
+        "employment": 2010261,
+        "laborForce": 2109516
       },
-      "unemploymentRateYoYDelta": 0.1,
+      "unemploymentRateYoYDelta": 0.2,
       "warnCoverageStatus": "live",
       "warnCoverage": {
         "sourceStatus": "live",
@@ -10557,6 +10829,10 @@
           {
             "date": "2026-07",
             "value": 4.7
+          },
+          {
+            "date": "2026-08",
+            "value": 4.7
           }
         ],
         "unemployed": [
@@ -10678,7 +10954,11 @@
           },
           {
             "date": "2026-07",
-            "value": 99606
+            "value": 99635
+          },
+          {
+            "date": "2026-08",
+            "value": 99255
           }
         ],
         "employment": [
@@ -10800,7 +11080,11 @@
           },
           {
             "date": "2026-07",
-            "value": 2004231
+            "value": 2004256
+          },
+          {
+            "date": "2026-08",
+            "value": 2010261
           }
         ],
         "laborForce": [
@@ -10922,16 +11206,14 @@
           },
           {
             "date": "2026-07",
-            "value": 2103837
+            "value": 2103891
+          },
+          {
+            "date": "2026-08",
+            "value": 2109516
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -10997,6 +11279,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -11006,13 +11294,13 @@
       "stateName": "Louisiana",
       "fips": "22",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4.4,
-        "unemployed": 92164,
-        "employment": 2018410,
-        "laborForce": 2110574
+        "date": "2026-08",
+        "unemploymentRate": 4.2,
+        "unemployed": 88198,
+        "employment": 2019252,
+        "laborForce": 2107450
       },
-      "unemploymentRateYoYDelta": 0.1,
+      "unemploymentRateYoYDelta": 0,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -11166,6 +11454,10 @@
           {
             "date": "2026-07",
             "value": 4.4
+          },
+          {
+            "date": "2026-08",
+            "value": 4.2
           }
         ],
         "unemployed": [
@@ -11287,7 +11579,11 @@
           },
           {
             "date": "2026-07",
-            "value": 92164
+            "value": 92162
+          },
+          {
+            "date": "2026-08",
+            "value": 88198
           }
         ],
         "employment": [
@@ -11409,7 +11705,11 @@
           },
           {
             "date": "2026-07",
-            "value": 2018410
+            "value": 2018406
+          },
+          {
+            "date": "2026-08",
+            "value": 2019252
           }
         ],
         "laborForce": [
@@ -11531,16 +11831,14 @@
           },
           {
             "date": "2026-07",
-            "value": 2110574
+            "value": 2110568
+          },
+          {
+            "date": "2026-08",
+            "value": 2107450
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -11606,6 +11904,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -11615,13 +11919,13 @@
       "stateName": "Maine",
       "fips": "23",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 3.1,
-        "unemployed": 22030,
-        "employment": 677833,
-        "laborForce": 699863
+        "date": "2026-08",
+        "unemploymentRate": 3.2,
+        "unemployed": 22440,
+        "employment": 675001,
+        "laborForce": 697441
       },
-      "unemploymentRateYoYDelta": -0.2,
+      "unemploymentRateYoYDelta": -0.1,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -11775,6 +12079,10 @@
           {
             "date": "2026-07",
             "value": 3.1
+          },
+          {
+            "date": "2026-08",
+            "value": 3.2
           }
         ],
         "unemployed": [
@@ -11896,7 +12204,11 @@
           },
           {
             "date": "2026-07",
-            "value": 22030
+            "value": 22024
+          },
+          {
+            "date": "2026-08",
+            "value": 22440
           }
         ],
         "employment": [
@@ -12018,7 +12330,11 @@
           },
           {
             "date": "2026-07",
-            "value": 677833
+            "value": 677765
+          },
+          {
+            "date": "2026-08",
+            "value": 675001
           }
         ],
         "laborForce": [
@@ -12140,16 +12456,14 @@
           },
           {
             "date": "2026-07",
-            "value": 699863
+            "value": 699789
+          },
+          {
+            "date": "2026-08",
+            "value": 697441
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -12215,6 +12529,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -12224,22 +12544,22 @@
       "stateName": "Maryland",
       "fips": "24",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4.2,
-        "unemployed": 135285,
-        "employment": 3067612,
-        "laborForce": 3202897
+        "date": "2026-08",
+        "unemploymentRate": 4.1,
+        "unemployed": 129852,
+        "employment": 3069927,
+        "laborForce": 3199779
       },
-      "unemploymentRateYoYDelta": 0,
+      "unemploymentRateYoYDelta": -0.2,
       "warnCoverageStatus": "live",
       "warnCoverage": {
         "sourceStatus": "live",
         "sourceType": "html",
         "recordsIncluded": true,
-        "notices": 1099,
+        "notices": 1106,
         "dateRange": {
           "earliest": "2016-01-05",
-          "latest": "2026-08-31"
+          "latest": "2026-10-01"
         },
         "buildStatus": "ok",
         "dataFreshness": null,
@@ -12263,9 +12583,9 @@
         "warnEmployeesPer10kLaborForce": 83.33,
         "unemploymentRateYoYDelta": 75
       },
-      "warnEmployees12m": 9314,
-      "warnNotices12m": 153,
-      "warnEmployeesPer10kLaborForce": 29.08,
+      "warnEmployees12m": 9408,
+      "warnNotices12m": 150,
+      "warnEmployeesPer10kLaborForce": 29.4,
       "series": {
         "unemploymentRate": [
           {
@@ -12387,6 +12707,10 @@
           {
             "date": "2026-07",
             "value": 4.2
+          },
+          {
+            "date": "2026-08",
+            "value": 4.1
           }
         ],
         "unemployed": [
@@ -12508,7 +12832,11 @@
           },
           {
             "date": "2026-07",
-            "value": 135285
+            "value": 135267
+          },
+          {
+            "date": "2026-08",
+            "value": 129852
           }
         ],
         "employment": [
@@ -12630,7 +12958,11 @@
           },
           {
             "date": "2026-07",
-            "value": 3067612
+            "value": 3067697
+          },
+          {
+            "date": "2026-08",
+            "value": 3069927
           }
         ],
         "laborForce": [
@@ -12752,16 +13084,14 @@
           },
           {
             "date": "2026-07",
-            "value": 3202897
+            "value": 3202964
+          },
+          {
+            "date": "2026-08",
+            "value": 3199779
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 15,
-            "employees": 778,
-            "employeesPer10kLaborForce": 2.41
-          },
           {
             "date": "2025-09",
             "notices": 13,
@@ -12772,7 +13102,7 @@
             "date": "2025-10",
             "notices": 11,
             "employees": 648,
-            "employeesPer10kLaborForce": 2.02
+            "employeesPer10kLaborForce": 2.03
           },
           {
             "date": "2025-11",
@@ -12827,6 +13157,12 @@
             "notices": 11,
             "employees": 823,
             "employeesPer10kLaborForce": 2.57
+          },
+          {
+            "date": "2026-08",
+            "notices": 12,
+            "employees": 872,
+            "employeesPer10kLaborForce": 2.73
           }
         ]
       }
@@ -12836,13 +13172,13 @@
       "stateName": "Massachusetts",
       "fips": "25",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4.4,
-        "unemployed": 168541,
-        "employment": 3702292,
-        "laborForce": 3870833
+        "date": "2026-08",
+        "unemploymentRate": 4.3,
+        "unemployed": 166328,
+        "employment": 3705532,
+        "laborForce": 3871860
       },
-      "unemploymentRateYoYDelta": -0.1,
+      "unemploymentRateYoYDelta": -0.2,
       "warnCoverageStatus": "manual-only",
       "warnCoverage": {
         "sourceStatus": "manual-only",
@@ -12996,6 +13332,10 @@
           {
             "date": "2026-07",
             "value": 4.4
+          },
+          {
+            "date": "2026-08",
+            "value": 4.3
           }
         ],
         "unemployed": [
@@ -13117,7 +13457,11 @@
           },
           {
             "date": "2026-07",
-            "value": 168541
+            "value": 168539
+          },
+          {
+            "date": "2026-08",
+            "value": 166328
           }
         ],
         "employment": [
@@ -13239,7 +13583,11 @@
           },
           {
             "date": "2026-07",
-            "value": 3702292
+            "value": 3702413
+          },
+          {
+            "date": "2026-08",
+            "value": 3705532
           }
         ],
         "laborForce": [
@@ -13361,16 +13709,14 @@
           },
           {
             "date": "2026-07",
-            "value": 3870833
+            "value": 3870952
+          },
+          {
+            "date": "2026-08",
+            "value": 3871860
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -13436,6 +13782,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -13445,13 +13797,13 @@
       "stateName": "Michigan",
       "fips": "26",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4.9,
-        "unemployed": 240905,
-        "employment": 4636955,
-        "laborForce": 4877860
+        "date": "2026-08",
+        "unemploymentRate": 5,
+        "unemployed": 240500,
+        "employment": 4612004,
+        "laborForce": 4852504
       },
-      "unemploymentRateYoYDelta": 0,
+      "unemploymentRateYoYDelta": 0.1,
       "warnCoverageStatus": "manual-only",
       "warnCoverage": {
         "sourceStatus": "manual-only",
@@ -13605,6 +13957,10 @@
           {
             "date": "2026-07",
             "value": 4.9
+          },
+          {
+            "date": "2026-08",
+            "value": 5
           }
         ],
         "unemployed": [
@@ -13726,7 +14082,11 @@
           },
           {
             "date": "2026-07",
-            "value": 240905
+            "value": 240895
+          },
+          {
+            "date": "2026-08",
+            "value": 240500
           }
         ],
         "employment": [
@@ -13848,7 +14208,11 @@
           },
           {
             "date": "2026-07",
-            "value": 4636955
+            "value": 4637066
+          },
+          {
+            "date": "2026-08",
+            "value": 4612004
           }
         ],
         "laborForce": [
@@ -13970,16 +14334,14 @@
           },
           {
             "date": "2026-07",
-            "value": 4877860
+            "value": 4877961
+          },
+          {
+            "date": "2026-08",
+            "value": 4852504
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -14045,6 +14407,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -14054,11 +14422,11 @@
       "stateName": "Minnesota",
       "fips": "27",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4.3,
-        "unemployed": 135668,
-        "employment": 2991180,
-        "laborForce": 3126848
+        "date": "2026-08",
+        "unemploymentRate": 4.4,
+        "unemployed": 137026,
+        "employment": 2987499,
+        "laborForce": 3124525
       },
       "unemploymentRateYoYDelta": 0.5,
       "warnCoverageStatus": "manual-only",
@@ -14214,6 +14582,10 @@
           {
             "date": "2026-07",
             "value": 4.3
+          },
+          {
+            "date": "2026-08",
+            "value": 4.4
           }
         ],
         "unemployed": [
@@ -14335,7 +14707,11 @@
           },
           {
             "date": "2026-07",
-            "value": 135668
+            "value": 135707
+          },
+          {
+            "date": "2026-08",
+            "value": 137026
           }
         ],
         "employment": [
@@ -14457,7 +14833,11 @@
           },
           {
             "date": "2026-07",
-            "value": 2991180
+            "value": 2991339
+          },
+          {
+            "date": "2026-08",
+            "value": 2987499
           }
         ],
         "laborForce": [
@@ -14579,16 +14959,14 @@
           },
           {
             "date": "2026-07",
-            "value": 3126848
+            "value": 3127046
+          },
+          {
+            "date": "2026-08",
+            "value": 3124525
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -14654,6 +15032,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -14663,13 +15047,13 @@
       "stateName": "Mississippi",
       "fips": "28",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 3.6,
-        "unemployed": 46446,
-        "employment": 1233773,
-        "laborForce": 1280219
+        "date": "2026-08",
+        "unemploymentRate": 3.4,
+        "unemployed": 43695,
+        "employment": 1230940,
+        "laborForce": 1274635
       },
-      "unemploymentRateYoYDelta": -0.2,
+      "unemploymentRateYoYDelta": -0.3,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -14823,6 +15207,10 @@
           {
             "date": "2026-07",
             "value": 3.6
+          },
+          {
+            "date": "2026-08",
+            "value": 3.4
           }
         ],
         "unemployed": [
@@ -14944,7 +15332,11 @@
           },
           {
             "date": "2026-07",
-            "value": 46446
+            "value": 46435
+          },
+          {
+            "date": "2026-08",
+            "value": 43695
           }
         ],
         "employment": [
@@ -15066,7 +15458,11 @@
           },
           {
             "date": "2026-07",
-            "value": 1233773
+            "value": 1233798
+          },
+          {
+            "date": "2026-08",
+            "value": 1230940
           }
         ],
         "laborForce": [
@@ -15188,16 +15584,14 @@
           },
           {
             "date": "2026-07",
-            "value": 1280219
+            "value": 1280233
+          },
+          {
+            "date": "2026-08",
+            "value": 1274635
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -15263,6 +15657,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -15272,13 +15672,13 @@
       "stateName": "Missouri",
       "fips": "29",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 3.6,
-        "unemployed": 113556,
-        "employment": 3053826,
-        "laborForce": 3167382
+        "date": "2026-08",
+        "unemploymentRate": 3.5,
+        "unemployed": 112415,
+        "employment": 3057441,
+        "laborForce": 3169856
       },
-      "unemploymentRateYoYDelta": -0.4,
+      "unemploymentRateYoYDelta": -0.5,
       "warnCoverageStatus": "manual-only",
       "warnCoverage": {
         "sourceStatus": "manual-only",
@@ -15432,6 +15832,10 @@
           {
             "date": "2026-07",
             "value": 3.6
+          },
+          {
+            "date": "2026-08",
+            "value": 3.5
           }
         ],
         "unemployed": [
@@ -15553,7 +15957,11 @@
           },
           {
             "date": "2026-07",
-            "value": 113556
+            "value": 113537
+          },
+          {
+            "date": "2026-08",
+            "value": 112415
           }
         ],
         "employment": [
@@ -15675,7 +16083,11 @@
           },
           {
             "date": "2026-07",
-            "value": 3053826
+            "value": 3053701
+          },
+          {
+            "date": "2026-08",
+            "value": 3057441
           }
         ],
         "laborForce": [
@@ -15797,16 +16209,14 @@
           },
           {
             "date": "2026-07",
-            "value": 3167382
+            "value": 3167238
+          },
+          {
+            "date": "2026-08",
+            "value": 3169856
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -15872,6 +16282,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -15881,13 +16297,13 @@
       "stateName": "Montana",
       "fips": "30",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 3.2,
-        "unemployed": 18568,
-        "employment": 555926,
-        "laborForce": 574494
+        "unemployed": 18267,
+        "employment": 556375,
+        "laborForce": 574642
       },
-      "unemploymentRateYoYDelta": -0.1,
+      "unemploymentRateYoYDelta": -0.2,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -16041,6 +16457,10 @@
           {
             "date": "2026-07",
             "value": 3.2
+          },
+          {
+            "date": "2026-08",
+            "value": 3.2
           }
         ],
         "unemployed": [
@@ -16162,7 +16582,11 @@
           },
           {
             "date": "2026-07",
-            "value": 18568
+            "value": 18572
+          },
+          {
+            "date": "2026-08",
+            "value": 18267
           }
         ],
         "employment": [
@@ -16284,7 +16708,11 @@
           },
           {
             "date": "2026-07",
-            "value": 555926
+            "value": 555893
+          },
+          {
+            "date": "2026-08",
+            "value": 556375
           }
         ],
         "laborForce": [
@@ -16406,16 +16834,14 @@
           },
           {
             "date": "2026-07",
-            "value": 574494
+            "value": 574465
+          },
+          {
+            "date": "2026-08",
+            "value": 574642
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -16481,6 +16907,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -16490,11 +16922,11 @@
       "stateName": "Nebraska",
       "fips": "31",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 2.9,
-        "unemployed": 31778,
-        "employment": 1064944,
-        "laborForce": 1096722
+        "unemployed": 31640,
+        "employment": 1064352,
+        "laborForce": 1095992
       },
       "unemploymentRateYoYDelta": 0,
       "warnCoverageStatus": "unavailable",
@@ -16650,6 +17082,10 @@
           {
             "date": "2026-07",
             "value": 2.9
+          },
+          {
+            "date": "2026-08",
+            "value": 2.9
           }
         ],
         "unemployed": [
@@ -16771,7 +17207,11 @@
           },
           {
             "date": "2026-07",
-            "value": 31778
+            "value": 31787
+          },
+          {
+            "date": "2026-08",
+            "value": 31640
           }
         ],
         "employment": [
@@ -16893,7 +17333,11 @@
           },
           {
             "date": "2026-07",
-            "value": 1064944
+            "value": 1064931
+          },
+          {
+            "date": "2026-08",
+            "value": 1064352
           }
         ],
         "laborForce": [
@@ -17015,16 +17459,14 @@
           },
           {
             "date": "2026-07",
-            "value": 1096722
+            "value": 1096718
+          },
+          {
+            "date": "2026-08",
+            "value": 1095992
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -17090,6 +17532,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -17099,13 +17547,13 @@
       "stateName": "Nevada",
       "fips": "32",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 5,
-        "unemployed": 84360,
-        "employment": 1597243,
-        "laborForce": 1681603
+        "date": "2026-08",
+        "unemploymentRate": 4.8,
+        "unemployed": 81130,
+        "employment": 1594516,
+        "laborForce": 1675646
       },
-      "unemploymentRateYoYDelta": -0.2,
+      "unemploymentRateYoYDelta": -0.4,
       "warnCoverageStatus": "manual-only",
       "warnCoverage": {
         "sourceStatus": "manual-only",
@@ -17259,6 +17707,10 @@
           {
             "date": "2026-07",
             "value": 5
+          },
+          {
+            "date": "2026-08",
+            "value": 4.8
           }
         ],
         "unemployed": [
@@ -17380,7 +17832,11 @@
           },
           {
             "date": "2026-07",
-            "value": 84360
+            "value": 84361
+          },
+          {
+            "date": "2026-08",
+            "value": 81130
           }
         ],
         "employment": [
@@ -17502,7 +17958,11 @@
           },
           {
             "date": "2026-07",
-            "value": 1597243
+            "value": 1597236
+          },
+          {
+            "date": "2026-08",
+            "value": 1594516
           }
         ],
         "laborForce": [
@@ -17624,16 +18084,14 @@
           },
           {
             "date": "2026-07",
-            "value": 1681603
+            "value": 1681597
+          },
+          {
+            "date": "2026-08",
+            "value": 1675646
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -17699,6 +18157,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -17708,11 +18172,11 @@
       "stateName": "New Hampshire",
       "fips": "33",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 2.8,
-        "unemployed": 21899,
-        "employment": 753496,
-        "laborForce": 775395
+        "unemployed": 21377,
+        "employment": 752949,
+        "laborForce": 774326
       },
       "unemploymentRateYoYDelta": -0.3,
       "warnCoverageStatus": "unavailable",
@@ -17868,6 +18332,10 @@
           {
             "date": "2026-07",
             "value": 2.8
+          },
+          {
+            "date": "2026-08",
+            "value": 2.8
           }
         ],
         "unemployed": [
@@ -17989,7 +18457,11 @@
           },
           {
             "date": "2026-07",
-            "value": 21899
+            "value": 21891
+          },
+          {
+            "date": "2026-08",
+            "value": 21377
           }
         ],
         "employment": [
@@ -18111,7 +18583,11 @@
           },
           {
             "date": "2026-07",
-            "value": 753496
+            "value": 753464
+          },
+          {
+            "date": "2026-08",
+            "value": 752949
           }
         ],
         "laborForce": [
@@ -18233,16 +18709,14 @@
           },
           {
             "date": "2026-07",
-            "value": 775395
+            "value": 775355
+          },
+          {
+            "date": "2026-08",
+            "value": 774326
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -18308,6 +18782,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -18317,22 +18797,22 @@
       "stateName": "New Jersey",
       "fips": "34",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4.4,
-        "unemployed": 216262,
-        "employment": 4694394,
-        "laborForce": 4910656
+        "date": "2026-08",
+        "unemploymentRate": 4.3,
+        "unemployed": 212716,
+        "employment": 4705446,
+        "laborForce": 4918162
       },
-      "unemploymentRateYoYDelta": -1.1,
+      "unemploymentRateYoYDelta": -1.2,
       "warnCoverageStatus": "live",
       "warnCoverage": {
         "sourceStatus": "live",
         "sourceType": "xlsx",
         "recordsIncluded": true,
-        "notices": 1038,
+        "notices": 1056,
         "dateRange": {
           "earliest": "2016-01-01",
-          "latest": "2026-09-01"
+          "latest": "2026-10-01"
         },
         "buildStatus": "ok",
         "dataFreshness": null,
@@ -18356,9 +18836,9 @@
         "warnEmployeesPer10kLaborForce": 100,
         "unemploymentRateYoYDelta": 0
       },
-      "warnEmployees12m": 18445,
-      "warnNotices12m": 142,
-      "warnEmployeesPer10kLaborForce": 37.56,
+      "warnEmployees12m": 18901,
+      "warnNotices12m": 145,
+      "warnEmployeesPer10kLaborForce": 38.43,
       "series": {
         "unemploymentRate": [
           {
@@ -18480,6 +18960,10 @@
           {
             "date": "2026-07",
             "value": 4.4
+          },
+          {
+            "date": "2026-08",
+            "value": 4.3
           }
         ],
         "unemployed": [
@@ -18601,7 +19085,11 @@
           },
           {
             "date": "2026-07",
-            "value": 216262
+            "value": 216255
+          },
+          {
+            "date": "2026-08",
+            "value": 212716
           }
         ],
         "employment": [
@@ -18723,7 +19211,11 @@
           },
           {
             "date": "2026-07",
-            "value": 4694394
+            "value": 4694390
+          },
+          {
+            "date": "2026-08",
+            "value": 4705446
           }
         ],
         "laborForce": [
@@ -18845,16 +19337,14 @@
           },
           {
             "date": "2026-07",
-            "value": 4910656
+            "value": 4910645
+          },
+          {
+            "date": "2026-08",
+            "value": 4918162
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 5,
-            "employees": 545,
-            "employeesPer10kLaborForce": 1.11
-          },
           {
             "date": "2025-09",
             "notices": 15,
@@ -18918,8 +19408,14 @@
           {
             "date": "2026-07",
             "notices": 13,
-            "employees": 2440,
-            "employeesPer10kLaborForce": 4.97
+            "employees": 2444,
+            "employeesPer10kLaborForce": 4.98
+          },
+          {
+            "date": "2026-08",
+            "notices": 8,
+            "employees": 997,
+            "employeesPer10kLaborForce": 2.03
           }
         ]
       }
@@ -18929,13 +19425,13 @@
       "stateName": "New Mexico",
       "fips": "35",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4.8,
-        "unemployed": 46162,
-        "employment": 924321,
-        "laborForce": 970483
+        "date": "2026-08",
+        "unemploymentRate": 4.7,
+        "unemployed": 45722,
+        "employment": 924066,
+        "laborForce": 969788
       },
-      "unemploymentRateYoYDelta": 0.8,
+      "unemploymentRateYoYDelta": 0.6,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -19089,6 +19585,10 @@
           {
             "date": "2026-07",
             "value": 4.8
+          },
+          {
+            "date": "2026-08",
+            "value": 4.7
           }
         ],
         "unemployed": [
@@ -19211,6 +19711,10 @@
           {
             "date": "2026-07",
             "value": 46162
+          },
+          {
+            "date": "2026-08",
+            "value": 45722
           }
         ],
         "employment": [
@@ -19332,7 +19836,11 @@
           },
           {
             "date": "2026-07",
-            "value": 924321
+            "value": 924666
+          },
+          {
+            "date": "2026-08",
+            "value": 924066
           }
         ],
         "laborForce": [
@@ -19454,16 +19962,14 @@
           },
           {
             "date": "2026-07",
-            "value": 970483
+            "value": 970828
+          },
+          {
+            "date": "2026-08",
+            "value": 969788
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -19529,6 +20035,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -19538,13 +20050,13 @@
       "stateName": "New York",
       "fips": "36",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4.4,
-        "unemployed": 443071,
-        "employment": 9596358,
-        "laborForce": 10039429
+        "date": "2026-08",
+        "unemploymentRate": 4.3,
+        "unemployed": 432957,
+        "employment": 9596956,
+        "laborForce": 10029913
       },
-      "unemploymentRateYoYDelta": 0,
+      "unemploymentRateYoYDelta": -0.2,
       "warnCoverageStatus": "live",
       "warnCoverage": {
         "sourceStatus": "live",
@@ -19701,6 +20213,10 @@
           {
             "date": "2026-07",
             "value": 4.4
+          },
+          {
+            "date": "2026-08",
+            "value": 4.3
           }
         ],
         "unemployed": [
@@ -19822,7 +20338,11 @@
           },
           {
             "date": "2026-07",
-            "value": 443071
+            "value": 443056
+          },
+          {
+            "date": "2026-08",
+            "value": 432957
           }
         ],
         "employment": [
@@ -19944,7 +20464,11 @@
           },
           {
             "date": "2026-07",
-            "value": 9596358
+            "value": 9596567
+          },
+          {
+            "date": "2026-08",
+            "value": 9596956
           }
         ],
         "laborForce": [
@@ -20066,16 +20590,14 @@
           },
           {
             "date": "2026-07",
-            "value": 10039429
+            "value": 10039623
+          },
+          {
+            "date": "2026-08",
+            "value": 10029913
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -20141,6 +20663,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -20150,22 +20678,22 @@
       "stateName": "North Carolina",
       "fips": "37",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 3.6,
-        "unemployed": 186120,
-        "employment": 5051914,
-        "laborForce": 5238034
+        "date": "2026-08",
+        "unemploymentRate": 3.5,
+        "unemployed": 182042,
+        "employment": 5049056,
+        "laborForce": 5231098
       },
-      "unemploymentRateYoYDelta": -0.3,
+      "unemploymentRateYoYDelta": -0.4,
       "warnCoverageStatus": "live",
       "warnCoverage": {
         "sourceStatus": "live",
         "sourceType": "csv",
         "recordsIncluded": true,
-        "notices": 56,
+        "notices": 62,
         "dateRange": {
           "earliest": "2026-01-07",
-          "latest": "2026-08-13"
+          "latest": "2026-09-28"
         },
         "buildStatus": "ok",
         "dataFreshness": null,
@@ -20183,15 +20711,15 @@
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
       "rank": 6,
-      "pressureScore": 27,
-      "pressureLevel": "Moderate",
+      "pressureScore": 19,
+      "pressureLevel": "Low",
       "pressurePercentiles": {
         "warnEmployeesPer10kLaborForce": 16.67,
-        "unemploymentRateYoYDelta": 50
+        "unemploymentRateYoYDelta": 25
       },
-      "warnEmployees12m": 5357,
-      "warnNotices12m": 55,
-      "warnEmployeesPer10kLaborForce": 10.23,
+      "warnEmployees12m": 5430,
+      "warnNotices12m": 56,
+      "warnEmployeesPer10kLaborForce": 10.38,
       "series": {
         "unemploymentRate": [
           {
@@ -20313,6 +20841,10 @@
           {
             "date": "2026-07",
             "value": 3.6
+          },
+          {
+            "date": "2026-08",
+            "value": 3.5
           }
         ],
         "unemployed": [
@@ -20434,7 +20966,11 @@
           },
           {
             "date": "2026-07",
-            "value": 186120
+            "value": 186094
+          },
+          {
+            "date": "2026-08",
+            "value": 182042
           }
         ],
         "employment": [
@@ -20556,7 +21092,11 @@
           },
           {
             "date": "2026-07",
-            "value": 5051914
+            "value": 5052141
+          },
+          {
+            "date": "2026-08",
+            "value": 5049056
           }
         ],
         "laborForce": [
@@ -20678,16 +21218,14 @@
           },
           {
             "date": "2026-07",
-            "value": 5238034
+            "value": 5238235
+          },
+          {
+            "date": "2026-08",
+            "value": 5231098
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -20753,6 +21291,12 @@
             "notices": 5,
             "employees": 652,
             "employeesPer10kLaborForce": 1.24
+          },
+          {
+            "date": "2026-08",
+            "notices": 1,
+            "employees": 73,
+            "employeesPer10kLaborForce": 0.14
           }
         ]
       }
@@ -20762,11 +21306,11 @@
       "stateName": "North Dakota",
       "fips": "38",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 2.2,
-        "unemployed": 9628,
-        "employment": 421758,
-        "laborForce": 431386
+        "unemployed": 9502,
+        "employment": 421012,
+        "laborForce": 430514
       },
       "unemploymentRateYoYDelta": -0.4,
       "warnCoverageStatus": "unavailable",
@@ -20922,6 +21466,10 @@
           {
             "date": "2026-07",
             "value": 2.2
+          },
+          {
+            "date": "2026-08",
+            "value": 2.2
           }
         ],
         "unemployed": [
@@ -21044,6 +21592,10 @@
           {
             "date": "2026-07",
             "value": 9628
+          },
+          {
+            "date": "2026-08",
+            "value": 9502
           }
         ],
         "employment": [
@@ -21165,7 +21717,11 @@
           },
           {
             "date": "2026-07",
-            "value": 421758
+            "value": 421783
+          },
+          {
+            "date": "2026-08",
+            "value": 421012
           }
         ],
         "laborForce": [
@@ -21287,16 +21843,14 @@
           },
           {
             "date": "2026-07",
-            "value": 431386
+            "value": 431411
+          },
+          {
+            "date": "2026-08",
+            "value": 430514
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -21362,6 +21916,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -21371,11 +21931,11 @@
       "stateName": "Ohio",
       "fips": "39",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 3.4,
-        "unemployed": 199631,
-        "employment": 5667797,
-        "laborForce": 5867428
+        "date": "2026-08",
+        "unemploymentRate": 3.3,
+        "unemployed": 195290,
+        "employment": 5662115,
+        "laborForce": 5857405
       },
       "unemploymentRateYoYDelta": -1.1,
       "warnCoverageStatus": "live",
@@ -21534,6 +22094,10 @@
           {
             "date": "2026-07",
             "value": 3.4
+          },
+          {
+            "date": "2026-08",
+            "value": 3.3
           }
         ],
         "unemployed": [
@@ -21655,7 +22219,11 @@
           },
           {
             "date": "2026-07",
-            "value": 199631
+            "value": 199635
+          },
+          {
+            "date": "2026-08",
+            "value": 195290
           }
         ],
         "employment": [
@@ -21777,7 +22345,11 @@
           },
           {
             "date": "2026-07",
-            "value": 5667797
+            "value": 5667570
+          },
+          {
+            "date": "2026-08",
+            "value": 5662115
           }
         ],
         "laborForce": [
@@ -21899,16 +22471,14 @@
           },
           {
             "date": "2026-07",
-            "value": 5867428
+            "value": 5867205
+          },
+          {
+            "date": "2026-08",
+            "value": 5857405
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -21974,6 +22544,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -21983,13 +22559,13 @@
       "stateName": "Oklahoma",
       "fips": "40",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 4.3,
-        "unemployed": 85381,
-        "employment": 1911857,
-        "laborForce": 1997238
+        "unemployed": 85170,
+        "employment": 1912849,
+        "laborForce": 1998019
       },
-      "unemploymentRateYoYDelta": 1,
+      "unemploymentRateYoYDelta": 0.9,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -22143,6 +22719,10 @@
           {
             "date": "2026-07",
             "value": 4.3
+          },
+          {
+            "date": "2026-08",
+            "value": 4.3
           }
         ],
         "unemployed": [
@@ -22264,7 +22844,11 @@
           },
           {
             "date": "2026-07",
-            "value": 85381
+            "value": 85395
+          },
+          {
+            "date": "2026-08",
+            "value": 85170
           }
         ],
         "employment": [
@@ -22386,7 +22970,11 @@
           },
           {
             "date": "2026-07",
-            "value": 1911857
+            "value": 1911895
+          },
+          {
+            "date": "2026-08",
+            "value": 1912849
           }
         ],
         "laborForce": [
@@ -22508,16 +23096,14 @@
           },
           {
             "date": "2026-07",
-            "value": 1997238
+            "value": 1997290
+          },
+          {
+            "date": "2026-08",
+            "value": 1998019
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -22583,6 +23169,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -22592,13 +23184,13 @@
       "stateName": "Oregon",
       "fips": "41",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 5.2,
-        "unemployed": 114231,
-        "employment": 2090269,
-        "laborForce": 2204500
+        "date": "2026-08",
+        "unemploymentRate": 5.1,
+        "unemployed": 112968,
+        "employment": 2095305,
+        "laborForce": 2208273
       },
-      "unemploymentRateYoYDelta": -0.1,
+      "unemploymentRateYoYDelta": -0.2,
       "warnCoverageStatus": "live",
       "warnCoverage": {
         "sourceStatus": "live",
@@ -22611,7 +23203,7 @@
         },
         "buildStatus": "preserved",
         "dataFreshness": "preserved",
-        "preservedGeneratedAt": "2026-09-08T00:44:05.074Z",
+        "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
         "preservationReason": null,
         "adapter": "fetchOR",
         "name": "Oregon WARN Act Notices",
@@ -22755,6 +23347,10 @@
           {
             "date": "2026-07",
             "value": 5.2
+          },
+          {
+            "date": "2026-08",
+            "value": 5.1
           }
         ],
         "unemployed": [
@@ -22876,7 +23472,11 @@
           },
           {
             "date": "2026-07",
-            "value": 114231
+            "value": 114079
+          },
+          {
+            "date": "2026-08",
+            "value": 112968
           }
         ],
         "employment": [
@@ -22998,7 +23598,11 @@
           },
           {
             "date": "2026-07",
-            "value": 2090269
+            "value": 2090519
+          },
+          {
+            "date": "2026-08",
+            "value": 2095305
           }
         ],
         "laborForce": [
@@ -23120,16 +23724,14 @@
           },
           {
             "date": "2026-07",
-            "value": 2204500
+            "value": 2204598
+          },
+          {
+            "date": "2026-08",
+            "value": 2208273
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 3,
-            "employees": 48,
-            "employeesPer10kLaborForce": 0.22
-          },
           {
             "date": "2025-09",
             "notices": 7,
@@ -23195,6 +23797,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -23204,19 +23812,19 @@
       "stateName": "Pennsylvania",
       "fips": "42",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 3.9,
-        "unemployed": 261145,
-        "employment": 6389675,
-        "laborForce": 6650820
+        "date": "2026-08",
+        "unemploymentRate": 3.7,
+        "unemployed": 249694,
+        "employment": 6409441,
+        "laborForce": 6659135
       },
-      "unemploymentRateYoYDelta": -0.5,
+      "unemploymentRateYoYDelta": -0.7,
       "warnCoverageStatus": "live",
       "warnCoverage": {
         "sourceStatus": "live",
         "sourceType": "html",
         "recordsIncluded": true,
-        "notices": 258,
+        "notices": 261,
         "dateRange": {
           "earliest": null,
           "latest": null
@@ -23367,6 +23975,10 @@
           {
             "date": "2026-07",
             "value": 3.9
+          },
+          {
+            "date": "2026-08",
+            "value": 3.7
           }
         ],
         "unemployed": [
@@ -23488,7 +24100,11 @@
           },
           {
             "date": "2026-07",
-            "value": 261145
+            "value": 261167
+          },
+          {
+            "date": "2026-08",
+            "value": 249694
           }
         ],
         "employment": [
@@ -23610,7 +24226,11 @@
           },
           {
             "date": "2026-07",
-            "value": 6389675
+            "value": 6389475
+          },
+          {
+            "date": "2026-08",
+            "value": 6409441
           }
         ],
         "laborForce": [
@@ -23732,16 +24352,14 @@
           },
           {
             "date": "2026-07",
-            "value": 6650820
+            "value": 6650642
+          },
+          {
+            "date": "2026-08",
+            "value": 6659135
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -23807,6 +24425,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -23816,13 +24440,13 @@
       "stateName": "Rhode Island",
       "fips": "44",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 3.9,
-        "unemployed": 22370,
-        "employment": 555078,
-        "laborForce": 577448
+        "date": "2026-08",
+        "unemploymentRate": 3.7,
+        "unemployed": 21350,
+        "employment": 555779,
+        "laborForce": 577129
       },
-      "unemploymentRateYoYDelta": -0.3,
+      "unemploymentRateYoYDelta": -0.6,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -23976,6 +24600,10 @@
           {
             "date": "2026-07",
             "value": 3.9
+          },
+          {
+            "date": "2026-08",
+            "value": 3.7
           }
         ],
         "unemployed": [
@@ -24097,7 +24725,11 @@
           },
           {
             "date": "2026-07",
-            "value": 22370
+            "value": 22407
+          },
+          {
+            "date": "2026-08",
+            "value": 21350
           }
         ],
         "employment": [
@@ -24219,7 +24851,11 @@
           },
           {
             "date": "2026-07",
-            "value": 555078
+            "value": 555083
+          },
+          {
+            "date": "2026-08",
+            "value": 555779
           }
         ],
         "laborForce": [
@@ -24341,16 +24977,14 @@
           },
           {
             "date": "2026-07",
-            "value": 577448
+            "value": 577490
+          },
+          {
+            "date": "2026-08",
+            "value": 577129
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -24416,6 +25050,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -24425,13 +25065,13 @@
       "stateName": "South Carolina",
       "fips": "45",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4.2,
-        "unemployed": 112467,
-        "employment": 2560443,
-        "laborForce": 2672910
+        "date": "2026-08",
+        "unemploymentRate": 4.1,
+        "unemployed": 109048,
+        "employment": 2566682,
+        "laborForce": 2675730
       },
-      "unemploymentRateYoYDelta": -0.2,
+      "unemploymentRateYoYDelta": -0.5,
       "warnCoverageStatus": "manual-only",
       "warnCoverage": {
         "sourceStatus": "manual-only",
@@ -24585,6 +25225,10 @@
           {
             "date": "2026-07",
             "value": 4.2
+          },
+          {
+            "date": "2026-08",
+            "value": 4.1
           }
         ],
         "unemployed": [
@@ -24706,7 +25350,11 @@
           },
           {
             "date": "2026-07",
-            "value": 112467
+            "value": 112452
+          },
+          {
+            "date": "2026-08",
+            "value": 109048
           }
         ],
         "employment": [
@@ -24828,7 +25476,11 @@
           },
           {
             "date": "2026-07",
-            "value": 2560443
+            "value": 2560474
+          },
+          {
+            "date": "2026-08",
+            "value": 2566682
           }
         ],
         "laborForce": [
@@ -24950,16 +25602,14 @@
           },
           {
             "date": "2026-07",
-            "value": 2672910
+            "value": 2672926
+          },
+          {
+            "date": "2026-08",
+            "value": 2675730
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -25025,6 +25675,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -25034,13 +25690,13 @@
       "stateName": "South Dakota",
       "fips": "46",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 2,
-        "unemployed": 9748,
-        "employment": 477396,
-        "laborForce": 487144
+        "unemployed": 9628,
+        "employment": 476316,
+        "laborForce": 485944
       },
-      "unemploymentRateYoYDelta": 0,
+      "unemploymentRateYoYDelta": -0.1,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -25194,6 +25850,10 @@
           {
             "date": "2026-07",
             "value": 2
+          },
+          {
+            "date": "2026-08",
+            "value": 2
           }
         ],
         "unemployed": [
@@ -25315,7 +25975,11 @@
           },
           {
             "date": "2026-07",
-            "value": 9748
+            "value": 9733
+          },
+          {
+            "date": "2026-08",
+            "value": 9628
           }
         ],
         "employment": [
@@ -25437,7 +26101,11 @@
           },
           {
             "date": "2026-07",
-            "value": 477396
+            "value": 477386
+          },
+          {
+            "date": "2026-08",
+            "value": 476316
           }
         ],
         "laborForce": [
@@ -25559,16 +26227,14 @@
           },
           {
             "date": "2026-07",
-            "value": 487144
+            "value": 487119
+          },
+          {
+            "date": "2026-08",
+            "value": 485944
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -25634,6 +26300,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -25643,11 +26315,11 @@
       "stateName": "Tennessee",
       "fips": "47",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 3.4,
-        "unemployed": 120272,
-        "employment": 3366261,
-        "laborForce": 3486533
+        "unemployed": 119623,
+        "employment": 3366389,
+        "laborForce": 3486012
       },
       "unemploymentRateYoYDelta": -0.1,
       "warnCoverageStatus": "live",
@@ -25806,6 +26478,10 @@
           {
             "date": "2026-07",
             "value": 3.4
+          },
+          {
+            "date": "2026-08",
+            "value": 3.4
           }
         ],
         "unemployed": [
@@ -25927,7 +26603,11 @@
           },
           {
             "date": "2026-07",
-            "value": 120272
+            "value": 120277
+          },
+          {
+            "date": "2026-08",
+            "value": 119623
           }
         ],
         "employment": [
@@ -26049,7 +26729,11 @@
           },
           {
             "date": "2026-07",
-            "value": 3366261
+            "value": 3366158
+          },
+          {
+            "date": "2026-08",
+            "value": 3366389
           }
         ],
         "laborForce": [
@@ -26171,16 +26855,14 @@
           },
           {
             "date": "2026-07",
-            "value": 3486533
+            "value": 3486435
+          },
+          {
+            "date": "2026-08",
+            "value": 3486012
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -26246,6 +26928,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -26255,13 +26943,13 @@
       "stateName": "Texas",
       "fips": "48",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4.5,
-        "unemployed": 708383,
-        "employment": 15207242,
-        "laborForce": 15915625
+        "date": "2026-08",
+        "unemploymentRate": 4.4,
+        "unemployed": 707524,
+        "employment": 15225115,
+        "laborForce": 15932639
       },
-      "unemploymentRateYoYDelta": 0.3,
+      "unemploymentRateYoYDelta": 0.2,
       "warnCoverageStatus": "live",
       "warnCoverage": {
         "sourceStatus": "live",
@@ -26418,6 +27106,10 @@
           {
             "date": "2026-07",
             "value": 4.5
+          },
+          {
+            "date": "2026-08",
+            "value": 4.4
           }
         ],
         "unemployed": [
@@ -26539,7 +27231,11 @@
           },
           {
             "date": "2026-07",
-            "value": 708383
+            "value": 708363
+          },
+          {
+            "date": "2026-08",
+            "value": 707524
           }
         ],
         "employment": [
@@ -26661,7 +27357,11 @@
           },
           {
             "date": "2026-07",
-            "value": 15207242
+            "value": 15207172
+          },
+          {
+            "date": "2026-08",
+            "value": 15225115
           }
         ],
         "laborForce": [
@@ -26783,16 +27483,14 @@
           },
           {
             "date": "2026-07",
-            "value": 15915625
+            "value": 15915535
+          },
+          {
+            "date": "2026-08",
+            "value": 15932639
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -26858,6 +27556,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -26867,13 +27571,13 @@
       "stateName": "Utah",
       "fips": "49",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 3.6,
-        "unemployed": 64847,
-        "employment": 1757766,
-        "laborForce": 1822613
+        "date": "2026-08",
+        "unemploymentRate": 3.5,
+        "unemployed": 64108,
+        "employment": 1762183,
+        "laborForce": 1826291
       },
-      "unemploymentRateYoYDelta": 0.1,
+      "unemploymentRateYoYDelta": -0.1,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -27027,6 +27731,10 @@
           {
             "date": "2026-07",
             "value": 3.6
+          },
+          {
+            "date": "2026-08",
+            "value": 3.5
           }
         ],
         "unemployed": [
@@ -27149,6 +27857,10 @@
           {
             "date": "2026-07",
             "value": 64847
+          },
+          {
+            "date": "2026-08",
+            "value": 64108
           }
         ],
         "employment": [
@@ -27270,7 +27982,11 @@
           },
           {
             "date": "2026-07",
-            "value": 1757766
+            "value": 1757697
+          },
+          {
+            "date": "2026-08",
+            "value": 1762183
           }
         ],
         "laborForce": [
@@ -27392,16 +28108,14 @@
           },
           {
             "date": "2026-07",
-            "value": 1822613
+            "value": 1822544
+          },
+          {
+            "date": "2026-08",
+            "value": 1826291
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -27467,6 +28181,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -27476,11 +28196,11 @@
       "stateName": "Vermont",
       "fips": "50",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 2.6,
-        "unemployed": 8761,
-        "employment": 329335,
-        "laborForce": 338096
+        "unemployed": 8701,
+        "employment": 329224,
+        "laborForce": 337925
       },
       "unemploymentRateYoYDelta": 0,
       "warnCoverageStatus": "unavailable",
@@ -27636,6 +28356,10 @@
           {
             "date": "2026-07",
             "value": 2.6
+          },
+          {
+            "date": "2026-08",
+            "value": 2.6
           }
         ],
         "unemployed": [
@@ -27757,7 +28481,11 @@
           },
           {
             "date": "2026-07",
-            "value": 8761
+            "value": 8755
+          },
+          {
+            "date": "2026-08",
+            "value": 8701
           }
         ],
         "employment": [
@@ -27879,7 +28607,11 @@
           },
           {
             "date": "2026-07",
-            "value": 329335
+            "value": 329337
+          },
+          {
+            "date": "2026-08",
+            "value": 329224
           }
         ],
         "laborForce": [
@@ -28001,16 +28733,14 @@
           },
           {
             "date": "2026-07",
-            "value": 338096
+            "value": 338092
+          },
+          {
+            "date": "2026-08",
+            "value": 337925
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -28076,6 +28806,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -28085,22 +28821,22 @@
       "stateName": "Virginia",
       "fips": "51",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 3.7,
-        "unemployed": 165255,
-        "employment": 4307098,
-        "laborForce": 4472353
+        "date": "2026-08",
+        "unemploymentRate": 3.6,
+        "unemployed": 160408,
+        "employment": 4304756,
+        "laborForce": 4465164
       },
-      "unemploymentRateYoYDelta": 0.4,
+      "unemploymentRateYoYDelta": 0.3,
       "warnCoverageStatus": "live",
       "warnCoverage": {
         "sourceStatus": "live",
         "sourceType": "csv",
         "recordsIncluded": true,
-        "notices": 771,
+        "notices": 780,
         "dateRange": {
           "earliest": "2016-01-04",
-          "latest": "2026-08-28"
+          "latest": "2026-10-02"
         },
         "buildStatus": "ok",
         "dataFreshness": null,
@@ -28117,16 +28853,16 @@
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
-      "rank": 4,
-      "pressureScore": 53,
+      "rank": 3,
+      "pressureScore": 65,
       "pressureLevel": "Elevated",
       "pressurePercentiles": {
-        "warnEmployeesPer10kLaborForce": 33.33,
+        "warnEmployeesPer10kLaborForce": 50,
         "unemploymentRateYoYDelta": 100
       },
-      "warnEmployees12m": 7623,
-      "warnNotices12m": 73,
-      "warnEmployeesPer10kLaborForce": 17.04,
+      "warnEmployees12m": 8007,
+      "warnNotices12m": 72,
+      "warnEmployeesPer10kLaborForce": 17.93,
       "series": {
         "unemploymentRate": [
           {
@@ -28248,6 +28984,10 @@
           {
             "date": "2026-07",
             "value": 3.7
+          },
+          {
+            "date": "2026-08",
+            "value": 3.6
           }
         ],
         "unemployed": [
@@ -28369,7 +29109,11 @@
           },
           {
             "date": "2026-07",
-            "value": 165255
+            "value": 165371
+          },
+          {
+            "date": "2026-08",
+            "value": 160408
           }
         ],
         "employment": [
@@ -28491,7 +29235,11 @@
           },
           {
             "date": "2026-07",
-            "value": 4307098
+            "value": 4307200
+          },
+          {
+            "date": "2026-08",
+            "value": 4304756
           }
         ],
         "laborForce": [
@@ -28613,16 +29361,14 @@
           },
           {
             "date": "2026-07",
-            "value": 4472353
+            "value": 4472571
+          },
+          {
+            "date": "2026-08",
+            "value": 4465164
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 5,
-            "employees": 243,
-            "employeesPer10kLaborForce": 0.54
-          },
           {
             "date": "2025-09",
             "notices": 1,
@@ -28688,6 +29434,12 @@
             "notices": 3,
             "employees": 217,
             "employeesPer10kLaborForce": 0.49
+          },
+          {
+            "date": "2026-08",
+            "notices": 4,
+            "employees": 627,
+            "employeesPer10kLaborForce": 1.4
           }
         ]
       }
@@ -28697,13 +29449,13 @@
       "stateName": "Washington",
       "fips": "53",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 5,
-        "unemployed": 202908,
-        "employment": 3845527,
-        "laborForce": 4048435
+        "date": "2026-08",
+        "unemploymentRate": 4.9,
+        "unemployed": 197474,
+        "employment": 3846217,
+        "laborForce": 4043691
       },
-      "unemploymentRateYoYDelta": 0.4,
+      "unemploymentRateYoYDelta": 0.3,
       "warnCoverageStatus": "manual-only",
       "warnCoverage": {
         "sourceStatus": "manual-only",
@@ -28857,6 +29609,10 @@
           {
             "date": "2026-07",
             "value": 5
+          },
+          {
+            "date": "2026-08",
+            "value": 4.9
           }
         ],
         "unemployed": [
@@ -28978,7 +29734,11 @@
           },
           {
             "date": "2026-07",
-            "value": 202908
+            "value": 202809
+          },
+          {
+            "date": "2026-08",
+            "value": 197474
           }
         ],
         "employment": [
@@ -29100,7 +29860,11 @@
           },
           {
             "date": "2026-07",
-            "value": 3845527
+            "value": 3845508
+          },
+          {
+            "date": "2026-08",
+            "value": 3846217
           }
         ],
         "laborForce": [
@@ -29222,16 +29986,14 @@
           },
           {
             "date": "2026-07",
-            "value": 4048435
+            "value": 4048317
+          },
+          {
+            "date": "2026-08",
+            "value": 4043691
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -29297,6 +30059,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -29306,13 +30074,13 @@
       "stateName": "West Virginia",
       "fips": "54",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 4.1,
-        "unemployed": 32041,
-        "employment": 740605,
-        "laborForce": 772646
+        "date": "2026-08",
+        "unemploymentRate": 4,
+        "unemployed": 31269,
+        "employment": 740961,
+        "laborForce": 772230
       },
-      "unemploymentRateYoYDelta": -0.1,
+      "unemploymentRateYoYDelta": -0.3,
       "warnCoverageStatus": "unavailable",
       "warnCoverage": {
         "sourceStatus": "unavailable",
@@ -29466,6 +30234,10 @@
           {
             "date": "2026-07",
             "value": 4.1
+          },
+          {
+            "date": "2026-08",
+            "value": 4
           }
         ],
         "unemployed": [
@@ -29587,7 +30359,11 @@
           },
           {
             "date": "2026-07",
-            "value": 32041
+            "value": 32038
+          },
+          {
+            "date": "2026-08",
+            "value": 31269
           }
         ],
         "employment": [
@@ -29709,7 +30485,11 @@
           },
           {
             "date": "2026-07",
-            "value": 740605
+            "value": 740564
+          },
+          {
+            "date": "2026-08",
+            "value": 740961
           }
         ],
         "laborForce": [
@@ -29831,16 +30611,14 @@
           },
           {
             "date": "2026-07",
-            "value": 772646
+            "value": 772602
+          },
+          {
+            "date": "2026-08",
+            "value": 772230
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -29906,6 +30684,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -29915,13 +30699,13 @@
       "stateName": "Wisconsin",
       "fips": "55",
       "lausLatest": {
-        "date": "2026-07",
-        "unemploymentRate": 3.3,
-        "unemployed": 102666,
-        "employment": 3036843,
-        "laborForce": 3139509
+        "date": "2026-08",
+        "unemploymentRate": 3.2,
+        "unemployed": 102083,
+        "employment": 3046167,
+        "laborForce": 3148250
       },
-      "unemploymentRateYoYDelta": 0.3,
+      "unemploymentRateYoYDelta": 0.1,
       "warnCoverageStatus": "live",
       "warnCoverage": {
         "sourceStatus": "live",
@@ -29934,7 +30718,7 @@
         },
         "buildStatus": "preserved",
         "dataFreshness": "preserved",
-        "preservedGeneratedAt": "2026-09-08T00:44:05.074Z",
+        "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
         "preservationReason": null,
         "adapter": "fetchWI",
         "name": "Wisconsin WARN Act Notices",
@@ -30078,6 +30862,10 @@
           {
             "date": "2026-07",
             "value": 3.3
+          },
+          {
+            "date": "2026-08",
+            "value": 3.2
           }
         ],
         "unemployed": [
@@ -30199,7 +30987,11 @@
           },
           {
             "date": "2026-07",
-            "value": 102666
+            "value": 102670
+          },
+          {
+            "date": "2026-08",
+            "value": 102083
           }
         ],
         "employment": [
@@ -30321,7 +31113,11 @@
           },
           {
             "date": "2026-07",
-            "value": 3036843
+            "value": 3036852
+          },
+          {
+            "date": "2026-08",
+            "value": 3046167
           }
         ],
         "laborForce": [
@@ -30443,16 +31239,14 @@
           },
           {
             "date": "2026-07",
-            "value": 3139509
+            "value": 3139522
+          },
+          {
+            "date": "2026-08",
+            "value": 3148250
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 3,
-            "employees": 93,
-            "employeesPer10kLaborForce": 0.3
-          },
           {
             "date": "2025-09",
             "notices": 8,
@@ -30518,6 +31312,12 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
@@ -30527,11 +31327,11 @@
       "stateName": "Wyoming",
       "fips": "56",
       "lausLatest": {
-        "date": "2026-07",
+        "date": "2026-08",
         "unemploymentRate": 3,
-        "unemployed": 8643,
-        "employment": 276587,
-        "laborForce": 285230
+        "unemployed": 8506,
+        "employment": 276474,
+        "laborForce": 284980
       },
       "unemploymentRateYoYDelta": -0.3,
       "warnCoverageStatus": "unavailable",
@@ -30687,6 +31487,10 @@
           {
             "date": "2026-07",
             "value": 3
+          },
+          {
+            "date": "2026-08",
+            "value": 3
           }
         ],
         "unemployed": [
@@ -30809,6 +31613,10 @@
           {
             "date": "2026-07",
             "value": 8643
+          },
+          {
+            "date": "2026-08",
+            "value": 8506
           }
         ],
         "employment": [
@@ -30930,7 +31738,11 @@
           },
           {
             "date": "2026-07",
-            "value": 276587
+            "value": 276564
+          },
+          {
+            "date": "2026-08",
+            "value": 276474
           }
         ],
         "laborForce": [
@@ -31052,16 +31864,14 @@
           },
           {
             "date": "2026-07",
-            "value": 285230
+            "value": 285207
+          },
+          {
+            "date": "2026-08",
+            "value": 284980
           }
         ],
         "warn": [
-          {
-            "date": "2025-08",
-            "notices": 0,
-            "employees": 0,
-            "employeesPer10kLaborForce": 0
-          },
           {
             "date": "2025-09",
             "notices": 0,
@@ -31127,14 +31937,20 @@
             "notices": 0,
             "employees": 0,
             "employeesPer10kLaborForce": 0
+          },
+          {
+            "date": "2026-08",
+            "notices": 0,
+            "employees": 0,
+            "employeesPer10kLaborForce": 0
           }
         ]
       }
     }
   ],
   "meta": {
-    "generatedAt": "2026-09-08T01:13:52.948Z",
-    "asOf": "2026-07",
+    "generatedAt": "2026-10-07T13:32:58.672Z",
+    "asOf": "2026-08",
     "source": {
       "name": "BLS Local Area Unemployment Statistics",
       "publisher": "U.S. Bureau of Labor Statistics",

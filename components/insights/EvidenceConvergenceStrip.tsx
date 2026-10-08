@@ -60,10 +60,10 @@ export default function EvidenceConvergenceStrip() {
       {/* Strip header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500">
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
             {t("convergenceStripEyebrow")}
           </p>
-          <h2 id={headingId} className="mt-1 text-xl font-bold text-gradient">
+          <h2 id={headingId} className="mt-1 text-lg font-semibold text-gradient tracking-tight">
             {t("convergenceStripTitle")}
           </h2>
           <p className="mt-1 max-w-2xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
@@ -92,7 +92,7 @@ export default function EvidenceConvergenceStrip() {
       >
         {items.map((item: EvidenceConvergenceItem) => (
           <li key={item.id} className="flex">
-            <article className="glass flex w-full flex-col gap-3 rounded-2xl border border-zinc-200 p-4 dark:border-zinc-800">
+            <article className="glass flex w-full flex-col gap-3 rounded-2xl p-4">
               {/* Status + confidence badges */}
               <div className="flex flex-wrap items-center gap-2">
                 <span

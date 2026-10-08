@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T01:00:31.843Z",
+  "generatedAt": "2026-10-07T13:32:55.137Z",
   "coverage": "16 live WARN adapters (CA, GA, IN, IA, KY, MD, NJ, NY, NC, OH, OR, PA, TN, TX, VA, WI) plus all-state coverage metadata for 51 jurisdictions; notices are normalized to the latest 10 years where available.",
   "coverageSummary": {
     "totalStates": 51,
@@ -93,10 +93,10 @@
       "sourceStatus": "live",
       "sourceType": "xlsx",
       "recordsIncluded": true,
-      "notices": 192,
+      "notices": 352,
       "dateRange": {
         "earliest": "2026-06-26",
-        "latest": "2026-09-02"
+        "latest": "2026-10-05"
       },
       "buildStatus": "ok",
       "adapter": "fetchCA",
@@ -302,10 +302,10 @@
       "sourceStatus": "live",
       "sourceType": "html",
       "recordsIncluded": true,
-      "notices": 534,
+      "notices": 535,
       "dateRange": {
         "earliest": "2016-01-19",
-        "latest": "2026-09-02"
+        "latest": "2026-09-30"
       },
       "buildStatus": "ok",
       "adapter": "fetchIN",
@@ -327,10 +327,10 @@
       "sourceStatus": "live",
       "sourceType": "xlsx",
       "recordsIncluded": true,
-      "notices": 569,
+      "notices": 571,
       "dateRange": {
-        "earliest": "2021-09-09",
-        "latest": "2026-09-01"
+        "earliest": "2021-10-06",
+        "latest": "2026-09-30"
       },
       "buildStatus": "ok",
       "adapter": "fetchIA",
@@ -435,10 +435,10 @@
       "sourceStatus": "live",
       "sourceType": "html",
       "recordsIncluded": true,
-      "notices": 1099,
+      "notices": 1106,
       "dateRange": {
         "earliest": "2016-01-05",
-        "latest": "2026-08-31"
+        "latest": "2026-10-01"
       },
       "buildStatus": "ok",
       "adapter": "fetchMD",
@@ -650,10 +650,10 @@
       "sourceStatus": "live",
       "sourceType": "xlsx",
       "recordsIncluded": true,
-      "notices": 1038,
+      "notices": 1056,
       "dateRange": {
         "earliest": "2016-01-01",
-        "latest": "2026-09-01"
+        "latest": "2026-10-01"
       },
       "buildStatus": "ok",
       "adapter": "fetchNJ",
@@ -717,10 +717,10 @@
       "sourceStatus": "live",
       "sourceType": "csv",
       "recordsIncluded": true,
-      "notices": 56,
+      "notices": 62,
       "dateRange": {
         "earliest": "2026-01-07",
-        "latest": "2026-08-13"
+        "latest": "2026-09-28"
       },
       "buildStatus": "ok",
       "adapter": "fetchNC",
@@ -811,7 +811,7 @@
       },
       "buildStatus": "preserved",
       "dataFreshness": "preserved",
-      "preservedGeneratedAt": "2026-09-08T00:44:05.074Z",
+      "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
       "adapter": "fetchOR",
       "name": "Oregon WARN Act Notices",
       "publisher": "Oregon Employment Department",
@@ -831,7 +831,7 @@
       "sourceStatus": "live",
       "sourceType": "html",
       "recordsIncluded": true,
-      "notices": 258,
+      "notices": 261,
       "dateRange": {
         "earliest": null,
         "latest": null
@@ -1000,10 +1000,10 @@
       "sourceStatus": "live",
       "sourceType": "csv",
       "recordsIncluded": true,
-      "notices": 771,
+      "notices": 780,
       "dateRange": {
         "earliest": "2016-01-04",
-        "latest": "2026-08-28"
+        "latest": "2026-10-02"
       },
       "buildStatus": "ok",
       "adapter": "fetchVA",
@@ -1071,7 +1071,7 @@
       },
       "buildStatus": "preserved",
       "dataFreshness": "preserved",
-      "preservedGeneratedAt": "2026-09-08T00:44:05.074Z",
+      "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
       "adapter": "fetchWI",
       "name": "Wisconsin WARN Act Notices",
       "publisher": "Wisconsin Department of Workforce Development",
@@ -1208,7 +1208,7 @@
       "notes": null,
       "license": "Public Domain (state public record)",
       "dataFreshness": "preserved",
-      "preservedGeneratedAt": "2026-09-08T00:44:05.074Z",
+      "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
       "preservationReason": "GOOGLE_SHEETS_API_KEY absent"
     },
     {
@@ -1280,7 +1280,7 @@
       "notes": null,
       "license": "Public Domain (state public record)",
       "dataFreshness": "preserved",
-      "preservedGeneratedAt": "2026-09-08T00:44:05.074Z",
+      "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
       "preservationReason": "live fetch failed after retries: HTTP 403 Forbidden"
     },
     {
@@ -1401,12 +1401,1761 @@
   ],
   "notices": [
     {
+      "company": "Kaiser Foundation Hospitals and Kaiser Foundation Health Plan, Inc.",
+      "county": "Alameda County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-10-05",
+      "effectiveDate": "2026-12-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser Foundation Hospitals and Kaiser Foundation Health Plan, Inc.",
+      "county": "Alameda County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-10-05",
+      "effectiveDate": "2026-12-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser Foundation Hospitals and Kaiser Foundation Health Plan, Inc. (74 N. Pasadena Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-10-05",
+      "effectiveDate": "2026-12-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser Foundation Hospitals and Kaiser Foundation Health Plan, Inc. (393 E. Walnut St.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-10-05",
+      "effectiveDate": "2026-12-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser Foundation Hospitals and Kaiser Foundation Health Plan, Inc.",
+      "county": "San Diego County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-10-05",
+      "effectiveDate": "2026-12-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "AMF Bowling Centers, Inc. Castle Park",
+      "county": "Riverside County",
+      "city": null,
+      "employees": 130,
+      "noticeDate": "2026-10-05",
+      "effectiveDate": "2026-12-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Blue Diamond Growers",
+      "county": "Sacramento County",
+      "city": null,
+      "employees": 3,
+      "noticeDate": "2026-10-02",
+      "effectiveDate": "2026-12-04",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "ICF International LLC",
+      "county": null,
+      "city": "Arlington",
+      "employees": 82,
+      "noticeDate": "2026-10-02",
+      "effectiveDate": "2026-12-07",
+      "layoffType": "Layoff",
+      "state": "VA",
+      "stateName": "Virginia"
+    },
+    {
+      "company": "Grunt Style LLC (Norfolk Premium Outlet Retail Store)",
+      "county": null,
+      "city": "Norfolk",
+      "employees": 8,
+      "noticeDate": "2026-10-02",
+      "effectiveDate": "2026-11-30",
+      "layoffType": "Closure",
+      "state": "VA",
+      "stateName": "Virginia"
+    },
+    {
+      "company": "TruFusion West Hollywood LLC",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 92,
+      "noticeDate": "2026-10-01",
+      "effectiveDate": "2026-11-30",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Magic Leap, Inc.",
+      "county": "Santa Clara County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-10-01",
+      "effectiveDate": "2026-12-01",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Sumitomo Mitsui Banking Corporation",
+      "county": null,
+      "city": "Jersey City",
+      "employees": 75,
+      "noticeDate": "2026-10-01",
+      "effectiveDate": "2026-10-01",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Acme Markets Inc.",
+      "county": null,
+      "city": "Hillsdale",
+      "employees": 122,
+      "noticeDate": "2026-10-01",
+      "effectiveDate": "2027-01-02",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Dr. Praeger's Sensible Foods LLC",
+      "county": null,
+      "city": "Elmwood Park",
+      "employees": 168,
+      "noticeDate": "2026-10-01",
+      "effectiveDate": "2026-12-30",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Atlantic City Linen Supply LLC",
+      "county": null,
+      "city": "Atlantic City",
+      "employees": 67,
+      "noticeDate": "2026-10-01",
+      "effectiveDate": "2027-01-03",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "FRC Balance LLC, DBA The Food Kitchen",
+      "county": null,
+      "city": "Hackensack",
+      "employees": 89,
+      "noticeDate": "2026-10-01",
+      "effectiveDate": "2027-01-03",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Aramark Campus, LLC",
+      "county": "Baltimore County",
+      "city": "Halethorpe",
+      "employees": 174,
+      "noticeDate": "2026-10-01",
+      "effectiveDate": "2026-11-01",
+      "layoffType": "Mass Layoff - No Recall",
+      "state": "MD",
+      "stateName": "Maryland"
+    },
+    {
+      "company": "James River Insurance",
+      "county": null,
+      "city": "Richmond",
+      "employees": 19,
+      "noticeDate": "2026-10-01",
+      "effectiveDate": "2026-11-30",
+      "layoffType": "Layoff",
+      "state": "VA",
+      "stateName": "Virginia"
+    },
+    {
+      "company": "DLVR (A Corp)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 60,
+      "noticeDate": "2026-09-30",
+      "effectiveDate": "2026-12-04",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Monroe Operations, LLC, dba Newport Healthcare - Pimlico",
+      "county": "Ventura County",
+      "city": null,
+      "employees": 3,
+      "noticeDate": "2026-09-30",
+      "effectiveDate": "2026-09-30",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Monroe Operations, LLC, dba Newport Healthcare - Alhambra",
+      "county": "Ventura County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-30",
+      "effectiveDate": "2026-09-30",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Monroe Operations, LLC, dba Newport Healthcare - Presilla",
+      "county": "Ventura County",
+      "city": null,
+      "employees": 8,
+      "noticeDate": "2026-09-30",
+      "effectiveDate": "2026-09-30",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Monroe Operations, LLC, dba Newport Healthcare - Read",
+      "county": "Ventura County",
+      "city": null,
+      "employees": 6,
+      "noticeDate": "2026-09-30",
+      "effectiveDate": "2026-09-30",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Monroe Operations, LLC, dba Newport Healthcare - Valley Vista",
+      "county": "Ventura County",
+      "city": null,
+      "employees": 18,
+      "noticeDate": "2026-09-30",
+      "effectiveDate": "2026-09-30",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Carry On Trailer Inc",
+      "county": "Harrision",
+      "city": "Missouri Valley",
+      "employees": 79,
+      "noticeDate": "2026-09-30",
+      "effectiveDate": "2026-11-29",
+      "layoffType": "Closing",
+      "state": "IA",
+      "stateName": "Iowa"
+    },
+    {
+      "company": "ZF Active Safety & Electronics US LLC",
+      "county": null,
+      "city": "Lafayette",
+      "employees": 133,
+      "noticeDate": "2026-09-30",
+      "effectiveDate": "2026-11-30",
+      "layoffType": "Closure",
+      "state": "IN",
+      "stateName": "Indiana"
+    },
+    {
+      "company": "Sharps Inc.",
+      "county": "Baltimore City",
+      "city": "Baltimore",
+      "employees": 47,
+      "noticeDate": "2026-09-30",
+      "effectiveDate": "2026-11-30",
+      "layoffType": "Closure",
+      "state": "MD",
+      "stateName": "Maryland"
+    },
+    {
+      "company": "Carry-On-Trailer Inc (American Trailor World Corp-ATW)",
+      "county": null,
+      "city": "Montross",
+      "employees": 179,
+      "noticeDate": "2026-09-30",
+      "effectiveDate": "2026-11-29",
+      "layoffType": "Closure",
+      "state": "VA",
+      "stateName": "Virginia"
+    },
+    {
+      "company": "Workday Inc.",
+      "county": "Alameda County",
+      "city": null,
+      "employees": 142,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-11-30",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (1060 N Eastern Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (1104 N. Eastern Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (11515 S. Colima Rd.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (11700 S. Alameda St.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (11703 S. Alameda St.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (11703 W. Alameda St.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (12335 Civic Center Dr.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (1310 W Imperial Hwy)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (13483 Fiji Way)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (1445 McKinley Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (150 N Hudson Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (21356 S. Avalon Blvd.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (21695 Valley Blvd.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (26123 S. Narbonne Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (26201 Golden Valley Rd.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (270 S. Walnut Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (270 W. Walnut Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (27050 Agoura Rd.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (29380 The Old Road)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (441 Bauchet St.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (4554 N. Briggs Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (501 W. Lancaster Blvd.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (5019 E 3rd St.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (5130 N. Clark Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (5130 N. Clark Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (6631 S Passons Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (750 E Ave Q)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (780 N. San Vicenta Blvd.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Constellis, LLC (8838 E. Las Tunas Dr.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Wells Fargo",
+      "county": "Polk",
+      "city": "West Des Moines",
+      "employees": 10,
+      "noticeDate": "2026-09-29",
+      "effectiveDate": "2026-11-28",
+      "layoffType": "Amendment - Additional Employees",
+      "state": "IA",
+      "stateName": "Iowa"
+    },
+    {
+      "company": "Covenant Aviation Security, LLC",
+      "county": "San Francisco County",
+      "city": null,
+      "employees": 1279,
+      "noticeDate": "2026-09-28",
+      "effectiveDate": "2026-11-30",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Corteva Agriscience LLC",
+      "county": "Contra Costa County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-09-28",
+      "effectiveDate": "2026-10-30",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "McKinley Paper and Packaging Company",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 45,
+      "noticeDate": "2026-09-28",
+      "effectiveDate": "2026-11-30",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "LifeBridge Suburban Staffing, LLC (LBSS)",
+      "county": "Susquehanna",
+      "city": null,
+      "employees": 12,
+      "noticeDate": "2026-09-28",
+      "effectiveDate": "2026-09-30",
+      "layoffType": "Closure",
+      "state": "MD",
+      "stateName": "Maryland"
+    },
+    {
+      "company": "MasterBrand Cabinets LLC",
+      "county": "Lenoir County",
+      "city": "Kinston",
+      "employees": 391,
+      "noticeDate": "2026-09-28",
+      "effectiveDate": "2026-11-27",
+      "layoffType": "Layoff Permanent",
+      "state": "NC",
+      "stateName": "North Carolina"
+    },
+    {
+      "company": "Kay and Associates Inc",
+      "county": null,
+      "city": "Virginia Beach",
+      "employees": 51,
+      "noticeDate": "2026-09-28",
+      "effectiveDate": "2026-10-31",
+      "layoffType": "Layoff",
+      "state": "VA",
+      "stateName": "Virginia"
+    },
+    {
+      "company": "Leidos",
+      "county": null,
+      "city": "Ashburn",
+      "employees": 84,
+      "noticeDate": "2026-09-28",
+      "effectiveDate": "2026-11-23",
+      "layoffType": "Layoff",
+      "state": "VA",
+      "stateName": "Virginia"
+    },
+    {
+      "company": "Randstad Inhouse Services, LLC (Dreyer's)",
+      "county": "Kern County",
+      "city": null,
+      "employees": 426,
+      "noticeDate": "2026-09-24",
+      "effectiveDate": "2026-11-19",
+      "layoffType": "Closure Temporary",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Randstad Inhouse Services, LLC (Dreyer's)",
+      "county": "Tulare County",
+      "city": null,
+      "employees": 90,
+      "noticeDate": "2026-09-24",
+      "effectiveDate": "2026-11-22",
+      "layoffType": "Closure Temporary",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "City National Bank - Flower Street",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 4,
+      "noticeDate": "2026-09-24",
+      "effectiveDate": "2026-11-23",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "City National Bank - Grand Ave.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 15,
+      "noticeDate": "2026-09-24",
+      "effectiveDate": "2026-11-23",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "BioMarin Pharmaceutical Inc.",
+      "county": "Marin County",
+      "city": null,
+      "employees": 117,
+      "noticeDate": "2026-09-24",
+      "effectiveDate": "2026-12-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Becton, Dickinson and Company (BD)",
+      "county": "San Diego County",
+      "city": null,
+      "employees": 85,
+      "noticeDate": "2026-09-24",
+      "effectiveDate": "2026-09-01",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "ColonialWebb Contracting Company",
+      "county": "Anne Arundel",
+      "city": "Glen Burnie",
+      "employees": 13,
+      "noticeDate": "2026-09-24",
+      "effectiveDate": "2026-12-01",
+      "layoffType": "Mass Layoff- No Recall",
+      "state": "MD",
+      "stateName": "Maryland"
+    },
+    {
+      "company": "Capstone Delivery Inc.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 106,
+      "noticeDate": "2026-09-23",
+      "effectiveDate": "2026-11-21",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Key Energy Services, LLC - Bakersfield Location",
+      "county": "Kern County",
+      "city": null,
+      "employees": 53,
+      "noticeDate": "2026-09-23",
+      "effectiveDate": "2026-11-22",
+      "layoffType": "Closure Temporary",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Key Energy Services, LLC - Ventura Location",
+      "county": "Ventura County",
+      "city": null,
+      "employees": 4,
+      "noticeDate": "2026-09-23",
+      "effectiveDate": "2026-11-22",
+      "layoffType": "Closure Temporary",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "City of Hope",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 73,
+      "noticeDate": "2026-09-23",
+      "effectiveDate": "2026-11-24",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "RTX",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-22",
+      "effectiveDate": "2026-11-27",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "SAC Health (1003 East Brier Drive)",
+      "county": "San Bernardino County",
+      "city": null,
+      "employees": 42,
+      "noticeDate": "2026-09-22",
+      "effectiveDate": "2026-09-28",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "SAC Health (250 South G St.)",
+      "county": "San Bernardino County",
+      "city": null,
+      "employees": 9,
+      "noticeDate": "2026-09-22",
+      "effectiveDate": "2026-09-28",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Dreyer's Grand Ice Cream",
+      "county": "Kern County",
+      "city": null,
+      "employees": 221,
+      "noticeDate": "2026-09-22",
+      "effectiveDate": "2026-11-19",
+      "layoffType": "Closure Temporary",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Dreyer's Grand Ice Cream",
+      "county": "Tulare County",
+      "city": null,
+      "employees": 221,
+      "noticeDate": "2026-09-22",
+      "effectiveDate": "2026-11-19",
+      "layoffType": "Closure Temporary",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "RTX",
+      "county": "Linn",
+      "city": "Cedar Rapids",
+      "employees": 1,
+      "noticeDate": "2026-09-22",
+      "effectiveDate": "2026-10-30",
+      "layoffType": "Amendment - Additional Employees",
+      "state": "IA",
+      "stateName": "Iowa"
+    },
+    {
+      "company": "Kaiser (1800 Harrison St.)",
+      "county": "Alameda County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser (One Kaiser Plaza)",
+      "county": "Alameda County",
+      "city": null,
+      "employees": 11,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser",
+      "county": "Alameda County",
+      "city": null,
+      "employees": 22,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser (393 E. Walnut St.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser (74 N. Pasadena Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser (75N. Fair Oaks Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 3,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser (99 S. Oakland Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 20,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser",
+      "county": "Orange County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser (1830 California Ave.)",
+      "county": "Riverside County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser (1840 California Ave.)",
+      "county": "Riverside County",
+      "city": null,
+      "employees": 4,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser",
+      "county": "Sacramento County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser",
+      "county": "Sacramento County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser (17140 Bernardo Center Dr.)",
+      "county": "San Diego County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser (3840 Murphy Canyon Rd.)",
+      "county": "San Diego County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Kaiser (8954 Rio San Diego Dr.)",
+      "county": "San Diego County",
+      "city": null,
+      "employees": 72,
+      "noticeDate": "2026-09-21",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Intel Corporation - Robert Noyce Building",
+      "county": "Santa Clara County",
+      "city": null,
+      "employees": 22,
+      "noticeDate": "2026-09-18",
+      "effectiveDate": "2026-09-30",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Intel Corporation, Inc. - SC-9",
+      "county": "Santa Clara County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-18",
+      "effectiveDate": "2026-09-30",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Intel Corporation - SC-11",
+      "county": "Santa Clara County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-18",
+      "effectiveDate": "2026-09-30",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Intel Corporation - SC-12",
+      "county": "Santa Clara County",
+      "city": null,
+      "employees": 24,
+      "noticeDate": "2026-09-18",
+      "effectiveDate": "2026-09-30",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "IPS Nationwide, Inc.",
+      "county": "Alameda County",
+      "city": "Suite #228  Newark",
+      "employees": 212,
+      "noticeDate": "2026-09-18",
+      "effectiveDate": "2026-11-17",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "IPS Nationwide, Inc.",
+      "county": "Orange County",
+      "city": "Suite F  Costa Mesa",
+      "employees": 50,
+      "noticeDate": "2026-09-18",
+      "effectiveDate": "2026-11-17",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Amy's Kitchen, LLC",
+      "county": "Sonoma County",
+      "city": null,
+      "employees": 200,
+      "noticeDate": "2026-09-17",
+      "effectiveDate": "2026-12-18",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Safeway, Inc. - Stoneridge Mall Road",
+      "county": "Alameda County",
+      "city": null,
+      "employees": 4,
+      "noticeDate": "2026-09-17",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Safeway, Inc. - Dublin Canyon Road",
+      "county": "Alameda County",
+      "city": null,
+      "employees": 46,
+      "noticeDate": "2026-09-17",
+      "effectiveDate": "2026-11-20",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Maya Cinemas Fresno 16",
+      "county": "Fresno County",
+      "city": null,
+      "employees": 86,
+      "noticeDate": "2026-09-16",
+      "effectiveDate": "2026-09-15",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Comfort First Heating & Cooling, LLC",
+      "county": "Lee County",
+      "city": "Sanford",
+      "employees": 67,
+      "noticeDate": "2026-09-16",
+      "effectiveDate": "2026-11-16",
+      "layoffType": "Layoff Permanent",
+      "state": "NC",
+      "stateName": "North Carolina"
+    },
+    {
+      "company": "Owens &amp; Minor (Avid Medical LLC)",
+      "county": null,
+      "city": "Toano",
+      "employees": 419,
+      "noticeDate": "2026-09-16",
+      "effectiveDate": "2026-11-25",
+      "layoffType": "Closure",
+      "state": "VA",
+      "stateName": "Virginia"
+    },
+    {
+      "company": "Full Steam Staffing (2121 Boeing Way)",
+      "county": "San Joaquin County",
+      "city": null,
+      "employees": 91,
+      "noticeDate": "2026-09-15",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Full Steam Staffing (4239 Pock Lane)",
+      "county": "San Joaquin County",
+      "city": null,
+      "employees": 19,
+      "noticeDate": "2026-09-15",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Quixote Studio Services - North Valley Campus A",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 24,
+      "noticeDate": "2026-09-15",
+      "effectiveDate": "2026-11-14",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Quixote Studio Services - North Valley",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 29,
+      "noticeDate": "2026-09-15",
+      "effectiveDate": "2026-11-14",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Quixote Studio Services - Sylmar South",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 3,
+      "noticeDate": "2026-09-15",
+      "effectiveDate": "2026-11-14",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Quixote Studio Services - Sylmar North",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-15",
+      "effectiveDate": "2026-11-14",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Wells Fargo",
+      "county": "Polk",
+      "city": "West Des Moines",
+      "employees": 35,
+      "noticeDate": "2026-09-15",
+      "effectiveDate": "2026-11-14",
+      "layoffType": "Amendment - Additional Employees",
+      "state": "IA",
+      "stateName": "Iowa"
+    },
+    {
+      "company": "Regional Acceptance Corporation",
+      "county": "Pitt County",
+      "city": "Winterville",
+      "employees": 156,
+      "noticeDate": "2026-09-15",
+      "effectiveDate": "2027-02-28",
+      "layoffType": "Closure",
+      "state": "NC",
+      "stateName": "North Carolina"
+    },
+    {
+      "company": "Regional Acceptance Corporation",
+      "county": "Pitt County",
+      "city": "Greenville",
+      "employees": 97,
+      "noticeDate": "2026-09-15",
+      "effectiveDate": "2027-07-31",
+      "layoffType": "Closure",
+      "state": "NC",
+      "stateName": "North Carolina"
+    },
+    {
+      "company": "Bechtel Power Corporation",
+      "county": null,
+      "city": "Reston",
+      "employees": 200,
+      "noticeDate": "2026-09-15",
+      "effectiveDate": "2026-11-16",
+      "layoffType": "Closure",
+      "state": "VA",
+      "stateName": "Virginia"
+    },
+    {
+      "company": "Oracle Pleasanton Campus (Pleasanton Campus)",
+      "county": "Alameda County",
+      "city": null,
+      "employees": 63,
+      "noticeDate": "2026-09-14",
+      "effectiveDate": "2026-11-13",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Oracle America, Inc.",
+      "county": "San Mateo County",
+      "city": null,
+      "employees": 279,
+      "noticeDate": "2026-09-14",
+      "effectiveDate": "2026-11-13",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Oracle America, Inc.",
+      "county": "Santa Clara County",
+      "city": null,
+      "employees": 99,
+      "noticeDate": "2026-09-14",
+      "effectiveDate": "2026-11-13",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "DesigneRx Pharmaceuticals, Inc.",
+      "county": "Solano County",
+      "city": "Suite B  Vacaville",
+      "employees": 7,
+      "noticeDate": "2026-09-14",
+      "effectiveDate": "2026-11-15",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "CB Manufacturing, Inc., dba Pepsi Beverages",
+      "county": "Prince Georges",
+      "city": "Hyattsville",
+      "employees": 143,
+      "noticeDate": "2026-09-14",
+      "effectiveDate": "2026-11-13",
+      "layoffType": "Mass Layoff- No Recall",
+      "state": "MD",
+      "stateName": "Maryland"
+    },
+    {
+      "company": "Sleep Med, LLC",
+      "county": "Baltimore County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-14",
+      "effectiveDate": "2026-08-31",
+      "layoffType": "Mass Layoff- No Recall",
+      "state": "MD",
+      "stateName": "Maryland"
+    },
+    {
+      "company": "LeeMah Electronics",
+      "county": "San Mateo County",
+      "city": null,
+      "employees": 62,
+      "noticeDate": "2026-09-11",
+      "effectiveDate": "2026-12-21",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Fuji Food Products, Inc.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 35,
+      "noticeDate": "2026-09-10",
+      "effectiveDate": "2026-11-13",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "United Air Temp, Air Conditioning and Heating, LLC",
+      "county": "Statewide",
+      "city": null,
+      "employees": 39,
+      "noticeDate": "2026-09-10",
+      "effectiveDate": "2026-11-10",
+      "layoffType": "Mass Layoff- No Recall",
+      "state": "MD",
+      "stateName": "Maryland"
+    },
+    {
+      "company": "Electrolux Consumer Products, Inc.",
+      "county": "Mecklenburg County",
+      "city": "Charlotte",
+      "employees": 1,
+      "noticeDate": "2026-09-10",
+      "effectiveDate": "2026-11-09",
+      "layoffType": "Closure",
+      "state": "NC",
+      "stateName": "North Carolina"
+    },
+    {
+      "company": "United Air Temp Air Conditioning and Heating LLC",
+      "county": null,
+      "city": "Lorton",
+      "employees": 96,
+      "noticeDate": "2026-09-10",
+      "effectiveDate": "2026-11-10",
+      "layoffType": "Closure",
+      "state": "VA",
+      "stateName": "Virginia"
+    },
+    {
+      "company": "Shell Catalyst & Technologies",
+      "county": "Contra Costa County",
+      "city": null,
+      "employees": 64,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-30",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (1042 Downey Way)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 7,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (1149 S. Hill Street)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (1150 S. Olive Street)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 5,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (12015 E Waterfront Dr.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 8,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (3649 McClintock Ave.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 21,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (3740 McClintock Ave)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (4676 Admiralty Way)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 15,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (746 W Adams Blvd.)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (854 Downey Way)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "University of Southern California (941 Bloom Walk)",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 4,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Sapporo U.S.A. (1999 Citracado Parkway)",
+      "county": "San Diego County",
+      "city": null,
+      "employees": 200,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-13",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Sapporo U.S.A. (2865 Executive Place)",
+      "county": "San Diego County",
+      "city": null,
+      "employees": 6,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-13",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Sapporo U.S.A. (2005 Harmony Grove Rd)",
+      "county": "San Diego County",
+      "city": null,
+      "employees": 6,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-11-13",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Bossong Hosiery Mills, Inc.",
+      "county": "Randolph County",
+      "city": "Asheboro",
+      "employees": 122,
+      "noticeDate": "2026-09-09",
+      "effectiveDate": "2026-09-09",
+      "layoffType": "Closure",
+      "state": "NC",
+      "stateName": "North Carolina"
+    },
+    {
+      "company": "SonTek (Xylem, Inc.)",
+      "county": "San Diego County",
+      "city": null,
+      "employees": 36,
+      "noticeDate": "2026-09-04",
+      "effectiveDate": "2026-11-06",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Eggo Company dba Kellanova",
+      "county": "Santa Clara County",
+      "city": null,
+      "employees": 112,
+      "noticeDate": "2026-09-04",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Closure Temporary",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Ruiz Food Products, Inc.",
+      "county": "Tulare County",
+      "city": null,
+      "employees": 176,
+      "noticeDate": "2026-09-04",
+      "effectiveDate": "2026-11-04",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "OVG Hospitality",
+      "county": "Ventura County",
+      "city": null,
+      "employees": 128,
+      "noticeDate": "2026-09-03",
+      "effectiveDate": "2026-11-15",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
       "company": "Foundation for California Community Colleges",
       "county": "Sacramento County",
       "city": "Suite 4800  Sacramento",
       "employees": 178,
       "noticeDate": "2026-09-02",
       "effectiveDate": "2026-10-30",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Ventana Grill",
+      "county": "San Luis Obispo County",
+      "city": null,
+      "employees": 82,
+      "noticeDate": "2026-09-02",
+      "effectiveDate": "2026-09-18",
+      "layoffType": "Closure Temporary",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Homeless Health Care Los Angeles - Crocker Street",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 117,
+      "noticeDate": "2026-09-02",
+      "effectiveDate": "2026-11-03",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Homeless Health Care Los Angeles - Maple Ave.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 16,
+      "noticeDate": "2026-09-02",
+      "effectiveDate": "2026-11-03",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Homeless Health Care Los Angeles - 2nd Street",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-09-02",
+      "effectiveDate": "2026-11-03",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Uber Technologies, Inc. - 200 Mathilda Place",
+      "county": "Santa Clara County",
+      "city": null,
+      "employees": 94,
+      "noticeDate": "2026-09-02",
+      "effectiveDate": "2026-11-02",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Uber technologies, Inc. - 190 Mathilda Place",
+      "county": "Santa Clara County",
+      "city": null,
+      "employees": 43,
+      "noticeDate": "2026-09-02",
+      "effectiveDate": "2026-11-02",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Uber Technologies, Inc. - 1655 3rd Street",
+      "county": "San Francisco County",
+      "city": null,
+      "employees": 151,
+      "noticeDate": "2026-09-02",
+      "effectiveDate": "2026-11-02",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Uber Technologies, Inc. 1725 3rd Street",
+      "county": "San Francisco County",
+      "city": null,
+      "employees": 102,
+      "noticeDate": "2026-09-02",
+      "effectiveDate": "2026-11-02",
       "layoffType": "Layoff Permanent",
       "state": "CA",
       "stateName": "California"
@@ -1456,12 +3205,188 @@
       "stateName": "California"
     },
     {
+      "company": "Grain Craft, LLC",
+      "county": "San Bernardino County",
+      "city": null,
+      "employees": 3,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-10-30",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Pathways Community Services dba Clarvida",
+      "county": "Orange County",
+      "city": null,
+      "employees": 35,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-11-01",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Pathways Community Services dba Clarvida",
+      "county": "Orange County",
+      "city": null,
+      "employees": 32,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-11-01",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
       "company": "UBS",
       "county": null,
       "city": "Weehawken",
       "employees": 41,
       "noticeDate": "2026-09-01",
       "effectiveDate": "2026-11-25",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Merck & Co",
+      "county": null,
+      "city": "Rahway",
+      "employees": 54,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-12-11",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Educational Testing Service",
+      "county": null,
+      "city": "Princeton",
+      "employees": 62,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-11-09",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Fiserv Solutions LLC",
+      "county": null,
+      "city": "Berkeley Heights",
+      "employees": 98,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-09-11",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Banker Steel, a Division of Schuff Steel",
+      "county": null,
+      "city": "South Plainfield",
+      "employees": 115,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-12-14",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Barrette Outdoor Living",
+      "county": null,
+      "city": "Egg Harbor City",
+      "employees": 59,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-12-13",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Headquarters Hotel Mgmt, LLC d/b/a Sheraton Atlantic City Convention Center Hotel",
+      "county": null,
+      "city": "Atlantic City",
+      "employees": 91,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-12-15",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Wonder Group, Inc.",
+      "county": null,
+      "city": "Parsippany",
+      "employees": 533,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-09-16",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Johnson & Johnson Services Inc",
+      "county": null,
+      "city": "New Brunswick",
+      "employees": 88,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-12-18",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Bristol Myers Squibb",
+      "county": null,
+      "city": "Princeton",
+      "employees": 265,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-12-17",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Novo Nordisk",
+      "county": null,
+      "city": "Plainsboro",
+      "employees": 108,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-12-31",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "EWC Controls, LLC",
+      "county": null,
+      "city": "Englishtown",
+      "employees": 71,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2027-04-01",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Prudential Insurance Company of America",
+      "county": null,
+      "city": "Newark",
+      "employees": 125,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-11-28",
+      "layoffType": null,
+      "state": "NJ",
+      "stateName": "New Jersey"
+    },
+    {
+      "company": "Culinaire",
+      "county": null,
+      "city": "Newark",
+      "employees": 75,
+      "noticeDate": "2026-09-01",
+      "effectiveDate": "2026-12-31",
       "layoffType": null,
       "state": "NJ",
       "stateName": "New Jersey"
@@ -1885,6 +3810,17 @@
       "stateName": "California"
     },
     {
+      "company": "Trailer Park, Inc.",
+      "county": "Los Angeles County",
+      "city": "10th Floor  Los Angeles",
+      "employees": 119,
+      "noticeDate": "2026-08-27",
+      "effectiveDate": "2026-07-07",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
       "company": "RTX",
       "county": "Los Angeles County",
       "city": null,
@@ -2144,7 +4080,7 @@
       "employees": 73,
       "noticeDate": "2026-08-19",
       "effectiveDate": "2026-11-02",
-      "layoffType": "Relocation Permanent",
+      "layoffType": "Relocation",
       "state": "CA",
       "stateName": "California"
     },
@@ -2189,6 +4125,325 @@
       "noticeDate": "2026-08-18",
       "effectiveDate": "2026-08-17",
       "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Group, Inc. - 822 SRobertson",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 17,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Candlewood",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - San Dimas",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 3,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Ratner St.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. 95th Street",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Towne Avenue",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 4,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine management Groups, Inc. - Normandie Ave",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Group, Inc. - Rural Dr.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 4,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Group, Inc. - James M. Wood Blvd",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Group, Inc. - Gale Ave.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Potrero Grande",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Mesa St.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - 900-906 Crenshaw Blvd",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups. Inc. - Kingsley Dr.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Beachwood Dr.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Manhattan Pl",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Valley Blvd.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 4,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - 1053 S. New Hampshire Ave.-",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - 1057 S, New Hampshire Ave",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - 980 Palm Ave.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Arrow Highway",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Glendale Blvd",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Leveine Management Groups - 415 S. Oleander Ave.",
+      "county": "Los Angeles County",
+      "city": "Compton",
+      "employees": 1,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - 425 S. Oleander Ave.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 3,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Canada Blvd.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Sunset Pl.",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Cypress Road",
+      "county": "Ventura County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Ponderosa Dr.",
+      "county": "Ventura County",
+      "city": null,
+      "employees": 2,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Levine Management Groups, Inc. - Carmelita Ct.",
+      "county": "Ventura County",
+      "city": null,
+      "employees": 1,
+      "noticeDate": "2026-08-18",
+      "effectiveDate": "2026-10-20",
+      "layoffType": "Layoff Not known at this time",
       "state": "CA",
       "stateName": "California"
     },
@@ -4330,7 +6585,7 @@
       "company": "BASF Corporation",
       "county": null,
       "city": "Florham Park",
-      "employees": 62,
+      "employees": 66,
       "noticeDate": "2026-07-01",
       "effectiveDate": "2026-11-01",
       "layoffType": null,
@@ -4805,7 +7060,7 @@
       "city": "Raleigh",
       "employees": 14,
       "noticeDate": "2026-06-02",
-      "effectiveDate": "2026-08-31",
+      "effectiveDate": "2026-09-29",
       "layoffType": "Closure",
       "state": "NC",
       "stateName": "North Carolina"
@@ -4816,7 +7071,7 @@
       "city": "Charlotte",
       "employees": 39,
       "noticeDate": "2026-06-02",
-      "effectiveDate": "2026-08-31",
+      "effectiveDate": "2026-09-29",
       "layoffType": "Closure",
       "state": "NC",
       "stateName": "North Carolina"
@@ -5652,7 +7907,7 @@
       "city": "Ringgold",
       "employees": 133,
       "noticeDate": "2026-04-29",
-      "effectiveDate": "2026-09-08",
+      "effectiveDate": "2026-10-07",
       "layoffType": "Closure",
       "state": "VA",
       "stateName": "Virginia"
@@ -34544,17 +36799,6 @@
       "stateName": "Maryland"
     },
     {
-      "company": "Lutheran Services in Iowa",
-      "county": "Story",
-      "city": "Ames",
-      "employees": 26,
-      "noticeDate": "2021-09-23",
-      "effectiveDate": "2021-10-22",
-      "layoffType": "Mass Layoff",
-      "state": "IA",
-      "stateName": "Iowa"
-    },
-    {
       "company": "Showa Group (Best Glove)",
       "county": "Chattooga",
       "city": "Menlo",
@@ -34718,17 +36962,6 @@
       "layoffType": "Closure",
       "state": "WI",
       "stateName": "Wisconsin"
-    },
-    {
-      "company": "Principal Life Insurance Company",
-      "county": "Polk",
-      "city": "Des Moines",
-      "employees": 25,
-      "noticeDate": "2021-09-09",
-      "effectiveDate": "2021-10-11",
-      "layoffType": "Mass Layoff",
-      "state": "IA",
-      "stateName": "Iowa"
     },
     {
       "company": "Lambertville Hospitality",
@@ -122038,6 +124271,17 @@
       "stateName": "Maryland"
     },
     {
+      "company": "Kenco Logistic Services, LLC",
+      "county": "Northampton",
+      "city": "Northampton",
+      "employees": 52,
+      "noticeDate": null,
+      "effectiveDate": null,
+      "layoffType": "Closure",
+      "state": "PA",
+      "stateName": "Pennsylvania"
+    },
+    {
       "company": "Jerith Manufacturing, LLC",
       "county": "Philadelphia",
       "city": "Philadelphia",
@@ -122067,6 +124311,28 @@
       "noticeDate": null,
       "effectiveDate": "2026-10-31",
       "layoffType": "Closure",
+      "state": "PA",
+      "stateName": "Pennsylvania"
+    },
+    {
+      "company": "Pavilion at Bradford",
+      "county": "McKean",
+      "city": "Bradford",
+      "employees": 80,
+      "noticeDate": null,
+      "effectiveDate": "2026-12-01",
+      "layoffType": "Closure",
+      "state": "PA",
+      "stateName": "Pennsylvania"
+    },
+    {
+      "company": "Pep Boys Manny Moe & Jack, LLC",
+      "county": "Montgomery",
+      "city": "Bala Cynwyd",
+      "employees": 169,
+      "noticeDate": null,
+      "effectiveDate": "2026-12-31",
+      "layoffType": "Layoff",
       "state": "PA",
       "stateName": "Pennsylvania"
     },
@@ -124877,11 +127143,11 @@
     }
   ],
   "summary": {
-    "total": 12477,
-    "totalEmployees": 1364173,
+    "total": 12683,
+    "totalEmployees": 1375936,
     "dateRange": {
       "earliest": "2016-01-01",
-      "latest": "2026-09-02"
+      "latest": "2026-10-05"
     },
     "byState": [
       {
@@ -124897,11 +127163,11 @@
       {
         "state": "NJ",
         "stateName": "New Jersey",
-        "notices": 1038,
-        "employees": 185199,
+        "notices": 1056,
+        "employees": 187468,
         "dateRange": {
           "earliest": "2016-01-01",
-          "latest": "2026-09-01"
+          "latest": "2026-10-01"
         }
       },
       {
@@ -124927,31 +127193,31 @@
       {
         "state": "VA",
         "stateName": "Virginia",
-        "notices": 771,
-        "employees": 90220,
+        "notices": 780,
+        "employees": 91358,
         "dateRange": {
           "earliest": "2016-01-04",
-          "latest": "2026-08-28"
+          "latest": "2026-10-02"
         }
       },
       {
         "state": "MD",
         "stateName": "Maryland",
-        "notices": 1099,
-        "employees": 86462,
+        "notices": 1106,
+        "employees": 86895,
         "dateRange": {
           "earliest": "2016-01-05",
-          "latest": "2026-08-31"
+          "latest": "2026-10-01"
         }
       },
       {
         "state": "IN",
         "stateName": "Indiana",
-        "notices": 534,
-        "employees": 85968,
+        "notices": 535,
+        "employees": 86101,
         "dateRange": {
           "earliest": "2016-01-19",
-          "latest": "2026-09-02"
+          "latest": "2026-09-30"
         }
       },
       {
@@ -124987,8 +127253,8 @@
       {
         "state": "PA",
         "stateName": "Pennsylvania",
-        "notices": 258,
-        "employees": 50531,
+        "notices": 261,
+        "employees": 50832,
         "dateRange": {
           "earliest": null,
           "latest": null
@@ -125007,21 +127273,21 @@
       {
         "state": "IA",
         "stateName": "Iowa",
-        "notices": 569,
-        "employees": 26311,
+        "notices": 571,
+        "employees": 26385,
         "dateRange": {
-          "earliest": "2021-09-09",
-          "latest": "2026-09-01"
+          "earliest": "2021-10-06",
+          "latest": "2026-09-30"
         }
       },
       {
         "state": "CA",
         "stateName": "California",
-        "notices": 192,
-        "employees": 10304,
+        "notices": 352,
+        "employees": 16885,
         "dateRange": {
           "earliest": "2026-06-26",
-          "latest": "2026-09-02"
+          "latest": "2026-10-05"
         }
       },
       {
@@ -125037,11 +127303,11 @@
       {
         "state": "NC",
         "stateName": "North Carolina",
-        "notices": 56,
-        "employees": 5430,
+        "notices": 62,
+        "employees": 6264,
         "dateRange": {
           "earliest": "2026-01-07",
-          "latest": "2026-08-13"
+          "latest": "2026-09-28"
         }
       }
     ],
@@ -125388,8 +127654,8 @@
       },
       {
         "month": "2021-09",
-        "notices": 24,
-        "employees": 1037
+        "notices": 22,
+        "employees": 986
       },
       {
         "month": "2021-10",
@@ -125679,34 +127945,39 @@
       {
         "month": "2026-07",
         "notices": 126,
-        "employees": 9422
+        "employees": 9426
       },
       {
         "month": "2026-08",
-        "notices": 137,
-        "employees": 7948
+        "notices": 167,
+        "employees": 8135
       },
       {
         "month": "2026-09",
-        "notices": 7,
-        "employees": 658
+        "notices": 164,
+        "employees": 10940
+      },
+      {
+        "month": "2026-10",
+        "notices": 18,
+        "employees": 1040
       }
     ],
     "byType": [
       {
         "type": "Unknown",
-        "notices": 4004,
-        "employees": 519499
+        "notices": 4022,
+        "employees": 521768
       },
       {
         "type": "Closure",
-        "notices": 1460,
-        "employees": 160859
+        "notices": 1493,
+        "employees": 163614
       },
       {
         "type": "Layoff",
-        "notices": 727,
-        "employees": 112437
+        "notices": 732,
+        "employees": 112842
       },
       {
         "type": "Restaurant",
@@ -125720,8 +127991,8 @@
       },
       {
         "type": "Closing",
-        "notices": 288,
-        "employees": 30041
+        "notices": 289,
+        "employees": 30120
       },
       {
         "type": "WR",
@@ -125735,8 +128006,8 @@
       },
       {
         "type": "Layoff Permanent",
-        "notices": 195,
-        "employees": 14951
+        "notices": 299,
+        "employees": 19541
       },
       {
         "type": "Contract Cancellation",
@@ -125745,8 +128016,8 @@
       },
       {
         "type": "Mass Layoff - No Recall",
-        "notices": 192,
-        "employees": 14010
+        "notices": 193,
+        "employees": 14184
       },
       {
         "type": "Slack Work",
@@ -125755,8 +128026,8 @@
       },
       {
         "type": "Mass Layoff",
-        "notices": 261,
-        "employees": 12925
+        "notices": 259,
+        "employees": 12874
       },
       {
         "type": "Other",
@@ -125884,6 +128155,11 @@
         "employees": 1925
       },
       {
+        "type": "Closure Temporary",
+        "notices": 11,
+        "employees": 1853
+      },
+      {
         "type": "A baseball park",
         "notices": 1,
         "employees": 1711
@@ -126009,6 +128285,11 @@
         "employees": 1123
       },
       {
+        "type": "Amendment - Additional Employees",
+        "notices": 54,
+        "employees": 1116
+      },
+      {
         "type": "Restaurants",
         "notices": 8,
         "employees": 1091
@@ -126017,11 +128298,6 @@
         "type": "Hotel & Casino",
         "notices": 1,
         "employees": 1077
-      },
-      {
-        "type": "Amendment - Additional Employees",
-        "notices": 51,
-        "employees": 1070
       },
       {
         "type": "various hotel-based homeless shelters in NYC",
@@ -126169,11 +128445,6 @@
         "employees": 648
       },
       {
-        "type": "Closure Temporary",
-        "notices": 3,
-        "employees": 644
-      },
-      {
         "type": "Health Centers",
         "notices": 1,
         "employees": 642
@@ -126181,6 +128452,11 @@
       {
         "type": "Data Processing, Hosting & Related Services",
         "notices": 1,
+        "employees": 641
+      },
+      {
+        "type": "Mass Layoff- No Recall",
+        "notices": 8,
         "employees": 641
       },
       {
@@ -126387,11 +128663,6 @@
         "type": "Inbound Call Center: Customer Service, Technical Support",
         "notices": 3,
         "employees": 442
-      },
-      {
-        "type": "Mass Layoff- No Recall",
-        "notices": 4,
-        "employees": 441
       },
       {
         "type": "Health Plans",
@@ -128784,6 +131055,11 @@
         "employees": 88
       },
       {
+        "type": "Layoff Not known at this time",
+        "notices": 31,
+        "employees": 87
+      },
+      {
         "type": "Home Care services",
         "notices": 1,
         "employees": 87
@@ -129209,7 +131485,7 @@
         "employees": 74
       },
       {
-        "type": "Relocation Permanent",
+        "type": "Relocation",
         "notices": 1,
         "employees": 73
       },
@@ -132493,8 +134769,8 @@
     ]
   },
   "meta": {
-    "generatedAt": "2026-09-08T01:00:31.843Z",
-    "asOf": "2026-09-02",
+    "generatedAt": "2026-10-07T13:32:55.137Z",
+    "asOf": "2026-10-05",
     "source": {
       "name": "Multi-state WARN Act notice registry",
       "publisher": "U.S. state workforce agencies (aggregated by FutureGrid)",

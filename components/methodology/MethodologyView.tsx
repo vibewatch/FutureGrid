@@ -99,15 +99,15 @@ export default function MethodologyView({
   return (
     <div className="space-y-16 max-w-[900px]">
       {/* ─── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="pt-4 pb-2" aria-labelledby="methodology-hero">
+      <section className="border-b border-[var(--border)] pb-6" aria-labelledby="methodology-hero">
         <Reveal>
           <h1
             id="methodology-hero"
-            className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.1]"
+            className="text-[26px] font-semibold leading-tight tracking-tight text-zinc-900 sm:text-3xl dark:text-white"
           >
-            <span className="text-gradient">{t("heroHeadline")}</span>
+            <span className="text-gradient tracking-tight">{t("heroHeadline")}</span>
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
             {t("heroSubhead")}
           </p>
         </Reveal>

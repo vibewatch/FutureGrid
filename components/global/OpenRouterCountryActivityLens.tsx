@@ -35,7 +35,7 @@ function KpiCard({
       <dt className="text-[10px] font-semibold uppercase tracking-widest text-zinc-500">
         {label}
       </dt>
-      <dd className="mt-1 text-2xl font-extrabold text-gradient tabular-nums">
+      <dd className="mt-1 text-2xl font-semibold text-gradient tabular-nums">
         {value}
       </dd>
       <dd className="mt-1 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
@@ -170,10 +170,10 @@ export default function OpenRouterCountryActivityLens({
       <div className="glass p-5 sm:p-6">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
           <div className="max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500 dark:text-violet-300">
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
               {t("openRouterCountryActivityEyebrow")}
             </p>
-            <h2 id={headingId} className="mt-1 text-2xl font-extrabold tracking-tight text-gradient sm:text-3xl">
+            <h2 id={headingId} className="mt-1 text-xl font-semibold tracking-tight text-gradient">
               {t("openRouterCountryActivityTitle")}
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">

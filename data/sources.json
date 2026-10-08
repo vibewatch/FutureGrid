@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-03T05:27:14.000Z",
+  "generatedAt": "2026-10-07T14:16:25.670Z",
   "license": "CC-BY 4.0 (Anthropic Economic Index); CC BY 4.0 (O*NET, USDOL/ETA); Public Domain (BLS)",
-  "attribution": "Anthropic Economic Index (Anthropic, 2025); O*NET 28.3 (U.S. Department of Labor/ETA); BLS Employment Statistics (U.S. Bureau of Labor Statistics, 2023)",
+  "attribution": "Anthropic Economic Index (Anthropic, 2025–2026); O*NET 31.0 (U.S. Department of Labor/ETA); BLS OEWS Employment and Wage Statistics (U.S. Bureau of Labor Statistics, 2016–2025)",
   "sources": [
     {
       "name": "Anthropic Economic Index — Job Exposure",
@@ -44,12 +44,20 @@
       "usedFor": "Employment totals by occupation (legacy fallback — superseded by OEWS API when key is set)"
     },
     {
-      "name": "Anthropic Economic Index — Country AI Adoption (Aug 2025)",
+      "name": "Anthropic Economic Index — Country AI Adoption (Apr–May 2026 release)",
+      "publisher": "Anthropic",
+      "year": 2026,
+      "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex/tree/main/release_2026_06_26",
+      "license": "CC-BY 4.0",
+      "usedFor": "Per-country Claude.ai usage per-capita index and usage share (latest reported month per country), plus work / personal / coursework use-case mix, automation vs augmentation collaboration share, and mean AI autonomy"
+    },
+    {
+      "name": "Anthropic Economic Index — Country AI Adoption (Aug 2025 release)",
       "publisher": "Anthropic",
       "year": 2025,
-      "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+      "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex/tree/main/release_2025_09_15",
       "license": "CC-BY 4.0",
-      "usedFor": "Per-country AI usage index, usage %, usage count, GDP per working-age capita"
+      "usedFor": "Base country list and GDP per working-age capita (usage metrics superseded by the 2026 release)"
     },
     {
       "name": "World Bank Open Data — China GDP and Working-Age Population",
@@ -140,9 +148,9 @@
       "usedFor": "Supplemental country-level AI research activity proxy from AI publication totals"
     },
     {
-      "name": "O*NET 28.3 Skills Database",
+      "name": "O*NET 31.0 Skills Database",
       "publisher": "U.S. Department of Labor / Employment and Training Administration",
-      "year": 2024,
+      "year": 2026,
       "url": "https://www.onetcenter.org/database.html",
       "license": "CC BY 4.0",
       "usedFor": "Top skills (by importance) per SOC occupation"
@@ -228,12 +236,28 @@
       "usedFor": "Historical automation probability per SOC (702 occupations) as a context/comparison baseline; automation-baseline.json — ⚠️ LICENSE RISK: no open license; see data/COMPLIANCE.md"
     },
     {
+      "name": "Real-Time Population Survey: Generative AI Adoption Tracker (FRED release 6)",
+      "publisher": "Federal Reserve Bank of St. Louis (Bick, Blandin & Deming)",
+      "year": 2026,
+      "url": "https://fred.stlouisfed.org/release?rid=6",
+      "license": "Public data via FRED; cite Bick, Blandin & Deming (2026), \"The Rapid Adoption of Generative AI\"",
+      "usedFor": "Quarterly share of U.S. adults and employed adults using generative AI (overall, for work, daily), work-hour time savings, and work adoption by SOC major occupation group and NAICS industry; ai-adoption-tracker.json"
+    },
+    {
+      "name": "Census Business Trends and Outlook Survey (BTOS) — AI use",
+      "publisher": "U.S. Census Bureau",
+      "year": 2026,
+      "url": "https://www.census.gov/hfp/btos/data",
+      "license": "Public Domain (U.S. Government work)",
+      "usedFor": "Biweekly share of U.S. employer businesses using AI in any business function (and expecting to within six months), national series plus latest NAICS-sector and state cuts; ai-adoption-tracker.json. Supersedes the 2018 ABS technology module for current business adoption."
+    },
+    {
       "name": "Microsoft AI Diffusion Report (AI Economic Impact & Insights)",
       "publisher": "Microsoft AI Economy Institute",
       "year": 2026,
       "url": "https://github.com/microsoft/ai-diffusion-report",
       "license": "MIT",
-      "usedFor": "GenAI diffusion % of working-age population across three periods (H1 2025 / H2 2025 / Q1 2026) for 147 economies; global-ai-metrics.json"
+      "usedFor": "GenAI diffusion % of working-age population across four periods (H1 2025 / H2 2025 / Q1 2026 / Q2 2026) for 147 economies; global-ai-metrics.json"
     },
     {
       "name": "IMF AI Preparedness Index (AIPI) — composite and sub-indices",
@@ -350,10 +374,10 @@
       "usedFor": "International occupation-mix shares by ISCO-08 major group (1-9) for included countries in international-occupation-mix.json"
     }
   ],
-  "note": "automationRisk bands are percentile-calibrated from the aiExposure distribution (756 occupations): Very High = top ~8% (aiExposure > 0.3104), High = next ~12% (> 0.1378), Medium = next ~25% (> 0.0080), Low = remainder (≤ 0.0080). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: real OEWS 2025 figures (755 occupations updated via BLS Public Data API). medianSalary: OEWS 2025 where available (752 updated), AEI-bundled wage otherwise. employmentHistory/wageHistory: OEWS multi-year annual series 2019–2025 — 2025 via BLS Public Data API (755 occ); 2019–2023 via archived national Excel flat files (Wayback Machine); note that BLS OEWS OEUN API series stores only the current-vintage snapshot so older years require flat-file download. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: successfully loaded",
+  "note": "automationRisk bands are percentile-calibrated from the aiExposure distribution (756 occupations): Very High = top ~8% (aiExposure > 0.3104), High = next ~12% (> 0.1378), Medium = next ~25% (> 0.0080), Low = remainder (≤ 0.0080). aiExposure = observed_exposure from Anthropic Economic Index (Claude AI-usage based, not Frey-Osborne 2013). employment: real OEWS 2025 figures (755 occupations updated via BLS Public Data API). medianSalary: OEWS 2025 where available (752 updated), AEI-bundled wage otherwise. employmentHistory/wageHistory: OEWS multi-year annual series 2016–2025 — 2025 via BLS Public Data API (755 occ); earlier years via national Excel flat files (bls.gov, Wayback Machine fallback); note that BLS OEWS OEUN API series stores only the current-vintage snapshot so older years require flat-file download. growthRate is null (no authoritative per-SOC % growth in AEI files). projectedOpenings from wage_data.JobForecast (BLS-EP annual openings) where > 0. Country usage metrics come from the AEI release_2026_06_26 release (latest reported month per country, recorded in usagePeriod); countries below that release's reporting threshold carry null usage. China is included as a supplemental country row with World Bank 2024 GDP per working-age capita; Anthropic Claude.ai usage metrics for China are not reported and remain null. O*NET skills: successfully loaded",
   "meta": {
-    "generatedAt": "2026-07-03T05:27:14.000Z",
-    "asOf": "2026-07-03",
+    "generatedAt": "2026-10-07T14:16:25.670Z",
+    "asOf": "2026-10-07",
     "source": {
       "name": "Anthropic Economic Index — Job Exposure",
       "publisher": "Anthropic",

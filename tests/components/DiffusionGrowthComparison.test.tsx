@@ -41,16 +41,16 @@ beforeEach(() => setLocale("en"));
 // ── Fixture data ──────────────────────────────────────────────────────────────
 
 const FIXTURE_ROWS: DiffusionComparisonRow[] = [
-  { iso3: "ARE", name: "United Arab Emirates", h1_2025: 59.4, h2_2025: 64.0, q1_2026: 70.1 },
-  { iso3: "SGP", name: "Singapore",            h1_2025: 58.6, h2_2025: 60.9, q1_2026: 63.4 },
-  { iso3: "NOR", name: "Norway",               h1_2025: 45.3, h2_2025: 46.4, q1_2026: 48.6 },
-  { iso3: "IRL", name: "Ireland",              h1_2025: 41.7, h2_2025: 44.6, q1_2026: 48.4 },
-  { iso3: "FRA", name: "France",               h1_2025: 40.9, h2_2025: 44.0, q1_2026: 47.8 },
-  { iso3: "ESP", name: "Spain",                h1_2025: 39.7, h2_2025: 41.8, q1_2026: 44.2 },
-  { iso3: "NZL", name: "New Zealand",          h1_2025: 37.6, h2_2025: 40.5, q1_2026: 43.0 },
-  { iso3: "GBR", name: "United Kingdom",       h1_2025: 36.4, h2_2025: 38.9, q1_2026: 42.2 },
-  { iso3: "NLD", name: "The Netherlands",      h1_2025: 36.3, h2_2025: 38.9, q1_2026: 42.1 },
-  { iso3: "QAT", name: "Qatar",                h1_2025: 35.7, h2_2025: 38.3, q1_2026: 41.8 },
+  { iso3: "ARE", name: "United Arab Emirates", h1_2025: 59.4, h2_2025: 64.0, q1_2026: 70.1, q2_2026: 73.3 },
+  { iso3: "SGP", name: "Singapore",            h1_2025: 58.6, h2_2025: 60.9, q1_2026: 63.4, q2_2026: 64.3 },
+  { iso3: "NOR", name: "Norway",               h1_2025: 45.3, h2_2025: 46.4, q1_2026: 48.6, q2_2026: 49.4 },
+  { iso3: "IRL", name: "Ireland",              h1_2025: 41.7, h2_2025: 44.6, q1_2026: 48.4, q2_2026: 49.9 },
+  { iso3: "FRA", name: "France",               h1_2025: 40.9, h2_2025: 44.0, q1_2026: 47.8, q2_2026: 49.6 },
+  { iso3: "ESP", name: "Spain",                h1_2025: 39.7, h2_2025: 41.8, q1_2026: 44.2, q2_2026: 45.1 },
+  { iso3: "NZL", name: "New Zealand",          h1_2025: 37.6, h2_2025: 40.5, q1_2026: 43.0, q2_2026: 44.1 },
+  { iso3: "GBR", name: "United Kingdom",       h1_2025: 36.4, h2_2025: 38.9, q1_2026: 42.2, q2_2026: 43.7 },
+  { iso3: "NLD", name: "The Netherlands",      h1_2025: 36.3, h2_2025: 38.9, q1_2026: 42.1, q2_2026: 43.5 },
+  { iso3: "QAT", name: "Qatar",                h1_2025: 35.7, h2_2025: 38.3, q1_2026: 41.8, q2_2026: 43.5 },
 ];
 
 // ── 1. Data helper tests ──────────────────────────────────────────────────────
@@ -61,7 +61,7 @@ describe("getTopDiffusionComparison", () => {
     expect(rows).toHaveLength(10);
   });
 
-  it("all returned rows have non-null h1_2025, h2_2025, q1_2026", () => {
+  it("all returned rows have non-null h1_2025, h2_2025, q1_2026, q2_2026", () => {
     const rows = getTopDiffusionComparison(10);
     for (const row of rows) {
       expect(typeof row.h1_2025).toBe("number");
@@ -70,20 +70,21 @@ describe("getTopDiffusionComparison", () => {
       expect(Number.isFinite(row.h1_2025)).toBe(true);
       expect(Number.isFinite(row.h2_2025)).toBe(true);
       expect(Number.isFinite(row.q1_2026)).toBe(true);
+      expect(Number.isFinite(row.q2_2026)).toBe(true);
     }
   });
 
-  it("rows are sorted by q1_2026 descending", () => {
+  it("rows are sorted by q2_2026 (latest period) descending", () => {
     const rows = getTopDiffusionComparison(10);
     for (let i = 1; i < rows.length; i++) {
-      expect(rows[i].q1_2026).toBeLessThanOrEqual(rows[i - 1].q1_2026);
+      expect(rows[i].q2_2026).toBeLessThanOrEqual(rows[i - 1].q2_2026);
     }
   });
 
-  it("first entry is the highest Q1 2026 country (United Arab Emirates)", () => {
+  it("first entry is the highest Q2 2026 country (United Arab Emirates)", () => {
     const rows = getTopDiffusionComparison(10);
     expect(rows[0].iso3).toBe("ARE");
-    expect(rows[0].q1_2026).toBeGreaterThan(60);
+    expect(rows[0].q2_2026).toBeGreaterThan(60);
   });
 
   it("respects the limit parameter", () => {
@@ -91,10 +92,10 @@ describe("getTopDiffusionComparison", () => {
     expect(getTopDiffusionComparison(3)).toHaveLength(3);
   });
 
-  it("returns iso3, name, h1_2025, h2_2025, q1_2026 — no other fields", () => {
+  it("returns iso3, name and the four AIEI periods — no other fields", () => {
     const rows = getTopDiffusionComparison(1);
     const keys = Object.keys(rows[0]).sort();
-    expect(keys).toEqual(["h1_2025", "h2_2025", "iso3", "name", "q1_2026"]);
+    expect(keys).toEqual(["h1_2025", "h2_2025", "iso3", "name", "q1_2026", "q2_2026"]);
   });
 });
 
@@ -144,29 +145,31 @@ describe("DiffusionGrowthComparison component", () => {
       return Math.max((v / SCALE_MAX_EXPECTED) * plotW, 2);
     }
 
-    // SVG rects: 10 rows × 3 bars each = rects[0..29]; rects[30..32] are legend swatches
+    // SVG rects: 10 rows × 4 bars each = rects[0..39]
     const rects = Array.from(svg?.querySelectorAll("rect") ?? []);
-    expect(rects.length).toBeGreaterThanOrEqual(30);
+    expect(rects.length).toBe(40);
 
-    // Row 0 = ARE (h1=59.4, h2=64.0, q1=70.1)
+    // Row 0 = ARE (h1=59.4, h2=64.0, q1=70.1, q2=73.3)
     const areH1W = parseFloat(rects[0].getAttribute("width")!);
     const areH2W = parseFloat(rects[1].getAttribute("width")!);
     const areQ1W = parseFloat(rects[2].getAttribute("width")!);
+    const areQ2W = parseFloat(rects[3].getAttribute("width")!);
 
     expect(areH1W).toBeCloseTo(expectedW(59.4), 1);
     expect(areH2W).toBeCloseTo(expectedW(64.0), 1);
     expect(areQ1W).toBeCloseTo(expectedW(70.1), 1);
+    expect(areQ2W).toBeCloseTo(expectedW(73.3), 1);
 
     // Row 2 = NOR (h1=45.3)
-    const norH1W = parseFloat(rects[6].getAttribute("width")!);
+    const norH1W = parseFloat(rects[8].getAttribute("width")!);
     expect(norH1W).toBeCloseTo(expectedW(45.3), 1);
 
     // Shared-scale proof: cross-row width ratio must equal cross-row value ratio.
     // Under per-row normalization each row's max bar fills plotW — this ratio would differ.
     expect(areQ1W / norH1W).toBeCloseTo(70.1 / 45.3, 2);
 
-    // SCALE_MAX=75 proof: ARE q1 at 70.1% must be ~93.5% of plotW, not 100%.
-    // If SCALE_MAX were 100 the width would be ~339.3 instead of ~452.4.
+    // Axis max rounds the leader (73.3%) up to the next 25pp → 75, so ARE q1
+    // at 70.1% is ~93.5% of plotW, not 100% (no per-chart normalization).
     expect(areQ1W).toBeLessThan(plotW);
     expect(areQ1W).toBeCloseTo((70.1 / SCALE_MAX_EXPECTED) * plotW, 1);
   });
@@ -182,9 +185,10 @@ describe("DiffusionGrowthComparison component", () => {
 
     // Check column headers
     expect(screen.getByRole("columnheader", { name: /Economy/i })).toBeInTheDocument();
-    expect(screen.getByRole("columnheader", { name: /H1 2025/i })).toBeInTheDocument();
-    expect(screen.getByRole("columnheader", { name: /H2 2025/i })).toBeInTheDocument();
-    expect(screen.getByRole("columnheader", { name: /Q1 2026/i })).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: /^H1 2025 \(%\)/i })).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: /^H2 2025 \(%\)/i })).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: /Q1 2026 \(%\)/i })).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: /Q2 2026 \(%\)/i })).toBeInTheDocument();
     expect(screen.getByRole("columnheader", { name: /Change/i })).toBeInTheDocument();
   });
 
@@ -216,7 +220,7 @@ describe("DiffusionGrowthComparison component", () => {
     const text = figcaption?.textContent ?? "";
     expect(text).toContain("United Arab Emirates");
     expect(text).toContain("H1 2025");
-    expect(text).toContain("Q1 2026");
+    expect(text).toContain("Q2 2026");
   });
 
   it("renders the caveat text with required claim guardrails", () => {
@@ -227,7 +231,7 @@ describe("DiffusionGrowthComparison component", () => {
     // Explicit ≠ claims (caveat uses "Usage ≠ ...")
     expect(body).toMatch(/[Uu]sage\s*≠/);
     // Short window disclosure
-    expect(body).toMatch(/short|three.*period|caution/i);
+    expect(body).toMatch(/short|four.*period|caution/i);
     // Telemetry bias
     expect(body).toMatch(/telemetry|undercount/i);
     // MIT license disclosure
@@ -248,16 +252,17 @@ describe("DiffusionGrowthComparison component", () => {
     expect(link).toHaveAttribute("href", "/sources");
   });
 
-  it("renders an accessible legend with three period labels", () => {
+  it("renders an accessible legend with four period labels", () => {
     render(<DiffusionGrowthComparison data={FIXTURE_ROWS} />);
     const legend = screen.getByRole("list", { name: /Legend/i });
     expect(legend).toBeInTheDocument();
     const items = legend.querySelectorAll("[role='listitem']");
-    expect(items.length).toBe(3);
+    expect(items.length).toBe(4);
     const text = legend.textContent ?? "";
     expect(text).toContain("H1 2025");
     expect(text).toContain("H2 2025");
     expect(text).toContain("Q1 2026");
+    expect(text).toContain("Q2 2026");
   });
 
   it("legend aria-label uses localized key (ZH locale shows 图例)", () => {
@@ -288,7 +293,7 @@ describe("DiffusionGrowthComparison i18n", () => {
     expect(zhKeys).toEqual(enKeys);
   });
 
-  it("EN title presents top economies by Q1 2026 level — not fastest-growth wording", () => {
+  it("EN title presents top economies by latest level — not fastest-growth wording", () => {
     const title = globalEn.diffusionGrowthTitle ?? "";
     expect(title).toMatch(/Consumer GenAI Diffusion/i);
     // Must not imply fastest-growth ranking
@@ -306,7 +311,7 @@ describe("DiffusionGrowthComparison i18n", () => {
     const caveat = globalEn.diffusionGrowthCaveat ?? "";
     // Usage ≠ capability/workplace adoption/productivity/labor-market impact
     expect(caveat).toMatch(/[Uu]sage\s*≠/);
-    expect(caveat).toMatch(/short|three.*period|caution/i);
+    expect(caveat).toMatch(/short|four.*period|caution/i);
     expect(caveat).toMatch(/telemetry|undercount/i);
     expect(caveat).toMatch(/MIT/i);
     // Guardrail: must NOT positively claim workplace penetration or labor displacement
@@ -330,13 +335,13 @@ describe("DiffusionGrowthComparison i18n", () => {
     expect(caveat).toMatch(/digital.{0,30}access|Microsoft.{0,40}penetration/i);
   });
 
-  it("EN subtitle explicitly states ranked by Q1 2026 level, not fastest-growth", () => {
+  it("EN subtitle explicitly states ranked by Q2 2026 level, not fastest-growth", () => {
     const subtitle = globalEn.diffusionGrowthSubtitle ?? "";
-    expect(subtitle).toMatch(/Q1.*2026/i);
+    expect(subtitle).toMatch(/Q2.*2026/i);
     // Subtitle must clarify ranking basis — negation of fastest-growth ranking is acceptable
     // but must not read as "ranked by fastest growth"
     expect(subtitle).not.toMatch(/ranked\s+by\s+.{0,30}growth/i);
-    expect(subtitle).toMatch(/Q1.*2026.*level|level.*descending|Ranked by Q1/i);
+    expect(subtitle).toMatch(/Q2.*2026.*level|level.*descending|Ranked by Q2/i);
   });
 
   it("ZH caveat is non-empty and contains core guardrail terms", () => {
@@ -345,10 +350,11 @@ describe("DiffusionGrowthComparison i18n", () => {
     expect(caveat).toMatch(/MIT/);
   });
 
-  it("diffusionGrowthColH1/H2/Q1 match the three period labels EN", () => {
+  it("diffusionGrowthCol* match the four period labels EN", () => {
     expect(globalEn.diffusionGrowthColH1).toMatch(/H1 2025/);
     expect(globalEn.diffusionGrowthColH2).toMatch(/H2 2025/);
     expect(globalEn.diffusionGrowthColQ1).toMatch(/Q1 2026/);
+    expect(globalEn.diffusionGrowthColQ2).toMatch(/Q2 2026/);
   });
 
   it("renders correctly in ZH locale", () => {

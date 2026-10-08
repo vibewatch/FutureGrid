@@ -4,6 +4,9 @@ import { getAnalysisPageData } from "@/lib/analysis";
 import { getAIPressureSynthesisData } from "@/lib/ai-pressure-synthesis";
 import { getAICompanyStocksData } from "@/lib/ai-company-stocks";
 import { getExposureOutcomeMatrix } from "@/lib/exposure-outcome";
+import { getAIAdoptionTracker, getAdoptionPulseData, getIndustryAdoption, getFirmAdoptionByState } from "@/lib/ai-adoption-tracker";
+import { getSectorAggregatesExtended } from "@/lib/data";
+import type { AdoptionTrackerLensProps } from "@/components/insights/AdoptionTrackerLens";
 import { BASE_PATH, SITE_NAME } from "@/lib/seo";
 
 const title = "Insights Lab";
@@ -31,6 +34,21 @@ export default function AnalysisPage() {
   const aiCompanyStocks = getAICompanyStocksData();
   const aiPressureSynthesis = getAIPressureSynthesisData({ aiCompanyStocks });
   const exposureOutcomeMatrix = getExposureOutcomeMatrix();
+  const pulse = getAdoptionPulseData();
+  const exposureBySector = new Map(getSectorAggregatesExtended().map((s) => [s.sector, s.avgRisk]));
+  const adoption: AdoptionTrackerLensProps = {
+    pulse,
+    industries: getIndustryAdoption(),
+    occupations: pulse.occupations.map((o) => ({
+      sector: o.sector,
+      adoptionWorkPct: o.adoptionWorkPct,
+      yoyPp: o.yoyPp,
+      observedExposure: exposureBySector.get(o.sector) ?? null,
+      timeSavingsPctOfHours: o.timeSavingsPctOfHours,
+    })),
+    states: getFirmAdoptionByState(),
+    caveats: getAIAdoptionTracker().caveats,
+  };
 
   return (
     <InsightsView
@@ -38,6 +56,7 @@ export default function AnalysisPage() {
       aiCompanyStocks={aiCompanyStocks}
       aiPressureSynthesis={aiPressureSynthesis}
       exposureOutcomeMatrix={exposureOutcomeMatrix}
+      adoption={adoption}
     />
   );
 }

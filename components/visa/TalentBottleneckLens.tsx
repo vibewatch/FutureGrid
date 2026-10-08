@@ -100,11 +100,11 @@ function jobPostingModeLabel(
 
 function KpiCard({ label, value, detail }: { label: string; value: string; detail: string }) {
   return (
-    <div className="glass rounded-2xl border border-zinc-200 bg-white/70 p-4 dark:border-zinc-800 dark:bg-zinc-900/50">
-      <dt className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+    <div className="glass rounded-2xl p-4">
+      <dt className="text-[10px] font-semibold uppercase tracking-[0.08em] text-zinc-500 text-zinc-500 dark:text-zinc-400">
         {label}
       </dt>
-      <dd className="mt-1 text-2xl font-bold text-gradient tabular-nums">{value}</dd>
+      <dd className="mt-1 text-2xl font-semibold text-gradient tabular-nums">{value}</dd>
       <dd className="mt-1 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
         {detail}
       </dd>
@@ -426,13 +426,13 @@ export default function TalentBottleneckLens({ data }: { data: TalentBottleneckD
       aria-labelledby={headingId}
       className="scroll-mt-24 space-y-5"
     >
-      <div className="glass rounded-2xl border border-zinc-200 bg-white/70 p-5 dark:border-zinc-800 dark:bg-zinc-900/50 sm:p-6">
+      <div className="glass rounded-2xl p-5 sm:p-6">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
           <div className="max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500 dark:text-violet-300">
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
               {t("talentBottleneckEyebrow")}
             </p>
-            <h2 id={headingId} className="mt-1 text-2xl font-extrabold tracking-tight text-gradient sm:text-3xl">
+            <h2 id={headingId} className="mt-1 text-xl font-semibold tracking-tight text-gradient">
               {t("talentBottleneckTitle")}
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">

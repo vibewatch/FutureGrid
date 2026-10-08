@@ -239,9 +239,9 @@ function buildSummary(
 function buildMethodology(rankableCountryCount: number): ReadinessGapMethodology {
   return {
     inputs: [
-      "diffusionPct from the existing global country map helper: Microsoft Q1 2026 generative-AI diffusion, measured as a percent of working-age population.",
+      "diffusionPct from the existing global country map helper: Microsoft Q2 2026 generative-AI diffusion, measured as a percent of working-age population.",
       "aiReadiness from the existing global country map helper: IMF AI Preparedness Index on a 0–1 capacity scale; readinessScore is aiReadiness × 100.",
-      "diffusionDelta is carried through when the existing helper has a H1 2025 to Q1 2026 percentage-point change; otherwise it remains null.",
+      "diffusionDelta is carried through when the existing helper has a H1 2025 to Q2 2026 percentage-point change; otherwise it remains null.",
     ],
     ranking: `${rankableCountryCount} countries with both diffusionPct and aiReadiness are ranked separately by metric using tie-aware percentile ranks from 0 to 100.`,
     scoring:

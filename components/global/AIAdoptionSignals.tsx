@@ -43,7 +43,7 @@ function PanelShell({ panel, t, children }: { panel: SignalPanel; t: Translator;
     <article className="glass mb-5 inline-block w-full break-inside-avoid rounded-2xl p-5 sm:p-6" aria-labelledby={`${panel.id}-heading`}>
       <div className="flex flex-1 flex-col">
         <div className="mb-4">
-          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-violet-500 dark:text-violet-300">
+          <p className="text-[10px] font-bold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
             {panel.family}
           </p>
           <h3 id={`${panel.id}-heading`} className="mt-1 text-lg font-bold leading-tight text-zinc-900 dark:text-white">
@@ -125,7 +125,7 @@ function KpiGridPanel({ panel }: { panel: SignalPanel }) {
       {panel.values.map((value) => (
         <div key={value.id} className="rounded-2xl border border-zinc-200 bg-white/60 p-4 dark:border-zinc-800 dark:bg-zinc-950/35">
           <dt className="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">{placeLabel(value)}</dt>
-          <dd className="mt-1 text-2xl font-extrabold text-gradient tabular-nums">{displayValue(value)}</dd>
+          <dd className="mt-1 text-2xl font-semibold text-gradient tabular-nums">{displayValue(value)}</dd>
           <dd className="mt-1 text-[11px] text-zinc-500">{value.period}</dd>
         </div>
       ))}
@@ -234,7 +234,7 @@ function RepoKpisPanel({ panel, t }: { panel: SignalPanel; t: Translator }) {
                 ))}
               </dl>
             ) : (
-              <p className="mt-2 text-2xl font-extrabold text-gradient tabular-nums">{displayValue(repo)}</p>
+              <p className="mt-2 text-2xl font-semibold text-gradient tabular-nums">{displayValue(repo)}</p>
             )}
           </div>
         );
@@ -295,10 +295,10 @@ export default function AIAdoptionSignals({ dataset }: { dataset: AdoptionSignal
       <div className="glass p-5 sm:p-6">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div className="min-w-0 max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500 dark:text-violet-300">
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
               {t("adoptionSignalsEyebrow")}
             </p>
-            <h2 id={headingId} className="mt-1 text-2xl font-extrabold tracking-tight text-gradient sm:text-3xl">
+            <h2 id={headingId} className="mt-1 text-xl font-semibold tracking-tight text-gradient">
               {t("adoptionSignalsTitle")}
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
@@ -313,15 +313,15 @@ export default function AIAdoptionSignals({ dataset }: { dataset: AdoptionSignal
           <dl className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3 xl:max-w-[26rem] xl:flex-none">
             <div className="rounded-2xl border border-zinc-200 bg-white/55 p-4 dark:border-zinc-800 dark:bg-zinc-950/35">
               <dt className="text-[10px] font-semibold uppercase tracking-widest text-zinc-500">{t("adoptionSignalsCollectedFamilies")}</dt>
-              <dd className="mt-1 text-2xl font-extrabold text-gradient tabular-nums">{dataset.coverage.collectedFamilies.length}</dd>
+              <dd className="mt-1 text-2xl font-semibold text-gradient tabular-nums">{dataset.coverage.collectedFamilies.length}</dd>
             </div>
             <div className="rounded-2xl border border-zinc-200 bg-white/55 p-4 dark:border-zinc-800 dark:bg-zinc-950/35">
               <dt className="text-[10px] font-semibold uppercase tracking-widest text-zinc-500">{t("adoptionSignalsVisualizedFamilies")}</dt>
-              <dd className="mt-1 text-2xl font-extrabold text-gradient tabular-nums">{dataset.coverage.visualizedFamilies.length}</dd>
+              <dd className="mt-1 text-2xl font-semibold text-gradient tabular-nums">{dataset.coverage.visualizedFamilies.length}</dd>
             </div>
             <div className="rounded-2xl border border-zinc-200 bg-white/55 p-4 dark:border-zinc-800 dark:bg-zinc-950/35">
               <dt className="text-[10px] font-semibold uppercase tracking-widest text-zinc-500">{t("adoptionSignalsFutureCatalogCount")}</dt>
-              <dd className="mt-1 text-2xl font-extrabold text-gradient tabular-nums">{dataset.coverage.futureCatalogCount}</dd>
+              <dd className="mt-1 text-2xl font-semibold text-gradient tabular-nums">{dataset.coverage.futureCatalogCount}</dd>
             </div>
           </dl>
         </div>

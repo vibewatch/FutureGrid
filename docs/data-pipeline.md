@@ -135,7 +135,8 @@ This is the **canonical refresh command** for both local use and CI. It runs `sc
 | `ai-company-stocks` | `build-ai-company-stocks.mjs` | Yahoo Finance chart bootstrap (unofficial; set `AI_COMPANY_STOCKS_BOOTSTRAP_YAHOO=1`) |
 | `ai-frontier` | `build-ai-frontier.mjs` | Epoch AI Notable AI Models |
 | `openrouter-models` | `build-openrouter-models.mjs` | OpenRouter public API; preserves endpoint details per model and rejects materially truncated catalogs |
-| `global-ai-metrics` | `build-global-metrics.mjs` | Microsoft AI Diffusion + IMF AIPI + Oxford GAIRI; partial optional sections preserve last-known-good coverage |
+| `global-ai-metrics` | `build-global-metrics.mjs` | Microsoft AI Diffusion (H1 2025 → Q2 2026, fails if the latest period column is missing) + IMF AIPI + Oxford GAIRI; partial optional sections preserve last-known-good coverage |
+| `ai-adoption-tracker` | `build-ai-adoption-tracker.mjs` | St. Louis Fed RPS GenAI Adoption Tracker (FRED graph CSV) + Census BTOS AI-use workbooks; each section falls back to last-known-good on fetch failure |
 | `international-occupation-mix` | `build-international-occupation-mix.mjs` | ILOSTAT 9 countries |
 | `warn-public` | `build-warn-public.mjs` | Privacy-filtered public copy (depends on warn) |
 | `provenance` | `build-provenance.mjs` | Central registry — **always last** |
@@ -177,9 +178,15 @@ Executes (in order):
 6. `npm run build:ors` — occupational requirements
 7. `npm run build:openrouter-models`
 8. `npm run build:ai-company-stocks`
-9. `npm run build:international-occupation-mix`
-10. `npm run build:provenance` — provenance registry
-11. `npm run build:downloads` — copy compliance-cleared files to `public/data/`
+9. `npm run build:ai-adoption-tracker`
+10. `npm run build:international-occupation-mix`
+11. `npm run build:provenance` — provenance registry
+12. `npm run build:downloads` — copy compliance-cleared files to `public/data/`
+
+**Upstream vintages (as of the October 2026 refresh):**
+
+- `occupation-snapshot` — country usage from the Anthropic Economic Index `release_2026_06_26` (latest reported month per country, `usagePeriod`; schema `geo_level`/`category_name`/`metric_id`), streamed and filtered to country rows; GDP per working-age capita still comes from `release_2025_09_15`. OEWS history 2016–2025 is downloaded directly from bls.gov (a User-Agent with contact details is required; Wayback Machine is the fallback). Skills come from O*NET 31.0, which splits the former `Skills.txt` into `Essential Skills.txt` + `Transferable Skills.txt` (identical schema) — the loader accepts either layout.
+- `jolts` — the request window ends at the current calendar year, so new months flow in without code changes.
 
 ### Individual Build Scripts
 
@@ -208,6 +215,7 @@ Executes (in order):
 | `build:ai-company-stocks` | `build-ai-company-stocks.mjs` | `data/ai-company-stocks.json` |
 | `build:ors` | `build-occupational-requirements.mjs` | `data/occupational-requirements.json` |
 | `build:international-occupation-mix` | `build-international-occupation-mix.mjs` | `data/international-occupation-mix.json` |
+| `build:ai-adoption-tracker` | `build-ai-adoption-tracker.mjs` | `data/ai-adoption-tracker.json` |
 
 ### Utility Scripts
 
@@ -272,6 +280,7 @@ Per-dataset validators:
 | `validateProvenance(data)` | `build-provenance.mjs` |
 | `validateOpenRouterModels(data)` | `build-openrouter-models.mjs` |
 | `validateEmploymentProjections(data)` | `build-employment-projections.mjs` |
+| `validateAIAdoptionTracker(data)` | `build-ai-adoption-tracker.mjs` |
 
 **Threshold philosophy:** Thresholds are set at ≈80 % of the current committed count. This catches degenerate fetches (empty response, structural change) without failing on normal variance.
 

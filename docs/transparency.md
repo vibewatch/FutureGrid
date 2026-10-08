@@ -245,7 +245,7 @@ flowchart LR
 All cleared-download datasets carry an attribution string surfaced in the Methodology page. Examples:
 
 - Occupation Snapshot: *"Anthropic Economic Index + BLS OEWS. Derived dataset — cite FutureGrid and upstream sources."*
-- O*NET Enrichment: *"O*NET 28.3, National Center for O*NET Development."*
+- O*NET Enrichment: *"O*NET 31.0, National Center for O*NET Development."*
 - AI Frontier: *"Epoch AI — AI Training Compute dataset."*
 
 The `GuardrailBadge` component visually signals the epistemic status of any displayed value:

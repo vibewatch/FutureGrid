@@ -6,7 +6,7 @@ export const globalEn: Record<string, string> = {
     "AI adoption varies dramatically across countries. This page shows",
   heroIntroHighlight1: "real per-capita AI (Claude.ai) usage",
   heroIntroMid: "from the",
-  heroIntroHighlight2: "Anthropic Economic Index (Aug 2025)",
+  heroIntroHighlight2: "Anthropic Economic Index (May 2026)",
   heroIntroAfter:
     "\u2014 a usage-based measure grounded in observed behaviour, not forecasts.",
   statCountriesLabel: "Countries tracked",
@@ -18,16 +18,16 @@ export const globalEn: Record<string, string> = {
   mapIntroBefore: "Two lenses are available via the layer toggle:",
   mapHighlight1: "Claude.ai usage",
   mapIntroMid1:
-    "(per-capita observed interactions, Anthropic Economic Index Aug\u00a02025 \u2014 availability-biased; China and restricted markets appear grey) and",
+    "(per-capita observed interactions, Anthropic Economic Index Apr\u2013May\u00a02026 \u2014 availability-biased; China and restricted markets appear grey) and",
   mapHighlight2: "GenAI diffusion",
   mapIntroMid2:
-    "(Microsoft AIEI Q1\u00a02026, % of working-age population using GenAI across 147\u00a0countries,",
+    "(Microsoft AIEI Q2\u00a02026, % of working-age population using GenAI across 147\u00a0countries,",
   mapHighlight3: "China included",
   mapIntroAfter:
     "). The two metrics use different denominators and cannot be merged \u2014 see",
   mapSourcesLink: "Data & Sources",
   diffusionLeadersLabel:
-    "GenAI diffusion leaders \u00b7 Microsoft AIEI Q1\u00a02026",
+    "GenAI diffusion leaders \u00b7 Microsoft AIEI Q2\u00a02026",
   diffusionLeadersCaption:
     "% working-age population using generative AI (147-country survey).",
   mapDemandLayerLabel: "AI job demand",
@@ -45,7 +45,7 @@ export const globalEn: Record<string, string> = {
   chinaIntroHighlight2: "GenAI diffusion layer",
   chinaIntroMid2: ", China does appear \u2014 Microsoft AIEI estimates",
   chinaIntroMid3:
-    "of working-age adults used GenAI in Q1\u00a02026. Note that Western telemetry likely undercounts domestic apps (Doubao, Kimi, etc.) \u2014 CNNIC\u2019s survey implies ~43% penetration. The native-ecosystem figures below use different measurement approaches and denominators and are",
+    "of working-age adults used GenAI in Q2\u00a02026. Note that Western telemetry likely undercounts domestic apps (Doubao, Kimi, etc.) \u2014 CNNIC\u2019s survey implies ~43% penetration. The native-ecosystem figures below use different measurement approaches and denominators and are",
   chinaNotMerged: "not merged into either index",
   cnnicLabel: "CNNIC \u00b7 Jun 2025",
   cnnicDesc: "Generative-AI users",
@@ -53,7 +53,7 @@ export const globalEn: Record<string, string> = {
   questDesc: "Mobile-AI MAU",
   doubaoLabel: "Doubao (QuestMobile) \u00b7 Dec 2025",
   doubaoDesc: "App MAU",
-  aieiLabel: "Microsoft AIEI \u00b7 Q1 2026",
+  aieiLabel: "Microsoft AIEI \u00b7 Q2 2026",
   aieiDesc: "GenAI diffusion (working-age pop.)",
   chinaCaveatPart1:
     "These proxies use different measurement methods (government survey, app-market scan, product MAU) and cannot be summed or directly compared to each other.",
@@ -278,12 +278,12 @@ export const globalEn: Record<string, string> = {
   risersHeading: "Fastest-Rising Adopters",
   risersSourceLink: "Microsoft AIEI \u00b7 see sources",
   risersIntroBefore: "Countries with the largest GenAI diffusion gains,",
-  risersIntroHighlight: "H1\u00a02025 \u2192 Q1\u00a02026",
+  risersIntroHighlight: "H1\u00a02025 \u2192 Q2\u00a02026",
   risersIntroAfter:
     "Based on Microsoft\u2019s AI Economic Impact Index (Western telemetry \u2014 may undercount domestic apps in some markets).",
   risersFullDetailsLink: "Full source details \u2192",
   risersCaption:
-    "Microsoft AIEI \u00b7 H1 2025 \u2192 Q1 2026 \u00b7 % working-age population using generative AI across 147\u00a0economies. Western telemetry \u2014",
+    "Microsoft AIEI \u00b7 H1 2025 \u2192 Q2 2026 \u00b7 % working-age population using generative AI across 147\u00a0economies. Western telemetry \u2014",
   risersCaptionSeeLink: "see sources",
   risersCaptionAfter: "for caveats.",
 
@@ -295,7 +295,7 @@ export const globalEn: Record<string, string> = {
   // Methodology
   methodologyLabel: "Methodology",
   methodologyText:
-    "Usage index = observed Claude.ai interactions per working-age capita, normalised across all countries. Source: Anthropic Economic Index, August 2025 snapshot (194 reported country rows, plus a supplemental China row using World Bank 2024 GDP and working-age population). GDP data comes from World Bank / IMF fields bundled in the Anthropic dataset, with China GDP-per-worker sourced directly from World Bank. Countries with zero recorded interactions are excluded from ranked lists but remain in the dataset; countries with unreported Claude.ai usage metrics do not rank.",
+    "Usage index = observed Claude.ai interactions per working-age capita, normalised across all countries. Source: Anthropic Economic Index, June 2026 release (latest reported month per country, Apr\u2013May 2026; countries below the release\u2019s reporting threshold have no usage value, plus a supplemental China row using World Bank 2024 GDP and working-age population). GDP data comes from World Bank / IMF fields bundled in the Anthropic dataset, with China GDP-per-worker sourced directly from World Bank. Countries with zero recorded interactions are excluded from ranked lists but remain in the dataset; countries with unreported Claude.ai usage metrics do not rank.",
   methodologySourceBefore:
     "For full details on data provenance and licensing, see the",
   methodologySourceLink: "Data & Sources",
@@ -316,7 +316,15 @@ export const globalEn: Record<string, string> = {
   countryInteractionsLabel: "Interactions:",
   countryDetailsLink: "details →",
   countryCloseAria: "Close country detail",
-  countryClaudeUsageHeading: "Claude.ai Usage · Anthropic Economic Index Aug 2025",
+  countryUseMixHeading: "How Claude.ai is used",
+  countryUseWork: "Work",
+  countryUsePersonal: "Personal",
+  countryUseCoursework: "Coursework",
+  countryCollabHeading: "Collaboration mode",
+  countryCollabAutomation: "Automation",
+  countryCollabAugmentation: "Augmentation",
+  countryUseMixNote: "Share of sampled Claude.ai conversations (Anthropic Economic Index, latest release). Automation = Claude completes the task with minimal back-and-forth; augmentation = iterative collaboration, learning, or validation.",
+  countryClaudeUsageHeading: "Claude.ai Usage · Anthropic Economic Index 2026",
   countryUsageIndexLabel: "usage index",
   countryGlobalShareLabel: "global share",
   countryNoClaudeData: "No Claude.ai data",
@@ -403,24 +411,26 @@ export const globalEn: Record<string, string> = {
   diffusionGrowthEyebrow: "Microsoft AIEI \u00b7 MIT License",
   diffusionGrowthTitle: "Consumer GenAI Diffusion \u2014 Top Economies",
   diffusionGrowthSubtitle:
-    "Top 10 economies ranked by Q1\u00a02026 share of working-age population using a generative AI product. H1 2025, H2 2025, and Q1 2026 values shown for trend context. Ranked by Q1\u00a02026 level, descending \u2014 not a fastest-growth ranking.",
+    "Top 10 economies ranked by Q2\u00a02026 share of working-age population using a generative AI product. H1 2025, H2 2025, Q1 2026, and Q2 2026 values shown for trend context. Ranked by Q2\u00a02026 level, descending \u2014 not a fastest-growth ranking.",
   diffusionGrowthH1Label: "H1 2025",
   diffusionGrowthH2Label: "H2 2025",
   diffusionGrowthQ1Label: "Q1 2026",
+  diffusionGrowthQ2Label: "Q2 2026",
   diffusionGrowthAxisLabel: "% of working-age population",
   diffusionGrowthSourceLink: "Data & Sources",
   diffusionGrowthTableCaption:
-    "Consumer GenAI diffusion — top 10 economies by Q1 2026 share (Microsoft AIEI, MIT)",
+    "Consumer GenAI diffusion — top 10 economies by Q2 2026 share (Microsoft AIEI, MIT)",
   diffusionGrowthColCountry: "Economy",
   diffusionGrowthColH1: "H1 2025 (%)",
   diffusionGrowthColH2: "H2 2025 (%)",
   diffusionGrowthColQ1: "Q1 2026 (%)",
-  diffusionGrowthColChange: "Change (Q1\u2212H1, pp)",
+  diffusionGrowthColQ2: "Q2 2026 (%)",
+  diffusionGrowthColChange: "Change (Q2 2026\u2212H1 2025, pp)",
   diffusionGrowthFigureAria:
-    "Grouped bar chart: Consumer GenAI Diffusion \u2014 top 10 economies by Q1 2026 level, with H1 2025, H2 2025, Q1 2026 trend",
+    "Grouped bar chart: Consumer GenAI Diffusion \u2014 top 10 economies by Q2 2026 level, with H1 2025, H2 2025, Q1 2026, Q2 2026 trend",
   diffusionGrowthGuardrail:
     "Usage \u2260 capability, workplace adoption, productivity, or labor-market impact.",
   diffusionGrowthLegendLabel: "Legend",
   diffusionGrowthCaveat:
-    "Metric: % of working-age population who reported using a generative AI product in each survey period (Microsoft AI Economic Impact \u0026 Insights). Usage \u2260 capability, workplace adoption, productivity, or labor-market impact. Three survey periods (H1\u00a02025, H2\u00a02025, Q1\u00a02026) is a short window; caution on trend extrapolation. This absolute-share top 10 reflects economies with high Microsoft product penetration and digital-access infrastructure; it is not a representative sample of global AI diffusion. Digital-access gaps and Microsoft product reach independently affect which economies appear in this ranking. Western telemetry may undercount domestic AI apps (e.g.\u00a0Doubao, Kimi) in China and other markets. Source: Microsoft AI Diffusion Report (MIT). Not merged with Claude\u00a0usage\u00a0index, Indeed\u00a0job\u00a0demand, Anthropic indices, or IMF metrics.",
+    "Metric: % of working-age population who reported using a generative AI product in each survey period (Microsoft AI Economic Impact \u0026 Insights). Usage \u2260 capability, workplace adoption, productivity, or labor-market impact. Four survey periods (H1\u00a02025, H2\u00a02025, Q1\u00a02026, Q2\u00a02026) is a short window; caution on trend extrapolation. This absolute-share top 10 reflects economies with high Microsoft product penetration and digital-access infrastructure; it is not a representative sample of global AI diffusion. Digital-access gaps and Microsoft product reach independently affect which economies appear in this ranking. Western telemetry may undercount domestic AI apps (e.g.\u00a0Doubao, Kimi) in China and other markets. Source: Microsoft AI Diffusion Report (MIT). Not merged with Claude\u00a0usage\u00a0index, Indeed\u00a0job\u00a0demand, Anthropic indices, or IMF metrics.",
 };

@@ -187,8 +187,8 @@ export default function ReportView() {
     return (
       <div className="max-w-[1200px] space-y-6">
         {/* Hero */}
-        <div className="animate-fade-up">
-          <h1 className="text-3xl font-bold tracking-tight text-gradient">
+        <div className="border-b border-[var(--border)] pb-6">
+          <h1 className="text-[26px] font-semibold leading-tight tracking-tight text-zinc-900 sm:text-3xl dark:text-white">
             {t("pageTitle")}
           </h1>
           <p className="text-zinc-600 dark:text-zinc-400 mt-2 max-w-2xl">
@@ -211,7 +211,7 @@ export default function ReportView() {
               <span className="text-xs font-semibold uppercase tracking-widest text-violet-400">
                 {t("stepOf", { n: String(i + 1), total: String(BEATS.length) })}
               </span>
-              <h2 className="text-2xl font-bold tracking-tight text-gradient mt-1">
+              <h2 className="text-xl font-semibold tracking-tight text-gradient mt-1">
                 {t(beat.titleKey)}
               </h2>
               <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-0.5">
@@ -221,7 +221,7 @@ export default function ReportView() {
             <p className="text-zinc-600 dark:text-zinc-300 leading-relaxed max-w-prose">
               {beatBody(beat, i)}
             </p>
-            <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
+            <div className="glass rounded-xl p-4">
               <beat.Chart />
             </div>
           </section>
@@ -235,7 +235,7 @@ export default function ReportView() {
     <div className="mx-auto w-full max-w-[1400px]">
       {/* Hero */}
       <div className="animate-fade-up mb-10">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight text-zinc-900 sm:text-3xl dark:text-white">
           {t("pageTitle")}
         </h1>
         <p className="text-zinc-600 dark:text-zinc-400 mt-2 max-w-2xl">
@@ -278,14 +278,14 @@ export default function ReportView() {
                 total: String(BEATS.length),
               })}
             </span>
-            <h2 className="text-xl font-bold tracking-tight text-gradient">
+            <h2 className="text-lg font-semibold tracking-tight text-gradient">
               {t(activeBeat.titleKey)}
             </h2>
           </div>
 
           {/* Chart panel — renders only the active chart, with fade transition */}
           <div
-            className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 overflow-hidden transition-opacity duration-300 relative"
+            className="glass rounded-xl p-4 overflow-hidden transition-opacity duration-300 relative"
             style={{ minHeight: "420px" }}
           >
             {BEATS.map((beat, i) => (
@@ -310,8 +310,8 @@ export default function ReportView() {
           {/* Active beat stat (beat 1 only) */}
           {activeIndex === 0 && (
             <div className="mt-4 flex gap-4">
-              <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl px-5 py-3 text-center">
-                <p className="text-2xl font-bold text-gradient">
+              <div className="glass rounded-xl px-5 py-3 text-center">
+                <p className="text-xl font-semibold text-gradient tracking-tight">
                   {t("beat1Stat", { highPct })}
                 </p>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">

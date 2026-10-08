@@ -54,21 +54,21 @@ export default function SectorsPageClient({
   return (
     <div className="mx-auto w-full max-w-[1400px] space-y-8">
       {/* Header */}
-      <div className="animate-fade-up">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient">
+      <div className="border-b border-[var(--border)] pb-6">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight text-zinc-900 sm:text-3xl dark:text-white">
           {t("pageTitle")}
         </h1>
-        <p className="text-zinc-600 dark:text-zinc-400 mt-1">
+        <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
           {t("pageIntro")}
         </p>
       </div>
 
       {/* Charts */}
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+      <div className="glass rounded-xl p-6">
         <CareerTrendChart />
       </div>
 
-      <div className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+      <div className="glass rounded-xl p-6">
         <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
           {t("topOccupationsHeading")}
         </h2>
@@ -122,7 +122,7 @@ export default function SectorsPageClient({
               <Link
                 key={s.sector}
                 href={`/sectors/${encodeURIComponent(s.sector)}`}
-                className="block glass glass-hover bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all group"
+                className="block glass glass-hover rounded-xl p-5 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all group"
               >
                 {/* Sector header */}
                 <div className="flex items-center gap-3 mb-4">

@@ -33,7 +33,7 @@ export default function OpportunityLensView({ data }: OpportunityLensViewProps) 
 
   if (data.chartRows.length === 0) {
     return (
-      <section className="glass rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/50 p-6">
+      <section className="glass rounded-2xl p-6">
         <p className="text-sm text-zinc-600 dark:text-zinc-400">{t("opportunityNoRows")}</p>
       </section>
     );
@@ -131,7 +131,7 @@ export default function OpportunityLensView({ data }: OpportunityLensViewProps) 
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold tracking-tight text-gradient">
+        <h2 className="text-xl font-semibold tracking-tight text-gradient">
           {t("opportunityHeroTitle")}
         </h2>
         <p className="mt-1.5 max-w-3xl text-sm text-zinc-600 dark:text-zinc-400">
@@ -139,10 +139,10 @@ export default function OpportunityLensView({ data }: OpportunityLensViewProps) 
         </p>
       </div>
 
-      <div className="glass rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/50 p-5">
+      <div className="glass rounded-2xl p-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400">
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400 text-zinc-500 dark:text-zinc-400">
               {t("opportunitySourceTitle")}
             </p>
             <p className="mt-1 text-sm font-medium text-zinc-900 dark:text-white">
@@ -185,7 +185,7 @@ export default function OpportunityLensView({ data }: OpportunityLensViewProps) 
         />
       </div>
 
-      <div className="glass rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/50 p-5 sm:p-6">
+      <div className="glass rounded-2xl p-5 sm:p-6">
         <div className="mb-4">
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">
             {t("opportunityChartTitle")}
@@ -461,9 +461,9 @@ function SpotlightSection({
 
 function StatCard({ value, label }: { value: string; label: string }) {
   return (
-    <div className="glass rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/50 p-4">
-      <div className="text-2xl font-bold text-gradient">{value}</div>
-      <p className="mt-1 text-xs uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400">
+    <div className="glass rounded-2xl p-4">
+      <div className="text-xl font-semibold text-gradient tracking-tight">{value}</div>
+      <p className="mt-1 text-xs uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400 text-zinc-500 dark:text-zinc-400">
         {label}
       </p>
     </div>

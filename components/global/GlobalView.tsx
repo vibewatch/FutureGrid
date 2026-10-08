@@ -3,7 +3,8 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
-import AnimatedCounter from "@/components/ui/AnimatedCounter";
+import StatTile from "@/components/ui/StatTile";
+import { PageHeader } from "@/components/ui/PageHeader";
 import CountryExposureChart from "@/components/charts/CountryExposureChart";
 import WorldChoroplethInteractive from "@/components/charts/WorldChoroplethInteractive";
 import CountryDetailPanel, {
@@ -115,77 +116,25 @@ export default function GlobalView({
 
   return (
     <div className="mx-auto w-full max-w-[1600px] space-y-12">
-      {/* ─── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="pt-4 pb-6">
-        <Reveal>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]">
-            <span className="text-gradient">{t("heroHeadline1")}</span>
-            <br />
-            <span className="text-zinc-900 dark:text-white">
-              {t("heroHeadline2")}
-            </span>
-          </h1>
-          <p className="mt-4 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
+      <PageHeader
+        title={`${t("heroHeadline1")} ${t("heroHeadline2")}`}
+        description={
+          <p>
             {t("heroIntroBefore")}{" "}
-            <span className="text-zinc-700 dark:text-zinc-200 font-medium">
-              {t("heroIntroHighlight1")}
-            </span>{" "}
+            <span className="font-medium text-zinc-800 dark:text-zinc-200">{t("heroIntroHighlight1")}</span>{" "}
             {t("heroIntroMid")}{" "}
-            <span className="text-zinc-700 dark:text-zinc-200 font-medium">
-              {t("heroIntroHighlight2")}
-            </span>{" "}
+            <span className="font-medium text-zinc-800 dark:text-zinc-200">{t("heroIntroHighlight2")}</span>{" "}
             {t("heroIntroAfter")}
           </p>
-          <div className="mt-3">
-            <DataAsOfBadge datasetIds={["country-exposure", "global-ai-metrics"]} />
-          </div>
-        </Reveal>
+        }
+        meta={<DataAsOfBadge datasetIds={["country-exposure", "global-ai-metrics"]} />}
+      />
 
-        {/* ─── HEADLINE STATS ──────────────────────────────────────────── */}
-        <Reveal delay={160} className="mt-8">
-          <div className="flex flex-wrap items-center gap-x-10 gap-y-6">
-            <div>
-              <AnimatedCounter
-                value={totalCovered}
-                durationMs={1400}
-                className="text-4xl sm:text-5xl font-extrabold text-gradient tabular-nums"
-              />
-              <p className="text-xs text-zinc-500 mt-1 uppercase tracking-widest">
-                {t("statCountriesLabel")}
-              </p>
-            </div>
-            <div
-              className="hidden sm:block w-px h-10 bg-zinc-300 dark:bg-zinc-800"
-              aria-hidden="true"
-            />
-            <div>
-              <AnimatedCounter
-                value={rankedLength}
-                durationMs={1400}
-                className="text-4xl sm:text-5xl font-extrabold text-gradient tabular-nums"
-              />
-              <p className="text-xs text-zinc-500 mt-1 uppercase tracking-widest">
-                {t("statMeasurableLabel")}
-              </p>
-            </div>
-            <div
-              className="hidden sm:block w-px h-10 bg-zinc-300 dark:bg-zinc-800"
-              aria-hidden="true"
-            />
-            <div>
-              <AnimatedCounter
-                value={topIndex}
-                decimals={2}
-                durationMs={1600}
-                className="text-4xl sm:text-5xl font-extrabold text-gradient tabular-nums"
-              />
-              <p className="text-xs text-zinc-500 mt-1 uppercase tracking-widest">
-                {t("statTopIndexLabel", { name: topCountryName })}
-              </p>
-            </div>
-          </div>
-        </Reveal>
-      </section>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <StatTile label={t("statCountriesLabel")} value={totalCovered.toLocaleString("en-US")} />
+        <StatTile label={t("statMeasurableLabel")} value={rankedLength.toLocaleString("en-US")} />
+        <StatTile label={t("statTopIndexLabel", { name: topCountryName })} value={topIndex.toFixed(2)} />
+      </div>
 
       <hr className="divider-glow" />
 
@@ -194,7 +143,7 @@ export default function GlobalView({
         <section aria-labelledby="world-map-heading">
           <h2
             id="world-map-heading"
-            className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gradient mb-2"
+            className="text-lg font-semibold tracking-tight text-gradient mb-2"
           >
             {t("worldMapHeading")}
           </h2>
@@ -416,7 +365,7 @@ export default function GlobalView({
             <div className="flex flex-wrap items-baseline justify-between gap-4 mb-1">
               <h2
                 id="diffusion-risers-heading"
-                className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gradient"
+                className="text-lg font-semibold tracking-tight text-gradient"
               >
                 {t("risersHeading")}
               </h2>
@@ -494,7 +443,7 @@ export default function GlobalView({
       {/* ─── CHART PANEL ─────────────────────────────────────────────────── */}
       <Reveal delay={80}>
         <div>
-          <h2 className="text-xl font-bold text-gradient mb-2">
+          <h2 className="text-lg font-semibold text-gradient mb-2 tracking-tight">
             {t("chartHeading")}
           </h2>
           <p className="text-xs text-zinc-500 mb-4">{t("chartCaption")}</p>
@@ -569,12 +518,12 @@ export function GlobalAIEcosystemComparison({ data }: { data: GlobalAIEcosystemD
     >
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-600 dark:text-cyan-300">
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
             {t("ecosystemMapEyebrow")}
           </p>
           <h2
             id={`${SECTION_IDS.globalAIEcosystemMap}-heading`}
-            className="mt-1 text-2xl sm:text-3xl font-extrabold tracking-tight text-gradient"
+            className="mt-1 text-lg font-semibold tracking-tight text-gradient"
           >
             {t("ecosystemMapTitle")}
           </h2>
@@ -679,7 +628,7 @@ export function GlobalAIEcosystemComparison({ data }: { data: GlobalAIEcosystemD
 function EcosystemKpi({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-xl border border-zinc-200 bg-white/70 p-4 dark:border-zinc-800 dark:bg-zinc-900/50">
-      <div className="text-2xl font-extrabold text-gradient tabular-nums">{value.toLocaleString()}</div>
+      <div className="text-2xl font-semibold text-gradient tabular-nums">{value.toLocaleString()}</div>
       <div className="mt-1 text-xs text-zinc-500">{label}</div>
     </div>
   );

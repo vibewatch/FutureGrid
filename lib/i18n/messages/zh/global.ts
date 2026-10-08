@@ -5,7 +5,7 @@ export const globalZh: Record<string, string> = {
   heroIntroBefore: "各国的AI采用程度差异显著。本页展示",
   heroIntroHighlight1: "真实的人均AI（Claude.ai）使用数据",
   heroIntroMid: "，来源于",
-  heroIntroHighlight2: "Anthropic经济指数（2025年8月）",
+  heroIntroHighlight2: "Anthropic经济指数（2026年5月）",
   heroIntroAfter: "\u2014\u2014基于实际观测行为的使用量化指标，而非预测数据。",
   statCountriesLabel: "覆盖国家",
   statMeasurableLabel: "有可测量数据",
@@ -16,15 +16,15 @@ export const globalZh: Record<string, string> = {
   mapIntroBefore: "地图提供两种数据视角，可通过图层切换查看：",
   mapHighlight1: "Claude.ai使用量",
   mapIntroMid1:
-    "（人均实际交互次数，Anthropic经济指数2025年8月\u2014受服务可用性影响；中国及受限市场显示为灰色）以及",
+    "（人均实际交互次数，Anthropic经济指数2026年4\u20135月\u2014受服务可用性影响；中国及受限市场显示为灰色）以及",
   mapHighlight2: "生成式AI普及率",
   mapIntroMid2:
-    "（微软AIEI 2026年Q1，覆盖147个国家的劳动年龄人口使用比例，",
+    "（微软AIEI 2026年Q2，覆盖147个国家的劳动年龄人口使用比例，",
   mapHighlight3: "包含中国",
   mapIntroAfter: "）。两项指标使用不同分母，不可合并\u2014\u2014请参阅",
   mapSourcesLink: "数据与来源",
   diffusionLeadersLabel:
-    "生成式AI普及率领跑国家 \u00b7 微软AIEI 2026年Q1",
+    "生成式AI普及率领跑国家 \u00b7 微软AIEI 2026年Q2",
   diffusionLeadersCaption:
     "劳动年龄人口使用生成式AI的比例（147国调查）。",
   mapDemandLayerLabel: "AI 招聘需求",
@@ -42,7 +42,7 @@ export const globalZh: Record<string, string> = {
   chinaIntroHighlight2: "生成式AI普及率图层",
   chinaIntroMid2: "中，中国有所体现\u2014\u2014微软AIEI估计",
   chinaIntroMid3:
-    "的劳动年龄成人在2026年Q1使用了生成式AI。注意西方遥测数据可能低估国内应用（豆包、Kimi等）\u2014CNNIC调查显示渗透率约为43%。下方本土生态数据采用不同的测量方法和分母，",
+    "的劳动年龄成人在2026年Q2使用了生成式AI。注意西方遥测数据可能低估国内应用（豆包、Kimi等）\u2014CNNIC调查显示渗透率约为43%。下方本土生态数据采用不同的测量方法和分母，",
   chinaNotMerged: "不纳入任何指数",
   cnnicLabel: "CNNIC \u00b7 2025年6月",
   cnnicDesc: "生成式AI用户数",
@@ -50,7 +50,7 @@ export const globalZh: Record<string, string> = {
   questDesc: "移动AI月活用户",
   doubaoLabel: "豆包（QuestMobile）\u00b7 2025年12月",
   doubaoDesc: "应用月活用户",
-  aieiLabel: "微软AIEI \u00b7 2026年Q1",
+  aieiLabel: "微软AIEI \u00b7 2026年Q2",
   aieiDesc: "生成式AI普及率（劳动年龄人口）",
   chinaCaveatPart1:
     "以上替代数据采用不同的测量方法（政府调查、应用市场扫描、产品月活），不可相加或直接比较。",
@@ -274,12 +274,12 @@ export const globalZh: Record<string, string> = {
   risersHeading: "增速最快的采用国",
   risersSourceLink: "微软AIEI \u00b7 查看来源",
   risersIntroBefore: "生成式AI普及率增幅最大的国家，",
-  risersIntroHighlight: "2025年上半年 \u2192 2026年Q1",
+  risersIntroHighlight: "2025年上半年 \u2192 2026年Q2",
   risersIntroAfter:
     "数据基于微软AI经济影响指数（西方遥测\u2014\u2014部分市场的本土应用可能被低估）。",
   risersFullDetailsLink: "查看完整来源 \u2192",
   risersCaption:
-    "微软AIEI \u00b7 2025年H1 \u2192 2026年Q1 \u00b7 147个经济体劳动年龄人口使用生成式AI的比例。西方遥测\u2014",
+    "微软AIEI \u00b7 2025年H1 \u2192 2026年Q2 \u00b7 147个经济体劳动年龄人口使用生成式AI的比例。西方遥测\u2014",
   risersCaptionSeeLink: "查看来源",
   risersCaptionAfter: "了解注意事项。",
 
@@ -291,7 +291,7 @@ export const globalZh: Record<string, string> = {
   // Methodology
   methodologyLabel: "方法论",
   methodologyText:
-    "使用指数 = 观测到的Claude.ai交互次数除以劳动年龄人口，并在所有国家间标准化。数据来源：Anthropic经济指数，2025年8月快照（194个国家行，另有使用世界银行2024年GDP和劳动年龄人口的中国补充行）。GDP数据来自Anthropic数据集中包含的世界银行/IMF字段，中国的人均劳动年龄GDP直接来源于世界银行。交互次数为零的国家被排除在排名列表之外，但仍保留在数据集中；未报告Claude.ai使用数据的国家不参与排名。",
+    "使用指数 = 观测到的Claude.ai交互次数除以劳动年龄人口，并在所有国家间标准化。数据来源：Anthropic经济指数2026年6月发布（各国取最新报告月份，2026年4\u20135月；低于报告阈值的国家无使用值，另有使用世界银行2024年GDP和劳动年龄人口的中国补充行）。GDP数据来自Anthropic数据集中包含的世界银行/IMF字段，中国的人均劳动年龄GDP直接来源于世界银行。交互次数为零的国家被排除在排名列表之外，但仍保留在数据集中；未报告Claude.ai使用数据的国家不参与排名。",
   methodologySourceBefore:
     "有关数据来源和许可证的完整详情，请参阅",
   methodologySourceLink: "数据与来源",
@@ -312,7 +312,15 @@ export const globalZh: Record<string, string> = {
   countryInteractionsLabel: "交互次数：",
   countryDetailsLink: "详情 →",
   countryCloseAria: "关闭国家详情",
-  countryClaudeUsageHeading: "Claude.ai 使用量 · Anthropic Economic Index Aug 2025",
+  countryUseMixHeading: "Claude.ai 使用用途",
+  countryUseWork: "工作",
+  countryUsePersonal: "个人",
+  countryUseCoursework: "课业",
+  countryCollabHeading: "协作模式",
+  countryCollabAutomation: "自动化",
+  countryCollabAugmentation: "增强",
+  countryUseMixNote: "Claude.ai 抽样对话占比（Anthropic 经济指数最新发布）。自动化 = Claude 以极少往返直接完成任务；增强 = 迭代协作、学习或校验。",
+  countryClaudeUsageHeading: "Claude.ai 使用量 · Anthropic 经济指数 2026",
   countryUsageIndexLabel: "使用指数",
   countryGlobalShareLabel: "全球份额",
   countryNoClaudeData: "无 Claude.ai 数据",
@@ -397,10 +405,11 @@ export const globalZh: Record<string, string> = {
   diffusionGrowthEyebrow: "微软AIEI \u00b7 MIT许可证",
   diffusionGrowthTitle: "消费者生成式AI普及 \u2014 领先经济体",
   diffusionGrowthSubtitle:
-    "按2026年第一季度劳动年龄人口使用生成式AI产品的比例，列出前10个经济体，并展示2025年上半年、2025年下半年及2026年第一季度的趋势背景。按Q1 2026水平降序排列 \u2014 非增速最快排名。",
+    "按2026年第二季度劳动年龄人口使用生成式AI产品的比例，列出前10个经济体，并展示2025年上半年、2025年下半年、2026年第一季度及第二季度的趋势背景。按2026年Q2水平降序排列 \u2014 非增速最快排名。",
   diffusionGrowthH1Label: "2025年上半年",
   diffusionGrowthH2Label: "2025年下半年",
   diffusionGrowthQ1Label: "2026年第一季度",
+  diffusionGrowthQ2Label: "2026年第二季度",
   diffusionGrowthAxisLabel: "劳动年龄人口占比（%）",
   diffusionGrowthSourceLink: "数据与来源",
   diffusionGrowthTableCaption:
@@ -409,12 +418,13 @@ export const globalZh: Record<string, string> = {
   diffusionGrowthColH1: "2025上半年（%）",
   diffusionGrowthColH2: "2025下半年（%）",
   diffusionGrowthColQ1: "2026Q1（%）",
-  diffusionGrowthColChange: "变化（Q1\u2212H1，百分点）",
+  diffusionGrowthColQ2: "2026Q2（%）",
+  diffusionGrowthColChange: "变化（2026Q2\u22122025H1，百分点）",
   diffusionGrowthFigureAria:
-    "分组条形图：消费者生成式AI普及 \u2014 按2026年Q1水平排列的前10经济体，含2025H1、2025H2、2026Q1趋势",
+    "分组条形图：消费者生成式AI普及 \u2014 按2026年Q2水平排列的前10经济体，含2025H1、2025H2、2026Q1、2026Q2趋势",
   diffusionGrowthGuardrail:
     "使用率 \u2260 能力水平、职场采用、生产率或劳动力市场影响。",
   diffusionGrowthLegendLabel: "图例",
   diffusionGrowthCaveat:
-    "指标：各调查期内报告使用生成式AI产品的劳动年龄人口比例（微软AI经济影响与洞察）。使用率 \u2260 能力水平、职场采用、生产率或劳动力市场影响。三个调查期（2025上半年、2025下半年、2026第一季度）窗口较短，趋势外推需谨慎。此绝对份额前10名反映的是微软产品渗透率高、数字基础设施完善的经济体，并非全球AI普及情况的代表性样本。数字获取差距和微软产品覆盖率会独立影响哪些经济体出现在此排名中。西方遥测可能低估中国等市场的本土AI应用（如豆包、Kimi）。来源：微软AI扩散报告（MIT许可）。不与Claude使用指数、Indeed招聘需求、Anthropic指数或IMF指标合并。",
+    "指标：各调查期内报告使用生成式AI产品的劳动年龄人口比例（微软AI经济影响与洞察）。使用率 \u2260 能力水平、职场采用、生产率或劳动力市场影响。四个调查期（2025上半年、2025下半年、2026第一季度、2026第二季度）窗口较短，趋势外推需谨慎。此绝对份额前10名反映的是微软产品渗透率高、数字基础设施完善的经济体，并非全球AI普及情况的代表性样本。数字获取差距和微软产品覆盖率会独立影响哪些经济体出现在此排名中。西方遥测可能低估中国等市场的本土AI应用（如豆包、Kimi）。来源：微软AI扩散报告（MIT许可）。不与Claude使用指数、Indeed招聘需求、Anthropic指数或IMF指标合并。",
 };

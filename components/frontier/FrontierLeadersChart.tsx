@@ -289,7 +289,7 @@ export default function FrontierLeadersChart() {
       <div
         role="tablist"
         aria-label={`${t("leadersTabOrgs")} / ${t("leadersTabCountries")}`}
-        className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-1 flex gap-1 w-fit"
+        className="glass rounded-xl p-1 flex gap-1 w-fit"
       >
         {(["orgs", "countries"] as const).map((tab) => (
           <button
@@ -313,7 +313,7 @@ export default function FrontierLeadersChart() {
       <div
         role="group"
         aria-labelledby="metric-group-label"
-        className="glass bg-white/70 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-1 flex gap-1 overflow-x-auto flex-nowrap"
+        className="glass rounded-xl p-1 flex gap-1 overflow-x-auto flex-nowrap"
       >
         <span id="metric-group-label" className="sr-only">
           {t("leadersSectionTitle")}

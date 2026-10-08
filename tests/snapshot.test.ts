@@ -7,11 +7,15 @@ describe("getOccupationTrend", () => {
     const trend = getOccupationTrend("11-1021");
 
     expect(trend).toEqual([
+      { year: 2016, employment: 2188870, wage: 99310 },
+      { year: 2017, employment: 2212200, wage: 100410 },
+      { year: 2018, employment: 2289770, wage: 100930 },
       { year: 2019, employment: 2400280, wage: 100780 },
       { year: 2020, employment: 2347420, wage: 103650 },
       { year: 2021, employment: 2984920, wage: 97970 },
       { year: 2022, employment: 3376680, wage: 98100 },
       { year: 2023, employment: 3507810, wage: 101280 },
+      { year: 2024, employment: 3584420, wage: 102950 },
       { year: 2025, employment: 3503020, wage: 105770 },
     ]);
   });
@@ -27,11 +31,15 @@ describe("getEmploymentHistoryMap", () => {
   it("returns a SOC-keyed employment history map for the committed snapshot", () => {
     expect(Object.keys(historyMap)).toHaveLength(756);
     expect(historyMap["11-1021"]).toEqual({
+      "2016": 2188870,
+      "2017": 2212200,
+      "2018": 2289770,
       "2019": 2400280,
       "2020": 2347420,
       "2021": 2984920,
       "2022": 3376680,
       "2023": 3507810,
+      "2024": 3584420,
       "2025": 3503020,
     });
   });

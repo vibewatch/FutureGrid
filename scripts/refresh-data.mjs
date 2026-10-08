@@ -145,6 +145,11 @@ export const MANIFEST = [
     note: "Microsoft AI Diffusion Index + IMF AIPI + Oxford GAIRI",
   },
   {
+    id: "ai-adoption-tracker",
+    script: "scripts/build-ai-adoption-tracker.mjs",
+    note: "St. Louis Fed RPS GenAI adoption (FRED) + Census BTOS business AI use",
+  },
+  {
     id: "international-occupation-mix",
     script: "scripts/build-international-occupation-mix.mjs",
     note: "ILOSTAT country-level occupation mix (9 countries)",
