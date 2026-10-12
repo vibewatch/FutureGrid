@@ -151,13 +151,15 @@ This is the **canonical refresh command** for both local use and CI. It runs `sc
 | `h1b-trends.json` | ~2 GB Internet Archive downloads; not safe for weekly CI |
 | `world-countries.geo.json` | Static geography; not time-varying |
 
-**Failure behavior:** Any builder that exits non-zero aborts the refresh immediately with a clear error. The `validate*()` gate in each builder ensures a degenerate fetch (too few rows, missing fields, etc.) throws before `writeFileSync` is called. A failing job is the alert — it indicates a bad upstream fetch, not a code regression.
+**Failure behavior:** Any builder that exits non-zero aborts the refresh immediately with a clear error. The `validate*()` gate in each builder ensures a degenerate fetch (too few rows, missing fields, etc.) throws before `writeFileSync` is called. A failing job is the alert: inspect the failed step to distinguish upstream fetch/validation failures from lint, test, or build regressions on the generated workspace.
 
 **No-change behavior:** If no data files changed, the CI job succeeds cleanly without creating an empty commit or PR.
 
 **CI PR target:** `data/scheduled-refresh` branch → PR against `main`. Existing open PRs are updated by force-pushing the branch; a new PR is created only when none is open.
 
 **Full gates before commit:** Because PRs created with `GITHUB_TOKEN` do not trigger PR CI automatically, the workflow runs `npm run lint`, `npm run test:run`, and `npm run build` on the generated workspace before any commit or push. This ensures idempotency, provenance, and schema invariants are enforced on the first run.
+
+**Refresh-safe tests:** Derived rankings can change when builders regenerate their inputs. Tests of SOC joins or nullable fields must not assume a specific occupation stays in the top origins or destinations. `tests/reskilling-bridge.test.ts` supplies a controlled destination for its SOC-specific annual-openings checks while retaining live-data ranking and join-integrity tests. The October 12, 2026 refresh completed all builders but failed because two tests depended on stale top-destination membership.
 
 **Repository prerequisite:** The GitHub repository must have **"Allow GitHub Actions to create and approve pull requests"** enabled (Settings → Actions → General → Workflow permissions). The workflow uses `GITHUB_TOKEN` with `pull-requests: write` permission; without the repository setting, the `gh pr create` call will fail. Default workflow permissions should be set to read-only (the workflow explicitly declares the permissions it needs).
 

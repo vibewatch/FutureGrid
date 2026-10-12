@@ -18,7 +18,7 @@
  * - Skills namespace EN / ZH key-set parity (forward-looking: survives any new keys Neo adds)
  */
 
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   getReskillingBridgeData,
@@ -26,7 +26,9 @@ import {
   type ReskillingBridgeOrigin,
 } from "@/lib/reskilling-bridge";
 import { getReskillingPaths } from "@/lib/data";
+import * as careerData from "@/lib/data";
 import { getEmploymentProjectionBySoc } from "@/lib/employment-projections";
+import * as employmentProjections from "@/lib/employment-projections";
 import { skillsEn } from "@/lib/i18n/messages/en/skills";
 import { skillsZh } from "@/lib/i18n/messages/zh/skills";
 
@@ -37,6 +39,22 @@ function findOrigin(origins: ReskillingBridgeOrigin[], socCode: string): Reskill
   expect(origin, `Expected origin SOC ${socCode} in the returned rows`).toBeDefined();
   return origin as ReskillingBridgeOrigin;
 }
+
+function getBridgeDestinationForSoc(socCode: string) {
+  const [path] = getReskillingPaths("13-1161", 1, "score");
+  expect(path, "Expected a path to use as the destination fixture").toBeDefined();
+  // Isolate the SOC join from rankings that legitimately change after a refresh.
+  vi.spyOn(careerData, "getReskillingPaths").mockReturnValue([
+    { ...path, occupationCode: socCode },
+  ]);
+  const { origins } = getReskillingBridgeData({ originLimit: 1 });
+  expect(origins[0].destinations).toHaveLength(1);
+  return origins[0].destinations[0];
+}
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 // ─── Shape and defaults ───────────────────────────────────────────────────────
 
@@ -193,26 +211,25 @@ describe("getReskillingBridgeData — annualOpenings matches employment-projecti
     }
   });
 
-  it("annualOpenings is null for 29-1215 (Family Medicine Physicians) — no projections row", () => {
-    // 29-1215 (Family Medicine Physicians) has projectedOpenings=null in the dataset.
-    // After the D5 fix, the ease scoring for sentinel-zone destinations changed, so the
-    // origin that 29-1215 appears in shifted. Search across all 3 origins to find it.
-    const { origins } = getReskillingBridgeData({ originLimit: 3 });
-    const allDests = origins.flatMap((o) => o.destinations);
-    const familyMedDest = allDests.find((d) => d.socCode === "29-1215");
-    expect(familyMedDest, "Expected 29-1215 to appear in at least one origin's destinations").toBeDefined();
-    expect(familyMedDest!.annualOpenings).toBeNull();
+  it("annualOpenings is null for 29-1215 (Family Medicine Physicians) — null projected openings", () => {
+    expect(getEmploymentProjectionBySoc("29-1215")?.projectedOpenings).toBeNull();
+    const destination = getBridgeDestinationForSoc("29-1215");
+    expect(destination.socCode).toBe("29-1215");
+    expect(destination.annualOpenings).toBeNull();
   });
 
   it("annualOpenings is a positive integer for 29-1071 (Physician Assistants)", () => {
-    const { origins } = getReskillingBridgeData({ originLimit: 3 });
-    const paDest = origins[0].destinations.find((d) => d.socCode === "29-1071");
-    expect(paDest).toBeDefined();
-    expect(typeof paDest!.annualOpenings).toBe("number");
-    expect(paDest!.annualOpenings).toBeGreaterThan(0);
-    // Matches the employment-projections dataset directly
+    const destination = getBridgeDestinationForSoc("29-1071");
+    expect(destination.socCode).toBe("29-1071");
+    expect(destination.annualOpenings).toBeGreaterThan(0);
+    expect(Number.isInteger(destination.annualOpenings)).toBe(true);
     const proj = getEmploymentProjectionBySoc("29-1071");
-    expect(paDest!.annualOpenings).toBe(proj?.projectedOpenings);
+    expect(destination.annualOpenings).toBe(proj?.projectedOpenings);
+  });
+
+  it("annualOpenings is null when the destination SOC has no projections row", () => {
+    vi.spyOn(employmentProjections, "getEmploymentProjectionBySoc").mockReturnValue(undefined);
+    expect(getBridgeDestinationForSoc("29-1215").annualOpenings).toBeNull();
   });
 
   it("no synthetic or random values: annualOpenings never exceeds any known BLS projection", () => {

@@ -2,8 +2,8 @@ name: Scheduled data refresh
 
 # Recurring refresh of committed data snapshots driven by scripts/refresh-data.mjs.
 # The orchestrator runs every public, key-free builder in dependency order.
-# Each builder's validate*() gate throws on degenerate data — a failing job
-# indicates a bad upstream fetch, not a code regression.
+# Each builder's validate*() gate throws on degenerate data. Failures may also
+# come from the full validation gates on the generated workspace.
 #
 # On success, changed snapshots are proposed as a PR against main.
 # If nothing changed, the job succeeds cleanly without creating an empty commit.
