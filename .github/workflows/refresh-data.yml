@@ -66,6 +66,9 @@ jobs:
         # BLS_API_KEY; without it writes employment: null, overwriting canonical OEWS data).
         env:
           GOOGLE_SHEETS_API_KEY: ${{ secrets.GOOGLE_SHEETS_API_KEY }}
+          # The GitHub activity proxy supports authenticated API requests.
+          # Avoid the shared runner IP's low anonymous rate limit.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run data:refresh
 
       - name: Run full gates (lint, test, build) on generated workspace

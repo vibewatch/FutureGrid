@@ -237,6 +237,15 @@ describe("refresh-data workflow YAML integrity", () => {
       "must NOT invoke individual build scripts directly — use the orchestrator",
     ).toBe(false);
   });
+
+  it("authenticates the GitHub activity proxy with the built-in workflow token", () => {
+    const parsed = jsYaml.load(readFileSync(WORKFLOW_PATH, "utf8")) as Record<string, unknown>;
+    const jobs = parsed.jobs as Record<string, Record<string, unknown>>;
+    const steps = jobs.refresh.steps as Array<Record<string, unknown>>;
+    const refreshStep = steps.find((s) => s.run === "npm run data:refresh");
+    const env = refreshStep?.env as Record<string, string> | undefined;
+    expect(env?.GITHUB_TOKEN).toBe("${{ secrets.GITHUB_TOKEN }}");
+  });
 });
 
 // ─── refresh-data.yml full-gate requirements ──────────────────────────────────

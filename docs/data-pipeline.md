@@ -161,6 +161,8 @@ This is the **canonical refresh command** for both local use and CI. It runs `sc
 
 **Refresh-safe tests:** Derived rankings can change when builders regenerate their inputs. Tests of SOC joins or nullable fields must not assume a specific occupation stays in the top origins or destinations. `tests/reskilling-bridge.test.ts` supplies a controlled destination for its SOC-specific annual-openings checks while retaining live-data ranking and join-integrity tests. The October 12, 2026 refresh completed all builders but failed because two tests depended on stale top-destination membership.
 
+**GitHub API authentication:** The refresh step passes the built-in `GITHUB_TOKEN` to the AI usage proxy builder, which uses it only for its GitHub repository activity request. This avoids exhausting the low anonymous rate limit shared by runner IPs; no additional secret is required.
+
 **Repository prerequisite:** The GitHub repository must have **"Allow GitHub Actions to create and approve pull requests"** enabled (Settings → Actions → General → Workflow permissions). The workflow uses `GITHUB_TOKEN` with `pull-requests: write` permission; without the repository setting, the `gh pr create` call will fail. Default workflow permissions should be set to read-only (the workflow explicitly declares the permissions it needs).
 
 **Manifest test:** `tests/refresh-manifest.test.ts` statically asserts script existence, dependency ordering, excluded credentials, required dataset coverage, and that full gates (lint/test/build) appear before the commit step — without running any builder.
