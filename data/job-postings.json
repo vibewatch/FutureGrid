@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-10-07T14:12:45.342Z",
+    "generatedAt": "2026-10-12T23:01:55.046Z",
     "asOf": "2025",
     "source": {
       "name": "FutureGrid provider-ready job postings seed",
@@ -1680,12 +1680,12 @@
         "Accounting Officer",
         "Audit Partner",
         "Auditor",
-        "Certified Public Accountant (CPA)",
         "Cost Accountant",
+        "CPA (Certified Public Accountant)",
         "Financial Auditor",
+        "Financial Reporting Accountant",
         "General Accountant",
-        "Internal Auditor",
-        "Revenue Tax Specialist"
+        "Internal Auditor"
       ],
       "relatedOccupations": [
         {
@@ -1813,15 +1813,15 @@
       "title": "Landscaping and Groundskeeping Workers",
       "sector": "Building and Grounds Cleaning and Maintenance",
       "sampleTitles": [
-        "Gardener",
+        "Athletic Fieldskeeper",
         "Greenskeeper",
         "Grounds Maintenance Worker",
-        "Grounds Person",
         "Grounds Specialist",
-        "Grounds Worker",
         "Groundskeeper",
+        "Groundsman",
         "Landscape Specialist",
-        "Landscape Technician",
+        "Landscape Technician (Landscape Tech)",
+        "Landscaper",
         "Outside Maintenance Worker"
       ],
       "relatedOccupations": [
@@ -1885,13 +1885,15 @@
       "sector": "Business and Financial Operations",
       "sampleTitles": [
         "Business Development Specialist",
+        "Communications Consultant",
         "Communications Specialist",
-        "Demographic Analyst",
+        "Content Strategist",
         "Market Analyst",
         "Market Research Analyst",
         "Market Research Consultant",
         "Market Research Specialist",
-        "Market Researcher"
+        "Market Researcher",
+        "Marketing Research Coordinator"
       ],
       "relatedOccupations": [
         {
@@ -2722,11 +2724,11 @@
       "sampleTitles": [
         "Bridge Carpenter",
         "Cabinet Maker",
-        "Carpenter",
+        "Carpentry Construction Specialist",
         "Concrete Carpenter",
         "Construction Carpenter",
+        "Finish Carpenter",
         "Form Carpenter",
-        "Framer",
         "Maintenance Carpenter",
         "Rough Carpenter",
         "Scaffold Builder"
@@ -2793,13 +2795,11 @@
       "sampleTitles": [
         "Buffet Hostess",
         "Dining Coordinator",
-        "General Teller",
         "Greeter",
-        "Hospitality Coordinator",
         "Host",
         "Host Coordinator",
         "Hostess",
-        "Maitre D' (Maitre d'hotel)",
+        "Private Dining Coordinator",
         "Seater"
       ],
       "relatedOccupations": [
@@ -2863,11 +2863,14 @@
       "sector": "Personal Care and Service",
       "sampleTitles": [
         "Beautician",
+        "Beauty Specialist",
         "Cosmetologist",
+        "Hair Artist",
         "Hair Dresser",
         "Hair Stylist",
         "Hairdresser",
         "Hairstylist",
+        "Lash Technician (Lash Tech)",
         "Stylist"
       ],
       "relatedOccupations": [
@@ -4483,16 +4486,15 @@
       "title": "Billing and Posting Clerks",
       "sector": "Office and Administrative Support",
       "sampleTitles": [
-        "Account Services Representative (Accounts Services Rep)",
         "Biller",
+        "Billing Accounts Representative",
         "Billing Clerk",
         "Billing Coordinator",
-        "Item Processing Clerk (IP Clerk)",
-        "Medical Biller",
-        "Pre-Audit Clerk",
+        "Billing Specialist",
+        "IP Clerk (Item Processing Clerk)",
+        "Pre Audit Clerk",
         "Statement Clerk",
-        "Statement Distribution Clerk",
-        "Statement Services Representative (Statement Services Rep)"
+        "Statement Distribution Clerk"
       ],
       "relatedOccupations": [
         {
@@ -5026,15 +5028,15 @@
       "title": "Automotive Service Technicians and Mechanics",
       "sector": "Installation, Maintenance, and Repair",
       "sampleTitles": [
-        "Automotive Drivability Technician (Auto Drivability Tech)",
-        "Automotive Mechanic (Auto Mechanic)",
-        "Automotive Service Technician (Auto Service Tech)",
-        "Automotive Technician (Auto Tech)",
-        "Diagnostic Technician (Diagnostic Tech)",
+        "Auto Drivability Tech (Automotive Drivability Technician)",
+        "Auto Mechanic (Automobile Mechanic)",
+        "Auto Mechanic (Automotive Mechanic)",
+        "Auto Service Tech (Automotive Service Technician)",
+        "Auto Tech (Automobile Technician)",
+        "Auto Tech (Automotive Technician)",
+        "Automatic Transmission Technician (Auto Transmission Tech)",
         "Heavy Line Technician (Heavy Line Tech)",
-        "Lube Tech (Lubrication Technician)",
-        "Mechanic",
-        "Quick Service Technician (Quick Service Tech)",
+        "Lube Technician (Lube Tech)",
         "Service Technician (Service Tech)"
       ],
       "relatedOccupations": [
@@ -5580,15 +5582,15 @@
       "sector": "Food Preparation and Serving Related",
       "sampleTitles": [
         "Cook",
-        "Deep Fat Fryer Operator",
+        "Cook Line Worker",
         "Fast Food Cook",
+        "Food Cook",
         "Fry Cook",
         "Fryer",
         "Grill Cook",
         "Line Cook",
         "Pizza Cook",
-        "Pizza Maker",
-        "Prep Cook (Preparatory Cook)"
+        "Pizza Maker"
       ],
       "relatedOccupations": [
         {
@@ -5848,16 +5850,16 @@
       "title": "Marketing Managers",
       "sector": "Management",
       "sampleTitles": [
-        "Account Supervisor",
+        "BD Director (Business Development Director)",
+        "BD Manager (Business Development Manager)",
         "Brand Manager",
-        "Business Development Director",
-        "Business Development Manager",
-        "Commercial Lines Manager",
         "Market Development Executive",
+        "Market Development Manager",
+        "Marketing Communications Manager",
         "Marketing Coordinator",
         "Marketing Director",
-        "Marketing Manager",
-        "Product Manager"
+        "Product Manager",
+        "Product Marketing Manager"
       ],
       "relatedOccupations": [
         {
@@ -5919,9 +5921,16 @@
       "title": "Helpers--Production Workers",
       "sector": "Production",
       "sampleTitles": [
-        "Helper",
-        "Material Handler",
-        "Press Helper"
+        "Assembly Line Worker",
+        "Control Room Helper",
+        "Laminator Helper",
+        "Machine Helper",
+        "Machine Operator Helper",
+        "Press Helper",
+        "Press Room Helper",
+        "Production Helper",
+        "Slitter Helper",
+        "Welder Helper"
       ],
       "relatedOccupations": [
         {
@@ -6055,12 +6064,12 @@
       "sector": "Management",
       "sampleTitles": [
         "Apartment Manager",
+        "Commercial Property Manager",
         "Community Association Manager",
         "Community Manager",
         "Lease Administration Supervisor",
         "Leasing Manager",
-        "Occupancy Director",
-        "On-Site Manager",
+        "Onsite Manager",
         "Property Manager",
         "Real Estate Manager",
         "Resident Manager"
@@ -6256,8 +6265,7 @@
         "Real Estate Agent",
         "Real Estate Salesperson",
         "Realtor",
-        "Realtor Associate",
-        "Sales Agent"
+        "Realtor Associate"
       ],
       "relatedOccupations": [
         {
@@ -6452,7 +6460,6 @@
       "sector": "Transportation and Material Moving",
       "sampleTitles": [
         "Checker Stocker",
-        "Inventory Specialist",
         "Inventory Technician (Inventory Tech)",
         "Label Maker",
         "Marking Clerk",
@@ -6460,7 +6467,8 @@
         "Order Picker",
         "Stock Clerk",
         "Stocker",
-        "Warehouse Technician (Warehouse Tech)"
+        "Warehouse Technician (Warehouse Tech)",
+        "Warehouse Worker"
       ],
       "relatedOccupations": [
         {
@@ -6593,15 +6601,15 @@
       "title": "Police and Sheriff's Patrol Officers",
       "sector": "Protective Service",
       "sampleTitles": [
-        "Deputy",
         "Deputy Sheriff",
+        "K-9 Handler (Canine Handler)",
         "Law Enforcement Officer",
-        "Patrol Deputy",
         "Patrol Officer",
         "Peace Officer",
         "Police Officer",
         "Police Patrol Officer",
-        "Public Safety Officer",
+        "Public Safety Officer (PSO)",
+        "SRO (School Resource Officer)",
         "State Trooper"
       ],
       "relatedOccupations": [
@@ -6664,16 +6672,16 @@
       "title": "Heating, Air Conditioning, and Refrigeration Mechanics and Installers",
       "sector": "Installation, Maintenance, and Repair",
       "sampleTitles": [
-        "A/C Tech (Air Conditioning Technician)",
+        "AC Mechanic (Air Conditioner Mechanic)",
+        "AC Tech (Air Conditioning Technician)",
+        "HVAC Control Tech (Heating, Ventilation, and Air Conditioning Control Technician)",
         "HVAC Installer (Heating, Ventilation, and Air Conditioning Installer)",
         "HVAC Mechanic (Heating, Ventilation, and Air Conditioning Mechanic)",
         "HVAC Service Tech (Heating, Ventilation, and Air Conditioning Service Technician)",
-        "HVAC Specialist (Heating, Ventilation, and Air Conditioning Specialist)",
         "HVAC Tech (Heating, Ventilation, and Air Conditioning Technician)",
         "Refrigeration Mechanic",
         "Refrigeration Operator",
-        "Refrigeration Technician (Refrigeration Tech)",
-        "Service Technician (Service Tech)"
+        "Refrigeration Technician (Refrigeration Tech)"
       ],
       "relatedOccupations": [
         {
@@ -7338,12 +7346,13 @@
         "Desk Clerk",
         "Front Desk Agent",
         "Front Desk Associate",
+        "Front Desk Attendant",
         "Front Desk Clerk",
-        "Front Office Agent",
-        "Guest Service Agent",
-        "Guest Service Representative",
+        "Front Desk Receptionist",
+        "Guest Service Representative (GSR)",
         "Guest Services Agent (GSA)",
-        "Night Auditor"
+        "Hotel Desk Clerk",
+        "Reservationist"
       ],
       "relatedOccupations": [
         {
@@ -7959,14 +7968,14 @@
       "sampleTitles": [
         "Athletic Director",
         "Curriculum and Instruction Superintendent",
+        "Curriculum Director",
         "Elementary Principal",
-        "High School Principal (HS Principal)",
-        "Middle School Principal (MS Principal)",
-        "Principal",
+        "K-12 Principal (Kindergarten Through Twelfth Grade Principal)",
+        "MS Principal (Middle School Principal)",
         "School Administrator (School Admin)",
+        "School Superintendent",
         "SPED Director (Special Education Director)",
-        "Superintendent",
-        "Vice Principal"
+        "Superintendent"
       ],
       "relatedOccupations": [
         {
@@ -8375,13 +8384,13 @@
       "title": "Loan Interviewers and Clerks",
       "sector": "Office and Administrative Support",
       "sampleTitles": [
-        "Closer",
         "Licensed Loan Officer Assistant",
         "Loan Analyst",
+        "Loan Assistant",
         "Loan Clerk",
-        "Loan Closer",
         "Loan Originator",
         "Loan Processor",
+        "Loan Representative",
         "Mortgage Broker",
         "Mortgage Loan Processor",
         "Mortgage Processor"
@@ -8871,8 +8880,9 @@
       "title": "Ushers, Lobby Attendants, and Ticket Takers",
       "sector": "Personal Care and Service",
       "sampleTitles": [
-        "Docent",
         "Lobby Attendant",
+        "Theater Attendant",
+        "Theatre Usher",
         "Ticket Attendant",
         "Ticket Taker",
         "Usher",
@@ -9221,11 +9231,11 @@
       "sector": "Healthcare Practitioners and Technical",
       "sampleTitles": [
         "Clinical Pharmacist",
+        "Clinical Pharmacy Specialist (CPS)",
+        "Community Pharmacist",
         "Hospital Pharmacist",
-        "Informatics Pharmacist",
+        "Inpatient Pharmacist",
         "Pharm D (Pharmacy Doctor)",
-        "Pharmacist in Charge (PIC)",
-        "Pharmacy Coordinator",
         "Pharmacy Informaticist",
         "Pharmacy Services Clinical Coordinator",
         "Registered Pharmacist",
@@ -9588,12 +9598,16 @@
       "title": "Bakers",
       "sector": "Production",
       "sampleTitles": [
-        "Baker",
+        "Bakery Worker",
+        "Bread Baker",
+        "Cake Baker",
         "Cake Decorator",
         "Dough Mixer",
         "Mixer",
-        "Pastry Chef",
-        "Scaler"
+        "Pastry Cook",
+        "Relief Baker",
+        "Scaler",
+        "Specialty Baker"
       ],
       "relatedOccupations": [
         {
@@ -9906,16 +9920,16 @@
       "title": "Massage Therapists",
       "sector": "Healthcare Support",
       "sampleTitles": [
+        "BCMT (Board Certified Massage Therapist)",
         "Bodywork Therapist",
         "Certified Massage Therapist (CMT)",
         "Clinical Massage Therapist",
-        "Integrated Deep Tissue Massage Therapist",
         "Licensed Massage Practitioner (LMP)",
         "Licensed Massage Therapist (LMT)",
-        "Massage Therapist",
+        "Medical Massage Practitioner",
+        "MMT (Medical Massage Therapist)",
         "Registered Massage Therapist (RMT)",
-        "Soft Tissue Specialist",
-        "Therapeutic Massage Technician"
+        "Soft Tissue Specialist"
       ],
       "relatedOccupations": [
         {
@@ -9978,11 +9992,12 @@
       "sector": "Production",
       "sampleTitles": [
         "Dry Cleaner",
+        "Industrial Laundry Attendant",
         "Laundry Aide",
         "Laundry Assistant",
         "Laundry Attendant",
         "Laundry Housekeeper",
-        "Laundry Technician",
+        "Laundry Technician (Laundry Tech)",
         "Laundry Worker",
         "Personal Clothing Laundry Aide",
         "Spotter"
@@ -10314,16 +10329,16 @@
       "title": "Radiologic Technologists and Technicians",
       "sector": "Healthcare Practitioners and Technical",
       "sampleTitles": [
-        "Computed Tomography Technologist (CT Tech)",
-        "Diagnostic Radiologic Technologist (DRT)",
-        "Imaging Technologist (Imaging Tech)",
+        "CT Tech (Computed Tomography Technologist)",
         "Mammographer",
+        "Multimodality Technologist",
         "Radiographer",
-        "Radiologic Technologist (RT)",
+        "Radiologic Technician (RAD Tech)",
         "Radiology Technician (Radiology Tech)",
         "Registered Radiologic Technologist (RT (R))",
-        "X-Ray Technician (X-Ray Tech)",
-        "X-Ray Technologist (X-Ray Tech)"
+        "RT (Radiologic Technologist)",
+        "X-Ray Tech (X-Ray Technician)",
+        "X-Ray Tech (X-Ray Technologist)"
       ],
       "relatedOccupations": [
         {
@@ -10662,9 +10677,10 @@
         "Lab Liaison Technician",
         "Mobile Examiner",
         "Patient Service Technician (PST)",
-        "Phlebotomist",
-        "Phlebotomy Technician",
-        "Registered Phlebotomist"
+        "Phlebotomist Lab Assistant (Phlebotomist Laboratory Assistant)",
+        "Phlebotomy Technician (Phlebotomy Tech)",
+        "Registered Phlebotomist",
+        "Registered Phlebotomy Technician (RPT)"
       ],
       "relatedOccupations": [
         {
@@ -10836,16 +10852,16 @@
       "title": "Telecommunications Equipment Installers and Repairers, Except Line Installers",
       "sector": "Installation, Maintenance, and Repair",
       "sampleTitles": [
-        "Broadband Technician",
-        "Central Office Technician",
-        "Combination Technician",
+        "Broadband Technician (Broadband Tech)",
+        "Combination Technician (Combination Tech)",
         "Customer Service Technician (CST)",
-        "Field Technician",
-        "Install and Repair Technician",
         "Installer",
-        "Outside Plant Technician",
-        "Service Technician",
-        "Telecommunications Technician"
+        "Network Technician (Network Tech)",
+        "Outside Plant Technician (Outside Plant Tech)",
+        "Repair Technician (Repair Tech)",
+        "Service Technician (Service Tech)",
+        "Telecommunications Technician (Telecommunications Tech)",
+        "Telephone Technician (Phone Tech)"
       ],
       "relatedOccupations": [
         {
@@ -10979,14 +10995,15 @@
       "sector": "Construction and Extraction",
       "sampleTitles": [
         "Commercial Roofer",
-        "Industrial Roofer",
+        "Flat Roofer",
+        "Journeyman Roofer",
         "Metal Roofing Mechanic",
-        "Residential Roofer",
         "Roof Mechanic",
-        "Roof Service Technician",
-        "Roofer",
-        "Roofing Technician",
-        "Sheet Metal Roofer"
+        "Roof Service Technician (Roof Service Tech)",
+        "Roofer Mechanic",
+        "Roofing Technician (Roofing Tech)",
+        "Sheet Metal Roofer",
+        "Single Ply Roofer"
       ],
       "relatedOccupations": [
         {
@@ -11780,13 +11797,13 @@
       "sampleTitles": [
         "Fire Engineer",
         "Fire Equipment Operator",
-        "Fire Fighter",
-        "Fire Management Specialist",
+        "Fire Rescue Technician (Fire Rescue Tech)",
         "Fire Technician (Fire Tech)",
-        "Firefighter",
+        "Fireman",
         "Forest Fire Suppression Specialist",
         "Forestry Fire Technician (Forestry Fire Tech)",
         "Hot Shot",
+        "Rescue Firefighter",
         "Wildland Firefighter"
       ],
       "relatedOccupations": [
@@ -11919,11 +11936,16 @@
       "title": "Advertising Sales Agents",
       "sector": "Sales and Related",
       "sampleTitles": [
+        "Advertising Account Executive",
         "Advertising Account Representative",
         "Advertising Consultant",
         "Advertising Representative",
         "Advertising Sales Representative (Ad Sales Representative)",
-        "Sales Representative"
+        "Directory Advertising Sales Representative (Directory Advertising Sales Rep)",
+        "Display Advertising Sales Representative (Display Advertising Sales Rep)",
+        "Media Consultant",
+        "Multimedia Sales Consultant",
+        "Retail Advertising Account Executive"
       ],
       "relatedOccupations": [
         {
@@ -12400,16 +12422,16 @@
       "title": "Rehabilitation Counselors",
       "sector": "Community and Social Service",
       "sampleTitles": [
+        "Classification Counselor",
+        "CRC (Certified Rehabilitation Counselor)",
         "Employment Advisor",
-        "Employment Services Case Manager",
-        "Employment Specialist",
-        "Human Services Care Specialist",
         "Job Coach",
-        "Rehabilitation Counselor",
         "Rehabilitation Specialist",
-        "Vocational Case Manager",
+        "Vocational Counselor",
         "Vocational Placement Specialist",
-        "Vocational Rehabilitation Counselor (VRC)"
+        "Vocational Services Specialist",
+        "VRC (Vocational Rehabilitation Counselor)",
+        "Work Counselor"
       ],
       "relatedOccupations": [
         {
@@ -12750,13 +12772,13 @@
       "title": "Musicians and Singers",
       "sector": "Arts, Design, Entertainment, Sports, and Media",
       "sampleTitles": [
-        "Choir Member",
         "Chorister",
-        "Gospel Singer",
+        "Drummer",
         "Musician",
         "Opera Singer",
         "Orchestra Musician",
         "Percussionist",
+        "Performer",
         "Singer",
         "Violinist",
         "Vocalist"
@@ -13035,6 +13057,7 @@
       "sector": "Architecture and Engineering",
       "sampleTitles": [
         "Architect",
+        "Architectural Designer",
         "Design Architect",
         "Planner",
         "Project Architect",
@@ -13548,11 +13571,11 @@
       "sampleTitles": [
         "Airline Ticket Agent",
         "Airport Sales Agent",
-        "Customer Service Agent",
+        "Baggage Service Agent",
+        "Corporate Travel Agent",
         "Reservation Agent",
         "Reservationist",
         "Reservations Agent",
-        "Reservations and Ticketing Agent",
         "Station Agent",
         "Ticket Agent",
         "Tour Sales Representative"
@@ -13824,13 +13847,16 @@
       "title": "Respiratory Therapists",
       "sector": "Healthcare Practitioners and Technical",
       "sampleTitles": [
-        "Cardiopulmonary Rehabilitation Respiratory Therapist",
-        "Certified Respiratory Therapist (CRT)",
-        "Registered Respiratory Therapist (RRT)",
+        "CRRT (Cardiopulmonary Rehabilitation Respiratory Therapist)",
+        "CRT (Certified Respiratory Therapist)",
+        "Diagnostics RRT (Diagnostics Registered Respiratory Therapist)",
+        "Infant RT (Infant Respiratory Therapist)",
+        "Licensed CRT (Licensed Certified Respiratory Therapist)",
+        "Licensed RT (Licensed Respiratory Therapist)",
+        "Registered Respiratory Care Practitioner (Registered RCP)",
+        "Registered Respiratory Practitioner",
         "Respiratory Care Practitioner (RCP)",
-        "Respiratory Therapist (RT)",
-        "Staff Respiratory Therapist",
-        "Staff Therapist"
+        "RRT (Registered Respiratory Therapist)"
       ],
       "relatedOccupations": [
         {
@@ -14169,16 +14195,16 @@
       "title": "Pest Control Workers",
       "sector": "Building and Grounds Cleaning and Maintenance",
       "sampleTitles": [
-        "Certified Pest Control Technician",
-        "Commercial Pest Control Technician",
+        "Commercial Pest Control Technician (Commercial Pest Control Tech)",
         "Exterminator",
         "Pest Control Applicator",
-        "Pest Control Chemical Technician",
+        "Pest Control Chemical Technician (Pest Control Chemical Tech)",
         "Pest Control Operator",
         "Pest Control Technician (Pest Control Tech)",
-        "Pest Technician",
-        "Residential Pest Control Technician",
-        "Termite Technician"
+        "Pest Technician (Pest Tech)",
+        "Residential Pest Control Technician (Residential Pest Control Tech)",
+        "Route Technician (Route Tech)",
+        "Termite Technician (Termite Tech)"
       ],
       "relatedOccupations": [
         {
@@ -14441,15 +14467,16 @@
       "title": "Surgical Technologists",
       "sector": "Healthcare Practitioners and Technical",
       "sampleTitles": [
-        "Certified Surgical Technician",
-        "Certified Surgical Technologist (CST)",
-        "Operating Room Surgical Technician (OR St)",
-        "Operating Room Technician (OR Tech)",
-        "Operating Room Technologist (OR Tech)",
-        "Surgical Scrub Technician",
-        "Surgical Scrub Technologist (Surgical Scrub Tech)",
-        "Surgical Technician",
-        "Surgical Technologist (Surgical Tech)"
+        "Central Supply Technician (Central Supply Tech)",
+        "Certified Scrub Technician (Certified Scrub Tech)",
+        "CST (Certified Surgical Technologist)",
+        "OR Surgical Tech (Operating Room Surgical Technician)",
+        "OR Tech (Operating Room Technician)",
+        "OR Technologist (Operating Room Technologist)",
+        "Scrub Technician (Scrub Tech)",
+        "Scrub Technologist (Scrub Tech)",
+        "Surgical Scrub Technician (Surgical Scrub Tech)",
+        "Surgical Scrub Technologist (Surgical Scrub Tech)"
       ],
       "relatedOccupations": [
         {
@@ -14512,15 +14539,15 @@
       "sector": "Arts, Design, Entertainment, Sports, and Media",
       "sampleTitles": [
         "Acquisitions Editor",
+        "Assignment Editor",
         "Business Editor",
-        "Editor",
         "Features Editor",
         "Legal Editor",
-        "News Editor",
         "Newspaper Copy Editor",
+        "Opinions Page Editor",
+        "Publishing Editor",
         "Science Editor",
-        "Sports Editor",
-        "Web Editor"
+        "Sports Editor"
       ],
       "relatedOccupations": [
         {
@@ -14890,13 +14917,15 @@
       "title": "Dentists, General",
       "sector": "Healthcare Practitioners and Technical",
       "sampleTitles": [
-        "Dental Surgery Doctor (DDS)",
+        "DDS (Dental Surgery Doctor)",
         "Dentist",
-        "Doctor of Dental Medicine (DMD)",
-        "Doctor of Dental Surgery (DDS)",
+        "DMD (Dental Medicine Doctor)",
+        "Endodontist",
         "Family Dentist",
         "General Dentist",
-        "Pediatric Dentist"
+        "Pediatric Dentist",
+        "Pedodontist",
+        "Periodontist"
       ],
       "relatedOccupations": [
         {
@@ -15632,13 +15661,13 @@
       "sampleTitles": [
         "City Clerk",
         "City Recorder",
+        "City Secretary",
         "Court Clerk",
         "License Clerk",
         "License Specialist",
-        "Motor Vehicle Field Representative (MVFR)",
         "Motor Vehicle Licensing Clerk",
         "Municipal Clerk",
-        "Permits Specialist",
+        "Permit Service Representative (Permit Service Rep)",
         "Town Clerk"
       ],
       "relatedOccupations": [
@@ -15702,15 +15731,15 @@
       "sector": "Installation, Maintenance, and Repair",
       "sampleTitles": [
         "Cable Splicer",
-        "Cable Technician",
-        "Cable Television Technician (Cable TV Tech)",
-        "Combination Technician",
+        "Cable Tech (Cable Technician)",
+        "Cable TV Tech (Cable Television Technician)",
+        "Combination Technician (Combination Tech)",
+        "Fiber Optic Splicer",
         "Field Service Technician",
-        "Installation and Repair Technician (I and R Technician)",
+        "I and R Technician (Installation and Repair Technician)",
         "Installer",
-        "Lineman",
-        "Outside Plant Technician",
-        "Service Technician"
+        "Outside Plant Technician (Outside Plant Tech)",
+        "Telecommunications Technician (Telecommunications Tech)"
       ],
       "relatedOccupations": [
         {
@@ -15772,16 +15801,16 @@
       "title": "Biological Technicians",
       "sector": "Life, Physical, and Social Science",
       "sampleTitles": [
-        "Biological Science Laboratory Technician (Biological Science Lab Tech)",
-        "Biological Science Technician",
-        "Biological Technician",
-        "Laboratory Technician",
-        "Marine Fisheries Technician",
+        "Biological Science Lab Tech (Biological Science Laboratory Technician)",
+        "Biological Science Technician (Biological Science Tech)",
+        "Biologist Aide",
+        "Biologist Technician (Biologist Tech)",
+        "Environmental Technician (Environmental Tech)",
+        "Fisheries Biological Technician (Fisheries Biological Tech)",
+        "Marine Fisheries Technician (Marine Fisheries Tech)",
+        "Microbiology Technician (Microbiology Tech)",
         "Research Assistant",
-        "Research Associate",
-        "Research Specialist",
-        "Research Technician",
-        "Wildlife Biology Technician"
+        "Research Associate"
       ],
       "relatedOccupations": [
         {
@@ -15962,10 +15991,12 @@
       "sampleTitles": [
         "Broker",
         "Broker Associate",
+        "Commercial Leasing Broker",
+        "Commercial Real Estate Advisor",
+        "Commercial Real Estate Broker",
         "Designated Broker",
         "Managing Broker",
         "Real Estate Associate",
-        "Real Estate Broker",
         "Real Estate Sales Associate",
         "Realtor"
       ],
@@ -16092,13 +16123,16 @@
       "title": "Structural Iron and Steel Workers",
       "sector": "Construction and Extraction",
       "sampleTitles": [
-        "Fitter",
+        "Field Iron Worker",
         "Iron Worker",
         "Ironworker",
+        "Steel Erector",
         "Steel Fabricator",
         "Steel Worker",
+        "Structural Erector",
         "Structural Steel Erector",
-        "Tower Hand"
+        "Tower Hand",
+        "Union Ironworker"
       ],
       "relatedOccupations": [
         {
@@ -16794,15 +16828,15 @@
       "sector": "Installation, Maintenance, and Repair",
       "sampleTitles": [
         "ATM Technician (Automated Teller Machine Technician)",
-        "Computer Repair Technician",
-        "Computer Technician",
-        "Copier Technician",
+        "Computer Repair Technician (Computer Repair Tech)",
+        "Copier Technician (Copier Tech)",
         "Customer Service Engineer",
         "Field Engineer",
         "Field Service Engineer",
-        "Field Service Technician",
-        "Field Technician",
-        "Service Technician"
+        "Field Service Technician (Field Service Tech)",
+        "Field Technician (Field Tech)",
+        "Printer Repair Technician (Printer Repair Tech)",
+        "Service Technician (Service Tech)"
       ],
       "relatedOccupations": [
         {
@@ -16860,15 +16894,15 @@
       "sector": "Construction and Extraction",
       "sampleTitles": [
         "Ceiling Installer",
-        "Dry Wall Installer",
         "Drywall Finisher",
         "Drywall Hanger",
         "Drywall Installer",
         "Drywall Mechanic",
-        "Drywaller",
-        "Exterior Interior Specialist",
+        "Installer",
         "Metal Framer",
-        "Metal Stud Framer"
+        "Metal Stud Framer",
+        "Sheetrock Hanger",
+        "Sheetrock Installer"
       ],
       "relatedOccupations": [
         {
@@ -17002,15 +17036,15 @@
       "sector": "Community and Social Service",
       "sampleTitles": [
         "Clinical Therapist",
-        "Counselor",
+        "Couple and Family Therapist",
+        "Family Specialist",
         "Family Therapist",
-        "Human Relations Counselor",
-        "Licensed Marriage and Family Therapist (LMFT)",
-        "Licensed Professional Counselor (LPC)",
+        "LCMFT (Licensed Clinical Marriage and Family Therapist)",
+        "LMFT (Licensed Marriage and Family Therapist)",
         "Marriage and Family Counselor",
-        "Marriage and Family Therapist (MFT)",
-        "Outpatient Therapist",
-        "Play Therapist"
+        "Multisystemic Therapist",
+        "Play Therapist",
+        "Therapist"
       ],
       "relatedOccupations": [
         {
@@ -17412,16 +17446,16 @@
       "title": "Writers and Authors",
       "sector": "Arts, Design, Entertainment, Sports, and Media",
       "sampleTitles": [
-        "Advertisement Agency Copywriter (Ad Agency Copywriter)",
-        "Advertising Associate",
         "Advertising Copywriter",
         "Advertising Writer",
-        "Communications Specialist",
+        "Author",
+        "Content Marketing Writer",
         "Copywriter",
         "Freelance Copywriter",
-        "Promotion Writer",
+        "Freelance Writer",
         "Search Engine Optimization Copywriter (SEO Copywriter)",
-        "Web Content Writer"
+        "Web Content Writer",
+        "Writer"
       ],
       "relatedOccupations": [
         {
@@ -17547,15 +17581,16 @@
       "title": "Tire Repairers and Changers",
       "sector": "Installation, Maintenance, and Repair",
       "sampleTitles": [
-        "Alignment Technician",
-        "Lube Technician",
-        "Service Technician",
-        "Tire Buster",
+        "Alignment Technician (Alignment Tech)",
+        "Lube Technician (Lube Tech)",
+        "Service Technician (Service Tech)",
+        "Tire Alignment Technician (Tire Alignment Tech)",
         "Tire Changer",
         "Tire Installer",
         "Tire Repairer",
         "Tire Shop Mechanic",
-        "Tire Technician"
+        "Tire Technician (Tire Tech)",
+        "Truck Tire Service Operator"
       ],
       "relatedOccupations": [
         {
@@ -17825,13 +17860,15 @@
       "title": "Cabinetmakers and Bench Carpenters",
       "sector": "Production",
       "sampleTitles": [
+        "Angled Cabinetmaker",
+        "Assembler",
         "Cabinet Assembler",
         "Cabinet Builder",
+        "Cabinet Door Maker",
         "Cabinet Installer",
         "Cabinetmaker",
         "Double End Tenon Operator",
         "Frame Builder",
-        "Framer",
         "Woodworker"
       ],
       "relatedOccupations": [
@@ -17960,14 +17997,16 @@
       "title": "Community Health Workers",
       "sector": "Community and Social Service",
       "sampleTitles": [
-        "Apprise Counselor",
+        "Communicable Disease Liaison",
+        "Community Health Coordinator",
         "Community Health Outreach Worker",
         "Community Health Program Coordinator",
         "Community Health Program Representative (Community Health Program Rep)",
         "Community Health Promoter",
-        "Community Health Worker (CHW)",
+        "Community HIV Education Specialist (Community Human Immunodeficiency Virus Education Specialist)",
+        "Community Navigator",
         "Community Nutrition Educator",
-        "HIV CTS Specialist (Human Immunodeficiency Virus Counseling and Testing Services Specialist)"
+        "Health Program Specialist"
       ],
       "relatedOccupations": [
         {
@@ -18357,13 +18396,15 @@
       "title": "Chemical Equipment Operators and Tenders",
       "sector": "Production",
       "sampleTitles": [
-        "Chemical Operator",
+        "Chemical Operator (Chemical Tech)",
+        "Chemical Process Operator",
+        "Chemical Reactor Operator",
         "Chlorination Operator",
         "Multiskill Operator",
         "Outside Operator",
+        "Process Equipment Operator",
         "Process Operator",
-        "Spray Dry Operator",
-        "Vessel Operator"
+        "Spray Dry Operator"
       ],
       "relatedOccupations": [
         {
@@ -18496,15 +18537,16 @@
       "title": "Electrical and Electronic Engineering Technologists and Technicians",
       "sector": "Architecture and Engineering",
       "sampleTitles": [
+        "Communication Technician (Communication Tech)",
         "Communications Technologist",
-        "Electrical Engineering Technician",
-        "Electrical Technician",
+        "Electrical Engineering Technician (Electrical Engineering Tech)",
+        "Electrical Technician (Electrical Tech)",
+        "Electronic Engineering Technician (Electronic Engineering Tech)",
+        "Electronic Technician (Electronic Tech)",
         "Electronics Engineering Technician",
         "Electronics Technician",
-        "Engineering Technician (Engineering Tech)",
-        "Engineering Technologist",
-        "System Technologist",
-        "Technologist"
+        "Relay Technician (Relay Tech)",
+        "System Technologist"
       ],
       "relatedOccupations": [
         {
@@ -18841,15 +18883,16 @@
       "title": "Education and Childcare Administrators, Preschool and Daycare",
       "sector": "Management",
       "sampleTitles": [
+        "Child Care Center Director",
+        "Child Care Director",
         "Childcare Director",
-        "Early Head Start Director",
+        "Day Care Director",
+        "Early Childhood Program Supervisor (ECP Supervisor)",
+        "Early Childhood Services Director",
         "Education Coordinator",
         "Education Director",
         "Education Site Manager",
-        "Preschool Director",
-        "Preschool Program Director",
-        "Principal",
-        "Site Coordinator"
+        "Preschool Program Director"
       ],
       "relatedOccupations": [
         {
@@ -18906,13 +18949,14 @@
       "title": "Diagnostic Medical Sonographers",
       "sector": "Healthcare Practitioners and Technical",
       "sampleTitles": [
-        "Cardiac Sonographer",
-        "Diagnostic Medical Sonographer",
+        "Cardiovascular Sonographer",
+        "Echo Tech (Echocardiographic Technician)",
+        "Echosonographer Technologist (Echo Technologist)",
         "Medical Sonographer",
-        "Registered Diagnostic Medical Sonographer (RDMS)",
-        "Sonographer",
+        "RDMS (Registered Diagnostic Medical Sonographer)",
+        "Registered Diagnostic Cardiac Sonographer",
+        "RVT (Registered Vascular Technologist)",
         "Staff Sonographer",
-        "Ultrasonographer",
         "Ultrasound Technician (Ultrasound Tech)",
         "Ultrasound Technologist (Ultrasound Tech)"
       ],
@@ -18976,16 +19020,16 @@
       "title": "Medical Equipment Preparers",
       "sector": "Healthcare Support",
       "sampleTitles": [
-        "Central Processing Technician (CPT)",
-        "Central Service Technician (CST)",
-        "Central Sterile Supply Technician (CSS Technician)",
+        "Central Sterile Technician (Central Sterile Tech)",
+        "Central Supply Processing Department Technician (CSPDT)",
         "Certified Registered Central Service Technician (CRCST)",
-        "Instrument Technician",
-        "Sterile Preparation Technician",
+        "CRCST (Certified Registered Central Supply Technician)",
+        "CSS Technician (Central Sterile Supply Technician)",
+        "CST (Central Service Technician)",
+        "Equipment Technician (Equipment Tech)",
+        "Sterile Preparation Technician (Sterile Preparation Tech)",
         "Sterile Processing and Distribution Technician (SPD Tech)",
-        "Sterile Processing Technician (Sterile Processing Tech)",
-        "Sterile Technician",
-        "Sterilization Technician"
+        "Sterile Technician (Sterile Tech)"
       ],
       "relatedOccupations": [
         {
@@ -19037,7 +19081,13 @@
       "title": "Helpers--Pipelayers, Plumbers, Pipefitters, and Steamfitters",
       "sector": "Construction and Extraction",
       "sampleTitles": [
-        "Plumber's Helper"
+        "Pipefitter Helper",
+        "Plumber Apprentice",
+        "Plumber Assistant",
+        "Plumber Helper",
+        "Plumbing Apprentice",
+        "Plumbing Helper",
+        "Plumbing Residential Apprentice"
       ],
       "relatedOccupations": [
         {
@@ -19099,15 +19149,15 @@
       "title": "Technical Writers",
       "sector": "Arts, Design, Entertainment, Sports, and Media",
       "sampleTitles": [
-        "Documentation Designer",
-        "Documentation Specialist",
+        "Com Writer",
         "Engineering Writer",
-        "Information Developer",
+        "Global Technical Writer",
+        "Grant Writer",
         "Medical Writer",
         "Narrative Writer",
+        "Principal Technical Writer",
         "Requirements Analyst",
-        "Technical Communicator",
-        "Technical Writer"
+        "Technical Report Writer"
       ],
       "relatedOccupations": [
         {
@@ -19165,8 +19215,9 @@
       "sector": "Office and Administrative Support",
       "sampleTitles": [
         "Courier",
+        "Delivery Driver",
         "Driver",
-        "Laboratory Courier",
+        "Lab Courier (Laboratory Courier)",
         "Mail Carrier",
         "Mailroom Courier",
         "Messenger",
@@ -19366,9 +19417,9 @@
       "title": "Barbers",
       "sector": "Personal Care and Service",
       "sampleTitles": [
-        "Barber",
         "Barber Shop Operator",
         "Barber Stylist",
+        "Hair Stylist",
         "Stylist"
       ],
       "relatedOccupations": [
@@ -20480,11 +20531,11 @@
         "Architectural Designer",
         "Architectural Drafter",
         "Architectural Draftsman",
+        "CAD Designer (Computer-Aided Design Designer)",
+        "CAD Tech (Computer-Aided Design Technician)",
+        "CADD Drafter (Computer-Aided Drafting and Design Drafter)",
         "Civil Drafter",
-        "Computer-Aided Design Designer (CAD Designer)",
-        "Computer-Aided Drafting and Design Drafter (CADD Drafter)",
-        "Computer-Aided Drafting Designer (CAD Designer)",
-        "Drafting Technician",
+        "Drafting Technician (Drafting Tech)",
         "Draftsman",
         "Draftsperson"
       ],
@@ -20756,12 +20807,14 @@
       "sampleTitles": [
         "Abatement Worker",
         "Asbestos Abatement Worker",
-        "Asbestos Hazard Abatement Worker",
-        "Asbestos Remover",
         "Asbestos Worker",
-        "Decontamination and Decommissioning Operator (D and D Operator)",
+        "Clandestine Laboratory Responder (Clan Lab Responder)",
+        "D and D Operator (Decontaminate and Decommissioning Operator)",
+        "D and D Operator (Decontamination and Decommissioning Operator)",
         "Hazmat Technician (Hazardous Materials Technician)",
-        "Waste Handling Technician"
+        "Mold Damage Technician (Mold Damage Tech)",
+        "Product Disposal Coordinator",
+        "Waste Handling Technician (Waste Handling Tech)"
       ],
       "relatedOccupations": [
         {
@@ -20829,8 +20882,9 @@
         "Mail Handler",
         "Mail Machine Operator",
         "Mail Processor",
-        "Mail Reader",
         "Mail Sorter",
+        "Mailing Equipment Operator",
+        "Mailroom Processor",
         "Postal Clerk"
       ],
       "relatedOccupations": [
@@ -21312,8 +21366,9 @@
       "title": "Extruding and Drawing Machine Setters, Operators, and Tenders, Metal and Plastic",
       "sector": "Production",
       "sampleTitles": [
-        "Equipment Technician",
+        "Equipment Technician (Equipment Tech)",
         "Extruder Operator",
+        "Extrusion Line Operator",
         "Extrusion Operator",
         "Extrusion Press Operator",
         "Machine Operator",
@@ -21513,15 +21568,15 @@
       "title": "Actors",
       "sector": "Arts, Design, Entertainment, Sports, and Media",
       "sampleTitles": [
-        "Actor",
         "Actress",
         "Comedian",
-        "Comic",
         "Community Theater Actor",
-        "Ensemble Member",
-        "Narrator",
-        "Performer",
+        "Entertainer",
+        "Film Actor",
+        "Motion Capture Actor",
+        "Role Player",
         "Tour Actor",
+        "Voice Actor",
         "Voice-Over Artist"
       ],
       "relatedOccupations": [
@@ -21654,16 +21709,14 @@
       "title": "Industrial Engineering Technologists and Technicians",
       "sector": "Architecture and Engineering",
       "sampleTitles": [
-        "Business Process Analyst",
-        "Engineering Technician",
+        "Engineering Technician (Engineering Tech)",
         "Industrial Engineering Analyst",
-        "Industrial Engineering Technician",
+        "Industrial Engineering Technician (Industrial Engineering Tech)",
+        "Industrial Technician (Industrial Tech)",
         "Manufacturing Coordinator",
-        "Manufacturing Technology Analyst",
-        "Quality Control Engineering Technician (QC Engineering Technician)",
-        "Quality Management Coordinator",
-        "Quality Technician",
-        "Service Technician"
+        "PLC Tech (Programmable Logic Controller Technician)",
+        "QC Engineering Technician (Quality Control Engineering Technician)",
+        "Quality Management Coordinator"
       ],
       "relatedOccupations": [
         {
@@ -22168,11 +22221,12 @@
         "Cell Operator",
         "Centerless Grinder Operator",
         "Deburrer",
-        "Die Maintenance Technician",
+        "Die Maintenance Technician (Die Maintenance Tech)",
         "Finisher",
         "Grinder",
         "Grinder Operator",
         "Grinding Machine Operator",
+        "Metal Finisher",
         "Process Equipment Operator"
       ],
       "relatedOccupations": [
@@ -22810,7 +22864,7 @@
       "sampleTitles": [
         "Cutter",
         "Cutter Operator",
-        "Cutting Pressman",
+        "Cutting Machine Operator",
         "Die Cutter Operator",
         "Flat Cutter",
         "Machine Operator",
@@ -23016,7 +23070,7 @@
       "sector": "Transportation and Material Moving",
       "sampleTitles": [
         "Bus Drive Coordinator",
-        "Bus Driver",
+        "Bus Driver Route Coordinator",
         "CDL Bus Driver (Commercial Driver's License Bus Driver)",
         "Public School Bus Driver",
         "School Bus Driver",
@@ -23082,15 +23136,15 @@
       "sector": "Architecture and Engineering",
       "sampleTitles": [
         "Aeronautical Engineer",
-        "Aerospace Engineer",
         "Aerospace Stress Engineer",
         "Avionics Engineer",
         "Design Engineer",
         "Flight Controls Engineer",
+        "Flight Systems Test Engineer",
         "Flight Test Engineer",
+        "Special Mission Engineer",
         "Structural Analysis Engineer",
-        "Systems Engineer",
-        "Test Engineer"
+        "Structural Test Engineer"
       ],
       "relatedOccupations": [
         {
@@ -23506,8 +23560,8 @@
       "title": "Detectives and Criminal Investigators",
       "sector": "Protective Service",
       "sampleTitles": [
-        "Crime Scene Investigator (CSI)",
         "Criminal Investigator",
+        "CSI (Crime Scene Investigator)",
         "Detective",
         "Fugitive Detective",
         "Fugitive Investigator",
@@ -23709,6 +23763,7 @@
         "Digester Cook",
         "Machine Tender",
         "Paper Machine Tender",
+        "Pasteurizer",
         "Plant Operator",
         "Pulper Operator",
         "Winemaker"
@@ -23979,13 +24034,14 @@
       "sector": "Transportation and Material Moving",
       "sampleTitles": [
         "Crane Operator",
+        "Equipment Operator",
         "Heavy Equipment Operator",
         "Machine Operator",
         "Mobile Crane Operator",
         "Overhead Crane Operator",
         "Port Crane Operator",
         "Scrap Crane Operator",
-        "Winchman",
+        "Tower Crane Operator",
         "Woodyard Crane Operator"
       ],
       "relatedOccupations": [
@@ -24189,15 +24245,16 @@
       "title": "Surveying and Mapping Technicians",
       "sector": "Architecture and Engineering",
       "sampleTitles": [
-        "Aerotriangulation Specialist",
-        "Geospatial Analyst",
+        "Field Surveyor",
+        "Land Survey Technician (Land Survey Tech)",
+        "Land Surveyor",
         "Mapping Editor",
-        "Mapping Technician",
-        "Photogrammetric Compilation Specialist",
-        "Photogrammetric Technician",
+        "Mapping Technician (Mapping Tech)",
+        "Photogrammetric Technician (Photogrammetric Tech)",
+        "Rodman",
         "Stereoplotter Operator",
-        "Survey Technician",
-        "Tax Map Technician"
+        "Survey Technician (Survey Tech)",
+        "Surveying Technician (Surveying Tech)"
       ],
       "relatedOccupations": [
         {
@@ -24716,16 +24773,16 @@
       "title": "Pesticide Handlers, Sprayers, and Applicators, Vegetation",
       "sector": "Building and Grounds Cleaning and Maintenance",
       "sampleTitles": [
+        "Applicator",
         "Chemical Applicator",
-        "Integrated Pest Management Technician (IPM Technician)",
+        "Herbicide Applicator",
+        "IPM Technician (Integrated Pest Management Technician)",
         "Lawn Specialist",
-        "Lawn Technician",
-        "Licensed Pesticide Applicator",
-        "Pest Control Technician",
         "Pesticide Applicator",
+        "Shrub Technician (Shrub Tech)",
         "Spray Applicator",
-        "Spray Technician",
-        "Tree and Shrub Technician"
+        "Spray Technician (Spray Tech)",
+        "Sprayer"
       ],
       "relatedOccupations": [
         {
@@ -24788,14 +24845,15 @@
       "sector": "Business and Financial Operations",
       "sampleTitles": [
         "Accredited Financial Counselor",
+        "Budget Credit Counselor",
         "Certified Consumer Credit and Housing Counselor",
-        "Certified Credit and Housing Counselor",
         "Certified Credit Consultant",
         "Certified Credit Counselor",
-        "Credit Counselor",
+        "Certified Financial Coach",
+        "Certified Personal Finance Counselor",
+        "Financial Coach",
         "Financial Health Counselor",
-        "Housing Counselor",
-        "Personal Finance Counselor"
+        "Housing Counselor"
       ],
       "relatedOccupations": [
         {
@@ -24858,8 +24916,10 @@
       "sector": "Legal",
       "sampleTitles": [
         "Abstractor",
+        "Advisory Title Officer",
+        "Commercial Examiner",
         "Commercial Title Examiner",
-        "Searcher",
+        "Examiner",
         "Title Abstractor",
         "Title Agent",
         "Title Examiner",
@@ -24980,14 +25040,15 @@
       "title": "Network and Computer Systems Administrators",
       "sector": "Computer and Mathematical",
       "sampleTitles": [
-        "Information Analyst",
-        "Information Technology Specialist (IT Specialist)",
+        "LAN Administrator (Local Area Network Administrator)",
         "LAN Specialist (Local Area Network Specialist)",
-        "Local Area Network Administrator (LAN Administrator)",
-        "Network Administrator",
+        "Network Administrator (Network Admin)",
+        "Network Analyst",
         "Network Coordinator",
+        "Network Engineer",
         "Network Manager",
-        "Systems Administrator (Systems Admin)"
+        "Network Specialist",
+        "Systems Engineer"
       ],
       "relatedOccupations": [
         {
@@ -25051,13 +25112,14 @@
       "sampleTitles": [
         "CAD Designer (Computer Aided Design Designer)",
         "CAD Operator (Computer Aided Design Operator)",
+        "CAM Specialist (Computer Aided Manufacturing Specialist)",
         "Design Drafter",
+        "Die Designer",
         "Drafter",
-        "Drafting Technician",
+        "Drafting Technician (Drafting Tech)",
         "Mechanical Designer",
-        "Mechanical Drafter",
-        "Product Designer",
-        "Project Designer"
+        "Tool Design Drafter",
+        "Tooling Designer"
       ],
       "relatedOccupations": [
         {
@@ -25119,9 +25181,9 @@
       "title": "Helpers--Carpenters",
       "sector": "Construction and Extraction",
       "sampleTitles": [
+        "Carpenter Apprentice",
         "Carpenter Assistant",
-        "Carpenter Helper",
-        "Carpenter's Helper"
+        "Carpenter Helper"
       ],
       "relatedOccupations": [
         {
@@ -25667,10 +25729,12 @@
         "Health Information Clerk",
         "Health Information Specialist",
         "Health Information Technician (Health Information Tech)",
+        "Health Records Specialist",
+        "HIM Clerk (Health Information Management Clerk)",
+        "Medical Coder",
         "Medical Records Clerk",
-        "Medical Records Coordinator",
         "Medical Records Technician (Medical Records Tech)",
-        "Registered Health Information Technician (RHIT)"
+        "RHIT (Registered Health Information Technician)"
       ],
       "relatedOccupations": [
         {
@@ -26444,13 +26508,15 @@
       "title": "Locker Room, Coatroom, and Dressing Room Attendants",
       "sector": "Personal Care and Service",
       "sampleTitles": [
-        "Athletic Equipment Manager",
+        "Attendant",
         "Coat Check Attendant",
         "Coat Checker",
         "Coat Room Attendant",
         "Fitting Room Attendant",
         "Ladies Locker Room Attendant",
+        "Locker Attendant",
         "Locker Room Attendant",
+        "Mens Locker Room Attendant",
         "Spa Attendant"
       ],
       "relatedOccupations": [
@@ -26586,8 +26652,7 @@
       "sampleTitles": [
         "Chiropractic Doctor (DC)",
         "Chiropractic Neurologist",
-        "Chiropractic Physician",
-        "Chiropractor"
+        "Chiropractic Physician"
       ],
       "relatedOccupations": [
         {
@@ -26713,14 +26778,14 @@
       "title": "Communications Teachers, Postsecondary",
       "sector": "Education, Training, and Library",
       "sampleTitles": [
-        "Assistant Professor",
-        "Associate Professor",
         "Communication Arts Professor",
         "Communication Instructor",
+        "Communication Lecturer",
         "Communication Professor",
-        "Instructor",
+        "Communication Skills Instructor",
+        "Communication Studies Professor",
+        "Journalism Professor",
         "Mass Communications Professor",
-        "Professor",
         "Speech Instructor",
         "Speech Professor"
       ],
@@ -26856,9 +26921,10 @@
         "Clerk Specialist",
         "Clerk Typist",
         "Keyboard Specialist",
-        "Office Technician",
         "Stenographer",
         "Typist",
+        "Word Processing Operator",
+        "Word Processing Specialist",
         "Word Processor"
       ],
       "relatedOccupations": [
@@ -27049,11 +27115,10 @@
       "title": "Floral Designers",
       "sector": "Arts, Design, Entertainment, Sports, and Media",
       "sampleTitles": [
-        "Designer",
         "Floral Artist",
+        "Floral Business Owner",
         "Floral Clerk",
-        "Floral Department Specialist",
-        "Floral Designer",
+        "Floral Studio Designer",
         "Florist",
         "Wedding Decorator"
       ],
@@ -27727,7 +27792,6 @@
       "sector": "Transportation and Material Moving",
       "sampleTitles": [
         "Airport Shuttle Driver",
-        "Car Driver",
         "Chauffeur",
         "Driver",
         "Limo Driver (Limousine Driver)",
@@ -27735,6 +27799,7 @@
         "Shuttle Bus Driver",
         "Shuttle Driver",
         "Special Needs Bus Driver",
+        "Transportation Driver",
         "Van Driver"
       ],
       "relatedOccupations": [
@@ -28079,14 +28144,15 @@
       "sector": "Healthcare Support",
       "sampleTitles": [
         "Certified Pharmacist Assistant",
-        "Drug Purchaser",
         "Front Counter Clerk",
         "Pharmacist Assistant",
-        "Pharmacy Aide",
         "Pharmacy Ancillary",
         "Pharmacy Assistant",
+        "Pharmacy Care Rep (Pharmacy Care Representative)",
         "Pharmacy Cashier",
-        "Pharmacy Clerk"
+        "Pharmacy Clerk",
+        "Pharmacy Helper",
+        "Pharmacy Support Person (PSP)"
       ],
       "relatedOccupations": [
         {
@@ -28148,13 +28214,13 @@
       "title": "First-Line Supervisors of Firefighting and Prevention Workers",
       "sector": "Protective Service",
       "sampleTitles": [
+        "Battalion Chief",
         "Engine Boss",
         "Fire Battalion Chief",
         "Fire Captain",
         "Fire Chief",
         "Fire Lieutenant",
         "Fire Marshal",
-        "Fire Prevention Chief",
         "Fire Suppression Captain",
         "Forest Fire Specialist Supervisor",
         "Section Forest Fire Warden"
@@ -28217,13 +28283,13 @@
         "Early Childhood Special Education Teacher (ECSE Teacher)",
         "Early Intervention Teacher",
         "Exceptional Student Education Teacher (ESE Teacher)",
-        "Handicapped Teacher",
-        "Preschool Special Education Teacher",
-        "Resource Teacher",
-        "Severe/Profound Mental Handicaps Special Education Teacher",
+        "Preschool SPED Teacher (Preschool Special Education Teacher)",
+        "Profound Mental Handicaps SPED Teacher (Profound Mental Handicaps Special Education Teacher)",
+        "Severe Mental Handicaps SPED Teacher (Severe Mental Handicaps Special Education Teacher)",
         "Special Education Resource Teacher",
         "Special Education Teacher",
-        "Teacher"
+        "Special Needs Teacher",
+        "SPED Preschool Teacher (Special Education Preschool Teacher)"
       ],
       "relatedOccupations": [
         {
@@ -28511,7 +28577,11 @@
       "sampleTitles": [
         "Conductor",
         "Freight Conductor",
+        "Freight Train Conductor",
+        "Local Freight Conductor",
         "Railroad Conductor",
+        "Railway Yardmaster",
+        "Thru Freight Conductor",
         "Train Master",
         "Trainman",
         "Yardmaster"
@@ -28647,15 +28717,15 @@
       "title": "Sailors and Marine Oilers",
       "sector": "Transportation and Material Moving",
       "sampleTitles": [
-        "Able Bodied Seaman (AB Seaman)",
-        "Able Bodied Watchman (AB Watchman)",
+        "AB Seaman (Able Bodied Seaman)",
+        "AB Watchman (Able Bodied Watchman)",
         "Able Seaman",
-        "Boat Crew Deck Hand",
-        "Bosun",
         "Deck Hand",
         "Deckhand",
         "Deckhand Engineer",
         "Oiler",
+        "Pilot Boat Deckhand",
+        "Relief Deckhand",
         "Tankerman"
       ],
       "relatedOccupations": [
@@ -28721,12 +28791,13 @@
         "Engineering Geologist",
         "Environmental Protection Geologist",
         "Exploration Geologist",
-        "Geological Specialist",
         "Geologist",
-        "Geophysicist",
         "Geoscientist",
         "Mine Geologist",
-        "Project Geologist"
+        "Petroleum Geologist",
+        "Project Geologist",
+        "Project Geophysicist",
+        "Research Geologist"
       ],
       "relatedOccupations": [
         {
@@ -29000,12 +29071,16 @@
       "title": "Passenger Attendants",
       "sector": "Transportation and Material Moving",
       "sampleTitles": [
+        "Attendant",
         "Bus Aide",
         "Bus Assistant",
         "Bus Attendant",
         "Bus Monitor",
+        "Cabin Attendant",
         "Fare Enforcement Officer",
-        "Transportation Aide"
+        "Transportation Aide",
+        "Transportation Assistant",
+        "Transportation Attendant"
       ],
       "relatedOccupations": [
         {
@@ -29072,8 +29147,8 @@
         "Actuarial Consultant",
         "Actuary",
         "Consulting Actuary",
-        "Corporate Actuary",
         "Health Actuary",
+        "Life Actuary",
         "Pricing Actuary",
         "Product Development Actuary",
         "Reserving Actuary"
@@ -29138,11 +29213,16 @@
       "title": "Helpers--Brickmasons, Blockmasons, Stonemasons, and Tile and Marble Setters",
       "sector": "Construction and Extraction",
       "sampleTitles": [
+        "Bricklayer Apprentice",
         "Bricklayer Helper",
+        "Helper",
         "Hod Carrier",
-        "Marble Finisher Helper",
+        "Marble Helper",
+        "Mason Apprentice",
+        "Mason Assistant",
         "Mason Tender",
-        "Restoration Labor Mason Tender"
+        "Masonry Helper",
+        "Setter Apprentice"
       ],
       "relatedOccupations": [
         {
@@ -29209,9 +29289,11 @@
         "Broadcast Engineer",
         "Broadcast Maintenance Engineer",
         "Broadcast Operations Engineer",
-        "Broadcast Technician",
+        "Broadcast Operations Technician (Broadcast Ops Tech)",
+        "Broadcast Systems Support Engineer",
         "Control Operator",
-        "Production Engineer"
+        "Production Engineer",
+        "Radio Technician (Radio Tech)"
       ],
       "relatedOccupations": [
         {
@@ -29919,13 +30001,11 @@
       "title": "Physicists",
       "sector": "Life, Physical, and Social Science",
       "sampleTitles": [
+        "Astrophysicist",
         "Biophysics Scientist",
         "Health Physicist",
         "Medical Physicist",
-        "Physicist",
-        "Research Consultant",
         "Research Physicist",
-        "Research Scientist",
         "Scientist"
       ],
       "relatedOccupations": [
@@ -29988,16 +30068,16 @@
       "title": "Law Teachers, Postsecondary",
       "sector": "Education, Training, and Library",
       "sampleTitles": [
-        "Adjunct Professor",
-        "Assistant Professor",
-        "Associate Professor",
         "Business Law Professor",
         "Clinical Law Professor",
-        "Instructor",
         "Law Instructor",
         "Law Professor",
+        "Legal Studies Professor",
         "Legal Writing Professor",
-        "Professor"
+        "Paralegal Instructor",
+        "Paralegal Studies Professor",
+        "School Law Professor",
+        "Special Education Law Professor"
       ],
       "relatedOccupations": [
         {
@@ -30264,12 +30344,14 @@
       "sampleTitles": [
         "Floor Covering Contractor",
         "Floor Coverings Installer",
+        "Floor Installer",
         "Floor Layer",
         "Flooring Installer",
         "Flooring Mechanic",
         "Tile Installer",
         "Tile Setter",
-        "Vinyl Installer"
+        "Vinyl Installer",
+        "Vinyl Mechanic"
       ],
       "relatedOccupations": [
         {
@@ -30334,12 +30416,13 @@
         "Daylight Driller",
         "Drill Operator",
         "Driller",
-        "Drilling Rig Operator",
         "Motor Man",
         "Oil Rig Driller",
         "Oil Well Driller",
         "Relief Driller",
-        "Tool Pusher"
+        "Rig Operator",
+        "Rotary Drill Operator",
+        "Rotary Driller"
       ],
       "relatedOccupations": [
         {
@@ -30402,13 +30485,13 @@
       "sector": "Management",
       "sampleTitles": [
         "Account Executive",
-        "Advertising Manager (Ad Manager)",
-        "Advertising Sales Manager (Ad Sales Manager)",
-        "Classified Advertising Manager (Classified Ad Manager)",
-        "Communications Director",
-        "Communications Manager",
+        "Ad Accounts Executive (Advertising Accounts Executive)",
+        "Ad Director (Advertising Director)",
+        "Ad Manager (Advertising Manager)",
+        "Ad Sales Director (Advertising Sales Director)",
+        "Ad Sales Manager (Advertising Sales Manager)",
+        "Classified Ad Manager (Classified Advertising Manager)",
         "Creative Services Director",
-        "Marketing and Promotions Manager",
         "Promotions Director",
         "Promotions Manager"
       ],
@@ -30758,12 +30841,13 @@
         "Commercial Door Installer",
         "Commercial Installer",
         "Door Installer",
-        "Door Technician",
+        "Door Serviceman",
         "Garage Door Installer",
-        "Garage Door Technician",
-        "Installation Technician",
-        "Residential Door Installer",
-        "Service Technician"
+        "Garage Door Technician (Garage Door Tech)",
+        "Installation Technician (Installation Tech)",
+        "Installer",
+        "Overhead Door Technician (Overhead Door Tech)",
+        "Residential Door Installer"
       ],
       "relatedOccupations": [
         {
@@ -31230,7 +31314,7 @@
       "title": "Carpet Installers",
       "sector": "Construction and Extraction",
       "sampleTitles": [
-        "Carpet Installer",
+        "Carpet Flooring Installer",
         "Carpet Layer",
         "Carpet Mechanic",
         "Commercial Floor Covering Installer",
@@ -31238,6 +31322,7 @@
         "Floor Covering Installer",
         "Floor Installation Mechanic",
         "Flooring Installer",
+        "Flooring Mechanic",
         "Installer"
       ],
       "relatedOccupations": [
@@ -31371,9 +31456,11 @@
       "title": "Locomotive Engineers",
       "sector": "Transportation and Material Moving",
       "sampleTitles": [
-        "Locomotive Engineer",
+        "Engineer",
         "Passenger Locomotive Engineer",
         "Railroad Engineer",
+        "Steam Locomotive Engineer",
+        "Steam Locomotive Fireman",
         "Through Freight Engineer",
         "Train Engineer",
         "Trainmaster",
@@ -31576,11 +31663,13 @@
         "Device Processing Engineer",
         "Diffusion Operator",
         "Manufacture Specialist",
-        "Manufacturing Technician",
+        "Manufacturing Technician (Manufacturing Tech)",
         "Metalorganic Chemical Vapor Deposition Engineer (MOCVD Engineer)",
         "Probe Operator",
-        "Process Technician",
-        "Wafer Fabrication Operator"
+        "Process Technician (Process Tech)",
+        "Semiconductor Laboratory Technician (Semiconductor Lab Tech)",
+        "Wafer Fabrication Operator",
+        "Wafer Technician (Wafer Tech)"
       ],
       "relatedOccupations": [
         {
@@ -32026,13 +32115,13 @@
       "title": "Ambulance Drivers and Attendants, Except Emergency Medical Technicians",
       "sector": "Transportation and Material Moving",
       "sampleTitles": [
-        "Ambulance Attendant",
         "Ambulance Driver",
         "Chair Car Driver",
         "CPR Ambulance Driver (Cardio Pulmonary Resuscitation Ambulance Driver)",
         "Driver",
         "Driver Medic",
-        "Emergency Care Attendant (ECA)",
+        "ECA (Emergency Care Attendant)",
+        "Emergency Vehicle Operator",
         "EMS Driver (Emergency Medical Services Driver)",
         "First Responder",
         "Medical Van Driver (Medi-Van Driver)"
@@ -32444,15 +32533,16 @@
       "title": "Aircraft Structure, Surfaces, Rigging, and Systems Assemblers",
       "sector": "Production",
       "sampleTitles": [
-        "A&P Technician (Airframe and Powerplant Technician)",
+        "Aircraft Assembler",
         "Aircraft Line Assembler",
         "Assembler",
         "Assembly Riveter",
-        "Helicopter Technician",
+        "Assembly Technician (Assembly Tech)",
         "Sheet Metal Assembler and Riveter (SMAR)",
         "Sheet Metal Mechanic",
+        "Sheet Metal Technician (Sheet Metal Tech)",
         "Structures Mechanic",
-        "Structures Technician"
+        "Structures Technician (Structures Tech)"
       ],
       "relatedOccupations": [
         {
@@ -32772,9 +32862,11 @@
         "Iron Installer",
         "Iron Worker",
         "Ironworker",
+        "Ironworker Journeyman",
+        "Ironworker Laborer",
         "Reinforced Ironworker",
+        "Rod Buster",
         "Rodbuster",
-        "Rodman",
         "Steel Tier"
       ],
       "relatedOccupations": [
@@ -33035,12 +33127,12 @@
       "title": "Meter Readers, Utilities",
       "sector": "Office and Administrative Support",
       "sampleTitles": [
-        "Field Technician",
-        "Fieldman",
+        "Field Technician (Field Tech)",
         "Meter Reader",
-        "Meter Reader Inspector",
         "Meter Reading Clerk",
-        "Meter Technician",
+        "Meter Service Technician (Meter Service Tech)",
+        "Meter Service Worker",
+        "Meter Technician (Meter Tech)",
         "Utility Service Worker",
         "Water Inspector",
         "Water Meter Reader",
@@ -33173,12 +33265,14 @@
       "sector": "Architecture and Engineering",
       "sampleTitles": [
         "Air Quality Instrument Specialist",
-        "Engineer Technician",
+        "EHS Engineer (Environmental, Health and Safety Engineer)",
+        "Engineer",
         "Environmental Engineering Assistant",
-        "Environmental Engineering Technician",
-        "Environmental Field Technician",
-        "Environmental Technician",
-        "Haz Tech (Hazardous Technician)"
+        "Environmental Engineering Technician (Environmental Engineering Tech)",
+        "Environmental Field Technician (Environmental Field Tech)",
+        "Environmental Technician (Environmental Tech)",
+        "Haz Tech (Hazardous Technician)",
+        "Remediation Technician (Remediation Tech)"
       ],
       "relatedOccupations": [
         {
@@ -33451,15 +33545,16 @@
       "title": "Air Traffic Controllers",
       "sector": "Transportation and Material Moving",
       "sampleTitles": [
-        "Air Traffic Control Specialist (ATCS)",
-        "Air Traffic Controller (ATC)",
-        "Center Air Traffic Controller (Center ATC)",
+        "ATCS (Air Traffic Control Specialist)",
+        "Center ATC (Center Air Traffic Controller)",
         "Certified Professional Controller (CPC)",
-        "Control Tower Operator",
-        "Enroute Air Traffic Controller (Enroute ATC)",
+        "Developmental Air Traffic Controller",
+        "Developmental ATCS (Developmental Air Traffic Control Specialist)",
+        "Enroute ATCS (Enroute Air Traffic Control Specialist)",
         "Radar Air Traffic Controller",
-        "Terminal Air Traffic Control Specialist (Terminal ATC Specialist)",
-        "Tower Air Traffic Controller (Tower ATC)"
+        "Terminal ATC Specialist (Terminal Air Traffic Control Specialist)",
+        "Terminal Radar Approach Controller",
+        "Tower ATC (Tower Air Traffic Controller)"
       ],
       "relatedOccupations": [
         {
@@ -33626,12 +33721,15 @@
       "sector": "Production",
       "sampleTitles": [
         "Chemical Operator",
-        "Loader Technician",
+        "Chemical Plant Operations Technician (Chemical Plan Operations Tech)",
+        "Chemical Plant Production Operator",
+        "Chemical Process Control Operator",
+        "Plant Technician (Plant Tech)",
         "Process Control Operator",
         "Process Development Associate",
         "Process Operator",
-        "Process Technician",
-        "Production Technician"
+        "Process Technician (Process Tech)",
+        "Production Technician (Production Tech)"
       ],
       "relatedOccupations": [
         {
@@ -33698,8 +33796,8 @@
         "Fish and Wildlife Biologist",
         "Fisheries and Wildlife Biological Scientist",
         "Fisheries Biologist",
-        "Forest Wildlife Biologist",
         "Habitat Biologist",
+        "Migratory Game Bird Biologist",
         "Wildlife Biologist",
         "Wildlife Refuge Specialist",
         "Zoologist"
@@ -33975,14 +34073,15 @@
       "title": "Agricultural Inspectors",
       "sector": "Farming, Fishing, and Forestry",
       "sampleTitles": [
+        "Agricultural Commodities Grader (ACG)",
+        "Agricultural Products Agent",
+        "Apiary Inspector",
         "Brand Inspector",
-        "Consumer Safety Inspector (CSI)",
+        "CSI (Consumer Safety Inspector)",
         "Food Inspector",
-        "Food Safety and Inspection Service Inspector (FSIS Inspector)",
-        "Food Sanitarian",
+        "Food Safety Inspector",
+        "FSIS Inspector (Food Safety and Inspection Service Inspector)",
         "Grain Inspector",
-        "Inspector",
-        "Seed and Fertilizer Specialist",
         "Shipping Point Inspector"
       ],
       "relatedOccupations": [
@@ -34045,15 +34144,16 @@
       "title": "Medical Appliance Technicians",
       "sector": "Production",
       "sampleTitles": [
+        "Certified Orthotist (CO)",
         "Certified Pedorthotist",
-        "Hearing Aid Repair Technician",
-        "Lab Technician",
-        "Orthopedic Technician",
-        "Orthotic and Prosthetic Technician (O and P Technician)",
-        "Orthotic Technician",
-        "Prosthetic Technician",
-        "Prosthetics Technician",
-        "Registered Prosthetic Orthotic Technician"
+        "Certified Prosthetist (CP)",
+        "Hearing Aid Repair Technician (Hearing Aid Repair Tech)",
+        "Laboratory Technician (Lab Tech)",
+        "Orthopedic Technician (Orthopedic Tech)",
+        "Orthotic Technician (Orthotic Tech)",
+        "Prosthetic Lab Tech (Prosthetic Laboratory Technician)",
+        "Prosthetic Technician (Prosthetic Tech)",
+        "Registered Prosthetic Orthotic Technician (Registered Prosthetic Orthotic Tech)"
       ],
       "relatedOccupations": [
         {
@@ -34322,13 +34422,13 @@
       "sector": "Transportation and Material Moving",
       "sampleTitles": [
         "Chipper Operator",
-        "Debarker Operator",
+        "Conveyor Operator",
+        "Conveyor Tender",
         "Flumer",
-        "Line Operator",
         "Machine Operator",
         "Package Line Operator",
         "Packaging Line Operator",
-        "Packing Line Operator",
+        "Process Line Operator",
         "Process Operator",
         "Strapper Operator"
       ],
@@ -34393,13 +34493,15 @@
       "sector": "Construction and Extraction",
       "sampleTitles": [
         "Applicator",
-        "Artisan Plasterer",
-        "Plaster and Stucco Worker",
+        "Ornamental Plasterer",
         "Plaster Applicator",
         "Plaster Mechanic",
         "Plasterer",
         "Plasterer Journeyman",
-        "Plastering Contractor"
+        "Plasterer Mechanic",
+        "Plastering Contractor",
+        "Stucco Worker",
+        "Swimming Pool Plasterer"
       ],
       "relatedOccupations": [
         {
@@ -34603,16 +34705,16 @@
       "title": "Museum Technicians and Conservators",
       "sector": "Education, Training, and Library",
       "sampleTitles": [
-        "Art Preparator",
-        "Conservation Technician",
+        "Conservation Technician (Conservation Tech)",
         "Conservator",
-        "Exhibit Technician",
+        "Exhibit Technician (Exhibit Tech)",
         "Museum Registrar",
-        "Museum Technician",
+        "Museum Technician (Museum Tech)",
         "Objects Conservator",
         "Paintings Conservator",
         "Paper Conservator",
-        "Preparator"
+        "Preparator",
+        "Textile Conservator"
       ],
       "relatedOccupations": [
         {
@@ -35165,15 +35267,15 @@
       "sector": "Education, Training, and Library",
       "sampleTitles": [
         "Catalog Librarian",
-        "Instructional Technology Specialist",
+        "Cataloger",
         "Librarian",
         "Library Media Specialist",
-        "Media Specialist",
-        "Media Technician",
-        "Multimedia Services Coordinator",
         "Reference and Instruction Librarian",
         "Reference Librarian",
-        "Technical Services Librarian"
+        "Research Librarian",
+        "School Librarian",
+        "Technical Services Librarian",
+        "University Librarian"
       ],
       "relatedOccupations": [
         {
@@ -35301,14 +35403,15 @@
       "title": "Materials Engineers",
       "sector": "Architecture and Engineering",
       "sampleTitles": [
+        "Automotive Sheet Metal Engineer",
+        "Ceramic Engineer",
         "Extrusion Engineer",
         "Materials Development Engineer",
-        "Materials Engineer",
         "Materials Research Engineer",
         "Metallurgical Engineer",
         "Metallurgist",
-        "Research Engineer",
-        "Test Engineer"
+        "Process Engineer",
+        "Textile Engineer"
       ],
       "relatedOccupations": [
         {
@@ -35371,12 +35474,13 @@
       "sector": "Construction and Extraction",
       "sampleTitles": [
         "Machine Operator",
-        "Rail Maintenance Worker",
         "Track Equipment Operator (TEO)",
         "Track Inspector",
         "Track Laborer",
         "Track Maintainer",
+        "Track Repair Person",
         "Track Repairer",
+        "Track Service Person",
         "Track Walker",
         "Trackman"
       ],
@@ -36077,7 +36181,11 @@
         "Derrick Man",
         "Derrick Operator",
         "Derrick Worker",
-        "Floor Hand"
+        "Derrickhand",
+        "Derrickman",
+        "Floor Hand",
+        "Rig Hand",
+        "Roughneck"
       ],
       "relatedOccupations": [
         {
@@ -36281,14 +36389,16 @@
       "title": "Automotive Glass Installers and Repairers",
       "sector": "Installation, Maintenance, and Repair",
       "sampleTitles": [
-        "Automotive Glass Installer (Auto Glass Installer)",
-        "Automotive Glass Technician (Auto Glass Technician)",
-        "Automotive Glazier (Auto Glazier)",
+        "Auto Glass Installer (Automotive Glass Installer)",
+        "Auto Glass Tech (Automotive Glass Technician)",
+        "Auto Glazier (Automotive Glazier)",
+        "Flat Glass Installer",
         "Glass Installer",
-        "Glass Installer Technician",
-        "Glass Technician",
+        "Glass Installer Technician (Glass Installer Tech)",
+        "Installer",
+        "Window Film Installer",
         "Windshield Installer",
-        "Windshield Repair Technician"
+        "Windshield Repair Technician (Windshield Repair Tech)"
       ],
       "relatedOccupations": [
         {
@@ -36565,11 +36675,14 @@
       "sampleTitles": [
         "Actuarial Analyst",
         "Actuarial Assistant",
-        "Actuarial Technician",
-        "Administrative Analyst",
+        "Actuarial Associate",
+        "Actuarial Technician (Actuarial Tech)",
+        "Administrative Analyst (Admin Analyst)",
+        "Data Technical Specialist",
         "Research Assistant",
+        "Research Associate",
         "Statistical Clerk",
-        "Statistical Technician"
+        "Statistical Technician (Statistical Tech)"
       ],
       "relatedOccupations": [
         {
@@ -36702,8 +36815,13 @@
       "title": "Web and Digital Interface Designers",
       "sector": "Computer and Mathematical",
       "sampleTitles": [
-        "Technology Applications Engineer",
+        "UI Developer (User Interface Developer)",
+        "UX Developer (User Experience Developer)",
+        "UX Engineer (User Experience Engineer)",
+        "Web Administration Coordinator (Web Admin Coordinator)",
         "Web Architect",
+        "Web Content Developer",
+        "Web Content Specialist",
         "Web Design Specialist",
         "Web Designer",
         "Webmaster"
@@ -36772,7 +36890,10 @@
         "Drywall Mechanic",
         "Drywall Taper",
         "Finisher",
-        "Taper"
+        "Patch Guy",
+        "Patcher",
+        "Sheetrock Finisher",
+        "Taper Finisher"
       ],
       "relatedOccupations": [
         {
@@ -38112,7 +38233,7 @@
         "Bicycle Repair Technician",
         "Bicycle Repairman",
         "Bicycle Service Technician",
-        "Bicycle Technician",
+        "Bicycle Technician (Bicycle Tech)",
         "Bike Mechanic"
       ],
       "relatedOccupations": [
@@ -38177,10 +38298,14 @@
       "sampleTitles": [
         "Caddymaster",
         "Community Life Director",
+        "Guest Services Manager",
+        "Guest Services Supervisor",
         "Hair Salon Manager",
-        "Hotel Services Supervisor",
         "Recreation Coordinator",
-        "Salon Manager"
+        "Recreation Supervisor",
+        "Salon Manager",
+        "Summer Camp Supervisor",
+        "Visitor Experience Supervisor"
       ],
       "relatedOccupations": [
         {
@@ -38243,14 +38368,15 @@
       "sector": "Installation, Maintenance, and Repair",
       "sampleTitles": [
         "Aircraft Electrical Systems Specialist",
-        "Aircraft Technician",
-        "Aviation Electrical Technician",
-        "Aviation Electronics Technician",
-        "Avionics Electronics Technician",
+        "Aircraft Technician (Aircraft Tech)",
+        "Aviation Electrical Technician (Aviation Electrical Tech)",
+        "Aviation Electronics Technician (Aviation Electronics Tech)",
+        "Avionic Technician (Avionic Tech)",
+        "Avionics Electrical Technician (AET)",
+        "Avionics Electronics Technician (Avionics Electronics Tech)",
         "Avionics Installer",
-        "Avionics Systems Integration Specialist",
-        "Avionics Technician (Avionics Tech)",
-        "Electronic Technician"
+        "Avionics Line Technician (Avionics Line Tech)",
+        "Avionics Repair Technician (Avionics Repair Tech)"
       ],
       "relatedOccupations": [
         {
@@ -39010,9 +39136,10 @@
       "title": "Paramedics",
       "sector": "Healthcare Practitioners and Technical",
       "sampleTitles": [
+        "Critical Care Paramedic",
+        "Firefighter Paramedic",
         "First Responder",
-        "Flight Paramedic",
-        "Paramedic"
+        "Flight Paramedic"
       ],
       "relatedOccupations": [
         {
@@ -39214,15 +39341,16 @@
       "title": "Gambling and Sports Book Writers and Runners",
       "sector": "Personal Care and Service",
       "sampleTitles": [
-        "Bingo Clerk",
+        "Bingo Caller",
         "Casino Attendant",
         "Casino Floor Runner",
         "Casino Runner",
         "Floor Runner",
+        "Gaming Floor Attendant",
         "Keno Attendant",
-        "Keno Writer",
-        "Race and Sports Book Writer",
-        "Racebook Writer"
+        "Keno Runner",
+        "Racebook Writer",
+        "Sportsbook Writer"
       ],
       "relatedOccupations": [
         {
@@ -39491,16 +39619,16 @@
       "title": "Special Education Teachers, Middle School",
       "sector": "Education, Training, and Library",
       "sampleTitles": [
-        "Exceptional Children Teacher (EC Teacher)",
-        "Exceptional Student Education Teacher (ESE Teacher)",
-        "Inclusion Teacher",
-        "Intervention Specialist",
+        "ED SPED Teacher (Emotional Disabilities Special Education Teacher)",
+        "Interrelated SPED Teacher (Interrelated Special Education Teacher)",
         "Learning Disabilities Teacher (LD Teacher)",
         "Learning Support Teacher",
-        "Middle School Special Education Teacher (MS SPED Teacher)",
-        "Self-Contained Special Education Teacher (Self-Contained SPED Teacher)",
-        "Special Education Teacher (SPED Teacher)",
-        "SPED Resource Teacher (Special Education Resource Teacher)"
+        "Middle School Resource Teacher",
+        "MS SPED Teacher (Middle School Special Education Teacher)",
+        "Self-Contained SPED Teacher (Self-Contained Special Education Teacher)",
+        "SLD Teacher (Specific Learning Disability Teacher)",
+        "SPED Resource Teacher (Special Education Resource Teacher)",
+        "SPED Teacher (Special Education Teacher)"
       ],
       "relatedOccupations": [
         {
@@ -39719,10 +39847,12 @@
       "sector": "Healthcare Practitioners and Technical",
       "sampleTitles": [
         "Bariatric Weight Loss Counselor",
-        "Certified Exercise Physiologist (EPC)",
+        "Cardiopulmonary Rehabilitation Practitioner",
+        "Cardiopulmonary Rehabilitation Therapist",
+        "Certified Exercise Physiologist (Certified EP)",
+        "Clinical Cardiac Exercise Physiologist",
         "Clinical Exercise Physiologist",
         "Clinical Exercise Specialist",
-        "Exercise Physiologist",
         "Exercise Scientist",
         "Exercise Specialist",
         "Lifestyle and Weight Management Consultant"
@@ -40277,7 +40407,9 @@
       "title": "Helpers--Roofers",
       "sector": "Construction and Extraction",
       "sampleTitles": [
-        "Roofer Helper"
+        "Roofer Apprentice",
+        "Roofer Helper",
+        "Roofing Apprentice"
       ],
       "relatedOccupations": [
         {
@@ -40410,16 +40542,16 @@
       "title": "Career/Technical Education Teachers, Middle School",
       "sector": "Education, Training, and Library",
       "sampleTitles": [
+        "Agriscience Technology Instructor (Agriculture Science Technology Instructor)",
         "Business Education Teacher",
-        "Business Teacher",
         "Career and Technology Education Teacher (CTE Teacher)",
-        "Computer Teacher",
+        "Career Discovery Teacher",
+        "Computer Technology Teacher",
         "Family and Consumer Sciences Teacher (FACS Teacher)",
         "Industrial Arts Teacher",
         "Industrial Technology Teacher",
-        "Teacher",
         "Technology Education Teacher (Tech Ed Teacher)",
-        "Technology Teacher"
+        "Vocational Teacher"
       ],
       "relatedOccupations": [
         {
@@ -40623,6 +40755,8 @@
       "title": "Helpers--Painters, Paperhangers, Plasterers, and Stucco Masons",
       "sector": "Construction and Extraction",
       "sampleTitles": [
+        "Helper",
+        "Painter Assistant",
         "Painter Helper",
         "Plaster Helper",
         "Plaster Tender"
@@ -40756,10 +40890,8 @@
         "Communications Director",
         "Communications Manager",
         "Community Relations Director",
-        "Development Director",
-        "Public Affairs Director",
-        "Public Relations Director (PR Director)",
-        "Public Relations Manager (PR Manager)"
+        "PR Director (Public Relations Director)",
+        "Public Affairs Director"
       ],
       "relatedOccupations": [
         {
@@ -41376,14 +41508,14 @@
       "sampleTitles": [
         "Area Forester",
         "District Forester",
+        "Environmental Protection Forester",
         "Fire Prevention Forester",
-        "Forest Practices Field Coordinator",
-        "Forester",
+        "Forest Silviculturist",
         "Procurement Forester",
+        "Resource Forester",
         "Service Forester",
         "Silviculturist",
-        "Timber Marker",
-        "Timber Sales Administrator (Timber Sales Admin)"
+        "Urban Forester"
       ],
       "relatedOccupations": [
         {
@@ -42323,10 +42455,8 @@
       "sampleTitles": [
         "Groundwater Consultant",
         "Hydrogeologist",
-        "Hydrologist",
-        "Physical Scientist",
+        "Research Hydrologic Engineer",
         "Research Hydrologist",
-        "Scientist",
         "Source Water Protection Specialist"
       ],
       "relatedOccupations": [
@@ -42583,15 +42713,15 @@
       "sector": "Production",
       "sampleTitles": [
         "Blacksmith",
-        "Cold Header Operator",
         "Forge Operator",
         "Forge Press Operator",
         "Forger",
         "Hammer Operator",
-        "Header Set-Up Operator",
+        "Header Operator",
+        "Hot Press Forger",
         "Machine Operator",
-        "Process Technician",
-        "Set Up Technician"
+        "Process Technician (Process Tech)",
+        "Set Up Operator"
       ],
       "relatedOccupations": [
         {
@@ -42919,12 +43049,9 @@
         "Autism Consultant",
         "Bilingual School Psychologist",
         "Challenging Behavior Consultant",
-        "Consulting Psychologist",
         "Early Intervention School Psychologist",
         "Educational Diagnostician",
-        "Learning Consultant",
-        "Psychologist",
-        "School Psychologist",
+        "School Neuropsychologist",
         "School Psychometrist"
       ],
       "relatedOccupations": [
@@ -43051,11 +43178,13 @@
       "title": "Tool Grinders, Filers, and Sharpeners",
       "sector": "Production",
       "sampleTitles": [
+        "Crankshaft Grinder",
+        "Cutter Grind Tool Technician (Cutter Grind Tool Tech)",
         "Cutter Grinder",
-        "Finisher",
         "Grinder",
         "Grinder Operator",
         "OD Grinder Operator (Outer Diameter Grinder Operator)",
+        "Polisher",
         "Saw Filer",
         "Tool and Cutter Grinder",
         "Tool Grinder"
@@ -43819,14 +43948,15 @@
       "sector": "Transportation and Material Moving",
       "sampleTitles": [
         "Field Traffic Investigator",
-        "Traffic Analyst",
-        "Traffic Control Technician",
+        "Traffic Control Technician (Traffic Control Tech)",
+        "Traffic Field Investigator",
         "Traffic Investigator",
+        "Traffic Monitor Specialist",
         "Traffic Signal Technician (TST)",
-        "Traffic Survey Technician",
-        "Traffic Technician",
-        "Transportation Planning Technician",
-        "Transportation Technician"
+        "Traffic Survey Technician (Traffic Survey Tech)",
+        "Traffic Systems Technician (Traffic Systems Tech)",
+        "Transportation Planning Technician (Transportation Planning Tech)",
+        "Transportation Technician (Transportation Tech)"
       ],
       "relatedOccupations": [
         {
@@ -44100,8 +44230,8 @@
       "title": "Electronic Equipment Installers and Repairers, Motor Vehicles",
       "sector": "Installation, Maintenance, and Repair",
       "sampleTitles": [
-        "Automotive Technician",
-        "Car Audio Installer",
+        "Auto Tech (Automotive Technician)",
+        "Car Alarm Installer",
         "Car Electronics Installer",
         "Car Stereo Installer",
         "Electronic Equipment Installer",
@@ -45192,14 +45322,16 @@
       "title": "Fallers",
       "sector": "Farming, Fishing, and Forestry",
       "sampleTitles": [
+        "Bucker",
         "Cutter Operator",
+        "Feller",
         "Logger",
         "Sawyer",
         "Timber Cutter",
         "Timber Faller",
+        "Timber Feller",
         "Tree Faller",
-        "Tree Feller",
-        "Tree Topper"
+        "Tree Feller"
       ],
       "relatedOccupations": [
         {
@@ -45262,15 +45394,15 @@
       "sector": "Arts, Design, Entertainment, Sports, and Media",
       "sampleTitles": [
         "Anchor",
+        "Journalist",
+        "Multimedia Journalist",
         "News Anchor",
         "News Reporter",
-        "Radio News Anchor",
-        "Radio Talk Show Host",
         "Reporter",
         "Staff Writer",
-        "Television News Anchor (TV News Anchor)",
-        "Television News Reporter",
-        "Television Reporter (TV Reporter)"
+        "TV News Anchor (Television News Anchor)",
+        "TV News Reporter (Television News Reporter)",
+        "TV Reporter (Television Reporter)"
       ],
       "relatedOccupations": [
         {
@@ -45592,10 +45724,16 @@
       "title": "Anesthesiologists",
       "sector": "Healthcare Practitioners and Technical",
       "sampleTitles": [
+        "Anesthesiologist MD (Anesthesiologist Medical Doctor)",
+        "Anesthesiology Resident",
+        "Attending Anesthesiologist",
+        "Cardiothoracic Anesthesiologist",
+        "Critical Care Anesthesiologist",
         "Medical Doctor (MD)",
         "Obstetrical Anesthesiologist",
-        "Staff Anesthesiologist",
-        "Staff Anesthetist"
+        "Pediatric Anesthesiologist",
+        "Physician",
+        "Physician Anesthesiologist"
       ],
       "relatedOccupations": [
         {
@@ -45859,9 +45997,12 @@
       "title": "Fish and Game Wardens",
       "sector": "Protective Service",
       "sampleTitles": [
-        "Fisheries Enforcement Officer",
+        "Conservation Enforcement Officer",
+        "Conservation Officer",
+        "Conservation Warden",
+        "Fish and Game Constable",
         "Game Warden",
-        "Natural Resource Officer",
+        "Refuge Officer",
         "State Game Warden",
         "State Wildlife Officer",
         "Wildlife Conservation Officer",
@@ -45995,13 +46136,13 @@
       "title": "Commercial Divers",
       "sector": "Installation, Maintenance, and Repair",
       "sampleTitles": [
-        "Commercial Diver",
         "Diver",
         "Diver Tender",
+        "Diving Coordinator",
         "Hard Hat Diver",
-        "Non Destructive Testing Under Water Welder (NDT U/W Welder)",
+        "NDT UW Welder (Non Destructive Testing Under Water Welder)",
         "Salvage Diver",
-        "Tender"
+        "Saturation Diver"
       ],
       "relatedOccupations": [
         {
@@ -46620,10 +46761,15 @@
       "title": "Genetic Counselors",
       "sector": "Healthcare Practitioners and Technical",
       "sampleTitles": [
-        "Certified Genetic Counselor",
-        "Genetic Counselor",
+        "Cardiovascular Genetics Counselor",
+        "Certified Genetic Counselor (CGC)",
+        "Clinical Genetic Counselor",
+        "Genetic Services Coordinator",
+        "Hereditary Cancer Program Coordinator",
+        "Lab Genetic Counselor (Laboratory Genetic Counselor)",
         "Medical Science Liaison",
-        "Prenatal and Pediatric Genetic Counselor",
+        "Pediatric Genetics Clinical Coordinator",
+        "Prenatal Genetic Counselor",
         "Reproductive Genetic Counseling Coordinator"
       ],
       "relatedOccupations": [
@@ -46686,8 +46832,9 @@
       "title": "Oral and Maxillofacial Surgeons",
       "sector": "Healthcare Practitioners and Technical",
       "sampleTitles": [
-        "Doctor of Dental Surgery (DDS)",
-        "Oral and Maxillofacial Surgeon (OMS)",
+        "DDS (Dental Surgery Doctor)",
+        "Maxillofacial Surgeon",
+        "Oral and Maxillofacial Surgery Resident",
         "Oral Surgeon",
         "Surgeon"
       ],
@@ -47617,14 +47764,16 @@
       "title": "Psychiatrists",
       "sector": "Healthcare Practitioners and Technical",
       "sampleTitles": [
+        "Adolescent Psychiatrist",
         "Adult Psychiatrist",
+        "Attending Psychiatrist",
+        "Board Certified Psychiatrist",
+        "Child and Adolescent Psychiatrist",
         "Child Psychiatrist",
         "Consulting Psychiatrist",
+        "Forensic Psychiatrist",
         "Medical Doctor (MD)",
-        "Outpatient Psychiatrist",
-        "Prison Psychiatrist",
-        "Psychiatrist",
-        "Staff Psychiatrist"
+        "Physician"
       ],
       "relatedOccupations": [
         {
@@ -47825,11 +47974,11 @@
       "sampleTitles": [
         "Bill Board Poster",
         "Bill Poster",
+        "Billposter",
         "Hanger",
+        "Installer",
         "Paper Hanger",
-        "Paperhanger",
         "Vinyl Hanger",
-        "Wall Covering Contractor",
         "Wall Covering Installer",
         "Wallpaper Hanger",
         "Wallpaper Installer"
@@ -48178,10 +48327,11 @@
       "sector": "Transportation and Material Moving",
       "sampleTitles": [
         "Hoist Operator",
+        "Hoisting Operator",
         "Hoistman",
-        "Material Handler",
         "Service Operator",
-        "Winch Derrick Operator"
+        "Winch Derrick Operator",
+        "Winchman"
       ],
       "relatedOccupations": [
         {
@@ -48243,13 +48393,13 @@
       "title": "Surgical Assistants",
       "sector": "Healthcare Practitioners and Technical",
       "sampleTitles": [
-        "Certified First Assistant (CFA)",
-        "Certified Registered Nurse First Assistant (CRNFA)",
-        "Certified Surgical Assistant (CSA)",
-        "Certified Surgical First Assistant (CSFA)",
-        "Certified Surgical Technician",
-        "Gastrointestinal Technician (GI Technician)",
-        "Registered Nurse First Assistant (RNFA)",
+        "Certified Surgical Technician (Certified Surgical Tech)",
+        "CRNFA (Certified Registered Nurse First Assistant)",
+        "CSA (Certified Surgical Assistant)",
+        "CSFA (Certified Surgical First Assistant)",
+        "GI Technician (Gastrointestinal Technician)",
+        "RNFA (Registered Nurse First Assistant)",
+        "Scrub Technician (Scrub Tech)",
         "Surgical First Assistant",
         "Surgical Scrub Technician (Surgical Scrub Tech)",
         "Surgical Technician (Surgical Tech)"
@@ -48570,13 +48720,15 @@
       "title": "Parking Enforcement Workers",
       "sector": "Protective Service",
       "sampleTitles": [
+        "Meter Maid",
         "Parking Control Officer",
         "Parking Enforcement Officer (PEO)",
-        "Parking Enforcement Technician",
+        "Parking Enforcement Technician (Parking Enforcement Tech)",
         "Parking Enforcer",
         "Parking Officer",
+        "Parking Patroller",
         "Parking Regulation Enforcement Officer",
-        "Parking Technician",
+        "Parking Technician (Parking Tech)",
         "Ticket Writer"
       ],
       "relatedOccupations": [
@@ -49429,9 +49581,9 @@
       "title": "Court Reporters and Simultaneous Captioners",
       "sector": "Arts, Design, Entertainment, Sports, and Media",
       "sampleTitles": [
+        "Captioner",
         "Certified Shorthand Reporter (CSR)",
-        "Court Monitor",
-        "Court Recording Monitor",
+        "Court Recorder",
         "Court Reporter",
         "Court Stenographer",
         "Deposition Reporter",
@@ -49501,11 +49653,11 @@
       "sector": "Installation, Maintenance, and Repair",
       "sampleTitles": [
         "Delivery Crew Worker",
+        "House Hauler",
         "Mobile Home Installer",
         "Mobile Home Laborer",
         "Mobile Home Set-Up Person",
-        "Modular Set Crew Member",
-        "Set Up Technician"
+        "Set Up Technician (Set Up Tech)"
       ],
       "relatedOccupations": [
         {
@@ -49644,8 +49796,10 @@
         "Locomotive Switch Operator",
         "Railroad Brakeman",
         "Railroad Switchman",
+        "Switch Operator",
+        "Switchman",
         "Terminal Carman",
-        "Trainman"
+        "Yard Switcher"
       ],
       "relatedOccupations": [
         {
@@ -49779,12 +49933,13 @@
       "sampleTitles": [
         "Die Cast Die Maker",
         "Fixture Builder",
-        "Layout Technician",
-        "Metal Pattern Maker",
-        "Pattern Maker",
-        "Pattern Maker Programmer",
+        "Journeyman Patternmaker",
+        "Layout Technician (Layout Tech)",
+        "Metal Mold Maker",
+        "Metal Patternmaker",
+        "Model Maker",
+        "Mold Maker",
         "Pattern Repair Person",
-        "Patternmaker",
         "Wax Molder"
       ],
       "relatedOccupations": [
@@ -50131,11 +50286,7 @@
       "socCode": "13-1074",
       "title": "Farm Labor Contractors",
       "sector": "Business and Financial Operations",
-      "sampleTitles": [
-        "Farm Labor Contractor",
-        "Field Manager",
-        "Field Supervisor"
-      ],
+      "sampleTitles": [],
       "relatedOccupations": [
         {
           "socCode": "45-1011",

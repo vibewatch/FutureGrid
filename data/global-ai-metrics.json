@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T13:56:57.991Z",
+  "generatedAt": "2026-10-12T23:02:32.213Z",
   "sources": [
     {
       "id": "microsoft-aiei",
@@ -2688,7 +2688,7 @@
     }
   },
   "meta": {
-    "generatedAt": "2026-10-07T13:56:57.991Z",
+    "generatedAt": "2026-10-12T23:02:32.213Z",
     "asOf": "2026-06-30",
     "source": {
       "name": "Global AI diffusion and readiness metrics",

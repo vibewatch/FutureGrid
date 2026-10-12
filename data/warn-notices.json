@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T13:32:55.137Z",
+  "generatedAt": "2026-10-12T23:01:31.866Z",
   "coverage": "16 live WARN adapters (CA, GA, IN, IA, KY, MD, NJ, NY, NC, OH, OR, PA, TN, TX, VA, WI) plus all-state coverage metadata for 51 jurisdictions; notices are normalized to the latest 10 years where available.",
   "coverageSummary": {
     "totalStates": 51,
@@ -93,10 +93,10 @@
       "sourceStatus": "live",
       "sourceType": "xlsx",
       "recordsIncluded": true,
-      "notices": 352,
+      "notices": 356,
       "dateRange": {
         "earliest": "2026-06-26",
-        "latest": "2026-10-05"
+        "latest": "2026-10-06"
       },
       "buildStatus": "ok",
       "adapter": "fetchCA",
@@ -302,10 +302,10 @@
       "sourceStatus": "live",
       "sourceType": "html",
       "recordsIncluded": true,
-      "notices": 535,
+      "notices": 536,
       "dateRange": {
         "earliest": "2016-01-19",
-        "latest": "2026-09-30"
+        "latest": "2026-10-05"
       },
       "buildStatus": "ok",
       "adapter": "fetchIN",
@@ -435,10 +435,10 @@
       "sourceStatus": "live",
       "sourceType": "html",
       "recordsIncluded": true,
-      "notices": 1106,
+      "notices": 1110,
       "dateRange": {
         "earliest": "2016-01-05",
-        "latest": "2026-10-01"
+        "latest": "2026-10-07"
       },
       "buildStatus": "ok",
       "adapter": "fetchMD",
@@ -717,10 +717,10 @@
       "sourceStatus": "live",
       "sourceType": "csv",
       "recordsIncluded": true,
-      "notices": 62,
+      "notices": 63,
       "dateRange": {
         "earliest": "2026-01-07",
-        "latest": "2026-09-28"
+        "latest": "2026-10-05"
       },
       "buildStatus": "ok",
       "adapter": "fetchNC",
@@ -811,7 +811,7 @@
       },
       "buildStatus": "preserved",
       "dataFreshness": "preserved",
-      "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
+      "preservedGeneratedAt": "2026-10-07T13:32:55.137Z",
       "adapter": "fetchOR",
       "name": "Oregon WARN Act Notices",
       "publisher": "Oregon Employment Department",
@@ -831,7 +831,7 @@
       "sourceStatus": "live",
       "sourceType": "html",
       "recordsIncluded": true,
-      "notices": 261,
+      "notices": 262,
       "dateRange": {
         "earliest": null,
         "latest": null
@@ -1005,7 +1005,9 @@
         "earliest": "2016-01-04",
         "latest": "2026-10-02"
       },
-      "buildStatus": "ok",
+      "buildStatus": "preserved",
+      "dataFreshness": "preserved",
+      "preservedGeneratedAt": "2026-10-07T13:32:55.137Z",
       "adapter": "fetchVA",
       "name": "Virginia WARN Notices",
       "publisher": "Virginia Works",
@@ -1016,7 +1018,7 @@
         "https://virginiaworks.gov/im-an-employer/retain-and-grow/warn-notices/"
       ],
       "notes": "Official page exposes a Download Filtered List CSV with notice date, impact date, affected employees, location, and notice type; the timestamped CSV export URL is discovered at build time.",
-      "error": null
+      "error": "HTTP 504 Gateway Timeout"
     },
     {
       "state": "WA",
@@ -1071,7 +1073,7 @@
       },
       "buildStatus": "preserved",
       "dataFreshness": "preserved",
-      "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
+      "preservedGeneratedAt": "2026-10-07T13:32:55.137Z",
       "adapter": "fetchWI",
       "name": "Wisconsin WARN Act Notices",
       "publisher": "Wisconsin Department of Workforce Development",
@@ -1208,7 +1210,7 @@
       "notes": null,
       "license": "Public Domain (state public record)",
       "dataFreshness": "preserved",
-      "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
+      "preservedGeneratedAt": "2026-10-07T13:32:55.137Z",
       "preservationReason": "GOOGLE_SHEETS_API_KEY absent"
     },
     {
@@ -1280,7 +1282,7 @@
       "notes": null,
       "license": "Public Domain (state public record)",
       "dataFreshness": "preserved",
-      "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
+      "preservedGeneratedAt": "2026-10-07T13:32:55.137Z",
       "preservationReason": "live fetch failed after retries: HTTP 403 Forbidden"
     },
     {
@@ -1396,10 +1398,57 @@
       "parserConfidence": 0.95,
       "parserNotes": null,
       "notes": "Official page exposes a Download Filtered List CSV with notice date, impact date, affected employees, location, and notice type; the timestamped CSV export URL is discovered at build time.",
-      "license": "Public Domain (state public record)"
+      "license": "Public Domain (state public record)",
+      "dataFreshness": "preserved",
+      "preservedGeneratedAt": "2026-10-07T13:32:55.137Z",
+      "preservationReason": "live fetch failed after retries: HTTP 504 Gateway Timeout"
     }
   ],
   "notices": [
+    {
+      "company": "Provider Partners Management Services, LLC",
+      "county": "Howard County",
+      "city": null,
+      "employees": 39,
+      "noticeDate": "2026-10-07",
+      "effectiveDate": "2026-12-07",
+      "layoffType": "Mass Layoff - No Recall",
+      "state": "MD",
+      "stateName": "Maryland"
+    },
+    {
+      "company": "Caribou Biosciences, Inc.",
+      "county": "Alameda County",
+      "city": "Ste 105  Berkeley",
+      "employees": 87,
+      "noticeDate": "2026-10-06",
+      "effectiveDate": "2026-12-07",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Beachbody, LLC",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 80,
+      "noticeDate": "2026-10-06",
+      "effectiveDate": "2026-12-07",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Cloudforce Group, Inc.",
+      "county": "Prince George’s County",
+      "city": null,
+      "employees": 33,
+      "noticeDate": "2026-10-06",
+      "effectiveDate": "2026-10-06",
+      "layoffType": "Mass Layoff - No Recall",
+      "state": "MD",
+      "stateName": "Maryland"
+    },
     {
       "company": "Kaiser Foundation Hospitals and Kaiser Foundation Health Plan, Inc.",
       "county": "Alameda County",
@@ -1467,6 +1516,61 @@
       "stateName": "California"
     },
     {
+      "company": "Cayuga Home for Children",
+      "county": "Los Angeles County",
+      "city": null,
+      "employees": 12,
+      "noticeDate": "2026-10-05",
+      "effectiveDate": "2027-01-04",
+      "layoffType": "Closure",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "American Woodmark Corporation",
+      "county": null,
+      "city": "Gas City",
+      "employees": 207,
+      "noticeDate": "2026-10-05",
+      "effectiveDate": "2026-12-05",
+      "layoffType": "Layoff",
+      "state": "IN",
+      "stateName": "Indiana"
+    },
+    {
+      "company": "True Food Kitchen",
+      "county": "Montgomery County",
+      "city": "Bethesda",
+      "employees": 41,
+      "noticeDate": "2026-10-05",
+      "effectiveDate": "2026-12-04",
+      "layoffType": "Closure",
+      "state": "MD",
+      "stateName": "Maryland"
+    },
+    {
+      "company": "Cayuga Centers",
+      "county": "Baltimore City",
+      "city": null,
+      "employees": 14,
+      "noticeDate": "2026-10-05",
+      "effectiveDate": "2027-01-04",
+      "layoffType": "Closure",
+      "state": "MD",
+      "stateName": "Maryland"
+    },
+    {
+      "company": "James River Management Company, Inc.",
+      "county": null,
+      "city": "Richmond VA",
+      "employees": 4,
+      "noticeDate": "2026-10-05",
+      "effectiveDate": "2026-11-30",
+      "layoffType": "Layoff Permanent",
+      "state": "NC",
+      "stateName": "North Carolina"
+    },
+    {
       "company": "Blue Diamond Growers",
       "county": "Sacramento County",
       "city": null,
@@ -1517,6 +1621,17 @@
       "employees": 5,
       "noticeDate": "2026-10-01",
       "effectiveDate": "2026-12-01",
+      "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "ODS Technologies LP and Betfair Interactive US LLC",
+      "county": "Los Angeles County",
+      "city": "Suite 160  Los Angeles",
+      "employees": 2,
+      "noticeDate": "2026-10-01",
+      "effectiveDate": "2026-11-30",
       "layoffType": "Layoff Permanent",
       "state": "CA",
       "stateName": "California"
@@ -1661,6 +1776,17 @@
       "noticeDate": "2026-09-30",
       "effectiveDate": "2026-09-30",
       "layoffType": "Layoff Permanent",
+      "state": "CA",
+      "stateName": "California"
+    },
+    {
+      "company": "Neogen Care Home Health Agency",
+      "county": "Los Angeles County",
+      "city": "Suite 670  Sherman Oaks",
+      "employees": 148,
+      "noticeDate": "2026-09-30",
+      "effectiveDate": "2026-09-11",
+      "layoffType": "Closure",
       "state": "CA",
       "stateName": "California"
     },
@@ -1963,17 +2089,6 @@
     },
     {
       "company": "Constellis, LLC (5019 E 3rd St.)",
-      "county": "Los Angeles County",
-      "city": null,
-      "employees": 5,
-      "noticeDate": "2026-09-29",
-      "effectiveDate": "2026-10-31",
-      "layoffType": "Layoff Permanent",
-      "state": "CA",
-      "stateName": "California"
-    },
-    {
-      "company": "Constellis, LLC (5130 N. Clark Ave.)",
       "county": "Los Angeles County",
       "city": null,
       "employees": 5,
@@ -4080,7 +4195,7 @@
       "employees": 73,
       "noticeDate": "2026-08-19",
       "effectiveDate": "2026-11-02",
-      "layoffType": "Relocation",
+      "layoffType": "Relocation Permanent",
       "state": "CA",
       "stateName": "California"
     },
@@ -124271,6 +124386,17 @@
       "stateName": "Maryland"
     },
     {
+      "company": "Starbucks",
+      "county": "Philadelphia",
+      "city": "Philadelphia",
+      "employees": 18,
+      "noticeDate": null,
+      "effectiveDate": "2026-12-06",
+      "layoffType": "Closure",
+      "state": "PA",
+      "stateName": "Pennsylvania"
+    },
+    {
       "company": "Kenco Logistic Services, LLC",
       "county": "Northampton",
       "city": "Northampton",
@@ -127143,11 +127269,11 @@
     }
   ],
   "summary": {
-    "total": 12683,
-    "totalEmployees": 1375936,
+    "total": 12694,
+    "totalEmployees": 1376616,
     "dateRange": {
       "earliest": "2016-01-01",
-      "latest": "2026-10-05"
+      "latest": "2026-10-07"
     },
     "byState": [
       {
@@ -127203,21 +127329,21 @@
       {
         "state": "MD",
         "stateName": "Maryland",
-        "notices": 1106,
-        "employees": 86895,
+        "notices": 1110,
+        "employees": 87022,
         "dateRange": {
           "earliest": "2016-01-05",
-          "latest": "2026-10-01"
+          "latest": "2026-10-07"
         }
       },
       {
         "state": "IN",
         "stateName": "Indiana",
-        "notices": 535,
-        "employees": 86101,
+        "notices": 536,
+        "employees": 86308,
         "dateRange": {
           "earliest": "2016-01-19",
-          "latest": "2026-09-30"
+          "latest": "2026-10-05"
         }
       },
       {
@@ -127253,8 +127379,8 @@
       {
         "state": "PA",
         "stateName": "Pennsylvania",
-        "notices": 261,
-        "employees": 50832,
+        "notices": 262,
+        "employees": 50850,
         "dateRange": {
           "earliest": null,
           "latest": null
@@ -127283,11 +127409,11 @@
       {
         "state": "CA",
         "stateName": "California",
-        "notices": 352,
-        "employees": 16885,
+        "notices": 356,
+        "employees": 17209,
         "dateRange": {
           "earliest": "2026-06-26",
-          "latest": "2026-10-05"
+          "latest": "2026-10-06"
         }
       },
       {
@@ -127303,11 +127429,11 @@
       {
         "state": "NC",
         "stateName": "North Carolina",
-        "notices": 62,
-        "employees": 6264,
+        "notices": 63,
+        "employees": 6268,
         "dateRange": {
           "earliest": "2026-01-07",
-          "latest": "2026-09-28"
+          "latest": "2026-10-05"
         }
       }
     ],
@@ -127955,12 +128081,12 @@
       {
         "month": "2026-09",
         "notices": 164,
-        "employees": 10940
+        "employees": 11083
       },
       {
         "month": "2026-10",
-        "notices": 18,
-        "employees": 1040
+        "notices": 28,
+        "employees": 1559
       }
     ],
     "byType": [
@@ -127971,13 +128097,13 @@
       },
       {
         "type": "Closure",
-        "notices": 1493,
-        "employees": 163614
+        "notices": 1499,
+        "employees": 163934
       },
       {
         "type": "Layoff",
-        "notices": 732,
-        "employees": 112842
+        "notices": 733,
+        "employees": 113049
       },
       {
         "type": "Restaurant",
@@ -128006,8 +128132,8 @@
       },
       {
         "type": "Layoff Permanent",
-        "notices": 299,
-        "employees": 19541
+        "notices": 301,
+        "employees": 19622
       },
       {
         "type": "Contract Cancellation",
@@ -128016,8 +128142,8 @@
       },
       {
         "type": "Mass Layoff - No Recall",
-        "notices": 193,
-        "employees": 14184
+        "notices": 195,
+        "employees": 14256
       },
       {
         "type": "Slack Work",
@@ -131485,7 +131611,7 @@
         "employees": 74
       },
       {
-        "type": "Relocation",
+        "type": "Relocation Permanent",
         "notices": 1,
         "employees": 73
       },
@@ -134769,8 +134895,8 @@
     ]
   },
   "meta": {
-    "generatedAt": "2026-10-07T13:32:55.137Z",
-    "asOf": "2026-10-05",
+    "generatedAt": "2026-10-12T23:01:31.866Z",
+    "asOf": "2026-10-07",
     "source": {
       "name": "Multi-state WARN Act notice registry",
       "publisher": "U.S. state workforce agencies (aggregated by FutureGrid)",

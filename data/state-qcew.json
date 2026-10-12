@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T13:33:03.799Z",
+  "generatedAt": "2026-10-12T23:01:36.651Z",
   "asOf": "2025",
   "source": {
     "name": "BLS Quarterly Census of Employment and Wages Annual Area CSVs",
@@ -67,14 +67,14 @@
     "privateOwnershipStates": 51,
     "allOwnershipFallbackStates": 0,
     "fallbackStates": [],
-    "statesWithBaselineRate": 7,
-    "rankedStates": 7,
+    "statesWithBaselineRate": 6,
+    "rankedStates": 6,
     "highestBaselineState": "NJ",
     "highestBaselineRate": 51.02,
     "warnWindowMonths": 12,
     "warnWindowStart": "2025-09-01",
     "warnWindowEnd": "2026-08-31",
-    "stateLaborGeneratedAt": "2026-10-07T13:32:58.672Z",
+    "stateLaborGeneratedAt": "2026-10-12T23:01:34.778Z",
     "candidateYearAttempts": [
       {
         "year": 2025,
@@ -284,8 +284,8 @@
       "warnNotices12m": 218,
       "warnEmployeesPer10kQcewEmployment": 6.45,
       "lausLaborForce": 19499116,
-      "warnPressureRank": 7,
-      "warnPressureScore": 8,
+      "warnPressureRank": 6,
+      "warnPressureScore": 10,
       "rankEligible": true,
       "dataQualityNotes": [
         "Uses QCEW private ownership (own_code 5), all industries (industry_code 10)."
@@ -733,8 +733,8 @@
       "warnNotices12m": 36,
       "warnEmployeesPer10kQcewEmployment": 20.42,
       "lausLaborForce": 3488019,
-      "warnPressureRank": 5,
-      "warnPressureScore": 31,
+      "warnPressureRank": 4,
+      "warnPressureScore": 38,
       "rankEligible": true,
       "dataQualityNotes": [
         "Uses QCEW private ownership (own_code 5), all industries (industry_code 10)."
@@ -777,7 +777,7 @@
       "warnNotices12m": 130,
       "warnEmployeesPer10kQcewEmployment": 33.75,
       "lausLaborForce": 1724263,
-      "warnPressureRank": 4,
+      "warnPressureRank": 3,
       "warnPressureScore": 62,
       "rankEligible": true,
       "dataQualityNotes": [
@@ -1002,7 +1002,7 @@
       "warnEmployeesPer10kQcewEmployment": 42.18,
       "lausLaborForce": 3199779,
       "warnPressureRank": 1,
-      "warnPressureScore": 81,
+      "warnPressureScore": 86,
       "rankEligible": true,
       "dataQualityNotes": [
         "Uses QCEW private ownership (own_code 5), all industries (industry_code 10)."
@@ -1584,8 +1584,8 @@
       "warnNotices12m": 56,
       "warnEmployeesPer10kQcewEmployment": 12.87,
       "lausLaborForce": 5231098,
-      "warnPressureRank": 6,
-      "warnPressureScore": 19,
+      "warnPressureRank": 5,
+      "warnPressureScore": 24,
       "rankEligible": true,
       "dataQualityNotes": [
         "Uses QCEW private ownership (own_code 5), all industries (industry_code 10)."
@@ -2164,15 +2164,16 @@
       "annualAverageEmployment": 3404966,
       "averageAnnualPay": 80159,
       "averageWeeklyWage": 1542,
-      "warnEmployees12m": 8007,
-      "warnNotices12m": 72,
-      "warnEmployeesPer10kQcewEmployment": 23.52,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kQcewEmployment": null,
       "lausLaborForce": 4465164,
-      "warnPressureRank": 3,
-      "warnPressureScore": 65,
-      "rankEligible": true,
+      "warnPressureRank": null,
+      "warnPressureScore": null,
+      "rankEligible": false,
       "dataQualityNotes": [
-        "Uses QCEW private ownership (own_code 5), all industries (industry_code 10)."
+        "Uses QCEW private ownership (own_code 5), all industries (industry_code 10).",
+        "WARN coverage is not rank-eligible; WARN counts/rates are unknown, not zero. Reason: WARN source refresh was preserved from last-known-good data and is not eligible for current pressure ranking"
       ],
       "sourceRow": {
         "areaFips": "51000",
@@ -2374,7 +2375,7 @@
     }
   ],
   "meta": {
-    "generatedAt": "2026-10-07T13:33:03.799Z",
+    "generatedAt": "2026-10-12T23:01:36.651Z",
     "asOf": "2025",
     "source": {
       "name": "BLS Quarterly Census of Employment and Wages Annual Area CSVs",
