@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-10-07T14:11:29.369Z",
-    "asOf": "2026-09-06",
+    "generatedAt": "2026-10-12T23:03:05.417Z",
+    "asOf": "2026-09-20",
     "source": {
       "name": "St. Louis Fed RPS Generative AI Adoption Tracker + Census Business Trends and Outlook Survey",
       "publisher": "Federal Reserve Bank of St. Louis / U.S. Census Bureau",
@@ -9,7 +9,7 @@
     },
     "version": "1.0.0"
   },
-  "generatedAt": "2026-10-07T14:11:29.369Z",
+  "generatedAt": "2026-10-12T23:03:05.417Z",
   "sources": [
     {
       "id": "stlouisfed-rps-genai",
@@ -1316,8 +1316,8 @@
     ]
   },
   "businesses": {
-    "asOf": "2026-09-06",
-    "latestCycle": "202619",
+    "asOf": "2026-09-20",
+    "latestCycle": "202620",
     "frequency": "biweekly",
     "universe": "U.S. employer businesses (single-unit and multi-unit firms), weighted by firm count",
     "national": [
@@ -1474,347 +1474,354 @@
         "refEnd": "2026-09-06",
         "aiUsePct": 23.8,
         "aiUseNext6mPct": 27.6
+      },
+      {
+        "cycle": "202620",
+        "refStart": "2026-09-07",
+        "refEnd": "2026-09-20",
+        "aiUsePct": 23.8,
+        "aiUseNext6mPct": 27.7
       }
     ],
     "bySector": [
       {
         "naics": "51",
         "sector": "Information",
-        "cycle": "202619",
-        "aiUsePct": 49,
-        "aiUseNext6mPct": 52.1
+        "cycle": "202620",
+        "aiUsePct": 50.2,
+        "aiUseNext6mPct": 52
       },
       {
         "naics": "54",
         "sector": "Professional, Scientific, and Technical Services",
-        "cycle": "202619",
-        "aiUsePct": 43.9,
-        "aiUseNext6mPct": 48.5
+        "cycle": "202620",
+        "aiUsePct": 42.7,
+        "aiUseNext6mPct": 47.2
       },
       {
         "naics": "52",
         "sector": "Finance and Insurance",
-        "cycle": "202619",
-        "aiUsePct": 41,
-        "aiUseNext6mPct": 45.9
-      },
-      {
-        "naics": "55",
-        "sector": "Management of Companies and Enterprises",
-        "cycle": "202618",
-        "aiUsePct": 34.8,
-        "aiUseNext6mPct": 27.3
+        "cycle": "202620",
+        "aiUsePct": 40.1,
+        "aiUseNext6mPct": 48
       },
       {
         "naics": "61",
         "sector": "Educational Services",
-        "cycle": "202619",
-        "aiUsePct": 30,
-        "aiUseNext6mPct": 33.8
+        "cycle": "202620",
+        "aiUsePct": 39.9,
+        "aiUseNext6mPct": 44.9
       },
       {
         "naics": "53",
         "sector": "Real Estate and Rental and Leasing",
-        "cycle": "202619",
-        "aiUsePct": 29.6,
-        "aiUseNext6mPct": 35.2
+        "cycle": "202620",
+        "aiUsePct": 30.8,
+        "aiUseNext6mPct": 34.8
       },
       {
         "naics": "62",
         "sector": "Health Care and Social Assistance",
-        "cycle": "202619",
-        "aiUsePct": 25.5,
-        "aiUseNext6mPct": 30.8
+        "cycle": "202620",
+        "aiUsePct": 24.8,
+        "aiUseNext6mPct": 29.3
       },
       {
-        "naics": "71",
-        "sector": "Arts, Entertainment, and Recreation",
-        "cycle": "202619",
-        "aiUsePct": 22.6,
-        "aiUseNext6mPct": 25.6
+        "naics": "55",
+        "sector": "Management of Companies and Enterprises",
+        "cycle": "202620",
+        "aiUsePct": 23.2,
+        "aiUseNext6mPct": 30
       },
       {
         "naics": "56",
         "sector": "Administrative and Support and Waste Management Services",
-        "cycle": "202619",
-        "aiUsePct": 20.8,
-        "aiUseNext6mPct": 24.2
-      },
-      {
-        "naics": "31",
-        "sector": "Manufacturing",
-        "cycle": "202619",
-        "aiUsePct": 19.5,
-        "aiUseNext6mPct": 24
+        "cycle": "202620",
+        "aiUsePct": 21.7,
+        "aiUseNext6mPct": 26.5
       },
       {
         "naics": "42",
         "sector": "Wholesale Trade",
-        "cycle": "202619",
-        "aiUsePct": 19.2,
-        "aiUseNext6mPct": 24.7
+        "cycle": "202620",
+        "aiUsePct": 21.6,
+        "aiUseNext6mPct": 25.6
       },
       {
-        "naics": "44",
-        "sector": "Retail Trade",
-        "cycle": "202619",
-        "aiUsePct": 16.5,
-        "aiUseNext6mPct": 19.6
+        "naics": "31",
+        "sector": "Manufacturing",
+        "cycle": "202620",
+        "aiUsePct": 20.8,
+        "aiUseNext6mPct": 25.6
       },
       {
         "naics": "23",
         "sector": "Construction",
-        "cycle": "202619",
-        "aiUsePct": 15.4,
-        "aiUseNext6mPct": 17.7
+        "cycle": "202620",
+        "aiUsePct": 17.2,
+        "aiUseNext6mPct": 20.3
       },
       {
-        "naics": "81",
-        "sector": "Other Services, Except Public Administration",
-        "cycle": "202619",
-        "aiUsePct": 15,
-        "aiUseNext6mPct": 16.7
+        "naics": "44",
+        "sector": "Retail Trade",
+        "cycle": "202620",
+        "aiUsePct": 16.8,
+        "aiUseNext6mPct": 20.1
       },
       {
-        "naics": "48",
-        "sector": "Transportation and Warehousing",
-        "cycle": "202619",
-        "aiUsePct": 13,
-        "aiUseNext6mPct": 16.3
+        "naics": "71",
+        "sector": "Arts, Entertainment, and Recreation",
+        "cycle": "202620",
+        "aiUsePct": 16.8,
+        "aiUseNext6mPct": 19.5
       },
       {
         "naics": "22",
         "sector": "Utilities",
-        "cycle": "202619",
-        "aiUsePct": 11.8,
-        "aiUseNext6mPct": 14.2
-      },
-      {
-        "naics": "72",
-        "sector": "Accommodation and Food Services",
-        "cycle": "202619",
-        "aiUsePct": 10.1,
-        "aiUseNext6mPct": 14.3
+        "cycle": "202620",
+        "aiUsePct": 16.7,
+        "aiUseNext6mPct": 24.5
       },
       {
         "naics": "21",
         "sector": "Mining, Quarrying, and Oil and Gas Extraction",
-        "cycle": "202619",
-        "aiUsePct": 8,
-        "aiUseNext6mPct": 8.2
+        "cycle": "202620",
+        "aiUsePct": 13,
+        "aiUseNext6mPct": 13
+      },
+      {
+        "naics": "81",
+        "sector": "Other Services, Except Public Administration",
+        "cycle": "202620",
+        "aiUsePct": 12.7,
+        "aiUseNext6mPct": 14.7
+      },
+      {
+        "naics": "48",
+        "sector": "Transportation and Warehousing",
+        "cycle": "202620",
+        "aiUsePct": 10.5,
+        "aiUseNext6mPct": 12.9
+      },
+      {
+        "naics": "72",
+        "sector": "Accommodation and Food Services",
+        "cycle": "202620",
+        "aiUsePct": 10.1,
+        "aiUseNext6mPct": 13.1
       },
       {
         "naics": "11",
         "sector": "Agriculture, Forestry, Fishing, and Hunting",
-        "cycle": "202619",
-        "aiUsePct": 6.2,
-        "aiUseNext6mPct": 8.6
+        "cycle": "202620",
+        "aiUsePct": 9.5,
+        "aiUseNext6mPct": 11.7
       }
     ],
     "byState": [
       {
         "state": "DC",
-        "cycle": "202619",
-        "aiUsePct": 33.9,
-        "aiUseNext6mPct": 35
-      },
-      {
-        "state": "NH",
-        "cycle": "202619",
-        "aiUsePct": 30.5,
-        "aiUseNext6mPct": 28.9
-      },
-      {
-        "state": "CO",
-        "cycle": "202619",
-        "aiUsePct": 30.2,
-        "aiUseNext6mPct": 35.1
+        "cycle": "202620",
+        "aiUsePct": 43.9,
+        "aiUseNext6mPct": 53.3
       },
       {
         "state": "UT",
-        "cycle": "202619",
-        "aiUsePct": 28.8,
-        "aiUseNext6mPct": 33.1
-      },
-      {
-        "state": "MN",
-        "cycle": "202619",
-        "aiUsePct": 28.7,
-        "aiUseNext6mPct": 32.7
+        "cycle": "202620",
+        "aiUsePct": 34.8,
+        "aiUseNext6mPct": 36.4
       },
       {
         "state": "AZ",
-        "cycle": "202619",
-        "aiUsePct": 28.3,
-        "aiUseNext6mPct": 31.9
-      },
-      {
-        "state": "FL",
-        "cycle": "202619",
-        "aiUsePct": 28.2,
-        "aiUseNext6mPct": 32.4
-      },
-      {
-        "state": "ID",
-        "cycle": "202619",
-        "aiUsePct": 28,
-        "aiUseNext6mPct": 29.9
-      },
-      {
-        "state": "GA",
-        "cycle": "202619",
-        "aiUsePct": 27.2,
-        "aiUseNext6mPct": 31.1
-      },
-      {
-        "state": "SD",
-        "cycle": "202619",
-        "aiUsePct": 27.2,
-        "aiUseNext6mPct": 33.6
-      },
-      {
-        "state": "DE",
-        "cycle": "202619",
-        "aiUsePct": 27.1,
-        "aiUseNext6mPct": 33.9
-      },
-      {
-        "state": "OR",
-        "cycle": "202619",
-        "aiUsePct": 26.4,
-        "aiUseNext6mPct": 28.9
-      },
-      {
-        "state": "CA",
-        "cycle": "202619",
-        "aiUsePct": 26.3,
-        "aiUseNext6mPct": 30.4
+        "cycle": "202620",
+        "aiUsePct": 29.5,
+        "aiUseNext6mPct": 33
       },
       {
         "state": "NV",
-        "cycle": "202619",
-        "aiUsePct": 26.3,
-        "aiUseNext6mPct": 32.7
+        "cycle": "202620",
+        "aiUsePct": 29.1,
+        "aiUseNext6mPct": 31.1
       },
       {
-        "state": "WA",
-        "cycle": "202619",
-        "aiUsePct": 26.2,
-        "aiUseNext6mPct": 31.7
+        "state": "FL",
+        "cycle": "202620",
+        "aiUsePct": 27.8,
+        "aiUseNext6mPct": 31.8
       },
       {
-        "state": "NC",
-        "cycle": "202619",
-        "aiUsePct": 25.6,
-        "aiUseNext6mPct": 27.6
+        "state": "DE",
+        "cycle": "202620",
+        "aiUsePct": 27.7,
+        "aiUseNext6mPct": 41
       },
       {
-        "state": "VA",
-        "cycle": "202619",
-        "aiUsePct": 25.1,
-        "aiUseNext6mPct": 29.8
-      },
-      {
-        "state": "KY",
-        "cycle": "202619",
-        "aiUsePct": 24.1,
-        "aiUseNext6mPct": 27.7
-      },
-      {
-        "state": "TX",
-        "cycle": "202619",
-        "aiUsePct": 24,
-        "aiUseNext6mPct": 28
-      },
-      {
-        "state": "NE",
-        "cycle": "202619",
-        "aiUsePct": 23.9,
-        "aiUseNext6mPct": 26
-      },
-      {
-        "state": "HI",
-        "cycle": "202619",
-        "aiUsePct": 23.4,
-        "aiUseNext6mPct": 21.8
-      },
-      {
-        "state": "MD",
-        "cycle": "202619",
-        "aiUsePct": 23.4,
-        "aiUseNext6mPct": 29.5
-      },
-      {
-        "state": "AL",
-        "cycle": "202619",
-        "aiUsePct": 23.3,
-        "aiUseNext6mPct": 26.3
-      },
-      {
-        "state": "ND",
-        "cycle": "202619",
-        "aiUsePct": 23.3,
-        "aiUseNext6mPct": 23.2
-      },
-      {
-        "state": "SC",
-        "cycle": "202619",
-        "aiUsePct": 23.3,
-        "aiUseNext6mPct": 26.4
-      },
-      {
-        "state": "PA",
-        "cycle": "202619",
-        "aiUsePct": 23.1,
-        "aiUseNext6mPct": 26.2
+        "state": "NM",
+        "cycle": "202620",
+        "aiUsePct": 27.7,
+        "aiUseNext6mPct": 30.4
       },
       {
         "state": "MA",
-        "cycle": "202619",
-        "aiUsePct": 22.2,
-        "aiUseNext6mPct": 25
+        "cycle": "202620",
+        "aiUsePct": 26,
+        "aiUseNext6mPct": 26.5
       },
       {
-        "state": "IL",
-        "cycle": "202619",
-        "aiUsePct": 22,
-        "aiUseNext6mPct": 27.7
+        "state": "WA",
+        "cycle": "202620",
+        "aiUsePct": 26,
+        "aiUseNext6mPct": 29.6
       },
       {
-        "state": "MT",
-        "cycle": "202619",
-        "aiUsePct": 22,
+        "state": "CA",
+        "cycle": "202620",
+        "aiUsePct": 25.7,
+        "aiUseNext6mPct": 29.5
+      },
+      {
+        "state": "CO",
+        "cycle": "202620",
+        "aiUsePct": 25.7,
+        "aiUseNext6mPct": 29.5
+      },
+      {
+        "state": "TX",
+        "cycle": "202620",
+        "aiUsePct": 25.7,
+        "aiUseNext6mPct": 30.6
+      },
+      {
+        "state": "NE",
+        "cycle": "202620",
+        "aiUsePct": 25.5,
+        "aiUseNext6mPct": 31.7
+      },
+      {
+        "state": "GA",
+        "cycle": "202620",
+        "aiUsePct": 25.1,
+        "aiUseNext6mPct": 29.5
+      },
+      {
+        "state": "MN",
+        "cycle": "202620",
+        "aiUsePct": 25.1,
+        "aiUseNext6mPct": 30.2
+      },
+      {
+        "state": "KY",
+        "cycle": "202620",
+        "aiUsePct": 25,
         "aiUseNext6mPct": 27.1
       },
       {
-        "state": "MO",
-        "cycle": "202619",
-        "aiUsePct": 21.7,
-        "aiUseNext6mPct": 25.9
+        "state": "HI",
+        "cycle": "202620",
+        "aiUsePct": 24.5,
+        "aiUseNext6mPct": 28.4
       },
       {
         "state": "KS",
-        "cycle": "202619",
-        "aiUsePct": 21.5,
-        "aiUseNext6mPct": 25.4
+        "cycle": "202620",
+        "aiUsePct": 24.3,
+        "aiUseNext6mPct": 26.5
       },
       {
-        "state": "OH",
-        "cycle": "202619",
-        "aiUsePct": 21.4,
-        "aiUseNext6mPct": 25.9
+        "state": "ME",
+        "cycle": "202620",
+        "aiUsePct": 24.3,
+        "aiUseNext6mPct": 28
+      },
+      {
+        "state": "VA",
+        "cycle": "202620",
+        "aiUsePct": 24.3,
+        "aiUseNext6mPct": 30.3
+      },
+      {
+        "state": "NC",
+        "cycle": "202620",
+        "aiUsePct": 23.6,
+        "aiUseNext6mPct": 27.2
+      },
+      {
+        "state": "IL",
+        "cycle": "202620",
+        "aiUsePct": 23.4,
+        "aiUseNext6mPct": 26.8
+      },
+      {
+        "state": "NH",
+        "cycle": "202620",
+        "aiUsePct": 23.3,
+        "aiUseNext6mPct": 29.4
+      },
+      {
+        "state": "AK",
+        "cycle": "202620",
+        "aiUsePct": 23.1,
+        "aiUseNext6mPct": 22.5
       },
       {
         "state": "AR",
-        "cycle": "202619",
-        "aiUsePct": 21.3,
-        "aiUseNext6mPct": 22.8
+        "cycle": "202620",
+        "aiUsePct": 23,
+        "aiUseNext6mPct": 27.4
       },
       {
-        "state": "MS",
-        "cycle": "202619",
-        "aiUsePct": 21.2,
-        "aiUseNext6mPct": 22.8
+        "state": "MO",
+        "cycle": "202620",
+        "aiUsePct": 22.9,
+        "aiUseNext6mPct": 27.2
+      },
+      {
+        "state": "TN",
+        "cycle": "202620",
+        "aiUsePct": 22.7,
+        "aiUseNext6mPct": 27.7
+      },
+      {
+        "state": "NJ",
+        "cycle": "202620",
+        "aiUsePct": 22.4,
+        "aiUseNext6mPct": 24.1
+      },
+      {
+        "state": "VT",
+        "cycle": "202620",
+        "aiUsePct": 22.3,
+        "aiUseNext6mPct": 23
+      },
+      {
+        "state": "CT",
+        "cycle": "202620",
+        "aiUsePct": 22.1,
+        "aiUseNext6mPct": 25.4
+      },
+      {
+        "state": "MI",
+        "cycle": "202620",
+        "aiUsePct": 22.1,
+        "aiUseNext6mPct": 26.2
+      },
+      {
+        "state": "PA",
+        "cycle": "202620",
+        "aiUsePct": 21.6,
+        "aiUseNext6mPct": 26.8
+      },
+      {
+        "state": "OK",
+        "cycle": "202620",
+        "aiUsePct": 21.4,
+        "aiUseNext6mPct": 23.1
+      },
+      {
+        "state": "OR",
+        "cycle": "202620",
+        "aiUsePct": 21.4,
+        "aiUseNext6mPct": 24.3
       },
       {
         "state": "WY",
@@ -1823,94 +1830,88 @@
         "aiUseNext6mPct": 20.4
       },
       {
-        "state": "TN",
-        "cycle": "202619",
-        "aiUsePct": 20.3,
-        "aiUseNext6mPct": 26.2
+        "state": "MD",
+        "cycle": "202620",
+        "aiUsePct": 21,
+        "aiUseNext6mPct": 27.6
       },
       {
-        "state": "MI",
-        "cycle": "202619",
-        "aiUsePct": 20,
-        "aiUseNext6mPct": 24.4
-      },
-      {
-        "state": "NM",
-        "cycle": "202619",
-        "aiUsePct": 19.7,
-        "aiUseNext6mPct": 19.3
-      },
-      {
-        "state": "IN",
-        "cycle": "202619",
-        "aiUsePct": 19.4,
-        "aiUseNext6mPct": 24.3
-      },
-      {
-        "state": "NJ",
-        "cycle": "202619",
-        "aiUsePct": 18.5,
-        "aiUseNext6mPct": 23.4
-      },
-      {
-        "state": "WI",
-        "cycle": "202619",
-        "aiUsePct": 18.3,
-        "aiUseNext6mPct": 22.9
-      },
-      {
-        "state": "OK",
-        "cycle": "202619",
-        "aiUsePct": 17.9,
+        "state": "AL",
+        "cycle": "202620",
+        "aiUsePct": 20.9,
         "aiUseNext6mPct": 22.1
       },
       {
+        "state": "SD",
+        "cycle": "202620",
+        "aiUsePct": 20.7,
+        "aiUseNext6mPct": 25.5
+      },
+      {
+        "state": "IN",
+        "cycle": "202620",
+        "aiUsePct": 20.5,
+        "aiUseNext6mPct": 23.9
+      },
+      {
+        "state": "OH",
+        "cycle": "202620",
+        "aiUsePct": 20.5,
+        "aiUseNext6mPct": 24.8
+      },
+      {
+        "state": "MT",
+        "cycle": "202620",
+        "aiUsePct": 20.4,
+        "aiUseNext6mPct": 23
+      },
+      {
+        "state": "SC",
+        "cycle": "202620",
+        "aiUsePct": 20.4,
+        "aiUseNext6mPct": 24
+      },
+      {
+        "state": "WI",
+        "cycle": "202620",
+        "aiUsePct": 19.7,
+        "aiUseNext6mPct": 22.6
+      },
+      {
+        "state": "RI",
+        "cycle": "202620",
+        "aiUsePct": 19,
+        "aiUseNext6mPct": 21
+      },
+      {
         "state": "NY",
-        "cycle": "202619",
-        "aiUsePct": 17.8,
-        "aiUseNext6mPct": 19.8
+        "cycle": "202620",
+        "aiUsePct": 18.1,
+        "aiUseNext6mPct": 21.7
       },
       {
-        "state": "VT",
-        "cycle": "202619",
-        "aiUsePct": 17.7,
-        "aiUseNext6mPct": 21.9
-      },
-      {
-        "state": "CT",
-        "cycle": "202619",
-        "aiUsePct": 17.2,
-        "aiUseNext6mPct": 20.8
+        "state": "ID",
+        "cycle": "202620",
+        "aiUsePct": 17.9,
+        "aiUseNext6mPct": 26.1
       },
       {
         "state": "LA",
-        "cycle": "202619",
-        "aiUsePct": 17.2,
-        "aiUseNext6mPct": 21.2
+        "cycle": "202620",
+        "aiUsePct": 17.9,
+        "aiUseNext6mPct": 20.3
       },
       {
         "state": "IA",
-        "cycle": "202619",
-        "aiUsePct": 17,
-        "aiUseNext6mPct": 21.3
+        "cycle": "202620",
+        "aiUsePct": 17.4,
+        "aiUseNext6mPct": 19.6
       },
       {
-        "state": "ME",
-        "cycle": "202619",
-        "aiUsePct": 16.7,
-        "aiUseNext6mPct": 17.8
-      },
-      {
-        "state": "PR",
-        "cycle": "202619",
-        "aiUsePct": 16.6,
-        "aiUseNext6mPct": 20.4
-      },
-      {
-        "state": "AK",
-        "cycle": "202619",
+        "state": "ND",
+        "cycle": "202620",
         "aiUsePct": 15,
-        "aiUseNext6mPct": 18.5
+        "aiUseNext6mPct": 18.7
       },
       {
         "state": "WV",
@@ -1919,10 +1920,16 @@
         "aiUseNext6mPct": 17.5
       },
       {
-        "state": "RI",
-        "cycle": "202618",
-        "aiUsePct": 10.9,
-        "aiUseNext6mPct": 17.3
+        "state": "MS",
+        "cycle": "202620",
+        "aiUsePct": 12.9,
+        "aiUseNext6mPct": 15.2
+      },
+      {
+        "state": "PR",
+        "cycle": "202620",
+        "aiUsePct": 12.1,
+        "aiUseNext6mPct": 17.2
       }
     ]
   }

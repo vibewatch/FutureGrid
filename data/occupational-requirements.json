@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-07T14:12:45.534Z",
+  "generatedAt": "2026-10-12T23:01:55.124Z",
   "meta": {
-    "generatedAt": "2026-10-07T14:12:45.534Z",
+    "generatedAt": "2026-10-12T23:01:55.124Z",
     "asOf": "2025 ORS concepts / FutureGrid seed v1",
     "source": {
       "name": "BLS Occupational Requirements Survey (ORS)",
@@ -68,7 +68,7 @@
     "recommendedSource": "BLS ORS complete dataset or ORS time-series files joined by SOC code"
   },
   "summary": {
-    "averageAutomationFrictionScore": 49.7,
+    "averageAutomationFrictionScore": 49.8,
     "highFrictionOccupations": [
       {
         "socCode": "47-1011",
@@ -125,19 +125,13 @@
         "coverage": "broad-soc"
       },
       {
-        "socCode": "49-9063",
-        "title": "Musical Instrument Repairers and Tuners",
-        "automationFrictionScore": 67,
+        "socCode": "29-1021",
+        "title": "Dentists, General",
+        "automationFrictionScore": 66,
         "coverage": "broad-soc"
       }
     ],
     "lowFrictionOccupations": [
-      {
-        "socCode": "15-2051",
-        "title": "Data Scientists",
-        "automationFrictionScore": 27,
-        "coverage": "broad-soc"
-      },
       {
         "socCode": "15-1253",
         "title": "Software Quality Assurance Analysts and Testers",
@@ -145,14 +139,14 @@
         "coverage": "broad-soc"
       },
       {
-        "socCode": "15-1252",
-        "title": "Software Developers",
-        "automationFrictionScore": 27,
+        "socCode": "15-2099",
+        "title": "Mathematical Science Occupations, All Other",
+        "automationFrictionScore": 28,
         "coverage": "broad-soc"
       },
       {
-        "socCode": "15-2099",
-        "title": "Mathematical Science Occupations, All Other",
+        "socCode": "15-2051",
+        "title": "Data Scientists",
         "automationFrictionScore": 28,
         "coverage": "broad-soc"
       },
@@ -181,8 +175,14 @@
         "coverage": "broad-soc"
       },
       {
-        "socCode": "15-1211",
-        "title": "Computer Systems Analysts",
+        "socCode": "15-1243",
+        "title": "Database Architects",
+        "automationFrictionScore": 28,
+        "coverage": "broad-soc"
+      },
+      {
+        "socCode": "15-1241",
+        "title": "Computer Network Architects",
         "automationFrictionScore": 28,
         "coverage": "broad-soc"
       },
@@ -298,7 +298,7 @@
         "physicalEnvironmentScore": 5
       },
       "cognitive": {
-        "decisionMakingPct": 90,
+        "decisionMakingPct": 96,
         "problemSolvingPct": 82
       },
       "automationFrictionScore": 51,
@@ -350,7 +350,7 @@
         "physicalEnvironmentScore": 5
       },
       "cognitive": {
-        "decisionMakingPct": 90,
+        "decisionMakingPct": 96,
         "problemSolvingPct": 82
       },
       "automationFrictionScore": 51,
@@ -368,7 +368,7 @@
       "physical": {
         "standingWalkingPct": 18,
         "heavyLiftingPct": 5,
-        "physicalPresenceScore": 45
+        "physicalPresenceScore": 48
       },
       "workConditions": {
         "hazardousPct": 7,
@@ -379,7 +379,7 @@
         "decisionMakingPct": 90,
         "problemSolvingPct": 82
       },
-      "automationFrictionScore": 34,
+      "automationFrictionScore": 35,
       "coverage": "broad-soc"
     },
     {
@@ -420,7 +420,7 @@
       "physical": {
         "standingWalkingPct": 18,
         "heavyLiftingPct": 5,
-        "physicalPresenceScore": 45
+        "physicalPresenceScore": 48
       },
       "workConditions": {
         "hazardousPct": 7,
@@ -428,10 +428,10 @@
         "physicalEnvironmentScore": 5
       },
       "cognitive": {
-        "decisionMakingPct": 90,
+        "decisionMakingPct": 96,
         "problemSolvingPct": 82
       },
-      "automationFrictionScore": 34,
+      "automationFrictionScore": 36,
       "coverage": "broad-soc"
     },
     {
@@ -662,8 +662,8 @@
         "physicalEnvironmentScore": 5
       },
       "cognitive": {
-        "decisionMakingPct": 96,
-        "problemSolvingPct": 82
+        "decisionMakingPct": 90,
+        "problemSolvingPct": 89
       },
       "automationFrictionScore": 36,
       "coverage": "broad-soc"
@@ -680,7 +680,7 @@
       "physical": {
         "standingWalkingPct": 26,
         "heavyLiftingPct": 15,
-        "physicalPresenceScore": 56
+        "physicalPresenceScore": 53
       },
       "workConditions": {
         "hazardousPct": 15,
@@ -740,10 +740,10 @@
         "physicalEnvironmentScore": 5
       },
       "cognitive": {
-        "decisionMakingPct": 82,
+        "decisionMakingPct": 88,
         "problemSolvingPct": 78
       },
-      "automationFrictionScore": 52,
+      "automationFrictionScore": 53,
       "coverage": "broad-soc"
     },
     {
@@ -1200,7 +1200,7 @@
       "physical": {
         "standingWalkingPct": 10,
         "heavyLiftingPct": 2,
-        "physicalPresenceScore": 35
+        "physicalPresenceScore": 38
       },
       "workConditions": {
         "hazardousPct": 3,
@@ -1512,7 +1512,7 @@
       "physical": {
         "standingWalkingPct": 10,
         "heavyLiftingPct": 2,
-        "physicalPresenceScore": 38
+        "physicalPresenceScore": 35
       },
       "workConditions": {
         "hazardousPct": 3,
@@ -1538,7 +1538,7 @@
       "physical": {
         "standingWalkingPct": 10,
         "heavyLiftingPct": 2,
-        "physicalPresenceScore": 38
+        "physicalPresenceScore": 35
       },
       "workConditions": {
         "hazardousPct": 3,
@@ -1547,9 +1547,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 70,
-        "problemSolvingPct": 72
+        "problemSolvingPct": 79
       },
-      "automationFrictionScore": 28,
+      "automationFrictionScore": 29,
       "coverage": "broad-soc"
     },
     {
@@ -1833,9 +1833,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 70,
-        "problemSolvingPct": 79
+        "problemSolvingPct": 72
       },
-      "automationFrictionScore": 43,
+      "automationFrictionScore": 42,
       "coverage": "broad-soc"
     },
     {
@@ -1885,9 +1885,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 72,
-        "problemSolvingPct": 82
+        "problemSolvingPct": 89
       },
-      "automationFrictionScore": 28,
+      "automationFrictionScore": 29,
       "coverage": "broad-soc"
     },
     {
@@ -2006,7 +2006,7 @@
       "physical": {
         "standingWalkingPct": 5,
         "heavyLiftingPct": 1,
-        "physicalPresenceScore": 28
+        "physicalPresenceScore": 25
       },
       "workConditions": {
         "hazardousPct": 2,
@@ -2017,7 +2017,7 @@
         "decisionMakingPct": 72,
         "problemSolvingPct": 89
       },
-      "automationFrictionScore": 29,
+      "automationFrictionScore": 28,
       "coverage": "broad-soc"
     },
     {
@@ -2066,10 +2066,10 @@
         "physicalEnvironmentScore": 2
       },
       "cognitive": {
-        "decisionMakingPct": 78,
+        "decisionMakingPct": 72,
         "problemSolvingPct": 89
       },
-      "automationFrictionScore": 29,
+      "automationFrictionScore": 28,
       "coverage": "broad-soc"
     },
     {
@@ -2144,10 +2144,10 @@
         "physicalEnvironmentScore": 2
       },
       "cognitive": {
-        "decisionMakingPct": 72,
-        "problemSolvingPct": 90
+        "decisionMakingPct": 78,
+        "problemSolvingPct": 97
       },
-      "automationFrictionScore": 27,
+      "automationFrictionScore": 29,
       "coverage": "broad-soc"
     },
     {
@@ -2274,7 +2274,7 @@
         "physicalEnvironmentScore": 2
       },
       "cognitive": {
-        "decisionMakingPct": 78,
+        "decisionMakingPct": 72,
         "problemSolvingPct": 97
       },
       "automationFrictionScore": 44,
@@ -2370,7 +2370,7 @@
       "physical": {
         "standingWalkingPct": 0,
         "heavyLiftingPct": 0,
-        "physicalPresenceScore": 20
+        "physicalPresenceScore": 17
       },
       "workConditions": {
         "hazardousPct": 2,
@@ -2379,9 +2379,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 72,
-        "problemSolvingPct": 90
+        "problemSolvingPct": 97
       },
-      "automationFrictionScore": 27,
+      "automationFrictionScore": 28,
       "coverage": "broad-soc"
     },
     {
@@ -2431,9 +2431,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 70,
-        "problemSolvingPct": 80
+        "problemSolvingPct": 87
       },
-      "automationFrictionScore": 50,
+      "automationFrictionScore": 51,
       "coverage": "broad-soc"
     },
     {
@@ -2457,9 +2457,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 70,
-        "problemSolvingPct": 80
+        "problemSolvingPct": 87
       },
-      "automationFrictionScore": 50,
+      "automationFrictionScore": 51,
       "coverage": "broad-soc"
     },
     {
@@ -2552,7 +2552,7 @@
       "physical": {
         "standingWalkingPct": 20,
         "heavyLiftingPct": 7,
-        "physicalPresenceScore": 50
+        "physicalPresenceScore": 53
       },
       "workConditions": {
         "hazardousPct": 15,
@@ -2560,10 +2560,10 @@
         "physicalEnvironmentScore": 13
       },
       "cognitive": {
-        "decisionMakingPct": 76,
-        "problemSolvingPct": 87
+        "decisionMakingPct": 70,
+        "problemSolvingPct": 80
       },
-      "automationFrictionScore": 51,
+      "automationFrictionScore": 50,
       "coverage": "broad-soc"
     },
     {
@@ -2578,7 +2578,7 @@
       "physical": {
         "standingWalkingPct": 20,
         "heavyLiftingPct": 7,
-        "physicalPresenceScore": 50
+        "physicalPresenceScore": 53
       },
       "workConditions": {
         "hazardousPct": 15,
@@ -2586,7 +2586,7 @@
         "physicalEnvironmentScore": 13
       },
       "cognitive": {
-        "decisionMakingPct": 76,
+        "decisionMakingPct": 70,
         "problemSolvingPct": 87
       },
       "automationFrictionScore": 51,
@@ -2760,7 +2760,7 @@
       "physical": {
         "standingWalkingPct": 20,
         "heavyLiftingPct": 7,
-        "physicalPresenceScore": 50
+        "physicalPresenceScore": 53
       },
       "workConditions": {
         "hazardousPct": 15,
@@ -2769,9 +2769,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 70,
-        "problemSolvingPct": 80
+        "problemSolvingPct": 87
       },
-      "automationFrictionScore": 34,
+      "automationFrictionScore": 35,
       "coverage": "broad-soc"
     },
     {
@@ -2812,7 +2812,7 @@
       "physical": {
         "standingWalkingPct": 20,
         "heavyLiftingPct": 7,
-        "physicalPresenceScore": 53
+        "physicalPresenceScore": 50
       },
       "workConditions": {
         "hazardousPct": 15,
@@ -2820,10 +2820,10 @@
         "physicalEnvironmentScore": 13
       },
       "cognitive": {
-        "decisionMakingPct": 76,
-        "problemSolvingPct": 80
+        "decisionMakingPct": 70,
+        "problemSolvingPct": 87
       },
-      "automationFrictionScore": 35,
+      "automationFrictionScore": 34,
       "coverage": "broad-soc"
     },
     {
@@ -2838,7 +2838,7 @@
       "physical": {
         "standingWalkingPct": 20,
         "heavyLiftingPct": 7,
-        "physicalPresenceScore": 50
+        "physicalPresenceScore": 53
       },
       "workConditions": {
         "hazardousPct": 15,
@@ -2849,7 +2849,7 @@
         "decisionMakingPct": 70,
         "problemSolvingPct": 87
       },
-      "automationFrictionScore": 50,
+      "automationFrictionScore": 51,
       "coverage": "broad-soc"
     },
     {
@@ -2994,7 +2994,7 @@
       "physical": {
         "standingWalkingPct": 20,
         "heavyLiftingPct": 7,
-        "physicalPresenceScore": 53
+        "physicalPresenceScore": 50
       },
       "workConditions": {
         "hazardousPct": 15,
@@ -3002,7 +3002,7 @@
         "physicalEnvironmentScore": 13
       },
       "cognitive": {
-        "decisionMakingPct": 70,
+        "decisionMakingPct": 76,
         "problemSolvingPct": 80
       },
       "automationFrictionScore": 34,
@@ -3123,19 +3123,19 @@
       },
       "physical": {
         "standingWalkingPct": 20,
-        "heavyLiftingPct": 7,
-        "physicalPresenceScore": 50
+        "heavyLiftingPct": 13,
+        "physicalPresenceScore": 55
       },
       "workConditions": {
-        "hazardousPct": 15,
+        "hazardousPct": 20,
         "outdoorsPct": 10,
-        "physicalEnvironmentScore": 13
+        "physicalEnvironmentScore": 15
       },
       "cognitive": {
         "decisionMakingPct": 70,
-        "problemSolvingPct": 87
+        "problemSolvingPct": 80
       },
-      "automationFrictionScore": 34,
+      "automationFrictionScore": 35,
       "coverage": "broad-soc"
     },
     {
@@ -3211,9 +3211,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 70,
-        "problemSolvingPct": 87
+        "problemSolvingPct": 80
       },
-      "automationFrictionScore": 48,
+      "automationFrictionScore": 47,
       "coverage": "broad-soc"
     },
     {
@@ -3237,7 +3237,7 @@
       },
       "cognitive": {
         "decisionMakingPct": 70,
-        "problemSolvingPct": 87
+        "problemSolvingPct": 80
       },
       "automationFrictionScore": 52,
       "coverage": "broad-soc"
@@ -3280,7 +3280,7 @@
       "physical": {
         "standingWalkingPct": 20,
         "heavyLiftingPct": 7,
-        "physicalPresenceScore": 53
+        "physicalPresenceScore": 50
       },
       "workConditions": {
         "hazardousPct": 15,
@@ -3291,7 +3291,7 @@
         "decisionMakingPct": 70,
         "problemSolvingPct": 87
       },
-      "automationFrictionScore": 35,
+      "automationFrictionScore": 34,
       "coverage": "broad-soc"
     },
     {
@@ -3332,7 +3332,7 @@
       "physical": {
         "standingWalkingPct": 25,
         "heavyLiftingPct": 5,
-        "physicalPresenceScore": 48
+        "physicalPresenceScore": 45
       },
       "workConditions": {
         "hazardousPct": 12,
@@ -3523,9 +3523,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 70,
-        "problemSolvingPct": 85
+        "problemSolvingPct": 78
       },
-      "automationFrictionScore": 50,
+      "automationFrictionScore": 49,
       "coverage": "broad-soc"
     },
     {
@@ -3774,7 +3774,7 @@
       "physical": {
         "standingWalkingPct": 25,
         "heavyLiftingPct": 5,
-        "physicalPresenceScore": 48
+        "physicalPresenceScore": 45
       },
       "workConditions": {
         "hazardousPct": 12,
@@ -3956,7 +3956,7 @@
       "physical": {
         "standingWalkingPct": 25,
         "heavyLiftingPct": 5,
-        "physicalPresenceScore": 45
+        "physicalPresenceScore": 48
       },
       "workConditions": {
         "hazardousPct": 12,
@@ -4294,7 +4294,7 @@
       "physical": {
         "standingWalkingPct": 25,
         "heavyLiftingPct": 5,
-        "physicalPresenceScore": 48
+        "physicalPresenceScore": 45
       },
       "workConditions": {
         "hazardousPct": 12,
@@ -4459,9 +4459,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 70,
-        "problemSolvingPct": 85
+        "problemSolvingPct": 78
       },
-      "automationFrictionScore": 34,
+      "automationFrictionScore": 33,
       "coverage": "broad-soc"
     },
     {
@@ -4823,9 +4823,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 78,
-        "problemSolvingPct": 81
+        "problemSolvingPct": 74
       },
-      "automationFrictionScore": 49,
+      "automationFrictionScore": 48,
       "coverage": "broad-soc"
     },
     {
@@ -7128,7 +7128,7 @@
       "physical": {
         "standingWalkingPct": 22,
         "heavyLiftingPct": 3,
-        "physicalPresenceScore": 45
+        "physicalPresenceScore": 48
       },
       "workConditions": {
         "hazardousPct": 8,
@@ -7139,7 +7139,7 @@
         "decisionMakingPct": 62,
         "problemSolvingPct": 67
       },
-      "automationFrictionScore": 29,
+      "automationFrictionScore": 30,
       "coverage": "broad-soc"
     },
     {
@@ -7231,19 +7231,19 @@
       },
       "physical": {
         "standingWalkingPct": 22,
-        "heavyLiftingPct": 3,
-        "physicalPresenceScore": 45
+        "heavyLiftingPct": 9,
+        "physicalPresenceScore": 50
       },
       "workConditions": {
-        "hazardousPct": 8,
+        "hazardousPct": 13,
         "outdoorsPct": 5,
-        "physicalEnvironmentScore": 7
+        "physicalEnvironmentScore": 9
       },
       "cognitive": {
         "decisionMakingPct": 62,
         "problemSolvingPct": 67
       },
-      "automationFrictionScore": 43,
+      "automationFrictionScore": 45,
       "coverage": "broad-soc"
     },
     {
@@ -7267,9 +7267,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 62,
-        "problemSolvingPct": 67
+        "problemSolvingPct": 74
       },
-      "automationFrictionScore": 44,
+      "automationFrictionScore": 45,
       "coverage": "broad-soc"
     },
     {
@@ -7570,7 +7570,7 @@
       "physical": {
         "standingWalkingPct": 73,
         "heavyLiftingPct": 8,
-        "physicalPresenceScore": 93
+        "physicalPresenceScore": 90
       },
       "workConditions": {
         "hazardousPct": 36,
@@ -7581,7 +7581,7 @@
         "decisionMakingPct": 82,
         "problemSolvingPct": 76
       },
-      "automationFrictionScore": 66,
+      "automationFrictionScore": 65,
       "coverage": "broad-soc"
     },
     {
@@ -8584,7 +8584,7 @@
       "physical": {
         "standingWalkingPct": 73,
         "heavyLiftingPct": 8,
-        "physicalPresenceScore": 90
+        "physicalPresenceScore": 93
       },
       "workConditions": {
         "hazardousPct": 36,
@@ -8792,7 +8792,7 @@
       "physical": {
         "standingWalkingPct": 63,
         "heavyLiftingPct": 8,
-        "physicalPresenceScore": 82
+        "physicalPresenceScore": 85
       },
       "workConditions": {
         "hazardousPct": 28,
@@ -8983,9 +8983,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 82,
-        "problemSolvingPct": 83
+        "problemSolvingPct": 76
       },
-      "automationFrictionScore": 65,
+      "automationFrictionScore": 64,
       "coverage": "broad-soc"
     },
     {
@@ -9242,10 +9242,10 @@
         "physicalEnvironmentScore": 23
       },
       "cognitive": {
-        "decisionMakingPct": 70,
+        "decisionMakingPct": 64,
         "problemSolvingPct": 55
       },
-      "automationFrictionScore": 60,
+      "automationFrictionScore": 59,
       "coverage": "broad-soc"
     },
     {
@@ -9528,10 +9528,10 @@
         "physicalEnvironmentScore": 40
       },
       "cognitive": {
-        "decisionMakingPct": 83,
+        "decisionMakingPct": 89,
         "problemSolvingPct": 69
       },
-      "automationFrictionScore": 49,
+      "automationFrictionScore": 50,
       "coverage": "broad-soc"
     },
     {
@@ -9554,7 +9554,7 @@
         "physicalEnvironmentScore": 40
       },
       "cognitive": {
-        "decisionMakingPct": 81,
+        "decisionMakingPct": 75,
         "problemSolvingPct": 65
       },
       "automationFrictionScore": 48,
@@ -10048,10 +10048,10 @@
         "physicalEnvironmentScore": 17
       },
       "cognitive": {
-        "decisionMakingPct": 56,
+        "decisionMakingPct": 62,
         "problemSolvingPct": 48
       },
-      "automationFrictionScore": 46,
+      "automationFrictionScore": 47,
       "coverage": "broad-soc"
     },
     {
@@ -10351,19 +10351,19 @@
       },
       "physical": {
         "standingWalkingPct": 84,
-        "heavyLiftingPct": 10,
-        "physicalPresenceScore": 93
+        "heavyLiftingPct": 16,
+        "physicalPresenceScore": 98
       },
       "workConditions": {
-        "hazardousPct": 28,
+        "hazardousPct": 33,
         "outdoorsPct": 5,
-        "physicalEnvironmentScore": 17
+        "physicalEnvironmentScore": 19
       },
       "cognitive": {
         "decisionMakingPct": 48,
         "problemSolvingPct": 44
       },
-      "automationFrictionScore": 40,
+      "automationFrictionScore": 41,
       "coverage": "broad-soc"
     },
     {
@@ -10560,7 +10560,7 @@
       "physical": {
         "standingWalkingPct": 86,
         "heavyLiftingPct": 22,
-        "physicalPresenceScore": 95
+        "physicalPresenceScore": 92
       },
       "workConditions": {
         "hazardousPct": 35,
@@ -10638,7 +10638,7 @@
       "physical": {
         "standingWalkingPct": 78,
         "heavyLiftingPct": 12,
-        "physicalPresenceScore": 88
+        "physicalPresenceScore": 91
       },
       "workConditions": {
         "hazardousPct": 18,
@@ -10646,10 +10646,10 @@
         "physicalEnvironmentScore": 12
       },
       "cognitive": {
-        "decisionMakingPct": 64,
+        "decisionMakingPct": 70,
         "problemSolvingPct": 54
       },
-      "automationFrictionScore": 41,
+      "automationFrictionScore": 42,
       "coverage": "broad-soc"
     },
     {
@@ -10672,7 +10672,7 @@
         "physicalEnvironmentScore": 12
       },
       "cognitive": {
-        "decisionMakingPct": 70,
+        "decisionMakingPct": 64,
         "problemSolvingPct": 54
       },
       "automationFrictionScore": 42,
@@ -11375,9 +11375,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 58,
-        "problemSolvingPct": 59
+        "problemSolvingPct": 52
       },
-      "automationFrictionScore": 41,
+      "automationFrictionScore": 40,
       "coverage": "broad-soc"
     },
     {
@@ -11504,7 +11504,7 @@
         "physicalEnvironmentScore": 5
       },
       "cognitive": {
-        "decisionMakingPct": 58,
+        "decisionMakingPct": 64,
         "problemSolvingPct": 52
       },
       "automationFrictionScore": 51,
@@ -11712,7 +11712,7 @@
         "physicalEnvironmentScore": 5
       },
       "cognitive": {
-        "decisionMakingPct": 58,
+        "decisionMakingPct": 64,
         "problemSolvingPct": 52
       },
       "automationFrictionScore": 51,
@@ -13498,7 +13498,7 @@
       "physical": {
         "standingWalkingPct": 86,
         "heavyLiftingPct": 45,
-        "physicalPresenceScore": 99
+        "physicalPresenceScore": 96
       },
       "workConditions": {
         "hazardousPct": 55,
@@ -13506,7 +13506,7 @@
         "physicalEnvironmentScore": 59
       },
       "cognitive": {
-        "decisionMakingPct": 55,
+        "decisionMakingPct": 61,
         "problemSolvingPct": 62
       },
       "automationFrictionScore": 66,
@@ -14121,19 +14121,19 @@
       },
       "physical": {
         "standingWalkingPct": 86,
-        "heavyLiftingPct": 45,
-        "physicalPresenceScore": 99
+        "heavyLiftingPct": 51,
+        "physicalPresenceScore": 100
       },
       "workConditions": {
-        "hazardousPct": 55,
+        "hazardousPct": 60,
         "outdoorsPct": 62,
-        "physicalEnvironmentScore": 59
+        "physicalEnvironmentScore": 61
       },
       "cognitive": {
         "decisionMakingPct": 55,
         "problemSolvingPct": 55
       },
-      "automationFrictionScore": 56,
+      "automationFrictionScore": 57,
       "coverage": "broad-soc"
     },
     {
@@ -14459,19 +14459,19 @@
       },
       "physical": {
         "standingWalkingPct": 86,
-        "heavyLiftingPct": 51,
-        "physicalPresenceScore": 100
+        "heavyLiftingPct": 45,
+        "physicalPresenceScore": 99
       },
       "workConditions": {
-        "hazardousPct": 60,
+        "hazardousPct": 55,
         "outdoorsPct": 62,
-        "physicalEnvironmentScore": 61
+        "physicalEnvironmentScore": 59
       },
       "cognitive": {
         "decisionMakingPct": 55,
         "problemSolvingPct": 55
       },
-      "automationFrictionScore": 66,
+      "automationFrictionScore": 65,
       "coverage": "broad-soc"
     },
     {
@@ -15500,7 +15500,7 @@
       "physical": {
         "standingWalkingPct": 72,
         "heavyLiftingPct": 44,
-        "physicalPresenceScore": 100
+        "physicalPresenceScore": 97
       },
       "workConditions": {
         "hazardousPct": 50,
@@ -15509,9 +15509,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 62,
-        "problemSolvingPct": 62
+        "problemSolvingPct": 69
       },
-      "automationFrictionScore": 54,
+      "automationFrictionScore": 55,
       "coverage": "broad-soc"
     },
     {
@@ -15551,19 +15551,19 @@
       },
       "physical": {
         "standingWalkingPct": 80,
-        "heavyLiftingPct": 48,
+        "heavyLiftingPct": 54,
         "physicalPresenceScore": 100
       },
       "workConditions": {
-        "hazardousPct": 53,
+        "hazardousPct": 58,
         "outdoorsPct": 34,
-        "physicalEnvironmentScore": 44
+        "physicalEnvironmentScore": 46
       },
       "cognitive": {
         "decisionMakingPct": 62,
         "problemSolvingPct": 62
       },
-      "automationFrictionScore": 56,
+      "automationFrictionScore": 57,
       "coverage": "broad-soc"
     },
     {
@@ -15795,9 +15795,9 @@
       },
       "cognitive": {
         "decisionMakingPct": 62,
-        "problemSolvingPct": 69
+        "problemSolvingPct": 62
       },
-      "automationFrictionScore": 57,
+      "automationFrictionScore": 56,
       "coverage": "broad-soc"
     },
     {
@@ -15872,10 +15872,10 @@
         "physicalEnvironmentScore": 46
       },
       "cognitive": {
-        "decisionMakingPct": 68,
+        "decisionMakingPct": 62,
         "problemSolvingPct": 62
       },
-      "automationFrictionScore": 67,
+      "automationFrictionScore": 66,
       "coverage": "broad-soc"
     },
     {
@@ -16366,10 +16366,10 @@
         "physicalEnvironmentScore": 23
       },
       "cognitive": {
-        "decisionMakingPct": 50,
+        "decisionMakingPct": 56,
         "problemSolvingPct": 48
       },
-      "automationFrictionScore": 48,
+      "automationFrictionScore": 49,
       "coverage": "broad-soc"
     },
     {
@@ -16678,10 +16678,10 @@
         "physicalEnvironmentScore": 33
       },
       "cognitive": {
-        "decisionMakingPct": 50,
+        "decisionMakingPct": 56,
         "problemSolvingPct": 48
       },
-      "automationFrictionScore": 52,
+      "automationFrictionScore": 53,
       "coverage": "broad-soc"
     },
     {
@@ -17215,19 +17215,19 @@
       },
       "physical": {
         "standingWalkingPct": 82,
-        "heavyLiftingPct": 28,
-        "physicalPresenceScore": 93
+        "heavyLiftingPct": 34,
+        "physicalPresenceScore": 98
       },
       "workConditions": {
-        "hazardousPct": 38,
+        "hazardousPct": 43,
         "outdoorsPct": 8,
-        "physicalEnvironmentScore": 23
+        "physicalEnvironmentScore": 26
       },
       "cognitive": {
         "decisionMakingPct": 50,
         "problemSolvingPct": 48
       },
-      "automationFrictionScore": 43,
+      "automationFrictionScore": 44,
       "coverage": "broad-soc"
     },
     {
@@ -17319,19 +17319,19 @@
       },
       "physical": {
         "standingWalkingPct": 90,
-        "heavyLiftingPct": 44,
-        "physicalPresenceScore": 100
+        "heavyLiftingPct": 38,
+        "physicalPresenceScore": 98
       },
       "workConditions": {
-        "hazardousPct": 51,
+        "hazardousPct": 46,
         "outdoorsPct": 14,
-        "physicalEnvironmentScore": 33
+        "physicalEnvironmentScore": 30
       },
       "cognitive": {
         "decisionMakingPct": 50,
         "problemSolvingPct": 48
       },
-      "automationFrictionScore": 52,
+      "automationFrictionScore": 51,
       "coverage": "broad-soc"
     },
     {
@@ -17346,7 +17346,7 @@
       "physical": {
         "standingWalkingPct": 82,
         "heavyLiftingPct": 28,
-        "physicalPresenceScore": 90
+        "physicalPresenceScore": 93
       },
       "workConditions": {
         "hazardousPct": 38,
@@ -17355,7 +17355,7 @@
       },
       "cognitive": {
         "decisionMakingPct": 56,
-        "problemSolvingPct": 55
+        "problemSolvingPct": 48
       },
       "automationFrictionScore": 49,
       "coverage": "broad-soc"
@@ -17588,10 +17588,10 @@
         "physicalEnvironmentScore": 33
       },
       "cognitive": {
-        "decisionMakingPct": 50,
+        "decisionMakingPct": 56,
         "problemSolvingPct": 48
       },
-      "automationFrictionScore": 52,
+      "automationFrictionScore": 53,
       "coverage": "broad-soc"
     },
     {
@@ -17632,7 +17632,7 @@
       "physical": {
         "standingWalkingPct": 82,
         "heavyLiftingPct": 28,
-        "physicalPresenceScore": 90
+        "physicalPresenceScore": 93
       },
       "workConditions": {
         "hazardousPct": 38,
@@ -17643,7 +17643,7 @@
         "decisionMakingPct": 50,
         "problemSolvingPct": 48
       },
-      "automationFrictionScore": 56,
+      "automationFrictionScore": 57,
       "coverage": "broad-soc"
     },
     {
@@ -17978,10 +17978,10 @@
         "physicalEnvironmentScore": 33
       },
       "cognitive": {
-        "decisionMakingPct": 50,
+        "decisionMakingPct": 56,
         "problemSolvingPct": 48
       },
-      "automationFrictionScore": 52,
+      "automationFrictionScore": 53,
       "coverage": "broad-soc"
     },
     {
@@ -18238,7 +18238,7 @@
         "physicalEnvironmentScore": 23
       },
       "cognitive": {
-        "decisionMakingPct": 56,
+        "decisionMakingPct": 50,
         "problemSolvingPct": 48
       },
       "automationFrictionScore": 43,
@@ -18697,19 +18697,19 @@
       },
       "physical": {
         "standingWalkingPct": 82,
-        "heavyLiftingPct": 28,
-        "physicalPresenceScore": 93
+        "heavyLiftingPct": 34,
+        "physicalPresenceScore": 95
       },
       "workConditions": {
-        "hazardousPct": 38,
+        "hazardousPct": 43,
         "outdoorsPct": 8,
-        "physicalEnvironmentScore": 23
+        "physicalEnvironmentScore": 26
       },
       "cognitive": {
         "decisionMakingPct": 50,
         "problemSolvingPct": 48
       },
-      "automationFrictionScore": 48,
+      "automationFrictionScore": 49,
       "coverage": "broad-soc"
     },
     {
@@ -19035,19 +19035,19 @@
       },
       "physical": {
         "standingWalkingPct": 84,
-        "heavyLiftingPct": 42,
+        "heavyLiftingPct": 48,
         "physicalPresenceScore": 100
       },
       "workConditions": {
-        "hazardousPct": 44,
+        "hazardousPct": 49,
         "outdoorsPct": 30,
-        "physicalEnvironmentScore": 37
+        "physicalEnvironmentScore": 40
       },
       "cognitive": {
         "decisionMakingPct": 58,
         "problemSolvingPct": 52
       },
-      "automationFrictionScore": 48,
+      "automationFrictionScore": 49,
       "coverage": "broad-soc"
     },
     {
@@ -19088,7 +19088,7 @@
       "physical": {
         "standingWalkingPct": 76,
         "heavyLiftingPct": 38,
-        "physicalPresenceScore": 100
+        "physicalPresenceScore": 99
       },
       "workConditions": {
         "hazardousPct": 41,

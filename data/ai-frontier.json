@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T13:33:53.355Z",
+  "generatedAt": "2026-10-12T23:02:18.656Z",
   "source": {
     "name": "Epoch AI — Notable AI Models",
     "publisher": "Epoch AI",
@@ -7,7 +7,7 @@
     "downloadUrl": "https://epoch.ai/data/notable_ai_models.csv",
     "docsUrl": "https://epoch.ai/data/ai-models-documentation",
     "license": "CC BY 4.0",
-    "accessed": "2026-10-07",
+    "accessed": "2026-10-12",
     "caveat": "Training-compute figures are Epoch AI estimates with varying confidence; not all models report compute/cost/power."
   },
   "methodology": {
@@ -14078,8 +14078,8 @@
       ],
       "task": "Language modeling/generation,Chat",
       "parameters": 975000000000,
-      "computeFlop": 1.845e+24,
-      "log10Compute": 24.266,
+      "computeFlop": 1.1e+25,
+      "log10Compute": 25.041,
       "trainingCostUsd2023": null,
       "powerDrawW": null,
       "frontier": false,
@@ -14308,18 +14308,18 @@
   "aggregates": {
     "computeTrend": {
       "overall": {
-        "slopeLog10PerYear": 0.329,
-        "intercept": -643.638,
-        "r2": 0.7615,
+        "slopeLog10PerYear": 0.3291,
+        "intercept": -643.8288,
+        "r2": 0.7614,
         "doublingTimeMonths": 11,
         "startYear": 1950,
         "endYear": 2026,
         "n": 540
       },
       "modernEra": {
-        "slopeLog10PerYear": 0.6317,
-        "intercept": -1255.4276,
-        "r2": 0.6571,
+        "slopeLog10PerYear": 0.6323,
+        "intercept": -1256.754,
+        "r2": 0.6576,
         "doublingTimeMonths": 5.7,
         "startYear": 2010,
         "endYear": 2026,
@@ -15660,8 +15660,8 @@
     "openWeightsCount is a proxy for tracked open-release activity only."
   ],
   "meta": {
-    "generatedAt": "2026-10-07T13:33:53.355Z",
-    "asOf": "2026-10-07",
+    "generatedAt": "2026-10-12T23:02:18.656Z",
+    "asOf": "2026-10-12",
     "source": {
       "name": "Epoch AI — Notable AI Models",
       "publisher": "Epoch AI",

@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-08T01:28:04.154Z",
+  "generatedAt": "2026-10-12T23:03:08.341Z",
   "datasets": [
     {
       "id": "ai-adoption-tracker",
       "file": "data/ai-adoption-tracker.json",
-      "generatedAt": "2026-10-07T14:11:29.369Z",
-      "asOf": "2026-09-06",
+      "generatedAt": "2026-10-12T23:03:05.417Z",
+      "asOf": "2026-09-20",
       "source": {
         "name": "St. Louis Fed RPS Generative AI Adoption Tracker + Census Business Trends and Outlook Survey",
         "publisher": "Federal Reserve Bank of St. Louis / U.S. Census Bureau",
@@ -17,8 +17,8 @@
     {
       "id": "ai-company-stocks",
       "file": "data/ai-company-stocks.json",
-      "generatedAt": "2026-10-07T13:33:53.283Z",
-      "asOf": "2026-10-07",
+      "generatedAt": "2026-10-12T23:02:18.608Z",
+      "asOf": "2026-10-12",
       "source": {
         "name": "Committed AI company stock fixture derived from FutureGrid's accepted market-signal source pattern",
         "publisher": "FutureGrid",
@@ -30,8 +30,8 @@
     {
       "id": "ai-demand",
       "file": "data/ai-demand.json",
-      "generatedAt": "2026-10-07T13:33:31.889Z",
-      "asOf": "2026-10-07",
+      "generatedAt": "2026-10-12T23:01:55.307Z",
+      "asOf": "2026-10-12",
       "source": {
         "name": "Indeed Hiring Lab",
         "url": "https://raw.githubusercontent.com/hiring-lab/ai-tracker/master/AI_posting.csv"
@@ -42,8 +42,8 @@
     {
       "id": "ai-frontier",
       "file": "data/ai-frontier.json",
-      "generatedAt": "2026-10-07T13:33:53.355Z",
-      "asOf": "2026-10-07",
+      "generatedAt": "2026-10-12T23:02:18.656Z",
+      "asOf": "2026-10-12",
       "source": {
         "name": "Epoch AI — Notable AI Models",
         "publisher": "Epoch AI",
@@ -55,8 +55,8 @@
     {
       "id": "ai-layoffs",
       "file": "data/ai-layoffs.json",
-      "generatedAt": "2026-10-07T13:33:31.889Z",
-      "asOf": "2026-10-07",
+      "generatedAt": "2026-10-12T23:01:55.307Z",
+      "asOf": "2026-10-12",
       "source": {
         "name": "Challenger, Gray & Christmas",
         "url": "https://gist.githubusercontent.com/mcphil/08f8f011f27c9864d157ead0b9d716d9/raw"
@@ -67,8 +67,8 @@
     {
       "id": "ai-usage-proxies",
       "file": "data/ai-usage-proxies.json",
-      "generatedAt": "2026-10-07T13:33:03.884Z",
-      "asOf": "2026-10-07",
+      "generatedAt": "2026-10-12T23:01:36.703Z",
+      "asOf": "2026-10-12",
       "source": {
         "name": "Multiple public AI-usage proxy sources",
         "publisher": "FutureGrid (aggregated)",
@@ -80,8 +80,8 @@
     {
       "id": "aioe-exposure",
       "file": "data/aioe-exposure.json",
-      "generatedAt": "2026-10-07T13:33:31.889Z",
-      "asOf": "2026-10-07",
+      "generatedAt": "2026-10-12T23:01:55.307Z",
+      "asOf": "2026-10-12",
       "source": {
         "name": "AIOE (Felten/Raj/Seamans)",
         "url": "https://raw.githubusercontent.com/AIOE-Data/AIOE/main/AIOE_DataAppendix.xlsx"
@@ -92,8 +92,8 @@
     {
       "id": "automation-baseline",
       "file": "data/automation-baseline.json",
-      "generatedAt": "2026-10-07T13:33:31.889Z",
-      "asOf": "2026-10-07",
+      "generatedAt": "2026-10-12T23:01:55.307Z",
+      "asOf": "2026-10-12",
       "source": {
         "name": "Frey & Osborne (2013)",
         "url": "https://raw.githubusercontent.com/WorkForce-Central/Future-of-Work/master/Frey%20and%20Osborne%20Computerization%20Probability%20by%20SOC.xlsx"
@@ -117,7 +117,7 @@
     {
       "id": "employment-projections",
       "file": "data/employment-projections.json",
-      "generatedAt": "2026-10-07T14:12:45.118Z",
+      "generatedAt": "2026-10-12T23:01:54.910Z",
       "asOf": "2024-2034",
       "source": {
         "name": "BLS Employment Projections occupational data",
@@ -130,7 +130,7 @@
     {
       "id": "global-ai-metrics",
       "file": "data/global-ai-metrics.json",
-      "generatedAt": "2026-10-07T13:56:57.991Z",
+      "generatedAt": "2026-10-12T23:02:32.213Z",
       "asOf": "2026-06-30",
       "source": {
         "name": "Global AI diffusion and readiness metrics",
@@ -156,7 +156,7 @@
     {
       "id": "international-occupation-mix",
       "file": "data/international-occupation-mix.json",
-      "generatedAt": "2026-10-07T13:34:05.868Z",
+      "generatedAt": "2026-10-12T23:03:08.100Z",
       "asOf": "2025",
       "source": {
         "name": "ILOSTAT — Employment by sex and occupation (thousands) — Annual",
@@ -169,7 +169,7 @@
     {
       "id": "job-postings",
       "file": "data/job-postings.json",
-      "generatedAt": "2026-10-07T14:12:45.342Z",
+      "generatedAt": "2026-10-12T23:01:55.046Z",
       "asOf": "2025",
       "source": {
         "name": "FutureGrid provider-ready job postings seed",
@@ -195,8 +195,8 @@
     {
       "id": "llm-exposure",
       "file": "data/llm-exposure.json",
-      "generatedAt": "2026-10-07T13:33:31.889Z",
-      "asOf": "2026-10-07",
+      "generatedAt": "2026-10-12T23:01:55.307Z",
+      "asOf": "2026-10-12",
       "source": {
         "name": "OpenAI \"GPTs are GPTs\"",
         "url": "https://raw.githubusercontent.com/openai/GPTs-are-GPTs/main/data/occ_level.csv"
@@ -207,8 +207,8 @@
     {
       "id": "market-ai-signals",
       "file": "data/market-ai-signals.json",
-      "generatedAt": "2026-10-07T13:33:39.174Z",
-      "asOf": "2026-10-07",
+      "generatedAt": "2026-10-12T23:02:00.082Z",
+      "asOf": "2026-10-12",
       "source": {
         "name": "Yahoo Finance chart JSON endpoint"
       },
@@ -218,7 +218,7 @@
     {
       "id": "occupation-snapshot-slim",
       "file": "data/occupation-snapshot-slim.json",
-      "generatedAt": "2026-10-07T14:12:44.537Z",
+      "generatedAt": "2026-10-12T23:01:54.575Z",
       "asOf": "2025",
       "source": {
         "name": "Anthropic Economic Index — Job Exposure",
@@ -244,7 +244,7 @@
     {
       "id": "occupational-requirements",
       "file": "data/occupational-requirements.json",
-      "generatedAt": "2026-10-07T14:12:45.534Z",
+      "generatedAt": "2026-10-12T23:01:55.124Z",
       "asOf": "2025 ORS concepts / FutureGrid seed v1",
       "source": {
         "name": "BLS Occupational Requirements Survey (ORS)",
@@ -269,15 +269,15 @@
     {
       "id": "openrouter-models",
       "file": "data/openrouter-models.json",
-      "generatedAt": "2026-10-07T13:33:56.399Z",
-      "asOf": "2026-10-07",
+      "generatedAt": "2026-10-12T23:02:19.274Z",
+      "asOf": "2026-10-12",
       "source": {
         "name": "OpenRouter public model catalog API",
         "publisher": "OpenRouter",
         "url": "https://openrouter.ai/api/v1/models"
       },
       "version": "1.0.0",
-      "rows": 465
+      "rows": 459
     },
     {
       "id": "sources",
@@ -295,7 +295,7 @@
     {
       "id": "state-labor",
       "file": "data/state-labor.json",
-      "generatedAt": "2026-10-07T13:32:58.672Z",
+      "generatedAt": "2026-10-12T23:01:34.778Z",
       "asOf": "2026-08",
       "source": {
         "name": "BLS Local Area Unemployment Statistics",
@@ -308,7 +308,7 @@
     {
       "id": "state-qcew",
       "file": "data/state-qcew.json",
-      "generatedAt": "2026-10-07T13:33:03.799Z",
+      "generatedAt": "2026-10-12T23:01:36.651Z",
       "asOf": "2025",
       "source": {
         "name": "BLS Quarterly Census of Employment and Wages Annual Area CSVs",
@@ -321,15 +321,15 @@
     {
       "id": "warn-notices",
       "file": "data/warn-notices.json",
-      "generatedAt": "2026-10-07T13:32:55.137Z",
-      "asOf": "2026-10-05",
+      "generatedAt": "2026-10-12T23:01:31.866Z",
+      "asOf": "2026-10-07",
       "source": {
         "name": "Multi-state WARN Act notice registry",
         "publisher": "U.S. state workforce agencies (aggregated by FutureGrid)",
         "url": "https://github.com/vibewatch/FutureGrid"
       },
       "version": "1.0.0",
-      "rows": 11431
+      "rows": 11442
     },
     {
       "id": "world-countries.geo",

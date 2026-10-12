@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T13:32:58.672Z",
+  "generatedAt": "2026-10-12T23:01:34.778Z",
   "asOf": "2026-08",
   "source": {
     "name": "BLS Local Area Unemployment Statistics",
@@ -17,7 +17,7 @@
   },
   "summary": {
     "latestMonth": "2026-08",
-    "rankedStates": 7,
+    "rankedStates": 6,
     "totalJurisdictions": 51,
     "warnWindowStart": "2025-09-01",
     "warnWindowEnd": "2026-08-31",
@@ -2541,10 +2541,10 @@
         "sourceStatus": "live",
         "sourceType": "xlsx",
         "recordsIncluded": true,
-        "notices": 352,
+        "notices": 356,
         "dateRange": {
           "earliest": "2026-06-26",
-          "latest": "2026-10-05"
+          "latest": "2026-10-06"
         },
         "buildStatus": "ok",
         "dataFreshness": null,
@@ -2561,12 +2561,12 @@
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
-      "rank": 7,
-      "pressureScore": 8,
+      "rank": 6,
+      "pressureScore": 10,
       "pressureLevel": "Low",
       "pressurePercentiles": {
         "warnEmployeesPer10kLaborForce": 0,
-        "unemploymentRateYoYDelta": 25
+        "unemploymentRateYoYDelta": 33.33
       },
       "warnEmployees12m": 10029,
       "warnNotices12m": 218,
@@ -8797,10 +8797,10 @@
         "sourceStatus": "live",
         "sourceType": "html",
         "recordsIncluded": true,
-        "notices": 535,
+        "notices": 536,
         "dateRange": {
           "earliest": "2016-01-19",
-          "latest": "2026-09-30"
+          "latest": "2026-10-05"
         },
         "buildStatus": "ok",
         "dataFreshness": null,
@@ -8817,12 +8817,12 @@
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
-      "rank": 5,
-      "pressureScore": 31,
+      "rank": 4,
+      "pressureScore": 38,
       "pressureLevel": "Moderate",
       "pressurePercentiles": {
-        "warnEmployeesPer10kLaborForce": 33.33,
-        "unemploymentRateYoYDelta": 25
+        "warnEmployeesPer10kLaborForce": 40,
+        "unemploymentRateYoYDelta": 33.33
       },
       "warnEmployees12m": 5699,
       "warnNotices12m": 36,
@@ -9445,12 +9445,12 @@
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
-      "rank": 4,
+      "rank": 3,
       "pressureScore": 62,
       "pressureLevel": "Elevated",
       "pressurePercentiles": {
-        "warnEmployeesPer10kLaborForce": 66.67,
-        "unemploymentRateYoYDelta": 50
+        "warnEmployeesPer10kLaborForce": 60,
+        "unemploymentRateYoYDelta": 66.67
       },
       "warnEmployees12m": 4415,
       "warnNotices12m": 130,
@@ -12556,10 +12556,10 @@
         "sourceStatus": "live",
         "sourceType": "html",
         "recordsIncluded": true,
-        "notices": 1106,
+        "notices": 1110,
         "dateRange": {
           "earliest": "2016-01-05",
-          "latest": "2026-10-01"
+          "latest": "2026-10-07"
         },
         "buildStatus": "ok",
         "dataFreshness": null,
@@ -12577,11 +12577,11 @@
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
       "rank": 1,
-      "pressureScore": 81,
+      "pressureScore": 86,
       "pressureLevel": "High",
       "pressurePercentiles": {
-        "warnEmployeesPer10kLaborForce": 83.33,
-        "unemploymentRateYoYDelta": 75
+        "warnEmployeesPer10kLaborForce": 80,
+        "unemploymentRateYoYDelta": 100
       },
       "warnEmployees12m": 9408,
       "warnNotices12m": 150,
@@ -20690,10 +20690,10 @@
         "sourceStatus": "live",
         "sourceType": "csv",
         "recordsIncluded": true,
-        "notices": 62,
+        "notices": 63,
         "dateRange": {
           "earliest": "2026-01-07",
-          "latest": "2026-09-28"
+          "latest": "2026-10-05"
         },
         "buildStatus": "ok",
         "dataFreshness": null,
@@ -20710,12 +20710,12 @@
       "rankEligible": true,
       "rankStatus": "ranked",
       "rankIneligibleReason": null,
-      "rank": 6,
-      "pressureScore": 19,
+      "rank": 5,
+      "pressureScore": 24,
       "pressureLevel": "Low",
       "pressurePercentiles": {
-        "warnEmployeesPer10kLaborForce": 16.67,
-        "unemploymentRateYoYDelta": 25
+        "warnEmployeesPer10kLaborForce": 20,
+        "unemploymentRateYoYDelta": 33.33
       },
       "warnEmployees12m": 5430,
       "warnNotices12m": 56,
@@ -23203,7 +23203,7 @@
         },
         "buildStatus": "preserved",
         "dataFreshness": "preserved",
-        "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
+        "preservedGeneratedAt": "2026-10-07T13:32:55.137Z",
         "preservationReason": null,
         "adapter": "fetchOR",
         "name": "Oregon WARN Act Notices",
@@ -23824,7 +23824,7 @@
         "sourceStatus": "live",
         "sourceType": "html",
         "recordsIncluded": true,
-        "notices": 261,
+        "notices": 262,
         "dateRange": {
           "earliest": null,
           "latest": null
@@ -28838,31 +28838,31 @@
           "earliest": "2016-01-04",
           "latest": "2026-10-02"
         },
-        "buildStatus": "ok",
-        "dataFreshness": null,
-        "preservedGeneratedAt": null,
+        "buildStatus": "preserved",
+        "dataFreshness": "preserved",
+        "preservedGeneratedAt": "2026-10-07T13:32:55.137Z",
         "preservationReason": null,
         "adapter": "fetchVA",
         "name": "Virginia WARN Notices",
         "publisher": "Virginia Works",
         "url": "https://virginiaworks.gov/im-an-employer/retain-and-grow/warn-notices/",
         "notes": "Official page exposes a Download Filtered List CSV with notice date, impact date, affected employees, location, and notice type; the timestamped CSV export URL is discovered at build time.",
-        "error": null
+        "error": "HTTP 504 Gateway Timeout"
       },
-      "coverageUnavailable": false,
-      "rankEligible": true,
-      "rankStatus": "ranked",
-      "rankIneligibleReason": null,
-      "rank": 3,
-      "pressureScore": 65,
-      "pressureLevel": "Elevated",
+      "coverageUnavailable": true,
+      "rankEligible": false,
+      "rankStatus": "not-ranked",
+      "rankIneligibleReason": "WARN source refresh was preserved from last-known-good data and is not eligible for current pressure ranking",
+      "rank": null,
+      "pressureScore": null,
+      "pressureLevel": "Not ranked",
       "pressurePercentiles": {
-        "warnEmployeesPer10kLaborForce": 50,
-        "unemploymentRateYoYDelta": 100
+        "warnEmployeesPer10kLaborForce": null,
+        "unemploymentRateYoYDelta": null
       },
-      "warnEmployees12m": 8007,
-      "warnNotices12m": 72,
-      "warnEmployeesPer10kLaborForce": 17.93,
+      "warnEmployees12m": null,
+      "warnNotices12m": null,
+      "warnEmployeesPer10kLaborForce": null,
       "series": {
         "unemploymentRate": [
           {
@@ -30718,7 +30718,7 @@
         },
         "buildStatus": "preserved",
         "dataFreshness": "preserved",
-        "preservedGeneratedAt": "2026-09-08T01:00:31.843Z",
+        "preservedGeneratedAt": "2026-10-07T13:32:55.137Z",
         "preservationReason": null,
         "adapter": "fetchWI",
         "name": "Wisconsin WARN Act Notices",
@@ -31949,7 +31949,7 @@
     }
   ],
   "meta": {
-    "generatedAt": "2026-10-07T13:32:58.672Z",
+    "generatedAt": "2026-10-12T23:01:34.778Z",
     "asOf": "2026-08",
     "source": {
       "name": "BLS Local Area Unemployment Statistics",
