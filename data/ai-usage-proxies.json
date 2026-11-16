@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T13:33:03.884Z",
+  "generatedAt": "2026-11-16T06:07:52.583Z",
   "scope": "Supplemental AI adoption and usage proxies outside Anthropic's Claude.ai country usage index.",
   "caveat": "These metrics use different denominators and collection methods. Do not merge them into the Anthropic usageIndex without explicit normalization and labeling.",
   "enterpriseAdoptionMetrics": [
@@ -326,6 +326,15 @@
         },
         {
           "geo": {
+            "code": "BRA",
+            "name": "Brazil"
+          },
+          "period": "2025",
+          "value": 17.46,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
             "code": "CZE",
             "name": "Czechia"
           },
@@ -576,7 +585,7 @@
             "name": "OECD"
           },
           "period": "2025",
-          "value": 36.81,
+          "value": 38.3959,
           "status": "Normal value"
         }
       ],
@@ -606,6 +615,15 @@
           },
           "period": "2025",
           "value": 22.4955,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "BRA",
+            "name": "Brazil"
+          },
+          "period": "2025",
+          "value": 28.38,
           "status": "Normal value"
         },
         {
@@ -732,6 +750,24 @@
           },
           "period": "2025",
           "value": 19.8612,
+          "status": "Normal value"
+        },
+        {
+          "geo": {
+            "code": "JPN",
+            "name": "Japan"
+          },
+          "period": "2025",
+          "value": 58.8,
+          "status": "Definition differs"
+        },
+        {
+          "geo": {
+            "code": "KOR",
+            "name": "Korea"
+          },
+          "period": "2025",
+          "value": 46.4064,
           "status": "Normal value"
         },
         {
@@ -2270,170 +2306,170 @@
   "openModelDownloadProxies": [
     {
       "provider": "Alibaba Qwen",
-      "capturedAt": "2026-10-07T13:33:25.635Z",
+      "capturedAt": "2026-11-16T06:08:08.055Z",
       "source": "https://huggingface.co/api/models?search=Qwen&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
         {
           "modelId": "Qwen/Qwen3-0.6B",
-          "downloads": 31121660,
-          "likes": 1747
+          "downloads": 17792207,
+          "likes": 1904
         },
         {
-          "modelId": "Qwen/Qwen3-VL-8B-Instruct",
-          "downloads": 10420686,
-          "likes": 1169
+          "modelId": "Qwen/Qwen3-14B",
+          "downloads": 13049351,
+          "likes": 545
         },
         {
-          "modelId": "Qwen/Qwen3-8B",
-          "downloads": 10146765,
-          "likes": 2080
+          "modelId": "Comfy-Org/Qwen-Image-2.1",
+          "downloads": 9795362,
+          "likes": 1327
         },
         {
           "modelId": "Qwen/Qwen3-Embedding-0.6B",
-          "downloads": 9110331,
-          "likes": 1262
+          "downloads": 8267720,
+          "likes": 1349
         },
         {
-          "modelId": "Qwen/Qwen3-4B",
-          "downloads": 8896913,
-          "likes": 725
+          "modelId": "ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF",
+          "downloads": 7035824,
+          "likes": 1260
         }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
     },
     {
       "provider": "DeepSeek",
-      "capturedAt": "2026-10-07T13:33:25.642Z",
+      "capturedAt": "2026-11-16T06:08:08.052Z",
       "source": "https://huggingface.co/api/models?search=DeepSeek&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
         {
-          "modelId": "deepseek-ai/DeepSeek-V4-Flash-0731",
-          "downloads": 4528516,
-          "likes": 4021
+          "modelId": "deepseek-ai/DeepSeek-V3.2",
+          "downloads": 8865855,
+          "likes": 1601
         },
         {
-          "modelId": "deepseek-ai/DeepSeek-V3.2",
-          "downloads": 4240676,
-          "likes": 1507
+          "modelId": "ISTA-DASLab/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF",
+          "downloads": 4161713,
+          "likes": 669
+        },
+        {
+          "modelId": "deepseek-ai/DeepSeek-V4-Flash-0731",
+          "downloads": 2235061,
+          "likes": 4107
         },
         {
           "modelId": "deepseek-ai/DeepSeek-OCR",
-          "downloads": 2076309,
-          "likes": 3391
+          "downloads": 1856733,
+          "likes": 3466
         },
         {
-          "modelId": "antirez/deepseek-v4.1-flash-gguf",
-          "downloads": 1577177,
-          "likes": 57
-        },
-        {
-          "modelId": "deepseek-ai/DeepSeek-V3-0324",
-          "downloads": 1419434,
-          "likes": 3183
+          "modelId": "deepseek-ai/DeepSeek-V4.1-Flash",
+          "downloads": 1694181,
+          "likes": 4978
         }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
     },
     {
       "provider": "Moonshot Kimi",
-      "capturedAt": "2026-10-07T13:33:25.647Z",
+      "capturedAt": "2026-11-16T06:08:08.047Z",
       "source": "https://huggingface.co/api/models?search=Kimi&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
         {
-          "modelId": "RadixArk/Kimi-K3-DSpark",
-          "downloads": 6430103,
-          "likes": 58
+          "modelId": "mradermacher/Qwen3.5-9B-Kimi-k3-Distilled-GGUF",
+          "downloads": 825894,
+          "likes": 23
         },
         {
           "modelId": "moonshotai/Kimi-K3",
-          "downloads": 1253272,
-          "likes": 11617
-        },
-        {
-          "modelId": "moonshotai/Kimi-K2.6",
-          "downloads": 457429,
-          "likes": 1613
-        },
-        {
-          "modelId": "unsloth/Kimi-K3-GGUF",
-          "downloads": 342974,
-          "likes": 397
+          "downloads": 783375,
+          "likes": 11996
         },
         {
           "modelId": "moonshotai/Kimi-K2.5",
-          "downloads": 339205,
-          "likes": 2878
+          "downloads": 392889,
+          "likes": 2901
+        },
+        {
+          "modelId": "moonshotai/Kimi-K2.7-Code",
+          "downloads": 294951,
+          "likes": 1429
+        },
+        {
+          "modelId": "moonshotai/Kimi-K2-Instruct",
+          "downloads": 247690,
+          "likes": 3007
         }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
     },
     {
       "provider": "Zhipu ChatGLM",
-      "capturedAt": "2026-10-07T13:33:25.632Z",
+      "capturedAt": "2026-11-16T06:08:08.050Z",
       "source": "https://huggingface.co/api/models?search=ChatGLM&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
         {
           "modelId": "zai-org/chatglm2-6b",
-          "downloads": 452337,
-          "likes": 2055
+          "downloads": 481567,
+          "likes": 2069
         },
         {
           "modelId": "zai-org/chatglm3-6b",
-          "downloads": 64103,
-          "likes": 1167
-        },
-        {
-          "modelId": "optimum-intel-internal-testing/tiny-random-chatglm",
-          "downloads": 6208,
-          "likes": 0
+          "downloads": 37124,
+          "likes": 1179
         },
         {
           "modelId": "zai-org/chatglm3-6b-base",
-          "downloads": 4556,
-          "likes": 87
+          "downloads": 4833,
+          "likes": 88
         },
         {
-          "modelId": "thu-coai/ShieldLM-6B-chatglm3",
-          "downloads": 2610,
-          "likes": 4
+          "modelId": "optimum-intel-internal-testing/tiny-random-chatglm",
+          "downloads": 3490,
+          "likes": 0
+        },
+        {
+          "modelId": "zai-org/chatglm-6b",
+          "downloads": 2155,
+          "likes": 2932
         }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
     },
     {
       "provider": "Baichuan",
-      "capturedAt": "2026-10-07T13:33:25.634Z",
+      "capturedAt": "2026-11-16T06:08:08.046Z",
       "source": "https://huggingface.co/api/models?search=Baichuan&sort=downloads&direction=-1&limit=5",
       "metric": "huggingface_model_downloads",
       "entries": [
         {
           "modelId": "baichuan-inc/Baichuan2-7B-Chat",
-          "downloads": 42534,
-          "likes": 172
+          "downloads": 49137,
+          "likes": 173
         },
         {
           "modelId": "baichuan-inc/Baichuan-7B",
-          "downloads": 36063,
-          "likes": 841
+          "downloads": 37083,
+          "likes": 848
         },
         {
           "modelId": "baichuan-inc/Baichuan2-13B-Chat",
-          "downloads": 8610,
+          "downloads": 8787,
           "likes": 434
         },
         {
           "modelId": "baichuan-inc/Baichuan-13B-Chat",
-          "downloads": 8038,
+          "downloads": 7479,
           "likes": 633
         },
         {
-          "modelId": "baichuan-inc/Baichuan-M2-32B-Q4_K_M-GGUF",
-          "downloads": 6266,
-          "likes": 3
+          "modelId": "optimum-intel-internal-testing/tiny-random-baichuan2",
+          "downloads": 4030,
+          "likes": 0
         }
       ],
       "comparability": "Developer/open-model proxy; not consumer app usage."
@@ -2444,11 +2480,11 @@
       "id": "github-huggingface-transformers",
       "metric": "github_repository_activity",
       "repository": "huggingface/transformers",
-      "stars": 167019,
-      "forks": 34766,
-      "openIssues": 2353,
-      "repositoryUpdatedAt": "2026-10-07T13:17:44Z",
-      "capturedAt": "2026-10-07T13:33:28.983Z",
+      "stars": 169036,
+      "forks": 35214,
+      "openIssues": 1142,
+      "repositoryUpdatedAt": "2026-11-16T06:07:04Z",
+      "capturedAt": "2026-11-16T06:08:09.426Z",
       "source": "https://api.github.com/repos/huggingface/transformers",
       "confidence": "high",
       "comparability": "Developer ecosystem proxy; no country split and no end-user usage measurement."
@@ -3955,7 +3991,7 @@
         {
           "geo": {
             "code": "GUF",
-            "name": "GUF"
+            "name": "French Guiana"
           },
           "period": "2022",
           "value": 1.333,
@@ -4265,7 +4301,7 @@
         {
           "geo": {
             "code": "GLP",
-            "name": "GLP"
+            "name": "Guadeloupe"
           },
           "period": "2024",
           "value": 0.333,
@@ -4325,7 +4361,7 @@
         {
           "geo": {
             "code": "MTQ",
-            "name": "MTQ"
+            "name": "Martinique"
           },
           "period": "2020",
           "value": 0.167,
@@ -4335,7 +4371,7 @@
         {
           "geo": {
             "code": "REU",
-            "name": "REU"
+            "name": "Reunion"
           },
           "period": "2023",
           "value": 0.125,
@@ -4407,8 +4443,8 @@
   ],
   "sectionFreshness": {
     "usCensusBusinessAIMetrics": {
-      "status": "fresh",
-      "reason": null
+      "status": "preserved",
+      "reason": "CENSUS_API_KEY not set"
     }
   },
   "sourceCatalogForFutureCollection": [
@@ -4496,8 +4532,8 @@
     }
   ],
   "meta": {
-    "generatedAt": "2026-10-07T13:33:03.884Z",
-    "asOf": "2026-10-07",
+    "generatedAt": "2026-11-16T06:07:52.583Z",
+    "asOf": "2026-11-16",
     "source": {
       "name": "Multiple public AI-usage proxy sources",
       "publisher": "FutureGrid (aggregated)",

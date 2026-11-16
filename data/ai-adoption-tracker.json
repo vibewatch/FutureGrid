@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-10-07T14:11:29.369Z",
-    "asOf": "2026-09-06",
+    "generatedAt": "2026-11-16T06:09:50.301Z",
+    "asOf": "2026-10-18",
     "source": {
       "name": "St. Louis Fed RPS Generative AI Adoption Tracker + Census Business Trends and Outlook Survey",
       "publisher": "Federal Reserve Bank of St. Louis / U.S. Census Bureau",
@@ -9,7 +9,7 @@
     },
     "version": "1.0.0"
   },
-  "generatedAt": "2026-10-07T14:11:29.369Z",
+  "generatedAt": "2026-11-16T06:09:50.301Z",
   "sources": [
     {
       "id": "stlouisfed-rps-genai",
@@ -33,7 +33,7 @@
     "The BTOS national series starts with the first cycle that publishes the current AI-use question wording; BTOS did not collect cycles 202521–202523 (Oct 6 – Nov 16, 2025) due to the federal funding lapse."
   ],
   "workers": {
-    "asOf": "2026-04-01",
+    "asOf": "2026-07-01",
     "frequency": "quarterly",
     "universe": "U.S. adults ages 18–64 (adoption overall/outside work) and employed adults (work adoption)",
     "headline": {
@@ -60,15 +60,19 @@
         },
         {
           "date": "2025-10-01",
-          "value": 55.93
+          "value": 56.01
         },
         {
           "date": "2026-01-01",
-          "value": 57.87
+          "value": 57.56
         },
         {
           "date": "2026-04-01",
           "value": 61.78
+        },
+        {
+          "date": "2026-07-01",
+          "value": 60.81
         }
       ],
       "adoptionWork": [
@@ -94,49 +98,57 @@
         },
         {
           "date": "2025-10-01",
-          "value": 40.73
+          "value": 40.65
         },
         {
           "date": "2026-01-01",
-          "value": 43.41
+          "value": 42.84
         },
         {
           "date": "2026-04-01",
           "value": 45.2
+        },
+        {
+          "date": "2026-07-01",
+          "value": 40.55
         }
       ],
       "adoptionNonWork": [
         {
           "date": "2024-07-01",
-          "value": 36.03
+          "value": 29.54
         },
         {
           "date": "2024-10-01",
-          "value": 39.28
+          "value": 34.65
         },
         {
           "date": "2025-01-01",
-          "value": 41.94
+          "value": 36.23
         },
         {
           "date": "2025-04-01",
-          "value": 45.94
+          "value": 38.29
         },
         {
           "date": "2025-07-01",
-          "value": 48.59
+          "value": 41.58
         },
         {
           "date": "2025-10-01",
-          "value": 49.69
+          "value": 42.44
         },
         {
           "date": "2026-01-01",
-          "value": 51.33
+          "value": 43.64
         },
         {
           "date": "2026-04-01",
-          "value": 54.81
+          "value": 46.87
+        },
+        {
+          "date": "2026-07-01",
+          "value": 49.49
         }
       ],
       "dailyUseWork": [
@@ -162,15 +174,19 @@
         },
         {
           "date": "2025-10-01",
-          "value": 11.99
+          "value": 12.16
         },
         {
           "date": "2026-01-01",
-          "value": 12.57
+          "value": 12.24
         },
         {
           "date": "2026-04-01",
           "value": 13.69
+        },
+        {
+          "date": "2026-07-01",
+          "value": 11.47
         }
       ],
       "lastWeekUseWork": [
@@ -196,15 +212,19 @@
         },
         {
           "date": "2025-10-01",
-          "value": 35.2
+          "value": 35.04
         },
         {
           "date": "2026-01-01",
-          "value": 37.83
+          "value": 37.3
         },
         {
           "date": "2026-04-01",
           "value": 39.23
+        },
+        {
+          "date": "2026-07-01",
+          "value": 34.84
         }
       ],
       "timeSavingsPctOfHours": [
@@ -218,23 +238,27 @@
         },
         {
           "date": "2025-04-01",
-          "value": 1.81
+          "value": 1.82
         },
         {
           "date": "2025-07-01",
-          "value": 1.75
+          "value": 1.76
         },
         {
           "date": "2025-10-01",
-          "value": 2
+          "value": 1.99
         },
         {
           "date": "2026-01-01",
-          "value": 2.16
+          "value": 2.07
         },
         {
           "date": "2026-04-01",
           "value": 2.17
+        },
+        {
+          "date": "2026-07-01",
+          "value": 2.08
         }
       ],
       "workHoursAssistedPct": [
@@ -248,23 +272,27 @@
         },
         {
           "date": "2025-04-01",
-          "value": 4.9
+          "value": 4.91
         },
         {
           "date": "2025-07-01",
-          "value": 5.72
+          "value": 5.73
         },
         {
           "date": "2025-10-01",
-          "value": 5.56
+          "value": 5.59
         },
         {
           "date": "2026-01-01",
-          "value": 6.01
+          "value": 5.97
         },
         {
           "date": "2026-04-01",
           "value": 6.27
+        },
+        {
+          "date": "2026-07-01",
+          "value": 5.31
         }
       ]
     },
@@ -272,9 +300,9 @@
       {
         "socMajor": "11",
         "group": "Management",
-        "adoptionWorkPct": 71.89,
-        "adoptionWorkPctYearAgo": 49.59,
-        "timeSavingsPctOfHours": 3.72,
+        "adoptionWorkPct": 63.3,
+        "adoptionWorkPctYearAgo": 61.43,
+        "timeSavingsPctOfHours": 5.22,
         "series": [
           {
             "date": "2024-07-01",
@@ -282,7 +310,7 @@
           },
           {
             "date": "2024-10-01",
-            "value": 48.08
+            "value": 48.05
           },
           {
             "date": "2025-01-01",
@@ -294,28 +322,32 @@
           },
           {
             "date": "2025-07-01",
-            "value": 61.46
+            "value": 61.43
           },
           {
             "date": "2025-10-01",
-            "value": 62.41
+            "value": 62
           },
           {
             "date": "2026-01-01",
-            "value": 64.95
+            "value": 65.31
           },
           {
             "date": "2026-04-01",
             "value": 71.89
+          },
+          {
+            "date": "2026-07-01",
+            "value": 63.3
           }
         ]
       },
       {
         "socMajor": "13",
         "group": "Business and Financial Operations",
-        "adoptionWorkPct": 60.33,
-        "adoptionWorkPctYearAgo": 41.81,
-        "timeSavingsPctOfHours": 2.89,
+        "adoptionWorkPct": 60.73,
+        "adoptionWorkPctYearAgo": 54.2,
+        "timeSavingsPctOfHours": 2.74,
         "series": [
           {
             "date": "2024-07-01",
@@ -323,7 +355,7 @@
           },
           {
             "date": "2024-10-01",
-            "value": 48.47
+            "value": 48.4
           },
           {
             "date": "2025-01-01",
@@ -339,24 +371,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 58.32
+            "value": 58.35
           },
           {
             "date": "2026-01-01",
-            "value": 59.63
+            "value": 60.03
           },
           {
             "date": "2026-04-01",
             "value": 60.33
+          },
+          {
+            "date": "2026-07-01",
+            "value": 60.73
           }
         ]
       },
       {
         "socMajor": "15",
         "group": "Computer and Mathematical",
-        "adoptionWorkPct": 77.62,
-        "adoptionWorkPctYearAgo": 64.37,
-        "timeSavingsPctOfHours": 4.8,
+        "adoptionWorkPct": 68.79,
+        "adoptionWorkPctYearAgo": 71.06,
+        "timeSavingsPctOfHours": 3.64,
         "series": [
           {
             "date": "2024-07-01",
@@ -380,24 +416,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 72.89
+            "value": 71.79
           },
           {
             "date": "2026-01-01",
-            "value": 71.95
+            "value": 71.03
           },
           {
             "date": "2026-04-01",
             "value": 77.62
+          },
+          {
+            "date": "2026-07-01",
+            "value": 68.79
           }
         ]
       },
       {
         "socMajor": "17",
         "group": "Architecture and Engineering",
-        "adoptionWorkPct": 49.86,
-        "adoptionWorkPctYearAgo": 41.93,
-        "timeSavingsPctOfHours": 3.15,
+        "adoptionWorkPct": 60.87,
+        "adoptionWorkPctYearAgo": 46.76,
+        "timeSavingsPctOfHours": 1.99,
         "series": [
           {
             "date": "2024-07-01",
@@ -425,20 +465,24 @@
           },
           {
             "date": "2026-01-01",
-            "value": 63.11
+            "value": 60.5
           },
           {
             "date": "2026-04-01",
             "value": 49.86
+          },
+          {
+            "date": "2026-07-01",
+            "value": 60.87
           }
         ]
       },
       {
         "socMajor": "19",
         "group": "Life, Physical, and Social Science",
-        "adoptionWorkPct": 54.36,
-        "adoptionWorkPctYearAgo": 55.66,
-        "timeSavingsPctOfHours": 2.48,
+        "adoptionWorkPct": 42.86,
+        "adoptionWorkPctYearAgo": 48.1,
+        "timeSavingsPctOfHours": 2.7,
         "series": [
           {
             "date": "2024-07-01",
@@ -462,24 +506,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 62.75
+            "value": 63.66
           },
           {
             "date": "2026-01-01",
-            "value": 54.66
+            "value": 50.73
           },
           {
             "date": "2026-04-01",
             "value": 54.36
+          },
+          {
+            "date": "2026-07-01",
+            "value": 42.86
           }
         ]
       },
       {
         "socMajor": "21",
         "group": "Community and Social Service",
-        "adoptionWorkPct": 53.83,
-        "adoptionWorkPctYearAgo": 36.78,
-        "timeSavingsPctOfHours": 2.2,
+        "adoptionWorkPct": 46.24,
+        "adoptionWorkPctYearAgo": 29.99,
+        "timeSavingsPctOfHours": 2.69,
         "series": [
           {
             "date": "2024-07-01",
@@ -503,24 +551,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 43.07
+            "value": 43.67
           },
           {
             "date": "2026-01-01",
-            "value": 50.08
+            "value": 48.39
           },
           {
             "date": "2026-04-01",
             "value": 53.83
+          },
+          {
+            "date": "2026-07-01",
+            "value": 46.24
           }
         ]
       },
       {
         "socMajor": "23",
         "group": "Legal",
-        "adoptionWorkPct": 53.27,
-        "adoptionWorkPctYearAgo": 63.53,
-        "timeSavingsPctOfHours": 3.52,
+        "adoptionWorkPct": 40.24,
+        "adoptionWorkPctYearAgo": 59.84,
+        "timeSavingsPctOfHours": 2.61,
         "series": [
           {
             "date": "2024-07-01",
@@ -544,24 +596,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 67.35
+            "value": 67.54
           },
           {
             "date": "2026-01-01",
-            "value": 65.07
+            "value": 65.64
           },
           {
             "date": "2026-04-01",
             "value": 53.27
+          },
+          {
+            "date": "2026-07-01",
+            "value": 40.24
           }
         ]
       },
       {
         "socMajor": "25",
         "group": "Educational Instruction and Library",
-        "adoptionWorkPct": 56.3,
-        "adoptionWorkPctYearAgo": 41.63,
-        "timeSavingsPctOfHours": 2.22,
+        "adoptionWorkPct": 45.83,
+        "adoptionWorkPctYearAgo": 49.82,
+        "timeSavingsPctOfHours": 2.2,
         "series": [
           {
             "date": "2024-07-01",
@@ -585,24 +641,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 55.94
+            "value": 54.88
           },
           {
             "date": "2026-01-01",
-            "value": 58.21
+            "value": 52.93
           },
           {
             "date": "2026-04-01",
             "value": 56.3
+          },
+          {
+            "date": "2026-07-01",
+            "value": 45.83
           }
         ]
       },
       {
         "socMajor": "27",
         "group": "Arts, Design, Entertainment, Sports, and Media",
-        "adoptionWorkPct": 51.08,
-        "adoptionWorkPctYearAgo": 55.86,
-        "timeSavingsPctOfHours": 2.67,
+        "adoptionWorkPct": 40.54,
+        "adoptionWorkPctYearAgo": 57.12,
+        "timeSavingsPctOfHours": 2.96,
         "series": [
           {
             "date": "2024-07-01",
@@ -626,24 +686,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 56.5
+            "value": 56.24
           },
           {
             "date": "2026-01-01",
-            "value": 45.03
+            "value": 45.26
           },
           {
             "date": "2026-04-01",
             "value": 51.08
+          },
+          {
+            "date": "2026-07-01",
+            "value": 40.54
           }
         ]
       },
       {
         "socMajor": "29",
         "group": "Healthcare Practitioners and Technical",
-        "adoptionWorkPct": 44.69,
-        "adoptionWorkPctYearAgo": 30.91,
-        "timeSavingsPctOfHours": 1.75,
+        "adoptionWorkPct": 34.58,
+        "adoptionWorkPctYearAgo": 29.29,
+        "timeSavingsPctOfHours": 1.14,
         "series": [
           {
             "date": "2024-07-01",
@@ -667,24 +731,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 43.63
+            "value": 43.99
           },
           {
             "date": "2026-01-01",
-            "value": 38.42
+            "value": 39.99
           },
           {
             "date": "2026-04-01",
             "value": 44.69
+          },
+          {
+            "date": "2026-07-01",
+            "value": 34.58
           }
         ]
       },
       {
         "socMajor": "31",
         "group": "Healthcare Support",
-        "adoptionWorkPct": 24.52,
-        "adoptionWorkPctYearAgo": 22.52,
-        "timeSavingsPctOfHours": 1.02,
+        "adoptionWorkPct": 30.81,
+        "adoptionWorkPctYearAgo": 16.64,
+        "timeSavingsPctOfHours": 1.15,
         "series": [
           {
             "date": "2024-07-01",
@@ -708,24 +776,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 18.88
+            "value": 18.95
           },
           {
             "date": "2026-01-01",
-            "value": 21.17
+            "value": 20.95
           },
           {
             "date": "2026-04-01",
             "value": 24.52
+          },
+          {
+            "date": "2026-07-01",
+            "value": 30.81
           }
         ]
       },
       {
         "socMajor": "33",
         "group": "Protective Service",
-        "adoptionWorkPct": 15.57,
-        "adoptionWorkPctYearAgo": 14.27,
-        "timeSavingsPctOfHours": 0.63,
+        "adoptionWorkPct": 25.85,
+        "adoptionWorkPctYearAgo": 30.06,
+        "timeSavingsPctOfHours": 0.42,
         "series": [
           {
             "date": "2024-07-01",
@@ -749,24 +821,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 35.08
+            "value": 34.45
           },
           {
             "date": "2026-01-01",
-            "value": 14.67
+            "value": 16.99
           },
           {
             "date": "2026-04-01",
             "value": 15.57
+          },
+          {
+            "date": "2026-07-01",
+            "value": 25.85
           }
         ]
       },
       {
         "socMajor": "35",
         "group": "Food Preparation and Serving Related",
-        "adoptionWorkPct": 29.14,
-        "adoptionWorkPctYearAgo": 25.11,
-        "timeSavingsPctOfHours": 1.19,
+        "adoptionWorkPct": 26.6,
+        "adoptionWorkPctYearAgo": 12.48,
+        "timeSavingsPctOfHours": 0.71,
         "series": [
           {
             "date": "2024-07-01",
@@ -790,24 +866,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 19.49
+            "value": 19.33
           },
           {
             "date": "2026-01-01",
-            "value": 20.61
+            "value": 20.66
           },
           {
             "date": "2026-04-01",
             "value": 29.14
+          },
+          {
+            "date": "2026-07-01",
+            "value": 26.6
           }
         ]
       },
       {
         "socMajor": "37",
         "group": "Building and Grounds Cleaning and Maintenance",
-        "adoptionWorkPct": 21.63,
-        "adoptionWorkPctYearAgo": 12.57,
-        "timeSavingsPctOfHours": 2.02,
+        "adoptionWorkPct": 13.54,
+        "adoptionWorkPctYearAgo": 8.93,
+        "timeSavingsPctOfHours": 0.35,
         "series": [
           {
             "date": "2024-07-01",
@@ -831,24 +911,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 10.85
+            "value": 9.48
           },
           {
             "date": "2026-01-01",
-            "value": 13.77
+            "value": 13.57
           },
           {
             "date": "2026-04-01",
             "value": 21.63
+          },
+          {
+            "date": "2026-07-01",
+            "value": 13.54
           }
         ]
       },
       {
         "socMajor": "39",
         "group": "Personal Care and Service",
-        "adoptionWorkPct": 20.76,
-        "adoptionWorkPctYearAgo": 14.56,
-        "timeSavingsPctOfHours": 0.94,
+        "adoptionWorkPct": 22.48,
+        "adoptionWorkPctYearAgo": 19.76,
+        "timeSavingsPctOfHours": 0.72,
         "series": [
           {
             "date": "2024-07-01",
@@ -872,24 +956,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 21.83
+            "value": 21.43
           },
           {
             "date": "2026-01-01",
-            "value": 37.25
+            "value": 37.99
           },
           {
             "date": "2026-04-01",
             "value": 20.76
+          },
+          {
+            "date": "2026-07-01",
+            "value": 22.48
           }
         ]
       },
       {
         "socMajor": "41",
         "group": "Sales and Related",
-        "adoptionWorkPct": 45.68,
-        "adoptionWorkPctYearAgo": 28.14,
-        "timeSavingsPctOfHours": 1.78,
+        "adoptionWorkPct": 34.91,
+        "adoptionWorkPctYearAgo": 33.33,
+        "timeSavingsPctOfHours": 1.51,
         "series": [
           {
             "date": "2024-07-01",
@@ -905,32 +993,36 @@
           },
           {
             "date": "2025-04-01",
-            "value": 28.14
+            "value": 27.89
           },
           {
             "date": "2025-07-01",
-            "value": 33.57
+            "value": 33.33
           },
           {
             "date": "2025-10-01",
-            "value": 36.84
+            "value": 37.14
           },
           {
             "date": "2026-01-01",
-            "value": 39.95
+            "value": 38.99
           },
           {
             "date": "2026-04-01",
             "value": 45.68
+          },
+          {
+            "date": "2026-07-01",
+            "value": 34.91
           }
         ]
       },
       {
         "socMajor": "43",
         "group": "Office and Administrative Support",
-        "adoptionWorkPct": 36.91,
-        "adoptionWorkPctYearAgo": 29.58,
-        "timeSavingsPctOfHours": 1.97,
+        "adoptionWorkPct": 36.77,
+        "adoptionWorkPctYearAgo": 27.88,
+        "timeSavingsPctOfHours": 1.54,
         "series": [
           {
             "date": "2024-07-01",
@@ -954,24 +1046,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 32.16
+            "value": 32.22
           },
           {
             "date": "2026-01-01",
-            "value": 36.47
+            "value": 35.64
           },
           {
             "date": "2026-04-01",
             "value": 36.91
+          },
+          {
+            "date": "2026-07-01",
+            "value": 36.77
           }
         ]
       },
       {
         "socMajor": "45",
         "group": "Farming, Fishing, and Forestry",
-        "adoptionWorkPct": 38.2,
-        "adoptionWorkPctYearAgo": 54,
-        "timeSavingsPctOfHours": 1.3,
+        "adoptionWorkPct": 52.28,
+        "adoptionWorkPctYearAgo": 24.48,
+        "timeSavingsPctOfHours": 0.95,
         "series": [
           {
             "date": "2024-07-01",
@@ -995,24 +1091,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 49.3
+            "value": 51.3
           },
           {
             "date": "2026-01-01",
-            "value": 52.29
+            "value": 53.11
           },
           {
             "date": "2026-04-01",
             "value": 38.2
+          },
+          {
+            "date": "2026-07-01",
+            "value": 52.28
           }
         ]
       },
       {
         "socMajor": "47",
         "group": "Construction and Extraction",
-        "adoptionWorkPct": 33.93,
-        "adoptionWorkPctYearAgo": 32.39,
-        "timeSavingsPctOfHours": 1.27,
+        "adoptionWorkPct": 36.15,
+        "adoptionWorkPctYearAgo": 31.37,
+        "timeSavingsPctOfHours": 1.94,
         "series": [
           {
             "date": "2024-07-01",
@@ -1036,24 +1136,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 29.77
+            "value": 29.13
           },
           {
             "date": "2026-01-01",
-            "value": 38.52
+            "value": 35.54
           },
           {
             "date": "2026-04-01",
             "value": 33.93
+          },
+          {
+            "date": "2026-07-01",
+            "value": 36.15
           }
         ]
       },
       {
         "socMajor": "49",
         "group": "Installation, Maintenance, and Repair",
-        "adoptionWorkPct": 31.67,
-        "adoptionWorkPctYearAgo": 34.53,
-        "timeSavingsPctOfHours": 1.5,
+        "adoptionWorkPct": 23.01,
+        "adoptionWorkPctYearAgo": 35.73,
+        "timeSavingsPctOfHours": 0.7,
         "series": [
           {
             "date": "2024-07-01",
@@ -1077,24 +1181,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 35.21
+            "value": 35.82
           },
           {
             "date": "2026-01-01",
-            "value": 44.79
+            "value": 44.98
           },
           {
             "date": "2026-04-01",
             "value": 31.67
+          },
+          {
+            "date": "2026-07-01",
+            "value": 23.01
           }
         ]
       },
       {
         "socMajor": "51",
         "group": "Production",
-        "adoptionWorkPct": 37.91,
-        "adoptionWorkPctYearAgo": 36.61,
-        "timeSavingsPctOfHours": 1.56,
+        "adoptionWorkPct": 28.53,
+        "adoptionWorkPctYearAgo": 38.46,
+        "timeSavingsPctOfHours": 1.76,
         "series": [
           {
             "date": "2024-07-01",
@@ -1118,24 +1226,28 @@
           },
           {
             "date": "2025-10-01",
-            "value": 28.43
+            "value": 29.34
           },
           {
             "date": "2026-01-01",
-            "value": 38.88
+            "value": 37.62
           },
           {
             "date": "2026-04-01",
             "value": 37.91
+          },
+          {
+            "date": "2026-07-01",
+            "value": 28.53
           }
         ]
       },
       {
         "socMajor": "53",
         "group": "Transportation and Material Moving",
-        "adoptionWorkPct": 28.98,
-        "adoptionWorkPctYearAgo": 19.91,
-        "timeSavingsPctOfHours": 1.23,
+        "adoptionWorkPct": 23.74,
+        "adoptionWorkPctYearAgo": 17.31,
+        "timeSavingsPctOfHours": 0.69,
         "series": [
           {
             "date": "2024-07-01",
@@ -1159,15 +1271,19 @@
           },
           {
             "date": "2025-10-01",
-            "value": 20
+            "value": 19.71
           },
           {
             "date": "2026-01-01",
-            "value": 22.69
+            "value": 22.63
           },
           {
             "date": "2026-04-01",
             "value": 28.98
+          },
+          {
+            "date": "2026-07-01",
+            "value": 23.74
           }
         ]
       }
@@ -1176,148 +1292,148 @@
       {
         "naics": "11",
         "industry": "Agriculture, Forestry, Fishing, and Hunting",
-        "adoptionWorkPct": 34.77,
-        "adoptionWorkPctYearAgo": 37.03,
-        "timeSavingsPctOfHours": 1.48
+        "adoptionWorkPct": 39.76,
+        "adoptionWorkPctYearAgo": 30.26,
+        "timeSavingsPctOfHours": 1.06
       },
       {
         "naics": "21",
         "industry": "Mining, Quarrying, and Oil and Gas Extraction",
-        "adoptionWorkPct": 26.1,
-        "adoptionWorkPctYearAgo": 54.92,
-        "timeSavingsPctOfHours": 0.68
+        "adoptionWorkPct": 28.41,
+        "adoptionWorkPctYearAgo": 65.36,
+        "timeSavingsPctOfHours": 1.44
       },
       {
         "naics": "23",
         "industry": "Construction",
-        "adoptionWorkPct": 43.54,
-        "adoptionWorkPctYearAgo": 37.36,
-        "timeSavingsPctOfHours": 2.48
+        "adoptionWorkPct": 43.67,
+        "adoptionWorkPctYearAgo": 37.94,
+        "timeSavingsPctOfHours": 1.86
       },
       {
         "naics": "31-33",
         "industry": "Manufacturing",
-        "adoptionWorkPct": 47.66,
-        "adoptionWorkPctYearAgo": 35.01,
-        "timeSavingsPctOfHours": 1.7
+        "adoptionWorkPct": 32.18,
+        "adoptionWorkPctYearAgo": 41.23,
+        "timeSavingsPctOfHours": 4.71
       },
       {
         "naics": "42",
         "industry": "Wholesale Trade",
-        "adoptionWorkPct": 62.12,
-        "adoptionWorkPctYearAgo": 41.63,
-        "timeSavingsPctOfHours": 2.83
+        "adoptionWorkPct": 40.7,
+        "adoptionWorkPctYearAgo": 39.46,
+        "timeSavingsPctOfHours": 2.05
       },
       {
         "naics": "44-45",
         "industry": "Retail Trade",
-        "adoptionWorkPct": 39.45,
-        "adoptionWorkPctYearAgo": 31.06,
-        "timeSavingsPctOfHours": 1.91
+        "adoptionWorkPct": 36.21,
+        "adoptionWorkPctYearAgo": 27.05,
+        "timeSavingsPctOfHours": 1.37
       },
       {
         "naics": "48-49",
         "industry": "Transportation and Warehousing",
-        "adoptionWorkPct": 25.1,
-        "adoptionWorkPctYearAgo": 20.81,
-        "timeSavingsPctOfHours": 1.59
+        "adoptionWorkPct": 26.11,
+        "adoptionWorkPctYearAgo": 30.54,
+        "timeSavingsPctOfHours": 0.98
       },
       {
         "naics": "22",
         "industry": "Utilities",
-        "adoptionWorkPct": 56.43,
-        "adoptionWorkPctYearAgo": 51.1,
-        "timeSavingsPctOfHours": 1.25
+        "adoptionWorkPct": 49.61,
+        "adoptionWorkPctYearAgo": 43.71,
+        "timeSavingsPctOfHours": 2.03
       },
       {
         "naics": "51",
         "industry": "Information",
-        "adoptionWorkPct": 82.19,
-        "adoptionWorkPctYearAgo": 59.3,
-        "timeSavingsPctOfHours": 4.85
+        "adoptionWorkPct": 77.04,
+        "adoptionWorkPctYearAgo": 68.97,
+        "timeSavingsPctOfHours": 4.42
       },
       {
         "naics": "52",
         "industry": "Finance and Insurance",
-        "adoptionWorkPct": 67.33,
-        "adoptionWorkPctYearAgo": 45.44,
-        "timeSavingsPctOfHours": 3.29
+        "adoptionWorkPct": 63.91,
+        "adoptionWorkPctYearAgo": 56.09,
+        "timeSavingsPctOfHours": 3.34
       },
       {
         "naics": "53",
         "industry": "Real Estate and Rental and Leasing",
-        "adoptionWorkPct": 56.49,
-        "adoptionWorkPctYearAgo": 42.17,
-        "timeSavingsPctOfHours": 2.6
+        "adoptionWorkPct": 39.01,
+        "adoptionWorkPctYearAgo": 46.12,
+        "timeSavingsPctOfHours": 2.43
       },
       {
         "naics": "54",
         "industry": "Professional, Scientific, and Technical Services",
-        "adoptionWorkPct": 69.54,
-        "adoptionWorkPctYearAgo": 52.41,
-        "timeSavingsPctOfHours": 3.94
+        "adoptionWorkPct": 61.42,
+        "adoptionWorkPctYearAgo": 62.44,
+        "timeSavingsPctOfHours": 3.27
       },
       {
         "naics": "55",
         "industry": "Management of Companies and Enterprises",
-        "adoptionWorkPct": 64.46,
-        "adoptionWorkPctYearAgo": 49.36,
-        "timeSavingsPctOfHours": 3.92
+        "adoptionWorkPct": 69.29,
+        "adoptionWorkPctYearAgo": 64.79,
+        "timeSavingsPctOfHours": 3.27
       },
       {
         "naics": "56",
         "industry": "Administrative and Support and Waste Management Services",
-        "adoptionWorkPct": 40.46,
-        "adoptionWorkPctYearAgo": 27.51,
-        "timeSavingsPctOfHours": 3.49
+        "adoptionWorkPct": 41,
+        "adoptionWorkPctYearAgo": 29.4,
+        "timeSavingsPctOfHours": 2
       },
       {
         "naics": "61",
         "industry": "Educational Services",
-        "adoptionWorkPct": 52.59,
-        "adoptionWorkPctYearAgo": 37.06,
-        "timeSavingsPctOfHours": 1.73
+        "adoptionWorkPct": 45.2,
+        "adoptionWorkPctYearAgo": 43.07,
+        "timeSavingsPctOfHours": 1.99
       },
       {
         "naics": "62",
         "industry": "Health Care and Social Assistance",
-        "adoptionWorkPct": 37.17,
-        "adoptionWorkPctYearAgo": 26.92,
-        "timeSavingsPctOfHours": 1.49
+        "adoptionWorkPct": 35.33,
+        "adoptionWorkPctYearAgo": 23.01,
+        "timeSavingsPctOfHours": 1.35
       },
       {
         "naics": "71",
         "industry": "Arts, Entertainment, and Recreation",
-        "adoptionWorkPct": 32,
-        "adoptionWorkPctYearAgo": 34.38,
-        "timeSavingsPctOfHours": 1.28
+        "adoptionWorkPct": 35.63,
+        "adoptionWorkPctYearAgo": 29.08,
+        "timeSavingsPctOfHours": 2.16
       },
       {
         "naics": "72",
         "industry": "Accommodation and Food Services",
-        "adoptionWorkPct": 30.53,
-        "adoptionWorkPctYearAgo": 22.84,
-        "timeSavingsPctOfHours": 1.56
+        "adoptionWorkPct": 30.16,
+        "adoptionWorkPctYearAgo": 16.56,
+        "timeSavingsPctOfHours": 1.22
       },
       {
         "naics": "81",
         "industry": "Other Services, Except Public Administration",
-        "adoptionWorkPct": 24.68,
-        "adoptionWorkPctYearAgo": 25.66,
-        "timeSavingsPctOfHours": 1.26
+        "adoptionWorkPct": 29.16,
+        "adoptionWorkPctYearAgo": 28.66,
+        "timeSavingsPctOfHours": 1.12
       },
       {
         "naics": "92",
         "industry": "Public Administration",
-        "adoptionWorkPct": 23.35,
-        "adoptionWorkPctYearAgo": 10.96,
-        "timeSavingsPctOfHours": 1.25
+        "adoptionWorkPct": 32.65,
+        "adoptionWorkPctYearAgo": 14.59,
+        "timeSavingsPctOfHours": 0.91
       }
     ]
   },
   "businesses": {
-    "asOf": "2026-09-06",
-    "latestCycle": "202619",
+    "asOf": "2026-10-18",
+    "latestCycle": "202622",
     "frequency": "biweekly",
     "universe": "U.S. employer businesses (single-unit and multi-unit firms), weighted by firm count",
     "national": [
@@ -1326,603 +1442,624 @@
         "refStart": "2025-11-03",
         "refEnd": "2025-11-16",
         "aiUsePct": 17.3,
-        "aiUseNext6mPct": 21.1
+        "aiUseNext6mPct": 2.2
       },
       {
         "cycle": "202525",
         "refStart": "2025-11-17",
         "refEnd": "2025-11-30",
         "aiUsePct": 17.2,
-        "aiUseNext6mPct": 20.9
+        "aiUseNext6mPct": 2.1
       },
       {
         "cycle": "202526",
         "refStart": "2025-12-01",
         "refEnd": "2025-12-14",
         "aiUsePct": 17.8,
-        "aiUseNext6mPct": 21.3
+        "aiUseNext6mPct": 2.1
       },
       {
         "cycle": "202601",
         "refStart": "2025-12-15",
         "refEnd": "2025-12-28",
         "aiUsePct": 17.7,
-        "aiUseNext6mPct": 22.4
+        "aiUseNext6mPct": 2.1
       },
       {
         "cycle": "202602",
         "refStart": "2025-12-29",
         "refEnd": "2026-01-11",
         "aiUsePct": 18.2,
-        "aiUseNext6mPct": 22.1
+        "aiUseNext6mPct": 2
       },
       {
         "cycle": "202603",
         "refStart": "2026-01-12",
         "refEnd": "2026-01-25",
         "aiUsePct": 18.9,
-        "aiUseNext6mPct": 22.1
+        "aiUseNext6mPct": 2
       },
       {
         "cycle": "202604",
         "refStart": "2026-01-26",
         "refEnd": "2026-02-08",
         "aiUsePct": 17.5,
-        "aiUseNext6mPct": 21
+        "aiUseNext6mPct": 2.3
       },
       {
         "cycle": "202605",
         "refStart": "2026-02-09",
         "refEnd": "2026-02-22",
         "aiUsePct": 18.2,
-        "aiUseNext6mPct": 21.8
+        "aiUseNext6mPct": 1.9
       },
       {
         "cycle": "202606",
         "refStart": "2026-02-23",
         "refEnd": "2026-03-08",
         "aiUsePct": 18.9,
-        "aiUseNext6mPct": 22.3
+        "aiUseNext6mPct": 2.2
       },
       {
         "cycle": "202607",
         "refStart": "2026-03-09",
         "refEnd": "2026-03-22",
         "aiUsePct": 19.1,
-        "aiUseNext6mPct": 22.5
+        "aiUseNext6mPct": 2.2
       },
       {
         "cycle": "202608",
         "refStart": "2026-03-23",
         "refEnd": "2026-04-05",
         "aiUsePct": 19.8,
-        "aiUseNext6mPct": 23
+        "aiUseNext6mPct": 2.2
       },
       {
         "cycle": "202609",
         "refStart": "2026-04-06",
         "refEnd": "2026-04-19",
         "aiUsePct": 19.8,
-        "aiUseNext6mPct": 22.8
+        "aiUseNext6mPct": 2.2
       },
       {
         "cycle": "202610",
         "refStart": "2026-04-20",
         "refEnd": "2026-05-03",
         "aiUsePct": 19.5,
-        "aiUseNext6mPct": 22.7
+        "aiUseNext6mPct": 2.3
       },
       {
         "cycle": "202611",
         "refStart": "2026-05-04",
         "refEnd": "2026-05-17",
         "aiUsePct": 20.6,
-        "aiUseNext6mPct": 23.7
+        "aiUseNext6mPct": 2.2
       },
       {
         "cycle": "202612",
         "refStart": "2026-05-18",
         "refEnd": "2026-05-31",
         "aiUsePct": 20.6,
-        "aiUseNext6mPct": 23.9
+        "aiUseNext6mPct": 2.1
       },
       {
         "cycle": "202613",
         "refStart": "2026-06-01",
         "refEnd": "2026-06-14",
         "aiUsePct": 20.6,
-        "aiUseNext6mPct": 23.7
+        "aiUseNext6mPct": 2.2
       },
       {
         "cycle": "202614",
         "refStart": "2026-06-15",
         "refEnd": "2026-06-28",
         "aiUsePct": 21.7,
-        "aiUseNext6mPct": 24.5
+        "aiUseNext6mPct": 2.3
       },
       {
         "cycle": "202615",
         "refStart": "2026-06-29",
         "refEnd": "2026-07-12",
         "aiUsePct": 21.5,
-        "aiUseNext6mPct": 24.3
+        "aiUseNext6mPct": 2.1
       },
       {
         "cycle": "202616",
         "refStart": "2026-07-13",
         "refEnd": "2026-07-26",
         "aiUsePct": 21.8,
-        "aiUseNext6mPct": 25.9
+        "aiUseNext6mPct": 2.1
       },
       {
         "cycle": "202617",
         "refStart": "2026-07-27",
         "refEnd": "2026-08-09",
         "aiUsePct": 22.4,
-        "aiUseNext6mPct": 25.9
+        "aiUseNext6mPct": 2.1
       },
       {
         "cycle": "202618",
         "refStart": "2026-08-10",
         "refEnd": "2026-08-23",
         "aiUsePct": 23.2,
-        "aiUseNext6mPct": 27.3
+        "aiUseNext6mPct": 2.3
       },
       {
         "cycle": "202619",
         "refStart": "2026-08-24",
         "refEnd": "2026-09-06",
         "aiUsePct": 23.8,
-        "aiUseNext6mPct": 27.6
+        "aiUseNext6mPct": 2.2
+      },
+      {
+        "cycle": "202620",
+        "refStart": "2026-09-07",
+        "refEnd": "2026-09-20",
+        "aiUsePct": 23.8,
+        "aiUseNext6mPct": 2.3
+      },
+      {
+        "cycle": "202621",
+        "refStart": "2026-09-21",
+        "refEnd": "2026-10-04",
+        "aiUsePct": 24.6,
+        "aiUseNext6mPct": 2.3
+      },
+      {
+        "cycle": "202622",
+        "refStart": "2026-10-05",
+        "refEnd": "2026-10-18",
+        "aiUsePct": 24.2,
+        "aiUseNext6mPct": 2.3
       }
     ],
     "bySector": [
       {
         "naics": "51",
         "sector": "Information",
-        "cycle": "202619",
-        "aiUsePct": 49,
-        "aiUseNext6mPct": 52.1
+        "cycle": "202622",
+        "aiUsePct": 45,
+        "aiUseNext6mPct": 1.7
       },
       {
         "naics": "54",
         "sector": "Professional, Scientific, and Technical Services",
-        "cycle": "202619",
-        "aiUsePct": 43.9,
-        "aiUseNext6mPct": 48.5
-      },
-      {
-        "naics": "52",
-        "sector": "Finance and Insurance",
-        "cycle": "202619",
-        "aiUsePct": 41,
-        "aiUseNext6mPct": 45.9
-      },
-      {
-        "naics": "55",
-        "sector": "Management of Companies and Enterprises",
-        "cycle": "202618",
-        "aiUsePct": 34.8,
-        "aiUseNext6mPct": 27.3
+        "cycle": "202622",
+        "aiUsePct": 41.6,
+        "aiUseNext6mPct": 0.7
       },
       {
         "naics": "61",
         "sector": "Educational Services",
-        "cycle": "202619",
-        "aiUsePct": 30,
-        "aiUseNext6mPct": 33.8
+        "cycle": "202622",
+        "aiUsePct": 39.5,
+        "aiUseNext6mPct": 1.2
+      },
+      {
+        "naics": "52",
+        "sector": "Finance and Insurance",
+        "cycle": "202622",
+        "aiUsePct": 39.2,
+        "aiUseNext6mPct": null
+      },
+      {
+        "naics": "55",
+        "sector": "Management of Companies and Enterprises",
+        "cycle": "202621",
+        "aiUsePct": 36.4,
+        "aiUseNext6mPct": null
       },
       {
         "naics": "53",
         "sector": "Real Estate and Rental and Leasing",
-        "cycle": "202619",
-        "aiUsePct": 29.6,
-        "aiUseNext6mPct": 35.2
-      },
-      {
-        "naics": "62",
-        "sector": "Health Care and Social Assistance",
-        "cycle": "202619",
-        "aiUsePct": 25.5,
-        "aiUseNext6mPct": 30.8
-      },
-      {
-        "naics": "71",
-        "sector": "Arts, Entertainment, and Recreation",
-        "cycle": "202619",
-        "aiUsePct": 22.6,
-        "aiUseNext6mPct": 25.6
-      },
-      {
-        "naics": "56",
-        "sector": "Administrative and Support and Waste Management Services",
-        "cycle": "202619",
-        "aiUsePct": 20.8,
-        "aiUseNext6mPct": 24.2
-      },
-      {
-        "naics": "31",
-        "sector": "Manufacturing",
-        "cycle": "202619",
-        "aiUsePct": 19.5,
-        "aiUseNext6mPct": 24
-      },
-      {
-        "naics": "42",
-        "sector": "Wholesale Trade",
-        "cycle": "202619",
-        "aiUsePct": 19.2,
-        "aiUseNext6mPct": 24.7
-      },
-      {
-        "naics": "44",
-        "sector": "Retail Trade",
-        "cycle": "202619",
-        "aiUsePct": 16.5,
-        "aiUseNext6mPct": 19.6
-      },
-      {
-        "naics": "23",
-        "sector": "Construction",
-        "cycle": "202619",
-        "aiUsePct": 15.4,
-        "aiUseNext6mPct": 17.7
-      },
-      {
-        "naics": "81",
-        "sector": "Other Services, Except Public Administration",
-        "cycle": "202619",
-        "aiUsePct": 15,
-        "aiUseNext6mPct": 16.7
-      },
-      {
-        "naics": "48",
-        "sector": "Transportation and Warehousing",
-        "cycle": "202619",
-        "aiUsePct": 13,
-        "aiUseNext6mPct": 16.3
+        "cycle": "202622",
+        "aiUsePct": 28.2,
+        "aiUseNext6mPct": 2.9
       },
       {
         "naics": "22",
         "sector": "Utilities",
-        "cycle": "202619",
-        "aiUsePct": 11.8,
-        "aiUseNext6mPct": 14.2
+        "cycle": "202622",
+        "aiUsePct": 27.5,
+        "aiUseNext6mPct": null
+      },
+      {
+        "naics": "62",
+        "sector": "Health Care and Social Assistance",
+        "cycle": "202622",
+        "aiUsePct": 24.6,
+        "aiUseNext6mPct": 0.6
+      },
+      {
+        "naics": "42",
+        "sector": "Wholesale Trade",
+        "cycle": "202622",
+        "aiUsePct": 23.1,
+        "aiUseNext6mPct": 7.3
+      },
+      {
+        "naics": "56",
+        "sector": "Administrative and Support and Waste Management Services",
+        "cycle": "202622",
+        "aiUsePct": 22.2,
+        "aiUseNext6mPct": 1.4
+      },
+      {
+        "naics": "71",
+        "sector": "Arts, Entertainment, and Recreation",
+        "cycle": "202622",
+        "aiUsePct": 22,
+        "aiUseNext6mPct": 1.6
+      },
+      {
+        "naics": "31",
+        "sector": "Manufacturing",
+        "cycle": "202622",
+        "aiUsePct": 21.4,
+        "aiUseNext6mPct": 6.9
+      },
+      {
+        "naics": "44",
+        "sector": "Retail Trade",
+        "cycle": "202622",
+        "aiUsePct": 19.1,
+        "aiUseNext6mPct": 7.4
+      },
+      {
+        "naics": "23",
+        "sector": "Construction",
+        "cycle": "202622",
+        "aiUsePct": 17.1,
+        "aiUseNext6mPct": 1.3
+      },
+      {
+        "naics": "81",
+        "sector": "Other Services, Except Public Administration",
+        "cycle": "202622",
+        "aiUsePct": 15.7,
+        "aiUseNext6mPct": 1
+      },
+      {
+        "naics": "48",
+        "sector": "Transportation and Warehousing",
+        "cycle": "202622",
+        "aiUsePct": 12.6,
+        "aiUseNext6mPct": null
       },
       {
         "naics": "72",
         "sector": "Accommodation and Food Services",
-        "cycle": "202619",
-        "aiUsePct": 10.1,
-        "aiUseNext6mPct": 14.3
+        "cycle": "202622",
+        "aiUsePct": 12.1,
+        "aiUseNext6mPct": 1.3
       },
       {
         "naics": "21",
         "sector": "Mining, Quarrying, and Oil and Gas Extraction",
-        "cycle": "202619",
-        "aiUsePct": 8,
-        "aiUseNext6mPct": 8.2
+        "cycle": "202622",
+        "aiUsePct": 10.2,
+        "aiUseNext6mPct": null
       },
       {
         "naics": "11",
         "sector": "Agriculture, Forestry, Fishing, and Hunting",
-        "cycle": "202619",
-        "aiUsePct": 6.2,
-        "aiUseNext6mPct": 8.6
+        "cycle": "202621",
+        "aiUsePct": 6,
+        "aiUseNext6mPct": null
       }
     ],
     "byState": [
       {
-        "state": "DC",
-        "cycle": "202619",
-        "aiUsePct": 33.9,
-        "aiUseNext6mPct": 35
+        "state": "WY",
+        "cycle": "202622",
+        "aiUsePct": 40.1,
+        "aiUseNext6mPct": null
       },
       {
-        "state": "NH",
-        "cycle": "202619",
-        "aiUsePct": 30.5,
-        "aiUseNext6mPct": 28.9
+        "state": "DC",
+        "cycle": "202622",
+        "aiUsePct": 37.2,
+        "aiUseNext6mPct": null
       },
       {
         "state": "CO",
-        "cycle": "202619",
-        "aiUsePct": 30.2,
-        "aiUseNext6mPct": 35.1
-      },
-      {
-        "state": "UT",
-        "cycle": "202619",
-        "aiUsePct": 28.8,
-        "aiUseNext6mPct": 33.1
-      },
-      {
-        "state": "MN",
-        "cycle": "202619",
-        "aiUsePct": 28.7,
-        "aiUseNext6mPct": 32.7
-      },
-      {
-        "state": "AZ",
-        "cycle": "202619",
-        "aiUsePct": 28.3,
-        "aiUseNext6mPct": 31.9
-      },
-      {
-        "state": "FL",
-        "cycle": "202619",
-        "aiUsePct": 28.2,
-        "aiUseNext6mPct": 32.4
-      },
-      {
-        "state": "ID",
-        "cycle": "202619",
-        "aiUsePct": 28,
-        "aiUseNext6mPct": 29.9
-      },
-      {
-        "state": "GA",
-        "cycle": "202619",
-        "aiUsePct": 27.2,
-        "aiUseNext6mPct": 31.1
-      },
-      {
-        "state": "SD",
-        "cycle": "202619",
-        "aiUsePct": 27.2,
-        "aiUseNext6mPct": 33.6
+        "cycle": "202622",
+        "aiUsePct": 31.2,
+        "aiUseNext6mPct": 3.6
       },
       {
         "state": "DE",
-        "cycle": "202619",
-        "aiUsePct": 27.1,
-        "aiUseNext6mPct": 33.9
-      },
-      {
-        "state": "OR",
-        "cycle": "202619",
-        "aiUsePct": 26.4,
-        "aiUseNext6mPct": 28.9
-      },
-      {
-        "state": "CA",
-        "cycle": "202619",
-        "aiUsePct": 26.3,
-        "aiUseNext6mPct": 30.4
+        "cycle": "202622",
+        "aiUsePct": 29.7,
+        "aiUseNext6mPct": null
       },
       {
         "state": "NV",
-        "cycle": "202619",
-        "aiUsePct": 26.3,
-        "aiUseNext6mPct": 32.7
+        "cycle": "202622",
+        "aiUsePct": 29.5,
+        "aiUseNext6mPct": null
       },
       {
-        "state": "WA",
-        "cycle": "202619",
-        "aiUsePct": 26.2,
-        "aiUseNext6mPct": 31.7
-      },
-      {
-        "state": "NC",
-        "cycle": "202619",
-        "aiUsePct": 25.6,
-        "aiUseNext6mPct": 27.6
-      },
-      {
-        "state": "VA",
-        "cycle": "202619",
-        "aiUsePct": 25.1,
-        "aiUseNext6mPct": 29.8
-      },
-      {
-        "state": "KY",
-        "cycle": "202619",
-        "aiUsePct": 24.1,
-        "aiUseNext6mPct": 27.7
-      },
-      {
-        "state": "TX",
-        "cycle": "202619",
-        "aiUsePct": 24,
-        "aiUseNext6mPct": 28
-      },
-      {
-        "state": "NE",
-        "cycle": "202619",
-        "aiUsePct": 23.9,
-        "aiUseNext6mPct": 26
-      },
-      {
-        "state": "HI",
-        "cycle": "202619",
-        "aiUsePct": 23.4,
-        "aiUseNext6mPct": 21.8
-      },
-      {
-        "state": "MD",
-        "cycle": "202619",
-        "aiUsePct": 23.4,
-        "aiUseNext6mPct": 29.5
-      },
-      {
-        "state": "AL",
-        "cycle": "202619",
-        "aiUsePct": 23.3,
-        "aiUseNext6mPct": 26.3
-      },
-      {
-        "state": "ND",
-        "cycle": "202619",
-        "aiUsePct": 23.3,
-        "aiUseNext6mPct": 23.2
-      },
-      {
-        "state": "SC",
-        "cycle": "202619",
-        "aiUsePct": 23.3,
-        "aiUseNext6mPct": 26.4
-      },
-      {
-        "state": "PA",
-        "cycle": "202619",
-        "aiUsePct": 23.1,
-        "aiUseNext6mPct": 26.2
-      },
-      {
-        "state": "MA",
-        "cycle": "202619",
-        "aiUsePct": 22.2,
-        "aiUseNext6mPct": 25
-      },
-      {
-        "state": "IL",
-        "cycle": "202619",
-        "aiUsePct": 22,
-        "aiUseNext6mPct": 27.7
-      },
-      {
-        "state": "MT",
-        "cycle": "202619",
-        "aiUsePct": 22,
-        "aiUseNext6mPct": 27.1
-      },
-      {
-        "state": "MO",
-        "cycle": "202619",
-        "aiUsePct": 21.7,
-        "aiUseNext6mPct": 25.9
+        "state": "UT",
+        "cycle": "202622",
+        "aiUsePct": 29.4,
+        "aiUseNext6mPct": null
       },
       {
         "state": "KS",
-        "cycle": "202619",
-        "aiUsePct": 21.5,
-        "aiUseNext6mPct": 25.4
+        "cycle": "202622",
+        "aiUsePct": 28.5,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "GA",
+        "cycle": "202622",
+        "aiUsePct": 28.2,
+        "aiUseNext6mPct": 2
+      },
+      {
+        "state": "VA",
+        "cycle": "202622",
+        "aiUsePct": 28.1,
+        "aiUseNext6mPct": 2.4
+      },
+      {
+        "state": "MN",
+        "cycle": "202622",
+        "aiUsePct": 27.7,
+        "aiUseNext6mPct": 2.1
+      },
+      {
+        "state": "FL",
+        "cycle": "202622",
+        "aiUsePct": 27.6,
+        "aiUseNext6mPct": 3.1
       },
       {
         "state": "OH",
-        "cycle": "202619",
-        "aiUsePct": 21.4,
-        "aiUseNext6mPct": 25.9
+        "cycle": "202622",
+        "aiUsePct": 27.3,
+        "aiUseNext6mPct": 2.8
       },
       {
-        "state": "AR",
-        "cycle": "202619",
-        "aiUsePct": 21.3,
-        "aiUseNext6mPct": 22.8
+        "state": "OR",
+        "cycle": "202622",
+        "aiUsePct": 26.9,
+        "aiUseNext6mPct": null
       },
       {
-        "state": "MS",
-        "cycle": "202619",
-        "aiUsePct": 21.2,
-        "aiUseNext6mPct": 22.8
+        "state": "TX",
+        "cycle": "202622",
+        "aiUsePct": 26.9,
+        "aiUseNext6mPct": 2.1
       },
       {
-        "state": "WY",
-        "cycle": "202619",
-        "aiUsePct": 21.1,
-        "aiUseNext6mPct": 20.4
+        "state": "NC",
+        "cycle": "202622",
+        "aiUsePct": 26.5,
+        "aiUseNext6mPct": 1.7
+      },
+      {
+        "state": "AZ",
+        "cycle": "202622",
+        "aiUsePct": 26.2,
+        "aiUseNext6mPct": null
       },
       {
         "state": "TN",
-        "cycle": "202619",
-        "aiUsePct": 20.3,
-        "aiUseNext6mPct": 26.2
+        "cycle": "202622",
+        "aiUsePct": 26.1,
+        "aiUseNext6mPct": 3
       },
       {
-        "state": "MI",
-        "cycle": "202619",
-        "aiUsePct": 20,
-        "aiUseNext6mPct": 24.4
+        "state": "MT",
+        "cycle": "202622",
+        "aiUsePct": 25.1,
+        "aiUseNext6mPct": null
       },
       {
-        "state": "NM",
-        "cycle": "202619",
-        "aiUsePct": 19.7,
-        "aiUseNext6mPct": 19.3
-      },
-      {
-        "state": "IN",
-        "cycle": "202619",
-        "aiUsePct": 19.4,
-        "aiUseNext6mPct": 24.3
-      },
-      {
-        "state": "NJ",
-        "cycle": "202619",
-        "aiUsePct": 18.5,
-        "aiUseNext6mPct": 23.4
-      },
-      {
-        "state": "WI",
-        "cycle": "202619",
-        "aiUsePct": 18.3,
-        "aiUseNext6mPct": 22.9
-      },
-      {
-        "state": "OK",
-        "cycle": "202619",
-        "aiUsePct": 17.9,
-        "aiUseNext6mPct": 22.1
-      },
-      {
-        "state": "NY",
-        "cycle": "202619",
-        "aiUsePct": 17.8,
-        "aiUseNext6mPct": 19.8
-      },
-      {
-        "state": "VT",
-        "cycle": "202619",
-        "aiUsePct": 17.7,
-        "aiUseNext6mPct": 21.9
-      },
-      {
-        "state": "CT",
-        "cycle": "202619",
-        "aiUsePct": 17.2,
-        "aiUseNext6mPct": 20.8
-      },
-      {
-        "state": "LA",
-        "cycle": "202619",
-        "aiUsePct": 17.2,
-        "aiUseNext6mPct": 21.2
-      },
-      {
-        "state": "IA",
-        "cycle": "202619",
-        "aiUsePct": 17,
-        "aiUseNext6mPct": 21.3
+        "state": "CA",
+        "cycle": "202622",
+        "aiUsePct": 24.7,
+        "aiUseNext6mPct": 2.4
       },
       {
         "state": "ME",
-        "cycle": "202619",
-        "aiUsePct": 16.7,
-        "aiUseNext6mPct": 17.8
+        "cycle": "202622",
+        "aiUsePct": 24.2,
+        "aiUseNext6mPct": null
       },
       {
-        "state": "PR",
-        "cycle": "202619",
-        "aiUsePct": 16.6,
-        "aiUseNext6mPct": 20.4
+        "state": "CT",
+        "cycle": "202622",
+        "aiUsePct": 24.1,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "IN",
+        "cycle": "202622",
+        "aiUsePct": 24,
+        "aiUseNext6mPct": 2.6
+      },
+      {
+        "state": "WA",
+        "cycle": "202622",
+        "aiUsePct": 24,
+        "aiUseNext6mPct": 3.3
+      },
+      {
+        "state": "WI",
+        "cycle": "202622",
+        "aiUsePct": 24,
+        "aiUseNext6mPct": 4.3
+      },
+      {
+        "state": "MO",
+        "cycle": "202622",
+        "aiUsePct": 23.6,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "IA",
+        "cycle": "202622",
+        "aiUsePct": 23.3,
+        "aiUseNext6mPct": null
       },
       {
         "state": "AK",
-        "cycle": "202619",
-        "aiUsePct": 15,
-        "aiUseNext6mPct": 18.5
+        "cycle": "202620",
+        "aiUsePct": 23.1,
+        "aiUseNext6mPct": null
       },
       {
-        "state": "WV",
-        "cycle": "202619",
-        "aiUsePct": 13.9,
-        "aiUseNext6mPct": 17.5
+        "state": "IL",
+        "cycle": "202622",
+        "aiUsePct": 23.1,
+        "aiUseNext6mPct": 2.7
+      },
+      {
+        "state": "SC",
+        "cycle": "202622",
+        "aiUsePct": 22.6,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "SD",
+        "cycle": "202622",
+        "aiUsePct": 22.6,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "KY",
+        "cycle": "202622",
+        "aiUsePct": 22.5,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "ND",
+        "cycle": "202622",
+        "aiUsePct": 22.5,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "LA",
+        "cycle": "202622",
+        "aiUsePct": 21.5,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "NJ",
+        "cycle": "202622",
+        "aiUsePct": 21.5,
+        "aiUseNext6mPct": 2
+      },
+      {
+        "state": "MD",
+        "cycle": "202622",
+        "aiUsePct": 21.2,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "AR",
+        "cycle": "202622",
+        "aiUsePct": 20.9,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "MI",
+        "cycle": "202622",
+        "aiUsePct": 20.7,
+        "aiUseNext6mPct": 2
+      },
+      {
+        "state": "AL",
+        "cycle": "202622",
+        "aiUsePct": 20.6,
+        "aiUseNext6mPct": null
       },
       {
         "state": "RI",
-        "cycle": "202618",
-        "aiUsePct": 10.9,
-        "aiUseNext6mPct": 17.3
+        "cycle": "202622",
+        "aiUsePct": 20.6,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "OK",
+        "cycle": "202622",
+        "aiUsePct": 20.5,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "MA",
+        "cycle": "202622",
+        "aiUsePct": 20.4,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "VT",
+        "cycle": "202622",
+        "aiUsePct": 19.3,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "PA",
+        "cycle": "202622",
+        "aiUsePct": 18.9,
+        "aiUseNext6mPct": 1.7
+      },
+      {
+        "state": "NM",
+        "cycle": "202622",
+        "aiUsePct": 17.8,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "NY",
+        "cycle": "202622",
+        "aiUsePct": 17.8,
+        "aiUseNext6mPct": 2.1
+      },
+      {
+        "state": "NE",
+        "cycle": "202622",
+        "aiUsePct": 16.3,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "ID",
+        "cycle": "202622",
+        "aiUsePct": 16,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "HI",
+        "cycle": "202622",
+        "aiUsePct": 14.6,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "WV",
+        "cycle": "202622",
+        "aiUsePct": 14,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "PR",
+        "cycle": "202622",
+        "aiUsePct": 13.9,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "MS",
+        "cycle": "202622",
+        "aiUsePct": 13.2,
+        "aiUseNext6mPct": null
+      },
+      {
+        "state": "NH",
+        "cycle": "202622",
+        "aiUsePct": 12.8,
+        "aiUseNext6mPct": null
       }
     ]
   }

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-10-07T13:34:05.868Z",
+    "generatedAt": "2026-11-16T06:09:54.078Z",
     "asOf": "2025",
     "source": {
       "name": "ILOSTAT — Employment by sex and occupation (thousands) — Annual",
@@ -18,7 +18,7 @@
     "licenseUrl": "https://www.ilo.org/global/copyright/lang--en/index.htm",
     "publisher": "International Labour Organization (ILO)",
     "publisherUrl": "https://ilostat.ilo.org/",
-    "accessDate": "2026-10-07T13:34:02.568Z"
+    "accessDate": "2026-11-16T06:09:50.409Z"
   },
   "coverage": {
     "classification": "ISCO-08",
@@ -275,13 +275,13 @@
         },
         "8": {
           "label": "Plant and machine operators, and assemblers",
-          "employment": 1798.226,
-          "share": 0.062271
+          "employment": 1808.414,
+          "share": 0.062624
         },
         "9": {
           "label": "Elementary occupations",
-          "employment": 2425.961,
-          "share": 0.084009
+          "employment": 2415.773,
+          "share": 0.083656
         }
       }
     },
@@ -600,11 +600,11 @@
       "ESP_KOR": 0.1803,
       "ESP_NLD": 0.1961,
       "ESP_USA": 0.1549,
-      "FRA_GBR": 0.1109,
+      "FRA_GBR": 0.1112,
       "FRA_ITA": 0.1387,
       "FRA_KOR": 0.1613,
       "FRA_NLD": 0.097,
-      "FRA_USA": 0.0694,
+      "FRA_USA": 0.0698,
       "GBR_ITA": 0.2124,
       "GBR_KOR": 0.2315,
       "GBR_NLD": 0.1325,
