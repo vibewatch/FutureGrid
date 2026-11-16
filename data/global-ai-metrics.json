@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T13:56:57.991Z",
+  "generatedAt": "2026-11-16T06:09:11.156Z",
   "sources": [
     {
       "id": "microsoft-aiei",
@@ -86,7 +86,18 @@
     }
   ],
   "unmatchedEconomies": [],
-  "sectionFreshness": {},
+  "sectionFreshness": {
+    "readiness": {
+      "status": "preserved",
+      "reason": "Fetch/parse error: Timeout fetching https://www.imf.org/external/datamapper/api/v1/AIPI/AI_PI",
+      "preservedGeneratedAt": "2026-10-07T13:56:57.991Z"
+    },
+    "governmentReadiness": {
+      "status": "preserved",
+      "reason": "Fetch/parse error: HTTP 502 for https://open.africa/dataset/e6551895-bded-4f5a-aca1-b3ed0937efd0/resource/f3f84fa7-6974-42f4-9a12-f637ff8ba6b6/download/2023-ai-readiness-index-public-dataset-global-rankings.csv",
+      "preservedGeneratedAt": "2026-10-07T13:56:57.991Z"
+    }
+  },
   "metrics": {
     "diffusion": {
       "ARE": 73.3,
@@ -2688,7 +2699,7 @@
     }
   },
   "meta": {
-    "generatedAt": "2026-10-07T13:56:57.991Z",
+    "generatedAt": "2026-11-16T06:09:11.156Z",
     "asOf": "2026-06-30",
     "source": {
       "name": "Global AI diffusion and readiness metrics",
